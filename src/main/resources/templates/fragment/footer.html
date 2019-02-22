@@ -1,0 +1,22 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+    <div th:fragment="content" th:remove="tag">
+        <footer class="py-3 bg-black-20">
+            <div class="container-fluid">
+            	<div class="row text-uppercase font-08 ">
+            		<div class="col-12 col-sm-6 text-center text-sm-left">
+            			<p class="m-0 text-secondary" th:utext="#{application.copyright}"></p>
+            		</div>
+            		<div class="col-12 col-sm-6 text-center text-sm-right">
+            			<a href="#" class="text-secondary">English</a> | 
+            			<a href="#" class="text-secondary">Bahasa Indonesia</a>
+            		</div>
+            	</div>
+            </div>
+        </footer>
+    </div>
+</body>
+
+</html>

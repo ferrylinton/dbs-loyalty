@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: DBS Priviledge
+  profiles:
+    active: dev, mariadb
+server:
+  port: 8080

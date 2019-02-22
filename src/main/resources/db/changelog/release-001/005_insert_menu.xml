@@ -1,0 +1,165 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="FLH" id="1549667595365-203">
+    	<insert tableName="m_menu">
+            <column name="id" value="EVZ72GXd"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+           	<column name="name" value="User Management"/>
+           	<column name="label" value="menu.userManagement"/>
+           	<column name="order_number" value="10"/>
+           	<column name="url" />
+           	<column name="authority_id" />
+           	<column name="parent_id" />
+        </insert>
+        <insert tableName="m_menu">
+            <column name="id" value="1GmRWCy5"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+           	<column name="name" value="User"/>
+           	<column name="label" value="menu.user"/>
+           	<column name="order_number" value="11"/>
+           	<column name="url" value="/secure/user"/>
+           	<column name="authority_id" value="9AVwgQkg"/>
+           	<column name="parent_id" value="EVZ72GXd"/>
+        </insert>
+        <insert tableName="m_menu">
+            <column name="id" value="AKrB1D73"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+           	<column name="name" value="Role"/>
+           	<column name="label" value="menu.role"/>
+           	<column name="order_number" value="12"/>
+           	<column name="url" value="/secure/role"/>
+           	<column name="authority_id" value="JngOeys4"/>
+           	<column name="parent_id" value="EVZ72GXd"/>
+        </insert>
+        <insert tableName="m_menu">
+            <column name="id" value="tk9HqrT9"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+           	<column name="name" value="Authority"/>
+           	<column name="label" value="menu.authority"/>
+           	<column name="order_number" value="13"/>
+           	<column name="url" value="/secure/authority"/>
+           	<column name="authority_id" value="rgkEbTWs"/>
+           	<column name="parent_id" value="EVZ72GXd"/>
+        </insert>
+        <insert tableName="m_menu">
+            <column name="id" value="vIG6CAln"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+           	<column name="name" value="Menu"/>
+           	<column name="label" value="menu.menu"/>
+           	<column name="order_number" value="14"/>
+           	<column name="url" value="/secure/menu"/>
+           	<column name="authority_id" value="3oxk1q6M"/>
+           	<column name="parent_id" value="EVZ72GXd"/>
+        </insert>
+        <insert tableName="m_menu">
+            <column name="id" value="mG1rSBr7"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+           	<column name="name" value="Data Management"/>
+           	<column name="label" value="menu.dataManagement"/>
+           	<column name="order_number" value="20"/>
+           	<column name="url"/>
+           	<column name="authority_id" />
+           	<column name="parent_id" />
+        </insert>
+        <insert tableName="m_menu">
+            <column name="id" value="Kij9LyOC"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+           	<column name="name" value="Post"/>
+           	<column name="label" value="menu.post"/>
+           	<column name="order_number" value="21"/>
+           	<column name="url" value="/secure/post"/>
+           	<column name="authority_id" value="CRrvkfYM" />
+           	<column name="parent_id" value="mG1rSBr7"/>
+        </insert>
+        <insert tableName="m_menu">
+            <column name="id" value="CvKYOGH3"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+           	<column name="name" value="Category"/>
+           	<column name="label" value="menu.category"/>
+           	<column name="order_number" value="22"/>
+           	<column name="url" value="/secure/category"/>
+           	<column name="authority_id" value="3EqK8rYW" />
+           	<column name="parent_id" value="mG1rSBr7"/>
+        </insert>
+        <insert tableName="m_menu">
+            <column name="id" value="wvZtF9Ll"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+           	<column name="name" value="App"/>
+           	<column name="label" value="menu.app"/>
+           	<column name="order_number" value="23"/>
+           	<column name="url" value="/secure/app"/>
+           	<column name="authority_id" value="qauPxk72" />
+           	<column name="parent_id" value="mG1rSBr7"/>
+        </insert>
+        <insert tableName="m_menu">
+            <column name="id" value="izXltJqw"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+           	<column name="name" value="Log"/>
+           	<column name="label" value="menu.log"/>
+           	<column name="order_number" value="30"/>
+           	<column name="url"/>
+           	<column name="authority_id" />
+           	<column name="parent_id" />
+        </insert>
+        <insert tableName="m_menu">
+            <column name="id" value="MogOqaqw"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+           	<column name="name" value="Log Session"/>
+           	<column name="label" value="menu.logSession"/>
+           	<column name="order_number" value="31"/>
+           	<column name="url" value="/secure/logsession"/>
+           	<column name="authority_id" value="TgCWVRqh" />
+           	<column name="parent_id" value="izXltJqw"/>
+        </insert>
+        <insert tableName="m_menu">
+            <column name="id" value="BN1xn2xW"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+           	<column name="name" value="Log Login"/>
+           	<column name="label" value="menu.logLogin"/>
+           	<column name="order_number" value="32"/>
+           	<column name="url" value="/secure/loglogin"/>
+           	<column name="authority_id" value="soUgSUE5" />
+           	<column name="parent_id" value="izXltJqw"/>
+        </insert>
+        <insert tableName="m_menu">
+            <column name="id" value="jQRTwG8W"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+           	<column name="name" value="Log Search"/>
+           	<column name="label" value="menu.logSearch"/>
+           	<column name="order_number" value="33"/>
+           	<column name="url" value="/secure/logsearch"/>
+           	<column name="authority_id" value="Rf3pMjU6" />
+           	<column name="parent_id" value="izXltJqw"/>
+        </insert>
+        <insert tableName="m_menu">
+            <column name="id" value="KVYqY1UW"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+           	<column name="name" value="Log Post"/>
+           	<column name="label" value="menu.logPost"/>
+           	<column name="order_number" value="34"/>
+           	<column name="url" value="/secure/logpost"/>
+           	<column name="authority_id" value="TKzyjUme" />
+           	<column name="parent_id" value="izXltJqw"/>
+        </insert>
+    </changeSet>
+    
+</databaseChangeLog>

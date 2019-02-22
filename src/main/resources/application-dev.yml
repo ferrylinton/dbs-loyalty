@@ -1,0 +1,33 @@
+application:
+  date-format: dd/MM/yy
+  date-time-format: dd/MM/yy HH:mm
+  date-time-full-format: dd/MM/yy HH:mm:ss.SSS
+spring:
+  liquibase: 
+    enabled: false
+    change-log: classpath:/db/changelog/db.changelog-master.xml
+  mvc:
+    date-format: dd/MM/yyyy hh.mm
+    ignore-default-model-on-redirect: true
+    static-path-pattern: /static/**
+  servlet:
+    multipart:
+      max-file-size: 1MB
+      max-request-size: 5MB
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
+  jackson:
+    date-format: dd/MM/yyyy hh.mm
+    serialization: 
+      indent-output: true
+  messages:
+    basename: i18n/messages
+  devtools:
+    livereload:
+      enabled: true
+      port: 35729
+server:
+  servlet:
+    context-path: /priviledge

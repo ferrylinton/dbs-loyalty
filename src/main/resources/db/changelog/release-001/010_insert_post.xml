@@ -1,0 +1,72 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+	<property name="postDescription" value="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla? Quos cum ex quis soluta, a laboriosam. Dicta expedita corporis animi vero voluptate voluptatibus possimus, veniam magni quis!" />
+	<property name="keyword" value="key01, key02, key03" />
+    
+    <changeSet author="FLH" id="1550227339289-208">
+    
+    	<!-- Insert POST -->
+    	
+        <insert tableName="d_post">
+            <column name="id" value="6N8FnMb0"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+            <column name="description" value="${postDescription}"/>
+            <column name="title" value="Title 01"/>
+            <column name="keyword" value="${keyword}"/>
+            <column name="content_bytes" valueBlobFile="post/post.md"/>
+            <column name="viewed" value="0"/>
+        </insert>
+        
+        <!-- Insert POST - IMAGE -->
+        
+        <insert tableName="d_post_image">
+			<column name="id" value="OjwsVgqU"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+            <column name="image_bytes" valueBlobFile="image/900x300.png"/>
+            <column name="post_id" value="6N8FnMb0"/>
+        </insert>
+        
+        <!-- Insert POST - USER -->
+        
+        <insert tableName="d_post_user">
+        	<column name="post_id" value="6N8FnMb0"/>
+        	<column name="user_id" value="OA2AHVDU"/>
+        </insert>
+        <insert tableName="d_post_user">
+        	<column name="post_id" value="6N8FnMb0"/>
+        	<column name="user_id" value="12BXiX2J"/>
+        </insert>
+        
+        <!-- Insert POST - CATEGORY -->
+        
+        <insert tableName="d_post_category">
+        	<column name="post_id" value="6N8FnMb0"/>
+        	<column name="category_id" value="RhOweHU0"/>
+        </insert>
+        <insert tableName="d_post_category">
+        	<column name="post_id" value="6N8FnMb0"/>
+        	<column name="category_id" value="Y9Z9b08A"/>
+        </insert>
+        <insert tableName="d_post_category">
+        	<column name="post_id" value="6N8FnMb0"/>
+        	<column name="category_id" value="SHhXlKPq"/>
+        </insert>
+        <insert tableName="d_post_category">
+        	<column name="post_id" value="6N8FnMb0"/>
+        	<column name="category_id" value="muwgPrAy"/>
+        </insert>
+        <insert tableName="d_post_category">
+        	<column name="post_id" value="6N8FnMb0"/>
+        	<column name="category_id" value="gW86lqq9"/>
+        </insert>
+        
+    </changeSet>
+    
+</databaseChangeLog>

@@ -1,0 +1,33 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<body>
+	<div th:fragment="content" th:remove="tag">
+		<nav class="navbar navbar-dark bg-black navbar-expand-sm fixed-top border-bottom border-red border-3" id="mainNav">
+			<div class="container-fluid">
+				<a class="navbar-brand py-0" href="index.html">
+					<img th:src="@{/static/image/dbs.png}"></img>
+				</a>
+				<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#nav1"
+				 aria-controls="nav1" aria-expanded="false" aria-label="Toggle navigation">
+					Menu <i class="fas fa-bars"></i>
+				</button>
+				<div class="collapse navbar-collapse" id="nav1">
+					<ul class="navbar-nav ml-auto">
+						<li class="nav-item">
+							<a class="nav-link text-white" href="index.html">Home</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-white" href="about.html">About</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link text-white" href="contact.html">Contact</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</nav>
+	</div>
+</body>
+
+</html>

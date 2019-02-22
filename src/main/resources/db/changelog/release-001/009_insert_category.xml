@@ -1,0 +1,95 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="FLH" id="1549667595365-207">
+        <insert tableName="d_category">
+            <column name="id" value="RhOweHU0"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+            <column name="name" value="Category 01"/>
+            <column name="image_bytes" valueBlobFile="category/300x260.png"/>
+        </insert>
+        <insert tableName="d_category">
+            <column name="id" value="Y9Z9b08A"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+            <column name="name" value="Category 02"/>
+            <column name="image_bytes" valueBlobFile="category/300x260.png"/>
+        </insert>
+        <insert tableName="d_category">
+            <column name="id" value="SHhXlKPq"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+            <column name="name" value="Category 03"/>
+            <column name="image_bytes" valueBlobFile="category/300x260.png"/>
+        </insert>
+        <insert tableName="d_category">
+            <column name="id" value="muwgPrAy"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+            <column name="name" value="Category 04"/>
+            <column name="image_bytes" valueBlobFile="category/300x260.png"/>
+        </insert>
+        <insert tableName="d_category">
+            <column name="id" value="gW86lqq9"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+            <column name="name" value="Category 05"/>
+            <column name="image_bytes" valueBlobFile="category/300x260.png"/>
+        </insert>
+        <insert tableName="d_category">
+            <column name="id" value="sMHdnPVb"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+            <column name="name" value="Category 06"/>
+            <column name="image_bytes" valueBlobFile="category/300x260.png"/>
+        </insert>
+        <insert tableName="d_category">
+            <column name="id" value="IhxvcwVM"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+            <column name="name" value="Category 07"/>
+            <column name="image_bytes" valueBlobFile="category/300x260.png"/>
+        </insert>
+        <insert tableName="d_category">
+            <column name="id" value="wWkJbVDr"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+            <column name="name" value="Category 08"/>
+            <column name="image_bytes" valueBlobFile="category/300x260.png"/>
+        </insert>
+        <insert tableName="d_category">
+            <column name="id" value="nxw8lteU"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+            <column name="name" value="Category 09"/>
+            <column name="image_bytes" valueBlobFile="category/300x260.png"/>
+        </insert>
+        <insert tableName="d_category">
+            <column name="id" value="IyLsSTBG"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+            <column name="name" value="Category 10"/>
+            <column name="image_bytes" valueBlobFile="category/300x260.png"/>
+        </insert>
+        <insert tableName="d_category">
+            <column name="id" value="1JgLEzvu"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+            <column name="name" value="Category 11"/>
+            <column name="image_bytes" valueBlobFile="category/300x260.png"/>
+        </insert>
+        <insert tableName="d_category">
+            <column name="id" value="ITvVizls"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+            <column name="name" value="Category 12"/>
+            <column name="image_bytes" valueBlobFile="category/300x260.png"/>
+        </insert>
+    </changeSet>
+    
+</databaseChangeLog>

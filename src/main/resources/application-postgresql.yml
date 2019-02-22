@@ -1,0 +1,14 @@
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:postgresql://localhost:5432/loyalty?currentSchema=public
+    username: bloghu
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    properties:
+      hibernate.hbm2ddl.auto: update
+      hibernate.format_sql: true
+      hibernate.jdbc.lob.non_contextual_creation: true
+      hibernate.integration.envers.enabled: false

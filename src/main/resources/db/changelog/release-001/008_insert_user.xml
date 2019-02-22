@@ -1,0 +1,107 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+	<property name="password" value="$2a$10$9KcHpiHwzPk.61JiGE.0MeyshggPZWY9TSyD66IZi26zl6mk67.S." />
+	<property name="userDescription" value="I am a Full-Stack Web Developer, and I like to work on both the front-end (Bootstrap, Html5, Css3 etc) and back-end (Spring, Spring Boot, Spring Data Jpa, Spring Security etc.)"/>
+
+    <changeSet author="FLH" id="1549667595365-206">
+    
+    	<!-- Insert USER -->
+        <insert tableName="m_user">
+            <column name="id" value="Jo6scVlX"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+            <column name="activated" valueBoolean="true"/>
+            <column name="email" value="user@gmail.com"/>
+            <column name="password" value="${password}"/>
+            <column name="fullname" value="User"/>
+            <column name="username" value="user"/>
+            <column name="role_id" value="81pNwv2Q"/>
+        </insert>
+        <insert tableName="m_user">
+            <column name="id" value="WxtNPwsP"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="admin"/>
+            <column name="activated" valueBoolean="true"/>
+            <column name="email" value="admin@gmail.com"/>
+            <column name="password" value="${password}"/>
+            <column name="fullname" value="Admin"/>
+            <column name="username" value="admin"/>
+            <column name="role_id" value="eSn1jhQG"/>
+        </insert>
+        
+        <!-- Insert AUTHOR and USER_DETAIL -->
+    	
+    	<insert tableName="m_user">
+            <column name="id" value="OA2AHVDU"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+            <column name="activated" valueBoolean="true"/>
+            <column name="email" value="author01@gmail.com"/>
+            <column name="password" value="${password}"/>
+            <column name="fullname" value="Author 01"/>
+            <column name="username" value="author01"/>
+            <column name="role_id" value="R5EiYDtI"/>
+            <column name="image_bytes" valueBlobFile="user/250x250.png"/>
+            <column name="description" value="${userDescription}"/>
+        </insert>
+        <insert tableName="m_user_detail">
+            <column name="id" value="i8e0f8f7"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+            <column name="user_id" value="OA2AHVDU" />
+            <column name="content_bytes" valueBlobFile="user/user-detail.md"/>
+            <column name="viewed" value="0"/>
+        </insert>
+        
+        <insert tableName="m_user">
+            <column name="id" value="12BXiX2J"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+            <column name="activated" valueBoolean="true"/>
+            <column name="email" value="author02@gmail.com"/>
+            <column name="password" value="${password}"/>
+            <column name="fullname" value="Author 02"/>
+            <column name="username" value="author02"/>
+            <column name="role_id" value="R5EiYDtI"/>
+            <column name="image_bytes" valueBlobFile="user/250x250.png"/>
+            <column name="description" value="${userDescription}"/>
+        </insert>
+        <insert tableName="m_user_detail">
+            <column name="id" value="VJqiGDGH"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+            <column name="user_id" value="12BXiX2J" />
+            <column name="content_bytes" valueBlobFile="user/user-detail.md"/>
+            <column name="viewed" value="0"/>
+        </insert>
+        
+        <insert tableName="m_user">
+            <column name="id" value="YLk8ms79"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+            <column name="activated" valueBoolean="true"/>
+            <column name="email" value="author03@gmail.com"/>
+            <column name="password" value="${password}"/>
+            <column name="fullname" value="Author 03"/>
+            <column name="username" value="author03"/>
+            <column name="role_id" value="R5EiYDtI"/>
+            <column name="image_bytes" valueBlobFile="user/250x250.png"/>
+            <column name="description" value="${userDescription}"/>
+        </insert>
+        <insert tableName="m_user_detail">
+            <column name="id" value="X7YWIJUD"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+            <column name="user_id" value="YLk8ms79" />
+            <column name="content_bytes" valueBlobFile="user/user-detail.md"/>
+            <column name="viewed" value="0"/>
+        </insert>
+        
+    </changeSet>
+    
+</databaseChangeLog>

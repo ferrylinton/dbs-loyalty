@@ -1,0 +1,29 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="FLH" id="1549667595365-204">
+        <insert tableName="m_role">
+            <column name="id" value="81pNwv2Q"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+            <column name="name" value="User"/>
+        </insert>
+        <insert tableName="m_role">
+            <column name="id" value="R5EiYDtI"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+            <column name="name" value="Author"/>
+        </insert>
+        <insert tableName="m_role">
+            <column name="id" value="eSn1jhQG"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+            <column name="name" value="Admin"/>
+        </insert>
+    </changeSet>
+    
+</databaseChangeLog>
