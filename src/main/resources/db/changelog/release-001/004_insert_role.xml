@@ -5,24 +5,18 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
-    <changeSet author="FLH" id="1549667595365-204">
-        <insert tableName="m_role">
-            <column name="id" value="81pNwv2Q"/>
-            <column name="created_by" value="system"/>
-            <column name="last_modified_by" value="system"/>
-            <column name="name" value="User"/>
-        </insert>
-        <insert tableName="m_role">
-            <column name="id" value="R5EiYDtI"/>
-            <column name="created_by" value="system"/>
-            <column name="last_modified_by" value="system"/>
-            <column name="name" value="Author"/>
-        </insert>
+    <changeSet author="FLH" id="1550816087783-401">
         <insert tableName="m_role">
             <column name="id" value="eSn1jhQG"/>
             <column name="created_by" value="system"/>
             <column name="last_modified_by" value="system"/>
             <column name="name" value="Admin"/>
+        </insert>
+        <insert tableName="m_role">
+            <column name="id" value="31ZxLeW1"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+            <column name="name" value="Customer"/>
         </insert>
     </changeSet>
     

@@ -11,14 +11,14 @@ import org.hibernate.annotations.GenericGenerator;
 
 
 @MappedSuperclass
-public abstract class AbstractUUID extends AbstractAuditing implements Serializable{
+public abstract class AbstractId extends AbstractAuditing implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@Column(name = "id", length=36)
-	@GenericGenerator(name = "UUIDGenerator", strategy = "com.dbs.priviledge.domain.UUIDGenerator")
-	@GeneratedValue(generator = "UUIDGenerator")
+	@Column(name = "id", length=8)
+	@GenericGenerator(name = "StringIdGenerator", strategy = "com.dbs.priviledge.domain.IdGenerator")
+	@GeneratedValue(generator = "StringIdGenerator")
 	private String id;
 
 	public String getId() {
@@ -45,7 +45,7 @@ public abstract class AbstractUUID extends AbstractAuditing implements Serializa
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		AbstractUUID other = (AbstractUUID) obj;
+		AbstractId other = (AbstractId) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

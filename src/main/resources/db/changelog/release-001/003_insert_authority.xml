@@ -1,0 +1,32 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+	<changeSet author="FLH" id="1550816087783-301">
+	
+        <insert tableName="m_authority">
+            <column name="id" value="3oxk1q6M"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+            <column name="name" value="ROLE_USER_MANAGEMENT"/>
+        </insert>
+        
+        <insert tableName="m_authority">
+            <column name="id" value="V6evDSIi"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+            <column name="name" value="ROLE_CUSTOMER_MANAGEMENT"/>
+        </insert>
+        
+        <insert tableName="m_authority">
+            <column name="id" value="VHhzT21P"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="system"/>
+            <column name="name" value="ROLE_CUSTOMER"/>
+        </insert>
+    </changeSet>
+    
+</databaseChangeLog>

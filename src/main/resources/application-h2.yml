@@ -1,7 +1,7 @@
 spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:h2:file:./target/h2db/db/bloghu;MODE=PostgreSQL;AUTO_SERVER=TRUE
+    url: jdbc:h2:file:./target/h2db/db/priviledge;MODE=MySQL;AUTO_SERVER=TRUE
     username: sa
     password: 
   h2:

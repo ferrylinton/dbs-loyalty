@@ -7,13 +7,12 @@
 
 	<property name="password" value="$2a$10$9KcHpiHwzPk.61JiGE.0MeyshggPZWY9TSyD66IZi26zl6mk67.S." />
 
-	<changeSet author="FLH" id="1549679657290-201">
+	<changeSet author="FLH" id="1550816087783-201">
 		<insert tableName="m_user">
 			<column name="id" value="xnn6QDJN" />
+			<column name="email" value="system@dbs.com" />
 			<column name="fullname" value="System" />
-			<column name="username" value="system" />
-			<column name="email" value="system@gmail.com" />
-			<column name="password" value="${password}" />
+			<column name="password_hash" value="${password}" />
 			<column name="activated" valueBoolean="false" />
 			<column name="created_by" value="system" />
 			<column name="last_modified_by" value="system" />

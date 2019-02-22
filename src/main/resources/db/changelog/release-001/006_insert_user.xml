@@ -1,0 +1,167 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="FLH" id="1550816087783-601">
+    
+        <insert tableName="m_user">
+            <column name="id" value="WxtNPwsP"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="admin"/>
+            <column name="activated" valueBoolean="true"/>
+            <column name="email" value="admin@dbs.com"/>
+            <column name="password_hash" value="${password}"/>
+            <column name="fullname" value="Admin"/>
+            <column name="role_id" value="eSn1jhQG"/>
+        </insert>
+        
+        <insert tableName="m_user">
+            <column name="id" value="GDno4OHC"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="customer01"/>
+            <column name="activated" valueBoolean="true"/>
+            <column name="email" value="customer01@dbs.com"/>
+            <column name="password_hash" value="${password}"/>
+            <column name="fullname" value="Customer 01"/>
+            <column name="image_bytes" valueBlobFile="user/250x250.png"/>
+            <column name="role_id" value="31ZxLeW1"/>
+        </insert>
+        
+        <insert tableName="m_user">
+            <column name="id" value="kv3bdKxI"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="customer02"/>
+            <column name="activated" valueBoolean="true"/>
+            <column name="email" value="customer02@dbs.com"/>
+            <column name="password_hash" value="${password}"/>
+            <column name="fullname" value="Customer 02"/>
+            <column name="image_bytes" valueBlobFile="user/250x250.png"/>
+            <column name="role_id" value="31ZxLeW1"/>
+        </insert>
+        
+        <insert tableName="m_user">
+            <column name="id" value="GZmq6RFY"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="customer03"/>
+            <column name="activated" valueBoolean="true"/>
+            <column name="email" value="customer03@dbs.com"/>
+            <column name="password_hash" value="${password}"/>
+            <column name="fullname" value="Customer 03"/>
+            <column name="image_bytes" valueBlobFile="user/250x250.png"/>
+            <column name="role_id" value="31ZxLeW1"/>
+        </insert>
+        
+        <insert tableName="m_user">
+            <column name="id" value="GNPzd9qJ"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="customer04"/>
+            <column name="activated" valueBoolean="true"/>
+            <column name="email" value="customer04@dbs.com"/>
+            <column name="password_hash" value="${password}"/>
+            <column name="fullname" value="Customer 04"/>
+            <column name="image_bytes" valueBlobFile="user/250x250.png"/>
+            <column name="role_id" value="31ZxLeW1"/>
+        </insert>
+        
+        <insert tableName="m_user">
+            <column name="id" value="1ocboPk6"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="customer05"/>
+            <column name="activated" valueBoolean="true"/>
+            <column name="email" value="customer05@dbs.com"/>
+            <column name="password_hash" value="${password}"/>
+            <column name="fullname" value="Customer 05"/>
+            <column name="image_bytes" valueBlobFile="user/250x250.png"/>
+            <column name="role_id" value="31ZxLeW1"/>
+        </insert>
+        
+        <insert tableName="m_user">
+            <column name="id" value="OlYvG7lr"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="customer06"/>
+            <column name="activated" valueBoolean="true"/>
+            <column name="email" value="customer06@dbs.com"/>
+            <column name="password_hash" value="${password}"/>
+            <column name="fullname" value="Customer 06"/>
+            <column name="image_bytes" valueBlobFile="user/250x250.png"/>
+            <column name="role_id" value="31ZxLeW1"/>
+        </insert>
+        
+        <insert tableName="m_user">
+            <column name="id" value="P7HkqbPx"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="customer07"/>
+            <column name="activated" valueBoolean="true"/>
+            <column name="email" value="customer07@dbs.com"/>
+            <column name="password_hash" value="${password}"/>
+            <column name="fullname" value="Customer 07"/>
+            <column name="image_bytes" valueBlobFile="user/250x250.png"/>
+            <column name="role_id" value="31ZxLeW1"/>
+        </insert>
+        
+        <insert tableName="m_user">
+            <column name="id" value="VHz4a46y"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="customer08"/>
+            <column name="activated" valueBoolean="true"/>
+            <column name="email" value="customer08@dbs.com"/>
+            <column name="password_hash" value="${password}"/>
+            <column name="fullname" value="Customer 08"/>
+            <column name="image_bytes" valueBlobFile="user/250x250.png"/>
+            <column name="role_id" value="31ZxLeW1"/>
+        </insert>
+        
+        <insert tableName="m_user">
+            <column name="id" value="S2XD2xUN"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="customer09"/>
+            <column name="activated" valueBoolean="true"/>
+            <column name="email" value="customer09@dbs.com"/>
+            <column name="password_hash" value="${password}"/>
+            <column name="fullname" value="Customer 09"/>
+            <column name="image_bytes" valueBlobFile="user/250x250.png"/>
+            <column name="role_id" value="31ZxLeW1"/>
+        </insert>
+        
+        <insert tableName="m_user">
+            <column name="id" value="xVcJLlwj"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="customer10"/>
+            <column name="activated" valueBoolean="true"/>
+            <column name="email" value="customer10@dbs.com"/>
+            <column name="password_hash" value="${password}"/>
+            <column name="fullname" value="Customer 10"/>
+            <column name="image_bytes" valueBlobFile="user/250x250.png"/>
+            <column name="role_id" value="31ZxLeW1"/>
+        </insert>
+        
+        <insert tableName="m_user">
+            <column name="id" value="mftYSJ8M"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="customer11"/>
+            <column name="activated" valueBoolean="true"/>
+            <column name="email" value="customer11@dbs.com"/>
+            <column name="password_hash" value="${password}"/>
+            <column name="fullname" value="Customer 11"/>
+            <column name="image_bytes" valueBlobFile="user/250x250.png"/>
+            <column name="role_id" value="31ZxLeW1"/>
+        </insert>
+        
+        <insert tableName="m_user">
+            <column name="id" value="HoneILwU"/>
+            <column name="created_by" value="system"/>
+            <column name="last_modified_by" value="customer12"/>
+            <column name="activated" valueBoolean="true"/>
+            <column name="email" value="customer12@dbs.com"/>
+            <column name="password_hash" value="${password}"/>
+            <column name="fullname" value="Customer 12"/>
+            <column name="image_bytes" valueBlobFile="user/250x250.png"/>
+            <column name="role_id" value="31ZxLeW1"/>
+        </insert>
+        
+    </changeSet>
+    
+</databaseChangeLog>

@@ -17,8 +17,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import org.hibernate.annotations.Type;
-
 import com.dbs.priviledge.config.Constant;
 
 
@@ -30,7 +28,7 @@ import com.dbs.priviledge.config.Constant;
 		indexes= {
 				@Index(name = "m_user_idx", columnList = "email")
 			})
-public class User extends AbstractAuditing implements Serializable {
+public class User extends AbstractId implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -39,6 +37,11 @@ public class User extends AbstractAuditing implements Serializable {
     @Size(min = 5, max = 50, message = "{validation.size.email}")
 	@Column(name = "email", length = 50, nullable = false)
 	private String email;
+	
+	@NotNull(message = "{validation.notnull.fullname}")
+	@Size(min = 3, max = 50, message = "{validation.size.fullname}")
+	@Column(name = "fullname", length = 50, nullable = false)
+	private String fullname;
 	
 	@Size(min=6, max = 30, message = "{validation.size.password}")
 	@Transient
@@ -51,8 +54,7 @@ public class User extends AbstractAuditing implements Serializable {
 	private Boolean activated = true;
 
     @Lob
-    @Column(name = "image_bytes")
-    @Type(type="org.hibernate.type.BinaryType")
+    @Column(name = "image_bytes", columnDefinition="BLOB")
     private byte[] imageBytes;
 	
     @ManyToOne(fetch = FetchType.LAZY)
@@ -65,6 +67,14 @@ public class User extends AbstractAuditing implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getFullname() {
+		return fullname;
+	}
+
+	public void setFullname(String fullname) {
+		this.fullname = fullname;
 	}
 
 	public String getPasswordPlain() {

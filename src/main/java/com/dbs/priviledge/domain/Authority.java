@@ -18,7 +18,7 @@ import javax.validation.constraints.Size;
 		indexes= {
 				@Index(name = "m_authority_idx", columnList = "name")
 			})
-public class Authority extends AbstractAuditing implements Serializable {
+public class Authority extends AbstractId implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

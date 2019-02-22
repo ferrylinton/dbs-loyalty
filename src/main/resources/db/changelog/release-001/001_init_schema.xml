@@ -2,289 +2,45 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
     
     <property name="now" value="now()" dbms="h2" />
-	<property name="now" value="current_timestamp" dbms="postgresql" />
+	<property name="now" value="current_timestamp" dbms="mariadb" />
     
-    <changeSet author="FLH" id="1550405907991-1">
-        <createTable tableName="d_app">
-            <column name="id" type="VARCHAR(8)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_by" type="VARCHAR(30)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_date" type="timestamp" defaultValueDate="${now}">
-                <constraints nullable="false"/>
-            </column>
-            <column name="last_modified_by" type="VARCHAR(30)"/>
-            <column name="last_modified_date" type="timestamp" defaultValueDate="${now}"/>
-            <column name="content_bytes" type="BYTEA"/>
-            <column name="description" type="VARCHAR(250)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="name" type="VARCHAR(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="viewed" type="INT"/>
-        </createTable>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-2">
-        <createTable tableName="d_app_image">
-            <column name="id" type="VARCHAR(8)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_by" type="VARCHAR(30)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_date" type="timestamp" defaultValueDate="${now}">
-                <constraints nullable="false"/>
-            </column>
-            <column name="last_modified_by" type="VARCHAR(30)"/>
-            <column name="last_modified_date" type="timestamp" defaultValueDate="${now}"/>
-            <column name="image_bytes" type="BYTEA">
-                <constraints nullable="false"/>
-            </column>
-            <column name="app_id" type="VARCHAR(8)"/>
-        </createTable>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-3">
-        <createTable tableName="d_category">
-            <column name="id" type="VARCHAR(8)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_by" type="VARCHAR(30)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_date" type="timestamp" defaultValueDate="${now}">
-                <constraints nullable="false"/>
-            </column>
-            <column name="last_modified_by" type="VARCHAR(30)"/>
-            <column name="last_modified_date" type="timestamp" defaultValueDate="${now}"/>
-            <column name="image_bytes" type="BYTEA"/>
-            <column name="name" type="VARCHAR(40)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-4">
-        <createTable tableName="d_comment">
-            <column name="id" type="VARCHAR(8)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_by" type="VARCHAR(30)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_date" type="timestamp" defaultValueDate="${now}">
-                <constraints nullable="false"/>
-            </column>
-            <column name="last_modified_by" type="VARCHAR(30)"/>
-            <column name="last_modified_date" type="timestamp" defaultValueDate="${now}"/>
-            <column name="email" type="VARCHAR(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="ip" type="VARCHAR(20)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="message" type="VARCHAR(250)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="parent_id" type="VARCHAR(8)"/>
-            <column name="post_id" type="VARCHAR(8)"/>
-        </createTable>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-5">
-        <createTable tableName="d_post">
-            <column name="id" type="VARCHAR(8)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_by" type="VARCHAR(30)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_date" type="timestamp" defaultValueDate="${now}">
-                <constraints nullable="false"/>
-            </column>
-            <column name="last_modified_by" type="VARCHAR(30)"/>
-            <column name="last_modified_date" type="timestamp" defaultValueDate="${now}"/>
-            <column name="content_bytes" type="BYTEA"/>
-            <column name="description" type="VARCHAR(250)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="keyword" type="VARCHAR(250)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="title" type="VARCHAR(250)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="viewed" type="INT"/>
-        </createTable>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-6">
-        <createTable tableName="d_post_category">
-            <column name="post_id" type="VARCHAR(8)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="category_id" type="VARCHAR(8)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-7">
-        <createTable tableName="d_post_image">
-            <column name="id" type="VARCHAR(8)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_by" type="VARCHAR(30)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_date" type="timestamp" defaultValueDate="${now}">
-                <constraints nullable="false"/>
-            </column>
-            <column name="last_modified_by" type="VARCHAR(30)"/>
-            <column name="last_modified_date" type="timestamp" defaultValueDate="${now}"/>
-            <column name="image_bytes" type="BYTEA">
-                <constraints nullable="false"/>
-            </column>
-            <column name="post_id" type="VARCHAR(8)"/>
-        </createTable>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-8">
-        <createTable tableName="d_post_user">
-            <column name="post_id" type="VARCHAR(8)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="user_id" type="VARCHAR(8)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-9">
-        <createTable tableName="log_app">
-            <column name="id" type="VARCHAR(36)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_date" type="timestamp" defaultValueDate="${now}">
-                <constraints nullable="false"/>
-            </column>
-            <column name="ip" type="VARCHAR(20)"/>
-            <column name="app_id" type="VARCHAR(8)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-10">
-        <createTable tableName="log_login">
-            <column name="id" type="VARCHAR(36)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_date" type="timestamp" defaultValueDate="${now}">
-                <constraints nullable="false"/>
-            </column>
-            <column name="ip" type="VARCHAR(20)"/>
-            <column name="browser" type="VARCHAR(50)"/>
-            <column name="browser_major_version" type="VARCHAR(50)"/>
-            <column name="browser_ype" type="VARCHAR(50)"/>
-            <column name="device_type" type="VARCHAR(50)"/>
-            <column name="login_status" type="VARCHAR(8)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="platform" type="VARCHAR(50)"/>
-            <column name="platform_version" type="VARCHAR(50)"/>
-            <column name="username" type="VARCHAR(30)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-11">
-        <createTable tableName="log_post">
-            <column name="id" type="VARCHAR(36)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_date" type="timestamp" defaultValueDate="${now}">
-                <constraints nullable="false"/>
-            </column>
-            <column name="ip" type="VARCHAR(20)"/>
-            <column name="post_id" type="VARCHAR(8)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-12">
-        <createTable tableName="log_search">
-            <column name="id" type="VARCHAR(36)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_date" type="timestamp" defaultValueDate="${now}">
-                <constraints nullable="false"/>
-            </column>
-            <column name="ip" type="VARCHAR(20)"/>
-            <column name="keyword" type="VARCHAR(100)">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-13">
+    <changeSet author="FLH" id="1550816087783-1">
         <createTable tableName="m_authority">
             <column name="id" type="VARCHAR(8)">
                 <constraints nullable="false"/>
             </column>
-            <column name="created_by" type="VARCHAR(30)">
+            <column name="name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
             <column name="created_date" type="timestamp" defaultValueDate="${now}">
                 <constraints nullable="false"/>
             </column>
-            <column name="last_modified_by" type="VARCHAR(30)"/>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
             <column name="last_modified_date" type="timestamp" defaultValueDate="${now}"/>
-            <column name="name" type="VARCHAR(50)">
-                <constraints nullable="false"/>
-            </column>
         </createTable>
     </changeSet>
-    <changeSet author="FLH" id="1550405907991-14">
-        <createTable tableName="m_menu">
-            <column name="id" type="VARCHAR(8)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_by" type="VARCHAR(30)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_date" type="timestamp" defaultValueDate="${now}">
-                <constraints nullable="false"/>
-            </column>
-            <column name="last_modified_by" type="VARCHAR(30)"/>
-            <column name="last_modified_date" type="timestamp" defaultValueDate="${now}"/>
-            <column name="label" type="VARCHAR(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="name" type="VARCHAR(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="order_number" type="SMALLINT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="url" type="VARCHAR(150)"/>
-            <column name="authority_id" type="VARCHAR(8)"/>
-            <column name="parent_id" type="VARCHAR(8)"/>
-        </createTable>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-15">
+    <changeSet author="FLH" id="1550816087783-2">
         <createTable tableName="m_role">
             <column name="id" type="VARCHAR(8)">
                 <constraints nullable="false"/>
             </column>
-            <column name="created_by" type="VARCHAR(30)">
+            <column name="name" type="VARCHAR(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
             <column name="created_date" type="timestamp" defaultValueDate="${now}">
                 <constraints nullable="false"/>
             </column>
-            <column name="last_modified_by" type="VARCHAR(30)"/>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
             <column name="last_modified_date" type="timestamp" defaultValueDate="${now}"/>
-            <column name="name" type="VARCHAR(40)">
-                <constraints nullable="false"/>
-            </column>
         </createTable>
     </changeSet>
-    <changeSet author="FLH" id="1550405907991-16">
+    <changeSet author="FLH" id="1550816087783-3">
         <createTable tableName="m_role_authority">
             <column name="role_id" type="VARCHAR(8)">
                 <constraints nullable="false"/>
@@ -294,234 +50,64 @@
             </column>
         </createTable>
     </changeSet>
-    <changeSet author="FLH" id="1550405907991-17">
+    <changeSet author="FLH" id="1550816087783-4">
         <createTable tableName="m_user">
             <column name="id" type="VARCHAR(8)">
                 <constraints nullable="false"/>
             </column>
-            <column name="created_by" type="VARCHAR(30)">
+            <column name="activated" type="BIT(1)">
                 <constraints nullable="false"/>
             </column>
-            <column name="created_date" type="timestamp" defaultValueDate="${now}">
-                <constraints nullable="false"/>
-            </column>
-            <column name="last_modified_by" type="VARCHAR(30)"/>
-            <column name="last_modified_date" type="timestamp" defaultValueDate="${now}"/>
-            <column name="activated" type="BOOLEAN">
-                <constraints nullable="false"/>
-            </column>
-            <column name="description" type="VARCHAR(255)"/>
             <column name="email" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
             <column name="fullname" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="image_bytes" type="BYTEA"/>
-            <column name="password" type="VARCHAR(100)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="username" type="VARCHAR(30)">
+            <column defaultValueComputed="NULL" name="image_bytes" type="BLOB"/>
+            <column name="password_hash" type="VARCHAR(100)">
                 <constraints nullable="false"/>
             </column>
             <column name="role_id" type="VARCHAR(8)"/>
-        </createTable>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-18">
-        <createTable tableName="m_user_detail">
-            <column name="id" type="VARCHAR(8)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_by" type="VARCHAR(30)">
+            <column name="created_by" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
             <column name="created_date" type="timestamp" defaultValueDate="${now}">
                 <constraints nullable="false"/>
             </column>
-            <column name="last_modified_by" type="VARCHAR(30)"/>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
             <column name="last_modified_date" type="timestamp" defaultValueDate="${now}"/>
-            <column name="content_bytes" type="BYTEA"/>
-            <column name="user_id" type="VARCHAR(8)"/>
-            <column name="viewed" type="INT"/>
         </createTable>
     </changeSet>
-    <changeSet author="FLH" id="1550405907991-19">
-        <addPrimaryKey columnNames="id" constraintName="d_app_image_pkey" tableName="d_app_image"/>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-20">
-        <addPrimaryKey columnNames="id" constraintName="d_app_pkey" tableName="d_app"/>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-21">
-        <addPrimaryKey columnNames="id" constraintName="d_category_pkey" tableName="d_category"/>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-22">
-        <addPrimaryKey columnNames="id" constraintName="d_comment_pkey" tableName="d_comment"/>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-23">
-        <addPrimaryKey columnNames="post_id, category_id" constraintName="d_post_category_pkey" tableName="d_post_category"/>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-24">
-        <addPrimaryKey columnNames="id" constraintName="d_post_image_pkey" tableName="d_post_image"/>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-25">
-        <addPrimaryKey columnNames="id" constraintName="d_post_pkey" tableName="d_post"/>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-26">
-        <addPrimaryKey columnNames="post_id, user_id" constraintName="d_post_user_pkey" tableName="d_post_user"/>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-27">
-        <addPrimaryKey columnNames="id" constraintName="log_app_pkey" tableName="log_app"/>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-28">
-        <addPrimaryKey columnNames="id" constraintName="log_login_pkey" tableName="log_login"/>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-29">
-        <addPrimaryKey columnNames="id" constraintName="log_post_pkey" tableName="log_post"/>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-30">
-        <addPrimaryKey columnNames="id" constraintName="log_search_pkey" tableName="log_search"/>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-31">
+    <changeSet author="FLH" id="1550816087783-5">
         <addPrimaryKey columnNames="id" constraintName="m_authority_pkey" tableName="m_authority"/>
     </changeSet>
-    <changeSet author="FLH" id="1550405907991-32">
-        <addPrimaryKey columnNames="id" constraintName="m_menu_pkey" tableName="m_menu"/>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-33">
-        <addPrimaryKey columnNames="role_id, authority_id" constraintName="m_role_authority_pkey" tableName="m_role_authority"/>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-34">
+    <changeSet author="FLH" id="1550816087783-6">
         <addPrimaryKey columnNames="id" constraintName="m_role_pkey" tableName="m_role"/>
     </changeSet>
-    <changeSet author="FLH" id="1550405907991-35">
-        <addPrimaryKey columnNames="id" constraintName="m_user_detail_pkey" tableName="m_user_detail"/>
+    <changeSet author="FLH" id="1550816087783-7">
+        <addPrimaryKey columnNames="role_id, authority_id" constraintName="m_role_authority_pkey" tableName="m_role_authority"/>
     </changeSet>
-    <changeSet author="FLH" id="1550405907991-36">
+    <changeSet author="FLH" id="1550816087783-8">
         <addPrimaryKey columnNames="id" constraintName="m_user_pkey" tableName="m_user"/>
     </changeSet>
-    <changeSet author="FLH" id="1550405907991-37">
-        <addUniqueConstraint columnNames="name" constraintName="d_app_name_uq" tableName="d_app"/>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-38">
-        <addUniqueConstraint columnNames="name" constraintName="d_category_name_uq" tableName="d_category"/>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-39">
-        <addUniqueConstraint columnNames="title" constraintName="d_post_title_uq" tableName="d_post"/>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-40">
+    <changeSet author="FLH" id="1550816087783-9">
         <addUniqueConstraint columnNames="name" constraintName="m_authority_name_uq" tableName="m_authority"/>
     </changeSet>
-    <changeSet author="FLH" id="1550405907991-41">
-        <addUniqueConstraint columnNames="name" constraintName="m_menu_name_uq" tableName="m_menu"/>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-42">
+    <changeSet author="FLH" id="1550816087783-10">
         <addUniqueConstraint columnNames="name" constraintName="m_role_name_uq" tableName="m_role"/>
     </changeSet>
-    <changeSet author="FLH" id="1550405907991-43">
+    <changeSet author="FLH" id="1550816087783-11">
         <addUniqueConstraint columnNames="email" constraintName="m_user_email_uq" tableName="m_user"/>
     </changeSet>
-    <changeSet author="FLH" id="1550405907991-44">
-        <addUniqueConstraint columnNames="username" constraintName="m_user_username_uq" tableName="m_user"/>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-45">
-        <createIndex indexName="d_app_idx" tableName="d_app">
-            <column name="name"/>
-            <column name="description"/>
-            <column name="viewed"/>
+    <changeSet author="FLH" id="1550816087783-12">
+        <createIndex indexName="m_role_authority_fk2" tableName="m_role_authority">
+            <column name="authority_id"/>
         </createIndex>
     </changeSet>
-    <changeSet author="FLH" id="1550405907991-46">
-        <createIndex indexName="d_app_image_idx" tableName="d_app_image">
-            <column name="app_id"/>
+    <changeSet author="FLH" id="1550816087783-13">
+        <createIndex indexName="m_user_fk" tableName="m_user">
+            <column name="role_id"/>
         </createIndex>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-47">
-        <createIndex indexName="d_post_idx" tableName="d_post">
-            <column name="title"/>
-            <column name="description"/>
-            <column name="keyword"/>
-            <column name="viewed"/>
-        </createIndex>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-48">
-        <createIndex indexName="log_app_idx" tableName="log_app">
-            <column name="ip"/>
-            <column name="app_id"/>
-        </createIndex>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-49">
-        <createIndex indexName="log_login_idx" tableName="log_login">
-            <column name="username"/>
-            <column name="login_status"/>
-            <column name="ip"/>
-            <column name="browser"/>
-            <column name="device_type"/>
-        </createIndex>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-50">
-        <createIndex indexName="log_post_idx" tableName="log_post">
-            <column name="ip"/>
-            <column name="post_id"/>
-        </createIndex>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-51">
-        <createIndex indexName="log_search_idx" tableName="log_search">
-            <column name="ip"/>
-            <column name="keyword"/>
-        </createIndex>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-52">
-        <createIndex indexName="m_user_detail_idx" tableName="m_user_detail">
-            <column name="user_id"/>
-        </createIndex>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-53">
-        <createIndex indexName="m_user_idx" tableName="m_user">
-            <column name="username"/>
-            <column name="email"/>
-            <column name="description"/>
-        </createIndex>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-54">
-        <addForeignKeyConstraint baseColumnNames="app_id" baseTableName="d_app_image" constraintName="d_app_image_app_id_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="d_app"/>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-55">
-        <addForeignKeyConstraint baseColumnNames="parent_id" baseTableName="d_comment" constraintName="d_comment_parent_id_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="d_comment"/>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-56">
-        <addForeignKeyConstraint baseColumnNames="post_id" baseTableName="d_comment" constraintName="d_comment_post_id_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="d_post"/>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-57">
-        <addForeignKeyConstraint baseColumnNames="post_id" baseTableName="d_post_category" constraintName="d_post_category_fk1" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="d_post"/>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-58">
-        <addForeignKeyConstraint baseColumnNames="category_id" baseTableName="d_post_category" constraintName="d_post_category_fk2" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="d_category"/>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-59">
-        <addForeignKeyConstraint baseColumnNames="post_id" baseTableName="d_post_image" constraintName="d_post_image_post_id_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="d_post"/>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-60">
-        <addForeignKeyConstraint baseColumnNames="post_id" baseTableName="d_post_user" constraintName="d_post_user_fk1" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="d_post"/>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-61">
-        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="d_post_user" constraintName="d_post_user_fk2" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="m_user"/>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-62">
-        <addForeignKeyConstraint baseColumnNames="authority_id" baseTableName="m_menu" constraintName="m_menu_authority_id_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="m_authority"/>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-63">
-        <addForeignKeyConstraint baseColumnNames="parent_id" baseTableName="m_menu" constraintName="m_menu_parent_id_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="m_menu"/>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-64">
-        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="m_role_authority" constraintName="m_role_authority_fk1" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="m_role"/>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-65">
-        <addForeignKeyConstraint baseColumnNames="authority_id" baseTableName="m_role_authority" constraintName="m_role_authority_fk2" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="m_authority"/>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-66">
-        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="m_user_detail" constraintName="m_user_detail_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="m_user"/>
-    </changeSet>
-    <changeSet author="FLH" id="1550405907991-67">
-        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="m_user" constraintName="m_user_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="m_role"/>
     </changeSet>
 </databaseChangeLog>
