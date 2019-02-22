@@ -15,6 +15,10 @@ body{
 	font-size: 1.5em !important;
 }
 
+.font-menu{
+	font-size: 3.5em !important;
+}
+
 .bg-black {
     background-color: #000!important;
 }
@@ -101,4 +105,11 @@ body{
 		height: calc(100% - 55px);
 	}
 	
+}
+
+/* OVERRIDE BOOTSTRAP */
+
+.breadcrumb{
+	border-radius: 0;
+	padding: .45rem 1rem;
 }

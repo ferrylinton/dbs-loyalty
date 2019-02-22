@@ -22,9 +22,7 @@ public class LoginController extends AbstractController{
 	
 	private final String ERROR = "error";
 	
-	private final String INPUT_USERNAME_AND_PASSWORD 	= "message.inputUsernameAndPassword";
-	
-	private final String INVALID_USERNAME_OR_PASSWORD	= "message.invalidUsernameOrPassword";
+	private final String INVALID_EMAIL_OR_PASSWORD		= "message.invalidEmailOrPassword";
 	
 	private final String USER_IS_ALREADY_LOGGED			= "message.userIsAlreadyLogged";
 	
@@ -46,8 +44,6 @@ public class LoginController extends AbstractController{
 	
 	private final String TEXT_SUCCESS					= "text-success";
 	
-	private final String TEXT_DARK						= "text-dark";
-
 	private final String LOGIN_TEMPLATE					= "login/form";
 	
 
@@ -79,13 +75,10 @@ public class LoginController extends AbstractController{
 			}else if(exception instanceof SessionAuthenticationException) {
 				request.setAttribute(Constant.MESSAGE, USER_IS_ALREADY_LOGGED);
 			}else{
-				request.setAttribute(Constant.MESSAGE, INVALID_USERNAME_OR_PASSWORD);
+				request.setAttribute(Constant.MESSAGE, INVALID_EMAIL_OR_PASSWORD);
 			}
-		}else {
-			request.setAttribute(CLASS, TEXT_DARK);
-			request.setAttribute(Constant.MESSAGE, INPUT_USERNAME_AND_PASSWORD);
 		}
-
+		
 		return LOGIN_TEMPLATE;
 	}
 

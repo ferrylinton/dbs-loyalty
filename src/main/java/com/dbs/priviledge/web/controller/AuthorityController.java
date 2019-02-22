@@ -18,6 +18,7 @@ import com.dbs.priviledge.domain.Authority;
 import com.dbs.priviledge.service.AuthorityService;
 import com.dbs.priviledge.util.UrlUtil;
 
+@PreAuthorize("hasRole('USER_MANAGEMENT')")
 @Controller
 public class AuthorityController extends AbstractController {
 
@@ -25,9 +26,9 @@ public class AuthorityController extends AbstractController {
 	
 	private final String ENTITY_NAME = "authority";
 
-	private final String REDIRECT = "redirect:/secure/authority";
+	private final String REDIRECT = "redirect:/authority";
 	
-	private final String LIST_TEMPLATE = "secure/authority/index";
+	private final String LIST_TEMPLATE = "authority/view";
 
 	private final String SORT_BY = "name";
 
@@ -37,8 +38,7 @@ public class AuthorityController extends AbstractController {
 		this.authorityService = authorityService;
 	}
 
-	@PreAuthorize("hasRole('AUTHORITY')")
-	@GetMapping("/secure/authority")
+	@GetMapping("/authority")
 	public String view(HttpServletRequest request, @PageableDefault Pageable pageable) {
 		try {
 			Page<Authority> page = authorityService.findAll(getKeyword(request), isValid(SORT_BY, pageable));

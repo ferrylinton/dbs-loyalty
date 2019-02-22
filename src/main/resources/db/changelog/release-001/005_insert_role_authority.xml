@@ -15,7 +15,7 @@
         </insert>
         <insert tableName="m_role_authority">
             <column name="role_id" value="eSn1jhQG"/>
-            <column name="authority_id" value="31ZxLeW1"/>
+            <column name="authority_id" value="V6evDSIi"/>
         </insert>
         
         <!-- CUSTOMER -->

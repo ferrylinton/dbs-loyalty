@@ -2,7 +2,7 @@ package com.dbs.priviledge.util;
 
 public class UrlUtil {
 
-	public static final String ENTITY_URL_FORMAT	= "%s/secure/%s";
+	public static final String ENTITY_URL_FORMAT	= "%s/%s";
 	
 	public static String contextPath;
 

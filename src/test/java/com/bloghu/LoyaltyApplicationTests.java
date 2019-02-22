@@ -8,14 +8,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.dbs.priviledge.web.controller.IndexController;
+import com.dbs.priviledge.web.controller.HomeController;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class LoyaltyApplicationTests {
 
 	@Autowired
-    private IndexController controller;
+    private HomeController controller;
 	
 	@Test
 	public void contextLoads() {

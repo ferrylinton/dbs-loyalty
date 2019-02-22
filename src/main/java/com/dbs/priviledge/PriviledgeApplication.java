@@ -8,9 +8,9 @@ import com.dbs.priviledge.config.ApplicationProperties;
 
 @SpringBootApplication
 @EnableConfigurationProperties({ApplicationProperties.class})
-public class LoyaltyApplication {
+public class PriviledgeApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(LoyaltyApplication.class, args);
+		SpringApplication.run(PriviledgeApplication.class, args);
 	}
 }

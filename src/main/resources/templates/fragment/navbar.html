@@ -3,28 +3,18 @@
 
 <body>
 	<div th:fragment="content" th:remove="tag">
-		<nav class="navbar navbar-dark bg-black navbar-expand-sm fixed-top border-bottom border-red border-3" id="mainNav">
-			<div class="container-fluid">
-				<a class="navbar-brand py-0" href="index.html">
-					<img th:src="@{/static/image/dbs.png}"></img>
+		<nav class="navbar navbar-dark bg-black fixed-top border-bottom border-red border-3">
+			<a class="navbar-brand clearfix" href="index.html">
+				<img class="float-left" th:src="@{/static/image/dbs.png}"></img>
+				<span class="float-left ml-1 mt-2 text-secondary" th:text=#{application.subname}></span>
+			</a>
+			<div class="ml-auto">
+				<a class="btn btn-outline-dark border-0 text-white" th:href="@{/home}">
+					<i class="icon-home-outline"></i> <span th:text="#{menu.home}"></span>
 				</a>
-				<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#nav1"
-				 aria-controls="nav1" aria-expanded="false" aria-label="Toggle navigation">
-					Menu <i class="fas fa-bars"></i>
-				</button>
-				<div class="collapse navbar-collapse" id="nav1">
-					<ul class="navbar-nav ml-auto">
-						<li class="nav-item">
-							<a class="nav-link text-white" href="index.html">Home</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link text-white" href="about.html">About</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link text-white" href="contact.html">Contact</a>
-						</li>
-					</ul>
-				</div>
+				<a class="btn btn-outline-dark border-0 text-white" th:href="@{/logout}">
+					<i class="icon-logout"></i> <span th:text="#{menu.logout}"></span>
+				</a>
 			</div>
 		</nav>
 	</div>

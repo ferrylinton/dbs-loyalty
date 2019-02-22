@@ -34,16 +34,17 @@ import com.dbs.priviledge.service.RoleService;
 import com.dbs.priviledge.util.ResponseUtil;
 import com.dbs.priviledge.web.validator.RoleValidator;
 
+@PreAuthorize("hasRole('USER_MANAGEMENT')")
 @Controller
 public class RoleController extends AbstractController {
 
 	private final Logger LOG = LoggerFactory.getLogger(RoleController.class);
 
-	private final String REDIRECT = "redirect:/secure/role";
+	private final String REDIRECT = "redirect:/role";
 
-	private final String LIST_TEMPLATE = "secure/role/index";
+	private final String LIST_TEMPLATE = "role/view";
 
-	private final String FORM_TEMPLATE = "secure/role/form/index";
+	private final String FORM_TEMPLATE = "role/form";
 
 	private final String SORT_BY = "name";
 
@@ -56,8 +57,7 @@ public class RoleController extends AbstractController {
 		this.authorityService = authorityService;
 	}
 
-	@PreAuthorize("hasRole('ROLE')")
-	@GetMapping("/secure/role")
+	@GetMapping("/role")
 	public String view(HttpServletRequest request, @PageableDefault Pageable pageable) {
 		Page<Role> page = null;
 
@@ -77,15 +77,13 @@ public class RoleController extends AbstractController {
 		}
 	}
 
-	@PreAuthorize("hasRole('ROLE')")
-	@GetMapping("/secure/role/{id}")
+	@GetMapping("/role/{id}")
 	public String view(ModelMap model, @PathVariable String id) throws NotFoundException {
 		roleService.viewForm(model, id);
 		return FORM_TEMPLATE;
 	}
 
-	@PreAuthorize("hasRole('ROLE')")
-	@PostMapping("/secure/role")
+	@PostMapping("/role")
 	@ResponseBody
 	public ResponseEntity<?> save(@ModelAttribute @Valid Role role, BindingResult result) {
 		if (result.hasErrors()) {
@@ -95,8 +93,7 @@ public class RoleController extends AbstractController {
 		}
 	}
 
-	@PreAuthorize("hasRole('ROLE')")
-	@DeleteMapping("/secure/role/{id}")
+	@DeleteMapping("/role/{id}")
 	@ResponseBody
 	public ResponseEntity<?> delete(@PathVariable String id) throws NotFoundException {
 		return roleService.delete(id);

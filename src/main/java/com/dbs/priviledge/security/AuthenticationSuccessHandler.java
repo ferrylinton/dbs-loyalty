@@ -13,8 +13,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 	
+	private final String DEFAULT_TARGET_URL = "/home";
+	
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+		super.setDefaultTargetUrl(DEFAULT_TARGET_URL);
 		super.onAuthenticationSuccess(request, response, authentication);
 	}
 	

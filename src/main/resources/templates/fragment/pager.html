@@ -1,0 +1,13 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+	<div th:fragment="content">
+		<th:block th:if="${page.getTotalPages() > 1}">
+			<div th:utext="${@linkService.previousLink()}" th:remove="tag"></div>
+			<div th:utext="${@linkService.nextLink()}" th:remove="tag"></div>
+		</th:block>
+	</div>
+</body>
+
+</html>

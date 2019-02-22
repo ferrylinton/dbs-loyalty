@@ -7,22 +7,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.dbs.priviledge.exception.NotFoundException;
 
-@Controller("indexController")
-public class IndexController{
+@Controller
+public class HomeController{
 
-	private final String INDEX_TEMPLATE = "index";
-
-	public IndexController() {
-	}
+	private final String HOME_VIEW_TEMPLATE = "home/view";
+	
+	private final String REDIRECT_LOGIN = "redirect:/home";
 	
 	@GetMapping("/")
 	public String view() {
-		return "redirect:/index";
+		return REDIRECT_LOGIN;
 	}
 	
-	@GetMapping("/index")
+	@GetMapping("/home")
 	public String view(HttpServletRequest request) throws NotFoundException {
-		return INDEX_TEMPLATE;
+		return HOME_VIEW_TEMPLATE;
 	}
 
 }

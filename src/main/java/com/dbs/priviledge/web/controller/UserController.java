@@ -35,18 +35,19 @@ import com.dbs.priviledge.util.ResponseUtil;
 import com.dbs.priviledge.web.validator.FileValidator;
 import com.dbs.priviledge.web.validator.UserValidator;
 
+@PreAuthorize("hasRole('USER_MANAGEMENT')")
 @Controller
 public class UserController extends AbstractController{
 
 	private final Logger LOG = LoggerFactory.getLogger(UserController.class);
 	
-	private final String REDIRECT = "redirect:/secure/user";
+	private final String REDIRECT = "redirect:/user";
 	
-	private final String LIST_TEMPLATE = "secure/user/index";
+	private final String LIST_TEMPLATE = "user/view";
 	
-	private final String FORM_TEMPLATE = "secure/user/form/index";
+	private final String FORM_TEMPLATE = "user/form";
 
-	private final String SORT_BY = "username";
+	private final String SORT_BY = "email";
 	
 	private final UserService userService;
 	
@@ -57,8 +58,7 @@ public class UserController extends AbstractController{
 		this.roleService = roleService;
 	}
 
-	@PreAuthorize("hasRole('USER')")
-	@GetMapping("/secure/user")
+	@GetMapping("/user")
 	public String view(HttpServletRequest request, @PageableDefault Pageable pageable) {
 		Page<User> page = null;
 
@@ -79,15 +79,13 @@ public class UserController extends AbstractController{
 		return LIST_TEMPLATE;
 	}
 	
-	@PreAuthorize("hasRole('USER')")
-	@GetMapping("/secure/user/{id}")
+	@GetMapping("/user/{id}")
 	public String view(ModelMap model, @PathVariable String id) throws NotFoundException {
 		userService.viewForm(model, id);		
 		return FORM_TEMPLATE;
 	}
 	
-	@PreAuthorize("hasRole('USER')")
-	@PostMapping("/secure/user")
+	@PostMapping("/user")
 	@ResponseBody
 	public ResponseEntity<?> save(@Valid @ModelAttribute User user, BindingResult result) {
 		if (result.hasErrors()) {
@@ -97,8 +95,7 @@ public class UserController extends AbstractController{
 		}
 	}
 	
-	@PreAuthorize("hasRole('USER')")
-	@DeleteMapping("/secure/user/{id}")
+	@DeleteMapping("/user/{id}")
 	@ResponseBody
 	public ResponseEntity<?> delete(@PathVariable String id) throws NotFoundException {
 		return userService.delete(id);
