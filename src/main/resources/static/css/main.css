@@ -11,6 +11,10 @@ body{
 	font-size: .8em !important;
 }
 
+.font-12{
+	font-size: 1.225em !important;
+}
+
 .font-15{
 	font-size: 1.5em !important;
 }
@@ -107,9 +111,48 @@ body{
 	
 }
 
+/* TABLE */
+
+.table tbody tr td .dropdown-toggle::after{
+	display: none;
+	border:none;
+}
+
+.table tbody tr td .btn-default{
+	background-color: transparent;
+}
+.table tbody tr td .btn-default:hover{
+	color: $primary;
+}
+
+.table tbody tr td .btn:focus, .table tbody tr td .btn.focus {
+	outline:0;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+	color: $primary;
+}
+
 /* OVERRIDE BOOTSTRAP */
 
 .breadcrumb{
 	border-radius: 0;
 	padding: .45rem 1rem;
+}
+
+.form-control::placeholder{
+	color: #d6d6d6;
+}
+
+::placeholder {
+  color: #d6d6d6;
+  opacity: 1;
+}
+
+:-ms-input-placeholder {
+  color: #d6d6d6;
+}
+
+::-ms-input-placeholder {
+  color: #d6d6d6;
 }
