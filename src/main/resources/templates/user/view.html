@@ -30,7 +30,7 @@
 							<tr>
 								<th width="60px"></th>
 								<th width="40px">#</th>
-								<th width="180px" th:utext="${@linkService.sortLink('email')}"></th>
+								<th width="220px" th:utext="${@linkService.sortLink('email')}"></th>
 								<th width="80px" th:utext="${@linkService.sortLink('activated')}"></th>
 								<th th:utext="${@linkService.sortLink('role.name')}"></th>
 							</tr>
@@ -39,7 +39,7 @@
 							<tr th:each="user,row : ${page}">
 								<td class="py-0 px-1">
 									<div class="dropdown">
-										<button type="button" class="btn btn-default dropdown-toggle px-1 py-0 font-13" id="dropdownMenuButton" data-boundary="window" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<button type="button" class="btn btn-default dropdown-toggle px-1 py-0 font-12" id="dropdownMenuButton" data-boundary="window" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 										 	<i class="icon-cog"></i>
 										</button>
 										<div class="dropdown-menu py-0 shadow" aria-labelledby="dropdownMenuButton">
@@ -67,10 +67,7 @@
 				<div class="border alert alert-light text-center" role="alert" th:if="${page.getTotalElements() == 0}">
 					<i class="icon-attention"></i> <span th:text="#{message.dataNotFound}"></span>
 				</div>
-				<th:block th:if="${page.getTotalPages() > 1}">
-					<div th:utext="${@linkService.previousLink()}" th:remove="tag"></div>
-					<div th:utext="${@linkService.nextLink()}" th:remove="tag"></div>
-				</th:block>
+				<div th:replace="fragment/pager.html :: content"></div>
 			</div>
 		</div>
 	</div>

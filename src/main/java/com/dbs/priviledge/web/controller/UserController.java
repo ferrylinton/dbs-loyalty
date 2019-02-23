@@ -71,7 +71,7 @@ public class UserController extends AbstractController{
 				request.setAttribute(Constant.PAGE, page);
 			}
 
-		} catch (PropertyReferenceException ex) {
+		} catch (IllegalArgumentException | PropertyReferenceException ex) {
 			LOG.error(ex.getLocalizedMessage());
 			return REDIRECT;
 		}

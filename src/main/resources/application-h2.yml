@@ -1,7 +1,8 @@
 spring:
   datasource:
+    platform: h2
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:h2:file:./target/h2db/db/priviledge;MODE=MySQL;AUTO_SERVER=TRUE
+    url: jdbc:h2:file:./target/h2db/priviledge;MODE=MySQL;AUTO_SERVER=TRUE
     username: sa
     password: 
   h2:

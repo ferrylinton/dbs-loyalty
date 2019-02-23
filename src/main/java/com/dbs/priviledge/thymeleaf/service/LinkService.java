@@ -16,9 +16,11 @@ import com.dbs.priviledge.service.MessageService;
 @Service
 public class LinkService {
 
-	private static final String DESC_ICON 			= "<i class='text-primary icon-down'></i>";
+	private final String DISABLED 	= " disabled";
 	
-	private static final String ASC_ICON 			= "<i class='text-primary icon-up'></i>";
+	private final String DESC_ICON	= "<i class='text-primary icon-down'></i>";
+	
+	private final String ASC_ICON	= "<i class='text-primary icon-up'></i>";
 
 	private HttpServletRequest request;
 
@@ -42,15 +44,13 @@ public class LinkService {
 	}
 	
 	private String getSortUrl(String field, int pageNumber, List<Order> orders) {
-		Direction direction = Direction.ASC;
-		
 		if(orders.size() > 0) {
 			if(field.equals(orders.get(0).getProperty()) && orders.get(0).getDirection() == Direction.ASC) {
-				direction = Direction.DESC;
+				return getUrl(pageNumber, field, Direction.DESC);
 			}
 		}
 		
-		return getUrl(pageNumber, field, direction);
+		return getUrl(pageNumber, field, Direction.ASC);
 	}
 	
 	private String getLabel(String field, List<Order> orders) {
@@ -65,26 +65,14 @@ public class LinkService {
 		return getLabel(field);
 	}
 	
-	public String nextLink() {
-		Page<?> page = (Page<?>) request.getAttribute(Constant.PAGE);
-		String btnClass = page.hasNext() ? "" : " disabled";
+	public String nextLink(Page<?> page) {
+		String btnClass = page.hasNext() ? Constant.EMPTY : DISABLED;
 		return String.format("<a class='btn btn-sm btn-secondary %s' href='%s'>" + getLabel("next") + "<i class='icon-right-open'></i></a>", btnClass, getNextUrl(page));
 	}
 	
-	public String previousLink() {
-		Page<?> page = (Page<?>) request.getAttribute(Constant.PAGE);
-		String btnClass = page.hasPrevious() ? "" : " disabled";
+	public String previousLink(Page<?> page) {
+		String btnClass = page.hasPrevious() ? Constant.EMPTY : DISABLED;
 		return String.format("<a class='btn btn-sm btn-secondary %s' href='%s'><i class='icon-left-open'></i>"  + getLabel("previous") +  "</a>", btnClass, getPreviousUrl(page));
-	}
-	
-	public String getNextUrl() {
-		Page<?> page = (Page<?>) request.getAttribute(Constant.PAGE);
-		return getNextUrl(page);
-	}
-	
-	public String getPreviousUrl() {
-		Page<?> page = (Page<?>) request.getAttribute(Constant.PAGE);
-		return getPreviousUrl(page);
 	}
 	
 	public String getNextUrl(Page<?> page) {
@@ -108,16 +96,16 @@ public class LinkService {
 	}
 	
 	private String getUrl(int pageNumber) {
-		return String.format("?keyword=%s&page=%d", getKeyword(), pageNumber);
+		return String.format("?%spage=%d", getKeyword(), pageNumber);
 	}
 	
 	private String getUrl(int page, String field, Direction direction) {
-		return String.format("?keyword=%s&page=%d&sort=%s,%s", getKeyword(), page, field, direction.name());
+		return String.format("?%spage=%d&sort=%s,%s", getKeyword(), page, field, direction.name());
 	}
 	
 	private String getKeyword() {
 		String keyword = request.getParameter(Constant.KEYWORD);
-		return (keyword == null) ? Constant.EMPTY : keyword;
+		return (keyword == null) ? Constant.EMPTY : String.format("keyword=%s&", keyword);
 	}
 	
 }

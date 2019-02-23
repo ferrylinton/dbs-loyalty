@@ -11,24 +11,20 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
 import com.dbs.priviledge.config.Constant;
 import com.dbs.priviledge.domain.Authority;
 import com.dbs.priviledge.service.AuthorityService;
-import com.dbs.priviledge.util.UrlUtil;
 
 @PreAuthorize("hasRole('USER_MANAGEMENT')")
 @Controller
 public class AuthorityController extends AbstractController {
 
 	private final Logger LOG = LoggerFactory.getLogger(AuthorityController.class);
-	
-	private final String ENTITY_NAME = "authority";
 
 	private final String REDIRECT = "redirect:/authority";
 	
-	private final String LIST_TEMPLATE = "authority/view";
+	private final String VIEW_TEMPLATE = "authority/view";
 
 	private final String SORT_BY = "name";
 
@@ -43,22 +39,17 @@ public class AuthorityController extends AbstractController {
 		try {
 			Page<Authority> page = authorityService.findAll(getKeyword(request), isValid(SORT_BY, pageable));
 
-			if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
+			if ((page.getNumber() > 0) && (page.getNumber() + 1 > page.getTotalPages())) {
 				return REDIRECT;
 			} else {
 				request.setAttribute(Constant.PAGE, page);
 			}
 
-			return LIST_TEMPLATE;
-		} catch (PropertyReferenceException ex) {
+			return VIEW_TEMPLATE;
+		} catch (IllegalArgumentException | PropertyReferenceException ex) {
 			LOG.error(ex.getLocalizedMessage());
 			return REDIRECT;
 		}
 	}
-
-	@ModelAttribute(Constant.ENTITY_URL)
-	public String getEntityUrl() {
-		return UrlUtil.getEntityUrl(ENTITY_NAME);
-	}
-
+	
 }

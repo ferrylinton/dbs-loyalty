@@ -1,11 +1,12 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
     
-    <include file="release-001/001_init_schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/002_insert_user_system.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/003_insert_authority.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/004_insert_role.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/005_insert_role_authority.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/006_insert_user.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/001_init_spring_session.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/002_init_schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/003_insert_user_system.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/004_insert_authority.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/005_insert_role.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/006_insert_role_authority.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/007_insert_user.xml" relativeToChangelogFile="true"/>
    
 </databaseChangeLog>

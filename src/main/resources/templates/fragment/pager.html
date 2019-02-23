@@ -3,9 +3,9 @@
 
 <body>
 	<div th:fragment="content">
-		<th:block th:if="${page.getTotalPages() > 1}">
-			<div th:utext="${@linkService.previousLink()}" th:remove="tag"></div>
-			<div th:utext="${@linkService.nextLink()}" th:remove="tag"></div>
+		<th:block th:if="${page != null && page.getTotalPages() > 1}">
+			<div th:utext="${@linkService.previousLink(page)}" th:remove="tag"></div>
+			<div th:utext="${@linkService.nextLink(page)}" th:remove="tag"></div>
 		</th:block>
 	</div>
 </body>
