@@ -1,0 +1,52 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    
+    <changeSet author="FLH" id="006-1">
+        <createTable tableName="m_user">
+            <column name="id" type="VARCHAR(8)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="activated" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="fullname" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueComputed="NULL" name="image_bytes" type="BLOB"/>
+            <column name="password_hash" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role_id" type="VARCHAR(8)"/>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="timestamp" defaultValueDate="${now}"/>
+        </createTable>
+    </changeSet>
+    
+    <changeSet author="FLH" id="006-2">
+        <addPrimaryKey columnNames="id" constraintName="m_user_pkey" tableName="m_user"/>
+    </changeSet>
+
+    <changeSet author="FLH" id="006-3">
+        <addUniqueConstraint columnNames="email" constraintName="m_user_email_uq" tableName="m_user"/>
+    </changeSet>
+
+    <changeSet author="FLH" id="006-4">
+        <createIndex indexName="m_user_idx" tableName="m_user">
+            <column name="email"/>
+        </createIndex>
+    </changeSet>
+    
+    <changeSet author="FLH" id="006-5">
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="m_user" constraintName="m_user_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="m_role"/>
+    </changeSet>
+    
+</databaseChangeLog>

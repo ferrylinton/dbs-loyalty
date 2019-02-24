@@ -35,7 +35,7 @@ public class Role extends AbstractId implements Serializable {
     @Size(min = 3, max = 40, message = "{validation.size.name}")
     @Column(name = "name", length = 40, nullable = false)
     private String name;
-
+	
 	@NotEmpty(message = "{validation.notempty.authorities}")
 	@ManyToMany(fetch=FetchType.LAZY)
     @JoinTable(	name = "m_role_authority",
