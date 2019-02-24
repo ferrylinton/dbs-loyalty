@@ -8,7 +8,7 @@
 	<nav aria-label="breadcrumb" th:if="${not password.ownPassword}">
         <ol class="breadcrumb border-bottom">
             <li class="breadcrumb-item"><a th:href="@{/}" th:text="#{menu.home}"></a></li>
-            <li class="breadcrumb-item"><a th:href="@{/secure/user}" th:text="#{menu.user}"></a></li>
+            <li class="breadcrumb-item"><a th:href="@{/user}" th:text="#{menu.user}"></a></li>
             <li class="breadcrumb-item active" aria-current="page" th:text="#{menu.password}"></li>
         </ol>
     </nav>

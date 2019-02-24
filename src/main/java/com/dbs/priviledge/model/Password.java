@@ -6,28 +6,28 @@ import javax.validation.constraints.Size;
 
 public class Password{
 
-	private String loggedUsername;
+	private String loggedEmail;
 	
-	private String username;
+	private String email;
 
 	@NotNull(message = "{validation.notnull.password}")
 	@Size(min=6, max = 30, message = "{validation.size.password}")
 	private String passwordPlain;
 
-	public String getLoggedUsername() {
-		return loggedUsername;
+	public String getLoggedEmail() {
+		return loggedEmail;
 	}
 
-	public void setLoggedUsername(String loggedUsername) {
-		this.loggedUsername = loggedUsername;
+	public void setLoggedEmail(String loggedEmail) {
+		this.loggedEmail = loggedEmail;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getPasswordPlain() {
@@ -39,7 +39,7 @@ public class Password{
 	}
 
 	public boolean isOwnPassword() {
-		return loggedUsername.equals(username);
+		return loggedEmail.equals(email);
 	}
 	
 }

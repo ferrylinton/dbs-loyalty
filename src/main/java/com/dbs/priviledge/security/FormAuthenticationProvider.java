@@ -19,17 +19,20 @@ import com.dbs.priviledge.domain.User;
 import com.dbs.priviledge.service.UserService;
 import com.dbs.priviledge.util.PasswordUtil;
 
-@Component
-public class AuthenticationProviderJpa implements AuthenticationProvider {
+@Component("formAuthenticationProvider")
+public class FormAuthenticationProvider implements AuthenticationProvider {
 
     private UserService userService;
  
-	public AuthenticationProviderJpa(UserService userService) {
+	public FormAuthenticationProvider(UserService userService) {
 		this.userService = userService;
 	}
 
 	@Override
 	public Authentication authenticate(Authentication authentication) {
+		System.out.println("---------------- FormAuthenticationProvider:authenticate()");
+		System.out.println("---------------- " + authentication.getCredentials().toString());
+		System.out.println("---------------- " + authentication.getName().toLowerCase());
         String password = authentication.getCredentials().toString();
         String email = authentication.getName().toLowerCase();
        

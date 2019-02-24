@@ -9,7 +9,7 @@
 		<nav aria-label="breadcrumb">
 	        <ol class="breadcrumb border-bottom">
 	            <li class="breadcrumb-item"><a th:href="@{/}" th:text="#{menu.home}"></a></li>
-	            <li class="breadcrumb-item"><a th:href="${entityUrl}" th:text="#{menu.role}"></a></li>
+	            <li class="breadcrumb-item"><a th:href="@{/role}" th:text="#{menu.role}"></a></li>
 	            <li class="breadcrumb-item active" aria-current="page" th:text="#{menu.form}"></li>
 	        </ol>
 	    </nav>
@@ -17,7 +17,7 @@
 			<div class="min-height border p-3">
 					<div class="row no-gutters">
 						<div class="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-6">
-							<form th:action="${entityUrl}" th:object="${role}" method="post" autocomplete="off" onsubmit="return Data.submit(this)">
+							<form th:action="@{/role}" th:object="${role}" method="post" autocomplete="off" onsubmit="return Data.submit(this)">
 								<div class="form-group" th:if="${role.id != null}">
 									<label for="id" th:text="#{label.id}">Id</label>
 									<input class="form-control" type="text" th:field="*{id}" readonly="readonly" />
@@ -38,7 +38,7 @@
 									</div>
 								</div>
 								<div th:replace="fragment/audit.html :: content(${role})"></div>
-								<a class="btn btn-sm btn-secondary px-3" th:href="${entityUrl}">
+								<a class="btn btn-sm btn-secondary px-3" th:href="@{/role}">
 									<i class="icon-left"></i> <span th:text="#{label.back}"></span>
 								</a>
 								<button class="btn btn-sm btn-primary px-3" type="submit">

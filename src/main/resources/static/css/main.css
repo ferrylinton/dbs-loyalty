@@ -100,13 +100,13 @@ body{
 }
 
 .login-box{
-	height: calc(100% - 77px);
+	height: calc(100% - 75px);
 }
 
 @media ( min-width : 576px) {
-	
+	 
 	.login-box{
-		height: calc(100% - 55px);
+		height: calc(100% - 53px);
 	}
 	
 }
