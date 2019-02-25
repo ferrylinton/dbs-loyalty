@@ -5,7 +5,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
     
-    <changeSet author="FLH" id="009-1">
+    <changeSet author="FLH" id="008-1">
         <createTable tableName="c_reward">
             <column name="id" type="VARCHAR(36)">
                 <constraints nullable="false"/>
@@ -33,23 +33,23 @@
         </createTable>
     </changeSet>
     
-    <changeSet author="FLH" id="009-2">
+    <changeSet author="FLH" id="008-2">
         <addPrimaryKey columnNames="id" constraintName="c_rewardPK" tableName="c_reward"/>
     </changeSet>
 
-    <changeSet author="FLH" id="009-3">
+    <changeSet author="FLH" id="008-3">
         <addForeignKeyConstraint baseColumnNames="reward_operation_id" baseTableName="c_reward" constraintName="c_reward_fk1" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="c_reward_operation"/>
     </changeSet>
     
-    <changeSet author="FLH" id="009-4">
+    <changeSet author="FLH" id="008-4">
         <addForeignKeyConstraint baseColumnNames="customer_id" baseTableName="c_reward" constraintName="c_reward_fk2" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="c_customer"/>
     </changeSet>
 
-    <changeSet author="FLH" id="009-5">
+    <changeSet author="FLH" id="008-5">
         <addDefaultValue columnDataType="timestamp" columnName="expiry_date" defaultValueComputed="CURRENT_TIMESTAMP" tableName="c_reward"/>
     </changeSet>
     
-    <changeSet author="FLH" id="009-6">
+    <changeSet author="FLH" id="008-6">
         <addDefaultValue columnDataType="timestamp" columnName="created_date" defaultValueComputed="CURRENT_TIMESTAMP" tableName="c_reward"/>
     </changeSet>
     
@@ -57,7 +57,7 @@
         <addDefaultValue columnDataType="timestamp" columnName="last_modified_date" defaultValueComputed="CURRENT_TIMESTAMP" tableName="c_reward"/>
     </changeSet>
     
-    <changeSet author="FLH" id="009-8">
+    <changeSet author="FLH" id="008-8">
         <createIndex indexName="c_reward_idx" tableName="c_reward">
             <column name="customer_id"/>
             <column name="expiry_date"/>

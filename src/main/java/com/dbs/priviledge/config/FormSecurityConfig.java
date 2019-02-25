@@ -2,7 +2,6 @@ package com.dbs.priviledge.config;
 
 import java.util.Arrays;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,16 +13,16 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
-import org.springframework.session.FindByIndexNameSessionRepository;
-import org.springframework.session.security.SpringSessionBackedSessionRegistry;
-import org.springframework.session.web.http.HeaderHttpSessionIdResolver;
-import org.springframework.session.web.http.HttpSessionIdResolver;
 
 import com.dbs.priviledge.security.ApiAuthenticationProvider;
 import com.dbs.priviledge.security.AuthenticationFailureHandler;
 import com.dbs.priviledge.security.AuthenticationSuccessHandler;
 import com.dbs.priviledge.security.FormAuthenticationProvider;
+import com.dbs.priviledge.service.CustomerService;
+import com.dbs.priviledge.service.UserService;
 
 
 
@@ -31,31 +30,6 @@ import com.dbs.priviledge.security.FormAuthenticationProvider;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class FormSecurityConfig extends WebSecurityConfigurerAdapter {
-
-	private FormAuthenticationProvider formAuthenticationProvider;
-	
-	private ApiAuthenticationProvider apiAuthenticationProvider;
-	
-	private FindByIndexNameSessionRepository<?> sessionRepository;
-	
-	private AuthenticationSuccessHandler authenticationSuccessHandler;
-
-	private AuthenticationFailureHandler authenticationFailureHandler;
-
-	public FormSecurityConfig(
-			@Qualifier("formAuthenticationProvider") FormAuthenticationProvider formAuthenticationProvider, 
-			@Qualifier("apiAuthenticationProvider") ApiAuthenticationProvider apiAuthenticationProvider, 
-			FindByIndexNameSessionRepository<?> sessionRepository,
-			AuthenticationSuccessHandler authenticationSuccessHandler, 
-			AuthenticationFailureHandler authenticationFailureHandler) {
-		
-		this.formAuthenticationProvider = formAuthenticationProvider;
-		this.apiAuthenticationProvider = apiAuthenticationProvider;
-		this.sessionRepository = sessionRepository;
-		this.authenticationSuccessHandler = authenticationSuccessHandler;
-		this.authenticationFailureHandler = authenticationFailureHandler;
-	}
-
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -77,6 +51,7 @@ public class FormSecurityConfig extends WebSecurityConfigurerAdapter {
     		.authorizeRequests()
     		.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
     		.antMatchers("/static/**").permitAll()
+    		.antMatchers("/h2-console/**").permitAll()
     		.antMatchers("/login").permitAll()
     		.antMatchers("/authenticate").permitAll()
     		.antMatchers("/**").authenticated();
@@ -87,8 +62,8 @@ public class FormSecurityConfig extends WebSecurityConfigurerAdapter {
 	    		.loginProcessingUrl("/login")
 	    		.usernameParameter("email")
 	    		.passwordParameter("password")
-	    		.successHandler(authenticationSuccessHandler)
-	    		.failureHandler(authenticationFailureHandler);
+	    		.successHandler(new AuthenticationSuccessHandler("/home"))
+	    		.failureHandler(new AuthenticationFailureHandler("/login?error"));
 	    
 	    http
 	    	.logout()
@@ -100,7 +75,7 @@ public class FormSecurityConfig extends WebSecurityConfigurerAdapter {
 	    http
 	    	.exceptionHandling()
 	    		.accessDeniedPage("/login?forbidden");
-	
+	    
 	}
 	
 	@Bean
@@ -109,13 +84,13 @@ public class FormSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 	
 	@Bean
-	public SpringSessionBackedSessionRegistry<?> sessionRegistry() {
-    	return new SpringSessionBackedSessionRegistry<>(sessionRepository);
-    }
-	
-	@Bean
-	public AuthenticationManager authenticationManager() {
-	    return new ProviderManager(Arrays.asList(apiAuthenticationProvider, formAuthenticationProvider));
+	public SessionRegistry sessionRegistry() {
+	    return new SessionRegistryImpl();
 	}
 	
+	@Bean
+	public AuthenticationManager authenticationManager(UserService userService, CustomerService customerService) {
+	    return new ProviderManager(Arrays.asList(new FormAuthenticationProvider(userService), new ApiAuthenticationProvider(customerService)));
+	}
+ 
 }

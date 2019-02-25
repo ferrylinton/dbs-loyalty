@@ -5,7 +5,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
     
-    <changeSet author="FLH" id="004-1">
+    <changeSet author="FLH" id="003-1">
         <createTable tableName="m_role">
             <column name="id" type="VARCHAR(8)">
                 <constraints nullable="false"/>
@@ -28,23 +28,23 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="FLH" id="004-2">
+    <changeSet author="FLH" id="003-2">
         <addPrimaryKey columnNames="id" constraintName="m_role_pkey" tableName="m_role"/>
     </changeSet>
     
-    <changeSet author="FLH" id="004-3">
+    <changeSet author="FLH" id="003-3">
         <addUniqueConstraint columnNames="name" constraintName="m_role_name_uq" tableName="m_role"/>
     </changeSet>
     
-    <changeSet author="FLH" id="004-4">
+    <changeSet author="FLH" id="003-4">
         <addDefaultValue columnDataType="timestamp" columnName="created_date" defaultValueComputed="CURRENT_TIMESTAMP" tableName="m_role"/>
     </changeSet>
     
-    <changeSet author="FLH" id="004-5">
+    <changeSet author="FLH" id="003-5">
         <addDefaultValue columnDataType="timestamp" columnName="last_modified_date" defaultValueComputed="CURRENT_TIMESTAMP" tableName="m_role"/>
     </changeSet>
     
-    <changeSet author="FLH" id="004-6">
+    <changeSet author="FLH" id="003-6">
         <createIndex indexName="m_role_idx" tableName="m_role">
             <column name="name"/>
         </createIndex>

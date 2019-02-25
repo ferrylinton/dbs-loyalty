@@ -11,15 +11,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.stereotype.Component;
 
 import com.dbs.priviledge.config.Constant;
 import com.dbs.priviledge.domain.Authority;
 import com.dbs.priviledge.domain.User;
 import com.dbs.priviledge.service.UserService;
 import com.dbs.priviledge.util.PasswordUtil;
-
-@Component("formAuthenticationProvider")
+ 
 public class FormAuthenticationProvider implements AuthenticationProvider {
 
     private UserService userService;
@@ -30,10 +28,7 @@ public class FormAuthenticationProvider implements AuthenticationProvider {
 
 	@Override
 	public Authentication authenticate(Authentication authentication) {
-		System.out.println("---------------- FormAuthenticationProvider:authenticate()");
-		System.out.println("---------------- " + authentication.getCredentials().toString());
-		System.out.println("---------------- " + authentication.getName().toLowerCase());
-        String password = authentication.getCredentials().toString();
+		String password = authentication.getCredentials().toString();
         String email = authentication.getName().toLowerCase();
        
         return authenticateFromDb(email, password);

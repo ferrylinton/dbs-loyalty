@@ -18,10 +18,6 @@ spring:
     prefix: classpath:/templates/
     suffix: .html
     cache: false
-  session:
-    store-type: jdbc
-    jdbc: 
-      initialize-schema: never
   jackson:
     date-format: dd/MM/yyyy hh.mm
     serialization: 

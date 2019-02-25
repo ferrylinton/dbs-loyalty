@@ -24,7 +24,7 @@ import com.dbs.priviledge.util.UrlUtil;
 @Service
 public class UserService{
 	
-	private final Logger LOG = LoggerFactory.getLogger(RoleService.class);
+	private final Logger LOG = LoggerFactory.getLogger(UserService.class);
 
 	private final String ENTITY_NAME = "user";
 

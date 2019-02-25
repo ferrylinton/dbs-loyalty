@@ -5,7 +5,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
     
-    <changeSet author="FLH" id="008-1">
+    <changeSet author="FLH" id="007-1">
     	<createTable tableName="c_reward_operation">
             <column name="id" type="VARCHAR(3)">
                 <constraints nullable="false"/>
@@ -37,19 +37,19 @@
         </createTable>
     </changeSet>
     
-    <changeSet author="FLH" id="008-2">
+    <changeSet author="FLH" id="007-2">
         <addPrimaryKey columnNames="id" constraintName="c_reward_operationPK" tableName="c_reward_operation"/>
     </changeSet>
     
-    <changeSet author="FLH" id="008-3">
+    <changeSet author="FLH" id="007-3">
         <addUniqueConstraint columnNames="description" constraintName="c_reward_operation_description_uq" tableName="c_reward_operation"/>
     </changeSet>
     
-    <changeSet author="FLH" id="008-4">
+    <changeSet author="FLH" id="007-4">
         <addDefaultValue columnDataType="timestamp" columnName="created_date" defaultValueComputed="CURRENT_TIMESTAMP" tableName="c_reward_operation"/>
     </changeSet>
     
-    <changeSet author="FLH" id="008-5">
+    <changeSet author="FLH" id="007-5">
         <addDefaultValue columnDataType="timestamp" columnName="last_modified_date" defaultValueComputed="CURRENT_TIMESTAMP" tableName="c_reward_operation"/>
     </changeSet>
     

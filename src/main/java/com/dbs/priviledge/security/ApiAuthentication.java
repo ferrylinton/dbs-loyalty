@@ -8,8 +8,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import com.dbs.priviledge.domain.Authority;
-import com.dbs.priviledge.domain.User;
+import com.dbs.priviledge.config.Constant;
+import com.dbs.priviledge.domain.Customer;
+import com.dbs.priviledge.model.Login;
 
 
 public class ApiAuthentication implements Authentication {
@@ -24,29 +25,31 @@ public class ApiAuthentication implements Authentication {
 	
 	private boolean authenticated; 
 	
-	private User user;
+	private Customer customer;
 
-	public ApiAuthentication(Object principal, Object credentials) {
+	public ApiAuthentication(String principal) {
 		this.principal = principal;
-		this.credentials = credentials;
+		this.credentials = null;
+		this.authenticated = true;
+	}
+	
+	public ApiAuthentication(Login login) {
+		this.principal = login.getEmail();
+		this.credentials = login.getPassword();
 		this.authenticated = false;
 	}
 	
-	public ApiAuthentication(String principal, String credentials, User user) {
+	public ApiAuthentication(String principal, String credentials, Customer customer) {
 		this.principal = principal;
 		this.credentials = credentials;
-		this.user = user;
+		this.customer = customer;
 		this.authenticated = true; 
 	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		Set<GrantedAuthority> authorities = new HashSet<>();
-		
-		for(Authority authority : user.getRole().getAuthorities()){
-			authorities.add(new SimpleGrantedAuthority(authority.getName()));
-		}
-		
+		authorities.add(new SimpleGrantedAuthority(Constant.ROLE_CUSTOMER));
         return authorities;
     }
 
@@ -88,8 +91,8 @@ public class ApiAuthentication implements Authentication {
 		return (String) principal;
 	}
 
-	public User getUser() {
-		return user;
+	public Customer getCustomer() {
+		return customer;
 	}
 
 }

@@ -5,7 +5,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
      
-    <changeSet author="FLH" id="006-1">
+    <changeSet author="FLH" id="005-1">
         <createTable tableName="m_user">
             <column name="id" type="VARCHAR(8)">
                 <constraints nullable="false"/>
@@ -39,27 +39,27 @@
         </createTable>
     </changeSet>
     
-    <changeSet author="FLH" id="006-2">
+    <changeSet author="FLH" id="005-2">
         <addPrimaryKey columnNames="id" constraintName="m_user_pkey" tableName="m_user"/>
     </changeSet>
 
-    <changeSet author="FLH" id="006-3">
+    <changeSet author="FLH" id="005-3">
         <addUniqueConstraint columnNames="email" constraintName="m_user_email_uq" tableName="m_user"/>
     </changeSet>
 
-	<changeSet author="FLH" id="006-4">
+	<changeSet author="FLH" id="005-4">
         <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="m_user" constraintName="m_user_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="m_role"/>
     </changeSet>
     
-    <changeSet author="FLH" id="006-5">
+    <changeSet author="FLH" id="005-5">
         <addDefaultValue columnDataType="timestamp" columnName="created_date" defaultValueComputed="CURRENT_TIMESTAMP" tableName="m_user"/>
     </changeSet>
     
-    <changeSet author="FLH" id="006-6">
+    <changeSet author="FLH" id="005-6">
         <addDefaultValue columnDataType="timestamp" columnName="last_modified_date" defaultValueComputed="CURRENT_TIMESTAMP" tableName="m_user"/>
     </changeSet>
     
-    <changeSet author="FLH" id="006-7">
+    <changeSet author="FLH" id="005-7">
         <createIndex indexName="m_user_idx" tableName="m_user">
             <column name="email"/>
         </createIndex>

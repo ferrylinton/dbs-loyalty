@@ -10,9 +10,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.savedrequest.NullRequestCache;
-import org.springframework.session.security.SpringSessionBackedSessionRegistry;
 
+import com.dbs.priviledge.security.ApiAccessFilter;
 import com.dbs.priviledge.security.ApiLoginFilter;
+import com.dbs.priviledge.security.JwtService;
 import com.dbs.priviledge.security.RestUnauthorizedEntryPoint;
 
 @Order(1)
@@ -24,17 +25,13 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
     private RestUnauthorizedEntryPoint restUnauthorizedEntryPoint;
 
     private AccessDeniedHandler accessDeniedHandler;
+    
+    private JwtService jwtService;
 
-    private SpringSessionBackedSessionRegistry<?> sessionRegistry;
-
-    public ApiSecurityConfig(
-			RestUnauthorizedEntryPoint restUnauthorizedEntryPoint, 
-			AccessDeniedHandler accessDeniedHandler,
-			SpringSessionBackedSessionRegistry<?> sessionRegistry) {
-		
+    public ApiSecurityConfig(RestUnauthorizedEntryPoint restUnauthorizedEntryPoint, AccessDeniedHandler accessDeniedHandler, JwtService jwtService) {
     	this.restUnauthorizedEntryPoint = restUnauthorizedEntryPoint;
 		this.accessDeniedHandler = accessDeniedHandler;
-		this.sessionRegistry = sessionRegistry;
+		this.jwtService = jwtService;
 	}
 
     @Override
@@ -48,10 +45,7 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
             
             http
             	.sessionManagement()
-                	.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                	.maximumSessions(5)
-                	.sessionRegistry(sessionRegistry)
-                 	.maxSessionsPreventsLogin(true);
+                	.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
             
             http
             	.antMatcher("/api/**")
@@ -68,7 +62,8 @@ public class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
              	.accessDeniedHandler(accessDeniedHandler);
 
             http
-            	.addFilterAfter(new ApiLoginFilter("/api/authenticate", authenticationManager()), UsernamePasswordAuthenticationFilter.class);
+            	.addFilterAfter(new ApiLoginFilter("/api/authenticate", authenticationManager(), jwtService), UsernamePasswordAuthenticationFilter.class)
+            	.addFilterBefore(new ApiAccessFilter(jwtService), UsernamePasswordAuthenticationFilter.class);
         } catch (Exception e) {   
             LOG.error(e.getLocalizedMessage(), e);
         }
