@@ -20,19 +20,19 @@ public abstract class AbstractAuditing implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @CreatedBy
-    @Column(name = "created_by", length = 30, nullable = false, updatable = false)
+    @Column(name = "created_by", length = 50, nullable = false)
     private String createdBy;
 
     @CreatedDate
-    @Column(name = "created_date", nullable = false, updatable = false)
+    @Column(name = "created_date", nullable = false, columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Instant createdDate;
 
     @LastModifiedBy
-    @Column(name = "last_modified_by", length = 30)
+    @Column(name = "last_modified_by", length = 50, nullable = false)
     private String lastModifiedBy;
 
     @LastModifiedDate
-    @Column(name = "last_modified_date")
+    @Column(name = "last_modified_date", nullable = false, columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
     private Instant lastModifiedDate;
 
 	public String getCreatedBy() {

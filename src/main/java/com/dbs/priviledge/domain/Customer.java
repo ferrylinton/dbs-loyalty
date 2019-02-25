@@ -17,14 +17,14 @@ import com.dbs.priviledge.config.Constant;
 
 
 @Entity
-@Table(	name = "m_customer",
+@Table(	name = "c_customer",
 		uniqueConstraints = {
-				@UniqueConstraint(name = "m_customer_email_uq", columnNames = { "email" })
+				@UniqueConstraint(name = "c_customer_email_uq", columnNames = { "email" })
 			},
 		indexes= {
-				@Index(name = "m_customer_idx", columnList = "email")
+				@Index(name = "c_customer_idx", columnList = "email")
 			})
-public class Customer extends AbstractId implements Serializable {
+public class Customer extends AbstractUUID implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -38,6 +38,11 @@ public class Customer extends AbstractId implements Serializable {
 	@Size(min = 3, max = 50, message = "{validation.size.fullname}")
 	@Column(name = "fullname", length = 50, nullable = false)
 	private String fullname;
+	
+	@NotNull(message = "{validation.notnull.phone}")
+	@Size(min = 6, max = 20, message = "{validation.size.phone}")
+	@Column(name = "phone", length = 20, nullable = false)
+	private String phone;
 	
 	@Size(min=6, max = 30, message = "{validation.size.password}")
 	@Transient
@@ -67,6 +72,14 @@ public class Customer extends AbstractId implements Serializable {
 
 	public void setFullname(String fullname) {
 		this.fullname = fullname;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 	public String getPasswordPlain() {

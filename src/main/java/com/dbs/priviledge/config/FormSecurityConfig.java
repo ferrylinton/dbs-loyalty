@@ -17,6 +17,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.session.FindByIndexNameSessionRepository;
 import org.springframework.session.security.SpringSessionBackedSessionRegistry;
+import org.springframework.session.web.http.HeaderHttpSessionIdResolver;
+import org.springframework.session.web.http.HttpSessionIdResolver;
 
 import com.dbs.priviledge.security.ApiAuthenticationProvider;
 import com.dbs.priviledge.security.AuthenticationFailureHandler;
@@ -115,4 +117,5 @@ public class FormSecurityConfig extends WebSecurityConfigurerAdapter {
 	public AuthenticationManager authenticationManager() {
 	    return new ProviderManager(Arrays.asList(apiAuthenticationProvider, formAuthenticationProvider));
 	}
+	
 }

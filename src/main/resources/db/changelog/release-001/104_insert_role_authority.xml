@@ -5,9 +5,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
-	<changeSet author="FLH" id="1550816087783-501">
+	<changeSet author="FLH" id="104-1">
 		
-		<!-- ADMIN -->
+		<!-- ROLE ADMIN -->
 		
         <insert tableName="m_role_authority">
             <column name="role_id" value="eSn1jhQG"/>
@@ -18,7 +18,7 @@
             <column name="authority_id" value="V6evDSIi"/>
         </insert>
         
-        <!-- CUSTOMER -->
+        <!-- ROLE CUSTOMER -->
         
         <insert tableName="m_role_authority">
             <column name="role_id" value="31ZxLeW1"/>

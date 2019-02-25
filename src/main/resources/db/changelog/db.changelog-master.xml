@@ -8,6 +8,8 @@
     <include file="release-001/005_role_authority_schema.xml" relativeToChangelogFile="true"/>
     <include file="release-001/006_user_schema.xml" relativeToChangelogFile="true"/>
     <include file="release-001/007_customer_schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/008_reward_operation_schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/009_reward_schema.xml" relativeToChangelogFile="true"/>
     
     <include file="release-001/101_insert_user_system.xml" relativeToChangelogFile="true"/>
     <include file="release-001/102_insert_authority.xml" relativeToChangelogFile="true"/>
@@ -15,5 +17,6 @@
     <include file="release-001/104_insert_role_authority.xml" relativeToChangelogFile="true"/>
     <include file="release-001/105_insert_user.xml" relativeToChangelogFile="true"/>
     <include file="release-001/106_insert_customer.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/107_insert_reward_operation.xml" relativeToChangelogFile="true"/>
    
 </databaseChangeLog>

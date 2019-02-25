@@ -7,7 +7,7 @@
 
     <changeSet author="FLH" id="106-1">
 
-        <insert tableName="m_customer">
+        <insert tableName="c_customer">
             <column name="id" value="GDno4OHC"/>
             <column name="created_by" value="system"/>
             <column name="last_modified_by" value="customer01"/>
@@ -15,10 +15,11 @@
             <column name="email" value="customer01@dbs.com"/>
             <column name="password_hash" value="${password}"/>
             <column name="fullname" value="Customer 01"/>
+            <column name="phone" value="+62 8123456789"/>
             <column name="image_bytes" valueBlobFile="image/250x250.png"/>
         </insert>
         
-        <insert tableName="m_customer">
+        <insert tableName="c_customer">
             <column name="id" value="kv3bdKxI"/>
             <column name="created_by" value="system"/>
             <column name="last_modified_by" value="customer02"/>
@@ -26,10 +27,11 @@
             <column name="email" value="customer02@dbs.com"/>
             <column name="password_hash" value="${password}"/>
             <column name="fullname" value="Customer 02"/>
+            <column name="phone" value="+62 8123456789"/>
             <column name="image_bytes" valueBlobFile="image/250x250.png"/>
         </insert>
         
-        <insert tableName="m_customer">
+        <insert tableName="c_customer">
             <column name="id" value="GZmq6RFY"/>
             <column name="created_by" value="system"/>
             <column name="last_modified_by" value="customer03"/>
@@ -37,10 +39,11 @@
             <column name="email" value="customer03@dbs.com"/>
             <column name="password_hash" value="${password}"/>
             <column name="fullname" value="Customer 03"/>
+            <column name="phone" value="+62 8123456789"/>
             <column name="image_bytes" valueBlobFile="image/250x250.png"/>
         </insert>
         
-        <insert tableName="m_customer">
+        <insert tableName="c_customer">
             <column name="id" value="GNPzd9qJ"/>
             <column name="created_by" value="system"/>
             <column name="last_modified_by" value="customer04"/>
@@ -48,10 +51,11 @@
             <column name="email" value="customer04@dbs.com"/>
             <column name="password_hash" value="${password}"/>
             <column name="fullname" value="Customer 04"/>
+            <column name="phone" value="+62 8123456789"/>
             <column name="image_bytes" valueBlobFile="image/250x250.png"/>
         </insert>
         
-        <insert tableName="m_customer">
+        <insert tableName="c_customer">
             <column name="id" value="1ocboPk6"/>
             <column name="created_by" value="system"/>
             <column name="last_modified_by" value="customer05"/>
@@ -59,10 +63,11 @@
             <column name="email" value="customer05@dbs.com"/>
             <column name="password_hash" value="${password}"/>
             <column name="fullname" value="Customer 05"/>
+            <column name="phone" value="+62 8123456789"/>
             <column name="image_bytes" valueBlobFile="image/250x250.png"/>
         </insert>
         
-        <insert tableName="m_customer">
+        <insert tableName="c_customer">
             <column name="id" value="OlYvG7lr"/>
             <column name="created_by" value="system"/>
             <column name="last_modified_by" value="customer06"/>
@@ -70,10 +75,11 @@
             <column name="email" value="customer06@dbs.com"/>
             <column name="password_hash" value="${password}"/>
             <column name="fullname" value="Customer 06"/>
+            <column name="phone" value="+62 8123456789"/>
             <column name="image_bytes" valueBlobFile="image/250x250.png"/>
         </insert>
         
-        <insert tableName="m_customer">
+        <insert tableName="c_customer">
             <column name="id" value="P7HkqbPx"/>
             <column name="created_by" value="system"/>
             <column name="last_modified_by" value="customer07"/>
@@ -81,10 +87,11 @@
             <column name="email" value="customer07@dbs.com"/>
             <column name="password_hash" value="${password}"/>
             <column name="fullname" value="Customer 07"/>
+            <column name="phone" value="+62 8123456789"/>
             <column name="image_bytes" valueBlobFile="image/250x250.png"/>
         </insert>
         
-        <insert tableName="m_customer">
+        <insert tableName="c_customer">
             <column name="id" value="VHz4a46y"/>
             <column name="created_by" value="system"/>
             <column name="last_modified_by" value="customer08"/>
@@ -92,10 +99,11 @@
             <column name="email" value="customer08@dbs.com"/>
             <column name="password_hash" value="${password}"/>
             <column name="fullname" value="Customer 08"/>
+            <column name="phone" value="+62 8123456789"/>
             <column name="image_bytes" valueBlobFile="image/250x250.png"/>
         </insert>
         
-        <insert tableName="m_customer">
+        <insert tableName="c_customer">
             <column name="id" value="S2XD2xUN"/>
             <column name="created_by" value="system"/>
             <column name="last_modified_by" value="customer09"/>
@@ -103,10 +111,11 @@
             <column name="email" value="customer09@dbs.com"/>
             <column name="password_hash" value="${password}"/>
             <column name="fullname" value="Customer 09"/>
+            <column name="phone" value="+62 8123456789"/>
             <column name="image_bytes" valueBlobFile="image/250x250.png"/>
         </insert>
         
-        <insert tableName="m_customer">
+        <insert tableName="c_customer">
             <column name="id" value="xVcJLlwj"/>
             <column name="created_by" value="system"/>
             <column name="last_modified_by" value="customer10"/>
@@ -114,10 +123,11 @@
             <column name="email" value="customer10@dbs.com"/>
             <column name="password_hash" value="${password}"/>
             <column name="fullname" value="Customer 10"/>
+            <column name="phone" value="+62 8123456789"/>
             <column name="image_bytes" valueBlobFile="image/250x250.png"/>
         </insert>
         
-        <insert tableName="m_customer">
+        <insert tableName="c_customer">
             <column name="id" value="mftYSJ8M"/>
             <column name="created_by" value="system"/>
             <column name="last_modified_by" value="customer11"/>
@@ -125,10 +135,11 @@
             <column name="email" value="customer11@dbs.com"/>
             <column name="password_hash" value="${password}"/>
             <column name="fullname" value="Customer 11"/>
+            <column name="phone" value="+62 8123456789"/>
             <column name="image_bytes" valueBlobFile="image/250x250.png"/>
         </insert>
         
-        <insert tableName="m_customer">
+        <insert tableName="c_customer">
             <column name="id" value="HoneILwU"/>
             <column name="created_by" value="system"/>
             <column name="last_modified_by" value="customer12"/>
@@ -136,6 +147,7 @@
             <column name="email" value="customer12@dbs.com"/>
             <column name="password_hash" value="${password}"/>
             <column name="fullname" value="Customer 12"/>
+            <column name="phone" value="+62 8123456789"/>
             <column name="image_bytes" valueBlobFile="image/250x250.png"/>
         </insert>
         
