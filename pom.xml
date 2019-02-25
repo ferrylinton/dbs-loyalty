@@ -7,7 +7,7 @@
 	<groupId>com.dbs</groupId>
 	<artifactId>dbs-priviledge</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>DBS Priviledge</name>
 	<description>DBS Priviledge Application</description>
@@ -43,6 +43,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
 		</dependency>
 		
 		<!-- TYHMELEAF -->
@@ -172,7 +177,7 @@
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-
+		
 	</dependencies>
 
 	<build>
@@ -180,6 +185,9 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+			        <mainClass>com.dbs.priviledge.PriviledgeApplication</mainClass>
+			   	</configuration>
 			</plugin>
 			<plugin>
                 <groupId>org.liquibase</groupId>
