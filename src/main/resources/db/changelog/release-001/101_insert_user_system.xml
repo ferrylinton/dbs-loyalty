@@ -9,7 +9,7 @@
 		<insert tableName="m_user">
 			<column name="id" value="xnn6QDJN" />
 			<column name="email" value="system@dbs.com" />
-			<column name="fullname" value="System" />
+			<column name="name" value="System" />
 			<column name="password_hash" value="${password}" />
 			<column name="activated" valueBoolean="false" />
 			<column name="created_by" value="system" />

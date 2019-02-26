@@ -26,7 +26,7 @@ import com.dbs.priviledge.config.Constant;
 				@UniqueConstraint(name = "m_user_email_uq", columnNames = { "email" })
 			},
 		indexes= {
-				@Index(name = "m_user_idx", columnList = "email")
+				@Index(name = "m_user_name_idx", columnList = "name")
 			})
 public class User extends AbstractId implements Serializable {
 
@@ -38,10 +38,10 @@ public class User extends AbstractId implements Serializable {
 	@Column(name = "email", length = 50, nullable = false)
 	private String email;
 	
-	@NotNull(message = "{validation.notnull.fullname}")
-	@Size(min = 3, max = 50, message = "{validation.size.fullname}")
-	@Column(name = "fullname", length = 50, nullable = false)
-	private String fullname;
+	@NotNull(message = "{validation.notnull.name}")
+	@Size(min = 3, max = 50, message = "{validation.size.name}")
+	@Column(name = "name", length = 50, nullable = false)
+	private String name;
 	
 	@Size(min=6, max = 30, message = "{validation.size.password}")
 	@Transient
@@ -69,12 +69,12 @@ public class User extends AbstractId implements Serializable {
 		this.email = email;
 	}
 
-	public String getFullname() {
-		return fullname;
+	public String getName() {
+		return name;
 	}
 
-	public void setFullname(String fullname) {
-		this.fullname = fullname;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getPasswordPlain() {

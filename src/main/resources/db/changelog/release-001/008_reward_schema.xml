@@ -22,7 +22,7 @@
             <column name="last_modified_date" type="timestamp">
                 <constraints nullable="false"/>
             </column>
-            <column name="expiry_date" type="timestamp">
+            <column name="expiry_date" type="date">
                 <constraints nullable="false"/>
             </column>
             <column name="point" type="INT">
@@ -46,7 +46,7 @@
     </changeSet>
 
     <changeSet author="FLH" id="008-5">
-        <addDefaultValue columnDataType="timestamp" columnName="expiry_date" defaultValueComputed="CURRENT_TIMESTAMP" tableName="c_reward"/>
+        <addDefaultValue columnDataType="date" columnName="expiry_date" defaultValueComputed="CURRENT_TIMESTAMP" tableName="c_reward"/>
     </changeSet>
     
     <changeSet author="FLH" id="008-6">
@@ -58,8 +58,13 @@
     </changeSet>
     
     <changeSet author="FLH" id="008-8">
-        <createIndex indexName="c_reward_idx" tableName="c_reward">
+        <createIndex indexName="c_reward_customer_id_idx" tableName="c_reward">
             <column name="customer_id"/>
+        </createIndex>
+    </changeSet>
+    
+    <changeSet author="FLH" id="008-9">
+        <createIndex indexName="c_reward_expiry_date_idx" tableName="c_reward">
             <column name="expiry_date"/>
         </createIndex>
     </changeSet>

@@ -8,145 +8,157 @@
     <changeSet author="FLH" id="106-1">
 
         <insert tableName="c_customer">
-            <column name="id" value="GDno4OHC"/>
+            <column name="id" value="646e8a2a-4ca4-459a-9da8-2a31daaecd38"/>
             <column name="created_by" value="system"/>
-            <column name="last_modified_by" value="customer01"/>
+            <column name="last_modified_by" value="system"/>
             <column name="activated" valueBoolean="true"/>
             <column name="email" value="customer01@dbs.com"/>
             <column name="password_hash" value="${password}"/>
-            <column name="fullname" value="Customer 01"/>
+            <column name="name" value="Customer 01"/>
+            <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
             <column name="image_bytes" valueBlobFile="image/250x250.png"/>
         </insert>
         
         <insert tableName="c_customer">
-            <column name="id" value="kv3bdKxI"/>
+            <column name="id" value="0fe2b3b8-9d63-4af5-b033-6ddddd85971a"/>
             <column name="created_by" value="system"/>
-            <column name="last_modified_by" value="customer02"/>
+            <column name="last_modified_by" value="system"/>
             <column name="activated" valueBoolean="true"/>
             <column name="email" value="customer02@dbs.com"/>
             <column name="password_hash" value="${password}"/>
-            <column name="fullname" value="Customer 02"/>
+            <column name="name" value="Customer 02"/>
+            <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
             <column name="image_bytes" valueBlobFile="image/250x250.png"/>
         </insert>
         
         <insert tableName="c_customer">
-            <column name="id" value="GZmq6RFY"/>
+            <column name="id" value="9b2186a3-24f5-4fa2-872b-f9d10aabd016"/>
             <column name="created_by" value="system"/>
-            <column name="last_modified_by" value="customer03"/>
+            <column name="last_modified_by" value="system"/>
             <column name="activated" valueBoolean="true"/>
             <column name="email" value="customer03@dbs.com"/>
             <column name="password_hash" value="${password}"/>
-            <column name="fullname" value="Customer 03"/>
+            <column name="name" value="Customer 03"/>
+            <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
             <column name="image_bytes" valueBlobFile="image/250x250.png"/>
         </insert>
         
         <insert tableName="c_customer">
-            <column name="id" value="GNPzd9qJ"/>
+            <column name="id" value="3d7e4698-092e-4b51-997a-6281995995e3"/>
             <column name="created_by" value="system"/>
-            <column name="last_modified_by" value="customer04"/>
+            <column name="last_modified_by" value="system"/>
             <column name="activated" valueBoolean="true"/>
             <column name="email" value="customer04@dbs.com"/>
             <column name="password_hash" value="${password}"/>
-            <column name="fullname" value="Customer 04"/>
+            <column name="name" value="Customer 04"/>
+            <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
             <column name="image_bytes" valueBlobFile="image/250x250.png"/>
         </insert>
         
         <insert tableName="c_customer">
-            <column name="id" value="1ocboPk6"/>
+            <column name="id" value="8bc972a6-8433-460b-95f5-63a2e1cbcef6"/>
             <column name="created_by" value="system"/>
-            <column name="last_modified_by" value="customer05"/>
+            <column name="last_modified_by" value="system"/>
             <column name="activated" valueBoolean="true"/>
             <column name="email" value="customer05@dbs.com"/>
             <column name="password_hash" value="${password}"/>
-            <column name="fullname" value="Customer 05"/>
+            <column name="name" value="Customer 05"/>
+            <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
             <column name="image_bytes" valueBlobFile="image/250x250.png"/>
         </insert>
         
         <insert tableName="c_customer">
-            <column name="id" value="OlYvG7lr"/>
+            <column name="id" value="6b2a1f61-087d-4260-8cc7-8eb50c4ec49b"/>
             <column name="created_by" value="system"/>
-            <column name="last_modified_by" value="customer06"/>
+            <column name="last_modified_by" value="system"/>
             <column name="activated" valueBoolean="true"/>
             <column name="email" value="customer06@dbs.com"/>
             <column name="password_hash" value="${password}"/>
-            <column name="fullname" value="Customer 06"/>
+            <column name="name" value="Customer 06"/>
+            <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
             <column name="image_bytes" valueBlobFile="image/250x250.png"/>
         </insert>
         
         <insert tableName="c_customer">
-            <column name="id" value="P7HkqbPx"/>
+            <column name="id" value="4c7c141a-7f63-40e0-ba67-d6accab2f216"/>
             <column name="created_by" value="system"/>
-            <column name="last_modified_by" value="customer07"/>
+            <column name="last_modified_by" value="system"/>
             <column name="activated" valueBoolean="true"/>
             <column name="email" value="customer07@dbs.com"/>
             <column name="password_hash" value="${password}"/>
-            <column name="fullname" value="Customer 07"/>
+            <column name="name" value="Customer 07"/>
+            <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
             <column name="image_bytes" valueBlobFile="image/250x250.png"/>
         </insert>
         
         <insert tableName="c_customer">
-            <column name="id" value="VHz4a46y"/>
+            <column name="id" value="1b2a702b-3908-4a37-b878-30fd1e5fee3f"/>
             <column name="created_by" value="system"/>
-            <column name="last_modified_by" value="customer08"/>
+            <column name="last_modified_by" value="system"/>
             <column name="activated" valueBoolean="true"/>
             <column name="email" value="customer08@dbs.com"/>
             <column name="password_hash" value="${password}"/>
-            <column name="fullname" value="Customer 08"/>
+            <column name="name" value="Customer 08"/>
+            <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
             <column name="image_bytes" valueBlobFile="image/250x250.png"/>
         </insert>
         
         <insert tableName="c_customer">
-            <column name="id" value="S2XD2xUN"/>
+            <column name="id" value="1e6d46b0-7335-4a3e-a2e3-f49e2d13daf8"/>
             <column name="created_by" value="system"/>
-            <column name="last_modified_by" value="customer09"/>
+            <column name="last_modified_by" value="system"/>
             <column name="activated" valueBoolean="true"/>
             <column name="email" value="customer09@dbs.com"/>
             <column name="password_hash" value="${password}"/>
-            <column name="fullname" value="Customer 09"/>
+            <column name="name" value="Customer 09"/>
+            <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
             <column name="image_bytes" valueBlobFile="image/250x250.png"/>
         </insert>
         
         <insert tableName="c_customer">
-            <column name="id" value="xVcJLlwj"/>
+            <column name="id" value="7ecaf1ff-6b23-4341-a40a-585a3ee0dab2"/>
             <column name="created_by" value="system"/>
-            <column name="last_modified_by" value="customer10"/>
+            <column name="last_modified_by" value="system"/>
             <column name="activated" valueBoolean="true"/>
             <column name="email" value="customer10@dbs.com"/>
             <column name="password_hash" value="${password}"/>
-            <column name="fullname" value="Customer 10"/>
+            <column name="name" value="Customer 10"/>
+            <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
             <column name="image_bytes" valueBlobFile="image/250x250.png"/>
         </insert>
         
         <insert tableName="c_customer">
-            <column name="id" value="mftYSJ8M"/>
+            <column name="id" value="213db910-6377-40da-8f53-9a1841e2eaa3"/>
             <column name="created_by" value="system"/>
-            <column name="last_modified_by" value="customer11"/>
+            <column name="last_modified_by" value="system"/>
             <column name="activated" valueBoolean="true"/>
             <column name="email" value="customer11@dbs.com"/>
             <column name="password_hash" value="${password}"/>
-            <column name="fullname" value="Customer 11"/>
+            <column name="name" value="Customer 11"/>
+            <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
             <column name="image_bytes" valueBlobFile="image/250x250.png"/>
         </insert>
         
         <insert tableName="c_customer">
-            <column name="id" value="HoneILwU"/>
+            <column name="id" value="72f7cb2a-5ba2-4453-8e24-73da7eb7c2dd"/>
             <column name="created_by" value="system"/>
-            <column name="last_modified_by" value="customer12"/>
+            <column name="last_modified_by" value="system"/>
             <column name="activated" valueBoolean="true"/>
             <column name="email" value="customer12@dbs.com"/>
             <column name="password_hash" value="${password}"/>
-            <column name="fullname" value="Customer 12"/>
+            <column name="name" value="Customer 12"/>
+            <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
             <column name="image_bytes" valueBlobFile="image/250x250.png"/>
         </insert>

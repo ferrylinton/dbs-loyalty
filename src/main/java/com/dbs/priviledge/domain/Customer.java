@@ -1,11 +1,16 @@
 package com.dbs.priviledge.domain;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Index;
 import javax.persistence.Lob;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
@@ -22,7 +27,9 @@ import com.dbs.priviledge.config.Constant;
 				@UniqueConstraint(name = "c_customer_email_uq", columnNames = { "email" })
 			},
 		indexes= {
-				@Index(name = "c_customer_idx", columnList = "email")
+				@Index(name = "c_customer_name_idx", columnList = "name"),
+				@Index(name = "c_customer_phone_idx", columnList = "phone"),
+				@Index(name = "c_customer_dob_idx", columnList = "dob")
 			})
 public class Customer extends AbstractUUID implements Serializable {
 
@@ -34,15 +41,19 @@ public class Customer extends AbstractUUID implements Serializable {
 	@Column(name = "email", length = 50, nullable = false)
 	private String email;
 	
-	@NotNull(message = "{validation.notnull.fullname}")
-	@Size(min = 3, max = 50, message = "{validation.size.fullname}")
-	@Column(name = "fullname", length = 50, nullable = false)
-	private String fullname;
+	@NotNull(message = "{validation.notnull.name}")
+	@Size(min = 2, max = 50, message = "{validation.size.name}")
+	@Column(name = "name", length = 50, nullable = false)
+	private String name;
 	
 	@NotNull(message = "{validation.notnull.phone}")
 	@Size(min = 6, max = 20, message = "{validation.size.phone}")
 	@Column(name = "phone", length = 20, nullable = false)
 	private String phone;
+	
+	@NotNull(message = "{validation.notnull.dob}")
+	@Column(nullable = false, columnDefinition = "DATE")
+	private LocalDate dob;
 	
 	@Size(min=6, max = 30, message = "{validation.size.password}")
 	@Transient
@@ -58,6 +69,9 @@ public class Customer extends AbstractUUID implements Serializable {
     @Column(name = "image_bytes", columnDefinition="BLOB")
     private byte[] imageBytes;
 
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    private Set<LovedOne> lovedOnes = new HashSet<>();
+    
 	public String getEmail() {
 		return email;
 	}
@@ -66,12 +80,20 @@ public class Customer extends AbstractUUID implements Serializable {
 		this.email = email;
 	}
 
-	public String getFullname() {
-		return fullname;
+	public String getName() {
+		return name;
 	}
 
-	public void setFullname(String fullname) {
-		this.fullname = fullname;
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public LocalDate getDob() {
+		return dob;
+	}
+
+	public void setDob(LocalDate dob) {
+		this.dob = dob;
 	}
 
 	public String getPhone() {
@@ -112,6 +134,14 @@ public class Customer extends AbstractUUID implements Serializable {
 
 	public void setImageBytes(byte[] imageBytes) {
 		this.imageBytes = imageBytes;
+	}
+
+	public Set<LovedOne> getLovedOnes() {
+		return lovedOnes;
+	}
+
+	public void setLovedOnes(Set<LovedOne> lovedOnes) {
+		this.lovedOnes = lovedOnes;
 	}
 	
 }

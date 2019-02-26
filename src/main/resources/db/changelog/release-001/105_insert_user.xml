@@ -10,11 +10,11 @@
         <insert tableName="m_user">
             <column name="id" value="WxtNPwsP"/>
             <column name="created_by" value="system"/>
-            <column name="last_modified_by" value="admin"/>
+            <column name="last_modified_by" value="system"/>
             <column name="activated" valueBoolean="true"/>
             <column name="email" value="admin@dbs.com"/>
             <column name="password_hash" value="${password}"/>
-            <column name="fullname" value="Admin"/>
+            <column name="name" value="Admin"/>
             <column name="role_id" value="eSn1jhQG"/>
         </insert>
         

@@ -1,21 +1,25 @@
 package com.dbs.priviledge.domain;
 
 import java.io.Serializable;
-import java.time.Instant;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 @Table(name = "c_reward",
 		indexes= {
-				@Index(name = "c_reward_idx", columnList = "customer_id, expiry_date")
+				@Index(name = "c_reward_customer_id_idx", columnList = "customer_id"),
+				@Index(name = "c_reward_expiry_date_idx", columnList = "expiry_date")
 			})
 public class Reward extends AbstractUUID implements Serializable {
 
@@ -24,14 +28,15 @@ public class Reward extends AbstractUUID implements Serializable {
 	@Column(name = "point", nullable = false)
 	private Integer point;
 	
-	@Column(name = "expiry_date", nullable = false, columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
-	private Instant expiryDate;
+	@Column(name = "expiry_date", nullable = false, columnDefinition = "DATE")
+	private LocalDate expiryDate;
 
 	@ManyToOne
     @JoinColumn(name = "reward_operation_id", foreignKey = @ForeignKey(name = "c_reward_fk1"))
 	private RewardOperation rewardOperation;
 	
-	@ManyToOne
+	@JsonIgnore
+	@ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name = "customer_id", foreignKey = @ForeignKey(name = "c_reward_fk2"))
     private Customer customer;
 
@@ -43,11 +48,11 @@ public class Reward extends AbstractUUID implements Serializable {
 		this.point = point;
 	}
 
-	public Instant getExpiryDate() {
+	public LocalDate getExpiryDate() {
 		return expiryDate;
 	}
 
-	public void setExpiryDate(Instant expiryDate) {
+	public void setExpiryDate(LocalDate expiryDate) {
 		this.expiryDate = expiryDate;
 	}
 

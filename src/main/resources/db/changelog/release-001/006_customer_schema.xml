@@ -28,7 +28,10 @@
             <column name="email" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="fullname" type="VARCHAR(50)">
+            <column name="dob" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
             <column name="image_bytes" type="BLOB"/>
@@ -58,8 +61,20 @@
     </changeSet>
 
     <changeSet author="FLH" id="006-6">
-        <createIndex indexName="c_customer_idx" tableName="c_customer">
-            <column name="email"/>
+        <createIndex indexName="c_customer_name_idx" tableName="c_customer">
+            <column name="name"/>
+        </createIndex>
+    </changeSet>
+    
+    <changeSet author="FLH" id="006-7">
+        <createIndex indexName="c_customer_phone_idx" tableName="c_customer">
+            <column name="phone"/>
+        </createIndex>
+    </changeSet>
+    
+    <changeSet author="FLH" id="006-8">
+        <createIndex indexName="c_customer_dob_idx" tableName="c_customer">
+            <column name="dob"/>
         </createIndex>
     </changeSet>
 

@@ -16,7 +16,7 @@
             <column name="email" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="fullname" type="VARCHAR(50)">
+            <column name="name" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
             <column defaultValueComputed="NULL" name="image_bytes" type="BLOB"/>
@@ -60,8 +60,8 @@
     </changeSet>
     
     <changeSet author="FLH" id="005-7">
-        <createIndex indexName="m_user_idx" tableName="m_user">
-            <column name="email"/>
+        <createIndex indexName="m_user_name_idx" tableName="m_user">
+            <column name="name"/>
         </createIndex>
     </changeSet>
     
