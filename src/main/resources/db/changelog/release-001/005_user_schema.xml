@@ -51,14 +51,6 @@
         <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="m_user" constraintName="m_user_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="m_role"/>
     </changeSet>
     
-    <changeSet author="FLH" id="005-5">
-        <addDefaultValue columnDataType="timestamp" columnName="created_date" defaultValueComputed="CURRENT_TIMESTAMP" tableName="m_user"/>
-    </changeSet>
-    
-    <changeSet author="FLH" id="005-6">
-        <addDefaultValue columnDataType="timestamp" columnName="last_modified_date" defaultValueComputed="CURRENT_TIMESTAMP" tableName="m_user"/>
-    </changeSet>
-    
     <changeSet author="FLH" id="005-7">
         <createIndex indexName="m_user_name_idx" tableName="m_user">
             <column name="name"/>

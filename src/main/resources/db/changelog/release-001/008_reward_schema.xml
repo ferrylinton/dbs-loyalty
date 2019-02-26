@@ -44,18 +44,6 @@
     <changeSet author="FLH" id="008-4">
         <addForeignKeyConstraint baseColumnNames="customer_id" baseTableName="c_reward" constraintName="c_reward_fk2" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="c_customer"/>
     </changeSet>
-
-    <changeSet author="FLH" id="008-5">
-        <addDefaultValue columnDataType="date" columnName="expiry_date" defaultValueComputed="CURRENT_TIMESTAMP" tableName="c_reward"/>
-    </changeSet>
-    
-    <changeSet author="FLH" id="008-6">
-        <addDefaultValue columnDataType="timestamp" columnName="created_date" defaultValueComputed="CURRENT_TIMESTAMP" tableName="c_reward"/>
-    </changeSet>
-    
-    <changeSet author="FLH" id="004-7">
-        <addDefaultValue columnDataType="timestamp" columnName="last_modified_date" defaultValueComputed="CURRENT_TIMESTAMP" tableName="c_reward"/>
-    </changeSet>
     
     <changeSet author="FLH" id="008-8">
         <createIndex indexName="c_reward_customer_id_idx" tableName="c_reward">

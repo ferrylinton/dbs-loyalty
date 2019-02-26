@@ -35,15 +35,7 @@
     <changeSet author="FLH" id="002-3">
         <addUniqueConstraint columnNames="name" constraintName="m_authority_name_uq" tableName="m_authority"/>
     </changeSet>
-    
-    <changeSet author="FLH" id="002-4">
-        <addDefaultValue columnDataType="timestamp" columnName="created_date" defaultValueComputed="CURRENT_TIMESTAMP" tableName="m_authority"/>
-    </changeSet>
-    
-    <changeSet author="FLH" id="002-5">
-        <addDefaultValue columnDataType="timestamp" columnName="last_modified_date" defaultValueComputed="CURRENT_TIMESTAMP" tableName="m_authority"/>
-    </changeSet>
-    
+
     <changeSet author="FLH" id="002-6">
         <createIndex indexName="m_authority_idx" tableName="m_authority">
             <column name="name"/>

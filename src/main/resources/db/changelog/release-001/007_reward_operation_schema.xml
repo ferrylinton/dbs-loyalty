@@ -45,12 +45,4 @@
         <addUniqueConstraint columnNames="description" constraintName="c_reward_operation_description_uq" tableName="c_reward_operation"/>
     </changeSet>
     
-    <changeSet author="FLH" id="007-4">
-        <addDefaultValue columnDataType="timestamp" columnName="created_date" defaultValueComputed="CURRENT_TIMESTAMP" tableName="c_reward_operation"/>
-    </changeSet>
-    
-    <changeSet author="FLH" id="007-5">
-        <addDefaultValue columnDataType="timestamp" columnName="last_modified_date" defaultValueComputed="CURRENT_TIMESTAMP" tableName="c_reward_operation"/>
-    </changeSet>
-    
 </databaseChangeLog>

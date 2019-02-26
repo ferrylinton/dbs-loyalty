@@ -36,14 +36,6 @@
         <addUniqueConstraint columnNames="name" constraintName="m_role_name_uq" tableName="m_role"/>
     </changeSet>
     
-    <changeSet author="FLH" id="003-4">
-        <addDefaultValue columnDataType="timestamp" columnName="created_date" defaultValueComputed="CURRENT_TIMESTAMP" tableName="m_role"/>
-    </changeSet>
-    
-    <changeSet author="FLH" id="003-5">
-        <addDefaultValue columnDataType="timestamp" columnName="last_modified_date" defaultValueComputed="CURRENT_TIMESTAMP" tableName="m_role"/>
-    </changeSet>
-    
     <changeSet author="FLH" id="003-6">
         <createIndex indexName="m_role_idx" tableName="m_role">
             <column name="name"/>

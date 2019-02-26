@@ -51,14 +51,6 @@
     <changeSet author="FLH" id="006-3">
         <addUniqueConstraint columnNames="email" constraintName="c_customer_email_uq" tableName="c_customer"/>
     </changeSet>
-    
-    <changeSet author="FLH" id="006-4">
-        <addDefaultValue columnDataType="timestamp" columnName="created_date" defaultValueComputed="CURRENT_TIMESTAMP" tableName="c_customer"/>
-    </changeSet>
-    
-    <changeSet author="FLH" id="006-5">
-        <addDefaultValue columnDataType="timestamp" columnName="last_modified_date" defaultValueComputed="CURRENT_TIMESTAMP" tableName="c_customer"/>
-    </changeSet>
 
     <changeSet author="FLH" id="006-6">
         <createIndex indexName="c_customer_name_idx" tableName="c_customer">
