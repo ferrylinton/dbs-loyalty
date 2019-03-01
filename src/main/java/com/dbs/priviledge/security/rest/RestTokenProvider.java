@@ -1,4 +1,4 @@
-package com.dbs.priviledge.security;
+package com.dbs.priviledge.security.rest;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
@@ -24,9 +24,9 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
 @Component
-public class JwtService {
+public class RestTokenProvider {
 	
-	private final Logger log = LoggerFactory.getLogger(JwtService.class);
+	private final Logger log = LoggerFactory.getLogger(RestTokenProvider.class);
 
 	private Key key;
 	
@@ -36,7 +36,7 @@ public class JwtService {
     
     private final SecurityProperties securityProperties;
     
-    public JwtService(SecurityProperties securityProperties) {
+    public RestTokenProvider(SecurityProperties securityProperties) {
     	this.securityProperties = securityProperties;
     }
 
@@ -79,8 +79,7 @@ public class JwtService {
             .parseClaimsJws(token)
             .getBody();
 
-        System.out.println("----------------------- claims.getSubject() : " + claims.getSubject());
-        return new ApiAuthentication(claims.getSubject());
+        return new RestAuthentication(claims.getSubject());
     }
 
     public boolean validateToken(String authToken) {

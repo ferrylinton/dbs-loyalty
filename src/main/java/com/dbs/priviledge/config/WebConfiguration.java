@@ -15,9 +15,9 @@ import com.dbs.priviledge.util.UrlUtil;
 import com.github.bufferings.thymeleaf.extras.nl2br.dialect.Nl2brDialect;
 
 @Configuration
-public class WebConfig {
+public class WebConfiguration {
 
-	public WebConfig(ServletContext context) {
+	public WebConfiguration(ServletContext context) {
 		UrlUtil.contextPath = context.getContextPath();
 	}
 	

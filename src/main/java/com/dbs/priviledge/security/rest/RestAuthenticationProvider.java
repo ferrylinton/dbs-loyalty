@@ -1,4 +1,4 @@
-package com.dbs.priviledge.security;
+package com.dbs.priviledge.security.rest;
 
 import java.util.Optional;
 
@@ -11,11 +11,11 @@ import com.dbs.priviledge.domain.Customer;
 import com.dbs.priviledge.service.CustomerService;
 import com.dbs.priviledge.util.PasswordUtil;
 
-public class ApiAuthenticationProvider implements AuthenticationProvider {
+public class RestAuthenticationProvider implements AuthenticationProvider {
 
     private CustomerService customerService;
  
-	public ApiAuthenticationProvider(CustomerService customerService) {
+	public RestAuthenticationProvider(CustomerService customerService) {
 		this.customerService = customerService;
 	}
 
@@ -27,11 +27,11 @@ public class ApiAuthenticationProvider implements AuthenticationProvider {
         return authenticateFromDb(email, password);
 	}
 
-	private ApiAuthentication authenticateFromDb(String email, String password){
+	private RestAuthentication authenticateFromDb(String email, String password){
 		Optional<Customer> customer = customerService.findByEmail(email);
 		
 		if(customer.isPresent() && PasswordUtil.getInstance().matches(password, customer.get().getPasswordHash())) {
-			return new ApiAuthentication(email, password, customer.get());
+			return new RestAuthentication(email, password, customer.get());
         }else{
         	throw new BadCredentialsException(Constant.EMPTY);
         }
@@ -39,7 +39,7 @@ public class ApiAuthenticationProvider implements AuthenticationProvider {
 	
 	@Override
 	public boolean supports(Class<?> authentication) {
-		return authentication.equals(ApiAuthentication.class);
+		return authentication.equals(RestAuthentication.class);
 	}
 	
 }

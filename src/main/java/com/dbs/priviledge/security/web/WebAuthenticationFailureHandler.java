@@ -1,4 +1,4 @@
-package com.dbs.priviledge.security;
+package com.dbs.priviledge.security.web;
 
 import java.io.IOException;
 
@@ -10,9 +10,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
 
-public class AuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
+public class WebAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 	
-	public AuthenticationFailureHandler(String defaultFailureUrl) {
+	public WebAuthenticationFailureHandler(String defaultFailureUrl) {
         super.setDefaultFailureUrl(defaultFailureUrl);
 	}
 	

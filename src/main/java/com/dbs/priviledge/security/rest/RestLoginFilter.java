@@ -1,4 +1,4 @@
-package com.dbs.priviledge.security;
+package com.dbs.priviledge.security.rest;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -23,15 +23,15 @@ import com.dbs.priviledge.util.JsonUtil;
 import com.dbs.priviledge.util.ResponseUtil;
 
 
-public class ApiLoginFilter extends AbstractAuthenticationProcessingFilter {
+public class RestLoginFilter extends AbstractAuthenticationProcessingFilter {
 
-	private static final Logger LOG = LoggerFactory.getLogger(ApiLoginFilter.class);
+	private static final Logger LOG = LoggerFactory.getLogger(RestLoginFilter.class);
 
     private JsonUtil jsonUtil = JsonUtil.getInstance();
     
-    private JwtService jwtService;
+    private RestTokenProvider jwtService;
 
-	public ApiLoginFilter(String url, AuthenticationManager authenticationManager, JwtService jwtService) {
+	public RestLoginFilter(String url, AuthenticationManager authenticationManager, RestTokenProvider jwtService) {
 		super(new AntPathRequestMatcher(url));
 		setAuthenticationManager(authenticationManager);
 		this.jwtService = jwtService;
@@ -41,7 +41,7 @@ public class ApiLoginFilter extends AbstractAuthenticationProcessingFilter {
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws ServletException {
 		try {
 			Login login = jsonUtil.getObjectMapper().readValue(request.getInputStream(), Login.class);
-	        return getAuthenticationManager().authenticate(new ApiAuthentication(login));
+	        return getAuthenticationManager().authenticate(new RestAuthentication(login));
 		} catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -51,7 +51,7 @@ public class ApiLoginFilter extends AbstractAuthenticationProcessingFilter {
 	@Override
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
 		SecurityContextHolder.getContext().setAuthentication(authentication);
-		ApiAuthentication apiAuthentication = (ApiAuthentication) authentication;
+		RestAuthentication apiAuthentication = (RestAuthentication) authentication;
 		Map<String, Object> result = new HashMap<>();
 		result.put("token", jwtService.createToken(apiAuthentication, false));
 		result.put("data", apiAuthentication.getCustomer());

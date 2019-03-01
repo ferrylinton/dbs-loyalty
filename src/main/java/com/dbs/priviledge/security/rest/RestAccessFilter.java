@@ -1,4 +1,4 @@
-package com.dbs.priviledge.security;
+package com.dbs.priviledge.security.rest;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,15 +12,15 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-public class ApiAccessFilter extends GenericFilterBean {
+public class RestAccessFilter extends GenericFilterBean {
 
     public static final String AUTHORIZATION_HEADER = "Authorization";
 
     public static final String AUTHORIZATION_TOKEN = "access_token";
 
-    private JwtService jwtService;
+    private RestTokenProvider jwtService;
 
-    public ApiAccessFilter(JwtService jwtService) {
+    public RestAccessFilter(RestTokenProvider jwtService) {
         this.jwtService = jwtService;
     }
 

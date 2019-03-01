@@ -1,4 +1,4 @@
-package com.dbs.priviledge.security;
+package com.dbs.priviledge.security.web;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -18,11 +18,11 @@ import com.dbs.priviledge.domain.User;
 import com.dbs.priviledge.service.UserService;
 import com.dbs.priviledge.util.PasswordUtil;
  
-public class FormAuthenticationProvider implements AuthenticationProvider {
+public class WebAuthenticationProvider implements AuthenticationProvider {
 
     private UserService userService;
  
-	public FormAuthenticationProvider(UserService userService) {
+	public WebAuthenticationProvider(UserService userService) {
 		this.userService = userService;
 	}
 

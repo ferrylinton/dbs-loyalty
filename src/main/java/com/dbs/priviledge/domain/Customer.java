@@ -19,6 +19,8 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import com.dbs.priviledge.config.Constant;
+import com.dbs.priviledge.util.UrlUtil;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @Entity
@@ -55,23 +57,31 @@ public class Customer extends AbstractUUID implements Serializable {
 	@Column(nullable = false, columnDefinition = "DATE")
 	private LocalDate dob;
 	
+	@JsonIgnore
 	@Size(min=6, max = 30, message = "{validation.size.password}")
 	@Transient
 	private String passwordPlain;
 	
+	@JsonIgnore
 	@Column(name = "password_hash", length = 100, nullable = false)
 	private String passwordHash;
 
+	@JsonIgnore
 	@Column(name = "activated", nullable = false)
 	private Boolean activated = true;
 
+	@JsonIgnore
     @Lob
     @Column(name = "image_bytes", columnDefinition="BLOB")
     private byte[] imageBytes;
 
+	@JsonIgnore
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     private Set<LovedOne> lovedOnes = new HashSet<>();
     
+	@Transient
+	private String imageUrl;
+	
 	public String getEmail() {
 		return email;
 	}
@@ -142,6 +152,14 @@ public class Customer extends AbstractUUID implements Serializable {
 
 	public void setLovedOnes(Set<LovedOne> lovedOnes) {
 		this.lovedOnes = lovedOnes;
+	}
+
+	public String getImageUrl() {
+		return String.format("%s/api/customers/%s/image", UrlUtil.contextPath, getId());
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 	
 }

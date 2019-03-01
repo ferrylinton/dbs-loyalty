@@ -1,4 +1,4 @@
-package com.dbs.priviledge.security;
+package com.dbs.priviledge.security.rest;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -13,7 +13,7 @@ import com.dbs.priviledge.domain.Customer;
 import com.dbs.priviledge.model.Login;
 
 
-public class ApiAuthentication implements Authentication {
+public class RestAuthentication implements Authentication {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -27,19 +27,19 @@ public class ApiAuthentication implements Authentication {
 	
 	private Customer customer;
 
-	public ApiAuthentication(String principal) {
+	public RestAuthentication(String principal) {
 		this.principal = principal;
 		this.credentials = null;
 		this.authenticated = true;
 	}
 	
-	public ApiAuthentication(Login login) {
+	public RestAuthentication(Login login) {
 		this.principal = login.getEmail();
 		this.credentials = login.getPassword();
 		this.authenticated = false;
 	}
 	
-	public ApiAuthentication(String principal, String credentials, Customer customer) {
+	public RestAuthentication(String principal, String credentials, Customer customer) {
 		this.principal = principal;
 		this.credentials = credentials;
 		this.customer = customer;

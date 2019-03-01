@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaAuditing(auditorAwareRef="auditorProvider")
-public class PersistenceConfig {
+public class PersistenceConfiguration {
 
 	private final String SYSTEM = "system";
 	

@@ -10,53 +10,49 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.dbs.priviledge.exception.AbstractException;
 import com.dbs.priviledge.service.MessageService;
 import com.dbs.priviledge.util.ErrorUtil;
-import com.dbs.priviledge.util.JsonUtil;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 public class ErrorController implements org.springframework.boot.web.servlet.error.ErrorController {
 	
-	private static final String STATUS_CODE 		= "statusCode";
+	private final String STATUS_CODE 	= "statusCode";
 	
-	private static final String REQUEST_URI			= "requestURI";
+	private final String REQUEST_URI	= "requestURI";
 	
-	private static final String MESSAGE 			= "message";
+	private final String MESSAGE 		= "message";
 	
-	private static final String DETAIL 				= "detail";
+	private final String DETAIL 		= "detail";
 	
-	private static final String TEMPLATE			= "error/view";
+	private final String TEMPLATE		= "error/view";
 	
-	private static final String MESSAGE_400			= "Bad Request";
+	private final String MESSAGE_404	= "Resource not found";
 	
-	private static final String MESSAGE_401			= "Unauthorized";
+	private final String ACCEPT			= "Accept";
 	
-	private static final String MESSAGE_403			= "Forbidden";
+	private final String HTML			= "html";
 	
-	private static final String MESSAGE_404			= "Resource not found";
+	private ObjectMapper objectMapper;
 
+	public ErrorController(ObjectMapper objectMapper) {
+		this.objectMapper = objectMapper;
+	}
+	
 	@GetMapping("/error")
 	public String handleError(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		System.out.println("---------- Accept : " + request.getHeader("Accept"));
+		Exception exception = (Exception) request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
+		String requestURI = (String) request.getAttribute(RequestDispatcher.ERROR_REQUEST_URI);
+		int statusCode =  (Integer) request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
+		String message = null;
 		
-		if(request.getHeader("Accept") == null || request.getHeader("Accept").contains("html")) {
-			Exception exception = (Exception) request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
-			String requestURI = (String) request.getAttribute(RequestDispatcher.ERROR_REQUEST_URI);
-			int statusCode =  (Integer) request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
-			String message = null;
-			
-			if(statusCode == 400) {
-				message = MESSAGE_400;
-			}else if(statusCode == 401) {
-				message = MESSAGE_401;
-			}else if(statusCode == 403) {
-				message = MESSAGE_403;
-			}else if(statusCode == 404) {
+		if(request.getHeader(ACCEPT) == null || HTML.contains(request.getHeader(ACCEPT))) {
+			if(statusCode == 404) {
 				message = MESSAGE_404;
 			}else if(statusCode == 501) {
 				message = exception.getMessage();
@@ -82,11 +78,13 @@ public class ErrorController implements org.springframework.boot.web.servlet.err
 
 		}else {
 			Map<String, Object> result = new HashMap<>();
-			result.put("message", "test");
-			response.setContentType("application/json;charset=UTF-8");
-	        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			result.put(STATUS_CODE, statusCode);
+			result.put(REQUEST_URI, requestURI);
+			
+			response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
+	        response.setStatus(statusCode);
 	        PrintWriter writer = response.getWriter();
-	        writer.write(JsonUtil.getInstance().getObjectMapper().writeValueAsString(result));
+	        writer.write(objectMapper.writeValueAsString(result));
 	        writer.flush();
 	        writer.close();
 		}

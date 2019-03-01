@@ -17,10 +17,10 @@ import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
-import com.dbs.priviledge.security.ApiAuthenticationProvider;
-import com.dbs.priviledge.security.AuthenticationFailureHandler;
-import com.dbs.priviledge.security.AuthenticationSuccessHandler;
-import com.dbs.priviledge.security.FormAuthenticationProvider;
+import com.dbs.priviledge.security.rest.RestAuthenticationProvider;
+import com.dbs.priviledge.security.web.WebAuthenticationFailureHandler;
+import com.dbs.priviledge.security.web.WebAuthenticationProvider;
+import com.dbs.priviledge.security.web.WebAuthenticationSuccessHandler;
 import com.dbs.priviledge.service.CustomerService;
 import com.dbs.priviledge.service.UserService;
 
@@ -29,7 +29,7 @@ import com.dbs.priviledge.service.UserService;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class FormSecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -62,8 +62,8 @@ public class FormSecurityConfig extends WebSecurityConfigurerAdapter {
 	    		.loginProcessingUrl("/login")
 	    		.usernameParameter("email")
 	    		.passwordParameter("password")
-	    		.successHandler(new AuthenticationSuccessHandler("/home"))
-	    		.failureHandler(new AuthenticationFailureHandler("/login?error"));
+	    		.successHandler(new WebAuthenticationSuccessHandler("/home"))
+	    		.failureHandler(new WebAuthenticationFailureHandler("/login?error"));
 	    
 	    http
 	    	.logout()
@@ -90,7 +90,7 @@ public class FormSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Bean
 	public AuthenticationManager authenticationManager(UserService userService, CustomerService customerService) {
-	    return new ProviderManager(Arrays.asList(new FormAuthenticationProvider(userService), new ApiAuthenticationProvider(customerService)));
+	    return new ProviderManager(Arrays.asList(new WebAuthenticationProvider(userService), new RestAuthenticationProvider(customerService)));
 	}
  
 }
