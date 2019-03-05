@@ -13,15 +13,11 @@
             <column name="created_by" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
-            <column defaultValueComputed="CURRENT_TIMESTAMP" name="created_date" type="timestamp">
+            <column name="created_date" type="timestamp">
                 <constraints nullable="false"/>
             </column>
-            <column name="last_modified_by" type="VARCHAR(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column defaultValueComputed="CURRENT_TIMESTAMP" name="last_modified_date" type="timestamp">
-                <constraints nullable="false"/>
-            </column>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
             <column name="dob" type="date">
                 <constraints nullable="false"/>
             </column>
@@ -59,6 +55,10 @@
         <createIndex indexName="c_loved_one_dob_idx" tableName="c_loved_one">
             <column name="dob"/>
         </createIndex>
+    </changeSet>
+    
+    <changeSet author="FLH" id="009-7">
+    	<dropDefaultValue tableName="c_loved_one" columnName="created_date" columnDataType="timestamp"/>
     </changeSet>
     
 </databaseChangeLog>

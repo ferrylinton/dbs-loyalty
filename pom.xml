@@ -5,12 +5,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.dbs</groupId>
-	<artifactId>dbs-priviledge</artifactId>
+	<artifactId>loyalty</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 
-	<name>DBS Priviledge</name>
-	<description>DBS Priviledge Application</description>
+	<name>DBS Loyalty</name>
+	<description>DBS Loyalty Application</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -191,7 +191,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-			        <mainClass>com.dbs.priviledge.PriviledgeApplication</mainClass>
+			        <mainClass>com.dbs.loyalty.Application</mainClass>
 			   	</configuration>
 			</plugin>
 			<plugin>
@@ -203,11 +203,11 @@
                     <diffChangeLogFile>src/main/resources/db/changelog/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
                 	<diffExcludeObjects>table:SPRING_.*</diffExcludeObjects>
                 	<driver>org.mariadb.jdbc.Driver</driver>
-                    <url>jdbc:mariadb://localhost:3306/priviledge</url>
+                    <url>jdbc:mariadb://localhost:3306/loyalty</url>
                     <defaultSchemaName></defaultSchemaName>
                     <username>root</username>
-                    <password>password</password>
-                    <referenceUrl>hibernate:spring:com.dbs.priviledge.domain?dialect=org.hibernate.dialect.H2Dialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</referenceUrl>
+                    <password></password>
+                    <referenceUrl>hibernate:spring:com.dbs.loyalty.domain?dialect=org.hibernate.dialect.H2Dialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</referenceUrl>
                     <verbose>true</verbose>
                     <logging>debug</logging>
                 </configuration>

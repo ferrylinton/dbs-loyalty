@@ -30,12 +30,8 @@
             <column name="created_date" type="timestamp">
                 <constraints nullable="false"/>
             </column>
-            <column name="last_modified_by" type="VARCHAR(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="last_modified_date" type="timestamp">
-                <constraints nullable="false"/>
-            </column>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
         </createTable>
     </changeSet>
     
@@ -55,6 +51,10 @@
         <createIndex indexName="m_user_name_idx" tableName="m_user">
             <column name="name"/>
         </createIndex>
+    </changeSet>
+    
+    <changeSet author="FLH" id="005-8">
+    	<dropDefaultValue tableName="m_user" columnName="created_date" columnDataType="timestamp"/>
     </changeSet>
     
 </databaseChangeLog>

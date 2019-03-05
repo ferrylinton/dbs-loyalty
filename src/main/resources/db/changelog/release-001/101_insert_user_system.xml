@@ -12,8 +12,8 @@
 			<column name="name" value="System" />
 			<column name="password_hash" value="${password}" />
 			<column name="activated" valueBoolean="false" />
-			<column name="created_by" value="system" />
-			<column name="last_modified_by" value="system" />
+			<column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
 		</insert>
 	</changeSet>
 	

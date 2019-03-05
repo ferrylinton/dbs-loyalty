@@ -16,12 +16,8 @@
             <column name="created_date" type="timestamp">
                 <constraints nullable="false"/>
             </column>
-            <column name="last_modified_by" type="VARCHAR(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="last_modified_date" type="timestamp">
-                <constraints nullable="false"/>
-            </column>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
             <column name="description" type="VARCHAR(100)">
                 <constraints nullable="false"/>
             </column>
@@ -43,6 +39,10 @@
     
     <changeSet author="FLH" id="007-3">
         <addUniqueConstraint columnNames="description" constraintName="c_reward_operation_description_uq" tableName="c_reward_operation"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="007-4">
+    	<dropDefaultValue tableName="c_reward_operation" columnName="created_date" columnDataType="timestamp"/>
     </changeSet>
     
 </databaseChangeLog>

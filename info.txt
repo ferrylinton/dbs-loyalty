@@ -1,0 +1,33 @@
+Loyalty Apps
+
+User --> Role 1 --> Menu 1
+                --> Menu 2
+                --> Menu 3 
+
+Semuar Data --> Add Checker - Maker
+
+Login History --> Tanggal / Jam
+
+Salah password 3x --> user locked
+
+
+Contoh Data Point
+
+Tanggal hitung point            exp
+----------------------------------------------------
+1 Juli 2015 - 30 Jun 2016       31 Des 2016
+1 Juli 2016 - 30 Jun 2017       31 Des 2017
+
+id      Tgl             User    Point   Exp
+----------------------------------------------------
+xxx     1 Feb 2019      user1   100     31 Des 2019
+xxx     1 Feb 2019      user1   100     31 Des 2020
+
+
+Point Ulang Tahun
+--------------------------------------------------
+user sendiri --> pas hari ulang tahun
+user loved one --> 7 hari sebelum ulang tahun
+
+Banner --> dipilih dari promo
+Promo --> ditampilkan berdasarkan masa aktif

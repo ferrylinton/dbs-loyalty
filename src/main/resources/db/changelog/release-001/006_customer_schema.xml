@@ -16,12 +16,8 @@
             <column name="created_date" type="timestamp">
                 <constraints nullable="false"/>
             </column>
-            <column name="last_modified_by" type="VARCHAR(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="last_modified_date" type="timestamp">
-                <constraints nullable="false"/>
-            </column>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
             <column name="activated" type="BIT(1)">
                 <constraints nullable="false"/>
             </column>
@@ -69,5 +65,9 @@
             <column name="dob"/>
         </createIndex>
     </changeSet>
-
+    
+    <changeSet author="FLH" id="006-9">
+    	<dropDefaultValue tableName="c_customer" columnName="created_date" columnDataType="timestamp"/>
+    </changeSet>
+    
 </databaseChangeLog>

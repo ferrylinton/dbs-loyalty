@@ -18,11 +18,11 @@
             <column name="authority_id" value="V6evDSIi"/>
         </insert>
         
-        <!-- ROLE CUSTOMER -->
+        <!-- ROLE APPROVER -->
         
         <insert tableName="m_role_authority">
-            <column name="role_id" value="31ZxLeW1"/>
-            <column name="authority_id" value="VHhzT21P"/>
+            <column name="role_id" value="d62HxUaE"/>
+            <column name="authority_id" value="cWhfnEjg"/>
         </insert>
         
     </changeSet>
