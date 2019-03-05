@@ -22,3 +22,7 @@ function initAuditCollapse(){
 function changeStatus(obj){
 	$('[for="' + obj.id + '"]').text(Lang.label(obj.checked ? 'activated' : 'deactivated'));
 }
+
+function changeApproval(obj){
+	$('[for="' + obj.id + '"]').text(Lang.label(obj.checked ? 'approve' : 'reject'));
+}

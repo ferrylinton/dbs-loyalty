@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.GenericGenerator;
@@ -64,6 +65,9 @@ public class Approval implements Serializable {
     @ColumnDefault("NULL")
     @Column(name = "message", nullable = true)
     private String message;
+    
+    @Transient
+    private Boolean approved;
 
 	public String getId() {
 		return id;
@@ -135,6 +139,14 @@ public class Approval implements Serializable {
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public Boolean getApproved() {
+		return approved;
+	}
+
+	public void setApproved(Boolean approved) {
+		this.approved = approved;
 	}
 
 }

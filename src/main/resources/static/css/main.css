@@ -31,12 +31,20 @@ body{
 	background: rgba(0, 0, 0, 0.2);
 }
 
+.bg-readonly{
+	background-color: #e9ecef!important;
+}
+
 .border-red{
 	border-color: #c00!important;
 }
 
 .border-black{
 	border-color: #000!important;
+}
+
+.border-readonly{
+	border-color: #ced4da!important;
 }
 
 .border-2{
@@ -133,6 +141,24 @@ body{
 	color: $primary;
 }
 
+.no-break{
+	/* These are technically the same, but use both */
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+
+	-ms-word-break: break-all;
+	/* This is the dangerous one in WebKit, as it breaks things wherever */
+	word-break: break-all;
+	/* Instead use this non-standard one: */
+	word-break: break-word;
+
+	/* Adds a hyphen where the word breaks, if supported (No Blink) */
+	-ms-hyphens: auto;
+	-moz-hyphens: auto;
+	-webkit-hyphens: auto;
+	hyphens: auto;
+}
+
 /* OVERRIDE BOOTSTRAP */
 
 .breadcrumb{
@@ -156,3 +182,8 @@ body{
 ::-ms-input-placeholder {
   color: #d6d6d6;
 }
+
+.form-control{
+	border-radius: 0;
+}
+

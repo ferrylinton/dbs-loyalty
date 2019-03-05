@@ -84,7 +84,7 @@ public class RoleService{
 
 	public ResponseEntity<?> save(Role role) {
 		try {
-			role = roleRepository.save(role);
+			//role = roleRepository.save(role);
 			return ResponseUtil.createSaveResponse(role.getName(), ENTITY_NAME);
 		} catch (Exception ex) {
 			LOG.error(ex.getLocalizedMessage(), ex);

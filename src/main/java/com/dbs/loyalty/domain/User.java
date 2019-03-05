@@ -63,7 +63,7 @@ public class User extends AbstractId implements Serializable {
     private byte[] imageBytes;
 	
     @ColumnDefault("NULL")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id", nullable = true, foreignKey = @ForeignKey(name = "m_user_fk"))
     private Role role;
 

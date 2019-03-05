@@ -19,8 +19,8 @@
                             aria-expanded="false" aria-controls="error-detail" th:if="${not #strings.isEmpty(detail)}">
                             <i class="icon-down-dir"></i> <span th:text="#{label.showDetail}"></span>
                         </a>
-                        <div class="collapse border-top mt-3 pt-2 no-break" id="error-detail">
-                            <p nl2br:text="${detail}"></p>
+                        <div class="collapse border-top mt-3 pt-2 font-08" id="error-detail">
+                            <p class="no-break" nl2br:text="${detail}"></p>
                         </div>
                     </div>
                 </div>

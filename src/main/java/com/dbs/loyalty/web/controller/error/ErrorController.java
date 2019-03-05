@@ -51,6 +51,8 @@ public class ErrorController implements org.springframework.boot.web.servlet.err
 		int statusCode =  (Integer) request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
 		String message = null;
 		
+		System.out.println("-------------- ACCEPT : " + request.getHeader(ACCEPT));
+		
 		if(statusCode == 404) {
 			message = MESSAGE_404;
 		}else if(statusCode == 501) {
@@ -71,7 +73,7 @@ public class ErrorController implements org.springframework.boot.web.servlet.err
 			request.setAttribute(DETAIL, ExceptionUtils.getStackTrace(exception));
 		}
 		
-		if(request.getHeader(ACCEPT) == null || HTML.contains(request.getHeader(ACCEPT))) {
+		if(request.getHeader(ACCEPT) == null || request.getHeader(ACCEPT).contains(HTML)) {
 			request.setAttribute(STATUS_CODE, statusCode);
 			request.setAttribute(REQUEST_URI, requestURI);
 			request.setAttribute(MESSAGE, message);

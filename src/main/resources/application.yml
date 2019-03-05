@@ -4,6 +4,6 @@ spring:
   profiles:
     active: dev, mariadb
 server:
-  port: 8080
+  port: 8181
   servlet:
     context-path: /loyalty

@@ -29,46 +29,42 @@ import com.dbs.loyalty.config.Constant;
 import com.dbs.loyalty.domain.Authority;
 import com.dbs.loyalty.domain.Role;
 import com.dbs.loyalty.domain.enumeration.DataType;
+import com.dbs.loyalty.domain.Approval;
 import com.dbs.loyalty.exception.NotFoundException;
-import com.dbs.loyalty.service.ApprovalService;
 import com.dbs.loyalty.service.AuthorityService;
-import com.dbs.loyalty.service.RoleService;
+import com.dbs.loyalty.service.ApprovalService;
 import com.dbs.loyalty.util.ResponseUtil;
-import com.dbs.loyalty.web.validator.RoleValidator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-@PreAuthorize("hasRole('USER_MANAGEMENT')")
+@PreAuthorize("hasAnyRole('APPROVAL', 'USER_MANAGEMENT')")
 @Controller
-public class RoleController extends AbstractController {
+public class ApprovalController extends AbstractController {
 
-	private final Logger LOG = LoggerFactory.getLogger(RoleController.class);
+	private final Logger LOG = LoggerFactory.getLogger(ApprovalController.class);
 
-	private final String REDIRECT = "redirect:/role";
+	private final String REDIRECT = "redirect:/approval";
 
-	private final String LIST_TEMPLATE = "role/view";
+	private final String LIST_TEMPLATE = "approval/view";
 
-	private final String FORM_TEMPLATE = "role/form";
+	private final String FORM_TEMPLATE = "approval/form";
 
-	private final String SORT_BY = "name";
+	private final String SORT_BY = "dataType";
 
-	private final RoleService roleService;
-
-	private final AuthorityService authorityService;
-	
 	private final ApprovalService approvalService;
 
-	public RoleController(RoleService roleService, AuthorityService authorityService, ApprovalService approvalService) {
-		this.roleService = roleService;
-		this.authorityService = authorityService;
+	private final AuthorityService authorityService;
+
+	public ApprovalController(ApprovalService approvalService, AuthorityService authorityService) {
 		this.approvalService = approvalService;
+		this.authorityService = authorityService;
 	}
 
-	@GetMapping("/role")
+	@GetMapping("/approval")
 	public String view(HttpServletRequest request, @PageableDefault Pageable pageable) {
-		Page<Role> page = null;
+		Page<Approval> page = null;
 
 		try {
-			page = roleService.findAll(getKeyword(request), isValid(SORT_BY, pageable));
+			page = approvalService.findAll(isValid(SORT_BY, pageable));
 			
 			if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
 				return REDIRECT;
@@ -83,42 +79,15 @@ public class RoleController extends AbstractController {
 		}
 	}
 
-	@GetMapping("/role/{id}")
+	@GetMapping("/approval/{id}")
 	public String view(ModelMap model, @PathVariable String id) throws NotFoundException {
-		roleService.viewForm(model, id);
+		approvalService.viewForm(model, id);
 		return FORM_TEMPLATE;
 	}
 
-	@PostMapping("/role")
+	@PostMapping("/approval")
 	@ResponseBody
-	public ResponseEntity<?> save(@ModelAttribute @Valid Role role, BindingResult result) throws JsonProcessingException {
-		if (result.hasErrors()) {
-			return ResponseUtil.createBadRequestResponse(result);
-		} else {
-			approvalService.save(DataType.Role, role);
-			return roleService.save(role);
-		}
+	public ResponseEntity<?> save(@ModelAttribute Approval approval) throws JsonProcessingException {
+		return approvalService.save(approval);
 	}
-
-	@DeleteMapping("/role/{id}")
-	@ResponseBody
-	public ResponseEntity<?> delete(@PathVariable String id) throws NotFoundException {
-		return roleService.delete(id);
-	}
-
-	@ModelAttribute("authorities")
-	public List<Authority> getAuthorities() {
-		return authorityService.findAll();
-	}
-
-	@ModelAttribute(Constant.ENTITY_URL)
-	public String getEntityUrl() {
-		return roleService.getEntityUrl();
-	}
-
-	@InitBinder
-	protected void initBinder(WebDataBinder binder) {
-		binder.addValidators(new RoleValidator(roleService));
-	}
-
 }

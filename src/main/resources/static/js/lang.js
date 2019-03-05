@@ -24,7 +24,9 @@ var Lang = (function () {
 			},
 			"label":{
 				"activated" : "Activated",
-				"deactivated" : "Deactivated"
+				"deactivated" : "Deactivated",
+				"reject": "Reject",
+				"approve": "Approve"
 			},
 			"message": {
 				"DeleteConfirm": "Delete data ?",
@@ -64,7 +66,9 @@ var Lang = (function () {
 			},
 			"label":{
 				"activated" : "Aktif",
-				"deactivated" : "Tidak Aktif"
+				"deactivated" : "Tidak Aktif",
+				"reject": "Tolak",
+				"approve": "Terima"
 			},
 			"message": {
 				"DeleteConfirm": "Hapus data ?",
