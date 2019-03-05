@@ -1,7 +1,9 @@
 spring:
   application:
-    name: DBS Priviledge
+    name: DBS Loyalty
   profiles:
     active: dev, mariadb
 server:
   port: 8080
+  servlet:
+    context-path: /loyalty

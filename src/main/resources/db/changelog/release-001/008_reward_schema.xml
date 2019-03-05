@@ -16,16 +16,24 @@
             <column name="created_date" type="timestamp">
                 <constraints nullable="false"/>
             </column>
-            <column name="last_modified_by" type="VARCHAR(50)"/>
-            <column name="last_modified_date" type="timestamp"/>
+            <column name="last_modified_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
             <column name="expiry_date" type="date">
                 <constraints nullable="false"/>
             </column>
             <column name="point" type="INT">
                 <constraints nullable="false"/>
             </column>
-            <column name="customer_id" type="VARCHAR(36)"/>
-            <column name="reward_operation_id" type="VARCHAR(3)"/>
+            <column name="customer_id" type="VARCHAR(36)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="reward_operation_id" type="VARCHAR(3)">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
     

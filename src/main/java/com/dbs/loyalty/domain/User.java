@@ -6,7 +6,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
-import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
@@ -17,17 +16,22 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.ColumnDefault;
+
 import com.dbs.loyalty.config.Constant;
 
-
+/**
+ * Class of User
+ * 
+ * @author Ferry L. H. <ferrylinton@gmail.com>
+ */
 @Entity
-@Table(	name = "m_user",
-		uniqueConstraints = {
-				@UniqueConstraint(name = "m_user_email_uq", columnNames = { "email" })
-			},
-		indexes= {
-				@Index(name = "m_user_name_idx", columnList = "name")
-			})
+@Table(	
+	name = "m_user",
+	uniqueConstraints = {
+		@UniqueConstraint(name = "m_user_email_uq", columnNames = { "email" })
+	}
+)
 public class User extends AbstractId implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -39,7 +43,8 @@ public class User extends AbstractId implements Serializable {
 	private String email;
 	
 	@NotNull(message = "{validation.notnull.name}")
-	@Size(min = 3, max = 50, message = "{validation.size.name}")
+	@Pattern(regexp = Constant.NAME_REGEX, message = "{validation.pattern.name}")
+	@Size(min = 2, max = 50, message = "{validation.size.name}")
 	@Column(name = "name", length = 50, nullable = false)
 	private String name;
 	
@@ -57,8 +62,9 @@ public class User extends AbstractId implements Serializable {
     @Column(name = "image_bytes", columnDefinition="BLOB")
     private byte[] imageBytes;
 	
+    @ColumnDefault("NULL")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "role_id", foreignKey = @ForeignKey(name = "m_user_fk"))
+    @JoinColumn(name = "role_id", nullable = true, foreignKey = @ForeignKey(name = "m_user_fk"))
     private Role role;
 
 	public String getEmail() {

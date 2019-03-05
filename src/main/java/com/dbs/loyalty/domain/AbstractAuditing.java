@@ -28,17 +28,17 @@ public abstract class AbstractAuditing implements Serializable {
 
     @JsonIgnore
     @CreatedDate
-    @Column(name = "created_date", nullable = false, columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "created_date", nullable = false)
     private Instant createdDate;
 
     @JsonIgnore
     @LastModifiedBy
-    @Column(name = "last_modified_by", length = 50)
+    @Column(name = "last_modified_by", length = 50, nullable = false)
     private String lastModifiedBy;
 
     @JsonIgnore
     @LastModifiedDate
-    @Column(name = "last_modified_date", columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "last_modified_date", nullable = false)
     private Instant lastModifiedDate;
 
 	public String getCreatedBy() {

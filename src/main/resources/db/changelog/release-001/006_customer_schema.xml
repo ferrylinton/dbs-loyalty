@@ -16,8 +16,12 @@
             <column name="created_date" type="timestamp">
                 <constraints nullable="false"/>
             </column>
-            <column name="last_modified_by" type="VARCHAR(50)"/>
-            <column name="last_modified_date" type="timestamp"/>
+            <column name="last_modified_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
             <column name="activated" type="BIT(1)">
                 <constraints nullable="false"/>
             </column>
@@ -68,6 +72,14 @@
     
     <changeSet author="FLH" id="006-9">
     	<dropDefaultValue tableName="c_customer" columnName="created_date" columnDataType="timestamp"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="006-10">
+        <addDefaultValue columnDataType="timestamp" columnName="created_date" defaultValueComputed="CURRENT_TIMESTAMP" tableName="c_customer"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="006-11">
+        <addDefaultValue columnDataType="timestamp" columnName="last_modified_date" defaultValueComputed="CURRENT_TIMESTAMP" tableName="c_customer"/>
     </changeSet>
     
 </databaseChangeLog>

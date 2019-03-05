@@ -7,25 +7,28 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
-import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import com.dbs.loyalty.config.Constant;
+
+/**
+ * Class of LovedOne
+ * 
+ * @author Ferry L. H. <ferrylinton@gmail.com>
+ */
 @Entity
-@Table(	name = "c_loved_one",
-		indexes= {
-				@Index(name = "c_loved_one_name_idx", columnList = "name"),
-				@Index(name = "c_loved_one_phone_idx", columnList = "phone"),
-				@Index(name = "c_loved_one_dob_idx", columnList = "dob")
-			})
+@Table(name = "c_loved_one")
 public class LovedOne extends AbstractUUID implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@NotNull(message = "{validation.notnull.name}")
+	@Pattern(regexp = Constant.NAME_REGEX, message = "{validation.pattern.name}")
 	@Size(min = 2, max = 50, message = "{validation.size.name}")
 	@Column(name = "name", length = 50, nullable = false)
 	private String name;
@@ -40,7 +43,7 @@ public class LovedOne extends AbstractUUID implements Serializable {
 	private LocalDate dob;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id", foreignKey = @ForeignKey(name = "m_customer_fk"))
+    @JoinColumn(name = "customer_id", nullable = false, foreignKey = @ForeignKey(name = "m_customer_fk"))
 	private Customer customer;
 
 	public String getName() {

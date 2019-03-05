@@ -8,7 +8,6 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.Index;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -22,17 +21,18 @@ import com.dbs.loyalty.config.Constant;
 import com.dbs.loyalty.util.UrlUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-
+/**
+ * Class of Customer
+ * 
+ * @author Ferry L. H. <ferrylinton@gmail.com>
+ */
 @Entity
-@Table(	name = "c_customer",
-		uniqueConstraints = {
-				@UniqueConstraint(name = "c_customer_email_uq", columnNames = { "email" })
-			},
-		indexes= {
-				@Index(name = "c_customer_name_idx", columnList = "name"),
-				@Index(name = "c_customer_phone_idx", columnList = "phone"),
-				@Index(name = "c_customer_dob_idx", columnList = "dob")
-			})
+@Table(	
+	name = "c_customer",
+	uniqueConstraints = {
+		@UniqueConstraint(name = "c_customer_email_uq", columnNames = { "email" })
+	}
+)
 public class Customer extends AbstractUUID implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -44,6 +44,7 @@ public class Customer extends AbstractUUID implements Serializable {
 	private String email;
 	
 	@NotNull(message = "{validation.notnull.name}")
+	@Pattern(regexp = Constant.NAME_REGEX, message = "{validation.pattern.name}")
 	@Size(min = 2, max = 50, message = "{validation.size.name}")
 	@Column(name = "name", length = 50, nullable = false)
 	private String name;

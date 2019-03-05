@@ -5,7 +5,8 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
   
-    <include file="release-001/001_variables.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/000_variables.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/001_approval.xml" relativeToChangelogFile="true"/>
     <include file="release-001/002_authority_schema.xml" relativeToChangelogFile="true"/>
     <include file="release-001/003_role_schema.xml" relativeToChangelogFile="true"/>
     <include file="release-001/004_role_authority_schema.xml" relativeToChangelogFile="true"/>
@@ -24,5 +25,5 @@
     <include file="release-001/107_insert_reward_operation.xml" relativeToChangelogFile="true"/>
     <include file="release-001/108_insert_reward.xml" relativeToChangelogFile="true"/>
     <include file="release-001/109_insert_loved_one.xml" relativeToChangelogFile="true"/>
-   
+    
 </databaseChangeLog>

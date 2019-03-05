@@ -1,4 +1,4 @@
-package com.dbs.loyalty.enums;
+package com.dbs.loyalty.domain.enumeration;
 
 public enum OperationType {
 

@@ -1,7 +1,3 @@
-application:
-  css-name: main.css?1
-  script-name: main.js?1
-  default-markdown: default.md
 spring:
   liquibase: 
     enabled: false

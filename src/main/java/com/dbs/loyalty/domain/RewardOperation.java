@@ -5,22 +5,20 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
-import javax.persistence.Index;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.dbs.loyalty.enums.OperationType;
+import com.dbs.loyalty.domain.enumeration.OperationType;
 
 @Entity
-@Table(	name = "c_reward_operation",
-		uniqueConstraints = {
-				@UniqueConstraint(name = "c_reward_operation_description_uq", columnNames = { "description" })
-			},
-		indexes= {
-				@Index(name = "c_reward_operation_idx", columnList = "id")
-			})
+@Table(	
+	name = "c_reward_operation",
+	uniqueConstraints = {
+		@UniqueConstraint(name = "c_reward_operation_description_uq", columnNames = { "description" })
+	}
+)
 public class RewardOperation extends AbstractAuditing{
 
 	private static final long serialVersionUID = 1L;

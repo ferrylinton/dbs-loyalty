@@ -11,6 +11,8 @@
             <column name="id" value="90718c41-8f90-4f38-aee9-3e4acf145db8"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="last_modified_by" value="system"/>
+            <column name="last_modified_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="dob" valueDate="1990-02-01"/>
             <column name="name" value="Loved One 01 - Customer 01"/>
             <column name="phone" value="+62 8123456789"/>
@@ -21,6 +23,8 @@
             <column name="id" value="51c96bbb-0785-4692-ad0a-d7d9dab1da6c"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="last_modified_by" value="system"/>
+            <column name="last_modified_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="dob" valueDate="1990-02-01"/>
             <column name="name" value="Loved One 02 - Customer 01"/>
             <column name="phone" value="+62 8123456789"/>

@@ -11,6 +11,8 @@
             <column name="id" value="WxtNPwsP"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="last_modified_by" value="system"/>
+            <column name="last_modified_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
             <column name="email" value="admin@dbs.com"/>
             <column name="password_hash" value="${password}"/>
@@ -22,6 +24,8 @@
             <column name="id" value="nsmby8bV"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="last_modified_by" value="system"/>
+            <column name="last_modified_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
             <column name="email" value="approver@dbs.com"/>
             <column name="password_hash" value="${password}"/>
