@@ -39,6 +39,10 @@ body{
 	border-color: #c00!important;
 }
 
+.text-red{
+	color: #c00!important;
+}
+
 .border-black{
 	border-color: #000!important;
 }
@@ -161,6 +165,19 @@ body{
 
 /* OVERRIDE BOOTSTRAP */
 
+.btn, .alert, .form-control, .dropdown-menu{
+	border-radius: 0;
+}
+
+.dropdown-item:last-child {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.dropdown-item:first-child {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
 .breadcrumb{
 	border-radius: 0;
 	padding: .45rem 1rem;
@@ -183,7 +200,13 @@ body{
   color: #d6d6d6;
 }
 
-.form-control{
+.toast{
+	max-width: none;
 	border-radius: 0;
+	box-shadow: none;
+	margin: 0 15px 15px 15px;
 }
 
+.close {
+    font-size: 1.2rem;
+}

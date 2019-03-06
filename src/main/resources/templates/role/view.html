@@ -12,14 +12,15 @@
 	            <li class="breadcrumb-item active" aria-current="page" th:text="#{menu.role}"></li>
 	        </ol>
 	    </nav>
+	    <div th:replace="fragment/toast.html :: content"></div>
 	    <div class="container-fluid pb-3">
 			<div class="min-height border p-3">
 	            <div class="row no-gutters mb-3">
 	                <div class="col-10 col-sm-8 col-md-5 col-lg-4 col-xl-3 mr-auto">
-	                    <div th:replace="fragment/search.html :: content(@{/role}, #{label.name})"></div>
+	                    <div th:replace="fragment/search.html :: content(@{/roles}, #{label.name})"></div>
 	                </div>
 	                <div class="col-auto">
-	                    <a class="btn btn-light text-secondary border" th:href="@{/role/0}">
+	                    <a class="btn btn-light text-secondary border" th:href="@{/roles/0}">
 	                        <i class="icon-plus"></i>
 	                    </a>
 	                </div>
@@ -41,11 +42,11 @@
 										 	<i class="icon-cog"></i>
 										</button>
 										<div class="dropdown-menu py-0 shadow" aria-labelledby="dropdownMenuButton">
-										    <a class="dropdown-item pl-1" th:href="@{|/role/${role.id}|}">
+										    <a class="dropdown-item pl-1" th:href="@{|/roles/${role.id}|}">
 										    	<i class="icon-edit"></i> <span th:text="#{label.edit}"></span>
 										    </a>
 										   	<div class="dropdown-divider my-0"></div>
-											<a class="dropdown-item pl-1 text-danger" th:href="@{|/role/${role.id}|}" onclick="return Data.confirm(this)">
+											<a class="dropdown-item pl-1 text-danger" th:href="@{|/roles/${role.id}|}" onclick="return Data.confirm(this)">
 												<i class="icon-trash"></i> <span th:text="#{label.delete}"></span>
 											</a>
 										</div>

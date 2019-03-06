@@ -32,6 +32,10 @@ public class AuthorityService{
 		}
 	}
 
+	public Optional<Authority> findById(String id){
+		return authorityRepository.findById(id);
+	}
+	
 	public Optional<Authority> findByName(String name){
 		return authorityRepository.findByNameIgnoreCase(name);
 	}

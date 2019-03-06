@@ -38,7 +38,7 @@ public class Role extends AbstractId implements Serializable {
 
 	@NotNull(message = "{validation.notnull.name}")
 	@Pattern(regexp = Constant.NAME_REGEX, message = "{validation.pattern.name}")
-    @Size(min = 3, max = 40, message = "{validation.size.name}")
+    @Size(min = 2, max = 40, message = "{validation.size.name}")
     @Column(name = "name", length = 40, nullable = false)
     private String name;
 	

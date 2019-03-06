@@ -16,32 +16,15 @@ import org.springframework.validation.FieldError;
 
 import com.dbs.loyalty.config.Constant;
 import com.dbs.loyalty.model.BadRequestResponse;
-import com.dbs.loyalty.model.HtmlResponse;
 import com.dbs.loyalty.model.SuccessResponse;
 import com.dbs.loyalty.service.MessageService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ResponseUtil {
 	
-	private static final String IMAGE_SAVE = "message.image";
-	
 	private static final String MESSAGE_SAVE = "message.save";
 	
 	private static final String MESSAGE_DELETE = "message.delete";
-	
-	public static ResponseEntity<?> createImageResponse(String html) {
-		String message = MessageService.getMessage(IMAGE_SAVE);
-		return createHtmlResponse(message, html);
-	}
-	
-	public static ResponseEntity<?> createHtmlResponse(String message, String html) {
-		HtmlResponse response = new HtmlResponse();
-		response.setMessage(message);
-		response.setHtml(html);
-		return ResponseEntity
-	            .status(HttpStatus.OK)
-	            .body(response);
-	}
 	
 	public static ResponseEntity<?> createSaveResponse(String data, String entityName) {
 		String message = MessageService.getMessage(MESSAGE_SAVE, data);
@@ -74,23 +57,6 @@ public class ResponseUtil {
 		}
 
 		response.setMessage(message);
-		return ResponseEntity
-	            .status(HttpStatus.BAD_REQUEST)
-	            .body(response);
-	}
-	
-	public static ResponseEntity<?> createBadRequestResponse(String field, String message) {
-		BadRequestResponse response = new BadRequestResponse();
-		response.getFields().add(field);
-		response.setMessage(message);
-		return ResponseEntity
-	            .status(HttpStatus.BAD_REQUEST)
-	            .body(response);
-	}
-	
-	public static ResponseEntity<?> createBadRequestResponse(Exception ex) {
-		BadRequestResponse response = new BadRequestResponse();
-		response.setMessage(ErrorUtil.getErrorMessage(ex));
 		return ResponseEntity
 	            .status(HttpStatus.BAD_REQUEST)
 	            .body(response);

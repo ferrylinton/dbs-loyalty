@@ -1,7 +1,7 @@
 <!doctype html>
 <html th:lang="${#locale}" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="fragment/head.html :: content(title=#{menu.approval})"></head>
+<head th:replace="fragment/head.html :: content(title=#{menu.task})"></head>
 
 <body>
 	<div th:replace="fragment/navbar.html :: content"></div>
@@ -9,14 +9,14 @@
 		<nav aria-label="breadcrumb">
 			<ol class="breadcrumb border-bottom">
 				<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{menu.home}"></a></li>
-				<li class="breadcrumb-item active" aria-current="page" th:text="#{menu.approval}"></li>
+				<li class="breadcrumb-item active" aria-current="page" th:text="#{menu.task}"></li>
 			</ol>
 		</nav>
 		<div class="container-fluid pb-3">
 			<div class="min-height border p-3">
 				<div class="row no-gutters mb-3">
 					<div class="col-12 col-sm-7 col-md-5 col-lg-4 col-xl-3">
-						<div th:replace="fragment/search.html :: content(@{/approval}, #{label.name})"></div>
+						<div th:replace="fragment/search.html :: content(@{/tasks}, #{label.name})"></div>
 					</div>
 				</div>
 				<div class="table-responsive" th:if="${page.getTotalElements() > 0}">
@@ -25,25 +25,33 @@
 							<tr>
 								<th width="40px"></th>
 								<th class="text-center" width="50px">#</th>
-								<th th:utext="${@linkService.sortLink('dataType')}"></th>
+								<th th:utext="${@linkService.sortLink('madeDate')}"></th>
+								<th th:utext="${@linkService.sortLink('maker')}"></th>
+								<th th:utext="${@linkService.sortLink('taskDataType')}"></th>
+								<th th:utext="${@linkService.sortLink('taskOperation')}"></th>
+								<th th:utext="${@linkService.sortLink('taskStatus')}"></th>
 							</tr>
 						</thead>
-						<tbody>
-							<tr th:each="approval,row : ${page}">
+						<tbody th:with="format=${@environment.getProperty('application.date-format')}">
+							<tr th:each="task,row : ${page}">
 								<td class="py-0 px-1">
 									<div class="dropdown">
 										<button type="button" class="btn btn-default dropdown-toggle px-1 py-0 font-12" id="dropdownMenuButton" data-boundary="window" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 										 	<i class="icon-cog"></i>
 										</button>
 										<div class="dropdown-menu py-0 shadow" aria-labelledby="dropdownMenuButton">
-										    <a class="dropdown-item pl-1" th:href="@{|/approval/${approval.id}|}">
+										    <a class="dropdown-item pl-1" th:href="@{|/tasks/${task.id}|}">
 										    	<i class="icon-eye"></i> <span th:text="#{label.showDetail}"></span>
 										    </a>
 										</div>
 									</div>
 								</td>
 								<td class="text-center" th:text="${row.count + (page.number * page.size)}"></td>
-								<td th:text="${approval.dataType}"></td>
+								<td th:text="${#dates.format(task.madeDate, format)}"></td>
+								<td th:text="${task.maker}"></td>
+								<td th:text="#{${task.taskDataType}}"></td>
+								<td th:text="#{${task.taskOperation}}"></td>
+								<td th:text="#{${task.taskStatus}}"></td>
 							</tr>
 					</table>
 				</div>

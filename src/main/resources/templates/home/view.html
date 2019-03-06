@@ -18,7 +18,7 @@
 							</a>
 	                	</div>
 	                	<div class="col-4 col-sm-4 col-md-3 col-lg-3 col-xl-2">
-	                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/role}">
+	                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/roles}">
 								<i class="icon-users d-block font-menu"></i>
 								<span class="d-block" th:text="#{menu.role}"></span>
 							</a>
@@ -27,6 +27,15 @@
 	                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/authority}">
 								<i class="icon-user-secret d-block font-menu"></i>
 								<span class="d-block" th:text="#{menu.authority}"></span>
+							</a>
+	                	</div>
+	                </div>
+	                <h4 th:text="#{menu.task}"></h4>
+	                <div class="row mb-3">
+	                	<div class="col-4 col-sm-4 col-md-3 col-lg-3 col-xl-2">
+	                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/tasks}">
+								<i class="icon-user d-block font-menu"></i>
+								<span class="d-block" th:text="#{menu.task}"></span>
 							</a>
 	                	</div>
 	                </div>
