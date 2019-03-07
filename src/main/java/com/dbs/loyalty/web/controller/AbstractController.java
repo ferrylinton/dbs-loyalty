@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
-import com.dbs.loyalty.config.Constant;
+import static com.dbs.loyalty.config.Constant.*;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.model.BadRequestResponse;
 import com.dbs.loyalty.model.ErrorResponse;
@@ -43,12 +43,13 @@ public abstract class AbstractController {
 	}
 
 	protected String getKeyword(HttpServletRequest request) {
-		String keyword = request.getParameter(Constant.KEYWORD);
-		if (keyword == null) {
-			return Constant.EMPTY;
+		String keyword = request.getParameter(KEYWORD);
+		
+		if (keyword == null || EMPTY.equals(keyword.trim())) {
+			return null;
 		} else {
 			keyword = keyword.trim().toLowerCase();
-			request.setAttribute(Constant.KEYWORD, keyword);
+			request.setAttribute(KEYWORD, keyword);
 			return keyword;
 		}
 	}
@@ -59,11 +60,11 @@ public abstract class AbstractController {
 
 	protected ResponseEntity<?> badRequestResponse(BindingResult result) {
 		BadRequestResponse response = new BadRequestResponse();
-		String message = Constant.EMPTY;
+		String message = EMPTY;
 		
 		for (FieldError fieldError : result.getFieldErrors()) {
 			response.getFields().add(fieldError.getField());
-			message += fieldError.getDefaultMessage() + Constant.BR; 
+			message += fieldError.getDefaultMessage() + BR; 
 		}
 
 		response.setMessage(message);

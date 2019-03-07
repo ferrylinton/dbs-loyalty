@@ -8,7 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.dbs.loyalty.config.Constant;
 import com.dbs.loyalty.domain.Role;
 import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
@@ -37,18 +36,22 @@ public class RoleService{
 		return roleRepository.findWithAuthoritiesById(id);
 	}
 
-	public Page<Role> findAll(String keyword, Pageable pageable) {
-		if (keyword == null || keyword.equals(Constant.EMPTY)) {
-			return roleRepository.findAll(pageable);
-		} else {
-			return roleRepository.findAllByNameContainingAllIgnoreCase(keyword.trim(), pageable);
-		}
-	}
-	
 	public List<Role> findAll(){
 		return roleRepository.findAll();
 	}
-
+	
+	public Page<Role> findAll(Pageable pageable) {
+		return roleRepository.findAll(pageable);
+	}
+	
+	public Page<Role> findAll(String keyword, Pageable pageable) {
+		if(keyword == null) {
+			return findAll(pageable);
+		}else {
+			return roleRepository.findAllByNameContainingAllIgnoreCase(keyword, pageable);
+		}
+	}
+	
 	public Optional<Role> findByName(String name) {
 		return roleRepository.findByNameIgnoreCase(name);
 	}

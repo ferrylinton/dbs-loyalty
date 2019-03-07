@@ -33,7 +33,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dbs.loyalty.domain.Authority;
 import com.dbs.loyalty.domain.Role;
-import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.AuthorityService;
 import com.dbs.loyalty.service.RoleService;
 import com.dbs.loyalty.service.TaskService;
@@ -45,7 +44,7 @@ import com.dbs.loyalty.web.validator.RoleValidator;
 @RequestMapping("/roles")
 public class RoleController extends AbstractController {
 
-	private final Logger log 			= LoggerFactory.getLogger(RoleController.class);
+	private final Logger LOG 			= LoggerFactory.getLogger(RoleController.class);
 
 	private final String ROLE 			= "role";
 	
@@ -53,9 +52,9 @@ public class RoleController extends AbstractController {
 	
 	private final String REDIRECT 		= "redirect:/roles";
 
-	private final String VIEW_TEMPLATE 	= "role/view";
+	private final String VIEW_TEMPLATE 	= "roles/view";
 
-	private final String FORM_TEMPLATE 	= "role/form";
+	private final String FORM_TEMPLATE 	= "roles/form";
 
 	private final String SORT_BY 		= "name";
 
@@ -84,17 +83,17 @@ public class RoleController extends AbstractController {
 				request.setAttribute(PAGE, page);
 			}
 			
-		} catch (PropertyReferenceException ex) {
-			log.error(ex.getLocalizedMessage());
+		} catch (IllegalArgumentException | PropertyReferenceException ex) {
+			LOG.error(ex.getLocalizedMessage());
 			request.setAttribute(ERROR, ex.getLocalizedMessage());
-			request.setAttribute(PAGE, roleService.findAll(null, getPageable(SORT_BY)));
+			request.setAttribute(PAGE, roleService.findAll(getPageable(SORT_BY)));
 		}
 		
 		return VIEW_TEMPLATE;
 	}
 
 	@GetMapping("/{id}")
-	public String view(ModelMap model, @PathVariable String id) throws NotFoundException {
+	public String view(ModelMap model, @PathVariable String id){
 		if (id.equals(ZERO)) {
 			model.addAttribute(ROLE, new Role());
 		} else {
@@ -129,7 +128,7 @@ public class RoleController extends AbstractController {
 			}
 			
 		} catch (Exception ex) {
-			log.error(ex.getLocalizedMessage(), ex);
+			LOG.error(ex.getLocalizedMessage(), ex);
 			return errorResponse(ex);
 		}
 	}
@@ -142,7 +141,7 @@ public class RoleController extends AbstractController {
 			taskService.saveTaskDelete(role.get());
 			return taskIsSavedResponse(Role.class.getSimpleName(), role.get().getName(), UrlUtil.getyUrl(ROLES));
 		} catch (Exception ex) {
-			log.error(ex.getLocalizedMessage(), ex);
+			LOG.error(ex.getLocalizedMessage(), ex);
 			return errorResponse(ex);
 		}
 	}
@@ -152,7 +151,7 @@ public class RoleController extends AbstractController {
 		return authorityService.findAll();
 	}
 
-	@InitBinder
+	@InitBinder("role")
 	protected void initBinder(WebDataBinder binder) {
 		binder.addValidators(new RoleValidator(roleService));
 	}

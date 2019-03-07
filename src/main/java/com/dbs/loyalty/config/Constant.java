@@ -6,7 +6,7 @@ public class Constant {
 	
 	public static final String USERNAME_REGEX 		= "^[A-Za-z][A-Za-z0-9_]{4,29}$";
 	
-	public static final String NAME_REGEX 			= "^[a-zA-Z0-9]*$";
+	public static final String NAME_REGEX 			= "^[a-zA-Z0-9\\d\\-_\\s]*$";
 	
 	public static final String EMPTY 				= "";
 	

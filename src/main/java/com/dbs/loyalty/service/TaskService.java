@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.dbs.loyalty.config.Constant;
 import com.dbs.loyalty.domain.Role;
 import com.dbs.loyalty.domain.Task;
+import com.dbs.loyalty.domain.User;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.domain.enumeration.TaskStatus;
 import com.dbs.loyalty.exception.NotFoundException;
@@ -98,6 +99,8 @@ public class TaskService {
 		
 		if(task.getTaskDataType().equals(Role.class.getSimpleName())) {
 			return context.getBean(RoleService.class).execute(task);
+		}else if(task.getTaskDataType().equals(User.class.getSimpleName())) {
+			return context.getBean(UserService.class).execute(task);
 		}
 		
 		return Constant.EMPTY;

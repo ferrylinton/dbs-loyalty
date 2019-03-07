@@ -1,36 +1,30 @@
 package com.dbs.loyalty.service;
 
+import java.io.IOException;
 import java.util.Optional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.ModelMap;
 
-import com.dbs.loyalty.config.Constant;
+import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.domain.User;
-import com.dbs.loyalty.exception.NotFoundException;
-import com.dbs.loyalty.model.ErrorResponse;
+import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.UserRepository;
-import com.dbs.loyalty.util.PasswordUtil;
-import com.dbs.loyalty.util.ResponseUtil;
-import com.dbs.loyalty.util.UrlUtil;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 @Service
 public class UserService{
 	
-	private final Logger LOG = LoggerFactory.getLogger(UserService.class);
-
-	private final String ENTITY_NAME = "user";
+	private final ObjectMapper objectMapper;
 
 	private final UserRepository userRepository;
  
-	public UserService(UserRepository userRepository) {
+	public UserService(ObjectMapper objectMapper, UserRepository userRepository) {
+		this.objectMapper = objectMapper;
 		this.userRepository = userRepository;
 	}
 	
@@ -38,19 +32,21 @@ public class UserService{
 		return userRepository.findByEmail(email);
 	}
 	
-	public Optional<User> findById(String id) throws NotFoundException {
-		Optional<User> user = userRepository.findById(id);
-		
-		if(user.isPresent()) {
-			return user;
-		}else {
-			throw new NotFoundException();
-		}
+	public Optional<User> findById(String id) {
+		return userRepository.findById(id);
+	}
+	
+	public Optional<User> findWithRoleById(String id) {
+		return userRepository.findWithRoleById(id);
+	}
+	
+	public Page<User> findAll(Pageable pageable) {
+		return userRepository.findAll(pageable);
 	}
 	
 	public Page<User> findAll(String keyword, Pageable pageable) {
-		if(keyword.equals(Constant.EMPTY)) {
-			return userRepository.findAll(pageable);
+		if(keyword == null) {
+			return findAll(pageable);
 		}else {
 			return userRepository.findAllByEmailContainingAllIgnoreCase(keyword, pageable);
 		}
@@ -72,50 +68,22 @@ public class UserService{
 		return false;
 	}
 	
-	public void viewForm(ModelMap model, String id) throws NotFoundException {
-		if(id.equals(Constant.ZERO)) {
-			model.addAttribute(ENTITY_NAME, new User());
-		}else {
-			Optional<User> user = findById(id);
-			model.addAttribute(ENTITY_NAME, user.get());
-		}
-	}
-	
-	public ResponseEntity<?> save(User user) {
-		try {
-			if(user.getId() == null) {
-				user.setPasswordHash(PasswordUtil.getInstance().encode(user.getPasswordPlain()));
-			}else {
-				Optional<User> current = userRepository.findById(user.getId());
-				user.setPasswordHash(current.get().getPasswordHash());
-				user.setImageBytes(current.get().getImageBytes());
-			}
-			
+	public String execute(Task task) throws JsonParseException, JsonMappingException, IOException {
+		User user = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), User.class);
+		
+		if(task.getTaskOperation() == TaskOperation.ADD) {
+			user.setCreatedBy(task.getMaker());
+			user.setCreatedDate(task.getMadeDate());
 			userRepository.save(user);
-			return ResponseUtil.createSaveResponse(user.getEmail(), ENTITY_NAME);
-		} catch (Exception ex) {
-			LOG.error(ex.getLocalizedMessage(), ex);
-			return ResponseEntity
-		            .status(HttpStatus.INTERNAL_SERVER_ERROR)
-		            .body(new ErrorResponse(ex.getLocalizedMessage()));
+		}else if(task.getTaskOperation() == TaskOperation.MODIFY) {
+			user.setLastModifiedBy(task.getMaker());
+			user.setLastModifiedDate(task.getMadeDate());
+			userRepository.save(user);
+		}else if(task.getTaskOperation() == TaskOperation.DELETE) {
+			userRepository.delete(user);
 		}
-	}
-	
-	public ResponseEntity<?> delete(String id) throws NotFoundException {
-		try {
-			Optional<User> user = userRepository.findById(id);
-			userRepository.delete(user.get());
-			return ResponseUtil.createDeleteResponse(user.get().getEmail(), ENTITY_NAME);
-		} catch (Exception ex) {
-			LOG.error(ex.getLocalizedMessage(), ex);
-			return ResponseEntity
-		            .status(HttpStatus.INTERNAL_SERVER_ERROR)
-		            .body(new ErrorResponse(ex.getLocalizedMessage()));
-		}
-	}
- 
-	public String getEntityUrl() {
-		return UrlUtil.getEntityUrl(ENTITY_NAME);
+		
+		return user.getName();
 	}
 	
 }

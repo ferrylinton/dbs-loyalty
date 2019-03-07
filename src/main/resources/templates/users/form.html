@@ -17,7 +17,7 @@
 			<div class="min-height border p-3">
 					<div class="row no-gutters">
 						<div class="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-6">
-							<form th:action="@{/user}" th:object="${user}" method="post" autocomplete="off" onsubmit="return Data.submit(this)">
+							<form th:action="@{/users}" th:object="${user}" method="post" autocomplete="off" onsubmit="return Data.submit(this)">
 								<div class="form-group" th:if="${user.id != null}">
 									<label for="id" th:text="#{label.id}">Id</label>
 									<input class="form-control" type="text" th:field="*{id}" readonly="readonly" />
