@@ -61,16 +61,25 @@ public class Task implements Serializable {
     private Instant madeDate;
     
     @ColumnDefault("NULL")
-    @Column(name = "checker", length = 50, nullable = true)
+    @Column(name = "checker", length = 50)
     private String checker;
 
     @ColumnDefault("NULL")
-    @Column(name = "checked_date", nullable = true)
+    @Column(name = "checked_date")
     private Instant checkedDate;
 
     @ColumnDefault("NULL")
-    @Column(name = "message", nullable = true)
+    @Column(name = "message")
     private String message;
+    
+    @ColumnDefault("NULL")
+    @Column(name = "error")
+    private String error;
+    
+    @Lob
+    @ColumnDefault("NULL")
+    @Column(name = "errorDetail")
+    private String errorDetail;
     
     @Transient
     private Boolean verified = true;
@@ -161,6 +170,22 @@ public class Task implements Serializable {
 
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public String getError() {
+		return error;
+	}
+
+	public void setError(String error) {
+		this.error = error;
+	}
+
+	public String getErrorDetail() {
+		return errorDetail;
+	}
+
+	public void setErrorDetail(String errorDetail) {
+		this.errorDetail = errorDetail;
 	}
 
 	public Boolean getVerified() {

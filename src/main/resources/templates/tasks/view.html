@@ -15,16 +15,34 @@
 		<div class="container-fluid pb-3">
 			<div class="min-height border p-3">
 				<div class="row no-gutters mb-3">
-					<div class="col-12 col-sm-7 col-md-5 col-lg-4 col-xl-3">
-						<div th:replace="fragment/search.html :: content(@{/tasks}, #{label.name})"></div>
+					<div class="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-6">
+						<form th:action="@{/tasks}" method="get" autocomplete="off" >
+							<div class="input-group">
+								<input class="form-control" name="keyword" maxlength="40" th:value="${param.keyword}" th:placeholder="#{label.email}" />
+								<div class="input-group-append">
+									<select class="custom-select text-secondary border-right-0" id="status">
+									    <option value="" selected th:text="#{ALL}"></option>
+									    <option value="PENDING" th:text="#{PENDING}">PENDING</option>
+									    <option value="REJECT" th:text="#{REJECT}">REJECT</option>
+									    <option value="VERIFY"th:text="#{VERIFY}" >VERIFY</option>
+									</select>
+									<button class="btn btn-light border text-secondary" type="submit">
+										<i class="icon-search"></i>
+									</button>
+									<a class="btn btn-light border text-secondary" th:href="@{/tasks}">
+										<i class="icon-arrows-cw"></i>
+									</a>
+								</div>
+							</div>
+						</form>
 					</div>
 				</div>
 				<div class="table-responsive" th:if="${page.getTotalElements() > 0}">
-					<table class="table table-sm table-hover table-striped border">
+					<table class="table table-sm table-hover table-striped border" style="min-width: 700px;">
 						<thead>
 							<tr>
 								<th width="40px"></th>
-								<th class="text-center" width="50px">#</th>
+								<th>#</th>
 								<th th:utext="${@linkService.sortLink('madeDate')}"></th>
 								<th th:utext="${@linkService.sortLink('maker')}"></th>
 								<th th:utext="${@linkService.sortLink('taskDataType')}"></th>
@@ -32,7 +50,7 @@
 								<th th:utext="${@linkService.sortLink('taskStatus')}"></th>
 							</tr>
 						</thead>
-						<tbody th:with="format=${@environment.getProperty('application.date-format')}">
+						<tbody th:with="format=${@environment.getProperty('application.date-time-format')}">
 							<tr th:each="task,row : ${page}">
 								<td class="py-0 px-1">
 									<div class="dropdown">
@@ -46,7 +64,7 @@
 										</div>
 									</div>
 								</td>
-								<td class="text-center" th:text="${row.count + (page.number * page.size)}"></td>
+								<td th:text="${row.count + (page.number * page.size)}"></td>
 								<td th:text="${#dates.format(task.madeDate, format)}"></td>
 								<td th:text="${task.maker}"></td>
 								<td th:text="#{${task.taskDataType}}"></td>

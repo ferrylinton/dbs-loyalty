@@ -12,7 +12,6 @@ import com.dbs.loyalty.config.Constant;
 import com.dbs.loyalty.domain.Role;
 import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
-import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.repository.RoleRepository;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -30,8 +29,12 @@ public class RoleService{
 		this.roleRepository = roleRepository;
 	}
 
-	public Optional<Role> findById(String id) throws NotFoundException {
+	public Optional<Role> findById(String id){
 		return roleRepository.findById(id);
+	}
+	
+	public Optional<Role> findWithAuthoritiesById(String id){
+		return roleRepository.findWithAuthoritiesById(id);
 	}
 
 	public Page<Role> findAll(String keyword, Pageable pageable) {
@@ -64,21 +67,21 @@ public class RoleService{
 		return false;
 	}
 
-	public Role save(Role role) {
-		return roleRepository.save(role);
-	}
-
-	public void delete(Role role) throws NotFoundException {
-		roleRepository.delete(role);
-	}
-
-	public Role execute(Task task) throws JsonParseException, JsonMappingException, IOException {
+	public String execute(Task task) throws JsonParseException, JsonMappingException, IOException {
 		Role role = objectMapper.readValue(task.getTaskData(), Role.class);
 		
 		if(task.getTaskOperation() == TaskOperation.ADD) {
-			return roleRepository.save(role);
+			role.setCreatedBy(task.getMaker());
+			role.setCreatedDate(task.getMadeDate());
+			roleRepository.save(role);
+		}else if(task.getTaskOperation() == TaskOperation.MODIFY) {
+			role.setLastModifiedBy(task.getMaker());
+			role.setLastModifiedDate(task.getMadeDate());
+			roleRepository.save(role);
+		}else if(task.getTaskOperation() == TaskOperation.DELETE) {
+			roleRepository.delete(role);
 		}
 		
-		return role;
+		return role.getName();
 	}
 }

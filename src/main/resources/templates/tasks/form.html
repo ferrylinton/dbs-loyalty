@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" th:lang="${#locale}" xmlns:th="http://www.org">
+<html lang="en" th:lang="${#locale}" xmlns:th="http://www.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="fragment/head.html :: content(title=#{menu.task})"></head>
 
@@ -9,11 +9,11 @@
 		<nav aria-label="breadcrumb">
 	        <ol class="breadcrumb border-bottom">
 	            <li class="breadcrumb-item"><a th:href="@{/}" th:text="#{menu.home}"></a></li>
-	            <li class="breadcrumb-item"><a th:href="@{/task}" th:text="#{menu.task}"></a></li>
+	            <li class="breadcrumb-item"><a th:href="@{/tasks}" th:text="#{menu.task}"></a></li>
 	            <li class="breadcrumb-item active" aria-current="page" th:text="#{menu.form}"></li>
 	        </ol>
 	    </nav>
-		<div class="container-fluid p-3" th:with="format=${@environment.getProperty('application.date-time-full-format')}">
+		<div class="container-fluid pb-3" th:with="format=${@environment.getProperty('application.date-time-full-format')}">
 			<div class="min-height border p-3">
 					<div class="row no-gutters">
 						<div class="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-6">
@@ -23,12 +23,14 @@
 									<input class="form-control" type="text" th:field="*{id}" readonly="readonly" />
 								</div>
 								<div class="form-group">
-									<label for="madeDate" th:text="#{label.madeDate}">Made Date</label>
-									<input class="form-control" type="text" th:field="*{madeDate}" readonly="readonly" />
+									<label for="taskDataTypeView" th:text="#{label.taskDataType}">Task Data Type</label>
+									<input class="form-control" type="text" id="taskDataTypeView" th:value="#{${task.taskDataType}}" readonly="readonly" />
+									<input type="hidden" th:field="*{taskDataType}" />
 								</div>
 								<div class="form-group">
-									<label for="maker" th:text="#{label.maker}">Maker</label>
-									<input class="form-control" type="text" th:field="*{maker}" readonly="readonly" />
+									<label for="taskOperationView" th:text="#{label.taskOperation}">Task Operation</label>
+									<input class="form-control" type="text" id="taskOperationView" th:value="#{${task.taskOperation}}" readonly="readonly" />
+									<input type="hidden" th:field="*{taskOperation}" />
 								</div>
 								<div class="form-group">
 									<label for="taskData" th:text="#{label.taskData}">Task Data</label>
@@ -36,25 +38,48 @@
 									<pre class="border bg-readonly border-readonly p-3" id="taskDataDetail" th:text="*{taskData}"></pre>
 								</div>
 								<div class="form-group">
-									<label for="checker" th:text="#{label.createdBy}">Checker</label>
-									<input class="form-control" type="text" th:field="*{checker}" readonly="readonly" />
+									<label for="maker" th:text="#{label.maker}">Maker</label>
+									<input class="form-control" type="text" th:field="*{maker}" readonly="readonly" />
 								</div>
 								<div class="form-group">
-									<label for="checkedDate" th:text="#{label.checkedDate}">Checked Date</label>
-									<input class="form-control" type="text" th:value="${#dates.format(task.checkedDate, format)}" readonly="readonly" />
+									<label for="madeDateView" th:text="#{label.madeDate}">Made Date</label>
+									<input class="form-control" type="text" id="madeDateView" th:value="${#dates.format(task.madeDate, format)}" readonly="readonly" />
+									<input type="hidden" th:value="*{madeDate}"/>
 								</div>
-								<div class="custom-control custom-switch mb-3">
+								<div class="form-group" th:if="*{checker != null}">
+									<label for="checker" th:text="#{label.checker}">Checker</label>
+									<input class="form-control" type="text" th:field="*{checker}" readonly="readonly" />
+								</div>
+								<div class="form-group" th:if="*{checkedDate != null}">
+									<label for="checkedDateView" th:text="#{label.checkedDate}">Checked Date</label>
+									<input class="form-control" type="text" id="checkedDateView" th:value="${#dates.format(task.checkedDate, format)}" readonly="readonly" />
+									<input type="hidden" th:value="*{checkedDate}"/>
+								</div>
+								<div class="form-group" th:if="${task.taskStatus.name() != 'PENDING'}">
+									<label for="taskStatusView" th:text="#{label.taskStatus}">Task Status</label>
+									<input class="form-control" type="text" id="taskStatusView" th:value="#{*{taskStatus}}" readonly="readonly" />
+									<input type="hidden" th:value="*{taskStatus}"/>
+								</div>
+								<div class="custom-control custom-switch mb-3" th:if="${task.taskStatus.name() == 'PENDING'}">
 									<input type="checkbox" th:field="*{verified}" class="custom-control-input" onchange="changeApproval(this)" id="verified">
-									<label class="custom-control-label" for="verified" th:text="*{verified} ? #{label.approve} : #{label.reject}"></label>
+									<label class="custom-control-label" for="verified" th:text="*{verified} ? #{label.verify} : #{label.reject}"></label>
 								</div>
 								<div class="form-group">
 									<label for="message" th:text="#{label.message}">Message</label>
 									<textarea class="form-control" th:field="*{message}" rows="2" maxlength="250"></textarea>
 								</div>
+								<div class="form-group" th:if="*{error}">
+									<label for="error" th:text="#{label.error}">Error</label>
+									<textarea class="form-control" th:field="*{error}" rows="2" readonly="readonly"></textarea>
+								</div>
+								<div class="form-group" th:if="*{errorDetail}">
+									<label for="errorDetail" th:text="#{label.errorDetail}">Error Detail</label>
+									<textarea class="form-control" th:field="*{errorDetail}" rows="5" readonly="readonly"></textarea>
+								</div>
 								<a class="btn btn-sm btn-secondary px-3" th:href="@{/tasks}">
 									<i class="icon-left"></i> <span th:text="#{label.back}"></span>
 								</a>
-								<button class="btn btn-sm btn-primary px-3" type="submit">
+								<button class="btn btn-sm btn-primary px-3" type="submit" th:if="${task.taskStatus.name() == 'PENDING'}" sec:authorize="hasRole('TASK')">
 									<i class="icon-floppy"></i> <span th:text="#{label.save}"></span>
 								</button>
 							</form>

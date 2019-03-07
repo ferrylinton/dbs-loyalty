@@ -5,10 +5,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.dbs.loyalty.config.ApplicationProperties;
 
 @SpringBootApplication
+@EnableTransactionManagement
 @EnableConfigurationProperties({ApplicationProperties.class})
 public class Application extends SpringBootServletInitializer{
 

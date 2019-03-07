@@ -14,8 +14,6 @@
 			<column name="activated" valueBoolean="false" />
 			<column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
-            <column name="last_modified_by" value="system"/>
-            <column name="last_modified_date" valueComputed="CURRENT_TIMESTAMP"/>
 		</insert>
 	</changeSet>
 	

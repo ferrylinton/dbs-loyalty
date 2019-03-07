@@ -28,7 +28,7 @@ function changeStatus(obj){
 }
 
 function changeApproval(obj){
-	$('[for="' + obj.id + '"]').text(Lang.label(obj.checked ? 'approve' : 'reject'));
+	$('[for="' + obj.id + '"]').text(Lang.label(obj.checked ? 'verify' : 'reject'));
 }
 
 function initTaskDataDetail(){
@@ -36,42 +36,47 @@ function initTaskDataDetail(){
 	
 	if(taskDataDetail.length){
 		var obj = JSON.parse(taskDataDetail.text());
-
 		var table = '<table>';
+		
 		for (var key in obj) {
+			console.log(obj[key]);
 			table += '<tr>';
 			table += '<td valign="top">' + key + '</td>';
 			table += '<td valign="top"> : </td>';
 			
 			if(Array.isArray(obj[key])){
+				console.log(1);
 				var arr = obj[key];
 				
 				table += '<td>';
 				for (var i = 0; i < arr.length; i++) {
-					var j = 0;
-					
-					for (var k in arr[i]) {
-						if(j == 0){
-							table += '[' + k + '=' + arr[i][k];
-						}else{
-							table += ', ' +  k + '=' + arr[i][k];
-						}
-						
-						j++;
-					}
-					
-					table += '] <br>';
+					table += objectJsonToString( arr[i]);
+					table += '<br>';
 				} 
-				table += '</td>'
-				
+				table += '</td>';
+			}else if(jQuery.type(obj[key]) === 'object'){
+				console.log(2);
+				table += '<td>' + objectJsonToString(obj[key]) + '</td>';
 			}else{
+				console.log(3);
 				table += '<td>' + (obj[key] == null ? '-' : obj[key]) + '</td>';
 			}
 			
 			table += '</tr>';
 		} 
-		table += '</table>';
 		
+		table += '</table>';
 		taskDataDetail.html(table);
 	}
+	
+	function objectJsonToString(obj){
+		var text = '';
+		
+		for (var key in obj) {
+			text += ((text === '') ? '[' : ', ') + key + '=' + obj[key];
+		}
+		
+		return text += ']';
+	}
+	
 }

@@ -4,11 +4,14 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.ModelMap;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dbs.loyalty.config.Constant;
 import com.dbs.loyalty.domain.Role;
@@ -17,6 +20,7 @@ import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.domain.enumeration.TaskStatus;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.repository.TaskRepository;
+import com.dbs.loyalty.util.ErrorUtil;
 import com.dbs.loyalty.util.SecurityUtil;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -26,8 +30,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class TaskService {
 
-	private final String ENTITY_NAME = "task";
-	
+	private final Logger LOG = LoggerFactory.getLogger(TaskService.class);
+
 	private final ApplicationContext context;
 	
 	private final TaskRepository taskRepository;
@@ -65,20 +69,26 @@ public class TaskService {
 		return taskRepository.save(task);
 	}
 	
-	public Task save(Task task) throws JsonParseException, JsonMappingException, IOException {
+	@Transactional
+	public String save(Task task) throws JsonParseException, JsonMappingException, IOException {
+		taskRepository.save(task);
+		
 		if(task.getTaskDataType().equals(Role.class.getSimpleName())) {
-			context.getBean(RoleService.class).execute(task);
+			return context.getBean(RoleService.class).execute(task);
 		}
 		
-		return taskRepository.save(task);
+		return Constant.EMPTY;
 	}
 	
-	public void viewForm(ModelMap model, String id) throws NotFoundException {
-		if (id.equals(Constant.ZERO)) {
-			model.addAttribute(ENTITY_NAME, new Task());
-		} else {
-			Optional<Task> task = findById(id);
-			model.addAttribute(ENTITY_NAME, task.get());
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
+	public void save(Exception ex, Task task) {
+		try {
+			task.setTaskStatus(TaskStatus.FAILED);
+			task.setError(ex.getLocalizedMessage());
+			task.setErrorDetail(ErrorUtil.getErrorMessage(ex));
+			taskRepository.save(task);
+		} catch (Exception e) {
+			LOG.error(e.getLocalizedMessage(), e);
 		}
 	}
 

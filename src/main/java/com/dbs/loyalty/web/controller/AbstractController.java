@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
 import com.dbs.loyalty.config.Constant;
+import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.model.BadRequestResponse;
 import com.dbs.loyalty.model.ErrorResponse;
 import com.dbs.loyalty.model.SuccessResponse;
@@ -25,6 +26,8 @@ public abstract class AbstractController {
 	private final String DATA_WITH_ID_NOT_FOUND = "message.dataWithIdNotFound";
 	
 	private final String TASK_IS_SAVED = "message.taskIsSaved";
+	
+	private final String TASK_IS_VERIFIED = "message.taskIsVerified";
 	
 	protected Pageable isValid(String sortBy, Pageable pageable) {
 		List<Order> orders = pageable.getSort().stream().collect(Collectors.toList());
@@ -71,6 +74,7 @@ public abstract class AbstractController {
 	
 	protected ResponseEntity<?> taskIsSavedResponse(String taskDataType, String val, String resultUrl) {
 		SuccessResponse response = new SuccessResponse();
+		taskDataType = MessageService.getMessage(taskDataType);
 		response.setMessage(MessageService.getMessage(TASK_IS_SAVED, taskDataType, val));
 		response.setResultUrl(resultUrl);
 		return ResponseEntity
@@ -83,4 +87,15 @@ public abstract class AbstractController {
 	            .status(HttpStatus.INTERNAL_SERVER_ERROR)
 	            .body(new ErrorResponse(ex.getLocalizedMessage()));
 	}
+	
+	protected ResponseEntity<?> saveResponse(TaskOperation taskOperation, String taskDataType, String val, String resultUrl) {
+		Object[] args = new Object[] { MessageService.getMessage(taskOperation.toString()), MessageService.getMessage(taskDataType), val };
+		SuccessResponse response = new SuccessResponse();
+		response.setMessage(MessageService.getMessage(TASK_IS_VERIFIED, args));
+		response.setResultUrl(resultUrl);
+		return ResponseEntity
+	            .status(HttpStatus.OK)
+	            .body(response);
+	}
+	
 }

@@ -165,7 +165,7 @@ body{
 
 /* OVERRIDE BOOTSTRAP */
 
-.btn, .alert, .form-control, .dropdown-menu{
+.btn, .alert, .form-control, .dropdown-menu, .custom-select{
 	border-radius: 0;
 }
 

@@ -26,7 +26,7 @@ var Lang = (function () {
 				"activated" : "Activated",
 				"deactivated" : "Deactivated",
 				"reject": "Reject",
-				"approve": "Approve"
+				"verify": "Verify"
 			},
 			"message": {
 				"DeleteConfirm": "Delete data ?",
@@ -42,7 +42,8 @@ var Lang = (function () {
 				"ConstraintViolationException": "Data is referenced by other data",
 				"ERR_CONNECTION_REFUSED": "Can not connect to server",
 				"PickImage": "Pick image",
-				"ImageName": "Name length min 3 chars and max 30 chars"
+				"ImageName": "Name length min 3 chars and max 30 chars",
+				"DuplicateEntry": "Duplicate data"
 			}
 		},
 		"in": {
@@ -67,8 +68,8 @@ var Lang = (function () {
 			"label":{
 				"activated" : "Aktif",
 				"deactivated" : "Tidak Aktif",
-				"reject": "Tolak",
-				"approve": "Terima"
+				"reject": "Ditolak",
+				"verify": "Diverfikasi"
 			},
 			"message": {
 				"DeleteConfirm": "Hapus data ?",
@@ -84,7 +85,8 @@ var Lang = (function () {
 				"ConstraintViolationException": "Data masih digunakan",
 				"ERR_CONNECTION_REFUSED": "Tidak bisa melakukan koneksi",
 				"PickImage": "Pilih gambar",
-				"ImageName": "Nama min 3 karakter dan maks 30 karakter"
+				"ImageName": "Nama min 3 karakter dan maks 30 karakter",
+				"DuplicateEntry": "Data rangkap"
 			}
 		}
 	}

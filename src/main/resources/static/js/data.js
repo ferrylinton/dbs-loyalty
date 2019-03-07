@@ -87,7 +87,11 @@ var Data = (function () {
         } else if (jqXHR.status == 404 || jqXHR.status == 405 || jqXHR.status == 406) {
             Alert.error(Lang.error(jqXHR.status));
         } else {
-        	Alert.error(jqXHR.responseText);
+        	if(typeof jqXHR.responseJSON === undefined || typeof jqXHR.responseJSON.message === undefined){
+        		Alert.error('<span class="text-red">ERROR : ' + jqXHR.responseText + '</span>');
+        	}else if(jqXHR.responseJSON.message.indexOf('uq') !== -1){
+        		Alert.error('<span class="text-red">ERROR : ' + Lang.error('DuplicateEntry') + '</span><hr>' + jqXHR.responseJSON.message);
+        	}
         }
     }
     

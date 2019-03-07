@@ -10,7 +10,7 @@
             <column name="id" type="VARCHAR(36)">
                 <constraints nullable="false"/>
             </column>
-            <column defaultValueComputed="NULL" name="checked_date" type="timestamp"/>
+            <column name="checked_date" type="timestamp"/>
             <column name="checker" type="VARCHAR(50)"/>
             <column name="made_date" type="timestamp">
                 <constraints nullable="false"/>
@@ -29,9 +29,11 @@
             <column name="task_operation" type="VARCHAR(6)">
                 <constraints nullable="false"/>
             </column>
-            <column name="task_status" type="VARCHAR(7)">
+            <column name="task_status" type="VARCHAR(8)">
                 <constraints nullable="false"/>
             </column>
+            <column name="error" type="varchar(255)"/>
+            <column name="error_detail" type="clob"/>
         </createTable>
     </changeSet>
     

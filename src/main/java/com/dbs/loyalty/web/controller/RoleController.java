@@ -1,8 +1,6 @@
 package com.dbs.loyalty.web.controller;
 
-import static com.dbs.loyalty.config.Constant.ERROR;
-import static com.dbs.loyalty.config.Constant.PAGE;
-import static com.dbs.loyalty.config.Constant.ZERO;
+import static com.dbs.loyalty.config.Constant.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +14,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -36,11 +33,9 @@ import com.dbs.loyalty.domain.Authority;
 import com.dbs.loyalty.domain.Role;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.exception.NotFoundException;
-import com.dbs.loyalty.model.ErrorResponse;
 import com.dbs.loyalty.service.AuthorityService;
 import com.dbs.loyalty.service.RoleService;
 import com.dbs.loyalty.service.TaskService;
-import com.dbs.loyalty.util.ResponseUtil;
 import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.validator.RoleValidator;
 
@@ -136,16 +131,14 @@ public class RoleController extends AbstractController {
 
 	@DeleteMapping("/{id}")
 	@ResponseBody
-	public ResponseEntity<?> delete(@PathVariable String id) throws NotFoundException {
+	public ResponseEntity<?> delete(@PathVariable String id){
 		try {
-			Optional<Role> role = roleService.findById(id);
-			roleService.delete(role.get());
-			return ResponseUtil.createDeleteResponse(role.get().getName(), ROLE);
+			Optional<Role> role = roleService.findWithAuthoritiesById(id);
+			taskService.save(TaskOperation.DELETE, TASK_DATA_TYPE, role.get());
+			return taskIsSavedResponse(TASK_DATA_TYPE, role.get().getName(), UrlUtil.getyUrl(ROLES));
 		} catch (Exception ex) {
 			log.error(ex.getLocalizedMessage(), ex);
-			return ResponseEntity
-		            .status(HttpStatus.INTERNAL_SERVER_ERROR)
-		            .body(new ErrorResponse(ex.getLocalizedMessage()));
+			return errorResponse(ex);
 		}
 	}
 
