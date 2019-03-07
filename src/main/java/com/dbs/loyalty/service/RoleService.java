@@ -68,7 +68,7 @@ public class RoleService{
 	}
 
 	public String execute(Task task) throws JsonParseException, JsonMappingException, IOException {
-		Role role = objectMapper.readValue(task.getTaskData(), Role.class);
+		Role role = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), Role.class);
 		
 		if(task.getTaskOperation() == TaskOperation.ADD) {
 			role.setCreatedBy(task.getMaker());
@@ -84,4 +84,5 @@ public class RoleService{
 		
 		return role.getName();
 	}
+	
 }

@@ -1,6 +1,8 @@
 package com.dbs.loyalty.web.controller;
 
-import static com.dbs.loyalty.config.Constant.*;
+import static com.dbs.loyalty.config.Constant.ERROR;
+import static com.dbs.loyalty.config.Constant.PAGE;
+import static com.dbs.loyalty.config.Constant.ZERO;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,7 +33,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dbs.loyalty.domain.Authority;
 import com.dbs.loyalty.domain.Role;
-import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.AuthorityService;
 import com.dbs.loyalty.service.RoleService;
@@ -46,8 +47,6 @@ public class RoleController extends AbstractController {
 
 	private final Logger log 			= LoggerFactory.getLogger(RoleController.class);
 
-	private final String TASK_DATA_TYPE = "Role";
-	
 	private final String ROLE 			= "role";
 	
 	private final String ROLES 			= "roles";
@@ -118,9 +117,15 @@ public class RoleController extends AbstractController {
 			if (result.hasErrors()) {
 				return badRequestResponse(result);
 			} else {
-				TaskOperation taskOperation = (role.getId() == null) ? TaskOperation.ADD : TaskOperation.MODIFY;
-				taskService.save(taskOperation, TASK_DATA_TYPE, role);
-				return taskIsSavedResponse(TASK_DATA_TYPE, role.getName(), UrlUtil.getyUrl(ROLES));
+				
+				if(role.getId() == null) {
+					taskService.saveTaskAdd(role);
+				}else {
+					Optional<Role> current = roleService.findWithAuthoritiesById(role.getId());
+					taskService.saveTaskModify(current.get(), role);
+				}
+
+				return taskIsSavedResponse(Role.class.getSimpleName(), role.getName(), UrlUtil.getyUrl(ROLES));
 			}
 			
 		} catch (Exception ex) {
@@ -134,8 +139,8 @@ public class RoleController extends AbstractController {
 	public ResponseEntity<?> delete(@PathVariable String id){
 		try {
 			Optional<Role> role = roleService.findWithAuthoritiesById(id);
-			taskService.save(TaskOperation.DELETE, TASK_DATA_TYPE, role.get());
-			return taskIsSavedResponse(TASK_DATA_TYPE, role.get().getName(), UrlUtil.getyUrl(ROLES));
+			taskService.saveTaskDelete(role.get());
+			return taskIsSavedResponse(Role.class.getSimpleName(), role.get().getName(), UrlUtil.getyUrl(ROLES));
 		} catch (Exception ex) {
 			log.error(ex.getLocalizedMessage(), ex);
 			return errorResponse(ex);

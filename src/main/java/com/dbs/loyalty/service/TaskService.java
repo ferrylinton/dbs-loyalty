@@ -58,12 +58,35 @@ public class TaskService {
 		return taskRepository.findAll(pageable);
 	}
 	
-	public Task save(TaskOperation taskOperation, String taskDataType, Object value) throws JsonProcessingException {
+	public Task saveTaskAdd(Object taskDataNew) throws JsonProcessingException {
 		Task task = new Task();
-		task.setTaskOperation(taskOperation);
+		task.setTaskOperation(TaskOperation.ADD);
 		task.setTaskStatus(TaskStatus.PENDING);
-		task.setTaskDataType(taskDataType);
-		task.setTaskData(objectMapper.writeValueAsString(value));
+		task.setTaskDataType(taskDataNew.getClass().getSimpleName());
+		task.setTaskDataNew(objectMapper.writeValueAsString(taskDataNew));
+		task.setMaker(SecurityUtil.getCurrentEmail());
+		task.setMadeDate(Instant.now());
+		return taskRepository.save(task);
+	}
+	
+	public Task saveTaskModify(Object taskDataOld, Object taskDataNew) throws JsonProcessingException {
+		Task task = new Task();
+		task.setTaskOperation(TaskOperation.MODIFY);
+		task.setTaskStatus(TaskStatus.PENDING);
+		task.setTaskDataType(taskDataOld.getClass().getSimpleName());
+		task.setTaskDataOld(objectMapper.writeValueAsString(taskDataOld));
+		task.setTaskDataNew(objectMapper.writeValueAsString(taskDataNew));
+		task.setMaker(SecurityUtil.getCurrentEmail());
+		task.setMadeDate(Instant.now());
+		return taskRepository.save(task);
+	}
+	
+	public Task saveTaskDelete(Object taskDataOld) throws JsonProcessingException {
+		Task task = new Task();
+		task.setTaskOperation(TaskOperation.DELETE);
+		task.setTaskStatus(TaskStatus.PENDING);
+		task.setTaskDataType(taskDataOld.getClass().getSimpleName());
+		task.setTaskDataOld(objectMapper.writeValueAsString(taskDataOld));
 		task.setMaker(SecurityUtil.getCurrentEmail());
 		task.setMadeDate(Instant.now());
 		return taskRepository.save(task);

@@ -32,10 +32,15 @@
 									<input class="form-control" type="text" id="taskOperationView" th:value="#{${task.taskOperation}}" readonly="readonly" />
 									<input type="hidden" th:field="*{taskOperation}" />
 								</div>
-								<div class="form-group">
-									<label for="taskData" th:text="#{label.taskData}">Task Data</label>
-									<input type="hidden" th:field="*{taskData}" />
-									<pre class="border bg-readonly border-readonly p-3" id="taskDataDetail" th:text="*{taskData}"></pre>
+								<div class="form-group" th:if="*{taskDataOld}">
+									<label for="taskDataOldDetail" th:text="#{label.taskDataOld}">Task Data Old</label>
+									<input type="hidden" th:field="*{taskDataOld}" />
+									<pre class="border bg-readonly border-readonly p-3" id="taskDataOldDetail" th:text="*{taskDataOld}"></pre>
+								</div>
+								<div class="form-group" th:if="*{taskDataNew}">
+									<label for="taskDataNewDetail" th:text="#{label.taskDataNew}">Task Data New</label>
+									<input type="hidden" th:field="*{taskDataNew}" />
+									<pre class="border bg-readonly border-readonly p-3" id="taskDataNewDetail" th:text="*{taskDataNew}"></pre>
 								</div>
 								<div class="form-group">
 									<label for="maker" th:text="#{label.maker}">Maker</label>

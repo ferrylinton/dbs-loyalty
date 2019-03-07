@@ -51,8 +51,12 @@ public class Task implements Serializable {
     private String taskDataId;
     
     @Lob
-    @Column(name = "task_data", nullable = false)
-    private String taskData;
+    @Column(name = "task_data_old")
+    private String taskDataOld;
+    
+    @Lob
+    @Column(name = "task_data_new")
+    private String taskDataNew;
 
     @Column(name = "maker", length = 50, nullable = false)
     private String maker;
@@ -124,12 +128,20 @@ public class Task implements Serializable {
 		this.taskDataId = taskDataId;
 	}
 
-	public String getTaskData() {
-		return taskData;
+	public String getTaskDataOld() {
+		return taskDataOld;
 	}
 
-	public void setTaskData(String taskData) {
-		this.taskData = taskData;
+	public void setTaskDataOld(String taskDataOld) {
+		this.taskDataOld = taskDataOld;
+	}
+
+	public String getTaskDataNew() {
+		return taskDataNew;
+	}
+
+	public void setTaskDataNew(String taskDataNew) {
+		this.taskDataNew = taskDataNew;
 	}
 
 	public String getMaker() {
