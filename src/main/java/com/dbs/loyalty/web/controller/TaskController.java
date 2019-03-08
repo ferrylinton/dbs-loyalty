@@ -55,7 +55,7 @@ public class TaskController extends AbstractController {
 		this.taskService = taskService;
 	}
 
-	@PreAuthorize("hasAnyRole('TASK', 'USER_MANAGEMENT')")
+	@PreAuthorize("hasAnyRole('TASK', 'TASK_VIEW')")
 	@GetMapping
 	public String view(HttpServletRequest request, @PageableDefault Pageable pageable) {
 		Page<Task> page = null;
@@ -76,7 +76,7 @@ public class TaskController extends AbstractController {
 		}
 	}
 
-	@PreAuthorize("hasAnyRole('TASK', 'USER_MANAGEMENT')")
+	@PreAuthorize("hasAnyRole('TASK', 'TASK_VIEW')")
 	@GetMapping("/{id}")
 	public String view(ModelMap model, @PathVariable String id) throws NotFoundException {
 		Optional<Task> task = taskService.findById(id);

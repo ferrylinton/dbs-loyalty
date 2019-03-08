@@ -5,27 +5,85 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
+	<property name="ROLE_ADMIN" value="ZwOkjFmG" />
+	<property name="ROLE_USER" value="3oxk1q6M" />
+	<property name="ROLE_USER_VIEW" value="GmI8ESO3" />
+	<property name="ROLE_CUSTOMER" value="V6evDSIi" />
+	<property name="ROLE_CUSTOMER_VIEW" value="GiATHOgx" />
+	<property name="ROLE_TASK" value="cWhfnEjg" />
+	<property name="ROLE_TASK_VIEW" value="ZLDS022J" />
+	<property name="ROLE_PROMO" value="FU2toQJa" />
+	<property name="ROLE_PROMO_VIEW" value="LFVeEiRv" />
+	<property name="ROLE_LOVED_ONE" value="MzFttlUa" />
+	<property name="ROLE_LOVED_ONE_VIEW" value="NOisXuC4" />
+	<property name="ROLE_REWARD" value="tx1zwTpY" />
+	<property name="ROLE_REWARD_VIEW" value="n83me3Kk" />
+	
 	<changeSet author="FLH" id="102-1">
 	
-        <insert tableName="m_authority">
-            <column name="id" value="3oxk1q6M"/>
-            <column name="created_by" value="system"/>
-            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
-            <column name="name" value="ROLE_USER_MANAGEMENT"/>
+		<insert tableName="m_authority">
+            <column name="id" value="${ROLE_ADMIN}"/>
+            <column name="name" value="ROLE_ADMIN"/>
         </insert>
         
         <insert tableName="m_authority">
-            <column name="id" value="V6evDSIi"/>
-            <column name="created_by" value="system"/>
-            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
-            <column name="name" value="ROLE_CUSTOMER_MANAGEMENT"/>
+            <column name="id" value="${ROLE_USER}"/>
+            <column name="name" value="ROLE_USER"/>
         </insert>
         
         <insert tableName="m_authority">
-            <column name="id" value="cWhfnEjg"/>
-            <column name="created_by" value="system"/>
-            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="id" value="${ROLE_USER_VIEW}"/>
+            <column name="name" value="ROLE_USER_VIEW"/>
+        </insert>
+        
+        <insert tableName="m_authority">
+            <column name="id" value="${ROLE_CUSTOMER}"/>
+            <column name="name" value="ROLE_CUSTOMER"/>
+        </insert>
+        
+        <insert tableName="m_authority">
+            <column name="id" value="${ROLE_CUSTOMER_VIEW}"/>
+            <column name="name" value="ROLE_CUSTOMER_VIEW"/>
+        </insert>
+        
+        <insert tableName="m_authority">
+            <column name="id" value="${ROLE_TASK}"/>
             <column name="name" value="ROLE_TASK"/>
+        </insert>
+        
+        <insert tableName="m_authority">
+            <column name="id" value="${ROLE_TASK_VIEW}"/>
+            <column name="name" value="ROLE_TASK_VIEW"/>
+        </insert>
+        
+        <insert tableName="m_authority">
+            <column name="id" value="${ROLE_PROMO}"/>
+            <column name="name" value="ROLE_PROMO"/>
+        </insert>
+        
+        <insert tableName="m_authority">
+            <column name="id" value="${ROLE_PROMO_VIEW}"/>
+            <column name="name" value="ROLE_PROMO_VIEW"/>
+        </insert>
+        
+        <insert tableName="m_authority">
+            <column name="id" value="${ROLE_LOVED_ONE}"/>
+            <column name="name" value="ROLE_LOVED_ONE"/>
+        </insert>
+        
+        <insert tableName="m_authority">
+            <column name="id" value="${ROLE_LOVED_ONE_VIEW}"/>
+            <column name="name" value="ROLE_LOVED_ONE_VIEW"/>
+        </insert>
+        
+        <insert tableName="m_authority">
+            <column name="id" value="${ROLE_REWARD}"/>
+            <column name="name" value="ROLE_REWARD"/>
+        </insert>
+        
+        <insert tableName="m_authority">
+            <column name="id" value="${ROLE_REWARD_VIEW}"/>
+            <column name="name" value="ROLE_REWARD_VIEW"/>
         </insert>
         
     </changeSet>

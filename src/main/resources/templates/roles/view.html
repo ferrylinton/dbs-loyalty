@@ -1,5 +1,5 @@
 <!doctype html>
-<html th:lang="${#locale}" xmlns:th="http://www.org">
+<html th:lang="${#locale}" xmlns:th="http://www.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="fragment/head.html :: content(title=#{menu.role})"></head>
 
@@ -17,9 +17,21 @@
 			<div class="min-height border p-3">
 	            <div class="row no-gutters mb-3">
 	                <div class="col-10 col-sm-8 col-md-5 col-lg-4 col-xl-3 mr-auto">
-	                    <div th:replace="fragment/search.html :: content(@{/roles}, #{label.name})"></div>
+	                    <form th:action="@{/roles}" method="get" autocomplete="off" >
+							<div class="input-group">
+								<input class="form-control" name="keyword" maxlength="40" th:value="${param.keyword}" th:placeholder="#{label.name}" />
+								<div class="input-group-append">
+									<button class="btn btn-light border text-secondary" type="submit">
+										<i class="icon-search"></i>
+									</button>
+									<a class="btn btn-light border text-secondary" th:href="@{/roles}">
+										<i class="icon-arrows-cw"></i>
+									</a>
+								</div>
+							</div>
+						</form>
 	                </div>
-	                <div class="col-auto">
+	                <div class="col-auto" sec:authorize="hasRole('USER')">
 	                    <a class="btn btn-light text-secondary border" th:href="@{/roles/0}">
 	                        <i class="icon-plus"></i>
 	                    </a>
@@ -43,12 +55,14 @@
 										</button>
 										<div class="dropdown-menu py-0 shadow" aria-labelledby="dropdownMenuButton">
 										    <a class="dropdown-item pl-1" th:href="@{|/roles/${role.id}|}">
-										    	<i class="icon-edit"></i> <span th:text="#{label.edit}"></span>
+										    	<i class="icon-eye"></i> <span th:text="#{label.view}"></span>
 										    </a>
-										   	<div class="dropdown-divider my-0"></div>
-											<a class="dropdown-item pl-1 text-danger" th:href="@{|/roles/${role.id}|}" onclick="return Data.confirm(this)">
-												<i class="icon-trash"></i> <span th:text="#{label.delete}"></span>
-											</a>
+										    <th:block sec:authorize="hasRole('USER')">
+											   	<div class="dropdown-divider my-0"></div>
+												<a class="dropdown-item pl-1 text-danger" th:href="@{|/roles/${role.id}|}" onclick="return Data.confirm(this)">
+													<i class="icon-trash"></i> <span th:text="#{label.delete}"></span>
+												</a>
+											</th:block>
 										</div>
 									</div>
 								</td>

@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.dbs.loyalty.config.Constant;
@@ -20,8 +21,8 @@ public class AuthorityService{
 		this.authorityRepository = authorityRepository;
 	}
 	
-	public List<Authority> findAll(){
-		return authorityRepository.findAll();
+	public List<Authority> findAll(Sort sort){
+		return authorityRepository.findAll(sort);
 	}
 	
 	public Page<Authority> findAll(String keyword, Pageable pageable) {

@@ -4,20 +4,34 @@
 	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
-
+	
+	<property name="Admin" value="eSn1jhQG" />
+	<property name="Maker" value="3VCG2cOW" />
+	<property name="Checker" value="d62HxUaE" />
+	
     <changeSet author="FLH" id="103-1">
+    
         <insert tableName="m_role">
-            <column name="id" value="eSn1jhQG"/>
+            <column name="id" value="${Admin}"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="name" value="Admin"/>
         </insert>
+        
         <insert tableName="m_role">
-            <column name="id" value="d62HxUaE"/>
+            <column name="id" value="${Maker}"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="name" value="Maker"/>
+        </insert>
+        
+        <insert tableName="m_role">
+            <column name="id" value="${Checker}"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="name" value="Checker"/>
         </insert>
+        
     </changeSet>
     
 </databaseChangeLog>

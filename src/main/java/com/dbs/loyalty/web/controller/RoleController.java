@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +40,6 @@ import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.validator.RoleValidator;
 
-@PreAuthorize("hasRole('USER_MANAGEMENT')")
 @Controller
 @RequestMapping("/roles")
 public class RoleController extends AbstractController {
@@ -70,6 +70,7 @@ public class RoleController extends AbstractController {
 		this.taskService = taskService;
 	}
 
+	@PreAuthorize("hasAnyRole('USER', 'USER_VIEW')")
 	@GetMapping
 	public String view(HttpServletRequest request, @PageableDefault Pageable pageable) {
 		Page<Role> page = null;
@@ -92,6 +93,7 @@ public class RoleController extends AbstractController {
 		return VIEW_TEMPLATE;
 	}
 
+	@PreAuthorize("hasAnyRole('USER', 'USER_VIEW')")
 	@GetMapping("/{id}")
 	public String view(ModelMap model, @PathVariable String id){
 		if (id.equals(ZERO)) {
@@ -109,6 +111,7 @@ public class RoleController extends AbstractController {
 		return FORM_TEMPLATE;
 	}
 
+	@PreAuthorize("hasRole('USER')")
 	@PostMapping
 	@ResponseBody
 	public ResponseEntity<?> save(@ModelAttribute @Valid Role role, BindingResult result) {
@@ -133,6 +136,7 @@ public class RoleController extends AbstractController {
 		}
 	}
 
+	@PreAuthorize("hasRole('USER')")
 	@DeleteMapping("/{id}")
 	@ResponseBody
 	public ResponseEntity<?> delete(@PathVariable String id){
@@ -148,7 +152,7 @@ public class RoleController extends AbstractController {
 
 	@ModelAttribute("authorities")
 	public List<Authority> getAuthorities() {
-		return authorityService.findAll();
+		return authorityService.findAll(Sort.by(SORT_BY));
 	}
 
 	@InitBinder("role")

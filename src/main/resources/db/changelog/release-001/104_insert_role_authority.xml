@@ -7,22 +7,80 @@
 
 	<changeSet author="FLH" id="104-1">
 		
-		<!-- ROLE ADMIN -->
+		<!-- ROLE ADMINISTRATOR -->
 		
         <insert tableName="m_role_authority">
-            <column name="role_id" value="eSn1jhQG"/>
-            <column name="authority_id" value="3oxk1q6M"/>
-        </insert>
-        <insert tableName="m_role_authority">
-            <column name="role_id" value="eSn1jhQG"/>
-            <column name="authority_id" value="V6evDSIi"/>
+            <column name="role_id" value="${Admin}"/>
+            <column name="authority_id" value="${ROLE_ADMIN}"/>
         </insert>
         
-        <!-- ROLE APPROVER -->
+        <insert tableName="m_role_authority">
+            <column name="role_id" value="${Admin}"/>
+            <column name="authority_id" value="${ROLE_TASK}"/>
+        </insert>
+        
+        <!-- ROLE MAKER -->
         
         <insert tableName="m_role_authority">
-            <column name="role_id" value="d62HxUaE"/>
-            <column name="authority_id" value="cWhfnEjg"/>
+            <column name="role_id" value="${Maker}"/>
+            <column name="authority_id" value="${ROLE_USER}"/>
+        </insert>
+        
+        <insert tableName="m_role_authority">
+            <column name="role_id" value="${Maker}"/>
+            <column name="authority_id" value="${ROLE_CUSTOMER}"/>
+        </insert>
+        
+        <insert tableName="m_role_authority">
+            <column name="role_id" value="${Maker}"/>
+            <column name="authority_id" value="${ROLE_PROMO}"/>
+        </insert>
+        
+        <insert tableName="m_role_authority">
+            <column name="role_id" value="${Maker}"/>
+            <column name="authority_id" value="${ROLE_LOVED_ONE}"/>
+        </insert>
+        
+        <insert tableName="m_role_authority">
+            <column name="role_id" value="${Maker}"/>
+            <column name="authority_id" value="${ROLE_REWARD}"/>
+        </insert>
+        
+        <insert tableName="m_role_authority">
+            <column name="role_id" value="${Maker}"/>
+            <column name="authority_id" value="${ROLE_TASK_VIEW}"/>
+        </insert>
+        
+        <!-- ROLE CHECKER -->
+        
+        <insert tableName="m_role_authority">
+            <column name="role_id" value="${Checker}"/>
+            <column name="authority_id" value="${ROLE_TASK}"/>
+        </insert>
+        
+        <insert tableName="m_role_authority">
+            <column name="role_id" value="${Checker}"/>
+            <column name="authority_id" value="${ROLE_USER_VIEW}"/>
+        </insert>
+        
+        <insert tableName="m_role_authority">
+            <column name="role_id" value="${Checker}"/>
+            <column name="authority_id" value="${ROLE_CUSTOMER_VIEW}"/>
+        </insert>
+        
+        <insert tableName="m_role_authority">
+            <column name="role_id" value="${Checker}"/>
+            <column name="authority_id" value="${ROLE_PROMO_VIEW}"/>
+        </insert>
+        
+        <insert tableName="m_role_authority">
+            <column name="role_id" value="${Checker}"/>
+            <column name="authority_id" value="${ROLE_LOVED_ONE_VIEW}"/>
+        </insert>
+        
+        <insert tableName="m_role_authority">
+            <column name="role_id" value="${Checker}"/>
+            <column name="authority_id" value="${ROLE_REWARD_VIEW}"/>
         </insert>
         
     </changeSet>

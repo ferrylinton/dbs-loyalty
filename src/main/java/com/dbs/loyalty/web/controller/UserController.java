@@ -41,7 +41,6 @@ import com.dbs.loyalty.util.PasswordUtil;
 import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.validator.UserValidator;
 
-@PreAuthorize("hasRole('USER_MANAGEMENT')")
 @Controller
 @RequestMapping("/users")
 public class UserController extends AbstractController{
@@ -72,6 +71,8 @@ public class UserController extends AbstractController{
 		this.taskService = taskService;
 	}
 
+	
+	@PreAuthorize("hasAnyRole('USER', 'USER_VIEW')")
 	@GetMapping
 	public String view(HttpServletRequest request, @PageableDefault Pageable pageable) {
 		Page<User> page = null;
@@ -94,6 +95,7 @@ public class UserController extends AbstractController{
 		return VIEW_TEMPLATE;
 	}
 	
+	@PreAuthorize("hasAnyRole('USER', 'USER_VIEW')")
 	@GetMapping("/{id}")
 	public String view(ModelMap model, @PathVariable String id) {
 		if (id.equals(ZERO)) {
@@ -111,6 +113,7 @@ public class UserController extends AbstractController{
 		return FORM_TEMPLATE;
 	}
 	
+	@PreAuthorize("hasRole('USER')")
 	@PostMapping
 	@ResponseBody
 	public ResponseEntity<?> save(@Valid @ModelAttribute User user, BindingResult result) {
@@ -138,6 +141,7 @@ public class UserController extends AbstractController{
 		}
 	}
 	
+	@PreAuthorize("hasRole('USER')")
 	@DeleteMapping("/{id}")
 	@ResponseBody
 	public ResponseEntity<?> delete(@PathVariable String id) throws NotFoundException {
