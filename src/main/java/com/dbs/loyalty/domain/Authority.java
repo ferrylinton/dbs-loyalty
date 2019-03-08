@@ -52,4 +52,9 @@ public class Authority implements Serializable {
 		this.name = name;
 	}
 
+	@Override
+	public String toString() {
+		return String.format("%s,%s", id, name);
+	}
+	
 }

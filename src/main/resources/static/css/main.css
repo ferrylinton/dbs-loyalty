@@ -168,7 +168,13 @@ body{
 .btn, .alert, .form-control, .dropdown-menu, .custom-select{
 	border-radius: 0;
 }
-
+.custom-select:focus, input[name="keyword"]:focus{
+	outline:0;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	box-shadow: none;
+	border: 1px solid #ced4da;
+}
 .dropdown-item:last-child {
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;

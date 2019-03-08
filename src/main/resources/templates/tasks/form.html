@@ -65,10 +65,12 @@
 									<input class="form-control" type="text" id="taskStatusView" th:value="#{*{taskStatus}}" readonly="readonly" />
 									<input type="hidden" th:value="*{taskStatus}"/>
 								</div>
-								<div class="custom-control custom-switch mb-3" th:if="${task.taskStatus.name() == 'PENDING'}">
-									<input type="checkbox" th:field="*{verified}" class="custom-control-input" onchange="changeApproval(this)" id="verified">
-									<label class="custom-control-label" for="verified" th:text="*{verified} ? #{label.verify} : #{label.reject}"></label>
-								</div>
+								<th:block sec:authorize="hasRole('TASK')">
+									<div class="custom-control custom-switch mb-3" th:if="${task.taskStatus.name() == 'PENDING'}" >
+										<input type="checkbox" th:field="*{verified}" class="custom-control-input" onchange="verify(this)" id="verified">
+										<label class="custom-control-label" for="verified" th:text="*{verified} ? #{label.verify} : #{label.reject}"></label>
+									</div>
+								</th:block>
 								<div class="form-group">
 									<label for="message" th:text="#{label.message}">Message</label>
 									<textarea class="form-control" th:field="*{message}" rows="2" maxlength="250"></textarea>
@@ -84,9 +86,14 @@
 								<a class="btn btn-sm btn-secondary px-3" th:href="@{/tasks}">
 									<i class="icon-left"></i> <span th:text="#{label.back}"></span>
 								</a>
-								<button class="btn btn-sm btn-primary px-3" type="submit" th:if="${task.taskStatus.name() == 'PENDING'}" sec:authorize="hasRole('TASK')">
-									<i class="icon-floppy"></i> <span th:text="#{label.save}"></span>
-								</button>
+								<th:block sec:authorize="hasRole('TASK')" th:if="${task.taskStatus.name() == 'PENDING'}">
+									<button class="btn btn-sm btn-success px-3" type="submit" style="display: none;">
+										<i class="icon-ok"></i> <span th:text="#{label.verify}"></span>
+									</button>
+									<button class="btn btn-sm btn-danger px-3" type="submit">
+										<i class="icon-block"></i> <span th:text="#{label.reject}"></span>
+									</button>
+								</th:block>
 							</form>
 						</div>
 					</div>

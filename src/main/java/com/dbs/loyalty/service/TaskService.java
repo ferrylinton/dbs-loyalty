@@ -2,13 +2,17 @@ package com.dbs.loyalty.service;
 
 import java.io.IOException;
 import java.time.Instant;
+import java.util.Map;
 import java.util.Optional;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +25,7 @@ import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.domain.enumeration.TaskStatus;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.repository.TaskRepository;
+import com.dbs.loyalty.service.specification.TaskSpecification;
 import com.dbs.loyalty.util.ErrorUtil;
 import com.dbs.loyalty.util.SecurityUtil;
 import com.fasterxml.jackson.core.JsonParseException;
@@ -55,8 +60,9 @@ public class TaskService {
 		}
 	}
 	
-	public Page<Task> findAll(Pageable pageable){
-		return taskRepository.findAll(pageable);
+	public Page<Task> findAll(Map<String, String> params, Pageable pageable, HttpServletRequest request){
+		Specification<Task> spec = TaskSpecification.getSpecfication(params, request);
+		return taskRepository.findAll(spec, pageable);
 	}
 	
 	public Task saveTaskAdd(Object taskDataNew) throws JsonProcessingException {

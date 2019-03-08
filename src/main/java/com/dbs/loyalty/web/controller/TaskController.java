@@ -1,6 +1,7 @@
 package com.dbs.loyalty.web.controller;
 
 import java.time.Instant;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dbs.loyalty.config.Constant;
@@ -57,11 +59,11 @@ public class TaskController extends AbstractController {
 
 	@PreAuthorize("hasAnyRole('TASK', 'TASK_VIEW')")
 	@GetMapping
-	public String view(HttpServletRequest request, @PageableDefault Pageable pageable) {
+	public String view(@RequestParam Map<String,String> params, @PageableDefault Pageable pageable, HttpServletRequest request) {
 		Page<Task> page = null;
-
+		
 		try {
-			page = taskService.findAll(isValid(SORT_BY, pageable));
+			page = taskService.findAll(params, isValid(SORT_BY, pageable), request);
 			
 			if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
 				return REDIRECT;
@@ -100,5 +102,5 @@ public class TaskController extends AbstractController {
 			return errorResponse((Exception) ErrorUtil.getThrowable(ex));
 		}
 	}
-	
+
 }

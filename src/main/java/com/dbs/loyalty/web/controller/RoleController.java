@@ -119,7 +119,6 @@ public class RoleController extends AbstractController {
 			if (result.hasErrors()) {
 				return badRequestResponse(result);
 			} else {
-				
 				if(role.getId() == null) {
 					taskService.saveTaskAdd(role);
 				}else {

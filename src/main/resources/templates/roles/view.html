@@ -75,7 +75,10 @@
 	            <div class="border alert alert-light text-center" role="alert" th:if="${page.getTotalElements() == 0}">
 	                <i class="icon-attention"></i> <span th:text="#{message.dataNotFound}"></span>
 	            </div>
-	            <div th:replace="fragment/pager.html :: content"></div>
+	            <th:block th:if="${page != null && page.getTotalPages() > 1}">
+					<div th:utext="${@linkService.previousLink(page)}" th:remove="tag"></div>
+					<div th:utext="${@linkService.nextLink(page)}" th:remove="tag"></div>
+				</th:block>
 	        </div>
 	    </div>
 	</div>

@@ -27,8 +27,20 @@ function changeStatus(obj){
 	$('[for="' + obj.id + '"]').text(Lang.label(obj.checked ? 'activated' : 'deactivated'));
 }
 
-function changeApproval(obj){
-	$('[for="' + obj.id + '"]').text(Lang.label(obj.checked ? 'verify' : 'reject'));
+function verify(obj){
+	var checkboxlabel = $('[for="' + obj.id + '"]');
+	var buttonVerify = $('.btn-success');
+	var buttonReject = $('.btn-danger');
+	
+	if(obj.checked){
+		checkboxlabel.text(Lang.label('verify'));
+		buttonVerify.show();
+		buttonReject.hide();
+	}else{
+		checkboxlabel.text(Lang.label('reject'));
+		buttonVerify.hide();
+		buttonReject.show();
+	}
 }
 
 function initTaskDataDetail(){

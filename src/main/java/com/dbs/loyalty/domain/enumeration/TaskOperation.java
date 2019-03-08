@@ -1,5 +1,5 @@
 package com.dbs.loyalty.domain.enumeration;
 
 public enum TaskOperation {
-    ADD, MODIFY, DELETE
+    ALL, ADD, MODIFY, DELETE
 }

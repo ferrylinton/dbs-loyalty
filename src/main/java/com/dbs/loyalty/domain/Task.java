@@ -86,7 +86,7 @@ public class Task implements Serializable {
     private String errorDetail;
     
     @Transient
-    private Boolean verified = true;
+    private Boolean verified = false;
 
 	public String getId() {
 		return id;
