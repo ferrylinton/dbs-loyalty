@@ -20,6 +20,8 @@ public class TaskSpecification {
 	
 	public static final String TASK_DATA_TYPE = "taskDataType";
 	
+	public static final String ID = "id";
+	
 	public static final String MAKER = "maker";
 	
 	public static final String CHECKER = "checker";
@@ -43,7 +45,7 @@ public class TaskSpecification {
 	}
 	
 	public static Specification<Task> all() {
-		return (task, cq, cb) -> cb.notEqual(task.get(MAKER), Constant.EMPTY);
+		return (task, cq, cb) -> cb.notEqual(task.get(ID), Constant.EMPTY);
 	}
 	
 	public static Specification<Task> taskStatus(Map<String, String> params, HttpServletRequest request) {

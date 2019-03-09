@@ -1,0 +1,28 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="FLH" id="111-1">
+
+        <insert tableName="c_promo">
+            <column name="id" value="In1IverC"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="activated" valueBoolean="true"/>
+            <column name="show_in_carousel" valueBoolean="true"/>
+            <column name="code" value="100"/>
+            <column name="title" value="Nilai Tukar Kompetitif"/>
+            <column name="description" value="Nikmati nilai tukar kompetitif Dollar Singapura terhadap Rupiah"/>
+            <column name="start_period" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="end_period" valueComputed="CURRENT_TIMESTAMP + interval '10 days"/>
+            <column name="image_bytes" valueBlobFile="image/nilai_tukar_kompetitif.png"/>
+            <column name="term_and_condition" valueBlobFile="txt/term_and_condition.txt"/>
+            <column name="promo_category_id" value="${DebitCardPromo}"/>
+        </insert>
+        
+    </changeSet>
+    
+</databaseChangeLog>

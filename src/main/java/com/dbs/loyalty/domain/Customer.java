@@ -17,6 +17,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.Type;
+
 import com.dbs.loyalty.config.Constant;
 import com.dbs.loyalty.util.UrlUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -73,7 +75,8 @@ public class Customer extends AbstractUUID implements Serializable {
 
 	@JsonIgnore
     @Lob
-    @Column(name = "image_bytes", columnDefinition="BLOB")
+    @Column(name = "image_bytes", columnDefinition="MEDIUMBLOB")
+	@Type(type = "org.hibernate.type.BinaryType")
     private byte[] imageBytes;
 
 	@JsonIgnore
