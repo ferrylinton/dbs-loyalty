@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.dbs.loyalty.domain.Role;
@@ -36,8 +37,8 @@ public class RoleService{
 		return roleRepository.findWithAuthoritiesById(id);
 	}
 
-	public List<Role> findAll(){
-		return roleRepository.findAll();
+	public List<Role> findAll(Sort sort){
+		return roleRepository.findAll(sort);
 	}
 	
 	public Page<Role> findAll(Pageable pageable) {

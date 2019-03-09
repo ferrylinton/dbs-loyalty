@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -157,7 +158,7 @@ public class UserController extends AbstractController{
 	
 	@ModelAttribute("roles")
 	public List<Role> getRoles() {
-	    return roleService.findAll();
+	    return roleService.findAll(Sort.by("name"));
 	}
 
 	@InitBinder("user")

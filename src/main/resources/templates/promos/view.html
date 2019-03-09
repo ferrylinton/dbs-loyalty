@@ -1,0 +1,89 @@
+<!doctype html>
+<html th:lang="${#locale}" xmlns:th="http://www.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="fragment/head.html :: content(title=#{menu.promo})"></head>
+
+<body>
+    <div th:replace="fragment/navbar.html :: content"></div>
+    <div class="bg-white">
+	    <nav aria-label="breadcrumb">
+	        <ol class="breadcrumb border-bottom">
+	            <li class="breadcrumb-item"><a th:href="@{/}" th:text="#{menu.home}"></a></li>
+	            <li class="breadcrumb-item active" aria-current="page" th:text="#{menu.promo}"></li>
+	        </ol>
+	    </nav>
+	    <div th:replace="fragment/toast.html :: content"></div>
+	    <div class="container-fluid pb-3">
+			<div class="min-height border p-3">
+	            <div class="row no-gutters mb-3">
+	                <div class="col-10 col-sm-8 col-md-5 col-lg-4 col-xl-3 mr-auto">
+	                    <form th:action="@{/promos}" method="get" autocomplete="off" >
+							<div class="input-group">
+								<input class="form-control" name="ky" maxlength="40" th:value="${param.ky}" th:placeholder="#{label.keyword}" />
+								<div class="input-group-append">
+									<button class="btn btn-light border text-secondary" type="submit">
+										<i class="icon-search"></i>
+									</button>
+									<a class="btn btn-light border text-secondary" th:href="@{/promos}">
+										<i class="icon-arrows-cw"></i>
+									</a>
+								</div>
+							</div>
+						</form>
+	                </div>
+	                <div class="col-auto" sec:authorize="hasRole('PROMO')">
+	                    <a class="btn btn-light text-secondary border" th:href="@{/promos/0}">
+	                        <i class="icon-plus"></i>
+	                    </a>
+	                </div>
+	            </div>
+	            <div class="table-responsive" th:if="${page.getTotalElements() > 0}">
+	                <table class="table table-sm table-striped table-hover border">
+	                    <thead>
+	                        <tr>
+	                            <th width="40px"></th>
+								<th width="40px">#</th>
+	                            <th th:utext="${@linkService.sortLink('code')}"></th>
+	                        </tr>
+	                    </thead>
+	                    <tbody>
+	                        <tr th:each="promo,row : ${page}">
+	                        	<td class="py-0 px-1">
+									<div class="dropdown">
+										<button type="button" class="btn btn-default dropdown-toggle px-1 py-0 font-12" id="dropdownMenuButton" data-boundary="window" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										 	<i class="icon-cog"></i>
+										</button>
+										<div class="dropdown-menu py-0 shadow" aria-labelledby="dropdownMenuButton">
+										    <a class="dropdown-item pl-1" th:href="@{|/promos/${promo.id}|}">
+										    	<i class="icon-eye"></i> <span th:text="#{label.view}"></span>
+										    </a>
+										    <th:block sec:authorize="hasRole('PROMO')">
+											   	<div class="dropdown-divider my-0"></div>
+												<a class="dropdown-item pl-1 text-danger" th:href="@{|/promos/${promo.id}|}" onclick="return Data.confirm(this)">
+													<i class="icon-trash"></i> <span th:text="#{label.delete}"></span>
+												</a>
+											</th:block>
+										</div>
+									</div>
+								</td>
+	                            <td th:text="${row.count + (page.number * page.size)}"></td>
+	                            <td th:text="${promo.code}"></td>
+	                        </tr>
+	                    </tbody>
+	                </table>
+	            </div>
+	            <div class="border alert alert-light text-center" role="alert" th:if="${page.getTotalElements() == 0}">
+	                <i class="icon-attention"></i> <span th:text="#{message.dataNotFound}"></span>
+	            </div>
+	            <th:block th:if="${page != null && page.getTotalPages() > 1}">
+					<div th:utext="${@linkService.previousLink(page)}" th:remove="tag"></div>
+					<div th:utext="${@linkService.nextLink(page)}" th:remove="tag"></div>
+				</th:block>
+	        </div>
+	    </div>
+	</div>
+    <div th:replace="fragment/footer.html :: content"></div>
+    <div th:replace="fragment/scripts.html :: content"></div>
+</body>
+
+</html>

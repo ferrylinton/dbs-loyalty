@@ -11,7 +11,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+
+import com.dbs.loyalty.config.Constant;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Class of Promo Category
@@ -29,11 +33,13 @@ public class PromoCategory extends AbstractId implements Serializable {
 
     private static final long serialVersionUID = 1L;
   
-    @NotNull
-    @Size(max = 100)
+    @NotNull(message = "{validation.notnull.name}")
+	@Pattern(regexp = Constant.NAME_REGEX, message = "{validation.pattern.name}")
+    @Size(min = 2, max = 100, message = "{validation.size.name}")
     @Column(name = "name", length = 100, nullable = false)
     private String name;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "promoCategory")
     private Set<Promo> promos = new HashSet<>();
 

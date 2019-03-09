@@ -21,7 +21,6 @@ import org.hibernate.annotations.Type;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * Class of Promo
@@ -40,38 +39,41 @@ public class Promo extends AbstractId implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @NotNull
+    @NotNull(message = "{validation.notnull.code}")
     @Size(max = 50)
     @Column(name = "code", length = 50, nullable = false)
     private String code;
 
-    @NotNull
+    @NotNull(message = "{validation.notnull.title}")
     @Size(max = 150)
     @Column(name = "title", length = 150, nullable = false)
     private String title;
 
-    @NotNull
+    @NotNull(message = "{validation.notnull.description}")
     @Column(name = "description", nullable = false)
     private String description;
 
+    @NotNull(message = "{validation.notnull.termAndCondition}")
     @Lob
     @Column(name = "term_and_condition", nullable = false, columnDefinition="TEXT")
     private String termAndCondition;
 
+    
     @Lob
     @Column(name = "image_bytes", nullable = false, columnDefinition="MEDIUMBLOB")
     @Type(type = "org.hibernate.type.BinaryType")
     private byte[] imageBytes;
     
+    @NotNull(message = "{validation.notnull.file}")
     @JsonIgnore
     @Transient
     private MultipartFile file;
 
-    @NotNull
+    @NotNull(message = "{validation.notnull.startPeriod}")
     @Column(name = "start_period", nullable = false)
     private Instant startPeriod;
 
-    @NotNull
+    @NotNull(message = "{validation.notnull.endPeriod}")
     @Column(name = "end_period", nullable = false)
     private Instant endPeriod;
     
@@ -83,7 +85,6 @@ public class Promo extends AbstractId implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "promo_category_id", nullable = false, foreignKey = @ForeignKey(name = "c_promo_fk"))
-    @JsonIgnoreProperties("promos")
     private PromoCategory promoCategory;
 
 	public String getCode() {

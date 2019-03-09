@@ -10,17 +10,17 @@
             <div class="col-12">
                 <div class="border min-height my-3 p-3">
                     <div class="border-bottom pb-2">
-                        <i class="icon-attention"></i> <span th:text="#{label.error}"></span> : <span th:text="${statusCode}"></span>
+                        <i class="icon-attention"></i> <span th:text="#{label.error}"></span> : <span th:text="${errorData.statusCode}"></span>
                     </div>
                     <div class="py-2">
-                        <span th:text="${requestURI}"></span>
-                        <p nl2br:text="${message}"></p>
+                        <span th:text="${errorData.requestURI}"></span>
+                        <p nl2br:text="${errorData.message}"></p>
                         <a class="btn btn-sm btn-dark" data-toggle="collapse" href="#error-detail" role="button"
-                            aria-expanded="false" aria-controls="error-detail" th:if="${not #strings.isEmpty(detail)}">
+                            aria-expanded="false" aria-controls="error-detail" th:if="${not #strings.isEmpty(errorData.detail)}">
                             <i class="icon-down-dir"></i> <span th:text="#{label.showDetail}"></span>
                         </a>
                         <div class="collapse border-top mt-3 pt-2 font-08" id="error-detail">
-                            <p class="no-break" nl2br:text="${detail}"></p>
+                            <p class="no-break" nl2br:text="${errorData.detail}"></p>
                         </div>
                     </div>
                 </div>

@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dbs.loyalty.config.Constant;
+import com.dbs.loyalty.domain.PromoCategory;
 import com.dbs.loyalty.domain.Role;
 import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.domain.User;
@@ -107,6 +108,8 @@ public class TaskService {
 			return context.getBean(RoleService.class).execute(task);
 		}else if(task.getTaskDataType().equals(User.class.getSimpleName())) {
 			return context.getBean(UserService.class).execute(task);
+		}else if(task.getTaskDataType().equals(PromoCategory.class.getSimpleName())) {
+			return context.getBean(PromoCategoryService.class).execute(task);
 		}
 		
 		return Constant.EMPTY;
