@@ -17,6 +17,7 @@
     <include file="release-001/009_loved_one_schema.xml" relativeToChangelogFile="true"/>
     <include file="release-001/010_category_promo_schema.xml" relativeToChangelogFile="true"/>
     <include file="release-001/011_promo_schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/012_log_login_schema.xml" relativeToChangelogFile="true"/>
     
     <include file="release-001/101_insert_user_system.xml" relativeToChangelogFile="true"/>
     <include file="release-001/102_insert_authority.xml" relativeToChangelogFile="true"/>

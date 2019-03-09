@@ -1,4 +1,7 @@
 application:
+  core-pool-size: 5
+  max-pool-size: 10
+  queue-capacity: 1000
   date-format: dd/MM/yy
   date-time-format: dd/MM/yy HH:mm
   date-time-full-format: dd/MM/yy HH:mm:ss.SSS

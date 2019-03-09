@@ -9,15 +9,21 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
+import com.dbs.loyalty.domain.enumeration.LoginStatus;
+import com.dbs.loyalty.event.LoginEventPublisher;
 
 public class WebAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 	
-	public WebAuthenticationFailureHandler(String defaultFailureUrl) {
-        super.setDefaultFailureUrl(defaultFailureUrl);
+	private final LoginEventPublisher loginEventPublisher;
+	
+	public WebAuthenticationFailureHandler(LoginEventPublisher loginEventPublisher) {
+        super.setDefaultFailureUrl("/login?error");
+        this.loginEventPublisher = loginEventPublisher;
 	}
 	
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+		loginEventPublisher.publish(LoginStatus.FAILURE, request);
 		super.onAuthenticationFailure(request, response, exception);
 	}
 }

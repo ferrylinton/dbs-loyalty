@@ -17,6 +17,7 @@ import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
+import com.dbs.loyalty.event.LoginEventPublisher;
 import com.dbs.loyalty.security.rest.RestAuthenticationProvider;
 import com.dbs.loyalty.security.web.WebAuthenticationFailureHandler;
 import com.dbs.loyalty.security.web.WebAuthenticationProvider;
@@ -30,6 +31,12 @@ import com.dbs.loyalty.service.UserService;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
+	
+	private final LoginEventPublisher loginEventPublisher;
+	
+	public WebSecurityConfiguration(LoginEventPublisher loginEventPublisher) {
+		this.loginEventPublisher = loginEventPublisher;
+	}
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -62,8 +69,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	    		.loginProcessingUrl("/login")
 	    		.usernameParameter("email")
 	    		.passwordParameter("password")
-	    		.successHandler(new WebAuthenticationSuccessHandler("/home"))
-	    		.failureHandler(new WebAuthenticationFailureHandler("/login?error"));
+	    		.successHandler(new WebAuthenticationSuccessHandler(loginEventPublisher))
+	    		.failureHandler(new WebAuthenticationFailureHandler(loginEventPublisher));
 	    
 	    http
 	    	.logout()
