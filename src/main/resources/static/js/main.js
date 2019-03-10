@@ -8,6 +8,8 @@ $(document).ready(function() {
 	
 	initTaskDataDetail();
 	
+	initDatePicker();
+	
 });
 
 function initAuditCollapse(){
@@ -90,4 +92,30 @@ function objectJsonToString(obj){
 	}
 	
 	return text += ']';
+}
+
+function initDatePicker(){
+	
+	var satePickerSettings = {
+		autoHide: true,
+		autoPick: true,
+		format: 'dd-mm-yyyy',
+		date: new Date(),
+		endDate: new Date()
+	}
+	
+	var startDate = $('input[name="sd"]').datepicker(satePickerSettings)
+	.on('pick.datepicker', function (e) {
+		if(endDate.datepicker('getDate') < e.date){
+			endDate.datepicker('setDate', e.date);
+		}
+	});
+	
+	var endDate = $('input[name="ed"]').datepicker(satePickerSettings)
+	.on('pick.datepicker', function (e) {
+		if(startDate.datepicker('getDate') > e.date){
+			startDate.datepicker('setDate', e.date);
+		}
+	});
+	
 }

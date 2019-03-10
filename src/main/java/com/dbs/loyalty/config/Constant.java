@@ -28,10 +28,6 @@ public class Constant {
 	
 	public static final String ENTITY_URL 			= "entityUrl";
 
-	public static final String IMAGES 				= "images";
-	
-	public static final String IMAGE 				= "image";
-	
 	public static final String HTML 				= "html";
 
 	public static final String BR 					= "<br>";
