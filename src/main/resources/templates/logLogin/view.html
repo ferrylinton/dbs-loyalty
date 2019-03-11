@@ -23,7 +23,7 @@
 										<div class="input-group-prepend">
 		                                    <div class="input-group-text bg-light" th:text="#{createdDate}"></div>
 		                                </div>
-		                                <input type="text" class="form-control bg-white border-right-0" name="sd" th:placeholder="#{startDate}" readonly="readonly">
+		                                <input type="text" class="form-control bg-white border-right-0" name="sd" th:value="${param.sd}" th:placeholder="#{startDate}" readonly="readonly">
 									</div>
 								</div>
 								<div class="col-5 pl-0">
@@ -31,7 +31,7 @@
 										<div class="input-group-prepend">
 		                                    <div class="input-group-text bg-light" th:text="#{to}"></div>
 		                                </div>
-		                                <input type="text" class="form-control bg-white" name="ed" th:placeholder="#{endDate}" readonly="readonly">
+		                                <input type="text" class="form-control bg-white" name="ed" th:value="${param.ed}" th:placeholder="#{endDate}" readonly="readonly">
 									</div>
 								</div>
 							</div>

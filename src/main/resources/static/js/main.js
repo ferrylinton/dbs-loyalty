@@ -95,27 +95,88 @@ function objectJsonToString(obj){
 }
 
 function initDatePicker(){
+	initDatePickerLang();
+
+	var startDate = $('input[name="sd"]')
+		.datepicker({language: getLocale()})
+		.datepicker('setDate', (getQueryParam('sd') == undefined) ? new Date() : getQueryParam('sd'))
+		.on('pick.datepicker', function (e) {
+			if(endDate.datepicker('getDate') < e.date){
+				endDate.datepicker('setDate', e.date);
+			}
+		});
 	
-	var satePickerSettings = {
+	var endDate = $('input[name="ed"]')
+		.datepicker({language: getLocale()})
+		.datepicker('setDate', (getQueryParam('ed') == undefined) ? new Date() : getQueryParam('ed'))
+		.on('pick.datepicker', function (e) {
+			if(startDate.datepicker('getDate') > e.date){
+				startDate.datepicker('setDate', e.date);
+			}
+		});
+	
+}
+
+function initDatePickerLang(){
+	$.fn.datepicker.languages['en'] = {
 		autoHide: true,
 		autoPick: true,
+		endDate: new Date(),
 		format: 'dd-mm-yyyy',
-		date: new Date(),
-		endDate: new Date()
+		days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+		daysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+		daysMin: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+		months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+		monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+		weekStart: 0,
+		startView: 0,
+		yearFirst: false,
+		yearSuffix: ''
+	};
+	
+	$.fn.datepicker.languages['in'] = {
+		autoHide: true,
+		autoPick: true,
+		endDate: new Date(),
+		format: 'dd-mm-yyyy',
+		days: ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'],
+		daysShort: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
+		daysMin: ['Mi', 'Se', 'Se', 'Ra', 'Ka', 'Ju', 'Sa'],
+		months: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
+		monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'Mai', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
+		weekStart: 0,
+		startView: 0,
+		yearFirst: false,
+		yearSuffix: ''
+	};
+}
+
+function getQueryParam(param) {
+	var url = window.location.href;
+	
+	if(url.indexOf('?') !== -1 && url.indexOf('&') !== -1){
+		var url = window.location.href;
+		var hashes = url.split('?')[1];
+		var hash = hashes.split('&');
+	
+		for (var i = 0; i < hash.length; i++) {
+			var temp = hash[i].split("=");
+			
+			if(temp[0] == param){
+				return temp[1];
+			}
+		}
 	}
 	
-	var startDate = $('input[name="sd"]').datepicker(satePickerSettings)
-	.on('pick.datepicker', function (e) {
-		if(endDate.datepicker('getDate') < e.date){
-			endDate.datepicker('setDate', e.date);
-		}
-	});
+	return undefined;
+}
+
+function getLocale(){
+	var locale = $('html').attr('lang');
 	
-	var endDate = $('input[name="ed"]').datepicker(satePickerSettings)
-	.on('pick.datepicker', function (e) {
-		if(startDate.datepicker('getDate') > e.date){
-			startDate.datepicker('setDate', e.date);
-		}
-	});
+	if (locale == undefined) {
+		locale = 'in';
+	}
 	
+	return locale;
 }
