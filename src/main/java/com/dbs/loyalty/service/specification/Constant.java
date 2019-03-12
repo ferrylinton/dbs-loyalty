@@ -35,5 +35,9 @@ public class Constant {
 	public static final String TITLE = "title";
 	
 	public static final String CREATED_DATE = "createdDate";
+	
+	public static final String BROWSER = "browser";
+	
+	public static final String DEVICE_TYPE = "deviceType";
 
 }

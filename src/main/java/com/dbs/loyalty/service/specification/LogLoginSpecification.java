@@ -21,8 +21,7 @@ public class LogLoginSpecification {
 	
 	public static Specification<LogLogin> getSpec(HttpServletRequest request) {
 		return Specification
-				.where(all())
-				.and(createdDate(request))
+				.where(createdDate(request))
 				.and(keyword(request));
 	}
 	
@@ -31,24 +30,33 @@ public class LogLoginSpecification {
 	}
 	
 	public static Specification<LogLogin> createdDate(HttpServletRequest request) {
-		Instant startDate = getStartDate(request);
-		Instant endDate = getEndDate(request);
-		
-		System.out.println(startDate);
-		System.out.println(endDate);
-
-		return (logLogin, cq, cb) -> cb.and(
-			cb.greaterThanOrEqualTo(logLogin.get(CREATED_DATE), startDate),
-			cb.lessThanOrEqualTo(logLogin.get(CREATED_DATE), endDate)
-		);
+		if(
+			request.getParameter(START_DATE_PARAM) != null &&
+			request.getParameter(END_DATE_PARAM) != null &&
+			!request.getParameter(START_DATE_PARAM).equals(Constant.EMPTY) &&
+			!request.getParameter(END_DATE_PARAM).equals(Constant.EMPTY)
+			) {
+			
+			Instant startDate = getStartDate(request);
+			Instant endDate = getEndDate(request);
+			
+			return (logLogin, cq, cb) -> cb.and(
+				cb.greaterThanOrEqualTo(logLogin.get(CREATED_DATE), startDate),
+				cb.lessThanOrEqualTo(logLogin.get(CREATED_DATE), endDate)
+			);
+		}else {
+			return all();
+		}		
 	}
 	
 	public static Specification<LogLogin> keyword(HttpServletRequest request) {
-		if(request.getParameter(KY_PARAM) != null) {
+		if(request.getParameter(KY_PARAM) != null && !Constant.EMPTY.equals(request.getParameter(KY_PARAM))) {
 			String keyword = String.format(LIKE_FORMAT, request.getParameter(KY_PARAM).trim().toLowerCase());
 			return (logLogin, cq, cb) -> cb.or(
 						cb.like(cb.lower(logLogin.get(EMAIL)), keyword),
-						cb.like(cb.lower(logLogin.get(IP)), keyword)
+						cb.like(cb.lower(logLogin.get(IP)), keyword),
+						cb.like(cb.lower(logLogin.get(BROWSER)), keyword),
+						cb.like(cb.lower(logLogin.get(DEVICE_TYPE)), keyword)
 			);
 		}else {
 			return null;
@@ -73,7 +81,6 @@ public class LogLoginSpecification {
 		if(request.getParameter(END_DATE_PARAM) != null) {
 			try {
 				String endDate = String.format(END_DATE_FORMAT, request.getParameter(END_DATE_PARAM));
-				System.out.println(endDate);
 				LocalDateTime localDateTime = LocalDateTime.parse(endDate, FORMATTER);
 				return localDateTime.toInstant(ZoneOffset.UTC);
 			}catch (Exception e) {
@@ -83,4 +90,5 @@ public class LogLoginSpecification {
 		
 		return Instant.now();
 	}
+	
 }

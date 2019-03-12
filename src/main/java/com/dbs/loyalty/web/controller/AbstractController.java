@@ -1,20 +1,13 @@
 package com.dbs.loyalty.web.controller;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import static com.dbs.loyalty.config.Constant.BR;
+import static com.dbs.loyalty.config.Constant.EMPTY;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
-import static com.dbs.loyalty.config.Constant.*;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.model.BadRequestResponse;
 import com.dbs.loyalty.model.ErrorResponse;
@@ -23,36 +16,11 @@ import com.dbs.loyalty.service.MessageService;
 
 public abstract class AbstractController {
 
-	private final String DATA_WITH_ID_NOT_FOUND = "message.dataWithIdNotFound";
+	protected final String DATA_WITH_ID_NOT_FOUND = "message.dataWithIdNotFound";
 	
-	private final String TASK_IS_SAVED = "message.taskIsSaved";
+	protected final String TASK_IS_SAVED = "message.taskIsSaved";
 	
-	private final String TASK_IS_VERIFIED = "message.taskIsVerified";
-	
-	protected Pageable isValid(String sortBy, Pageable pageable) {
-		List<Order> orders = pageable.getSort().stream().collect(Collectors.toList());
-		if (orders.size() > 0) {
-			return pageable;
-		} else {
-			return PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(sortBy));
-		}
-	}
-	
-	protected Pageable getPageable(String sortBy) {
-		return PageRequest.of(0, 10, Sort.by(sortBy));
-	}
-
-	protected String getKeyword(HttpServletRequest request) {
-		String keyword = request.getParameter(KEYWORD);
-		
-		if (keyword == null || EMPTY.equals(keyword.trim())) {
-			return null;
-		} else {
-			keyword = keyword.trim().toLowerCase();
-			request.setAttribute(KEYWORD, keyword);
-			return keyword;
-		}
-	}
+	protected final String TASK_IS_VERIFIED = "message.taskIsVerified";
 	
 	protected String getNotFoundMessage(String id) {
 		return MessageService.getMessage(DATA_WITH_ID_NOT_FOUND, id);

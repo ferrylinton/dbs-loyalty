@@ -16,22 +16,17 @@
 			<div class="min-height border p-3">
 				<div class="row no-gutters mb-3">
 					<div class="col-12 col-sm-12 col-md-6 col-lg-5 col-xl-4">
-						<form th:action="@{/web/logLogin}" method="get" autocomplete="off" >
+						<form th:action="@{/loglogin}" method="get" autocomplete="off" >
 							<div class="form-row mb-1">
-								<div class="col-7 pr-0">
-									<div class="input-group">
-										<div class="input-group-prepend">
-		                                    <div class="input-group-text bg-light" th:text="#{createdDate}"></div>
-		                                </div>
-		                                <input type="text" class="form-control bg-white border-right-0" name="sd" th:value="${param.sd}" th:placeholder="#{startDate}" readonly="readonly">
-									</div>
+								<div class="col-5 pr-0">
+									<input type="text" class="form-control bg-white border-right-0" name="sd" th:value="${param.sd}" th:placeholder="#{startDate}" readonly="readonly">
 								</div>
-								<div class="col-5 pl-0">
+								<div class="col-7 pl-0">
 									<div class="input-group">
-										<div class="input-group-prepend">
-		                                    <div class="input-group-text bg-light" th:text="#{to}"></div>
-		                                </div>
 		                                <input type="text" class="form-control bg-white" name="ed" th:value="${param.ed}" th:placeholder="#{endDate}" readonly="readonly">
+										<div class="input-group-append">
+		                                    <div class="input-group-text bg-light"><i class="icon-calendar"></i></div>
+		                                </div>
 									</div>
 								</div>
 							</div>
@@ -41,7 +36,7 @@
                                     <button class="btn btn-light border text-secondary" type="submit">
                                         <i class="icon-search"></i>
                                     </button>
-                                    <a class="btn btn-light border text-secondary" th:href="@{/web/logLogin}">
+                                    <a class="btn btn-light border text-secondary" th:href="@{/loglogin}">
                                         <i class="icon-arrows-cw"></i>
                                     </a>
                                 </div>
@@ -52,10 +47,15 @@
 				<div class="table-responsive" th:if="${page.getTotalElements() > 0}">
 	                <table class="table table-sm table-striped table-hover border" style="min-width: 800px;">
                         <thead>
-                            <tr>
+                            <tr th:with="ascending=${order.getDirection().name() == 'ASC'}">
                                 <th class="text-center" width="50px">#</th>
+                                <th th:with="sort=|&sort=createdDate,${ascending ? 'DESC' : 'ASC'}|">
+                                	<a th:href="@{|?page=${page.getNumber()}${params}${sort}|}" class="text-decoration-none">
+                                		<span th:text="#{date}"></span> 
+                                		<i th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></i>
+                                	</a>
+                                </th>
                                 <th th:text="#{ip}"></th>
-                                <th th:text="#{createdDate}"></th>
                                 <th th:text="#{email}"></th>
                                 <th th:text="#{loginStatus}"></th>
                                 <th th:text="#{browser}"></th>
@@ -65,10 +65,12 @@
 						<tbody>
 							<tr th:each="logLogin,row : ${page}">
 								<td class="text-center" th:text="${row.count + (page.number * page.size)}"></td>
-								<td th:text="${logLogin.ip}"></td>
 								<td th:text="${#dates.format(logLogin.createdDate, @environment.getProperty('application.date-time-format'))}"></td>
+								<td th:text="${logLogin.ip}"></td>
 								<td th:text="${#strings.isEmpty(logLogin.email)} ? '-' : ${logLogin.email}"></td>
-								<td th:text="#{${logLogin.loginStatus}}"></td>
+								<td>
+									<span th:class="${logLogin.loginStatus.name() == 'SUCCESS'} ? 'badge badge-success' : 'badge badge-danger'" th:text="#{${logLogin.loginStatus}}">Success</span>
+								</td>
 								<td th:text="${logLogin.browser}"></td>
 								<td th:text="${logLogin.deviceType}"></td>
 							</tr>
@@ -79,8 +81,12 @@
                     <i class="icon-attention"></i> <span th:text="#{message.dataNotFound}"></span>
                 </div>
                 <th:block th:if="${page != null && page.getTotalPages() > 1}">
-                    <div th:utext="${@linkService.previousLink(page)}" th:remove="tag"></div>
-                    <div th:utext="${@linkService.nextLink(page)}" th:remove="tag"></div>
+                    <a class="btn btn-sm btn-secondary" th:href="@{|?${previous}${params}|}" th:classappend="${not page.hasPrevious()} ? 'disabled'">
+                    	<i class="icon-left-open"></i> <span th:text="#{previous}"></span>
+                    </a>
+                    <a class="btn btn-sm btn-secondary" th:href="@{|?${next}${params}|}" th:classappend="${not page.hasNext()} ? 'disabled'">
+                    	<span th:text="#{next}"></span> <i class="icon-right-open"></i>
+                    </a>
                 </th:block>
 			</div>
 		</div>

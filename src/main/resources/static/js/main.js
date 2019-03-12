@@ -96,22 +96,34 @@ function objectJsonToString(obj){
 
 function initDatePicker(){
 	initDatePickerLang();
+	initDatePickerField();
+}
 
-	var startDate = $('input[name="sd"]')
+function initDatePickerField(){
+	var startDateInput = $('input[name="sd"]');
+	var endDateInput = $('input[name="ed"]');
+	var startDate;
+	var endDate;
+
+	startDate = startDateInput
 		.datepicker({language: getLocale()})
-		.datepicker('setDate', (getQueryParam('sd') == undefined) ? new Date() : getQueryParam('sd'))
+		.datepicker('setDate', (getQueryParam('sd') == null || getQueryParam('sd') == '') ? null : getQueryParam('sd'))
 		.on('pick.datepicker', function (e) {
 			if(endDate.datepicker('getDate') < e.date){
 				endDate.datepicker('setDate', e.date);
+			}else if((endDateInput.val()) == ''){
+				endDateInput.val(endDate.datepicker('getDate', true));
 			}
 		});
 	
-	var endDate = $('input[name="ed"]')
+	endDate = endDateInput
 		.datepicker({language: getLocale()})
-		.datepicker('setDate', (getQueryParam('ed') == undefined) ? new Date() : getQueryParam('ed'))
+		.datepicker('setDate', (getQueryParam('ed') == null || getQueryParam('ed') == '') ? null : getQueryParam('ed'))
 		.on('pick.datepicker', function (e) {
 			if(startDate.datepicker('getDate') > e.date){
 				startDate.datepicker('setDate', e.date);
+			}else if((startDateInput.val()) == ''){
+				startDateInput.val(startDate.datepicker('getDate', true));
 			}
 		});
 	
@@ -120,7 +132,6 @@ function initDatePicker(){
 function initDatePickerLang(){
 	$.fn.datepicker.languages['en'] = {
 		autoHide: true,
-		autoPick: true,
 		endDate: new Date(),
 		format: 'dd-mm-yyyy',
 		days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
@@ -136,7 +147,6 @@ function initDatePickerLang(){
 	
 	$.fn.datepicker.languages['in'] = {
 		autoHide: true,
-		autoPick: true,
 		endDate: new Date(),
 		format: 'dd-mm-yyyy',
 		days: ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'],
@@ -168,7 +178,7 @@ function getQueryParam(param) {
 		}
 	}
 	
-	return undefined;
+	return null;
 }
 
 function getLocale(){

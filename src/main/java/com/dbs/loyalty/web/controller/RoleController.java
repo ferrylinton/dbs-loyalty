@@ -42,7 +42,7 @@ import com.dbs.loyalty.web.validator.RoleValidator;
 
 @Controller
 @RequestMapping("/roles")
-public class RoleController extends AbstractController {
+public class RoleController extends AbstractPageController {
 
 	private final Logger LOG 			= LoggerFactory.getLogger(RoleController.class);
 

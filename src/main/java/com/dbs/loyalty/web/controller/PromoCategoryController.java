@@ -42,7 +42,7 @@ import com.dbs.loyalty.web.validator.PromoCategoryValidator;
 
 @Controller
 @RequestMapping("/promocategories")
-public class PromoCategoryController extends AbstractController {
+public class PromoCategoryController extends AbstractPageController {
 
 	private final Logger LOG 				= LoggerFactory.getLogger(PromoCategoryController.class);
 

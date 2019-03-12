@@ -35,7 +35,7 @@ import com.dbs.loyalty.util.UrlUtil;
 
 @Controller
 @RequestMapping("/tasks")
-public class TaskController extends AbstractController {
+public class TaskController extends AbstractPageController {
 
 	private final Logger LOG 			= LoggerFactory.getLogger(TaskController.class);
 

@@ -44,7 +44,7 @@ import com.dbs.loyalty.web.validator.UserValidator;
 
 @Controller
 @RequestMapping("/users")
-public class UserController extends AbstractController{
+public class UserController extends AbstractPageController{
 
 	private final Logger LOG 			= LoggerFactory.getLogger(UserController.class);
 	
