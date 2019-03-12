@@ -1,22 +1,22 @@
 <!doctype html>
 <html th:lang="${#locale}" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="fragment/head.html :: content(title=#{menu.task})"></head>
+<head th:replace="fragment/head.html :: content(title=#{task})"></head>
 
 <body>
 	<div th:replace="fragment/navbar.html :: content"></div>
 	<div class="bg-white">
 		<nav aria-label="breadcrumb">
 			<ol class="breadcrumb border-bottom">
-				<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{menu.home}"></a></li>
-				<li class="breadcrumb-item active" aria-current="page" th:text="#{menu.task}"></li>
+				<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{home}"></a></li>
+				<li class="breadcrumb-item active" aria-current="page" th:text="#{task}"></li>
 			</ol>
 		</nav>
 		<div class="container-fluid pb-3">
 			<div class="min-height border p-3">
 				<div class="row no-gutters mb-3">
 					<div class="col-12 col-sm-12 col-md-10 col-lg-8 col-xl-8">
-						<form th:action="@{/tasks}" method="get" autocomplete="off" >
+						<form th:action="@{/task}" method="get" autocomplete="off" >
 							<div class="row no-gutters">
 								<div class="col-12 col-sm-12 col-md-9 col-lg-8 col-xl-7 pb-1">
 									<div class="input-group">
@@ -44,7 +44,7 @@
 											<button class="btn btn-light border text-secondary" type="submit">
 												<i class="icon-search"></i>
 											</button>
-											<a class="btn btn-light border text-secondary" th:href="@{/tasks}">
+											<a class="btn btn-light border text-secondary" th:href="@{/task}">
 												<i class="icon-arrows-cw"></i>
 											</a>
 										</div>
@@ -57,14 +57,18 @@
 				<div class="table-responsive" th:if="${page.getTotalElements() > 0}">
 					<table class="table table-sm table-hover table-striped border" style="min-width: 700px;">
 						<thead>
-							<tr>
-								<th width="40px"></th>
+							<tr th:with="ascending=${order.getDirection().name() == 'ASC'}">
+								<th width="60px"></th>
 								<th>#</th>
-								<th th:utext="${@linkService.sortLink('madeDate')}"></th>
-								<th th:utext="${@linkService.sortLink('maker')}"></th>
-								<th th:utext="${@linkService.sortLink('taskDataType')}"></th>
-								<th th:utext="${@linkService.sortLink('taskOperation')}"></th>
-								<th th:utext="${@linkService.sortLink('taskStatus')}"></th>
+								<th th:with="sort=|&sort=madeDate,${ascending ? 'DESC' : 'ASC'}|">
+                                	<a th:href="@{|?page=${page.getNumber()}${params}${sort}|}" class="text-decoration-none">
+                                		<span th:text="#{date}"></span> <i th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></i>
+                                	</a>
+                                </th>
+								<th th:text="#{maker}"></th>
+								<th th:text="#{taskDataType}"></th>
+								<th th:text="#{taskOperation}"></th>
+								<th th:text="#{taskStatus}"></th>
 							</tr>
 						</thead>
 						<tbody th:with="format=${@environment.getProperty('application.date-time-format')}">
@@ -75,7 +79,7 @@
 										 	<i class="icon-cog"></i>
 										</button>
 										<div class="dropdown-menu py-0 shadow" aria-labelledby="dropdownMenuButton">
-										    <a class="dropdown-item pl-1" th:href="@{|/tasks/${task.id}|}">
+										    <a class="dropdown-item pl-1" th:href="@{|/task/${task.id}|}">
 										    	<i class="icon-eye"></i> <span th:text="#{label.view}"></span>
 										    </a>
 										</div>

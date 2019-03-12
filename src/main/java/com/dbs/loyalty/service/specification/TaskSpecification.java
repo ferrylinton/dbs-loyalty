@@ -34,7 +34,7 @@ public class TaskSpecification {
 	
 	public static final String ST_PARAM = "st";
 	
-	public static Specification<Task> getSpecfication(Map<String, String> params, HttpServletRequest request) {
+	public static Specification<Task> getSpec(Map<String, String> params, HttpServletRequest request) {
 		Specification<Task> specification = Specification
 				.where(all())
 				.and(taskStatus(params, request))

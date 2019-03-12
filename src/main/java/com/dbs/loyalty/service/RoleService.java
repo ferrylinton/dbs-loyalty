@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -13,6 +15,7 @@ import com.dbs.loyalty.domain.Role;
 import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.RoleRepository;
+import com.dbs.loyalty.service.specification.RoleSpecification;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -41,18 +44,10 @@ public class RoleService{
 		return roleRepository.findAll(sort);
 	}
 	
-	public Page<Role> findAll(Pageable pageable) {
-		return roleRepository.findAll(pageable);
+	public Page<Role> findAll(Pageable pageable, HttpServletRequest request) {
+		return roleRepository.findAll(RoleSpecification.getSpec(request), pageable);
 	}
-	
-	public Page<Role> findAll(String keyword, Pageable pageable) {
-		if(keyword == null) {
-			return findAll(pageable);
-		}else {
-			return roleRepository.findAllByNameContainingAllIgnoreCase(keyword, pageable);
-		}
-	}
-	
+
 	public Optional<Role> findByName(String name) {
 		return roleRepository.findByNameIgnoreCase(name);
 	}

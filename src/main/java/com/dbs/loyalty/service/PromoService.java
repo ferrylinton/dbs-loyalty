@@ -42,7 +42,7 @@ public class PromoService{
 	}
 	
 	public Page<Promo> findAll(Pageable pageable, HttpServletRequest request) {
-		Specification<Promo> spec = PromoSpecification.getSpecfication(request);
+		Specification<Promo> spec = PromoSpecification.getSpec(request);
 		return promoRepository.findAll(spec, pageable);
 	}
 

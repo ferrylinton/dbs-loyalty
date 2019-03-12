@@ -5,6 +5,7 @@ import static com.dbs.loyalty.config.Constant.PAGE;
 import static com.dbs.loyalty.config.Constant.ZERO;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,10 +14,8 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.mapping.PropertyReferenceException;
-import org.springframework.data.web.PageableDefault;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -30,6 +29,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dbs.loyalty.domain.Role;
@@ -43,22 +43,22 @@ import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.validator.UserValidator;
 
 @Controller
-@RequestMapping("/users")
+@RequestMapping("/user")
 public class UserController extends AbstractPageController{
 
 	private final Logger LOG 			= LoggerFactory.getLogger(UserController.class);
-	
-	private final String USER 			= "user";
-	
-	private final String USERS 			= "users";
-	
-	private final String REDIRECT 		= "redirect:/users";
 
-	private final String VIEW_TEMPLATE 	= "users/view";
+	private final String ENTITY 		= "user";
+	
+	private final String REDIRECT 		= "redirect:/user";
 
-	private final String FORM_TEMPLATE 	= "users/form";
+	private final String VIEW_TEMPLATE 	= "user/view";
+
+	private final String FORM_TEMPLATE 	= "user/form";
 
 	private final String SORT_BY 		= "email";
+	
+	private final Order ORDER			= Order.asc(SORT_BY).ignoreCase();
 	
 	private final UserService userService;
 	
@@ -75,24 +75,17 @@ public class UserController extends AbstractPageController{
 	
 	@PreAuthorize("hasAnyRole('USER', 'USER_VIEW')")
 	@GetMapping
-	public String view(HttpServletRequest request, @PageableDefault Pageable pageable) {
-		Page<User> page = null;
+	public String view(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
+		Order order = (sort.getOrderFor(SORT_BY) == null) ? ORDER : sort.getOrderFor(SORT_BY);
+		Page<User> page = userService.findAll(getPageable(params, order), request);
 
-		try {
-			page = userService.findAll(getKeyword(request), isValid(SORT_BY, pageable));
-			
-			if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
-				return REDIRECT;
-			} else {
-				request.setAttribute(PAGE, page);
-			}
-
-		} catch (IllegalArgumentException | PropertyReferenceException ex) {
-			LOG.error(ex.getLocalizedMessage());
-			request.setAttribute(ERROR, ex.getLocalizedMessage());
-			request.setAttribute(PAGE, roleService.findAll(getPageable(SORT_BY)));
+		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
+			return REDIRECT;
 		}
 
+		request.setAttribute(PAGE, page);
+		setParamsQueryString(params, request);
+		setPagerQueryString(order, page.getNumber(), request);
 		return VIEW_TEMPLATE;
 	}
 	
@@ -100,12 +93,12 @@ public class UserController extends AbstractPageController{
 	@GetMapping("/{id}")
 	public String view(ModelMap model, @PathVariable String id) {
 		if (id.equals(ZERO)) {
-			model.addAttribute(USER, new User());
+			model.addAttribute(ENTITY, new User());
 		} else {
 			Optional<User> user = userService.findById(id);
 			
 			if (user.isPresent()) {
-				model.addAttribute(USER, user.get());
+				model.addAttribute(ENTITY, user.get());
 			} else {
 				model.addAttribute(ERROR, getNotFoundMessage(id));
 			}
@@ -133,7 +126,7 @@ public class UserController extends AbstractPageController{
 					taskService.saveTaskModify(current.get(), user);
 				}
 
-				return taskIsSavedResponse(User.class.getSimpleName(), user.getEmail(), UrlUtil.getyUrl(USERS));
+				return taskIsSavedResponse(User.class.getSimpleName(), user.getEmail(), UrlUtil.getyUrl(ENTITY));
 			}
 			
 		} catch (Exception ex) {
@@ -149,7 +142,7 @@ public class UserController extends AbstractPageController{
 		try {
 			Optional<User> user = userService.findWithRoleById(id);
 			taskService.saveTaskDelete(user.get());
-			return taskIsSavedResponse(User.class.getSimpleName(), user.get().getEmail(), UrlUtil.getyUrl(USERS));
+			return taskIsSavedResponse(User.class.getSimpleName(), user.get().getEmail(), UrlUtil.getyUrl(ENTITY));
 		} catch (Exception ex) {
 			LOG.error(ex.getLocalizedMessage(), ex);
 			return errorResponse(ex);

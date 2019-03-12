@@ -1,10 +1,9 @@
 package com.dbs.loyalty.web.controller;
 
-import static com.dbs.loyalty.config.Constant.ERROR;
-import static com.dbs.loyalty.config.Constant.PAGE;
-import static com.dbs.loyalty.config.Constant.ZERO;
+import static com.dbs.loyalty.config.Constant.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,10 +12,8 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.mapping.PropertyReferenceException;
-import org.springframework.data.web.PageableDefault;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -30,6 +27,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dbs.loyalty.domain.Promo;
@@ -41,22 +39,22 @@ import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.validator.PromoValidator;
 
 @Controller
-@RequestMapping("/promos")
+@RequestMapping("/promo")
 public class PromoController extends AbstractPageController {
 
 	private final Logger LOG 				= LoggerFactory.getLogger(PromoController.class);
 
-	private final String PROMO				= "promo";
+	private final String ENTITY				= "promo";
 	
-	private final String PROMOS				= "promos";
-	
-	private final String REDIRECT 			= "redirect:/promos";
+	private final String REDIRECT 			= "redirect:/promo";
 
-	private final String VIEW_TEMPLATE 		= "promos/view";
+	private final String VIEW_TEMPLATE 		= "promo/view";
 
-	private final String FORM_TEMPLATE 		= "promos/form";
+	private final String FORM_TEMPLATE 		= "promo/form";
 
 	private final String SORT_BY 			= "title";
+	
+	private final Order ORDER				= Order.asc(SORT_BY).ignoreCase();
 	
 	private final String NAME				= "name";
 
@@ -74,24 +72,17 @@ public class PromoController extends AbstractPageController {
 
 	@PreAuthorize("hasAnyRole('PROMO', 'PROMO_VIEW')")
 	@GetMapping
-	public String view(HttpServletRequest request, @PageableDefault Pageable pageable) {
-		Page<Promo> page = null;
+	public String view(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
+		Order order = (sort.getOrderFor(SORT_BY) == null) ? ORDER : sort.getOrderFor(SORT_BY);
+		Page<Promo> page = promoService.findAll(getPageable(params, order), request);
 
-		try {
-			page = promoService.findAll(isValid(SORT_BY, pageable), request);
-			
-			if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
-				return REDIRECT;
-			} else {
-				request.setAttribute(PAGE, page);
-			}
-			
-		} catch (IllegalArgumentException | PropertyReferenceException ex) {
-			LOG.error(ex.getLocalizedMessage());
-			request.setAttribute(ERROR, ex.getLocalizedMessage());
-			request.setAttribute(PAGE, promoService.findAll(getPageable(SORT_BY), request));
+		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
+			return REDIRECT;
 		}
 		
+		request.setAttribute(PAGE, page);
+		setParamsQueryString(params, request);
+		setPagerQueryString(order, page.getNumber(), request);
 		return VIEW_TEMPLATE;
 	}
 
@@ -99,12 +90,12 @@ public class PromoController extends AbstractPageController {
 	@GetMapping("/{id}")
 	public String view(ModelMap model, @PathVariable String id){
 		if (id.equals(ZERO)) {
-			model.addAttribute(PROMO, new Promo());
+			model.addAttribute(ENTITY, new Promo());
 		} else {
 			Optional<Promo> promo = promoService.findById(id);
 			
 			if (promo.isPresent()) {
-				model.addAttribute(PROMO, promo.get());
+				model.addAttribute(ENTITY, promo.get());
 			} else {
 				model.addAttribute(ERROR, getNotFoundMessage(id));
 			}
@@ -128,7 +119,7 @@ public class PromoController extends AbstractPageController {
 					taskService.saveTaskModify(current.get(), promo);
 				}
 
-				return taskIsSavedResponse(Promo.class.getSimpleName(), promo.getTitle(), UrlUtil.getyUrl(PROMOS));
+				return taskIsSavedResponse(Promo.class.getSimpleName(), promo.getTitle(), UrlUtil.getyUrl(ENTITY));
 			}
 			
 		} catch (Exception ex) {
@@ -144,7 +135,7 @@ public class PromoController extends AbstractPageController {
 		try {
 			Optional<Promo> promo = promoService.findById(id);
 			taskService.saveTaskDelete(promo.get());
-			return taskIsSavedResponse(Promo.class.getSimpleName(), promo.get().getTitle(), UrlUtil.getyUrl(PROMOS));
+			return taskIsSavedResponse(Promo.class.getSimpleName(), promo.get().getTitle(), UrlUtil.getyUrl(ENTITY));
 		} catch (Exception ex) {
 			LOG.error(ex.getLocalizedMessage(), ex);
 			return errorResponse(ex);

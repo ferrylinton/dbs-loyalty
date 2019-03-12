@@ -1,16 +1,16 @@
 <!doctype html>
 <html lang="en" th:lang="${#locale}" xmlns:th="http://www.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head th:replace="fragment/head.html :: content(title=#{menu.role})"></head>
+<head th:replace="fragment/head.html :: content(title=#{role})"></head>
 
 <body>
 	<div th:replace="fragment/navbar.html :: content"></div>
 	<div class="bg-white">
 		<nav aria-label="breadcrumb">
 	        <ol class="breadcrumb border-bottom">
-	            <li class="breadcrumb-item"><a th:href="@{/}" th:text="#{menu.home}"></a></li>
-	            <li class="breadcrumb-item"><a th:href="@{/roles}" th:text="#{menu.role}"></a></li>
-	            <li class="breadcrumb-item active" aria-current="page" th:text="#{menu.form}"></li>
+	            <li class="breadcrumb-item"><a th:href="@{/}" th:text="#{home}"></a></li>
+	            <li class="breadcrumb-item"><a th:href="@{/role}" th:text="#{role}"></a></li>
+	            <li class="breadcrumb-item active" aria-current="page" th:text="#{form}"></li>
 	        </ol>
 	    </nav>
 		<div class="container-fluid pb-3">
@@ -20,17 +20,17 @@
 							<div class="border alert alert-light text-center" role="alert" th:if="${error}">
 				                <i class="icon-attention"></i> <span th:text="${error}"></span>
 				            </div>
-							<form th:action="@{/roles}" th:object="${role}" method="post" autocomplete="off" onsubmit="return Data.submit(this)" th:if="role != null">
+							<form th:action="@{/role}" th:object="${role}" method="post" autocomplete="off" onsubmit="return Data.submit(this)" th:if="role != null">
 								<div class="form-group" th:if="${role.id != null}">
-									<label for="id" th:text="#{label.id}">Id</label>
+									<label for="id" th:text="#{id}">Id</label>
 									<input class="form-control" type="text" th:field="*{id}" readonly="readonly" />
 								</div>
 								<div class="form-group">
-									<label for="name" th:text="|#{label.name} *|">Name *</label>
-									<input class="form-control" type="text" th:placeholder="#{label.name}" th:field="*{name}" maxlength="40" />
+									<label for="name" th:text="|#{name} *|">Name *</label>
+									<input class="form-control" type="text" th:placeholder="#{name}" th:field="*{name}" maxlength="40" />
 								</div>
 								<div class="form-group">
-									<label for="authorities" th:text="|#{label.authorities} *|">Authorities *</label>
+									<label for="authorities" th:text="|#{authorities} *|">Authorities *</label>
 									<div class="form-check">
 										<div class="row">
 											<div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6" th:each="authority : ${authorities}">
@@ -41,11 +41,11 @@
 									</div>
 								</div>
 								<div th:replace="fragment/audit.html :: content(${role})"></div>
-								<a class="btn btn-sm btn-secondary px-3" th:href="@{/roles}">
-									<i class="icon-left"></i> <span th:text="#{label.back}"></span>
+								<a class="btn btn-sm btn-secondary px-3" th:href="@{/role}">
+									<i class="icon-left"></i> <span th:text="#{back}"></span>
 								</a>
 								<button class="btn btn-sm btn-primary px-3" type="submit" sec:authorize="hasRole('USER')">
-									<i class="icon-floppy"></i> <span th:text="#{label.save}"></span>
+									<i class="icon-floppy"></i> <span th:text="#{save}"></span>
 								</button>
 							</form>
 						</div>

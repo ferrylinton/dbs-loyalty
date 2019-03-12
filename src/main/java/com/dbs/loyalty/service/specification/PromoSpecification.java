@@ -1,5 +1,7 @@
 package com.dbs.loyalty.service.specification;
 
+import static com.dbs.loyalty.service.specification.Constant.*;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.data.jpa.domain.Specification;
@@ -10,30 +12,10 @@ import com.dbs.loyalty.domain.Promo;
 
 public class PromoSpecification {
 
-	public static final String CODE = "code";
-	
-	public static final String ID = "id";
-	
-	public static final String TITLE = "title";
-	
-	public static final String DESCRIPTION = "description";
-	
-	public static final String LIKE_FORMAT = "%%%s%%";
+	public static Specification<Promo> getSpec(HttpServletRequest request) {
+		return Specification.where(keyword(request));
+	}
 
-	public static final String KY_PARAM = "ky";;
-	
-	public static Specification<Promo> getSpecfication(HttpServletRequest request) {
-		Specification<Promo> specification = Specification
-				.where(all())
-				.and(keyword(request));
-		
-		return specification;
-	}
-	
-	public static Specification<Promo> all() {
-		return (task, cq, cb) -> cb.notEqual(task.get(ID), Constant.EMPTY);
-	}
-	
 	public static Specification<Promo> keyword(HttpServletRequest request) {
 		if(request.getParameter(KY_PARAM) != null) {
 			String keyword = request.getParameter(KY_PARAM).trim().toLowerCase();
@@ -43,7 +25,7 @@ public class PromoSpecification {
 						cb.like(cb.lower(task.get(DESCRIPTION)), keyword)
 					);
 		}else {
-			return null;
+			return (task, cq, cb) -> cb.notEqual(task.get(ID), Constant.EMPTY);
 		}
 	}
 	

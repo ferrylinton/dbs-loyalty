@@ -1,15 +1,15 @@
 <!doctype html>
 <html th:lang="${#locale}" xmlns:th="http://www.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head th:replace="fragment/head.html :: content(title=#{menu.role})"></head>
+<head th:replace="fragment/head.html :: content(title=#{role})"></head>
 
 <body>
     <div th:replace="fragment/navbar.html :: content"></div>
     <div class="bg-white">
 	    <nav aria-label="breadcrumb">
 	        <ol class="breadcrumb border-bottom">
-	            <li class="breadcrumb-item"><a th:href="@{/}" th:text="#{menu.home}"></a></li>
-	            <li class="breadcrumb-item active" aria-current="page" th:text="#{menu.role}"></li>
+	            <li class="breadcrumb-item"><a th:href="@{/}" th:text="#{home}"></a></li>
+	            <li class="breadcrumb-item active" aria-current="page" th:text="#{role}"></li>
 	        </ol>
 	    </nav>
 	    <div th:replace="fragment/toast.html :: content"></div>
@@ -17,14 +17,14 @@
 			<div class="min-height border p-3">
 	            <div class="row no-gutters mb-3">
 	                <div class="col-10 col-sm-8 col-md-5 col-lg-4 col-xl-3 mr-auto">
-	                    <form th:action="@{/roles}" method="get" autocomplete="off" >
+	                    <form th:action="@{/role}" method="get" autocomplete="off" >
 							<div class="input-group">
-								<input class="form-control" name="keyword" maxlength="40" th:value="${param.keyword}" th:placeholder="#{label.name}" />
+								<input class="form-control" name="ky" maxlength="40" th:value="${param.ky}" th:placeholder="#{keyword}" />
 								<div class="input-group-append">
 									<button class="btn btn-light border text-secondary" type="submit">
 										<i class="icon-search"></i>
 									</button>
-									<a class="btn btn-light border text-secondary" th:href="@{/roles}">
+									<a class="btn btn-light border text-secondary" th:href="@{/role}">
 										<i class="icon-arrows-cw"></i>
 									</a>
 								</div>
@@ -32,7 +32,7 @@
 						</form>
 	                </div>
 	                <div class="col-auto" sec:authorize="hasRole('USER')">
-	                    <a class="btn btn-light text-secondary border" th:href="@{/roles/0}">
+	                    <a class="btn btn-light text-secondary border" th:href="@{/role/0}">
 	                        <i class="icon-plus"></i>
 	                    </a>
 	                </div>
@@ -40,10 +40,14 @@
 	            <div class="table-responsive" th:if="${page.getTotalElements() > 0}">
 	                <table class="table table-sm table-striped table-hover border">
 	                    <thead>
-	                        <tr>
+	                        <tr th:with="ascending=${order.getDirection().name() == 'ASC'}">
 	                            <th width="40px"></th>
 								<th width="40px">#</th>
-	                            <th th:utext="${@linkService.sortLink('name')}"></th>
+	                            <th th:with="sort=|&sort=name,${ascending ? 'DESC' : 'ASC'}|">
+                                	<a th:href="@{|?page=${page.getNumber()}${params}${sort}|}" class="text-decoration-none">
+                                		<span th:text="#{name}"></span> <i th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></i>
+                                	</a>
+                                </th>
 	                        </tr>
 	                    </thead>
 	                    <tbody>
@@ -54,12 +58,12 @@
 										 	<i class="icon-cog"></i>
 										</button>
 										<div class="dropdown-menu py-0 shadow" aria-labelledby="dropdownMenuButton">
-										    <a class="dropdown-item pl-1" th:href="@{|/roles/${role.id}|}">
+										    <a class="dropdown-item pl-1" th:href="@{|/role/${role.id}|}">
 										    	<i class="icon-eye"></i> <span th:text="#{label.view}"></span>
 										    </a>
 										    <th:block sec:authorize="hasRole('USER')">
 											   	<div class="dropdown-divider my-0"></div>
-												<a class="dropdown-item pl-1 text-danger" th:href="@{|/roles/${role.id}|}" onclick="return Data.confirm(this)">
+												<a class="dropdown-item pl-1 text-danger" th:href="@{|/role/${role.id}|}" onclick="return Data.confirm(this)">
 													<i class="icon-trash"></i> <span th:text="#{label.delete}"></span>
 												</a>
 											</th:block>

@@ -28,6 +28,8 @@ public class Constant {
 	
 	public static final String EMAIL = "email";
 	
+	public static final String NAME = "name";
+	
 	public static final String LOGIN_STATUS = "loginStatus";
 	
 	public static final String IP = "ip";
@@ -39,5 +41,5 @@ public class Constant {
 	public static final String BROWSER = "browser";
 	
 	public static final String DEVICE_TYPE = "deviceType";
-
+	
 }

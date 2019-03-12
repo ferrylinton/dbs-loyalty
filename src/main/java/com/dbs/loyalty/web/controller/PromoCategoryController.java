@@ -5,6 +5,7 @@ import static com.dbs.loyalty.config.Constant.PAGE;
 import static com.dbs.loyalty.config.Constant.ZERO;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,10 +14,8 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.mapping.PropertyReferenceException;
-import org.springframework.data.web.PageableDefault;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -30,6 +29,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dbs.loyalty.domain.Authority;
@@ -41,22 +41,22 @@ import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.validator.PromoCategoryValidator;
 
 @Controller
-@RequestMapping("/promocategories")
+@RequestMapping("/promocategory")
 public class PromoCategoryController extends AbstractPageController {
 
-	private final Logger LOG 				= LoggerFactory.getLogger(PromoCategoryController.class);
+	private final Logger LOG 			= LoggerFactory.getLogger(PromoCategoryController.class);
 
-	private final String PROMOCATEGORY		= "promocategory";
+	private final String ENTITY			= "promocategory";
 	
-	private final String PROMOCATEGORIES	= "promocategories";
+	private final String REDIRECT 		= "redirect:/promocategory";
+
+	private final String VIEW_TEMPLATE	= "promocategory/view";
+
+	private final String FORM_TEMPLATE	= "promocategory/form";
+
+	private final String SORT_BY 		= "name";
 	
-	private final String REDIRECT 			= "redirect:/promocategories";
-
-	private final String VIEW_TEMPLATE 		= "promocategories/view";
-
-	private final String FORM_TEMPLATE 		= "promocategories/form";
-
-	private final String SORT_BY 			= "name";
+	private final Order ORDER			= Order.asc(SORT_BY).ignoreCase();
 
 	private final PromoCategoryService promoCategoryService;
 
@@ -72,24 +72,17 @@ public class PromoCategoryController extends AbstractPageController {
 
 	@PreAuthorize("hasAnyRole('PROMO', 'PROMO_VIEW')")
 	@GetMapping
-	public String view(HttpServletRequest request, @PageableDefault Pageable pageable) {
-		Page<PromoCategory> page = null;
+	public String view(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
+		Order order = (sort.getOrderFor(SORT_BY) == null) ? ORDER : sort.getOrderFor(SORT_BY);
+		Page<PromoCategory> page = promoCategoryService.findAll(getPageable(params, order), request);
 
-		try {
-			page = promoCategoryService.findAll(getKeyword(request), isValid(SORT_BY, pageable));
-			
-			if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
-				return REDIRECT;
-			} else {
-				request.setAttribute(PAGE, page);
-			}
-			
-		} catch (IllegalArgumentException | PropertyReferenceException ex) {
-			LOG.error(ex.getLocalizedMessage());
-			request.setAttribute(ERROR, ex.getLocalizedMessage());
-			request.setAttribute(PAGE, promoCategoryService.findAll(getPageable(SORT_BY)));
+		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
+			return REDIRECT;
 		}
 		
+		request.setAttribute(PAGE, page);
+		setParamsQueryString(params, request);
+		setPagerQueryString(order, page.getNumber(), request);
 		return VIEW_TEMPLATE;
 	}
 
@@ -97,12 +90,12 @@ public class PromoCategoryController extends AbstractPageController {
 	@GetMapping("/{id}")
 	public String view(ModelMap model, @PathVariable String id){
 		if (id.equals(ZERO)) {
-			model.addAttribute(PROMOCATEGORY, new PromoCategory());
+			model.addAttribute(ENTITY, new PromoCategory());
 		} else {
 			Optional<PromoCategory> promoCategory = promoCategoryService.findById(id);
 			
 			if (promoCategory.isPresent()) {
-				model.addAttribute(PROMOCATEGORY, promoCategory.get());
+				model.addAttribute(ENTITY, promoCategory.get());
 			} else {
 				model.addAttribute(ERROR, getNotFoundMessage(id));
 			}
@@ -126,7 +119,7 @@ public class PromoCategoryController extends AbstractPageController {
 					taskService.saveTaskModify(current.get(), promoCategory);
 				}
 
-				return taskIsSavedResponse(PromoCategory.class.getSimpleName(), promoCategory.getName(), UrlUtil.getyUrl(PROMOCATEGORIES));
+				return taskIsSavedResponse(PromoCategory.class.getSimpleName(), promoCategory.getName(), UrlUtil.getyUrl(ENTITY));
 			}
 			
 		} catch (Exception ex) {
@@ -142,7 +135,7 @@ public class PromoCategoryController extends AbstractPageController {
 		try {
 			Optional<PromoCategory> promoCategory = promoCategoryService.findById(id);
 			taskService.saveTaskDelete(promoCategory.get());
-			return taskIsSavedResponse(PromoCategory.class.getSimpleName(), promoCategory.get().getName(), UrlUtil.getyUrl(PROMOCATEGORIES));
+			return taskIsSavedResponse(PromoCategory.class.getSimpleName(), promoCategory.get().getName(), UrlUtil.getyUrl(ENTITY));
 		} catch (Exception ex) {
 			LOG.error(ex.getLocalizedMessage(), ex);
 			return errorResponse(ex);

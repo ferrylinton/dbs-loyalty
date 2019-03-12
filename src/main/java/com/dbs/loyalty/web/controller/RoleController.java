@@ -5,6 +5,7 @@ import static com.dbs.loyalty.config.Constant.PAGE;
 import static com.dbs.loyalty.config.Constant.ZERO;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,10 +14,8 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.mapping.PropertyReferenceException;
-import org.springframework.data.web.PageableDefault;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -30,6 +29,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dbs.loyalty.domain.Authority;
@@ -41,22 +41,22 @@ import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.validator.RoleValidator;
 
 @Controller
-@RequestMapping("/roles")
+@RequestMapping("/role")
 public class RoleController extends AbstractPageController {
 
 	private final Logger LOG 			= LoggerFactory.getLogger(RoleController.class);
 
-	private final String ROLE 			= "role";
+	private final String ENTITY 		= "role";
 	
-	private final String ROLES 			= "roles";
-	
-	private final String REDIRECT 		= "redirect:/roles";
+	private final String REDIRECT 		= "redirect:/role";
 
-	private final String VIEW_TEMPLATE 	= "roles/view";
+	private final String VIEW_TEMPLATE 	= "role/view";
 
-	private final String FORM_TEMPLATE 	= "roles/form";
+	private final String FORM_TEMPLATE 	= "role/form";
 
 	private final String SORT_BY 		= "name";
+	
+	private final Order ORDER			= Order.asc(SORT_BY).ignoreCase();
 
 	private final RoleService roleService;
 
@@ -72,24 +72,17 @@ public class RoleController extends AbstractPageController {
 
 	@PreAuthorize("hasAnyRole('USER', 'USER_VIEW')")
 	@GetMapping
-	public String view(HttpServletRequest request, @PageableDefault Pageable pageable) {
-		Page<Role> page = null;
+	public String view(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
+		Order order = (sort.getOrderFor(SORT_BY) == null) ? ORDER : sort.getOrderFor(SORT_BY);
+		Page<Role> page = roleService.findAll(getPageable(params, order), request);
 
-		try {
-			page = roleService.findAll(getKeyword(request), isValid(SORT_BY, pageable));
-			
-			if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
-				return REDIRECT;
-			} else {
-				request.setAttribute(PAGE, page);
-			}
-			
-		} catch (IllegalArgumentException | PropertyReferenceException ex) {
-			LOG.error(ex.getLocalizedMessage());
-			request.setAttribute(ERROR, ex.getLocalizedMessage());
-			request.setAttribute(PAGE, roleService.findAll(getPageable(SORT_BY)));
+		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
+			return REDIRECT;
 		}
 		
+		request.setAttribute(PAGE, page);
+		setParamsQueryString(params, request);
+		setPagerQueryString(order, page.getNumber(), request);
 		return VIEW_TEMPLATE;
 	}
 
@@ -97,12 +90,12 @@ public class RoleController extends AbstractPageController {
 	@GetMapping("/{id}")
 	public String view(ModelMap model, @PathVariable String id){
 		if (id.equals(ZERO)) {
-			model.addAttribute(ROLE, new Role());
+			model.addAttribute(ENTITY, new Role());
 		} else {
 			Optional<Role> role = roleService.findById(id);
 			
 			if (role.isPresent()) {
-				model.addAttribute(ROLE, role.get());
+				model.addAttribute(ENTITY, role.get());
 			} else {
 				model.addAttribute(ERROR, getNotFoundMessage(id));
 			}
@@ -126,7 +119,7 @@ public class RoleController extends AbstractPageController {
 					taskService.saveTaskModify(current.get(), role);
 				}
 
-				return taskIsSavedResponse(Role.class.getSimpleName(), role.getName(), UrlUtil.getyUrl(ROLES));
+				return taskIsSavedResponse(Role.class.getSimpleName(), role.getName(), UrlUtil.getyUrl(ENTITY));
 			}
 			
 		} catch (Exception ex) {
@@ -142,7 +135,7 @@ public class RoleController extends AbstractPageController {
 		try {
 			Optional<Role> role = roleService.findWithAuthoritiesById(id);
 			taskService.saveTaskDelete(role.get());
-			return taskIsSavedResponse(Role.class.getSimpleName(), role.get().getName(), UrlUtil.getyUrl(ROLES));
+			return taskIsSavedResponse(Role.class.getSimpleName(), role.get().getName(), UrlUtil.getyUrl(ENTITY));
 		} catch (Exception ex) {
 			LOG.error(ex.getLocalizedMessage(), ex);
 			return errorResponse(ex);

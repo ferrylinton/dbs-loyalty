@@ -62,7 +62,7 @@ public class TaskService {
 	}
 	
 	public Page<Task> findAll(Map<String, String> params, Pageable pageable, HttpServletRequest request){
-		Specification<Task> spec = TaskSpecification.getSpecfication(params, request);
+		Specification<Task> spec = TaskSpecification.getSpec(params, request);
 		return taskRepository.findAll(spec, pageable);
 	}
 	

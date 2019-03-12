@@ -6,10 +6,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import com.dbs.loyalty.domain.Role;
 
-public interface RoleRepository extends JpaRepository<Role, String>{
+public interface RoleRepository extends JpaRepository<Role, String>, JpaSpecificationExecutor<Role>{
 
 	Page<Role> findAllByNameContainingAllIgnoreCase(String name, Pageable pageable);
 	

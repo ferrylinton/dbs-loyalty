@@ -20,6 +20,8 @@ public class Constant {
 	
 	public static final String PAGE 				= "page";
 	
+	public static final String SORT 				= "sort";
+	
 	public static final String KEYWORD 				= "keyword";
 	
 	public static final String MESSAGE				= "message";
@@ -38,5 +40,17 @@ public class Constant {
 	
 	public static final String ROLE_CUSTOMER		= "ROLE_CUSTOMER";
 	
+	public static final int	SIZE					= 10;
 	
+	public static final String PARAMS				= "params";
+	
+	public static final String AND					= "&";
+	
+	public static final String EQUALS				= "=";
+	
+	public static final String NEXT					= "next";
+	
+	public static final String PREVIOUS				= "previous";
+	
+	public static final String ORDER				= "order";
 }

@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -13,6 +15,7 @@ import com.dbs.loyalty.domain.PromoCategory;
 import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.PromoCategoryRepository;
+import com.dbs.loyalty.service.specification.PromoCategorySpecification;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,17 +39,9 @@ public class PromoCategoryService{
 	public List<PromoCategory> findAll(Sort sort){
 		return promoCategoryRepository.findAll(sort);
 	}
-	
-	public Page<PromoCategory> findAll(Pageable pageable) {
-		return promoCategoryRepository.findAll(pageable);
-	}
-	
-	public Page<PromoCategory> findAll(String keyword, Pageable pageable) {
-		if(keyword == null) {
-			return findAll(pageable);
-		}else {
-			return promoCategoryRepository.findAllByNameContainingAllIgnoreCase(keyword, pageable);
-		}
+
+	public Page<PromoCategory> findAll(Pageable pageable, HttpServletRequest request) {
+		return promoCategoryRepository.findAll(PromoCategorySpecification.getSpec(request), pageable);
 	}
 	
 	public Optional<PromoCategory> findByName(String name) {

@@ -3,6 +3,8 @@ package com.dbs.loyalty.service;
 import java.io.IOException;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,7 @@ import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.domain.User;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.UserRepository;
+import com.dbs.loyalty.service.specification.UserSpecification;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -40,16 +43,8 @@ public class UserService{
 		return userRepository.findWithRoleById(id);
 	}
 	
-	public Page<User> findAll(Pageable pageable) {
-		return userRepository.findAll(pageable);
-	}
-	
-	public Page<User> findAll(String keyword, Pageable pageable) {
-		if(keyword == null) {
-			return findAll(pageable);
-		}else {
-			return userRepository.findAllByEmailContainingAllIgnoreCase(keyword, pageable);
-		}
+	public Page<User> findAll(Pageable pageable, HttpServletRequest request) {
+		return userRepository.findAll(UserSpecification.getSpec(request), pageable);
 	}
 	
 	public boolean isEmailExist(User user) {
