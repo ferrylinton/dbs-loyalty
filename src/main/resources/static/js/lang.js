@@ -31,8 +31,10 @@ var Lang = (function () {
 			"label":{
 				"activated" : "Activated",
 				"deactivated" : "Deactivated",
+				"no": "No",
 				"reject": "Reject",
-				"verify": "Verify"
+				"verify": "Verify",
+				"yes": "Yes"
 			},
 			"message": {
 				"DeleteConfirm": "Delete data ?",
@@ -80,8 +82,10 @@ var Lang = (function () {
 			"label":{
 				"activated" : "Aktif",
 				"deactivated" : "Tidak Aktif",
+				"no": "Tidak",
 				"reject": "Ditolak",
-				"verify": "Diverfikasi"
+				"verify": "Diverfikasi",
+				"yes": "Ya"
 			},
 			"message": {
 				"DeleteConfirm": "Hapus data ?",

@@ -1,4 +1,4 @@
-package com.dbs.loyalty.thymeleaf.service;
+package com.dbs.loyalty.service;
 
 import java.util.Arrays;
 import java.util.HashSet;

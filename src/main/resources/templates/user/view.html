@@ -84,7 +84,14 @@
 				<div class="border alert alert-light text-center" role="alert" th:if="${page.getTotalElements() == 0}">
 					<i class="icon-attention"></i> <span th:text="#{message.dataNotFound}"></span>
 				</div>
-				<div th:replace="fragment/pager.html :: content"></div>
+				<th:block th:if="${page != null && page.getTotalPages() > 1}">
+                    <a class="btn btn-sm btn-secondary" th:href="@{|?${previous}${params}|}" th:classappend="${not page.hasPrevious()} ? 'disabled'">
+                    	<i class="icon-left-open"></i> <span th:text="#{previous}"></span>
+                    </a>
+                    <a class="btn btn-sm btn-secondary" th:href="@{|?${next}${params}|}" th:classappend="${not page.hasNext()} ? 'disabled'">
+                    	<span th:text="#{next}"></span> <i class="icon-right-open"></i>
+                    </a>
+                </th:block>
 			</div>
 		</div>
 	</div>

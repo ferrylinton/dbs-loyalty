@@ -39,7 +39,7 @@
 							<div class="row no-gutters">
 								<div class="col-12 col-sm-12 col-md-9 col-lg-8 col-xl-7">
 									<div class="input-group">
-										<input class="form-control" name="ky" maxlength="40" th:value="${param.ky}" th:placeholder="#{label.keyword}" />
+										<input class="form-control" name="ky" maxlength="40" th:value="${param.ky}" th:placeholder="#{keyword}" />
 										<div class="input-group-append">
 											<button class="btn btn-light border text-secondary" type="submit">
 												<i class="icon-search"></i>
@@ -80,7 +80,7 @@
 										</button>
 										<div class="dropdown-menu py-0 shadow" aria-labelledby="dropdownMenuButton">
 										    <a class="dropdown-item pl-1" th:href="@{|/task/${task.id}|}">
-										    	<i class="icon-eye"></i> <span th:text="#{label.view}"></span>
+										    	<i class="icon-eye"></i> <span th:text="#{view}"></span>
 										    </a>
 										</div>
 									</div>
@@ -97,7 +97,14 @@
 				<div class="border alert alert-light text-center" role="alert" th:if="${page.getTotalElements() == 0}">
 					<i class="icon-attention"></i> <span th:text="#{message.dataNotFound}"></span>
 				</div>
-				<div th:replace="fragment/pager.html :: content"></div>
+				<th:block th:if="${page != null && page.getTotalPages() > 1}">
+                    <a class="btn btn-sm btn-secondary" th:href="@{|?${previous}${params}|}" th:classappend="${not page.hasPrevious()} ? 'disabled'">
+                    	<i class="icon-left-open"></i> <span th:text="#{previous}"></span>
+                    </a>
+                    <a class="btn btn-sm btn-secondary" th:href="@{|?${next}${params}|}" th:classappend="${not page.hasNext()} ? 'disabled'">
+                    	<span th:text="#{next}"></span> <i class="icon-right-open"></i>
+                    </a>
+                </th:block>
 			</div>
 		</div>
 	</div>

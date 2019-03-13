@@ -142,7 +142,7 @@ public class PromoController extends AbstractPageController {
 		}
 	}
 
-	@ModelAttribute("promocategories")
+	@ModelAttribute("promoCategories")
 	public List<PromoCategory> getPromoCategories() {
 		return promoCategoryService.findAll(Sort.by(NAME));
 	}

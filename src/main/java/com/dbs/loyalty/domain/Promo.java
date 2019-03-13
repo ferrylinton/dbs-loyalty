@@ -58,7 +58,6 @@ public class Promo extends AbstractId implements Serializable {
     @Column(name = "term_and_condition", nullable = false, columnDefinition="TEXT")
     private String termAndCondition;
 
-    
     @Lob
     @Column(name = "image_bytes", nullable = false, columnDefinition="MEDIUMBLOB")
     @Type(type = "org.hibernate.type.BinaryType")
