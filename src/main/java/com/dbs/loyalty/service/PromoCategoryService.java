@@ -65,18 +65,20 @@ public class PromoCategoryService{
 	public String execute(Task task) throws JsonParseException, JsonMappingException, IOException {
 		PromoCategory promoCategory = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), PromoCategory.class);
 		
-		if(task.getTaskOperation() == TaskOperation.ADD) {
-			promoCategory.setCreatedBy(task.getMaker());
-			promoCategory.setCreatedDate(task.getMadeDate());
-			promoCategoryRepository.save(promoCategory);
-		}else if(task.getTaskOperation() == TaskOperation.MODIFY) {
-			promoCategory.setLastModifiedBy(task.getMaker());
-			promoCategory.setLastModifiedDate(task.getMadeDate());
-			promoCategoryRepository.save(promoCategory);
-		}else if(task.getTaskOperation() == TaskOperation.DELETE) {
-			promoCategoryRepository.delete(promoCategory);
+		if(task.getVerified()) {
+			if(task.getTaskOperation() == TaskOperation.ADD) {
+				promoCategory.setCreatedBy(task.getMaker());
+				promoCategory.setCreatedDate(task.getMadeDate());
+				promoCategoryRepository.save(promoCategory);
+			}else if(task.getTaskOperation() == TaskOperation.MODIFY) {
+				promoCategory.setLastModifiedBy(task.getMaker());
+				promoCategory.setLastModifiedDate(task.getMadeDate());
+				promoCategoryRepository.save(promoCategory);
+			}else if(task.getTaskOperation() == TaskOperation.DELETE) {
+				promoCategoryRepository.delete(promoCategory);
+			}
 		}
-		
+
 		return promoCategory.getName();
 	}
 	

@@ -19,6 +19,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import com.dbs.loyalty.config.Constant;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Class of Role
@@ -42,6 +43,7 @@ public class Role extends AbstractId implements Serializable {
     @Column(name = "name", length = 40, nullable = false)
     private String name;
 	
+	@JsonIgnore
 	@NotEmpty(message = "{validation.notempty.authorities}")
 	@ManyToMany(fetch=FetchType.LAZY)
     @JoinTable(	
@@ -65,6 +67,11 @@ public class Role extends AbstractId implements Serializable {
 
 	public void setAuthorities(Set<Authority> authorities) {
 		this.authorities = authorities;
+	}
+
+	@Override
+	public String toString() {
+		return getId() + "," + name;
 	}
 
 }

@@ -1,7 +1,7 @@
 <!doctype html>
 <html th:lang="${#locale}" xmlns:th="http://www.thymeleaf.org" xmlns:nl2br="https://github.com/bufferings/thymeleaf-extras-nl2br">
 
-<head th:replace="fragment/head.html :: content(title=#{label.error})"></head>
+<head th:replace="fragment/head.html :: content(title='Error')"></head>
 
 <body>
     <div th:replace="fragment/navbar.html :: content"></div>
@@ -10,14 +10,14 @@
             <div class="col-12">
                 <div class="border min-height my-3 p-3">
                     <div class="border-bottom pb-2">
-                        <i class="icon-attention"></i> <span th:text="#{label.error}"></span> : <span th:text="${errorData.statusCode}"></span>
+                        <i class="icon-attention"></i> <span>Error</span> : <span th:text="${errorData.statusCode}"></span>
                     </div>
                     <div class="py-2">
                         <span th:text="${errorData.requestURI}"></span>
                         <p nl2br:text="${errorData.message}"></p>
                         <a class="btn btn-sm btn-dark" data-toggle="collapse" href="#error-detail" role="button"
                             aria-expanded="false" aria-controls="error-detail" th:if="${not #strings.isEmpty(errorData.detail)}">
-                            <i class="icon-down-dir"></i> <span th:text="#{label.showDetail}"></span>
+                            <i class="icon-down-dir"></i> <span th:text="#{detail}"></span>
                         </a>
                         <div class="collapse border-top mt-3 pt-2 font-08" id="error-detail">
                             <p class="no-break" nl2br:text="${errorData.detail}"></p>

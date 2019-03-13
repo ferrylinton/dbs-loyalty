@@ -54,7 +54,7 @@ function initTaskDataDetail(){
 			for (var key in obj) {
 				console.log(obj[key]);
 				table += '<tr>';
-				table += '<td valign="top">' + key + '</td>';
+				table += '<td valign="top">' + Lang.field(key) + '</td>';
 				table += '<td valign="top"> : </td>';
 				
 				if(Array.isArray(obj[key])){
@@ -88,7 +88,7 @@ function objectJsonToString(obj){
 	var text = '';
 	
 	for (var key in obj) {
-		text += ((text === '') ? '[' : ', ') + key + '=' + obj[key];
+		text += ((text === '') ? '[' : ', ') + Lang.field(key) + ' = ' + obj[key];
 	}
 	
 	return text += ']';

@@ -66,18 +66,20 @@ public class UserService{
 	public String execute(Task task) throws JsonParseException, JsonMappingException, IOException {
 		User user = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), User.class);
 		
-		if(task.getTaskOperation() == TaskOperation.ADD) {
-			user.setCreatedBy(task.getMaker());
-			user.setCreatedDate(task.getMadeDate());
-			userRepository.save(user);
-		}else if(task.getTaskOperation() == TaskOperation.MODIFY) {
-			user.setLastModifiedBy(task.getMaker());
-			user.setLastModifiedDate(task.getMadeDate());
-			userRepository.save(user);
-		}else if(task.getTaskOperation() == TaskOperation.DELETE) {
-			userRepository.delete(user);
+		if(task.getVerified()) {
+			if(task.getTaskOperation() == TaskOperation.ADD) {
+				user.setCreatedBy(task.getMaker());
+				user.setCreatedDate(task.getMadeDate());
+				userRepository.save(user);
+			}else if(task.getTaskOperation() == TaskOperation.MODIFY) {
+				user.setLastModifiedBy(task.getMaker());
+				user.setLastModifiedDate(task.getMadeDate());
+				userRepository.save(user);
+			}else if(task.getTaskOperation() == TaskOperation.DELETE) {
+				userRepository.delete(user);
+			}
 		}
-		
+
 		return user.getName();
 	}
 	

@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
-import com.dbs.loyalty.domain.enumeration.TaskOperation;
+import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.model.BadRequestResponse;
 import com.dbs.loyalty.model.ErrorResponse;
 import com.dbs.loyalty.model.SuccessResponse;
@@ -21,6 +21,8 @@ public abstract class AbstractController {
 	protected final String TASK_IS_SAVED = "message.taskIsSaved";
 	
 	protected final String TASK_IS_VERIFIED = "message.taskIsVerified";
+	
+	protected final String TASK_IS_REJECTED = "message.taskIsRejected";
 	
 	protected String getNotFoundMessage(String id) {
 		return MessageService.getMessage(DATA_WITH_ID_NOT_FOUND, id);
@@ -57,14 +59,17 @@ public abstract class AbstractController {
 	            .body(new ErrorResponse(ex.getLocalizedMessage()));
 	}
 	
-	protected ResponseEntity<?> saveResponse(TaskOperation taskOperation, String taskDataType, String val, String resultUrl) {
-		Object[] args = new Object[] { MessageService.getMessage(taskOperation.toString()), MessageService.getMessage(taskDataType), val };
+	protected ResponseEntity<?> saveResponse(String message, String resultUrl) {
 		SuccessResponse response = new SuccessResponse();
-		response.setMessage(MessageService.getMessage(TASK_IS_VERIFIED, args));
+		response.setMessage(message);
 		response.setResultUrl(resultUrl);
 		return ResponseEntity
 	            .status(HttpStatus.OK)
 	            .body(response);
 	}
 	
+	protected String getMessage(Task task, String val) {
+		Object[] args = new Object[] { MessageService.getMessage(task.getTaskOperation().toString()), MessageService.getMessage(task.getTaskDataType()), val };
+		return MessageService.getMessage(task.getVerified() ? TASK_IS_VERIFIED : TASK_IS_REJECTED, args);
+	}
 }

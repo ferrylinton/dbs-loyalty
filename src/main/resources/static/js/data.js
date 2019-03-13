@@ -52,7 +52,10 @@ var Data = (function () {
                 dataType: 'json',
                 contentType: false,
                 processData: false,
-                data: new FormData(element)
+                data: new FormData(element),
+            	beforeSend: function(jqXHR, settings){
+        			jqXHR.url = $(element).attr('action');
+            	}
             }
     	
         $.ajax(settings)
@@ -85,7 +88,7 @@ var Data = (function () {
             Alert.error(Lang.error(jqXHR.status));
             window.location.href = $('meta[name=contextPath]').attr('content') + "login?forbidden";
         } else if (jqXHR.status == 404 || jqXHR.status == 405 || jqXHR.status == 406) {
-            Alert.error(Lang.error(jqXHR.status));
+            Alert.error(jqXHR.url + ' : ' + Lang.error(jqXHR.status));
         } else {
         	if(typeof jqXHR.responseJSON === undefined || typeof jqXHR.responseJSON.message === undefined){
         		Alert.error('<span class="text-red">ERROR : ' + jqXHR.responseText + '</span>');

@@ -93,7 +93,7 @@ public class RoleController extends AbstractPageController {
 			model.addAttribute(ENTITY, new Role());
 		} else {
 			Optional<Role> role = roleService.findById(id);
-			
+			System.out.println("----------------- role.isPresent() : " + role.isPresent());
 			if (role.isPresent()) {
 				model.addAttribute(ENTITY, role.get());
 			} else {

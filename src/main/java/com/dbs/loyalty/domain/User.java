@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -19,6 +18,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.ColumnDefault;
 
 import com.dbs.loyalty.config.Constant;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Class of User
@@ -48,6 +48,7 @@ public class User extends AbstractId implements Serializable {
 	@Column(name = "name", length = 50, nullable = false)
 	private String name;
 	
+	@JsonIgnore
 	@Size(min=6, max = 30, message = "{validation.size.password}")
 	@Transient
 	private String passwordPlain;
@@ -57,10 +58,6 @@ public class User extends AbstractId implements Serializable {
 
 	@Column(name = "activated", nullable = false)
 	private Boolean activated = true;
-
-    @Lob
-    @Column(name = "image_bytes", columnDefinition="BLOB")
-    private byte[] imageBytes;
 	
     @ColumnDefault("NULL")
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
@@ -105,14 +102,6 @@ public class User extends AbstractId implements Serializable {
 
 	public void setActivated(Boolean activated) {
 		this.activated = activated;
-	}
-
-	public byte[] getImageBytes() {
-		return imageBytes;
-	}
-
-	public void setImageBytes(byte[] imageBytes) {
-		this.imageBytes = imageBytes;
 	}
 
 	public Role getRole() {

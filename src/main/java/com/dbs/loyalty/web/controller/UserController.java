@@ -56,7 +56,7 @@ public class UserController extends AbstractPageController{
 
 	private final String FORM_TEMPLATE 	= "user/form";
 
-	private final String SORT_BY 		= "email";
+	private final String SORT_BY 		= "name";
 	
 	private final Order ORDER			= Order.asc(SORT_BY).ignoreCase();
 	

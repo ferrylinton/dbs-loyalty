@@ -90,7 +90,7 @@ public class TaskController extends AbstractPageController {
 			task.setChecker(SecurityUtil.getCurrentEmail());
 			task.setCheckedDate(Instant.now());
 			String val = taskService.save(task);
-			return saveResponse(task.getTaskOperation(), task.getTaskDataType(), val, UrlUtil.getyUrl(ENTITY));
+			return saveResponse(getMessage(task, val), UrlUtil.getyUrl(ENTITY));
 		} catch (Exception ex) {
 			LOG.error(ex.getLocalizedMessage(), ex);
 			taskService.save(ex, task);
