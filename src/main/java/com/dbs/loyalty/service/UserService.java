@@ -31,8 +31,8 @@ public class UserService{
 		this.userRepository = userRepository;
 	}
 	
-	public Optional<User> findByEmail(String email){
-		return userRepository.findByEmail(email);
+	public Optional<User> findWithRoleByUsername(String username){
+		return userRepository.findWithRoleByUsername(username);
 	}
 	
 	public Optional<User> findById(String id) {
@@ -80,7 +80,7 @@ public class UserService{
 			}
 		}
 
-		return user.getName();
+		return user.getEmail();
 	}
 	
 }

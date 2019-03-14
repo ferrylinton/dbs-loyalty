@@ -23,6 +23,7 @@ import com.dbs.loyalty.security.web.WebAuthenticationFailureHandler;
 import com.dbs.loyalty.security.web.WebAuthenticationProvider;
 import com.dbs.loyalty.security.web.WebAuthenticationSuccessHandler;
 import com.dbs.loyalty.service.CustomerService;
+import com.dbs.loyalty.service.LdapService;
 import com.dbs.loyalty.service.UserService;
 
 
@@ -67,8 +68,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	    	.formLogin()
 	    		.loginPage("/login")
 	    		.loginProcessingUrl("/login")
-	    		.usernameParameter("email")
-	    		.passwordParameter("password")
 	    		.successHandler(new WebAuthenticationSuccessHandler(loginEventPublisher))
 	    		.failureHandler(new WebAuthenticationFailureHandler(loginEventPublisher));
 	    
@@ -96,8 +95,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	}
 	
 	@Bean
-	public AuthenticationManager authenticationManager(UserService userService, CustomerService customerService) {
-	    return new ProviderManager(Arrays.asList(new WebAuthenticationProvider(userService), new RestAuthenticationProvider(customerService)));
+	public AuthenticationManager authenticationManager(UserService userService, LdapService ldapService, CustomerService customerService) {
+	    return new ProviderManager(Arrays.asList(new WebAuthenticationProvider(userService, ldapService), new RestAuthenticationProvider(customerService)));
 	}
  
 }

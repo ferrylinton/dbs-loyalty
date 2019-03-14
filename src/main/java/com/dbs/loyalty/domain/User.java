@@ -29,6 +29,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(	
 	name = "m_user",
 	uniqueConstraints = {
+		@UniqueConstraint(name = "m_user_username_uq", columnNames = { "username" }),
 		@UniqueConstraint(name = "m_user_email_uq", columnNames = { "email" })
 	}
 )
@@ -36,28 +37,27 @@ public class User extends AbstractId implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	@NotNull(message = "{validation.notnull.email}")
-	@Pattern(regexp = Constant.EMAIL_REGEX, message = "{validation.pattern.email}")
-    @Size(min = 5, max = 50, message = "{validation.size.email}")
+	@NotNull(message = "{validation.notnull.username}")
+	@Pattern(regexp = Constant.USERNAME_REGEX, message = "{validation.pattern.username}")
+	@Size(min = 2, max = 50, message = "{validation.size.username}")
+	@Column(name = "username", length = 50, nullable = false)
+	private String username;
+	
 	@Column(name = "email", length = 50, nullable = false)
 	private String email;
 	
-	@NotNull(message = "{validation.notnull.name}")
-	@Pattern(regexp = Constant.NAME_REGEX, message = "{validation.pattern.name}")
-	@Size(min = 2, max = 50, message = "{validation.size.name}")
-	@Column(name = "name", length = 50, nullable = false)
-	private String name;
-	
 	@JsonIgnore
-	@Size(min=6, max = 30, message = "{validation.size.password}")
 	@Transient
 	private String passwordPlain;
 	
-	@Column(name = "password_hash", length = 100, nullable = false)
+	@Column(name = "password_hash", length = 100)
 	private String passwordHash;
 
 	@Column(name = "activated", nullable = false)
 	private Boolean activated = true;
+	
+	@Column(name = "authenticate_from_db", nullable = false)
+	private Boolean authenticateFromDb = true;
 	
     @ColumnDefault("NULL")
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
@@ -70,14 +70,6 @@ public class User extends AbstractId implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public String getPasswordPlain() {
@@ -102,6 +94,14 @@ public class User extends AbstractId implements Serializable {
 
 	public void setActivated(Boolean activated) {
 		this.activated = activated;
+	}
+
+	public Boolean getAuthenticateFromDb() {
+		return authenticateFromDb;
+	}
+
+	public void setAuthenticateFromDb(Boolean authenticateFromDb) {
+		this.authenticateFromDb = authenticateFromDb;
 	}
 
 	public Role getRole() {

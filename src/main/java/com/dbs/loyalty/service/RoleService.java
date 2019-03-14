@@ -39,6 +39,10 @@ public class RoleService{
 	public Optional<Role> findWithAuthoritiesById(String id){
 		return roleRepository.findWithAuthoritiesById(id);
 	}
+	
+	public Optional<Role> findWithAuthoritiesByName(String name){
+		return roleRepository.findWithAuthoritiesByName(name);
+	}
 
 	public List<Role> findAll(Sort sort){
 		return roleRepository.findAll(sort);

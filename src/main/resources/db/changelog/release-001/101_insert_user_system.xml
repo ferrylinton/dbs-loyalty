@@ -8,10 +8,11 @@
 	<changeSet author="FLH" id="101-1">
 		<insert tableName="m_user">
 			<column name="id" value="xnn6QDJN" />
+			<column name="username" value="system" />
 			<column name="email" value="system@dbs.com" />
-			<column name="name" value="System" />
 			<column name="password_hash" value="${password}" />
 			<column name="activated" valueBoolean="false" />
+			<column name="authenticate_from_db" valueBoolean="true"/>
 			<column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
 		</insert>

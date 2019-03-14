@@ -1,0 +1,55 @@
+dn: dc=dbs,dc=com
+objectclass: top
+objectclass: domain
+objectclass: extensibleObject
+dc: dbs
+
+dn: ou=users,dc=dbs,dc=com
+objectclass: top
+objectclass: organizationalUnit
+ou: users
+
+dn: uid=admin,ou=Users,dc=dbs,dc=com
+objectClass: top
+objectClass: person
+objectClass: inetOrgPerson
+cn: Admin
+sn: Admin
+uid: admin
+userPassword: password
+
+dn: uid=maker,ou=Users,dc=dbs,dc=com
+objectClass: top
+objectClass: person
+objectClass: inetOrgPerson
+cn: Maker
+sn: Maker
+uid: maker
+userPassword: password
+
+dn: uid=checker,ou=Users,dc=dbs,dc=com
+objectClass: top
+objectClass: person
+objectClass: inetOrgPerson
+cn: Checker
+sn: Checker
+uid: checker
+userPassword: password
+
+dn: uid=user01,ou=Users,dc=dbs,dc=com
+objectClass: top
+objectClass: person
+objectClass: inetOrgPerson
+cn: User01
+sn: user01
+uid: user01
+userPassword: password
+
+dn: uid=user02,ou=Users,dc=dbs,dc=com
+objectClass: top
+objectClass: person
+objectClass: inetOrgPerson
+cn: User02
+sn: user02
+uid: user02
+userPassword: password

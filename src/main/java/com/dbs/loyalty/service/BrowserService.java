@@ -31,7 +31,7 @@ public class BrowserService {
 		LogLogin logLogin = new LogLogin();
 		logLogin.setIp(IpUtil.getInstance().getIp(request));
 		logLogin.setCreatedDate(Instant.now());
-		logLogin.setEmail(request.getParameter("email"));
+		logLogin.setUsername(request.getParameter("username"));
 		logLogin.setLoginStatus(loginStatus);
 		logLogin.setBrowser(capabilities.getBrowser());
 		logLogin.setBrowserType(capabilities.getBrowserType());

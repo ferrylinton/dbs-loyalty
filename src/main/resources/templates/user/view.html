@@ -42,12 +42,11 @@
 							<tr th:with="ascending=${order.getDirection().name() == 'ASC'}">
 								<th width="40px"></th>
 								<th width="40px">#</th>
-								<th width="220px" th:with="sort=|&sort=name,${ascending ? 'DESC' : 'ASC'}|">
+								<th width="220px" th:with="sort=|&sort=email,${ascending ? 'DESC' : 'ASC'}|">
                                 	<a th:href="@{|?page=${page.getNumber()}${params}${sort}|}" class="text-decoration-none">
-                                		<span th:text="#{name}"></span> <i th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></i>
+                                		<span th:text="#{email}"></span> <i th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></i>
                                 	</a>
                                 </th>
-								<th width="220px" th:text="#{email}"></th>
 								<th width="90px" th:text="#{status}"></th>
 								<th th:text="#{role}"></th>
 							</tr>
@@ -71,7 +70,6 @@
 									</div>
 								</td>
 								<td th:text="${row.count + (page.number * page.size)}"></td>
-								<td th:text="${user.name}"></td>
 								<td th:text="${user.email}"></td>
 								<td th:with="class=${user.activated} ? 'badge badge-success' : 'badge badge-danger'">
 									<span th:class="${class}" th:text="${user.activated} ? #{activated} : #{deactivated}"></span>

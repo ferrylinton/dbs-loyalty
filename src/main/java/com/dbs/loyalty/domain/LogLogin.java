@@ -22,7 +22,7 @@ import com.dbs.loyalty.domain.enumeration.LoginStatus;
 @Table(	
 	name = "log_login",
 	indexes= {
-		@Index(name = "log_login_email_idx", columnList = "email"),
+		@Index(name = "log_login_username_idx", columnList = "username"),
 		@Index(name = "log_login_ip_idx", columnList = "ip")
 	}
 )
@@ -36,8 +36,8 @@ public class LogLogin implements Serializable {
 	@GeneratedValue(generator = "UUIDGenerator")
 	private String id;
     
-	@Column(name = "email", length = 50, nullable = false, updatable = false)
-	private String email;
+	@Column(name = "username", length = 50, nullable = false, updatable = false)
+	private String username;
 	
 	@Column(name = "ip", length = 20)
 	private String ip;
@@ -75,12 +75,12 @@ public class LogLogin implements Serializable {
 		this.id = id;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getIp() {

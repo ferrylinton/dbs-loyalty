@@ -62,7 +62,7 @@
                                 </th>
                                 <th width="80px" th:text="#{loginStatus}"></th>
                                 <th width="180px" th:text="#{ip}"></th>
-                                <th width="190px" th:text="#{email}"></th>
+                                <th width="190px" th:text="#{username}"></th>
                                 <th th:text="#{browser}"></th>
                             </tr>
                         </thead>
@@ -74,7 +74,7 @@
 									<span th:class="${logLogin.loginStatus.name() == 'SUCCESS'} ? 'badge badge-success' : 'badge badge-danger'" th:text="#{${logLogin.loginStatus}}">Success</span>
 								</td>
 								<td th:text="${logLogin.ip}"></td>
-								<td th:text="${#strings.isEmpty(logLogin.email)} ? '-' : ${logLogin.email}"></td>
+								<td th:text="${#strings.isEmpty(logLogin.username)} ? '-' : ${logLogin.username}"></td>
 								<td th:text="${logLogin.browser}"></td>
 							</tr>
 						</tbody>

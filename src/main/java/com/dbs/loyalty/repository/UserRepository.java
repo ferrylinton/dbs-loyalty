@@ -14,15 +14,14 @@ public interface UserRepository extends JpaRepository<User, String>, JpaSpecific
 
 	@EntityGraph(attributePaths = { "role", "role.authorities"})
 	Page<User> findAll(Pageable pageable);
-	
-	@EntityGraph(attributePaths = { "role", "role.authorities"})
-	Page<User> findAllByEmailContainingAllIgnoreCase(String email, Pageable pageable);
 
 	@EntityGraph(attributePaths = { "role", "role.authorities"})
-	Optional<User> findByEmail(String email);
+	Optional<User> findWithRoleByUsername(String username);
 	
-	@EntityGraph(attributePaths = { "role" })
+	@EntityGraph(attributePaths = { "role", "role.authorities"})
 	Optional<User> findWithRoleById(String id);
+	
+	Optional<User> findByUsernameIgnoreCase(String username);
 	
 	Optional<User> findByEmailIgnoreCase(String email);
 	

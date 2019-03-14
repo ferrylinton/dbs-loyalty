@@ -12,6 +12,10 @@ public class UserValidator implements Validator {
 	private final String EMAIL_EXIST = "validation.exist.email";
 	
 	private final String EMAIL = "email";
+	
+	private final String PASSWORD_SIZE = "validation.size.password";
+	
+	private final String PASSWORD = "passwordPlain";
 
 	private final UserService userService;
 
@@ -28,7 +32,10 @@ public class UserValidator implements Validator {
 	public void validate(Object target, Errors errors) {
 		User user = (User) target;
 		
-		if (userService.isEmailExist(user)) {
+		if(user.getAuthenticateFromDb() && (user.getPasswordPlain() == null || user.getPasswordPlain().trim().length() < 6 || user.getPasswordPlain().trim().length() > 30)) {
+			String defaultMessage = MessageService.getMessage(PASSWORD_SIZE);
+			errors.rejectValue(PASSWORD, PASSWORD_SIZE, defaultMessage);
+		}else if (userService.isEmailExist(user)) {
 			Object[] errorArgs = new String[] { user.getEmail() };
 			String defaultMessage = MessageService.getMessage(EMAIL_EXIST, errorArgs);
 			errors.rejectValue(EMAIL, EMAIL_EXIST, errorArgs, defaultMessage);

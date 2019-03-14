@@ -49,7 +49,7 @@ public class PasswordService{
 	
 	public ResponseEntity<?> save(Password password) throws NotFoundException {
 		try {
-			Optional<User> user = userRepository.findByEmail(password.getEmail());
+			Optional<User> user = userRepository.findByUsernameIgnoreCase(password.getEmail());
 			
 			if(user.isPresent()) {
 				user.get().setPasswordPlain(password.getPasswordPlain());

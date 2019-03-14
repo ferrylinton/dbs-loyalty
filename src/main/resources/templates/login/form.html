@@ -1,7 +1,7 @@
 <!doctype html>
 <html th:lang="${#locale}" xmlns:th="http://www.thymeleaf.org" class="h-100">
 
-<head th:replace="fragment/head.html :: content(title=#{menu.login})"></head>
+<head th:replace="fragment/head.html :: content(title=#{login})"></head>
 
 <body class="bg-login p-0 h-100">
     <div class="container-fluid login-box">
@@ -15,15 +15,15 @@
 	               	<form class="px-4 pt-3 pb-5" th:action="@{/login}" method="post" autocomplete="off">
 		                <div class="p-2 text-center" th:classappend="${class}" th:text="#{${message}}" th:if="${message != null}"></div>
 		                <div class="form-group input-material">
-		                    <input type="text" class="form-control" id="email" name="email" autofocus="autofocus">
-		                    <label for="email" th:text="#{label.email}">Email</label>
+		                    <input type="text" class="form-control" id=username name="username" autofocus="autofocus">
+		                    <label for="email" th:text="#{username}">Username</label>
 		                </div>
 		                <div class="form-group input-material">
 		                    <input type="password" class="form-control" id="password" name="password">
-		                    <label for="password" th:text="#{label.password}">Password</label>
+		                    <label for="password" th:text="#{password}">Password</label>
 		                </div>
 		                <div class="text-center">
-		                    <button type="submit" class="btn btn-block btn-danger" th:text="#{label.login}">Login</button>
+		                    <button type="submit" class="btn btn-block btn-danger" th:text="#{login}">Login</button>
 		                </div>
                    </form>
           		</div>

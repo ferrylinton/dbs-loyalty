@@ -17,7 +17,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="device_type" type="VARCHAR(50)"/>
-            <column name="email" type="VARCHAR(50)">
+            <column name="username" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
             <column name="ip" type="VARCHAR(20)"/>
@@ -33,8 +33,8 @@
         <addPrimaryKey columnNames="id" constraintName="log_loginPK" tableName="log_login"/>
     </changeSet>
     <changeSet author="FLH" id="012-3">
-        <createIndex indexName="log_login_email_idx" tableName="log_login">
-            <column name="email"/>
+        <createIndex indexName="log_login_username_idx" tableName="log_login">
+            <column name="username"/>
         </createIndex>
     </changeSet>
     <changeSet author="FLH" id="012-4">
