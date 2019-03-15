@@ -38,9 +38,39 @@
             <column name="activated" valueBoolean="true"/>
             <column name="authenticate_from_db" valueBoolean="true"/>
             <column name="username" value="checkerdb"/>
-            <column name="email" value="checker@dbs.com"/>
+            <column name="email" value="checkerdb@dbs.com"/>
             <column name="password_hash" value="${password}"/>
             <column name="role_id" value="${Checker}"/>
+        </insert>
+        
+        <insert tableName="m_user">
+            <column name="id" value="bbollVUv"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="activated" valueBoolean="true"/>
+            <column name="authenticate_from_db" valueBoolean="false"/>
+            <column name="username" value="admin"/>
+            <column name="role_id" value="${Admin}"/>
+        </insert>
+        
+        <insert tableName="m_user">
+            <column name="id" value="f8w3ofML"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="activated" valueBoolean="true"/>
+            <column name="authenticate_from_db" valueBoolean="false"/>
+            <column name="username" value="checker"/>
+            <column name="role_id" value="${Checker}"/>
+        </insert>
+        
+        <insert tableName="m_user">
+            <column name="id" value="BJAhVZdE"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="activated" valueBoolean="true"/>
+            <column name="authenticate_from_db" valueBoolean="false"/>
+            <column name="username" value="maker"/>
+            <column name="role_id" value="${Maker}"/>
         </insert>
         
     </changeSet>

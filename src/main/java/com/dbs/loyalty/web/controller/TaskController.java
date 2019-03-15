@@ -1,5 +1,6 @@
 package com.dbs.loyalty.web.controller;
 
+import static com.dbs.loyalty.config.Constant.ERROR;
 import static com.dbs.loyalty.config.Constant.PAGE;
 
 import java.time.Instant;
@@ -77,7 +78,13 @@ public class TaskController extends AbstractPageController {
 	@GetMapping("/{id}")
 	public String view(ModelMap model, @PathVariable String id) throws NotFoundException {
 		Optional<Task> task = taskService.findById(id);
-		model.addAttribute(ENTITY, task.get());
+		
+		if (task.isPresent()) {
+			model.addAttribute(ENTITY, task.get());
+		} else {
+			model.addAttribute(ERROR, getNotFoundMessage(id));
+		}
+		
 		return FORM_TEMPLATE;
 	}
 

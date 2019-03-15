@@ -28,11 +28,15 @@
 									<input class="form-control" type="text" th:field="*{id}" readonly="readonly" />
 								</div>
 								<div class="form-group">
-									<label for="email" th:text="#{email} + ' *'">Email *</label>
+									<label for="username" th:text="#{username}">Username *</label>
+									<input class="form-control" type="text" th:field="*{username}" maxlength="50" />
+								</div>
+								<div class="form-group">
+									<label for="email" th:text="#{email}">Email</label>
 									<input class="form-control" type="text" th:field="*{email}" maxlength="50" />
 								</div>
 								<div class="form-group" th:if="${user.id == null}">
-									<label for="password" th:text="#{password} + ' *'">Password *</label>
+									<label for="password" th:text="#{password}">Password</label>
 									<input class="form-control" type="password" th:field="*{passwordPlain}" maxlength="30" />
 								</div>
 								<div class="form-group">
@@ -41,11 +45,25 @@
 										<option th:each="_role: ${roles}" th:value="${_role}" th:text="${_role.name}">Role</option>
 									</select>
 								</div>
-								<div class="form-group" th:if="${user.id != null}">
-									<div class="custom-control custom-switch">
-									  	<input type="checkbox" th:field="*{activated}" class="custom-control-input" onchange="changeStatus(this)" id="activated">
-									  	<label class="custom-control-label" for="activated" th:text="*{activated} ? #{activated} : #{deactivated}"></label>
+								<div class="form-row">
+									<div class="form-group col">
+										<label for="code" th:text="#{authenticateFromDb}">Authenticate From Db</label>
+											<div class="custom-control custom-switch">
+											<input type="checkbox" th:field="*{authenticateFromDb}" class="custom-control-input" onchange="changeStatus(this)" id="authenticateFromDb">
+											<label class="custom-control-label" for="authenticateFromDb" th:text="*{authenticateFromDb} ? #{yes} : #{no}"></label>
+										</div>
 									</div>
+									<div class="form-group col">
+										<label for="code" th:text="#{activated}">Activated</label>
+										<div class="custom-control custom-switch">
+										  	<input type="checkbox" th:field="*{activated}" class="custom-control-input" onchange="changeStatus(this)" id="activated">
+										  	<label class="custom-control-label" for="activated" th:text="*{activated} ? #{yes} : #{no}"></label>
+										</div>
+									</div>
+									
+								</div>
+								<div class="form-group" th:if="${user.id != null}">
+									
 								</div>
 								<div th:replace="fragment/audit.html :: content(${user})"></div>
 								<a class="btn btn-sm btn-secondary px-3" th:href="@{/user}">

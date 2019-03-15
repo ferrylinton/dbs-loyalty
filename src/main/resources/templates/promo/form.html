@@ -15,7 +15,7 @@
 	    </nav>
 		<div class="container-fluid pb-3">
 			<div class="min-height border p-3">
-					<div class="row no-gutters">
+					<div class="row no-gutters" th:with="format=${@environment.getProperty('application.date-format')}">
 						<div class="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-6">
 							<div class="border alert alert-light text-center" role="alert" th:if="${error}">
 				                <i class="icon-attention"></i> <span th:text="${error}"></span>
@@ -44,11 +44,11 @@
 								<div class="form-row">
 									<div class="form-group col">
 										<label for="code" th:text="|#{startPeriod} *|">Start Period *</label>
-										<input class="form-control" type="text" th:placeholder="#{startPeriod}" th:field="*{startPeriod}" />
+										<input class="form-control" type="text" th:placeholder="#{startPeriod}" id="startPeriod" name="startPeriod" th:value="${#dates.format(promo.startPeriod, format)}" readonly="readonly" />
 									</div>
 									<div class="form-group col">
 										<label for="code" th:text="|#{endPeriod} *|">End Period *</label>
-										<input class="form-control" type="text" th:placeholder="#{endPeriod}" th:field="*{endPeriod}" />
+										<input class="form-control" type="text" th:placeholder="#{endPeriod}" id="endPeriod" name="endPeriod" th:value="${#dates.format(promo.endPeriod, format)}" readonly="readonly"/>
 									</div>
 								</div>
 								<div class="form-row">
@@ -75,8 +75,8 @@
 								</div>
 								<div class="form-group">
 									<div class="custom-file">
-										<input type="file" class="custom-file-input" id="customFile">
-									  	<label class="custom-file-label" for="customFile" th:text="#{chooseFile}"></label>
+										<input type="file" class="custom-file-input" id="file" name="file">
+									  	<label class="custom-file-label" th:text="#{chooseFile}"></label>
 									</div>
 								</div>
 								<div th:replace="fragment/audit.html :: content(${promo})"></div>

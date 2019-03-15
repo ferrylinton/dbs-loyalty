@@ -16,8 +16,8 @@
             <column name="code" value="100"/>
             <column name="title" value="Nilai Tukar Kompetitif"/>
             <column name="description" value="Nikmati nilai tukar kompetitif Dollar Singapura terhadap Rupiah"/>
-            <column name="start_period" valueComputed="CURRENT_TIMESTAMP"/>
-            <column name="end_period" valueComputed="CURRENT_TIMESTAMP + interval '10 days"/>
+            <column name="start_period" valueDate="2019-04-01"/>
+            <column name="end_period" valueDate="2019-12-31"/>
             <column name="image_bytes" valueBlobFile="image/nilai_tukar_kompetitif.png"/>
             <column name="term_and_condition" valueBlobFile="txt/term_and_condition.txt"/>
             <column name="promo_category_id" value="${DebitCardPromo}"/>

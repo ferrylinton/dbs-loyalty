@@ -17,6 +17,7 @@ import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.PromoRepository;
 import com.dbs.loyalty.service.specification.PromoSpecification;
+import com.dbs.loyalty.util.Base64Util;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -78,10 +79,12 @@ public class PromoService{
 		Promo promo = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), Promo.class);
 		
 		if(task.getTaskOperation() == TaskOperation.ADD) {
+			promo.setImageBytes(Base64Util.getBytes(promo.getImageString()));
 			promo.setCreatedBy(task.getMaker());
 			promo.setCreatedDate(task.getMadeDate());
 			promoRepository.save(promo);
 		}else if(task.getTaskOperation() == TaskOperation.MODIFY) {
+			promo.setImageBytes(Base64Util.getBytes(promo.getImageString()));
 			promo.setLastModifiedBy(task.getMaker());
 			promo.setLastModifiedDate(task.getMadeDate());
 			promoRepository.save(promo);

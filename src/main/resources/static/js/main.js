@@ -10,6 +10,8 @@ $(document).ready(function() {
 	
 	initDatePicker();
 	
+	initFileBrowser();
+	
 });
 
 function initAuditCollapse(){
@@ -23,6 +25,13 @@ function initAuditCollapse(){
 	audit.on('hide.bs.collapse', function () {
 		icon.attr('class', 'icon-up-dir float-right');
 	})
+}
+
+function initFileBrowser(){
+	$('.custom-file-input').on('change', function() {
+		  var fileName = $(this).val().split('\\').pop();
+		  $(this).siblings('.custom-file-label').addClass('selected').html(fileName);
+	});
 }
 
 function changeStatus(obj){
@@ -72,7 +81,15 @@ function initTaskDataDetail(){
 					table += '<td>' + objectJsonToString(obj[key]) + '</td>';
 				}else{
 					console.log(3);
-					table += '<td>' + (obj[key] == null ? '-' : obj[key]) + '</td>';
+					var val = obj[key];
+					
+					if(typeof val === 'boolean'){
+						val = Lang.field(val);
+					}else if(key === 'imageString'){
+						val = '<img width="300" height="200" src="' + val + '" />';
+					}
+					
+					table += '<td>' + (val == null ? '-' : val) + '</td>';
 				}
 				
 				table += '</tr>';
@@ -95,16 +112,17 @@ function objectJsonToString(obj){
 }
 
 function initDatePicker(){
-	initDatePickerLang();
-	initDatePickerField();
+	initSearchDatePicker();
+	initPromoDatePicker();
 }
 
-function initDatePickerField(){
+function initSearchDatePicker(){
 	var startDateInput = $('input[name="sd"]');
 	var endDateInput = $('input[name="ed"]');
 	var startDate;
 	var endDate;
 
+	initDatePickerLang(null, new Date());
 	startDate = startDateInput
 		.datepicker({language: getLocale()})
 		.datepicker('setDate', (getQueryParam('sd') == null || getQueryParam('sd') == '') ? null : getQueryParam('sd'))
@@ -129,10 +147,42 @@ function initDatePickerField(){
 	
 }
 
-function initDatePickerLang(){
+function initPromoDatePicker(){
+	var startDateInput = $('input[name="startPeriod"]');
+	var endDateInput = $('input[name="endPeriod"]');
+	var startDate;
+	var endDate;
+
+	initDatePickerLang(new Date(), null);
+	startDate = startDateInput
+		.datepicker({language: getLocale()})
+		.datepicker('setDate', (startDateInput.val() == null) ? new Date() : startDateInput.val())
+		.on('pick.datepicker', function (e) {
+			if(endDate.datepicker('getDate') < e.date){
+				endDate.datepicker('setDate', e.date);
+			}else if((endDateInput.val()) == ''){
+				endDateInput.val(endDate.datepicker('getDate', true));
+			}
+		});
+	
+	endDate = endDateInput
+		.datepicker({language: getLocale()})
+		.datepicker('setDate', (endDateInput.val() == null) ? new Date() : endDateInput.val())
+		.on('pick.datepicker', function (e) {
+			if(startDate.datepicker('getDate') > e.date){
+				startDate.datepicker('setDate', e.date);
+			}else if((startDateInput.val()) == ''){
+				startDateInput.val(startDate.datepicker('getDate', true));
+			}
+		});
+	
+}
+
+function initDatePickerLang(startDate, endDate){
 	$.fn.datepicker.languages['en'] = {
 		autoHide: true,
-		endDate: new Date(),
+		startDate: startDate,
+		endDate: endDate,
 		format: 'dd-mm-yyyy',
 		days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
 		daysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
@@ -147,7 +197,8 @@ function initDatePickerLang(){
 	
 	$.fn.datepicker.languages['in'] = {
 		autoHide: true,
-		endDate: new Date(),
+		startDate: startDate,
+		endDate: endDate,
 		format: 'dd-mm-yyyy',
 		days: ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'],
 		daysShort: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],

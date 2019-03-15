@@ -16,8 +16,13 @@
 		<div class="container-fluid pb-3" th:with="format=${@environment.getProperty('application.date-time-full-format')}">
 			<div class="min-height border p-3">
 					<div class="row no-gutters">
+						<div class="col-12" th:if="${error}">
+							<div class="border alert alert-light text-center" role="alert">
+				                <i class="icon-attention"></i> <span th:text="${error}"></span>
+				            </div>
+						</div>
 						<div class="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-6">
-							<form th:action="@{/task}" th:object="${task}" method="post" autocomplete="off" onsubmit="return Data.submit(this)">
+							<form th:action="@{/task}" th:object="${task}" method="post" autocomplete="off" onsubmit="return Data.submit(this)" th:if="${task}">
 								<div class="form-group" th:if="${task.id != null}">
 									<label for="id" th:text="#{id}">Id</label>
 									<input class="form-control" type="text" th:field="*{id}" readonly="readonly" />

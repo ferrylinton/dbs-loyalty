@@ -80,7 +80,7 @@ public class UserService{
 			}
 		}
 
-		return user.getEmail();
+		return user.getUsername();
 	}
 	
 }

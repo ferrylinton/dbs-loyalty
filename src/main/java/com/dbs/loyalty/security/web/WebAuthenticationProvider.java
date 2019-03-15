@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -43,15 +44,18 @@ public class WebAuthenticationProvider implements AuthenticationProvider {
         Optional<User> user = userService.findWithRoleByUsername(username);
         
         if(user.isPresent() && user.get().getAuthenticateFromDb()) {
-        	LOG.info("db authentication");
-        	if(PasswordUtil.getInstance().matches(password, user.get().getPasswordHash())) {
-    			return new UsernamePasswordAuthenticationToken(username, password, getAuthorities(user.get()));
+        	LOG.info(String.format("[ %s ] login with DATABASE username/password", username));
+        	
+        	if(!user.get().getActivated()) {
+        		throw new LockedException(Constant.EMPTY);
+        	}else if(PasswordUtil.getInstance().matches(password, user.get().getPasswordHash())) {
+        		return new UsernamePasswordAuthenticationToken(username, password, getAuthorities(user.get()));
             }
         }else if(user.isPresent() && !user.get().getAuthenticateFromDb()) {
-        	LOG.info("ldap authentication and role from db");
+        	LOG.info(String.format("[ %s ] login with LDAP username/password and ROLE from DATABASE", username));
         	return ldapService.authenticate(username, password, user.get().getRole());
         }else {
-        	LOG.info("ldap authentication with default role");
+        	LOG.info(String.format("[ %s ] login with LDAP username/password and with DEFAULT ROLE", username));
         	return ldapService.authenticate(username, password, null);
         }
 		

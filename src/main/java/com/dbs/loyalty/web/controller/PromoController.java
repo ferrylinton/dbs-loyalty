@@ -2,6 +2,8 @@ package com.dbs.loyalty.web.controller;
 
 import static com.dbs.loyalty.config.Constant.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -9,8 +11,10 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
@@ -30,11 +34,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.dbs.loyalty.config.Constant;
 import com.dbs.loyalty.domain.Promo;
 import com.dbs.loyalty.domain.PromoCategory;
 import com.dbs.loyalty.service.PromoCategoryService;
 import com.dbs.loyalty.service.PromoService;
 import com.dbs.loyalty.service.TaskService;
+import com.dbs.loyalty.util.Base64Util;
 import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.validator.PromoValidator;
 
@@ -113,9 +119,17 @@ public class PromoController extends AbstractPageController {
 				return badRequestResponse(result);
 			} else {
 				if(promo.getId() == null) {
+					promo.setImageString(Base64Util.getString(promo.getFile().getBytes()));
 					taskService.saveTaskAdd(promo);
 				}else {
 					Optional<Promo> current = promoService.findById(promo.getId());
+					
+					if(promo.getFile().isEmpty()) {
+						promo.setImageString(Base64Util.getString(current.get().getFile().getBytes()));
+					}else {
+						promo.setImageString(Base64Util.getString(promo.getFile().getBytes()));
+					}
+					
 					taskService.saveTaskModify(current.get(), promo);
 				}
 
@@ -149,6 +163,7 @@ public class PromoController extends AbstractPageController {
 	
 	@InitBinder("promo")
 	protected void initBinder(WebDataBinder binder) {
+		binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("dd-MM-yyyy"), true, 10)); 
 		binder.addValidators(new PromoValidator(promoService));
 	}
 

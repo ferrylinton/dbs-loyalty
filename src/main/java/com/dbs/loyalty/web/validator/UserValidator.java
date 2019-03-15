@@ -32,7 +32,7 @@ public class UserValidator implements Validator {
 	public void validate(Object target, Errors errors) {
 		User user = (User) target;
 		
-		if(user.getAuthenticateFromDb() && (user.getPasswordPlain() == null || user.getPasswordPlain().trim().length() < 6 || user.getPasswordPlain().trim().length() > 30)) {
+		if(user.getId() == null && user.getAuthenticateFromDb() && (user.getPasswordPlain() == null || user.getPasswordPlain().trim().length() < 6 || user.getPasswordPlain().trim().length() > 30)) {
 			String defaultMessage = MessageService.getMessage(PASSWORD_SIZE);
 			errors.rejectValue(PASSWORD, PASSWORD_SIZE, defaultMessage);
 		}else if (userService.isEmailExist(user)) {

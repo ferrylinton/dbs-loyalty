@@ -34,7 +34,7 @@ public class Constant {
 
 	public static final String BR 					= "<br>";
 	
-	public static final String BASE64_FORMAT 		= "data:image/jpg;base64, %s";
+	public static final String BASE64_PREFIX 		= "data:image/jpg;base64, ";
 	
 	public static final String BASE64_TO_STRING		= "Base64";
 	

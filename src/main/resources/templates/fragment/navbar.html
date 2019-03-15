@@ -9,13 +9,23 @@
 				<span class="float-left ml-1 mt-2 text-secondary" th:text=#{application.subname}></span>
 			</a>
 			<div class="ml-auto">
-				<a class="btn btn-outline-dark border-0 text-white" th:href="@{/home}">
-					<i class="icon-home"></i> <span th:text="#{menu.home}"></span>
-				</a>
-				<a class="btn btn-outline-dark border-0 text-white" th:href="@{/logout}">
-					<i class="icon-logout"></i> <span th:text="#{menu.logout}"></span>
-				</a>
+				<div class="btn-group dropdown">
+                    <a class="btn dropdown-toggle text-light" href="#" role="button" id="user-account" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                        <i class="icon-user-circle"></i> <span sec:authentication="name"></span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="user-account">
+                        <a class="dropdown-item" th:href="@{/password}">
+                            <i class="icon-lock"></i> <span th:text="#{changePassword}">Change Password</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" th:href="@{/logout}">
+                            <i class="icon-logout"></i> <span th:text="#{logout}">Logout</span>
+                        </a>
+                    </div>
+                </div>
 			</div>
+			
 		</nav>
 	</div>
 </body>

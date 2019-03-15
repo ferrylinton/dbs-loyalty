@@ -50,7 +50,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	    	.sessionManagement()
 	    		.invalidSessionUrl("/login?logout")
 	        	.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-	        	.maximumSessions(5)
+	        	.maximumSessions(1)
 	        	.expiredUrl("/login?expired")
 	        	.sessionRegistry(sessionRegistry())
 	        	.maxSessionsPreventsLogin(true);

@@ -19,6 +19,7 @@ var Lang = (function () {
 				"keyword": "Keyword",
 				"id": "Id",
 				"imageBytes": "Image",
+				"authenticateFromDb": "Authenticate From Db",
 				"name": "Name",
 				"password": "Password",
 				"passwordHash": "Password",
@@ -26,7 +27,9 @@ var Lang = (function () {
 				"username": "Username",
 				"title": "Title",
 				"file" : "File",
-				"orderNumber": "Order Number"
+				"orderNumber": "Order Number",
+				"true": "Yes",
+				"false": "No"
 			},
 			"label":{
 				"activated" : "Activated",
@@ -70,6 +73,7 @@ var Lang = (function () {
 				"keyword": "Kata Kunci",
 				"id": "Id",
 				"imageBytes": "Gambar",
+				"authenticateFromDb": "Login Dari Db",
 				"name": "Nama",
 				"password": "Kata Sandi",
 				"passwordHash": "Kata Sandi",
@@ -77,7 +81,9 @@ var Lang = (function () {
 				"username": "Nama Pengguna",
 				"title": "Judul",
 				"file" : "Berkas",
-				"orderNumber": "Nomor Urut"
+				"orderNumber": "Nomor Urut",
+				"true": "Ya",
+				"false": "Tidak"
 			},
 			"label":{
 				"activated" : "Aktif",

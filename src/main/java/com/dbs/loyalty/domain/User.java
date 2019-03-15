@@ -19,6 +19,7 @@ import org.hibernate.annotations.ColumnDefault;
 
 import com.dbs.loyalty.config.Constant;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * Class of User
@@ -43,7 +44,7 @@ public class User extends AbstractId implements Serializable {
 	@Column(name = "username", length = 50, nullable = false)
 	private String username;
 	
-	@Column(name = "email", length = 50, nullable = false)
+	@Column(name = "email", length = 50)
 	private String email;
 	
 	@JsonIgnore
@@ -59,10 +60,19 @@ public class User extends AbstractId implements Serializable {
 	@Column(name = "authenticate_from_db", nullable = false)
 	private Boolean authenticateFromDb = true;
 	
+	@JsonIgnoreProperties("authorities")
     @ColumnDefault("NULL")
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id", nullable = true, foreignKey = @ForeignKey(name = "m_user_fk"))
     private Role role;
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
 
 	public String getEmail() {
 		return email;

@@ -56,7 +56,7 @@ public class UserController extends AbstractPageController{
 
 	private final String FORM_TEMPLATE 	= "user/form";
 
-	private final String SORT_BY 		= "email";
+	private final String SORT_BY 		= "username";
 	
 	private final Order ORDER			= Order.asc(SORT_BY).ignoreCase();
 	
@@ -126,7 +126,7 @@ public class UserController extends AbstractPageController{
 					taskService.saveTaskModify(current.get(), user);
 				}
 
-				return taskIsSavedResponse(User.class.getSimpleName(), user.getEmail(), UrlUtil.getyUrl(ENTITY));
+				return taskIsSavedResponse(User.class.getSimpleName(), user.getUsername(), UrlUtil.getyUrl(ENTITY));
 			}
 			
 		} catch (Exception ex) {

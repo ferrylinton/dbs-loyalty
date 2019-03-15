@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dbs.loyalty.config.Constant;
+import com.dbs.loyalty.domain.Promo;
 import com.dbs.loyalty.domain.PromoCategory;
 import com.dbs.loyalty.domain.Role;
 import com.dbs.loyalty.domain.Task;
@@ -52,13 +53,7 @@ public class TaskService {
 	}
 	
 	public Optional<Task> findById(String id) throws NotFoundException {
-		Optional<Task> task = taskRepository.findById(id);
-
-		if (task.isPresent()) {
-			return task;
-		} else {
-			throw new NotFoundException();
-		}
+		return taskRepository.findById(id);
 	}
 	
 	public Page<Task> findAll(Map<String, String> params, Pageable pageable, HttpServletRequest request){
@@ -110,6 +105,8 @@ public class TaskService {
 			return context.getBean(UserService.class).execute(task);
 		}else if(task.getTaskDataType().equals(PromoCategory.class.getSimpleName())) {
 			return context.getBean(PromoCategoryService.class).execute(task);
+		}else if(task.getTaskDataType().equals(Promo.class.getSimpleName())) {
+			return context.getBean(PromoService.class).execute(task);
 		}
 		
 		return Constant.EMPTY;
