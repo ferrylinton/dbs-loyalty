@@ -29,7 +29,14 @@ var Lang = (function () {
 				"file" : "File",
 				"orderNumber": "Order Number",
 				"true": "Yes",
-				"false": "No"
+				"false": "No",
+				"termAndCondition": "Term And Condition",
+				"startPeriod": "Start Period",
+				"endPeriod": "Endi Period",
+				"showInCarousel": "Show In Carousel",
+				"promoCategory": "Promo Category",
+				"imageString": "Image",
+				"code": "Code"
 			},
 			"label":{
 				"activated" : "Activated",
@@ -83,7 +90,14 @@ var Lang = (function () {
 				"file" : "Berkas",
 				"orderNumber": "Nomor Urut",
 				"true": "Ya",
-				"false": "Tidak"
+				"false": "Tidak",
+				"termAndCondition": "Syarat Dan Kondisi",
+				"startPeriod": "Periode Mulai",
+				"endPeriod": "Periode Akhir",
+				"showInCarousel": "Tampilkan di Carousel",
+				"promoCategory": "Kategori Promo",
+				"imageString": "Gambar",
+				"code": "Kode"
 			},
 			"label":{
 				"activated" : "Aktif",

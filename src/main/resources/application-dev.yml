@@ -10,7 +10,6 @@ spring:
     enabled: true
     change-log: classpath:/db/changelog/db.changelog-master.xml
   mvc:
-    date-format: dd/MM/yyyy hh.mm
     ignore-default-model-on-redirect: true
     static-path-pattern: /static/**
   servlet:
@@ -21,10 +20,6 @@ spring:
     prefix: classpath:/templates/
     suffix: .html
     cache: false
-  jackson:
-    date-format: dd/MM/yyyy hh.mm
-    serialization: 
-      indent-output: true
   messages:
     basename: i18n/messages
   devtools:

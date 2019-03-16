@@ -20,7 +20,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Type;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
@@ -79,13 +78,11 @@ public class Promo extends AbstractId implements Serializable {
     private MultipartFile file;
 
     @NotNull(message = "{validation.notnull.startPeriod}")
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
     @Temporal(TemporalType.DATE)
     @Column(name = "start_period", nullable = false)
     private Date startPeriod;
 
     @NotNull(message = "{validation.notnull.endPeriod}")
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
     @Temporal(TemporalType.DATE)
     @Column(name = "end_period", nullable = false)
     private Date endPeriod;
@@ -96,6 +93,7 @@ public class Promo extends AbstractId implements Serializable {
     @Column(name = "activated", nullable = false)
 	private Boolean activated = true;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "promo_category_id", nullable = false, foreignKey = @ForeignKey(name = "c_promo_fk"))
     private PromoCategory promoCategory;

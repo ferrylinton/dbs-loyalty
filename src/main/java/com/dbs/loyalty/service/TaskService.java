@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -116,7 +117,7 @@ public class TaskService {
 	public void save(Exception ex, Task task) {
 		try {
 			task.setTaskStatus(TaskStatus.FAILED);
-			task.setError(ex.getLocalizedMessage());
+			task.setError(StringUtils.substring(ex.getLocalizedMessage(), 0, 250));
 			task.setErrorDetail(ErrorUtil.getErrorMessage(ex));
 			taskRepository.save(task);
 		} catch (Exception e) {

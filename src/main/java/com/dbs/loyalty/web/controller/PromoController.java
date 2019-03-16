@@ -1,6 +1,8 @@
 package com.dbs.loyalty.web.controller;
 
-import static com.dbs.loyalty.config.Constant.*;
+import static com.dbs.loyalty.config.Constant.ERROR;
+import static com.dbs.loyalty.config.Constant.PAGE;
+import static com.dbs.loyalty.config.Constant.ZERO;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,7 +13,6 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -34,7 +35,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.dbs.loyalty.config.Constant;
 import com.dbs.loyalty.domain.Promo;
 import com.dbs.loyalty.domain.PromoCategory;
 import com.dbs.loyalty.service.PromoCategoryService;
@@ -118,6 +118,8 @@ public class PromoController extends AbstractPageController {
 			if (result.hasErrors()) {
 				return badRequestResponse(result);
 			} else {
+				System.out.println("promo.getStartPeriod() : " + promo.getStartPeriod());
+				System.out.println("promo.getEndPeriod() : " + promo.getEndPeriod());
 				if(promo.getId() == null) {
 					promo.setImageString(Base64Util.getString(promo.getFile().getBytes()));
 					taskService.saveTaskAdd(promo);

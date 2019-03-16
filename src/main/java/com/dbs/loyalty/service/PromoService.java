@@ -35,7 +35,13 @@ public class PromoService{
 	}
 	
 	public Optional<Promo> findById(String id){
-		return promoRepository.findById(id);
+		Optional<Promo> promo = promoRepository.findById(id);
+		
+		if(promo.isPresent()) {
+			promo.get().setImageString(Base64Util.getString(promo.get().getImageBytes()));
+		}
+		
+		return promo;
 	}
 	
 	public List<Promo> findAll(Sort sort){

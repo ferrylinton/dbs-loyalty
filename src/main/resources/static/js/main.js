@@ -86,7 +86,7 @@ function initTaskDataDetail(){
 					if(typeof val === 'boolean'){
 						val = Lang.field(val);
 					}else if(key === 'imageString'){
-						val = '<img width="300" height="200" src="' + val + '" />';
+						val = '<img class="border p-1 bg-white" width="100%" src="' + val + '" />';
 					}
 					
 					table += '<td>' + (val == null ? '-' : val) + '</td>';
@@ -240,4 +240,19 @@ function getLocale(){
 	}
 	
 	return locale;
+}
+
+function showImage(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+        	$('#preview-image').show();
+        	$('#preview-image img').attr('src', e.target.result);
+        }
+
+        reader.readAsDataURL(input.files[0]);
+    }else{
+    	$('#preview-image').hide();
+    }
 }

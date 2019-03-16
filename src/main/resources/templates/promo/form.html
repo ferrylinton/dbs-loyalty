@@ -43,24 +43,24 @@
 								</div>
 								<div class="form-row">
 									<div class="form-group col">
-										<label for="code" th:text="|#{startPeriod} *|">Start Period *</label>
+										<label for="startPeriod" th:text="|#{startPeriod} *|">Start Period *</label>
 										<input class="form-control" type="text" th:placeholder="#{startPeriod}" id="startPeriod" name="startPeriod" th:value="${#dates.format(promo.startPeriod, format)}" readonly="readonly" />
 									</div>
 									<div class="form-group col">
-										<label for="code" th:text="|#{endPeriod} *|">End Period *</label>
+										<label for="endPeriod" th:text="|#{endPeriod} *|">End Period *</label>
 										<input class="form-control" type="text" th:placeholder="#{endPeriod}" id="endPeriod" name="endPeriod" th:value="${#dates.format(promo.endPeriod, format)}" readonly="readonly"/>
 									</div>
 								</div>
 								<div class="form-row">
 									<div class="form-group col">
-										<label for="code" th:text="#{activated}">Activated</label>
+										<label for="activated" th:text="#{activated}">Activated</label>
 										<div class="custom-control custom-switch">
 											<input type="checkbox" th:field="*{activated}" class="custom-control-input" onchange="changeStatus(this)" id="activated">
 											<label class="custom-control-label" for="activated" th:text="*{activated} ? #{yes} : #{no}"></label>
 										</div>
 									</div>
 									<div class="form-group col">
-										<label for="code" th:text="#{showInCarousel}">Show In Carousel</label>
+										<label for="showInCarousel" th:text="#{showInCarousel}">Show In Carousel</label>
 											<div class="custom-control custom-switch">
 											<input type="checkbox" th:field="*{showInCarousel}" class="custom-control-input" onchange="changeStatus(this)" id="showInCarousel">
 											<label class="custom-control-label" for="showInCarousel" th:text="*{showInCarousel} ? #{yes} : #{no}"></label>
@@ -73,19 +73,30 @@
 										<option th:each="cat: ${promoCategories}" th:value="${cat}" th:text="${cat.name}">Role</option>
 									</select>
 								</div>
+								<div class="form-group" th:if="${promo.imageString}">
+									<label for="imageString" th:text="#{image}">Image</label>
+									<div class="d-block">
+										<img class="border p-1" width="100%" th:src="*{imageString}" />
+									</div>
+								</div>
 								<div class="form-group">
 									<div class="custom-file">
-										<input type="file" class="custom-file-input" id="file" name="file">
+										<input type="file" class="custom-file-input" id="file" name="file" onchange="showImage(this)">
 									  	<label class="custom-file-label" th:text="#{chooseFile}"></label>
 									</div>
 								</div>
+								<div class="form-group" id="preview-image" style="display: none;">
+									<img class="border p-1" width="100%" src="" />
+								</div>
 								<div th:replace="fragment/audit.html :: content(${promo})"></div>
-								<a class="btn btn-sm btn-secondary px-3" th:href="@{/promo}">
-									<i class="icon-left"></i> <span th:text="#{back}"></span>
-								</a>
-								<button class="btn btn-sm btn-primary px-3" type="submit" sec:authorize="hasRole('PROMO')">
-									<i class="icon-floppy"></i> <span th:text="#{save}"></span>
-								</button>
+								<div class="mt-3">
+									<a class="btn btn-sm btn-secondary px-3" th:href="@{/promo}">
+										<i class="icon-left"></i> <span th:text="#{back}"></span>
+									</a>
+									<button class="btn btn-sm btn-primary px-3" type="submit" sec:authorize="hasRole('PROMO')">
+										<i class="icon-floppy"></i> <span th:text="#{save}"></span>
+									</button>
+								</div>
 							</form>
 						</div>
 					</div>
