@@ -60,6 +60,9 @@ public class User extends AbstractId implements Serializable {
 	@Column(name = "authenticate_from_db", nullable = false)
 	private Boolean authenticateFromDb = true;
 	
+	@Column(name = "login_attempt_count", nullable = false, columnDefinition="TINYINT")
+	private Integer loginAttemptCount = 0;
+	
 	@JsonIgnoreProperties("authorities")
     @ColumnDefault("NULL")
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
@@ -112,6 +115,14 @@ public class User extends AbstractId implements Serializable {
 
 	public void setAuthenticateFromDb(Boolean authenticateFromDb) {
 		this.authenticateFromDb = authenticateFromDb;
+	}
+
+	public Integer getLoginAttemptCount() {
+		return loginAttemptCount;
+	}
+
+	public void setLoginAttemptCount(Integer loginAttemptCount) {
+		this.loginAttemptCount = loginAttemptCount;
 	}
 
 	public Role getRole() {

@@ -7,6 +7,8 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
 public class ApplicationProperties {
  
+	private int loginAttemptCount = 3;
+	
 	private int corePoolSize = 5;
 	
     private int maxPoolSize = 10;
@@ -18,6 +20,14 @@ public class ApplicationProperties {
     private String dateTimeFormat = "dd-MM-yyyy HH:mm";
     
     private String dateTimeFullFormat = "dd-MM-yyyy HH:mm:ss.SSS";
+
+	public int getLoginAttemptCount() {
+		return loginAttemptCount;
+	}
+
+	public void setLoginAttemptCount(int loginAttemptCount) {
+		this.loginAttemptCount = loginAttemptCount;
+	}
 
 	public int getCorePoolSize() {
 		return corePoolSize;

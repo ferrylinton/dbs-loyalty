@@ -4,7 +4,7 @@
 	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
-
+ 
 	<changeSet author="FLH" id="101-1">
 		<insert tableName="m_user">
 			<column name="id" value="xnn6QDJN" />
@@ -13,6 +13,7 @@
 			<column name="password_hash" value="${password}" />
 			<column name="activated" valueBoolean="false" />
 			<column name="authenticate_from_db" valueBoolean="true"/>
+			<column name="login_attempt_count" valueNumeric="0"/>
 			<column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
 		</insert>

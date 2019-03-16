@@ -16,6 +16,9 @@
             <column name="authenticate_from_db" type="BIT(1)">
                 <constraints nullable="false"/>
             </column>
+            <column name="login_attempt_count" type="TINYINT">
+                <constraints nullable="false"/>
+            </column>
             <column name="username" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>

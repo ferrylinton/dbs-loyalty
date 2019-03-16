@@ -1,26 +1,16 @@
 package com.dbs.loyalty.security.web;
 
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import com.dbs.loyalty.config.Constant;
-import com.dbs.loyalty.domain.Authority;
 import com.dbs.loyalty.domain.User;
 import com.dbs.loyalty.service.LdapService;
 import com.dbs.loyalty.service.UserService;
-import com.dbs.loyalty.util.PasswordUtil;
  
 public class WebAuthenticationProvider implements AuthenticationProvider {
 
@@ -40,17 +30,11 @@ public class WebAuthenticationProvider implements AuthenticationProvider {
 		String password = authentication.getCredentials().toString();
         String username = authentication.getName();
         
-        
         Optional<User> user = userService.findWithRoleByUsername(username);
         
         if(user.isPresent() && user.get().getAuthenticateFromDb()) {
         	LOG.info(String.format("[ %s ] login with DATABASE username/password", username));
-        	
-        	if(!user.get().getActivated()) {
-        		throw new LockedException(Constant.EMPTY);
-        	}else if(PasswordUtil.getInstance().matches(password, user.get().getPasswordHash())) {
-        		return new UsernamePasswordAuthenticationToken(username, password, getAuthorities(user.get()));
-            }
+        	return userService.authenticate(user.get(), password);
         }else if(user.isPresent() && !user.get().getAuthenticateFromDb()) {
         	LOG.info(String.format("[ %s ] login with LDAP username/password and ROLE from DATABASE", username));
         	return ldapService.authenticate(username, password, user.get().getRole());
@@ -58,19 +42,7 @@ public class WebAuthenticationProvider implements AuthenticationProvider {
         	LOG.info(String.format("[ %s ] login with LDAP username/password and with DEFAULT ROLE", username));
         	return ldapService.authenticate(username, password, null);
         }
-		
-        throw new BadCredentialsException(Constant.EMPTY);
 	}
- 
-	private Collection<? extends GrantedAuthority> getAuthorities(User user) {
-		Set<GrantedAuthority> authorities = new HashSet<>();
-		
-		for(Authority authority : user.getRole().getAuthorities()){
-			authorities.add(new SimpleGrantedAuthority(authority.getName()));
-		}
-		
-        return authorities;
-    }
 	
 	@Override
 	public boolean supports(Class<?> authentication) {
