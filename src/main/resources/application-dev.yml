@@ -1,10 +1,12 @@
 application:
-  core-pool-size: 5
-  max-pool-size: 10
-  queue-capacity: 1000
-  date-format: dd-MM-yyyy
-  date-time-format: dd-MM-yyyy HH:mm
-  date-time-full-format: dd-MM-yyyy HH:mm:ss.SSS
+  async: 
+    core-pool-size: 5
+    max-pool-size: 10
+    queue-capacity: 1000
+  format: 
+    date: dd-MM-yyyy
+    date-time: dd-MM-yyyy HH:mm
+    date-time-full: dd-MM-yyyy HH:mm:ss.SSS
 spring:
   liquibase: 
     enabled: true

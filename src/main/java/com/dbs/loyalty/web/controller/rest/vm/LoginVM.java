@@ -1,25 +1,22 @@
-package com.dbs.loyalty.model;
+package com.dbs.loyalty.web.controller.rest.vm;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+/**
+ * View Model object for storing a user's credentials.
+ */
+public class LoginVM {
 
-@ApiModel(description = "Login")
-public class Login {
-
-	@ApiModelProperty(value = "customer's email", example = "customer01@dbs.com", required = true)
-	@NotNull
+    @NotNull
     @Size(min = 5, max = 50)
-	private String email;
-	
-	@ApiModelProperty(value = "customer's password", example = "password", required = true)
-	@NotNull
+    private String email;
+
+    @NotNull
     @Size(min = 6, max = 30)
-	private String password;
-	
-	private Boolean rememberMe;
+    private String password;
+
+    private Boolean rememberMe;
 
 	public String getEmail() {
 		return email;
@@ -44,5 +41,5 @@ public class Login {
 	public void setRememberMe(Boolean rememberMe) {
 		this.rememberMe = rememberMe;
 	}
-	
+
 }

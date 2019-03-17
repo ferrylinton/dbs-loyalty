@@ -14,6 +14,13 @@ $(document).ready(function() {
 	
 });
 
+function openNewTab(el) {
+    url = $(el).attr('href');
+    window.open(url, '_blank');
+
+    return false;
+}
+
 function initAuditCollapse(){
 	var audit = $('#audit');
 	var icon = $('.btn[data-toggle="collapse"] i');

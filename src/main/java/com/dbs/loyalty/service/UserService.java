@@ -101,7 +101,7 @@ public class UserService{
 	public Authentication authenticate(User user, String password) {
 		if(!user.getActivated()) {
     		throw new LockedException(Constant.EMPTY);
-		}else if(user.getLoginAttemptCount() >= applicationProperties.getLoginAttemptCount()) {
+		}else if(user.getLoginAttemptCount() >= applicationProperties.getSecurity().getLoginAttemptCount()) {
 			throw new LockedException(Constant.EMPTY);
     	}else if(PasswordUtil.getInstance().matches(password, user.getPasswordHash())) {
     		resetLoginAttemptCount(user.getUsername());

@@ -19,8 +19,16 @@ body{
 	font-size: 1.5em !important;
 }
 
-.font-menu{
-	font-size: 3.5em !important;
+.font-icon{
+	font-size: 3.0em !important;
+	display: block;
+}
+
+.font-label{
+	margin-top: -8px;
+	display: block;
+	font-size: .8em;
+	text-transform: uppercase;
 }
 
 .bg-black {
@@ -205,6 +213,7 @@ body{
 ::-ms-input-placeholder {
   color: #d6d6d6;
 }
+
 
 .toast{
 	max-width: none;

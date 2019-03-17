@@ -33,6 +33,12 @@ public class RestAuthentication implements Authentication {
 		this.authenticated = true;
 	}
 	
+	public RestAuthentication(String email, String password) {
+		this.principal = email;
+		this.credentials = password;
+		this.authenticated = false;
+	}
+	
 	public RestAuthentication(Login login) {
 		this.principal = login.getEmail();
 		this.credentials = login.getPassword();

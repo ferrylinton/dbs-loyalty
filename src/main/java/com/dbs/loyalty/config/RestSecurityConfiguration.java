@@ -38,8 +38,10 @@ public class RestSecurityConfiguration extends WebSecurityConfigurerAdapter {
             http
 	            .formLogin().disable()
 	            .httpBasic().disable()
-            	.csrf().disable()
             	.headers().frameOptions().disable();
+            
+            http
+            	.csrf().disable();
             
             http
             	.sessionManagement()
@@ -48,6 +50,8 @@ public class RestSecurityConfiguration extends WebSecurityConfigurerAdapter {
             http
             	.antMatcher("/api/**")
 		    		.authorizeRequests()
+		    		.antMatchers("/api/authenticate").permitAll()
+		    		.antMatchers("/swagger-ui.html").permitAll()
 		    		.anyRequest().authenticated();
             
             http
@@ -60,7 +64,7 @@ public class RestSecurityConfiguration extends WebSecurityConfigurerAdapter {
              	.accessDeniedHandler(new RestAccessDeniedHandler(objectMapper));
 
             http
-            	.addFilterAfter(new RestLoginFilter("/api/authenticate", authenticationManager(), jwtService), UsernamePasswordAuthenticationFilter.class)
+            	//.addFilterAfter(new RestLoginFilter("/api/authenticate", authenticationManager(), jwtService), UsernamePasswordAuthenticationFilter.class)
             	.addFilterBefore(new RestAccessFilter(jwtService), UsernamePasswordAuthenticationFilter.class);
         } catch (Exception e) {   
             LOG.error(e.getLocalizedMessage(), e);

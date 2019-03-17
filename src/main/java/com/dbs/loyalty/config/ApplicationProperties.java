@@ -7,74 +7,166 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "application", ignoreUnknownFields = false)
 public class ApplicationProperties {
  
-	private int loginAttemptCount = 3;
+	private Security security;
 	
-	private int corePoolSize = 5;
+	private Format format;
 	
-    private int maxPoolSize = 10;
-    
-    private int queueCapacity = 1000;
-    
-    private String dateFormat = "dd-MM-yyyy";
-    
-    private String dateTimeFormat = "dd-MM-yyyy HH:mm";
-    
-    private String dateTimeFullFormat = "dd-MM-yyyy HH:mm:ss.SSS";
+	private Async async;
 
-	public int getLoginAttemptCount() {
-		return loginAttemptCount;
+	public Security getSecurity() {
+		return security;
 	}
 
-	public void setLoginAttemptCount(int loginAttemptCount) {
-		this.loginAttemptCount = loginAttemptCount;
+	public void setSecurity(Security security) {
+		this.security = security;
 	}
 
-	public int getCorePoolSize() {
-		return corePoolSize;
+	public Format getFormat() {
+		return format;
 	}
 
-	public void setCorePoolSize(int corePoolSize) {
-		this.corePoolSize = corePoolSize;
+	public void setFormat(Format format) {
+		this.format = format;
 	}
 
-	public int getMaxPoolSize() {
-		return maxPoolSize;
+	public Async getAsync() {
+		return async;
 	}
 
-	public void setMaxPoolSize(int maxPoolSize) {
-		this.maxPoolSize = maxPoolSize;
+	public void setAsync(Async async) {
+		this.async = async;
 	}
 
-	public int getQueueCapacity() {
-		return queueCapacity;
+	public static class Security{
+		
+		private int loginAttemptCount = 3;
+		
+		private String secret = "OTE1ZWVlYTZjZWIyODY5ODQ1ZDFkYmI3ZmM1YjNmNDdkOWU3NjUyMGYwOTcwMzEzMWY5MzU1YmU0Mzk5MzUzODY2NDVkYTA1OGI5NmRiYjNkNDQ3NzBmZGVmYTFmODcyNzliNmE2MmZmN2JlZThkMmU2Y2E3M2U4YjgyNTFhNjk=";
+		
+		private String base64Secret = "OTE1ZWVlYTZjZWIyODY5ODQ1ZDFkYmI3ZmM1YjNmNDdkOWU3NjUyMGYwOTcwMzEzMWY5MzU1YmU0Mzk5MzUzODY2NDVkYTA1OGI5NmRiYjNkNDQ3NzBmZGVmYTFmODcyNzliNmE2MmZmN2JlZThkMmU2Y2E3M2U4YjgyNTFhNjk=";
+		
+		private long tokenValidityInSeconds = 86400;
+		
+		private long tokenValidityInSecondsForRememberMe = 2592000;
+
+		public int getLoginAttemptCount() {
+			return loginAttemptCount;
+		}
+
+		public void setLoginAttemptCount(int loginAttemptCount) {
+			this.loginAttemptCount = loginAttemptCount;
+		}
+
+		public String getSecret() {
+			return secret;
+		}
+
+		public void setSecret(String secret) {
+			this.secret = secret;
+		}
+
+		public String getBase64Secret() {
+			return base64Secret;
+		}
+
+		public void setBase64Secret(String base64Secret) {
+			this.base64Secret = base64Secret;
+		}
+
+		public long getTokenValidityInSeconds() {
+			return tokenValidityInSeconds;
+		}
+
+		public void setTokenValidityInSeconds(long tokenValidityInSeconds) {
+			this.tokenValidityInSeconds = tokenValidityInSeconds;
+		}
+
+		public long getTokenValidityInSecondsForRememberMe() {
+			return tokenValidityInSecondsForRememberMe;
+		}
+
+		public void setTokenValidityInSecondsForRememberMe(long tokenValidityInSecondsForRememberMe) {
+			this.tokenValidityInSecondsForRememberMe = tokenValidityInSecondsForRememberMe;
+		}
+		
+	}
+	
+	public static class Format{
+		
+		private String date = "dd-MM-yyyy";
+	    
+	    private String dateTime = "dd-MM-yyyy HH:mm";
+	    
+	    private String dateTimeFull = "dd-MM-yyyy HH:mm:ss.SSS";
+
+		public String getDate() {
+			return date;
+		}
+
+		public void setDate(String date) {
+			this.date = date;
+		}
+
+		public String getDateTime() {
+			return dateTime;
+		}
+
+		public void setDateTime(String dateTime) {
+			this.dateTime = dateTime;
+		}
+
+		public String getDateTimeFull() {
+			return dateTimeFull;
+		}
+
+		public void setDateTimeFull(String dateTimeFull) {
+			this.dateTimeFull = dateTimeFull;
+		}
+
 	}
 
-	public void setQueueCapacity(int queueCapacity) {
-		this.queueCapacity = queueCapacity;
-	}
+	public static class Async{
+		
+		private int loginAttemptCount = 3;
+		
+		private int corePoolSize = 5;
+		
+	    private int maxPoolSize = 10;
+	    
+	    private int queueCapacity = 1000;
 
-	public String getDateFormat() {
-		return dateFormat;
-	}
+		public int getLoginAttemptCount() {
+			return loginAttemptCount;
+		}
 
-	public void setDateFormat(String dateFormat) {
-		this.dateFormat = dateFormat;
-	}
+		public void setLoginAttemptCount(int loginAttemptCount) {
+			this.loginAttemptCount = loginAttemptCount;
+		}
 
-	public String getDateTimeFormat() {
-		return dateTimeFormat;
-	}
+		public int getCorePoolSize() {
+			return corePoolSize;
+		}
 
-	public void setDateTimeFormat(String dateTimeFormat) {
-		this.dateTimeFormat = dateTimeFormat;
-	}
+		public void setCorePoolSize(int corePoolSize) {
+			this.corePoolSize = corePoolSize;
+		}
 
-	public String getDateTimeFullFormat() {
-		return dateTimeFullFormat;
-	}
+		public int getMaxPoolSize() {
+			return maxPoolSize;
+		}
 
-	public void setDateTimeFullFormat(String dateTimeFullFormat) {
-		this.dateTimeFullFormat = dateTimeFullFormat;
-	}
+		public void setMaxPoolSize(int maxPoolSize) {
+			this.maxPoolSize = maxPoolSize;
+		}
 
+		public int getQueueCapacity() {
+			return queueCapacity;
+		}
+
+		public void setQueueCapacity(int queueCapacity) {
+			this.queueCapacity = queueCapacity;
+		}
+	    
+	}
+	
 }

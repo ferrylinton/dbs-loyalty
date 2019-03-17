@@ -27,7 +27,7 @@ public class JacksonConfiguration {
 	
 	@Bean
 	public Jackson2ObjectMapperBuilder jackson2ObjectMapperBuilder() {
-		SimpleDateFormat dateFormat = new SimpleDateFormat(applicationProperties.getDateFormat());
+		SimpleDateFormat dateFormat = new SimpleDateFormat(applicationProperties.getFormat().getDate());
 		Jackson2ObjectMapperBuilder jackson2ObjectMapperBuilder = new Jackson2ObjectMapperBuilder();
 		jackson2ObjectMapperBuilder.timeZone(TimeZone.getDefault());
 		jackson2ObjectMapperBuilder.indentOutput(true);

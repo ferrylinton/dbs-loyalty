@@ -1,39 +1,96 @@
 package com.dbs.loyalty.config;
 
-import static com.google.common.collect.Lists.newArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
-import java.util.Collections;
-
+import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.context.annotation.Primary;
+import org.springframework.http.ResponseEntity;
+
+import com.dbs.loyalty.swagger.FormLoginOperations;
+import com.google.common.collect.Lists;
 
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.builders.ResponseMessageBuilder;
-import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
+import springfox.documentation.service.ApiKey;
+import springfox.documentation.service.AuthorizationScope;
+import springfox.documentation.service.ResponseMessage;
+import springfox.documentation.service.SecurityReference;
 import springfox.documentation.spi.DocumentationType;
+import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
+import springfox.documentation.spring.web.plugins.DocumentationPluginsManager;
+import springfox.documentation.spring.web.scanners.ApiDescriptionReader;
+import springfox.documentation.spring.web.scanners.ApiListingScanner;
+import springfox.documentation.spring.web.scanners.ApiModelReader;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
 @EnableSwagger2
 public class SwaggerConfiguration {
 	
+	public static final String AUTHORIZATION_HEADER = "Authorization";
+	
+	public static final String DEFAULT_INCLUDE_PATTERN = "/api/*";
+	
 	@Bean
 	public Docket apiDocket() {
-		return new Docket(DocumentationType.SWAGGER_2).select()
+		return new Docket(DocumentationType.SWAGGER_2)
+				.apiInfo(ApiInfo.DEFAULT)
+	            .forCodeGeneration(true)
+	            .genericModelSubstitutes(ResponseEntity.class)
+	            .ignoredParameterTypes(Pageable.class)
+	            .ignoredParameterTypes(java.sql.Date.class)
+	            .directModelSubstitute(java.time.LocalDate.class, java.sql.Date.class)
+	            .directModelSubstitute(java.time.ZonedDateTime.class, Date.class)
+	            .directModelSubstitute(java.time.LocalDateTime.class, Date.class)
+	            .securityContexts(Lists.newArrayList(securityContext()))
+	            .securitySchemes(Lists.newArrayList(apiKey()))
+	            .useDefaultResponseMessages(false)
+				.select()
 				.apis(RequestHandlerSelectors.basePackage("com.dbs.loyalty.web.controller.rest"))
-				.paths(PathSelectors.ant("/api/*"))
-				.build()
-				.useDefaultResponseMessages(false)
-				.globalResponseMessage(RequestMethod.GET,
-						newArrayList(
-								new ResponseMessageBuilder().code(500).message("500 message").responseModel(new ModelRef("Error")).build(),
-								new ResponseMessageBuilder().code(403).message("Forbidden!!!!!").build())
-						);
+				.paths(PathSelectors.ant(DEFAULT_INCLUDE_PATTERN))
+				.build();
 	}
 
+	private ApiKey apiKey() {
+        return new ApiKey("JWT", AUTHORIZATION_HEADER, "header");
+    }
+
+    private SecurityContext securityContext() {
+        return SecurityContext.builder()
+            .securityReferences(defaultAuth())
+            .forPaths(PathSelectors.regex(DEFAULT_INCLUDE_PATTERN))
+            .build();
+    }
+    
+    private List<SecurityReference> defaultAuth() {
+        AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
+        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
+        authorizationScopes[0] = authorizationScope;
+        return Lists.newArrayList(new SecurityReference("JWT", authorizationScopes));
+    }
+    
+    private List<ResponseMessage> getGlobalMessages() {
+    	return Arrays.asList(
+    	        new ResponseMessageBuilder()
+    	            .code(200)
+    	            .message("OK")
+    	            .build(),
+    	        new ResponseMessageBuilder()
+    	            .code(400)
+    	            .message("Bad Request")
+    	            .build(),
+    	        new ResponseMessageBuilder()
+    	            .code(500)
+    	            .message("Internal Error")
+    	            .build()
+    		);
+    }
+    
 }

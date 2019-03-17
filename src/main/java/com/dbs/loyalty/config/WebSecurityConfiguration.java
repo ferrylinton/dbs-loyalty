@@ -61,7 +61,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     		.antMatchers("/static/**").permitAll()
     		.antMatchers("/h2-console/**").permitAll()
     		.antMatchers("/login").permitAll()
-    		.antMatchers("/authenticate").permitAll()
     		.antMatchers("/swagger-ui.html").permitAll()
     		.antMatchers("/**").authenticated();
 		
@@ -97,7 +96,17 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
 	@Bean
 	public AuthenticationManager authenticationManager(UserService userService, LdapService ldapService, CustomerService customerService) {
-	    return new ProviderManager(Arrays.asList(new WebAuthenticationProvider(userService, ldapService), new RestAuthenticationProvider(customerService)));
+	    return new ProviderManager(Arrays.asList(webAuthenticationProvider(userService, ldapService), restAuthenticationProvider(customerService)));
 	}
  
+	@Bean("webAuthenticationProvider")
+	public WebAuthenticationProvider webAuthenticationProvider(UserService userService, LdapService ldapService) {
+		return new WebAuthenticationProvider(userService, ldapService);
+	}
+	
+	@Bean("restAuthenticationProvider")
+	public RestAuthenticationProvider restAuthenticationProvider(CustomerService customerService){
+		return new RestAuthenticationProvider(customerService);
+	}
+	
 }

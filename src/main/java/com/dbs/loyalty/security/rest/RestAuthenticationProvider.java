@@ -20,7 +20,7 @@ public class RestAuthenticationProvider implements AuthenticationProvider {
 	}
 
 	@Override
-	public Authentication authenticate(Authentication authentication) {
+	public RestAuthentication authenticate(Authentication authentication) {
         String password = authentication.getCredentials().toString();
         String email = authentication.getName().toLowerCase();
        
