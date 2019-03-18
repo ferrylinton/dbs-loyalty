@@ -28,4 +28,8 @@ spring:
     livereload:
       enabled: true
       port: 35729
-    
+      
+JWTController:
+  authenticate:
+    value: authenticate
+    notes: Authenticate customer to access DBS API

@@ -7,24 +7,27 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dbs.loyalty.config.TagConstant;
 import com.dbs.loyalty.domain.PromoCategory;
 import com.dbs.loyalty.service.PromoCategoryService;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 
 /**
  * REST controller for managing PromoCategory.
  */
+@Api(tags = { TagConstant.PromoCategory })
 @RestController
 @RequestMapping("/api")
-public class PromoCategoryResource {
+public class PromoCategoryRestController {
 
 	private final String SORT_BY = "name";
 	
     private final PromoCategoryService promoCategoryService;
 
-    public PromoCategoryResource(PromoCategoryService promoCategoryService) {
+    public PromoCategoryRestController(PromoCategoryService promoCategoryService) {
         this.promoCategoryService = promoCategoryService;
     }
 

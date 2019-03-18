@@ -6,15 +6,15 @@ import javax.validation.constraints.Size;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-@ApiModel(description = "Login")
+@ApiModel(description = "Authentication's request data")
 public class Login {
 
-	@ApiModelProperty(value = "customer's email", example = "customer01@dbs.com", required = true)
+	@ApiModelProperty(value = "Customer's email", example = "johnsmith@dbs.com", required = true)
 	@NotNull
     @Size(min = 5, max = 50)
 	private String email;
 	
-	@ApiModelProperty(value = "customer's password", example = "password", required = true)
+	@ApiModelProperty(value = "Customer's password", example = "password", required = true)
 	@NotNull
     @Size(min = 6, max = 30)
 	private String password;

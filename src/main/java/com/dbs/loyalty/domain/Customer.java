@@ -23,11 +23,15 @@ import com.dbs.loyalty.config.Constant;
 import com.dbs.loyalty.util.UrlUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 /**
  * Class of Customer
  * 
  * @author Ferry L. H. <ferrylinton@gmail.com>
  */
+@ApiModel(description = "Customer data")
 @Entity
 @Table(	
 	name = "c_customer",
@@ -39,23 +43,27 @@ public class Customer extends AbstractUUID implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
+	@ApiModelProperty(value = "Customer's email", example = "johnsmith@dbs.com", required = true)
 	@NotNull(message = "{validation.notnull.email}")
 	@Pattern(regexp = Constant.EMAIL_REGEX, message = "{validation.pattern.email}")
     @Size(min = 5, max = 50, message = "{validation.size.email}")
 	@Column(name = "email", length = 50, nullable = false)
 	private String email;
 	
+	@ApiModelProperty(value = "Customer's name", example = "John Smith", required = true)
 	@NotNull(message = "{validation.notnull.name}")
 	@Pattern(regexp = Constant.NAME_REGEX, message = "{validation.pattern.name}")
 	@Size(min = 2, max = 50, message = "{validation.size.name}")
 	@Column(name = "name", length = 50, nullable = false)
 	private String name;
 	
+	@ApiModelProperty(value = "Customer's phone", example = "+62 8123456789", required = true)
 	@NotNull(message = "{validation.notnull.phone}")
 	@Size(min = 6, max = 20, message = "{validation.size.phone}")
 	@Column(name = "phone", length = 20, nullable = false)
 	private String phone;
 	
+	@ApiModelProperty(value = "Customer's date of birth", example = "1980-01-21", required = true)
 	@NotNull(message = "{validation.notnull.dob}")
 	@Column(nullable = false, columnDefinition = "DATE")
 	private LocalDate dob;
@@ -83,6 +91,7 @@ public class Customer extends AbstractUUID implements Serializable {
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     private Set<LovedOne> lovedOnes = new HashSet<>();
     
+	@ApiModelProperty(value = "Customer's image url", example = "/api/customers/image", required = true)
 	@Transient
 	private String imageUrl;
 	

@@ -1,4 +1,4 @@
-package com.dbs.loyalty.web.controller.error;
+package com.dbs.loyalty.model;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;

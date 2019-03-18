@@ -12,7 +12,6 @@ import org.springframework.security.web.savedrequest.NullRequestCache;
 
 import com.dbs.loyalty.security.rest.RestAccessDeniedHandler;
 import com.dbs.loyalty.security.rest.RestAccessFilter;
-import com.dbs.loyalty.security.rest.RestLoginFilter;
 import com.dbs.loyalty.security.rest.RestTokenProvider;
 import com.dbs.loyalty.security.rest.RestUnauthorizedEntryPoint;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -51,7 +50,6 @@ public class RestSecurityConfiguration extends WebSecurityConfigurerAdapter {
             	.antMatcher("/api/**")
 		    		.authorizeRequests()
 		    		.antMatchers("/api/authenticate").permitAll()
-		    		.antMatchers("/swagger-ui.html").permitAll()
 		    		.anyRequest().authenticated();
             
             http
@@ -64,7 +62,6 @@ public class RestSecurityConfiguration extends WebSecurityConfigurerAdapter {
              	.accessDeniedHandler(new RestAccessDeniedHandler(objectMapper));
 
             http
-            	//.addFilterAfter(new RestLoginFilter("/api/authenticate", authenticationManager(), jwtService), UsernamePasswordAuthenticationFilter.class)
             	.addFilterBefore(new RestAccessFilter(jwtService), UsernamePasswordAuthenticationFilter.class);
         } catch (Exception e) {   
             LOG.error(e.getLocalizedMessage(), e);

@@ -53,6 +53,10 @@ public class PromoService{
 		return promoRepository.findAll(spec, pageable);
 	}
 
+	public List<Promo> findByPromoCategoryId(String promoCategoryId){
+		return promoRepository.findByPromoCategoryId(promoCategoryId);
+	}
+	
 	public boolean isCodeExist(Promo promo) {
 		Optional<Promo> obj = promoRepository.findByCodeIgnoreCase(promo.getCode());
 

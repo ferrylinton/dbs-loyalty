@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.dbs.loyalty.config.Constant;
+import com.dbs.loyalty.model.ErrorData;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller

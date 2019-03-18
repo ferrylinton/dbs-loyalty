@@ -10,66 +10,46 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbs.loyalty.domain.Customer;
+import com.dbs.loyalty.config.TagConstant;
+import com.dbs.loyalty.model.JWTToken;
 import com.dbs.loyalty.model.Login;
 import com.dbs.loyalty.security.rest.RestAuthentication;
 import com.dbs.loyalty.security.rest.RestAuthenticationProvider;
 import com.dbs.loyalty.security.rest.RestTokenProvider;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
 /**
  * Controller to authenticate users.
  */
+@Api(tags = { TagConstant.Authentication })
 @RestController
 @RequestMapping("/api")
-public class UserJWTController {
+public class JWTRestController {
 
     private final RestTokenProvider restTokenProvider;
 
-    private final RestAuthenticationProvider restAuthenticationProvider;
+    private final RestAuthenticationProvider provider;
 
-    public UserJWTController(RestTokenProvider restTokenProvider, RestAuthenticationProvider restAuthenticationProvider) {
+    public JWTRestController(RestTokenProvider restTokenProvider, RestAuthenticationProvider restAuthenticationProvider) {
         this.restTokenProvider = restTokenProvider;
-        this.restAuthenticationProvider = restAuthenticationProvider;
+        this.provider = restAuthenticationProvider;
     }
 
+    @ApiOperation(
+    	nickname = "authenticate",
+    	notes="${JWTController.authenticate.notes}", 
+    	value="${JWTController.authenticate.value}", 
+    	response = JWTToken.class
+    )
     @PostMapping("/authenticate")
-    public ResponseEntity<JWTToken> authorize(@Valid @RequestBody Login login) {
-    	RestAuthentication authentication = restAuthenticationProvider.authenticate(new RestAuthentication(login.getEmail(), login.getPassword()));
+    public ResponseEntity<JWTToken> authenticate(@Valid @RequestBody Login login) {
+    	RestAuthentication authentication = provider.authenticate(new RestAuthentication(login.getEmail(), login.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         boolean rememberMe = (login.getRememberMe() == null) ? false : login.getRememberMe();
         String token = restTokenProvider.createToken(authentication, rememberMe);
         return new ResponseEntity<>(new JWTToken(token, authentication.getCustomer()), HttpStatus.OK);
     }
 
-    /**
-     * Object to return as body in JWT Authentication.
-     */
-    static class JWTToken {
-
-        private String token;
-        
-        private Customer customer;
-
-		public JWTToken(String token, Customer customer) {
-			this.token = token;
-			this.customer = customer;
-		}
-
-		public String getToken() {
-			return token;
-		}
-
-		public void setToken(String token) {
-			this.token = token;
-		}
-
-		public Customer getCustomer() {
-			return customer;
-		}
-
-		public void setCustomer(Customer customer) {
-			this.customer = customer;
-		}
-
-    }
 }

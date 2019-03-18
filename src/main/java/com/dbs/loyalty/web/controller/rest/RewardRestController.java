@@ -8,9 +8,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dbs.loyalty.config.TagConstant;
 import com.dbs.loyalty.domain.Reward;
 import com.dbs.loyalty.service.RewardService;
+import com.dbs.loyalty.web.swagger.ApiPageable;
 
+import io.swagger.annotations.Api;
+
+@Api(tags = { TagConstant.Reward })
 @RestController
 @RequestMapping("/api/reward")
 public class RewardRestController {
@@ -22,6 +27,7 @@ public class RewardRestController {
 	}
 
 	@GetMapping
+	@ApiPageable
 	public Page<Reward> get(Pageable pageable, Principal principal){
 		return rewardService.findByExpiryDate(principal.getName(), pageable);
 	}

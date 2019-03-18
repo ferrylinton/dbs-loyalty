@@ -38,14 +38,8 @@ public class CustomerService{
 		return customerRepository.findByEmail(email);
 	}
 	
-	public Optional<Customer> findById(String id) throws NotFoundException {
-		Optional<Customer> customer = customerRepository.findById(id);
-		
-		if(customer.isPresent()) {
-			return customer;
-		}else {
-			throw new NotFoundException();
-		}
+	public Optional<Customer> findById(String id) {
+		return customerRepository.findById(id);
 	}
 	
 	public Page<Customer> findAll(String keyword, Pageable pageable) {

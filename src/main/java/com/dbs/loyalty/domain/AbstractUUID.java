@@ -9,12 +9,15 @@ import javax.persistence.MappedSuperclass;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import io.swagger.annotations.ApiModelProperty;
+
 
 @MappedSuperclass
 public abstract class AbstractUUID extends AbstractAuditing implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
+	@ApiModelProperty(value = "Id", example = "646e8a2a-4ca4-459a-9da8-2a31daaecd31")
 	@Id
 	@Column(name = "id", length=36)
 	@GenericGenerator(name = "UUIDGenerator", strategy = "com.dbs.loyalty.domain.UUIDGenerator")

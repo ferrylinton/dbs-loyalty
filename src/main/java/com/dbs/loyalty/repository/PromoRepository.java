@@ -1,5 +1,6 @@
 package com.dbs.loyalty.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,5 +13,7 @@ public interface PromoRepository extends JpaRepository<Promo, String>, JpaSpecif
 	Optional<Promo> findByCodeIgnoreCase(String code);
 	
 	Optional<Promo> findByTitleIgnoreCase(String title);
+	
+	List<Promo> findByPromoCategoryId(String promoCategoryId);
 	
 }
