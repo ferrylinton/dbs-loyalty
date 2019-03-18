@@ -3,14 +3,13 @@ package com.dbs.loyalty.web.validator;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import com.dbs.loyalty.config.Constant;
 import com.dbs.loyalty.domain.Promo;
 import com.dbs.loyalty.service.MessageService;
 import com.dbs.loyalty.service.PromoService;
 
 public class PromoValidator implements Validator {
 
-	private final String IMAGE_EMPTY = "validation.notempty.image";
+	private final String EMPTY_FILE = "validation.notempty.file";
 
 	private final String FILE = "file";
 	
@@ -49,9 +48,9 @@ public class PromoValidator implements Validator {
 			errors.rejectValue(TITLE, TITLE_EXIST, errorArgs, defaultMessage);
 		}
 
-		if (Constant.ZERO.equals(promo.getId()) && (promo.getFile() == null || promo.getFile().isEmpty())){
-			String defaultMessage = MessageService.getMessage(IMAGE_EMPTY);
-			errors.rejectValue(FILE, IMAGE_EMPTY, defaultMessage);
+		if (promo.getId() == null && (promo.getFile() == null || promo.getFile().isEmpty())){
+			String defaultMessage = MessageService.getMessage(EMPTY_FILE);
+			errors.rejectValue(FILE, EMPTY_FILE, defaultMessage);
         }
 		
 	}

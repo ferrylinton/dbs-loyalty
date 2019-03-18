@@ -21,13 +21,9 @@ public class RestAuthenticationProvider implements AuthenticationProvider {
 
 	@Override
 	public RestAuthentication authenticate(Authentication authentication) {
-        String password = authentication.getCredentials().toString();
-        String email = authentication.getName().toLowerCase();
-       
-        return authenticateFromDb(email, password);
-	}
-
-	private RestAuthentication authenticateFromDb(String email, String password){
+		String email = authentication.getName().toLowerCase();
+		String password = authentication.getCredentials().toString();
+        
 		Optional<Customer> customer = customerService.findByEmail(email);
 		
 		if(customer.isPresent() && PasswordUtil.getInstance().matches(password, customer.get().getPasswordHash())) {
@@ -36,7 +32,7 @@ public class RestAuthenticationProvider implements AuthenticationProvider {
         	throw new BadCredentialsException(Constant.EMPTY);
         }
 	}
-	
+
 	@Override
 	public boolean supports(Class<?> authentication) {
 		return authentication.equals(RestAuthentication.class);

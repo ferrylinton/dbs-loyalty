@@ -13,7 +13,7 @@
 	            <li class="breadcrumb-item active" aria-current="page" th:text="#{form}"></li>
 	        </ol>
 	    </nav>
-		<div class="container-fluid pb-3" th:with="format=${@environment.getProperty('application.date-time-full-format')}">
+		<div class="container-fluid pb-3" th:with="format=${@environment.getProperty('application.format.date-time-full')}">
 			<div class="min-height border p-3">
 					<div class="row no-gutters">
 						<div class="col-12" th:if="${error}">

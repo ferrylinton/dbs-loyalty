@@ -88,20 +88,22 @@ public class PromoService{
 	public String execute(Task task) throws JsonParseException, JsonMappingException, IOException {
 		Promo promo = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), Promo.class);
 		
-		if(task.getTaskOperation() == TaskOperation.ADD) {
-			promo.setImageBytes(Base64Util.getBytes(promo.getImageString()));
-			promo.setCreatedBy(task.getMaker());
-			promo.setCreatedDate(task.getMadeDate());
-			promoRepository.save(promo);
-		}else if(task.getTaskOperation() == TaskOperation.MODIFY) {
-			promo.setImageBytes(Base64Util.getBytes(promo.getImageString()));
-			promo.setLastModifiedBy(task.getMaker());
-			promo.setLastModifiedDate(task.getMadeDate());
-			promoRepository.save(promo);
-		}else if(task.getTaskOperation() == TaskOperation.DELETE) {
-			promoRepository.delete(promo);
+		if(task.getVerified()) {
+			if(task.getTaskOperation() == TaskOperation.ADD) {
+				promo.setImageBytes(Base64Util.getBytes(promo.getImageString()));
+				promo.setCreatedBy(task.getMaker());
+				promo.setCreatedDate(task.getMadeDate());
+				promoRepository.save(promo);
+			}else if(task.getTaskOperation() == TaskOperation.MODIFY) {
+				promo.setImageBytes(Base64Util.getBytes(promo.getImageString()));
+				promo.setLastModifiedBy(task.getMaker());
+				promo.setLastModifiedDate(task.getMadeDate());
+				promoRepository.save(promo);
+			}else if(task.getTaskOperation() == TaskOperation.DELETE) {
+				promoRepository.delete(promo);
+			}
 		}
-		
+
 		return promo.getTitle();
 	}
 	

@@ -15,7 +15,7 @@
 	    </nav>
 		<div class="container-fluid pb-3">
 			<div class="min-height border p-3">
-					<div class="row no-gutters" th:with="format=${@environment.getProperty('application.date-format')}">
+					<div class="row no-gutters" th:with="format=${@environment.getProperty('application.format.date')}">
 						<div class="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-6">
 							<div class="border alert alert-light text-center" role="alert" th:if="${error}">
 				                <i class="icon-attention"></i> <span th:text="${error}"></span>

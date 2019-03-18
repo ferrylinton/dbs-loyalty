@@ -69,7 +69,7 @@
 						<tbody>
 							<tr th:each="logLogin,row : ${page}">
 								<td class="text-center" th:text="${row.count + (page.number * page.size)}"></td>
-								<td th:text="${#dates.format(logLogin.createdDate, @environment.getProperty('application.date-time-format'))}"></td>
+								<td th:text="${#dates.format(logLogin.createdDate, @environment.getProperty('application.format.date-time'))}"></td>
 								<td>
 									<span th:class="${logLogin.loginStatus.name() == 'SUCCESS'} ? 'badge badge-success' : 'badge badge-danger'" th:text="#{${logLogin.loginStatus}}">Success</span>
 								</td>

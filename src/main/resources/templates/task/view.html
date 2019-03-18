@@ -71,7 +71,7 @@
 								<th th:text="#{taskStatus}"></th>
 							</tr>
 						</thead>
-						<tbody th:with="format=${@environment.getProperty('application.date-time-format')}">
+						<tbody th:with="format=${@environment.getProperty('application.format.date-time')}">
 							<tr th:each="task,row : ${page}">
 								<td class="py-0 px-1">
 									<div class="dropdown">
