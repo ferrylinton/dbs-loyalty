@@ -4,7 +4,17 @@
 	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
-     
+    
+    <property name="image.type" value="blob" dbms="h2"/>
+	<property name="image.type" value="mediumblob" dbms="mariadb,mysql"/>
  	<property name="password" value="$2a$10$9KcHpiHwzPk.61JiGE.0MeyshggPZWY9TSyD66IZi26zl6mk67.S." />
  	
+    <preConditions>
+        <or>
+            <dbms type="h2"/>
+            <dbms type="mysql"/>
+            <dbms type="mariadb"/>
+        </or>
+    </preConditions>
+    
 </databaseChangeLog>

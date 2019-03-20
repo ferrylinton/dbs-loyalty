@@ -31,3 +31,21 @@ user loved one --> 7 hari sebelum ulang tahun
 
 Banner --> dipilih dari promo
 Promo --> ditampilkan berdasarkan masa aktif
+
+---------------------------------------------------------------
+18 Maert 2018
+---------------------------------------------------------------
+
+Tambah User untuk User LDAP --> dengan username aja sama role
+Tambah Hak Akses untuk checker sesui tipe data
+Tambah Tipe Url untuk Promo kalo tertarik
+Tambah Konfigurasi di database
+
+Ada dua tipe customer :
+- TPC : 0025
+- Treasure : 0012
+
+Event
+
+Notif Loved One ada tanggal ulang tahun
+

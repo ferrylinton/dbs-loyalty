@@ -12,6 +12,7 @@
 			<column name="email" value="system@dbs.com" />
 			<column name="password_hash" value="${password}" />
 			<column name="activated" valueBoolean="false" />
+			<column name="locked" valueBoolean="false" />
 			<column name="authenticate_from_db" valueBoolean="true"/>
 			<column name="login_attempt_count" valueNumeric="0"/>
 			<column name="created_by" value="system"/>

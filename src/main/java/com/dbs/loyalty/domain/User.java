@@ -55,7 +55,10 @@ public class User extends AbstractId implements Serializable {
 	private String passwordHash;
 
 	@Column(name = "activated", nullable = false)
-	private Boolean activated = true;
+	private boolean activated = true;
+	
+	@Column(name = "locked", nullable = false)
+	private boolean locked = false;
 	
 	@Column(name = "authenticate_from_db", nullable = false)
 	private Boolean authenticateFromDb = true;
@@ -101,12 +104,20 @@ public class User extends AbstractId implements Serializable {
 		this.passwordHash = passwordHash;
 	}
 
-	public Boolean getActivated() {
+	public boolean isActivated() {
 		return activated;
 	}
 
-	public void setActivated(Boolean activated) {
+	public void setActivated(boolean activated) {
 		this.activated = activated;
+	}
+
+	public boolean isLocked() {
+		return locked;
+	}
+
+	public void setLocked(boolean locked) {
+		this.locked = locked;
 	}
 
 	public Boolean getAuthenticateFromDb() {

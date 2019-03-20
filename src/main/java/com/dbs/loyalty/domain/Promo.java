@@ -66,8 +66,8 @@ public class Promo extends AbstractId implements Serializable {
 
     @JsonIgnore
     @Lob
-    @Column(name = "image_bytes", nullable = false, columnDefinition="MEDIUMBLOB")
-    @Type(type = "org.hibernate.type.BinaryType")
+    @Column(name = "image_bytes", nullable = false)
+    @Type(type = "org.hibernate.type.BlobType")
     private byte[] imageBytes;
     
     @Transient

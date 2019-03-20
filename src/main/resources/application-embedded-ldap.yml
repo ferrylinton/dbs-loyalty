@@ -1,12 +1,17 @@
+ldap:
+  url: ldap://localhost:10389
+  base: dc=dbs,dc=com
+  principal: admin
+  credentials: password
+  searchFilter: (&(uid=%s))
+  
 spring:
   ldap:
-    base: dc=dbs,dc=com
-    attribute: uid
-    role: Maker
+    base: dc=dbs,dc=comer
     embedded:
       base-dn: dc=dbs,dc=com
       ldif: classpath:schema.ldif
-      port: 8389
+      port: 10389
       credential:
         username: uid=admin
         password: password

@@ -18,12 +18,12 @@ import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 import com.dbs.loyalty.event.LoginEventPublisher;
+import com.dbs.loyalty.ldap.LdapService;
 import com.dbs.loyalty.security.rest.RestAuthenticationProvider;
 import com.dbs.loyalty.security.web.WebAuthenticationFailureHandler;
 import com.dbs.loyalty.security.web.WebAuthenticationProvider;
 import com.dbs.loyalty.security.web.WebAuthenticationSuccessHandler;
 import com.dbs.loyalty.service.CustomerService;
-import com.dbs.loyalty.service.LdapService;
 import com.dbs.loyalty.service.UserService;
 
 

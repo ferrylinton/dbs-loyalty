@@ -30,7 +30,7 @@
             <column name="name" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="image_bytes" type="MEDIUMBLOB"/>
+            <column name="image_bytes" type="${image.type}"/>
             <column name="password_hash" type="VARCHAR(100)">
                 <constraints nullable="false"/>
             </column>

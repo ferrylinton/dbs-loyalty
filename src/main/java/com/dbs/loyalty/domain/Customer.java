@@ -83,8 +83,8 @@ public class Customer extends AbstractUUID implements Serializable {
 
 	@JsonIgnore
     @Lob
-    @Column(name = "image_bytes", columnDefinition="MEDIUMBLOB")
-	@Type(type = "org.hibernate.type.BinaryType")
+    @Type(type = "org.hibernate.type.BlobType")
+    @Column(name = "image_bytes")
     private byte[] imageBytes;
 
 	@JsonIgnore

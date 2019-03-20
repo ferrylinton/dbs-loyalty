@@ -30,7 +30,7 @@
             <column name="end_period" type="date">
                 <constraints nullable="false"/>
             </column>
-            <column name="image_bytes" type="MEDIUMBLOB">
+            <column name="image_bytes" type="${image.type}">
                 <constraints nullable="false"/>
             </column>
             <column name="show_in_carousel" type="BIT(1)">

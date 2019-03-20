@@ -1,8 +1,6 @@
-spring:
-  ldap:
-    urls: ldap://localhost:12345
-    base: dc=dbs,dc=com
-    username: uid=admin
-    password: password
-    attribute: uid
-    role: Maker
+ldap:
+  url: ldap://localhost:10389
+  base: dc=dbs,dc=com
+  # principal: uid=admin,ou=users,dc=dbs,dc=com
+  # credentials: password
+  searchFilter: (&(uid=%s))

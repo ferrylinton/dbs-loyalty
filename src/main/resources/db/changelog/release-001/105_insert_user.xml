@@ -12,6 +12,7 @@
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
+            <column name="locked" valueBoolean="false"/>
             <column name="authenticate_from_db" valueBoolean="true"/>
             <column name="login_attempt_count" valueNumeric="0"/>
             <column name="username" value="admindb"/>
@@ -25,6 +26,7 @@
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
+            <column name="locked" valueBoolean="false"/>
             <column name="authenticate_from_db" valueBoolean="true"/>
             <column name="login_attempt_count" valueNumeric="0"/>
             <column name="username" value="makerdb"/>
@@ -38,6 +40,7 @@
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
+            <column name="locked" valueBoolean="false"/>
             <column name="authenticate_from_db" valueBoolean="true"/>
             <column name="login_attempt_count" valueNumeric="0"/>
             <column name="username" value="checkerdb"/>
@@ -51,6 +54,7 @@
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
+            <column name="locked" valueBoolean="false"/>
             <column name="authenticate_from_db" valueBoolean="false"/>
             <column name="login_attempt_count" valueNumeric="0"/>
             <column name="username" value="admin"/>
@@ -62,6 +66,7 @@
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
+            <column name="locked" valueBoolean="false"/>
             <column name="authenticate_from_db" valueBoolean="false"/>
             <column name="login_attempt_count" valueNumeric="0"/>
             <column name="username" value="checker"/>
@@ -73,6 +78,7 @@
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
+            <column name="locked" valueBoolean="false"/>
             <column name="authenticate_from_db" valueBoolean="false"/>
             <column name="login_attempt_count" valueNumeric="0"/>
             <column name="username" value="maker"/>

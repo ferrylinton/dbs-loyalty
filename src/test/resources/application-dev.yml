@@ -1,0 +1,35 @@
+application:
+  async: 
+    core-pool-size: 5
+    max-pool-size: 10
+    queue-capacity: 1000
+  format: 
+    date: dd-MM-yyyy
+    date-time: dd-MM-yyyy HH:mm
+    date-time-full: dd-MM-yyyy HH:mm:ss.SSS
+spring:
+  liquibase: 
+    enabled: true
+    change-log: classpath:/db/changelog/db.changelog-master.xml
+  mvc:
+    ignore-default-model-on-redirect: true
+    static-path-pattern: /static/**
+  servlet:
+    multipart:
+      max-file-size: 1MB
+      max-request-size: 5MB
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
+  messages:
+    basename: i18n/messages
+  devtools:
+    livereload:
+      enabled: true
+      port: 35729
+      
+JWTController:
+  authenticate:
+    value: authenticate
+    notes: Authenticate customer to access DBS API

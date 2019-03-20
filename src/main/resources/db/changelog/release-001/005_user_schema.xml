@@ -13,6 +13,9 @@
             <column name="activated" type="BIT(1)">
                 <constraints nullable="false"/>
             </column>
+            <column name="locked" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
             <column name="authenticate_from_db" type="BIT(1)">
                 <constraints nullable="false"/>
             </column>

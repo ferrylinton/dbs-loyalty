@@ -8,11 +8,11 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.dbs.loyalty.config.ApplicationProperties;
-import com.dbs.loyalty.config.CustomLdapProperties;
+import com.dbs.loyalty.config.LdapProperties;
 
 @SpringBootApplication
 @EnableTransactionManagement
-@EnableConfigurationProperties({ApplicationProperties.class, CustomLdapProperties.class})
+@EnableConfigurationProperties({ApplicationProperties.class, LdapProperties.class})
 public class Application extends SpringBootServletInitializer{
 
 	@Override
