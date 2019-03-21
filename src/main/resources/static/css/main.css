@@ -109,6 +109,19 @@ body{
     border-color: #d40810;
 }
 
+fieldset { 
+	border: 1px solid #ccc;
+	padding: 6px 9px 8px 10px;
+}
+
+legend {
+	padding: 2px 8px;
+	border:1px solid #ccc;
+	background-color: #f8f8f8;
+	color: #555753;
+	font-size:1em;
+}
+
 /* LOGIN */
 
 .bg-login{

@@ -11,78 +11,63 @@
 		
         <insert tableName="m_role_authority">
             <column name="role_id" value="${Admin}"/>
-            <column name="authority_id" value="${ROLE_ADMIN}"/>
-        </insert>
-        
-        <insert tableName="m_role_authority">
-            <column name="role_id" value="${Admin}"/>
-            <column name="authority_id" value="${ROLE_TASK}"/>
+            <column name="authority_id" value="${ADMIN}"/>
         </insert>
         
         <!-- ROLE MAKER -->
         
         <insert tableName="m_role_authority">
             <column name="role_id" value="${Maker}"/>
-            <column name="authority_id" value="${ROLE_USER}"/>
+            <column name="authority_id" value="${ROLE_MK}"/>
         </insert>
         
         <insert tableName="m_role_authority">
             <column name="role_id" value="${Maker}"/>
-            <column name="authority_id" value="${ROLE_CUSTOMER}"/>
+            <column name="authority_id" value="${USER_MK}"/>
         </insert>
         
         <insert tableName="m_role_authority">
             <column name="role_id" value="${Maker}"/>
-            <column name="authority_id" value="${ROLE_PROMO}"/>
+            <column name="authority_id" value="${CUSTOMER_MK}"/>
         </insert>
         
         <insert tableName="m_role_authority">
             <column name="role_id" value="${Maker}"/>
-            <column name="authority_id" value="${ROLE_LOVED_ONE}"/>
+            <column name="authority_id" value="${CAT_PROMO_MK}"/>
         </insert>
         
         <insert tableName="m_role_authority">
             <column name="role_id" value="${Maker}"/>
-            <column name="authority_id" value="${ROLE_REWARD}"/>
-        </insert>
-        
-        <insert tableName="m_role_authority">
-            <column name="role_id" value="${Maker}"/>
-            <column name="authority_id" value="${ROLE_TASK_VIEW}"/>
+            <column name="authority_id" value="${PROMO_MK}"/>
         </insert>
         
         <!-- ROLE CHECKER -->
         
         <insert tableName="m_role_authority">
             <column name="role_id" value="${Checker}"/>
-            <column name="authority_id" value="${ROLE_TASK}"/>
+            <column name="authority_id" value="${ROLE_CK}"/>
         </insert>
         
         <insert tableName="m_role_authority">
             <column name="role_id" value="${Checker}"/>
-            <column name="authority_id" value="${ROLE_USER_VIEW}"/>
+            <column name="authority_id" value="${USER_CK}"/>
         </insert>
         
         <insert tableName="m_role_authority">
             <column name="role_id" value="${Checker}"/>
-            <column name="authority_id" value="${ROLE_CUSTOMER_VIEW}"/>
+            <column name="authority_id" value="${CUSTOMER_CK}"/>
         </insert>
         
         <insert tableName="m_role_authority">
             <column name="role_id" value="${Checker}"/>
-            <column name="authority_id" value="${ROLE_PROMO_VIEW}"/>
+            <column name="authority_id" value="${CAT_PROMO_CK}"/>
         </insert>
         
         <insert tableName="m_role_authority">
             <column name="role_id" value="${Checker}"/>
-            <column name="authority_id" value="${ROLE_LOVED_ONE_VIEW}"/>
+            <column name="authority_id" value="${PROMO_CK}"/>
         </insert>
-        
-        <insert tableName="m_role_authority">
-            <column name="role_id" value="${Checker}"/>
-            <column name="authority_id" value="${ROLE_REWARD_VIEW}"/>
-        </insert>
-        
+
     </changeSet>
     
 </databaseChangeLog>

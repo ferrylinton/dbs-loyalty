@@ -120,17 +120,14 @@
 			<artifactId>swagger-models</artifactId>
 			<version>1.5.22</version>
 		</dependency>
-		
-		<!-- DTO -->
 
-		<dependency>
-        	<groupId>org.mapstruct</groupId>
-        	<artifactId>mapstruct</artifactId>
-        	<version>${mapstruct.version}</version>
-    	</dependency>
-		
 		<!-- LDAP -->
-
+		
+		<dependency>
+			<groupId>org.springframework.ldap</groupId>
+			<artifactId>spring-ldap-core</artifactId>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>com.unboundid</groupId>
 		 	<artifactId>unboundid-ldapsdk</artifactId>
@@ -174,12 +171,6 @@
 		<dependency>
 		 	<groupId>org.mariadb.jdbc</groupId>
 		 	<artifactId>mariadb-java-client</artifactId>
-		</dependency>
-		
-		<dependency>
-		    <groupId>org.modelmapper</groupId>
-		    <artifactId>modelmapper</artifactId>
-		    <version>2.3.2</version>
 		</dependency>
 
 		<!-- APACHE COMMON -->
@@ -225,7 +216,17 @@
 		</dependency>
 
 		<!-- DEVTOOLS -->
-
+		
+		<dependency>
+        	<groupId>org.mapstruct</groupId>
+        	<artifactId>mapstruct</artifactId>
+        	<version>${mapstruct.version}</version>
+    	</dependency>
+		<dependency>
+		    <groupId>org.projectlombok</groupId>
+		    <artifactId>lombok</artifactId>
+		    <scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
@@ -250,6 +251,11 @@
 	                <source>${java.version}</source>
 	                <target>${java.version}</target>
 	                <annotationProcessorPaths>
+	                	<path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+						</path>
 	                    <path>
 	                        <groupId>org.mapstruct</groupId>
 	                        <artifactId>mapstruct-processor</artifactId>
@@ -271,7 +277,7 @@
                     <defaultSchemaName></defaultSchemaName>
                     <username>root</username>
                     <password></password>
-                    <referenceUrl>hibernate:spring:com.dbs.loyalty.domain?dialect=org.hibernate.dialect.H2Dialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</referenceUrl>
+                    <referenceUrl>hibernate:spring:com.dbs.loyalty.domain?dialect=org.hibernate.dialect.MySQL5Dialect&amp;hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&amp;hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</referenceUrl>
                     <verbose>true</verbose>
                     <logging>debug</logging>
                 </configuration>

@@ -6,75 +6,106 @@
 <body>
     <div th:replace="fragment/navbar.html :: content"></div>
     <div class="container-fluid bg-white">
-        <div class="py-3">
-      		<div class="row no-gutters border min-height">
-	            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 p-3">
-	                <th:block th:if="${#authorization.expression('hasAnyRole(''USER'', ''USER_VIEW'')')}">
-	                	<h4 th:text="#{userManagement}"></h4>
-		                <div class="row no-gutters mb-3">
-		                	<div class="col-4 col-sm-4 col-md-3 col-lg-3 col-xl-2 pr-1">
-		                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/user}">
-									<i class="icon-user font-icon"></i>
-									<span class="font-label" th:text="#{user}"></span>
+        <div class="pt-3">
+      		<div class="row no-gutters min-height">
+     			<th:block th:if="${#authorization.expression('hasAnyAuthority(''USER_MK'', ''USER_CK'')')}">
+     				<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 px-1 pb-3">
+                		<fieldset>
+ 							<legend th:text="#{userManagement}"></legend>
+ 							<div class="row no-gutters">
+			                	<div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-4 p-1 mb-1">
+			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/user}">
+										<i class="icon-user font-icon"></i>
+										<span class="font-label" th:text="#{user}"></span>
+									</a>
+			                	</div>
+			                	<div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-4 p-1 mb-1">
+			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/role}">
+										<i class="icon-user-secret font-icon"></i>
+										<span class="font-label" th:text="#{menu.role}"></span>
+									</a>
+			                	</div>
+			                </div>
+ 						</fieldset>
+ 					</div>
+                </th:block>
+
+      			
+      			<th:block th:if="${#authorization.expression('hasAnyAuthority(''PROMO_MK'', ''PROMO_CK'')')}">
+	                <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 px-1 pb-3">
+	                	<fieldset>
+  							<legend th:text="#{promo}"></legend>
+  							<div class="row no-gutters">
+			                	<div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-4 p-1 mb-1">
+			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/promocategory}">
+										<i class="icon-birthday font-icon"></i>
+										<span class="font-label" th:text="#{promoCategory}"></span>
+									</a>
+			                	</div>
+			                	<div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-4 p-1 mb-1">
+			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/promo}">
+										<i class="icon-birthday font-icon"></i>
+										<span class="font-label" th:text="#{promo}"></span>
+									</a>
+			                	</div>
+			                </div>
+  						</fieldset>
+  					</div>
+	            </th:block>
+
+      			<th:block th:if="${#authorization.expression('hasAnyAuthority(''USER_MK'', ''USER_CK'')')}">
+	                <div class="col-12 px-1 pb-3">
+	                	<fieldset>
+  							<legend th:text="#{task}"></legend>
+  							<div class="row no-gutters">
+			                	<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 p-1 mb-1">
+			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/user}">
+										<i class="icon-user font-icon"></i>
+										<span class="font-label" th:text="#{user}"></span>
+									</a>
+			                	</div>
+			                	<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 p-1 mb-1">
+			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/role}">
+										<i class="icon-user-secret font-icon"></i>
+										<span class="font-label" th:text="#{menu.role}"></span>
+									</a>
+			                	</div>
+			                	<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 p-1 mb-1">
+			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/user}">
+										<i class="icon-user font-icon"></i>
+										<span class="font-label" th:text="#{user}"></span>
+									</a>
+			                	</div>
+			                	<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 p-1 mb-1">
+			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/role}">
+										<i class="icon-user-secret font-icon"></i>
+										<span class="font-label" th:text="#{menu.role}"></span>
+									</a>
+			                	</div>
+			                </div>
+  						</fieldset>
+  					</div>
+	            </th:block>
+      			
+      			<div class="col-12 px-1 pb-3">
+                	<fieldset>
+ 						<legend th:text="#{tool}"></legend>
+ 						<div class="row no-gutters">
+		                	<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 p-1 mb-1">
+		                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/swagger-ui.html}" onclick="return openNewTab(this);">
+									<i class="icon-cog-alt font-icon"></i>
+									<span class="font-label" th:text="#{swagger}"></span>
 								</a>
 		                	</div>
-		                	<div class="col-4 col-sm-4 col-md-3 col-lg-3 col-xl-2 pr-1">
-		                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/role}">
-									<i class="icon-user-secret font-icon"></i>
-									<span class="font-label" th:text="#{menu.role}"></span>
-								</a>
-		                	</div>
-		                </div>
-	                </th:block>
-	                <th:block th:if="${#authorization.expression('hasAnyRole(''PROMO'', ''PROMO_VIEW'')')}">
-		                <h4 th:text="#{promo}"></h4>
-		                <div class="row no-gutters mb-3">
-		                	<div class="col-4 col-sm-4 col-md-3 col-lg-3 col-xl-2 pr-1">
-		                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/promocategory}">
-									<i class="icon-birthday font-icon"></i>
-									<span class="font-label" th:text="#{promoCategory}"></span>
-								</a>
-		                	</div>
-		                	<div class="col-4 col-sm-4 col-md-3 col-lg-3 col-xl-2 pr-1">
-		                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/promo}">
-									<i class="icon-birthday font-icon"></i>
-									<span class="font-label" th:text="#{promo}"></span>
-								</a>
-		                	</div>
-		                </div>
-		        	</th:block>
-	                <th:block th:if="${#authorization.expression('hasAnyRole(''TASK'', ''TASK_VIEW'')')}">
-		                <h4 th:text="#{task}"></h4>
-		                <div class="row no-gutters mb-3">
-		                	<div class="col-4 col-sm-4 col-md-3 col-lg-3 col-xl-2 pr-1">
-		                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/task}">
-									<i class="icon-tasks font-icon"></i>
-									<span class="font-label" th:text="#{task}"></span>
-								</a>
-		                	</div>
-		                </div>
-		        	</th:block>
-		        	<th:block sec:authorize="hasRole('ADMIN')">
-		                <h4 th:text="#{logLogin}"></h4>
-		                <div class="row no-gutters mb-3">
-		                	<div class="col-4 col-sm-4 col-md-3 col-lg-3 col-xl-2 pr-1">
+		                	<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 p-1 mb-1">
 		                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/loglogin}">
 									<i class="icon-history font-icon"></i>
 									<span class="font-label" th:text="#{logLogin}"></span>
 								</a>
 		                	</div>
 		                </div>
-		        	</th:block>
-		        	<h4 th:text="#{api}"></h4>
-	                <div class="row mb-3">
-	                	<div class="col-4 col-sm-4 col-md-3 col-lg-3 col-xl-2 pr-1">
-	                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/swagger-ui.html}" onclick="return openNewTab(this);">
-								<i class="icon-cog-alt font-icon"></i>
-								<span class="font-label" th:text="#{swagger}"></span>
-							</a>
-	                	</div>
-	                </div>
-	            </div>
+ 					</fieldset>
+ 				</div>
 	        </div>
   		</div>
     </div>

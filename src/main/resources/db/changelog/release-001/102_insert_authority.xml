@@ -5,85 +5,85 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
-	<property name="ROLE_ADMIN" value="ZwOkjFmG" />
-	<property name="ROLE_USER" value="3oxk1q6M" />
-	<property name="ROLE_USER_VIEW" value="GmI8ESO3" />
-	<property name="ROLE_CUSTOMER" value="V6evDSIi" />
-	<property name="ROLE_CUSTOMER_VIEW" value="GiATHOgx" />
-	<property name="ROLE_TASK" value="cWhfnEjg" />
-	<property name="ROLE_TASK_VIEW" value="ZLDS022J" />
-	<property name="ROLE_PROMO" value="FU2toQJa" />
-	<property name="ROLE_PROMO_VIEW" value="LFVeEiRv" />
-	<property name="ROLE_LOVED_ONE" value="MzFttlUa" />
-	<property name="ROLE_LOVED_ONE_VIEW" value="NOisXuC4" />
-	<property name="ROLE_REWARD" value="tx1zwTpY" />
-	<property name="ROLE_REWARD_VIEW" value="n83me3Kk" />
+	<property name="ADMIN" value="ZwOkjFmG" />
+	<property name="ROLE_MK" value="o6o0pHGS" />
+	<property name="ROLE_CK" value="LD1KGZjP" />
+	<property name="USER_MK" value="3oxk1q6M" />
+	<property name="USER_CK" value="GmI8ESO3" />
+	<property name="CUSTOMER_MK" value="V6evDSIi" />
+	<property name="CUSTOMER_CK" value="GiATHOgx" />
+	<property name="CAT_PROMO_MK" value="CyvXButR" />
+	<property name="CAT_PROMO_CK" value="hYMMkMXN" />
+	<property name="PROMO_MK" value="FU2toQJa" />
+	<property name="PROMO_CK" value="LFVeEiRv" />
+	<property name="LOVED_ONE" value="MzFttlUa" />
+	<property name="REWARD" value="tx1zwTpY" />
 	
 	<changeSet author="FLH" id="102-1">
 	
 		<insert tableName="m_authority">
-            <column name="id" value="${ROLE_ADMIN}"/>
-            <column name="name" value="ROLE_ADMIN"/>
+            <column name="id" value="${ADMIN}"/>
+            <column name="name" value="ADMIN"/>
         </insert>
         
         <insert tableName="m_authority">
-            <column name="id" value="${ROLE_USER}"/>
-            <column name="name" value="ROLE_USER"/>
+            <column name="id" value="${ROLE_MK}"/>
+            <column name="name" value="ROLE_MK"/>
         </insert>
         
         <insert tableName="m_authority">
-            <column name="id" value="${ROLE_USER_VIEW}"/>
-            <column name="name" value="ROLE_USER_VIEW"/>
+            <column name="id" value="${ROLE_CK}"/>
+            <column name="name" value="ROLE_CK"/>
         </insert>
         
         <insert tableName="m_authority">
-            <column name="id" value="${ROLE_CUSTOMER}"/>
-            <column name="name" value="ROLE_CUSTOMER"/>
+            <column name="id" value="${USER_MK}"/>
+            <column name="name" value="USER_MK"/>
         </insert>
         
         <insert tableName="m_authority">
-            <column name="id" value="${ROLE_CUSTOMER_VIEW}"/>
-            <column name="name" value="ROLE_CUSTOMER_VIEW"/>
+            <column name="id" value="${USER_CK}"/>
+            <column name="name" value="USER_CK"/>
         </insert>
         
         <insert tableName="m_authority">
-            <column name="id" value="${ROLE_TASK}"/>
-            <column name="name" value="ROLE_TASK"/>
+            <column name="id" value="${CUSTOMER_MK}"/>
+            <column name="name" value="CUSTOMER_MK"/>
         </insert>
         
         <insert tableName="m_authority">
-            <column name="id" value="${ROLE_TASK_VIEW}"/>
-            <column name="name" value="ROLE_TASK_VIEW"/>
+            <column name="id" value="${CUSTOMER_CK}"/>
+            <column name="name" value="CUSTOMER_CK"/>
+        </insert>
+        
+		<insert tableName="m_authority">
+            <column name="id" value="${CAT_PROMO_MK}"/>
+            <column name="name" value="CAT_PROMO_MK"/>
         </insert>
         
         <insert tableName="m_authority">
-            <column name="id" value="${ROLE_PROMO}"/>
-            <column name="name" value="ROLE_PROMO"/>
+            <column name="id" value="${CAT_PROMO_CK}"/>
+            <column name="name" value="CAT_PROMO_CK"/>
         </insert>
         
         <insert tableName="m_authority">
-            <column name="id" value="${ROLE_PROMO_VIEW}"/>
-            <column name="name" value="ROLE_PROMO_VIEW"/>
+            <column name="id" value="${PROMO_MK}"/>
+            <column name="name" value="PROMO_MK"/>
         </insert>
         
         <insert tableName="m_authority">
-            <column name="id" value="${ROLE_LOVED_ONE}"/>
-            <column name="name" value="ROLE_LOVED_ONE"/>
+            <column name="id" value="${PROMO_CK}"/>
+            <column name="name" value="PROMO_CK"/>
         </insert>
         
         <insert tableName="m_authority">
-            <column name="id" value="${ROLE_LOVED_ONE_VIEW}"/>
-            <column name="name" value="ROLE_LOVED_ONE_VIEW"/>
+            <column name="id" value="${LOVED_ONE}"/>
+            <column name="name" value="LOVED_ONE"/>
         </insert>
         
         <insert tableName="m_authority">
-            <column name="id" value="${ROLE_REWARD}"/>
-            <column name="name" value="ROLE_REWARD"/>
-        </insert>
-        
-        <insert tableName="m_authority">
-            <column name="id" value="${ROLE_REWARD_VIEW}"/>
-            <column name="name" value="ROLE_REWARD_VIEW"/>
+            <column name="id" value="${REWARD}"/>
+            <column name="name" value="REWARD"/>
         </insert>
         
     </changeSet>

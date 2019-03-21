@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
@@ -112,6 +113,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Bean("restAuthenticationProvider")
 	public RestAuthenticationProvider restAuthenticationProvider(CustomerService customerService){
 		return new RestAuthenticationProvider(customerService);
+	}
+	
+	@Bean  
+	public GrantedAuthorityDefaults grantedAuthorityDefaults() {  
+	    return new GrantedAuthorityDefaults(Constant.EMPTY); // Remove the ROLE_ prefix  
 	}
 	
 }

@@ -2,7 +2,7 @@ spring:
   application:
     name: DBS Loyalty
   profiles:
-    active: dev, h2, embedded-ldap
+    active: dev, h2, ldap
 server:
   port: 8181
   servlet:

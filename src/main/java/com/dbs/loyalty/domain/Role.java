@@ -20,11 +20,16 @@ import javax.validation.constraints.Size;
 
 import com.dbs.loyalty.config.Constant;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Class of Role
  * 
  * @author Ferry L. H. <ferrylinton@gmail.com>
  */
+@Setter
+@Getter
 @Entity
 @Table(	
 	name = "m_role", 
@@ -50,22 +55,6 @@ public class Role extends AbstractId implements Serializable {
         inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "m_role_authority_fk2"))
     )
     private Set<Authority> authorities = new HashSet<>();
-	
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Set<Authority> getAuthorities() {
-		return authorities;
-	}
-
-	public void setAuthorities(Set<Authority> authorities) {
-		this.authorities = authorities;
-	}
 
 	@Override
 	public String toString() {

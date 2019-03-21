@@ -73,7 +73,7 @@ public class UserController extends AbstractPageController{
 	}
 
 	
-	@PreAuthorize("hasAnyRole('USER', 'USER_VIEW')")
+	@PreAuthorize("hasAnyRole('USER_MK', 'USER_CK')")
 	@GetMapping
 	public String view(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
 		Order order = (sort.getOrderFor(SORT_BY) == null) ? ORDER : sort.getOrderFor(SORT_BY);
