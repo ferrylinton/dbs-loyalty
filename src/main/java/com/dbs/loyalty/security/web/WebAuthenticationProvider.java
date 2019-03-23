@@ -14,41 +14,39 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import com.dbs.loyalty.config.Constant;
+import static com.dbs.loyalty.config.Constant.*;
 import com.dbs.loyalty.domain.Authority;
 import com.dbs.loyalty.domain.User;
 import com.dbs.loyalty.ldap.LdapService;
-import com.dbs.loyalty.service.UserService;
+import com.dbs.loyalty.repository.UserRepository;
 import com.dbs.loyalty.util.PasswordUtil;
+
+import lombok.RequiredArgsConstructor;
  
+@RequiredArgsConstructor
 public class WebAuthenticationProvider implements AuthenticationProvider {
 		
-    private UserService userService;
+    private final UserRepository userRepository;
     
-    private LdapService ldapService;
- 
-	public WebAuthenticationProvider(UserService userService, LdapService ldapService) {
-		this.userService = userService;
-		this.ldapService = ldapService;
-	}
+    private final LdapService ldapService;
 
 	@Override
 	public Authentication authenticate(Authentication authentication) {
 		String password = authentication.getCredentials().toString();
         String username = authentication.getName();
         
-        Optional<User> user = userService.findWithRoleByUsername(username);
+        Optional<User> user = userRepository.findWithRoleByUsername(username);
         
         if(user.isPresent()) {
         	if(!user.get().isActivated()) {
-        		throw new DisabledException(Constant.EMPTY);
+        		throw new DisabledException(EMPTY);
             }else if(user.get().isLocked()) {
-        		throw new LockedException(Constant.EMPTY);
+        		throw new LockedException(EMPTY);
         	}else {
         		return authenticate(password, user.get());
         	}
         }else {
-        	throw new BadCredentialsException(Constant.EMPTY);
+        	throw new BadCredentialsException(EMPTY);
         }
 	}
 	
@@ -59,8 +57,7 @@ public class WebAuthenticationProvider implements AuthenticationProvider {
 	
 	private Authentication authenticate(String password, User user) {
 		boolean authenticated = false;
-		
-		System.out.println("user.getAuthenticateFromDb() : " + user.getAuthenticateFromDb());
+
 		if(user.getAuthenticateFromDb()) {
 			authenticated = PasswordUtil.getInstance().matches(password, user.getPasswordHash());
 		}else{
@@ -68,11 +65,11 @@ public class WebAuthenticationProvider implements AuthenticationProvider {
         }
 		
 		if(authenticated) {
-			userService.resetLoginAttemptCount(user.getUsername());
-    		return new UsernamePasswordAuthenticationToken(user.getUsername(), Constant.EMPTY, getAuthorities(user));
+			resetLoginAttemptCount(user.getUsername());
+    		return new UsernamePasswordAuthenticationToken(user.getUsername(), EMPTY, getAuthorities(user));
 		}else {
-			userService.addLoginAttemptCount(user.getLoginAttemptCount(), user.getUsername());
-        	throw new BadCredentialsException(Constant.EMPTY);
+			addLoginAttemptCount(user.getLoginAttemptCount(), user.getUsername());
+        	throw new BadCredentialsException(EMPTY);
         }
 	}
 	
@@ -86,4 +83,12 @@ public class WebAuthenticationProvider implements AuthenticationProvider {
         return authorities;
     }
 	
+	public void addLoginAttemptCount(Integer loginAttemptCount, String username) {
+		loginAttemptCount = (loginAttemptCount < 3) ? (loginAttemptCount + 1) : loginAttemptCount;
+		userRepository.updateLoginAttemptCount(loginAttemptCount, username);
+	}
+
+	public void resetLoginAttemptCount(String username) {
+		userRepository.updateLoginAttemptCount(0, username);
+	}
 }

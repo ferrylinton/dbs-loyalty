@@ -3,33 +3,32 @@ package com.dbs.loyalty.web.validator;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import com.dbs.loyalty.domain.Role;
 import com.dbs.loyalty.service.MessageService;
 import com.dbs.loyalty.service.RoleService;
+import com.dbs.loyalty.service.dto.RoleDto;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 public class RoleValidator implements Validator {
 
-	private final String NAME_EXIST = "validation.exist.name";
+	private String NAME_EXIST = "validation.exist.name";
 
-	private final String NAME = "name";
+	private String NAME = "name";
 
 	private final RoleService roleService;
 
-	public RoleValidator(final RoleService roleService) {
-		this.roleService = roleService;
-	}
-
 	@Override
 	public boolean supports(Class<?> clazz) {
-		return Role.class.equals(clazz);
+		return RoleDto.class.equals(clazz);
 	}
 
 	@Override
 	public void validate(Object target, Errors errors) {
-		Role role = (Role) target;
+		RoleDto roleDto = (RoleDto) target;
 
-		if (roleService.isNameExist(role)) {
-			Object[] errorArgs = new String[] { role.getName() };
+		if (roleService.isNameExist(roleDto)) {
+			Object[] errorArgs = new String[] { roleDto.getName() };
 			String defaultMessage = MessageService.getMessage(NAME_EXIST, errorArgs);
 			errors.rejectValue(NAME, NAME_EXIST, errorArgs, defaultMessage);
 		}

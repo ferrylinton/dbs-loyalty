@@ -11,8 +11,6 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
@@ -32,31 +30,35 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.dbs.loyalty.domain.Authority;
 import com.dbs.loyalty.domain.Role;
 import com.dbs.loyalty.service.AuthorityService;
 import com.dbs.loyalty.service.RoleService;
 import com.dbs.loyalty.service.TaskService;
+import com.dbs.loyalty.service.dto.AuthorityDto;
+import com.dbs.loyalty.service.dto.RoleDto;
 import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.validator.RoleValidator;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@RequiredArgsConstructor
 @Controller
 @RequestMapping("/role")
 public class RoleController extends AbstractPageController {
 
-	private final Logger LOG 			= LoggerFactory.getLogger(RoleController.class);
-
-	private final String ENTITY 		= "role";
+	private String ENTITY 			= "role";
 	
-	private final String REDIRECT 		= "redirect:/role";
+	private String REDIRECT 		= "redirect:/role";
 
-	private final String VIEW_TEMPLATE 	= "role/view";
+	private String VIEW_TEMPLATE 	= "role/view";
 
-	private final String FORM_TEMPLATE 	= "role/form";
+	private String FORM_TEMPLATE	= "role/form";
 
-	private final String SORT_BY 		= "name";
+	private String SORT_BY 			= "name";
 	
-	private final Order ORDER			= Order.asc(SORT_BY).ignoreCase();
+	private Order ORDER				= Order.asc(SORT_BY).ignoreCase();
 
 	private final RoleService roleService;
 
@@ -64,17 +66,11 @@ public class RoleController extends AbstractPageController {
 	
 	private final TaskService taskService;
 
-	public RoleController(RoleService roleService, AuthorityService authorityService, TaskService taskService) {
-		this.roleService = roleService;
-		this.authorityService = authorityService;
-		this.taskService = taskService;
-	}
-
-	@PreAuthorize("hasAnyRole('USER', 'USER_VIEW')")
+	@PreAuthorize("hasAnyRole('ROLE_MK', 'ROLE_CK')")
 	@GetMapping
 	public String view(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
 		Order order = (sort.getOrderFor(SORT_BY) == null) ? ORDER : sort.getOrderFor(SORT_BY);
-		Page<Role> page = roleService.findAll(getPageable(params, order), request);
+		Page<RoleDto> page = roleService.findAll(getPageable(params, order), request);
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
 			return REDIRECT;
@@ -86,16 +82,16 @@ public class RoleController extends AbstractPageController {
 		return VIEW_TEMPLATE;
 	}
 
-	@PreAuthorize("hasAnyRole('USER', 'USER_VIEW')")
+	@PreAuthorize("hasAnyRole('ROLE_MK', 'ROLE_CK')")
 	@GetMapping("/{id}")
 	public String view(ModelMap model, @PathVariable String id){
 		if (id.equals(ZERO)) {
-			model.addAttribute(ENTITY, new Role());
+			model.addAttribute(ENTITY, new RoleDto());
 		} else {
-			Optional<Role> role = roleService.findById(id);
+			Optional<RoleDto> roleDto = roleService.findById(id);
 			
-			if (role.isPresent()) {
-				model.addAttribute(ENTITY, role.get());
+			if (roleDto.isPresent()) {
+				model.addAttribute(ENTITY, roleDto.get());
 			} else {
 				model.addAttribute(ERROR, getNotFoundMessage(id));
 			}
@@ -104,50 +100,48 @@ public class RoleController extends AbstractPageController {
 		return FORM_TEMPLATE;
 	}
 
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasRole('ROLE_MK')")
 	@PostMapping
-	@ResponseBody
-	public ResponseEntity<?> save(@ModelAttribute @Valid Role role, BindingResult result) {
+	public @ResponseBody ResponseEntity<?> save(@ModelAttribute @Valid RoleDto roleDto, BindingResult result) {
 		try {
 			if (result.hasErrors()) {
 				return badRequestResponse(result);
 			} else {
-				if(role.getId() == null) {
-					taskService.saveTaskAdd(role);
+				if(roleDto.getId() == null) {
+					taskService.saveTaskAdd(roleDto);
 				}else {
-					Optional<Role> current = roleService.findWithAuthoritiesById(role.getId());
-					taskService.saveTaskModify(current.get(), role);
+					Optional<RoleDto> current = roleService.findWithAuthoritiesById(roleDto.getId());
+					taskService.saveTaskModify(current.get(), roleDto);
 				}
 
-				return taskIsSavedResponse(Role.class.getSimpleName(), role.getName(), UrlUtil.getyUrl(ENTITY));
+				return taskIsSavedResponse(Role.class.getSimpleName(), roleDto.getName(), UrlUtil.getUrl(ENTITY));
 			}
 			
 		} catch (Exception ex) {
-			LOG.error(ex.getLocalizedMessage(), ex);
+			log.error(ex.getLocalizedMessage(), ex);
 			return errorResponse(ex);
 		}
 	}
 
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasRole('ROLE_MK')")
 	@DeleteMapping("/{id}")
-	@ResponseBody
-	public ResponseEntity<?> delete(@PathVariable String id){
+	public @ResponseBody ResponseEntity<?> delete(@PathVariable String id){
 		try {
-			Optional<Role> role = roleService.findWithAuthoritiesById(id);
-			taskService.saveTaskDelete(role.get());
-			return taskIsSavedResponse(Role.class.getSimpleName(), role.get().getName(), UrlUtil.getyUrl(ENTITY));
+			Optional<RoleDto> roleDto = roleService.findWithAuthoritiesById(id);
+			taskService.saveTaskDelete(roleDto.get());
+			return taskIsSavedResponse(Role.class.getSimpleName(), roleDto.get().getName(), UrlUtil.getUrl(ENTITY));
 		} catch (Exception ex) {
-			LOG.error(ex.getLocalizedMessage(), ex);
+			log.error(ex.getLocalizedMessage(), ex);
 			return errorResponse(ex);
 		}
 	}
 
 	@ModelAttribute("authorities")
-	public List<Authority> getAuthorities() {
-		return authorityService.findAll(Sort.by(SORT_BY));
+	public List<AuthorityDto> getAuthorities() {
+		return authorityService.findAll();
 	}
 
-	@InitBinder("role")
+	@InitBinder("roleDto")
 	protected void initBinder(WebDataBinder binder) {
 		binder.addValidators(new RoleValidator(roleService));
 	}

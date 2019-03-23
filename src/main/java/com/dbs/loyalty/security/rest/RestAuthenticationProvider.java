@@ -1,12 +1,13 @@
 package com.dbs.loyalty.security.rest;
 
+import static com.dbs.loyalty.config.Constant.EMPTY;
+
 import java.util.Optional;
 
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 
-import com.dbs.loyalty.config.Constant;
 import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.service.CustomerService;
 import com.dbs.loyalty.util.PasswordUtil;
@@ -29,7 +30,7 @@ public class RestAuthenticationProvider implements AuthenticationProvider {
 		if(customer.isPresent() && PasswordUtil.getInstance().matches(password, customer.get().getPasswordHash())) {
 			return new RestAuthentication(email, password, customer.get());
         }else{
-        	throw new BadCredentialsException(Constant.EMPTY);
+        	throw new BadCredentialsException(EMPTY);
         }
 	}
 

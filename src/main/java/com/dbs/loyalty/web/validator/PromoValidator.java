@@ -6,6 +6,7 @@ import org.springframework.validation.Validator;
 import com.dbs.loyalty.domain.Promo;
 import com.dbs.loyalty.service.MessageService;
 import com.dbs.loyalty.service.PromoService;
+import com.dbs.loyalty.service.dto.PromoDto;
 
 public class PromoValidator implements Validator {
 
@@ -34,21 +35,21 @@ public class PromoValidator implements Validator {
 
 	@Override
 	public void validate(Object target, Errors errors) {
-		Promo promo = (Promo) target;
+		PromoDto promoDto = (PromoDto) target;
 
-		if (promoService.isCodeExist(promo)) {
-			Object[] errorArgs = new String[] { promo.getCode() };
+		if (promoService.isCodeExist(promoDto)) {
+			Object[] errorArgs = new String[] { promoDto.getCode() };
 			String defaultMessage = MessageService.getMessage(CODE_EXIST, errorArgs);
 			errors.rejectValue(CODE, CODE_EXIST, errorArgs, defaultMessage);
 		}
 		
-		if (promoService.isTitleExist(promo)) {
-			Object[] errorArgs = new String[] { promo.getCode() };
+		if (promoService.isTitleExist(promoDto)) {
+			Object[] errorArgs = new String[] { promoDto.getCode() };
 			String defaultMessage = MessageService.getMessage(TITLE_EXIST, errorArgs);
 			errors.rejectValue(TITLE, TITLE_EXIST, errorArgs, defaultMessage);
 		}
 
-		if (promo.getId() == null && (promo.getFile() == null || promo.getFile().isEmpty())){
+		if (promoDto.getId() == null && (promoDto.getFile() == null || promoDto.getFile().isEmpty())){
 			String defaultMessage = MessageService.getMessage(EMPTY_FILE);
 			errors.rejectValue(FILE, EMPTY_FILE, defaultMessage);
         }

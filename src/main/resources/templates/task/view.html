@@ -16,7 +16,7 @@
 			<div class="min-height border p-3">
 				<div class="row no-gutters mb-3">
 					<div class="col-12 col-sm-12 col-md-10 col-lg-8 col-xl-8">
-						<form th:action="@{/task}" method="get" autocomplete="off" >
+						<form th:action="@{|/task/${type}|}" method="get" autocomplete="off" >
 							<div class="row no-gutters">
 								<div class="col-12 col-sm-12 col-md-9 col-lg-8 col-xl-7 pb-1">
 									<div class="input-group">
@@ -44,7 +44,7 @@
 											<button class="btn btn-light border text-secondary" type="submit">
 												<i class="icon-search"></i>
 											</button>
-											<a class="btn btn-light border text-secondary" th:href="@{/task}">
+											<a class="btn btn-light border text-secondary" th:href="@{|/task/${type}|}">
 												<i class="icon-arrows-cw"></i>
 											</a>
 										</div>
@@ -58,9 +58,9 @@
 					<table class="table table-sm table-hover table-striped border" style="min-width: 700px;">
 						<thead>
 							<tr th:with="ascending=${order.getDirection().name() == 'ASC'}">
-								<th width="60px"></th>
-								<th>#</th>
-								<th th:with="sort=|&sort=madeDate,${ascending ? 'DESC' : 'ASC'}|">
+								<th width="50px"></th>
+								<th width="50px">#</th>
+								<th width="160px" th:with="sort=|&sort=madeDate,${ascending ? 'DESC' : 'ASC'}|">
                                 	<a th:href="@{|?page=${page.getNumber()}${params}${sort}|}" class="text-decoration-none">
                                 		<span th:text="#{date}"></span> <i th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></i>
                                 	</a>
@@ -79,7 +79,7 @@
 										 	<i class="icon-cog"></i>
 										</button>
 										<div class="dropdown-menu py-0 shadow" aria-labelledby="dropdownMenuButton">
-										    <a class="dropdown-item pl-1" th:href="@{|/task/${task.id}|}">
+										    <a class="dropdown-item pl-1" th:href="@{|/task/${type}/${task.id}|}">
 										    	<i class="icon-eye"></i> <span th:text="#{view}"></span>
 										    </a>
 										</div>

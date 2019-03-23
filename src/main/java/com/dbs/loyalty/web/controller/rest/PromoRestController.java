@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dbs.loyalty.config.TagConstant;
 import com.dbs.loyalty.domain.Promo;
 import com.dbs.loyalty.service.PromoService;
+import com.dbs.loyalty.service.dto.PromoDto;
 
 import io.swagger.annotations.Api;
 
@@ -27,7 +28,7 @@ public class PromoRestController {
     
     @GetMapping("/promos/promo-categories/{promoCategoryId}")
     public ResponseEntity<?> getByPromoCategoryId(@PathVariable String promoCategoryId){
-    	List<Promo> promos = promoService.findByPromoCategoryId(promoCategoryId);
+    	List<PromoDto> promos = promoService.findByPromoCategoryId(promoCategoryId);
     	return ResponseEntity.ok().body(promos);
     }
     

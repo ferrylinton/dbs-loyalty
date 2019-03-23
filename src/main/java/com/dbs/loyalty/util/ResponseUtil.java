@@ -28,13 +28,13 @@ public class ResponseUtil {
 	
 	public static ResponseEntity<?> createSaveResponse(String data, String entityName) {
 		String message = MessageService.getMessage(MESSAGE_SAVE, data);
-		String resultUrl = UrlUtil.getEntityUrl(entityName);
+		String resultUrl = UrlUtil.getUrl(entityName);
 		return createSuccessResponse(message, resultUrl);
 	}
 	
 	public static ResponseEntity<?> createDeleteResponse(String data, String entityName) {
 		String message = MessageService.getMessage(MESSAGE_DELETE, data);
-		String resultUrl = UrlUtil.getEntityUrl(entityName);
+		String resultUrl = UrlUtil.getUrl(entityName);
 		return createSuccessResponse(message, resultUrl);
 	}
 	

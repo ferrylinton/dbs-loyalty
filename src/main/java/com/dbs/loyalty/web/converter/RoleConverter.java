@@ -4,22 +4,20 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 import com.dbs.loyalty.config.Constant;
-import com.dbs.loyalty.domain.Role;
+import com.dbs.loyalty.service.dto.RoleDto;
 
 @Component
-public class RoleConverter implements Converter<String, Role> {
+public class RoleConverter implements Converter<String, RoleDto> {
 
 	@Override
-	public Role convert(String content) {
+	public RoleDto convert(String content) {
 		String[] str = content.split(Constant.COMMA);
-		Role role = new Role();
 		
 		if(str.length == 2) {
-			role.setId(str[0]);
-			role.setName(str[1]);
+			return new RoleDto(str[0], str[1]);
+		}else {
+			return null;
 		}
-		
-		return role;
 	}
 
 }

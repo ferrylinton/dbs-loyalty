@@ -12,9 +12,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.dbs.loyalty.domain.PromoCategory;
-import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.PromoCategoryRepository;
+import com.dbs.loyalty.service.dto.TaskDto;
 import com.dbs.loyalty.service.specification.PromoCategorySpecification;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -62,10 +62,10 @@ public class PromoCategoryService{
 		return false;
 	}
 
-	public String execute(Task task) throws JsonParseException, JsonMappingException, IOException {
+	public String execute(TaskDto task) throws JsonParseException, JsonMappingException, IOException {
 		PromoCategory promoCategory = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), PromoCategory.class);
 		
-		if(task.getVerified()) {
+		if(task.isVerified()) {
 			if(task.getTaskOperation() == TaskOperation.ADD) {
 				promoCategory.setCreatedBy(task.getMaker());
 				promoCategory.setCreatedDate(task.getMadeDate());

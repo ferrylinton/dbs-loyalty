@@ -46,7 +46,7 @@
 								<a class="btn btn-sm btn-secondary px-3" th:href="@{/role}">
 									<i class="icon-left"></i> <span th:text="#{back}"></span>
 								</a>
-								<button class="btn btn-sm btn-primary px-3" type="submit" sec:authorize="hasRole('USER')">
+								<button class="btn btn-sm btn-primary px-3" type="submit" sec:authorize="hasRole('ROLE_MK')">
 									<i class="icon-floppy"></i> <span th:text="#{save}"></span>
 								</button>
 							</form>

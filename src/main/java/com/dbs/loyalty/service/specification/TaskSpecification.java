@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.data.jpa.domain.Specification;
 
-import com.dbs.loyalty.config.Constant;
 import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.domain.enumeration.TaskStatus;
@@ -34,9 +33,9 @@ public class TaskSpecification {
 	
 	public static final String ST_PARAM = "st";
 	
-	public static Specification<Task> getSpec(Map<String, String> params, HttpServletRequest request) {
+	public static Specification<Task> getSpec(String taskDataType, Map<String, String> params, HttpServletRequest request) {
 		Specification<Task> specification = Specification
-				.where(all())
+				.where(taskDataType(taskDataType))
 				.and(taskStatus(params, request))
 				.and(taskOperation(params, request))
 				.and(keyword(params));
@@ -44,8 +43,8 @@ public class TaskSpecification {
 		return specification;
 	}
 	
-	public static Specification<Task> all() {
-		return (task, cq, cb) -> cb.notEqual(task.get(ID), Constant.EMPTY);
+	public static Specification<Task> taskDataType(String taskDataType) {
+		return (task, cq, cb) -> cb.equal(task.get(TASK_DATA_TYPE), taskDataType);
 	}
 	
 	public static Specification<Task> taskStatus(Map<String, String> params, HttpServletRequest request) {

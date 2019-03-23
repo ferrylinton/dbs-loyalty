@@ -38,6 +38,8 @@ import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.RoleService;
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.service.UserService;
+import com.dbs.loyalty.service.dto.RoleDto;
+import com.dbs.loyalty.service.dto.UserDto;
 import com.dbs.loyalty.util.PasswordUtil;
 import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.validator.UserValidator;
@@ -77,7 +79,7 @@ public class UserController extends AbstractPageController{
 	@GetMapping
 	public String view(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
 		Order order = (sort.getOrderFor(SORT_BY) == null) ? ORDER : sort.getOrderFor(SORT_BY);
-		Page<User> page = userService.findAll(getPageable(params, order), request);
+		Page<UserDto> page = userService.findAll(getPageable(params, order), request);
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
 			return REDIRECT;
@@ -95,7 +97,7 @@ public class UserController extends AbstractPageController{
 		if (id.equals(ZERO)) {
 			model.addAttribute(ENTITY, new User());
 		} else {
-			Optional<User> user = userService.findById(id);
+			Optional<UserDto> user = userService.findById(id);
 			
 			if (user.isPresent()) {
 				model.addAttribute(ENTITY, user.get());
@@ -121,12 +123,12 @@ public class UserController extends AbstractPageController{
 					user.setPasswordPlain(null);
 					taskService.saveTaskAdd(user);
 				}else {
-					Optional<User> current = userService.findWithRoleById(user.getId());
+					Optional<UserDto> current = userService.findWithRoleById(user.getId());
 					user.setPasswordHash(current.get().getPasswordHash());
 					taskService.saveTaskModify(current.get(), user);
 				}
 
-				return taskIsSavedResponse(User.class.getSimpleName(), user.getUsername(), UrlUtil.getyUrl(ENTITY));
+				return taskIsSavedResponse(User.class.getSimpleName(), user.getUsername(), UrlUtil.getUrl(ENTITY));
 			}
 			
 		} catch (Exception ex) {
@@ -140,9 +142,9 @@ public class UserController extends AbstractPageController{
 	@ResponseBody
 	public ResponseEntity<?> delete(@PathVariable String id) throws NotFoundException {
 		try {
-			Optional<User> user = userService.findWithRoleById(id);
+			Optional<UserDto> user = userService.findWithRoleById(id);
 			taskService.saveTaskDelete(user.get());
-			return taskIsSavedResponse(User.class.getSimpleName(), user.get().getEmail(), UrlUtil.getyUrl(ENTITY));
+			return taskIsSavedResponse(User.class.getSimpleName(), user.get().getEmail(), UrlUtil.getUrl(ENTITY));
 		} catch (Exception ex) {
 			LOG.error(ex.getLocalizedMessage(), ex);
 			return errorResponse(ex);
@@ -150,8 +152,8 @@ public class UserController extends AbstractPageController{
 	}
 	
 	@ModelAttribute("roles")
-	public List<Role> getRoles() {
-	    return roleService.findAll(Sort.by("name"));
+	public List<RoleDto> getRoles() {
+	    return roleService.findAll();
 	}
 
 	@InitBinder("user")

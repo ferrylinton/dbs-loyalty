@@ -6,6 +6,7 @@ import org.springframework.validation.Validator;
 import com.dbs.loyalty.domain.User;
 import com.dbs.loyalty.service.MessageService;
 import com.dbs.loyalty.service.UserService;
+import com.dbs.loyalty.service.dto.UserDto;
 
 public class UserValidator implements Validator {
 
@@ -25,12 +26,12 @@ public class UserValidator implements Validator {
 
 	@Override
 	public boolean supports(Class<?> clazz) {
-		return User.class.equals(clazz);
+		return UserDto.class.equals(clazz);
 	}
 
 	@Override
 	public void validate(Object target, Errors errors) {
-		User user = (User) target;
+		UserDto user = (UserDto) target;
 		
 		if(user.getId() == null && user.getAuthenticateFromDb() && (user.getPasswordPlain() == null || user.getPasswordPlain().trim().length() < 6 || user.getPasswordPlain().trim().length() > 30)) {
 			String defaultMessage = MessageService.getMessage(PASSWORD_SIZE);

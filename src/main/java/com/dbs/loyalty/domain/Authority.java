@@ -11,11 +11,18 @@ import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Class of Authority
  * 
  * @author Ferry L. H. <ferrylinton@gmail.com>
  */
+@Setter
+@Getter
+@EqualsAndHashCode(of = { "id", "name" })
 @Entity
 @Table(	
 	name = "m_authority", 
@@ -32,29 +39,8 @@ public class Authority implements Serializable {
 	@GenericGenerator(name = "StringIdGenerator", strategy = "com.dbs.loyalty.domain.IdGenerator")
 	@GeneratedValue(generator = "StringIdGenerator")
 	private String id;
-	
-	public String getId() {
-		return id;
-	}
 
-	public void setId(String id) {
-		this.id = id;
-	}
-	
 	@Column(name = "name", length = 50, nullable = false)
 	private String name;
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	@Override
-	public String toString() {
-		return String.format("%s,%s", id, name);
-	}
 	
 }

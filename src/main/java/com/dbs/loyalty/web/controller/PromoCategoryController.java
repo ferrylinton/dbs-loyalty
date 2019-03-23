@@ -60,13 +60,10 @@ public class PromoCategoryController extends AbstractPageController {
 
 	private final PromoCategoryService promoCategoryService;
 
-	private final AuthorityService authorityService;
-	
 	private final TaskService taskService;
 
-	public PromoCategoryController(PromoCategoryService promoCategoryService, AuthorityService authorityService, TaskService taskService) {
+	public PromoCategoryController(PromoCategoryService promoCategoryService, TaskService taskService) {
 		this.promoCategoryService = promoCategoryService;
-		this.authorityService = authorityService;
 		this.taskService = taskService;
 	}
 
@@ -119,7 +116,7 @@ public class PromoCategoryController extends AbstractPageController {
 					taskService.saveTaskModify(current.get(), promoCategory);
 				}
 
-				return taskIsSavedResponse(PromoCategory.class.getSimpleName(), promoCategory.getName(), UrlUtil.getyUrl(ENTITY));
+				return taskIsSavedResponse(PromoCategory.class.getSimpleName(), promoCategory.getName(), UrlUtil.getUrl(ENTITY));
 			}
 			
 		} catch (Exception ex) {
@@ -135,16 +132,11 @@ public class PromoCategoryController extends AbstractPageController {
 		try {
 			Optional<PromoCategory> promoCategory = promoCategoryService.findById(id);
 			taskService.saveTaskDelete(promoCategory.get());
-			return taskIsSavedResponse(PromoCategory.class.getSimpleName(), promoCategory.get().getName(), UrlUtil.getyUrl(ENTITY));
+			return taskIsSavedResponse(PromoCategory.class.getSimpleName(), promoCategory.get().getName(), UrlUtil.getUrl(ENTITY));
 		} catch (Exception ex) {
 			LOG.error(ex.getLocalizedMessage(), ex);
 			return errorResponse(ex);
 		}
-	}
-
-	@ModelAttribute("authorities")
-	public List<Authority> getAuthorities() {
-		return authorityService.findAll(Sort.by(SORT_BY));
 	}
 
 	@InitBinder("promoCategory")

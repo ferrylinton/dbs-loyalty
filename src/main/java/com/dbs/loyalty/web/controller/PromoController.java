@@ -13,8 +13,6 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
@@ -40,29 +38,33 @@ import com.dbs.loyalty.domain.PromoCategory;
 import com.dbs.loyalty.service.PromoCategoryService;
 import com.dbs.loyalty.service.PromoService;
 import com.dbs.loyalty.service.TaskService;
+import com.dbs.loyalty.service.dto.PromoDto;
 import com.dbs.loyalty.util.Base64Util;
 import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.validator.PromoValidator;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@RequiredArgsConstructor
 @Controller
 @RequestMapping("/promo")
 public class PromoController extends AbstractPageController {
 
-	private final Logger LOG 				= LoggerFactory.getLogger(PromoController.class);
-
-	private final String ENTITY				= "promo";
+	private String ENTITY			= "promo";
 	
-	private final String REDIRECT 			= "redirect:/promo";
+	private String REDIRECT 		= "redirect:/promo";
 
-	private final String VIEW_TEMPLATE 		= "promo/view";
+	private String VIEW_TEMPLATE 	= "promo/view";
 
-	private final String FORM_TEMPLATE 		= "promo/form";
+	private String FORM_TEMPLATE 	= "promo/form";
 
-	private final String SORT_BY 			= "title";
+	private String SORT_BY 			= "title";
 	
-	private final Order ORDER				= Order.asc(SORT_BY).ignoreCase();
+	private Order ORDER				= Order.asc(SORT_BY).ignoreCase();
 	
-	private final String NAME				= "name";
+	private String NAME				= "name";
 
 	private final PromoService promoService;
 
@@ -70,17 +72,11 @@ public class PromoController extends AbstractPageController {
 	
 	private final TaskService taskService;
 
-	public PromoController(PromoService promoService, PromoCategoryService promoCategoryService, TaskService taskService) {
-		this.promoService = promoService;
-		this.promoCategoryService = promoCategoryService;
-		this.taskService = taskService;
-	}
-
 	@PreAuthorize("hasAnyRole('PROMO', 'PROMO_VIEW')")
 	@GetMapping
 	public String view(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
 		Order order = (sort.getOrderFor(SORT_BY) == null) ? ORDER : sort.getOrderFor(SORT_BY);
-		Page<Promo> page = promoService.findAll(getPageable(params, order), request);
+		Page<PromoDto> page = promoService.findAll(getPageable(params, order), request);
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
 			return REDIRECT;
@@ -98,7 +94,7 @@ public class PromoController extends AbstractPageController {
 		if (id.equals(ZERO)) {
 			model.addAttribute(ENTITY, new Promo());
 		} else {
-			Optional<Promo> promo = promoService.findById(id);
+			Optional<PromoDto> promo = promoService.findById(id);
 			
 			if (promo.isPresent()) {
 				model.addAttribute(ENTITY, promo.get());
@@ -113,33 +109,30 @@ public class PromoController extends AbstractPageController {
 	@PreAuthorize("hasRole('PROMO')")
 	@PostMapping
 	@ResponseBody
-	public ResponseEntity<?> save(@ModelAttribute @Valid Promo promo, BindingResult result) {
+	public ResponseEntity<?> save(@ModelAttribute @Valid PromoDto promoDto, BindingResult result) {
 		try {
 			if (result.hasErrors()) {
 				return badRequestResponse(result);
 			} else {
-				System.out.println("promo.getStartPeriod() : " + promo.getStartPeriod());
-				System.out.println("promo.getEndPeriod() : " + promo.getEndPeriod());
-				if(promo.getId() == null) {
-					promo.setImageString(Base64Util.getString(promo.getFile().getBytes()));
-					taskService.saveTaskAdd(promo);
+				if(promoDto.getId() == null) {
+					taskService.saveTaskAdd(promoDto);
 				}else {
-					Optional<Promo> current = promoService.findById(promo.getId());
+					Optional<PromoDto> current = promoService.findById(promoDto.getId());
 					
-					if(promo.getFile().isEmpty()) {
-						promo.setImageString(Base64Util.getString(current.get().getFile().getBytes()));
+					if(promoDto.getFile().isEmpty()) {
+						promoDto.setImageString(Base64Util.getString(current.get().getFile().getBytes()));
 					}else {
-						promo.setImageString(Base64Util.getString(promo.getFile().getBytes()));
+						promoDto.setImageString(Base64Util.getString(promoDto.getFile().getBytes()));
 					}
 					
-					taskService.saveTaskModify(current.get(), promo);
+					taskService.saveTaskModify(current.get(), promoDto);
 				}
 
-				return taskIsSavedResponse(Promo.class.getSimpleName(), promo.getTitle(), UrlUtil.getyUrl(ENTITY));
+				return taskIsSavedResponse(Promo.class.getSimpleName(), promoDto.getTitle(), UrlUtil.getUrl(ENTITY));
 			}
 			
 		} catch (Exception ex) {
-			LOG.error(ex.getLocalizedMessage(), ex);
+			log.error(ex.getLocalizedMessage(), ex);
 			return errorResponse(ex);
 		}
 	}
@@ -149,11 +142,11 @@ public class PromoController extends AbstractPageController {
 	@ResponseBody
 	public ResponseEntity<?> delete(@PathVariable String id){
 		try {
-			Optional<Promo> promo = promoService.findById(id);
+			Optional<PromoDto> promo = promoService.findById(id);
 			taskService.saveTaskDelete(promo.get());
-			return taskIsSavedResponse(Promo.class.getSimpleName(), promo.get().getTitle(), UrlUtil.getyUrl(ENTITY));
+			return taskIsSavedResponse(Promo.class.getSimpleName(), promo.get().getTitle(), UrlUtil.getUrl(ENTITY));
 		} catch (Exception ex) {
-			LOG.error(ex.getLocalizedMessage(), ex);
+			log.error(ex.getLocalizedMessage(), ex);
 			return errorResponse(ex);
 		}
 	}

@@ -20,25 +20,23 @@ import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 import com.dbs.loyalty.event.LoginEventPublisher;
 import com.dbs.loyalty.ldap.LdapService;
+import com.dbs.loyalty.repository.UserRepository;
 import com.dbs.loyalty.security.rest.RestAuthenticationProvider;
 import com.dbs.loyalty.security.web.WebAuthenticationFailureHandler;
 import com.dbs.loyalty.security.web.WebAuthenticationProvider;
 import com.dbs.loyalty.security.web.WebAuthenticationSuccessHandler;
 import com.dbs.loyalty.service.CustomerService;
-import com.dbs.loyalty.service.UserService;
+
+import lombok.RequiredArgsConstructor;
 
 
-
+@RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
 	private final LoginEventPublisher loginEventPublisher;
-	
-	public WebSecurityConfiguration(LoginEventPublisher loginEventPublisher) {
-		this.loginEventPublisher = loginEventPublisher;
-	}
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -101,13 +99,13 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	}
 	
 	@Bean
-	public AuthenticationManager authenticationManager(UserService userService, LdapService ldapService, CustomerService customerService) {
-	    return new ProviderManager(Arrays.asList(webAuthenticationProvider(userService, ldapService), restAuthenticationProvider(customerService)));
+	public AuthenticationManager authenticationManager(UserRepository userRepository, LdapService ldapService, CustomerService customerService) {
+	    return new ProviderManager(Arrays.asList(webAuthenticationProvider(userRepository, ldapService), restAuthenticationProvider(customerService)));
 	}
  
 	@Bean("webAuthenticationProvider")
-	public WebAuthenticationProvider webAuthenticationProvider(UserService userService, LdapService ldapService) {
-		return new WebAuthenticationProvider(userService, ldapService);
+	public WebAuthenticationProvider webAuthenticationProvider(UserRepository userRepository, LdapService ldapService) {
+		return new WebAuthenticationProvider(userRepository, ldapService);
 	}
 	
 	@Bean("restAuthenticationProvider")

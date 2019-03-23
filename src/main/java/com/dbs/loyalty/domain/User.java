@@ -21,11 +21,20 @@ import com.dbs.loyalty.config.Constant;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
  * Class of User
  * 
  * @author Ferry L. H. <ferrylinton@gmail.com>
  */
+@Setter
+@Getter
+@EqualsAndHashCode(of = { "username" }, callSuper = true)
+@ToString
 @Entity
 @Table(	
 	name = "m_user",
@@ -71,77 +80,5 @@ public class User extends AbstractId implements Serializable {
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id", nullable = true, foreignKey = @ForeignKey(name = "m_user_fk"))
     private Role role;
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getPasswordPlain() {
-		return passwordPlain;
-	}
-
-	public void setPasswordPlain(String passwordPlain) {
-		this.passwordPlain = passwordPlain;
-	}
-
-	public String getPasswordHash() {
-		return passwordHash;
-	}
-
-	public void setPasswordHash(String passwordHash) {
-		this.passwordHash = passwordHash;
-	}
-
-	public boolean isActivated() {
-		return activated;
-	}
-
-	public void setActivated(boolean activated) {
-		this.activated = activated;
-	}
-
-	public boolean isLocked() {
-		return locked;
-	}
-
-	public void setLocked(boolean locked) {
-		this.locked = locked;
-	}
-
-	public Boolean getAuthenticateFromDb() {
-		return authenticateFromDb;
-	}
-
-	public void setAuthenticateFromDb(Boolean authenticateFromDb) {
-		this.authenticateFromDb = authenticateFromDb;
-	}
-
-	public Integer getLoginAttemptCount() {
-		return loginAttemptCount;
-	}
-
-	public void setLoginAttemptCount(Integer loginAttemptCount) {
-		this.loginAttemptCount = loginAttemptCount;
-	}
-
-	public Role getRole() {
-		return role;
-	}
-
-	public void setRole(Role role) {
-		this.role = role;
-	}
-
+	
 }

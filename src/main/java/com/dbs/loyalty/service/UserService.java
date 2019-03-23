@@ -9,45 +9,47 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.domain.User;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.UserRepository;
+import com.dbs.loyalty.service.dto.TaskDto;
+import com.dbs.loyalty.service.dto.UserDto;
+import com.dbs.loyalty.service.mapper.UserMapper;
 import com.dbs.loyalty.service.specification.UserSpecification;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Service
 public class UserService{
 	
 	private final ObjectMapper objectMapper;
 
 	private final UserRepository userRepository;
- 
-	public UserService(ObjectMapper objectMapper, UserRepository userRepository) {
-		this.objectMapper = objectMapper;
-		this.userRepository = userRepository;
+	
+	private final UserMapper userMapper;
+
+	public Optional<UserDto> findByUsername(String username){
+		return userRepository.findWithRoleByUsername(username).map(userMapper::toDto);
 	}
 	
-	public Optional<User> findWithRoleByUsername(String username){
-		return userRepository.findWithRoleByUsername(username);
+	public Optional<UserDto> findById(String id) {
+		return userRepository.findById(id).map(userMapper::toDto);
 	}
 	
-	public Optional<User> findById(String id) {
-		return userRepository.findById(id);
+	public Optional<UserDto> findWithRoleById(String id) {
+		return userRepository.findWithRoleById(id).map(userMapper::toDto);
 	}
 	
-	public Optional<User> findWithRoleById(String id) {
-		return userRepository.findWithRoleById(id);
+	public Page<UserDto> findAll(Pageable pageable, HttpServletRequest request) {
+		return userRepository.findAll(UserSpecification.getSpec(request), pageable).map(userMapper::toDto);
 	}
 	
-	public Page<User> findAll(Pageable pageable, HttpServletRequest request) {
-		return userRepository.findAll(UserSpecification.getSpec(request), pageable);
-	}
-	
-	public boolean isEmailExist(User user) {
-		return isExist(userRepository.findByEmailIgnoreCase(user.getEmail()), user.getId());
+	public boolean isEmailExist(UserDto userDto) {
+		return isExist(userRepository.findByEmailIgnoreCase(userDto.getEmail()), userDto.getId());
 	}
 	
 	private boolean isExist(Optional<User> user, String id) {
@@ -62,33 +64,25 @@ public class UserService{
 		return false;
 	}
 	
-	public String execute(Task task) throws JsonParseException, JsonMappingException, IOException {
-		User user = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), User.class);
+	public String execute(TaskDto taskDto) throws JsonParseException, JsonMappingException, IOException {
+		UserDto dto = objectMapper.readValue((taskDto.getTaskOperation() == TaskOperation.DELETE) ? taskDto.getTaskDataOld() : taskDto.getTaskDataNew(), UserDto.class);
 		
-		if(task.getVerified()) {
-			if(task.getTaskOperation() == TaskOperation.ADD) {
-				user.setCreatedBy(task.getMaker());
-				user.setCreatedDate(task.getMadeDate());
+		if(taskDto.isVerified()) {
+			User user = userMapper.toEntity(dto);
+			if(taskDto.getTaskOperation() == TaskOperation.ADD) {
+				user.setCreatedBy(taskDto.getMaker());
+				user.setCreatedDate(taskDto.getMadeDate());
 				userRepository.save(user);
-			}else if(task.getTaskOperation() == TaskOperation.MODIFY) {
-				user.setLastModifiedBy(task.getMaker());
-				user.setLastModifiedDate(task.getMadeDate());
+			}else if(taskDto.getTaskOperation() == TaskOperation.MODIFY) {
+				user.setLastModifiedBy(taskDto.getMaker());
+				user.setLastModifiedDate(taskDto.getMadeDate());
 				userRepository.save(user);
-			}else if(task.getTaskOperation() == TaskOperation.DELETE) {
+			}else if(taskDto.getTaskOperation() == TaskOperation.DELETE) {
 				userRepository.delete(user);
 			}
 		}
 
-		return user.getUsername();
-	}
-	
-	public void addLoginAttemptCount(Integer loginAttemptCount, String username) {
-		loginAttemptCount = (loginAttemptCount < 3) ? (loginAttemptCount + 1) : loginAttemptCount;
-		userRepository.updateLoginAttemptCount(loginAttemptCount, username);
-	}
-
-	public void resetLoginAttemptCount(String username) {
-		userRepository.updateLoginAttemptCount(0, username);
+		return dto.getUsername();
 	}
 	
 }

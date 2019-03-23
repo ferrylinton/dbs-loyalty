@@ -8,26 +8,25 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dbs.loyalty.config.Constant;
-import com.dbs.loyalty.domain.Promo;
-import com.dbs.loyalty.domain.PromoCategory;
-import com.dbs.loyalty.domain.Role;
 import com.dbs.loyalty.domain.Task;
-import com.dbs.loyalty.domain.User;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.domain.enumeration.TaskStatus;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.repository.TaskRepository;
+import com.dbs.loyalty.service.dto.PromoCategoryDto;
+import com.dbs.loyalty.service.dto.PromoDto;
+import com.dbs.loyalty.service.dto.RoleDto;
+import com.dbs.loyalty.service.dto.TaskDto;
+import com.dbs.loyalty.service.dto.UserDto;
+import com.dbs.loyalty.service.mapper.TaskMapper;
 import com.dbs.loyalty.service.specification.TaskSpecification;
 import com.dbs.loyalty.util.ErrorUtil;
 import com.dbs.loyalty.util.SecurityUtil;
@@ -36,10 +35,13 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@RequiredArgsConstructor
 @Service
 public class TaskService {
-
-	private final Logger LOG = LoggerFactory.getLogger(TaskService.class);
 
 	private final ApplicationContext context;
 	
@@ -47,22 +49,27 @@ public class TaskService {
 	
 	private final ObjectMapper objectMapper;
 	
-	public TaskService(ApplicationContext context, TaskRepository taskRepository, ObjectMapper objectMapper) {
-		this.context = context;
-		this.taskRepository = taskRepository;
-		this.objectMapper = objectMapper;
+	private final TaskMapper taskMapper;
+
+	public Optional<TaskDto> findById(String id) throws NotFoundException {
+		return taskRepository.findById(id).map(taskMapper::toDto);
 	}
 	
-	public Optional<Task> findById(String id) throws NotFoundException {
-		return taskRepository.findById(id);
-	}
-	
-	public Page<Task> findAll(Map<String, String> params, Pageable pageable, HttpServletRequest request){
-		Specification<Task> spec = TaskSpecification.getSpec(params, request);
-		return taskRepository.findAll(spec, pageable);
+	public Page<TaskDto> findAll(String taskDataType, Map<String, String> params, Pageable pageable, HttpServletRequest request){
+		return taskRepository.findAll(TaskSpecification.getSpec(taskDataType, params, request), pageable).map(taskMapper::toDto);
 	}
 	
 	public Task saveTaskAdd(Object taskDataNew) throws JsonProcessingException {
+		String temp = objectMapper.writeValueAsString(taskDataNew);
+		System.out.println(temp);
+		try {
+			RoleDto roleDto = objectMapper.readValue(temp, RoleDto.class);
+			System.out.println(roleDto);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
 		Task task = new Task();
 		task.setTaskOperation(TaskOperation.ADD);
 		task.setTaskStatus(TaskStatus.PENDING);
@@ -97,31 +104,33 @@ public class TaskService {
 	}
 	
 	@Transactional
-	public String save(Task task) throws JsonParseException, JsonMappingException, IOException {
+	public String save(TaskDto taskDto) throws JsonParseException, JsonMappingException, IOException {
+		Task task = taskMapper.toEntity(taskDto);
 		taskRepository.save(task);
 		
-		if(task.getTaskDataType().equals(Role.class.getSimpleName())) {
-			return context.getBean(RoleService.class).execute(task);
-		}else if(task.getTaskDataType().equals(User.class.getSimpleName())) {
-			return context.getBean(UserService.class).execute(task);
-		}else if(task.getTaskDataType().equals(PromoCategory.class.getSimpleName())) {
-			return context.getBean(PromoCategoryService.class).execute(task);
-		}else if(task.getTaskDataType().equals(Promo.class.getSimpleName())) {
-			return context.getBean(PromoService.class).execute(task);
+		if(taskDto.getTaskDataType().equals(RoleDto.class.getSimpleName())) {
+			return context.getBean(RoleService.class).execute(taskDto);
+		}else if(taskDto.getTaskDataType().equals(UserDto.class.getSimpleName())) {
+			return context.getBean(UserService.class).execute(taskDto);
+		}else if(taskDto.getTaskDataType().equals(PromoCategoryDto.class.getSimpleName())) {
+			return context.getBean(PromoCategoryService.class).execute(taskDto);
+		}else if(taskDto.getTaskDataType().equals(PromoDto.class.getSimpleName())) {
+			return context.getBean(PromoService.class).execute(taskDto);
 		}
 		
 		return Constant.EMPTY;
 	}
 	
 	@Transactional(propagation=Propagation.REQUIRES_NEW)
-	public void save(Exception ex, Task task) {
+	public void save(Exception ex, TaskDto taskDto) {
 		try {
+			Task task = taskMapper.toEntity(taskDto);
 			task.setTaskStatus(TaskStatus.FAILED);
 			task.setError(StringUtils.substring(ex.getLocalizedMessage(), 0, 250));
 			task.setErrorDetail(ErrorUtil.getErrorMessage(ex));
 			taskRepository.save(task);
 		} catch (Exception e) {
-			LOG.error(e.getLocalizedMessage(), e);
+			log.error(e.getLocalizedMessage(), e);
 		}
 	}
 

@@ -31,7 +31,7 @@
 							</div>
 						</form>
 	                </div>
-	                <div class="col-auto" sec:authorize="hasRole('USER')">
+	                <div class="col-auto" sec:authorize="hasRole('ROLE_MK')">
 	                    <a class="btn btn-light text-secondary border" th:href="@{/role/0}">
 	                        <i class="icon-plus"></i>
 	                    </a>
@@ -61,7 +61,7 @@
 										    <a class="dropdown-item pl-1" th:href="@{|/role/${role.id}|}">
 										    	<i class="icon-eye"></i> <span th:text="#{view}"></span>
 										    </a>
-										    <th:block sec:authorize="hasRole('USER')">
+										    <th:block sec:authorize="hasRole('ROLE_MK')">
 											   	<div class="dropdown-divider my-0"></div>
 												<a class="dropdown-item pl-1 text-danger" th:href="@{|/role/${role.id}|}" onclick="return Data.confirm(this)">
 													<i class="icon-trash"></i> <span th:text="#{delete}"></span>

@@ -8,11 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
-import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.model.BadRequestResponse;
 import com.dbs.loyalty.model.ErrorResponse;
 import com.dbs.loyalty.model.SuccessResponse;
 import com.dbs.loyalty.service.MessageService;
+import com.dbs.loyalty.service.dto.TaskDto;
 
 public abstract class AbstractController {
 
@@ -68,8 +68,8 @@ public abstract class AbstractController {
 	            .body(response);
 	}
 	
-	protected String getMessage(Task task, String val) {
-		Object[] args = new Object[] { MessageService.getMessage(task.getTaskOperation().toString()), MessageService.getMessage(task.getTaskDataType()), val };
-		return MessageService.getMessage(task.getVerified() ? TASK_IS_VERIFIED : TASK_IS_REJECTED, args);
+	protected String getMessage(TaskDto taskDto, String val) {
+		Object[] args = new Object[] { MessageService.getMessage(taskDto.getTaskOperation().toString()), MessageService.getMessage(taskDto.getTaskDataType()), val };
+		return MessageService.getMessage(taskDto.isVerified() ? TASK_IS_VERIFIED : TASK_IS_REJECTED, args);
 	}
 }

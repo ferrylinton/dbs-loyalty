@@ -44,7 +44,7 @@ public class PasswordService{
 		password.setEmail(email);
 
 		model.addAttribute(ENTITY_NAME, password);
-		model.addAttribute(Constant.ENTITY_URL, UrlUtil.getEntityUrl(ENTITY_NAME));
+		model.addAttribute(Constant.ENTITY_URL, UrlUtil.getUrl(ENTITY_NAME));
 	}
 	
 	public ResponseEntity<?> save(Password password) throws NotFoundException {
@@ -60,7 +60,7 @@ public class PasswordService{
 			}
 
 			String message = MessageService.getMessage(PASSWORD_MESSAGE, password.getEmail());
-			String resultUrl = UrlUtil.getEntityUrl(password.isOwnPassword() ? ENTITY_NAME : USER);
+			String resultUrl = UrlUtil.getUrl(password.isOwnPassword() ? ENTITY_NAME : USER);
 			return ResponseUtil.createSuccessResponse(message, resultUrl);
 		} catch (Exception ex) {
 			LOG.error(ex.getLocalizedMessage(), ex);

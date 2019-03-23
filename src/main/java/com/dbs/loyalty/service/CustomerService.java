@@ -107,9 +107,5 @@ public class CustomerService{
 		            .body(new ErrorResponse(ex.getLocalizedMessage()));
 		}
 	}
- 
-	public String getEntityUrl() {
-		return UrlUtil.getEntityUrl(ENTITY_NAME);
-	}
-	
+
 }
