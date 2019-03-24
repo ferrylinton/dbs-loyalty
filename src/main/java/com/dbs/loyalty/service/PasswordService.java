@@ -52,7 +52,7 @@ public class PasswordService{
 			Optional<User> user = userRepository.findByUsernameIgnoreCase(password.getEmail());
 			
 			if(user.isPresent()) {
-				user.get().setPasswordPlain(password.getPasswordPlain());
+				//user.get().setPasswordPlain(password.getPasswordPlain());
 				user.get().setPasswordHash(PasswordUtil.getInstance().encode(password.getPasswordPlain()));
 				userRepository.save(user.get());
 			}else {

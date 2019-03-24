@@ -87,7 +87,7 @@ public class LdapService {
 			log.error(e.getLocalizedMessage(), e);
 			if ((e instanceof AuthenticationException) || (e instanceof OperationNotSupportedException)) {
 				handleBindException(username, e);
-				throw badCredentials(e);
+				authenticated = false;
 			}else if(e instanceof CommunicationException) {
 				throw new LdapConnectException(MessageService.getMessage("message.ldapConnectException"));
 			}else {

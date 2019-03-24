@@ -13,10 +13,9 @@
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
             <column name="locked" valueBoolean="false"/>
-            <column name="authenticate_from_db" valueBoolean="true"/>
+            <column name="user_type" valueNumeric="1"/>
             <column name="login_attempt_count" valueNumeric="0"/>
             <column name="username" value="admindb"/>
-            <column name="email" value="admindb@dbs.com"/>
             <column name="password_hash" value="${password}"/>
             <column name="role_id" value="${Admin}"/>
         </insert>
@@ -27,10 +26,9 @@
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
             <column name="locked" valueBoolean="false"/>
-            <column name="authenticate_from_db" valueBoolean="true"/>
+            <column name="user_type" valueNumeric="1"/>
             <column name="login_attempt_count" valueNumeric="0"/>
             <column name="username" value="makerdb"/>
-            <column name="email" value="makerdb@dbs.com"/>
             <column name="password_hash" value="${password}"/>
             <column name="role_id" value="${Maker}"/>
         </insert>
@@ -41,10 +39,9 @@
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
             <column name="locked" valueBoolean="false"/>
-            <column name="authenticate_from_db" valueBoolean="true"/>
+            <column name="user_type" valueNumeric="1"/>
             <column name="login_attempt_count" valueNumeric="0"/>
             <column name="username" value="checkerdb"/>
-            <column name="email" value="checkerdb@dbs.com"/>
             <column name="password_hash" value="${password}"/>
             <column name="role_id" value="${Checker}"/>
         </insert>
@@ -55,7 +52,7 @@
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
             <column name="locked" valueBoolean="false"/>
-            <column name="authenticate_from_db" valueBoolean="false"/>
+            <column name="user_type" valueNumeric="0"/>
             <column name="login_attempt_count" valueNumeric="0"/>
             <column name="username" value="admin"/>
             <column name="role_id" value="${Admin}"/>
@@ -67,7 +64,7 @@
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
             <column name="locked" valueBoolean="false"/>
-            <column name="authenticate_from_db" valueBoolean="false"/>
+            <column name="user_type" valueNumeric="0"/>
             <column name="login_attempt_count" valueNumeric="0"/>
             <column name="username" value="checker"/>
             <column name="role_id" value="${Checker}"/>
@@ -79,7 +76,7 @@
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
             <column name="locked" valueBoolean="false"/>
-            <column name="authenticate_from_db" valueBoolean="false"/>
+            <column name="user_type" valueNumeric="0"/>
             <column name="login_attempt_count" valueNumeric="0"/>
             <column name="username" value="maker"/>
             <column name="role_id" value="${Maker}"/>

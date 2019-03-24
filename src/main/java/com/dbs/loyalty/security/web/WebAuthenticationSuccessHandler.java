@@ -23,7 +23,7 @@ public class WebAuthenticationSuccessHandler extends SimpleUrlAuthenticationSucc
 	
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-		loginEventPublisher.publish(LoginStatus.SUCCESS, request);
+		loginEventPublisher.publish(LoginStatus.Succeeded, request);
 		super.onAuthenticationSuccess(request, response, authentication);
 	}
 	

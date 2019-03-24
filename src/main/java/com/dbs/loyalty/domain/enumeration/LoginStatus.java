@@ -2,9 +2,9 @@ package com.dbs.loyalty.domain.enumeration;
 
 public enum LoginStatus {
 
-	FAILURE(0),
+	Failed(0),
 	
-	SUCCESS(1);
+	Succeeded(1);
 
 	private final int value;
 

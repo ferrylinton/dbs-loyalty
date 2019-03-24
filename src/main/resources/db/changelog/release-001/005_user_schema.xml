@@ -16,7 +16,7 @@
             <column name="locked" type="BIT(1)">
                 <constraints nullable="false"/>
             </column>
-            <column name="authenticate_from_db" type="BIT(1)">
+            <column name="user_type" type="TINYINT">
                 <constraints nullable="false"/>
             </column>
             <column name="login_attempt_count" type="TINYINT">
@@ -25,7 +25,6 @@
             <column name="username" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="email" type="VARCHAR(50)"/>
             <column name="password_hash" type="VARCHAR(100)"/>
             <column name="role_id" type="VARCHAR(8)"/>
             <column name="created_by" type="VARCHAR(50)">
@@ -46,12 +45,8 @@
     <changeSet author="FLH" id="005-3">
         <addUniqueConstraint columnNames="username" constraintName="m_user_username_uq" tableName="m_user"/>
     </changeSet>
-    
-    <changeSet author="FLH" id="005-4">
-        <addUniqueConstraint columnNames="email" constraintName="m_user_email_uq" tableName="m_user"/>
-    </changeSet>
 
-	<changeSet author="FLH" id="005-5">
+	<changeSet author="FLH" id="005-4">
         <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="m_user" constraintName="m_user_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="m_role"/>
     </changeSet>
     

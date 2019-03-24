@@ -31,7 +31,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.dbs.loyalty.domain.User;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.RoleService;
 import com.dbs.loyalty.service.TaskService;
@@ -87,7 +86,7 @@ public class UserController extends AbstractPageController{
 	@GetMapping("/{id}")
 	public String view(ModelMap model, @PathVariable String id) {
 		if (id.equals(ZERO)) {
-			model.addAttribute(USER, new User());
+			model.addAttribute(USER, new UserDto());
 		} else {
 			Optional<UserDto> user = userService.findById(id);
 			
@@ -104,23 +103,23 @@ public class UserController extends AbstractPageController{
 	@PreAuthorize("hasRole('USER_CK')")
 	@PostMapping
 	@ResponseBody
-	public ResponseEntity<?> save(@Valid @ModelAttribute User user, BindingResult result) {
+	public ResponseEntity<?> save(@Valid @ModelAttribute UserDto userDto, BindingResult result) {
 		try {
 			if (result.hasErrors()) {
 				return badRequestResponse(result);
 			} else {
 				
-				if(user.getId() == null) {
-					user.setPasswordHash(PasswordUtil.getInstance().encode(user.getPasswordPlain()));
-					user.setPasswordPlain(null);
-					taskService.saveTaskAdd(USER, user);
+				if(userDto.getId() == null) {
+					userDto.setPasswordHash(PasswordUtil.getInstance().encode(userDto.getPasswordPlain()));
+					userDto.setPasswordPlain(null);
+					taskService.saveTaskAdd(USER, userDto);
 				}else {
-					Optional<UserDto> current = userService.findWithRoleById(user.getId());
-					user.setPasswordHash(current.get().getPasswordHash());
-					taskService.saveTaskModify(USER, current.get(), user);
+					Optional<UserDto> current = userService.findWithRoleById(userDto.getId());
+					userDto.setPasswordHash(current.get().getPasswordHash());
+					taskService.saveTaskModify(USER, current.get(), userDto);
 				}
 
-				return taskIsSavedResponse(USER,  user.getUsername(), UrlUtil.getUrl(USER));
+				return taskIsSavedResponse(USER,  userDto.getUsername(), UrlUtil.getUrl(USER));
 			}
 			
 		} catch (Exception ex) {
@@ -134,9 +133,9 @@ public class UserController extends AbstractPageController{
 	@ResponseBody
 	public ResponseEntity<?> delete(@PathVariable String id) throws NotFoundException {
 		try {
-			Optional<UserDto> user = userService.findWithRoleById(id);
-			taskService.saveTaskDelete(USER, user.get());
-			return taskIsSavedResponse(USER, user.get().getEmail(), UrlUtil.getUrl(USER));
+			Optional<UserDto> userDto = userService.findWithRoleById(id);
+			taskService.saveTaskDelete(USER, userDto.get());
+			return taskIsSavedResponse(USER, userDto.get().getEmail(), UrlUtil.getUrl(USER));
 		} catch (Exception ex) {
 			log.error(ex.getLocalizedMessage(), ex);
 			return errorResponse(ex);
@@ -150,7 +149,7 @@ public class UserController extends AbstractPageController{
 
 	@InitBinder("userDto")
 	protected void initBinder(WebDataBinder binder) {
-		binder.addValidators(new UserValidator(userService));
+		binder.addValidators(new UserValidator());
 	}
 	
 }

@@ -16,8 +16,12 @@ import org.hibernate.annotations.GenericGenerator;
 
 import com.dbs.loyalty.domain.enumeration.LoginStatus;
 
+import lombok.Getter;
+import lombok.Setter;
 
 
+@Setter
+@Getter
 @Entity
 @Table(	
 	name = "log_login",
@@ -46,7 +50,7 @@ public class LogLogin implements Serializable {
 	private Instant createdDate;
 	
 	@Enumerated(EnumType.ORDINAL)
-    @Column(name = "login_status", length = 1, nullable = false, updatable = false)
+    @Column(name = "login_status", nullable = false, updatable = false, columnDefinition="TINYINT")
 	private LoginStatus loginStatus;
 	
 	@Column(name = "browser", length = 50)
@@ -66,93 +70,5 @@ public class LogLogin implements Serializable {
 	
 	@Column(name = "platform_version", length = 50)
 	private String platformVersion;
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getIp() {
-		return ip;
-	}
-
-	public void setIp(String ip) {
-		this.ip = ip;
-	}
-
-	public Instant getCreatedDate() {
-		return createdDate;
-	}
-
-	public void setCreatedDate(Instant createdDate) {
-		this.createdDate = createdDate;
-	}
-
-	public LoginStatus getLoginStatus() {
-		return loginStatus;
-	}
-
-	public void setLoginStatus(LoginStatus loginStatus) {
-		this.loginStatus = loginStatus;
-	}
-
-	public String getBrowser() {
-		return browser;
-	}
-
-	public void setBrowser(String browser) {
-		this.browser = browser;
-	}
-
-	public String getBrowserType() {
-		return browserType;
-	}
-
-	public void setBrowserType(String browserType) {
-		this.browserType = browserType;
-	}
-
-	public String getBrowserMajorVersion() {
-		return browserMajorVersion;
-	}
-
-	public void setBrowserMajorVersion(String browserMajorVersion) {
-		this.browserMajorVersion = browserMajorVersion;
-	}
-
-	public String getDeviceType() {
-		return deviceType;
-	}
-
-	public void setDeviceType(String deviceType) {
-		this.deviceType = deviceType;
-	}
-
-	public String getPlatform() {
-		return platform;
-	}
-
-	public void setPlatform(String platform) {
-		this.platform = platform;
-	}
-
-	public String getPlatformVersion() {
-		return platformVersion;
-	}
-
-	public void setPlatformVersion(String platformVersion) {
-		this.platformVersion = platformVersion;
-	}
 
 }

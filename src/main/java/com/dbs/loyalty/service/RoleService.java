@@ -76,20 +76,20 @@ public class RoleService{
 	}
 
 	public String execute(TaskDto taskDto) throws JsonParseException, JsonMappingException, IOException {
-		RoleDto roleDto = objectMapper.readValue((taskDto.getTaskOperation() == TaskOperation.DELETE) ? taskDto.getTaskDataOld() : taskDto.getTaskDataNew(), RoleDto.class);
+		RoleDto roleDto = objectMapper.readValue((taskDto.getTaskOperation() == TaskOperation.Delete) ? taskDto.getTaskDataOld() : taskDto.getTaskDataNew(), RoleDto.class);
 		
 		if(taskDto.isVerified()) {
 			Role role = roleMapper.toEntity(roleDto);
 			
-			if(taskDto.getTaskOperation() == TaskOperation.ADD) {
+			if(taskDto.getTaskOperation() == TaskOperation.Add) {
 				role.setCreatedBy(taskDto.getMaker());
 				role.setCreatedDate(taskDto.getMadeDate());
 				roleRepository.save(role);
-			}else if(taskDto.getTaskOperation() == TaskOperation.MODIFY) {
+			}else if(taskDto.getTaskOperation() == TaskOperation.Modify) {
 				role.setLastModifiedBy(taskDto.getMaker());
 				role.setLastModifiedDate(taskDto.getMadeDate());
 				roleRepository.save(role);
-			}else if(taskDto.getTaskOperation() == TaskOperation.DELETE) {
+			}else if(taskDto.getTaskOperation() == TaskOperation.Delete) {
 				roleRepository.delete(role);
 			}
 		}

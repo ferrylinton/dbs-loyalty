@@ -21,7 +21,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="ip" type="VARCHAR(20)"/>
-            <column name="login_status" type="INT">
+            <column name="login_status" type="TINYINT">
                 <constraints nullable="false"/>
             </column>
             <column name="platform" type="VARCHAR(50)"/>

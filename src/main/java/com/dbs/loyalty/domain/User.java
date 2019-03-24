@@ -9,16 +9,13 @@ import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import org.hibernate.annotations.ColumnDefault;
-
 import com.dbs.loyalty.config.constant.Constant;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.dbs.loyalty.domain.enumeration.UserType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.EqualsAndHashCode;
@@ -39,8 +36,7 @@ import lombok.ToString;
 @Table(	
 	name = "m_user",
 	uniqueConstraints = {
-		@UniqueConstraint(name = "m_user_username_uq", columnNames = { "username" }),
-		@UniqueConstraint(name = "m_user_email_uq", columnNames = { "email" })
+		@UniqueConstraint(name = "m_user_username_uq", columnNames = { "username" })
 	}
 )
 public class User extends AbstractId implements Serializable {
@@ -53,30 +49,22 @@ public class User extends AbstractId implements Serializable {
 	@Column(name = "username", length = 50, nullable = false)
 	private String username;
 	
-	@Column(name = "email", length = 50)
-	private String email;
-	
-	@JsonIgnore
-	@Transient
-	private String passwordPlain;
-	
 	@Column(name = "password_hash", length = 100)
 	private String passwordHash;
 
 	@Column(name = "activated", nullable = false)
-	private boolean activated = true;
+	private boolean activated;
 	
 	@Column(name = "locked", nullable = false)
-	private boolean locked = false;
+	private boolean locked;
 	
-	@Column(name = "authenticate_from_db", nullable = false)
-	private Boolean authenticateFromDb = true;
+	@Column(name = "user_type", nullable = false, columnDefinition="TINYINT")
+	private UserType userType;
 	
 	@Column(name = "login_attempt_count", nullable = false, columnDefinition="TINYINT")
-	private Integer loginAttemptCount = 0;
+	private int loginAttemptCount;
 	
 	@JsonIgnoreProperties("authorities")
-    @ColumnDefault("NULL")
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id", nullable = true, foreignKey = @ForeignKey(name = "m_user_fk"))
     private Role role;

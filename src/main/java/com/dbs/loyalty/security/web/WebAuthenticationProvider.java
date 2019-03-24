@@ -18,6 +18,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import com.dbs.loyalty.domain.Authority;
 import com.dbs.loyalty.domain.User;
+import com.dbs.loyalty.domain.enumeration.UserType;
 import com.dbs.loyalty.ldap.LdapService;
 import com.dbs.loyalty.repository.UserRepository;
 import com.dbs.loyalty.util.PasswordUtil;
@@ -57,20 +58,20 @@ public class WebAuthenticationProvider implements AuthenticationProvider {
 	}
 	
 	private Authentication authenticate(String password, User user) {
-		boolean authenticated = false;
-
-		if(user.getAuthenticateFromDb()) {
-			authenticated = PasswordUtil.getInstance().matches(password, user.getPasswordHash());
-		}else{
-			authenticated = ldapService.authenticate(user.getUsername(), password);
-        }
-		
-		if(authenticated) {
+		if(isAuthenticated(password, user)) {
 			resetLoginAttemptCount(user.getUsername());
     		return new UsernamePasswordAuthenticationToken(user.getUsername(), EMPTY, getAuthorities(user));
 		}else {
 			addLoginAttemptCount(user.getLoginAttemptCount(), user.getUsername());
         	throw new BadCredentialsException(EMPTY);
+        }
+	}
+	
+	private boolean isAuthenticated(String password, User user) {
+		if(user.getUserType() == UserType.Internal) {
+			return ldapService.authenticate(user.getUsername(), password);
+		}else{
+			return PasswordUtil.getInstance().matches(password, user.getPasswordHash());
         }
 	}
 	
@@ -86,10 +87,17 @@ public class WebAuthenticationProvider implements AuthenticationProvider {
 	
 	public void addLoginAttemptCount(Integer loginAttemptCount, String username) {
 		loginAttemptCount = (loginAttemptCount < 3) ? (loginAttemptCount + 1) : loginAttemptCount;
-		userRepository.updateLoginAttemptCount(loginAttemptCount, username);
+		
+		if(loginAttemptCount == 3) {
+			userRepository.lockUser(loginAttemptCount, true, username);
+		}else {
+			userRepository.updateLoginAttemptCount(loginAttemptCount, username);
+		}
+		
 	}
 
 	public void resetLoginAttemptCount(String username) {
 		userRepository.updateLoginAttemptCount(0, username);
 	}
+	
 }

@@ -48,36 +48,20 @@ public class UserService{
 		return userRepository.findAll(UserSpecification.getSpec(request), pageable).map(userMapper::toDto);
 	}
 	
-	public boolean isEmailExist(UserDto userDto) {
-		return isExist(userRepository.findByEmailIgnoreCase(userDto.getEmail()), userDto.getId());
-	}
-	
-	private boolean isExist(Optional<User> user, String id) {
-		if(user.isPresent()) {
-			if(id == null) {
-				return true;
-			}else if(!id.equals(user.get().getId())) {
-				return true;
-			}
-		}
-		
-		return false;
-	}
-	
 	public String execute(TaskDto taskDto) throws JsonParseException, JsonMappingException, IOException {
-		UserDto dto = objectMapper.readValue((taskDto.getTaskOperation() == TaskOperation.DELETE) ? taskDto.getTaskDataOld() : taskDto.getTaskDataNew(), UserDto.class);
+		UserDto dto = objectMapper.readValue((taskDto.getTaskOperation() == TaskOperation.Delete) ? taskDto.getTaskDataOld() : taskDto.getTaskDataNew(), UserDto.class);
 		
 		if(taskDto.isVerified()) {
 			User user = userMapper.toEntity(dto);
-			if(taskDto.getTaskOperation() == TaskOperation.ADD) {
+			if(taskDto.getTaskOperation() == TaskOperation.Add) {
 				user.setCreatedBy(taskDto.getMaker());
 				user.setCreatedDate(taskDto.getMadeDate());
 				userRepository.save(user);
-			}else if(taskDto.getTaskOperation() == TaskOperation.MODIFY) {
+			}else if(taskDto.getTaskOperation() == TaskOperation.Modify) {
 				user.setLastModifiedBy(taskDto.getMaker());
 				user.setLastModifiedDate(taskDto.getMadeDate());
 				userRepository.save(user);
-			}else if(taskDto.getTaskOperation() == TaskOperation.DELETE) {
+			}else if(taskDto.getTaskOperation() == TaskOperation.Delete) {
 				userRepository.delete(user);
 			}
 		}

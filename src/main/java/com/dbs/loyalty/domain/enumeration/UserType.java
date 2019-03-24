@@ -1,15 +1,14 @@
 package com.dbs.loyalty.domain.enumeration;
 
-public enum TaskStatus {
-    All(0), 
-    Pending(1), 
-    Rejected(2), 
-    Verified(3), 
-    Failed(4);
+public enum UserType {
+
+	Internal(0),
 	
+	External(1);
+
 	private final int value;
 
-    private TaskStatus(int value) {
+    private UserType(int value) {
         this.value = value;
     }
     

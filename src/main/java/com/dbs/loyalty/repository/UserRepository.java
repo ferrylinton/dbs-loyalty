@@ -28,11 +28,14 @@ public interface UserRepository extends JpaRepository<User, String>, JpaSpecific
 	
 	Optional<User> findByUsernameIgnoreCase(String username);
 	
-	Optional<User> findByEmailIgnoreCase(String email);
-	
 	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	@Modifying
 	@Query("update User u set u.loginAttemptCount = :loginAttemptCount where u.username = :username")
 	void updateLoginAttemptCount(@Param("loginAttemptCount") Integer loginAttemptCount, @Param("username") String username);
+
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
+	@Modifying
+	@Query("update User u set u.loginAttemptCount = :loginAttemptCount, u.locked = :locked where u.username = :username")
+	void lockUser(@Param("loginAttemptCount") Integer loginAttemptCount, @Param("locked") boolean locked, @Param("username") String username);
 
 }

@@ -25,10 +25,10 @@
             <column name="task_data_type" type="VARCHAR(30)">
                 <constraints nullable="false"/>
             </column>
-            <column name="task_operation" type="VARCHAR(6)">
+            <column name="task_operation" type="TINYINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="task_status" type="VARCHAR(8)">
+            <column name="task_status" type="TINYINT">
                 <constraints nullable="false"/>
             </column>
             <column name="error" type="varchar(255)"/>
