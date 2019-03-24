@@ -7,8 +7,12 @@ import org.springframework.security.web.authentication.session.SessionAuthentica
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.dbs.loyalty.config.Constant;
+import com.dbs.loyalty.config.constant.Constant;
+import com.dbs.loyalty.exception.LdapConnectException;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller("loginController")
 public class LoginController extends AbstractController{
 	
@@ -24,27 +28,29 @@ public class LoginController extends AbstractController{
 	
 	private final String INVALID_USERNAME_OR_PASSWORD		= "message.invalidUsernameOrPassword";
 	
-	private final String USER_IS_ALREADY_LOGGED			= "message.userIsAlreadyLogged";
+	private final String USER_IS_ALREADY_LOGGED				= "message.userIsAlreadyLogged";
 	
-	private final String USER_IS_LOCKED					= "message.userIsLocked";
+	private final String USER_IS_LOCKED						= "message.userIsLocked";
 	
-	private final String USER_LOGOUT_SUCCESS			= "message.userLogoutSuccess";
+	private final String USER_LOGOUT_SUCCESS				= "message.userLogoutSuccess";
 	
-	private final String SESSION_IS_EXPIRED				= "message.sessionIsExpired";
+	private final String SESSION_IS_EXPIRED					= "message.sessionIsExpired";
 	
-	private final String SESSION_IS_INVALID				= "message.sessionIsInvalid";
+	private final String SESSION_IS_INVALID					= "message.sessionIsInvalid";
 	
-	private final String FORBIDDEN_MESSAGE				= "message.forbidden";
+	private final String FORBIDDEN_MESSAGE					= "message.forbidden";
+	
+	private final String LDAP_CONNECT_EXCEPTION				= "message.ldapConnectException";
 
-	private final String SPRING_SECURITY_LAST_EXCEPTION	= "SPRING_SECURITY_LAST_EXCEPTION";
+	private final String SPRING_SECURITY_LAST_EXCEPTION		= "SPRING_SECURITY_LAST_EXCEPTION";
 	
-	private final String CLASS							= "class";
+	private final String CLASS								= "class";
 	
-	private final String TEXT_DANGER 					= "text-danger";
+	private final String TEXT_DANGER 						= "text-danger";
 	
-	private final String TEXT_SUCCESS					= "text-success";
+	private final String TEXT_SUCCESS						= "text-success";
 	
-	private final String LOGIN_TEMPLATE					= "login/form";
+	private final String LOGIN_TEMPLATE						= "login/form";
 	
 
 	@RequestMapping("/login")
@@ -68,12 +74,16 @@ public class LoginController extends AbstractController{
 			
 		}else if (request.getParameter(ERROR) != null) {
 			Exception exception = (Exception) request.getSession().getAttribute(SPRING_SECURITY_LAST_EXCEPTION);
+			log.error("LOGIN ERROR");
+			log.error(exception.getLocalizedMessage(), exception);
 			
 			request.setAttribute(CLASS, TEXT_DANGER);
 			if(exception instanceof LockedException) {
 				request.setAttribute(Constant.MESSAGE, USER_IS_LOCKED);
 			}else if(exception instanceof SessionAuthenticationException) {
 				request.setAttribute(Constant.MESSAGE, USER_IS_ALREADY_LOGGED);
+			}else if(exception instanceof LdapConnectException) {
+				request.setAttribute(Constant.MESSAGE, LDAP_CONNECT_EXCEPTION);
 			}else{
 				request.setAttribute(Constant.MESSAGE, INVALID_USERNAME_OR_PASSWORD);
 			}

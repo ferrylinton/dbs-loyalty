@@ -1,6 +1,6 @@
-package com.dbs.loyalty.config;
+package com.dbs.loyalty.config.constant;
 
-public class TagConstant {
+public class SwaggerConstant {
 
 	public static final String Authentication = "Authentication";
 	

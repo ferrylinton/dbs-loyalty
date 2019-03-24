@@ -1,16 +1,13 @@
 package com.dbs.loyalty.service.dto;
 
-import java.time.Instant;
+import static com.dbs.loyalty.config.constant.Constant.NAME_REGEX;
+
 import java.util.Set;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import static com.dbs.loyalty.config.Constant.*;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,7 +24,7 @@ import lombok.Setter;
 @RequiredArgsConstructor
 @Setter
 @Getter
-public class RoleDto {
+public class RoleDto extends AbstractAuditDto {
 
 	@NonNull
 	private String id;
@@ -40,18 +37,6 @@ public class RoleDto {
 	
 	@NotEmpty(message = "{validation.notempty.authorities}")
 	private Set<AuthorityDto> authorities;
-	
-	@JsonIgnore
-	private String createdBy;
-	
-	@JsonIgnore
-	private Instant createdDate;
-	
-	@JsonIgnore
-	private String lastModifiedBy;
-	
-	@JsonIgnore
-	private Instant lastModifiedDate;
 	
 	@Override
 	public String toString() {

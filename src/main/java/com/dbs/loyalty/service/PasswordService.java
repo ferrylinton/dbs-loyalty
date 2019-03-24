@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 
-import com.dbs.loyalty.config.Constant;
+import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.domain.User;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.model.ErrorResponse;

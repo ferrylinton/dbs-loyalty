@@ -19,7 +19,7 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Type;
 
-import com.dbs.loyalty.config.Constant;
+import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.util.UrlUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

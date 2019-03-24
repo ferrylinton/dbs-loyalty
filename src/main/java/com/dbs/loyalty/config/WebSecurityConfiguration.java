@@ -18,6 +18,7 @@ import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
+import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.event.LoginEventPublisher;
 import com.dbs.loyalty.ldap.LdapService;
 import com.dbs.loyalty.repository.UserRepository;

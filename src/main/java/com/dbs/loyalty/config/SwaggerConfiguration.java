@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.dbs.loyalty.config.constant.Constant;
+import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.google.common.collect.Lists;
 
 import springfox.documentation.builders.PathSelectors;
@@ -42,11 +44,11 @@ public class SwaggerConfiguration {
 	            .securitySchemes(Lists.newArrayList(apiKey()))
 	            .globalResponseMessage(RequestMethod.GET, getResponseMessages())
 	            .tags(
-	            	new Tag(TagConstant.Authentication, Constant.EMPTY, 0),
-	            	new Tag(TagConstant.Customer, Constant.EMPTY, 1),
-	            	new Tag(TagConstant.Promo, Constant.EMPTY, 2),
-	            	new Tag(TagConstant.PromoCategory, Constant.EMPTY, 3),
-	            	new Tag(TagConstant.Reward, Constant.EMPTY, 4)
+	            	new Tag(SwaggerConstant.Authentication, Constant.EMPTY, 0),
+	            	new Tag(SwaggerConstant.Customer, Constant.EMPTY, 1),
+	            	new Tag(SwaggerConstant.Promo, Constant.EMPTY, 2),
+	            	new Tag(SwaggerConstant.PromoCategory, Constant.EMPTY, 3),
+	            	new Tag(SwaggerConstant.Reward, Constant.EMPTY, 4)
 	            )
 				.select()
 				.apis(RequestHandlerSelectors.basePackage("com.dbs.loyalty.web.controller.rest"))

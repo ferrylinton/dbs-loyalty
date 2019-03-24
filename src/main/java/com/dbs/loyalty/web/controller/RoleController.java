@@ -1,8 +1,9 @@
 package com.dbs.loyalty.web.controller;
 
-import static com.dbs.loyalty.config.Constant.ERROR;
-import static com.dbs.loyalty.config.Constant.PAGE;
-import static com.dbs.loyalty.config.Constant.ZERO;
+import static com.dbs.loyalty.config.constant.Constant.ERROR;
+import static com.dbs.loyalty.config.constant.Constant.PAGE;
+import static com.dbs.loyalty.config.constant.Constant.ZERO;
+import static com.dbs.loyalty.config.constant.EntityConstant.ROLE;
 
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.dbs.loyalty.domain.Role;
 import com.dbs.loyalty.service.AuthorityService;
 import com.dbs.loyalty.service.RoleService;
 import com.dbs.loyalty.service.TaskService;
@@ -48,8 +48,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/role")
 public class RoleController extends AbstractPageController {
 
-	private String ENTITY 			= "role";
-	
 	private String REDIRECT 		= "redirect:/role";
 
 	private String VIEW_TEMPLATE 	= "role/view";
@@ -86,12 +84,12 @@ public class RoleController extends AbstractPageController {
 	@GetMapping("/{id}")
 	public String view(ModelMap model, @PathVariable String id){
 		if (id.equals(ZERO)) {
-			model.addAttribute(ENTITY, new RoleDto());
+			model.addAttribute(ROLE, new RoleDto());
 		} else {
 			Optional<RoleDto> roleDto = roleService.findById(id);
 			
 			if (roleDto.isPresent()) {
-				model.addAttribute(ENTITY, roleDto.get());
+				model.addAttribute(ROLE, roleDto.get());
 			} else {
 				model.addAttribute(ERROR, getNotFoundMessage(id));
 			}
@@ -108,13 +106,13 @@ public class RoleController extends AbstractPageController {
 				return badRequestResponse(result);
 			} else {
 				if(roleDto.getId() == null) {
-					taskService.saveTaskAdd(roleDto);
+					taskService.saveTaskAdd(ROLE, roleDto);
 				}else {
 					Optional<RoleDto> current = roleService.findWithAuthoritiesById(roleDto.getId());
-					taskService.saveTaskModify(current.get(), roleDto);
+					taskService.saveTaskModify(ROLE, current.get(), roleDto);
 				}
 
-				return taskIsSavedResponse(Role.class.getSimpleName(), roleDto.getName(), UrlUtil.getUrl(ENTITY));
+				return taskIsSavedResponse(ROLE, roleDto.getName(), UrlUtil.getUrl(ROLE));
 			}
 			
 		} catch (Exception ex) {
@@ -128,8 +126,8 @@ public class RoleController extends AbstractPageController {
 	public @ResponseBody ResponseEntity<?> delete(@PathVariable String id){
 		try {
 			Optional<RoleDto> roleDto = roleService.findWithAuthoritiesById(id);
-			taskService.saveTaskDelete(roleDto.get());
-			return taskIsSavedResponse(Role.class.getSimpleName(), roleDto.get().getName(), UrlUtil.getUrl(ENTITY));
+			taskService.saveTaskDelete(ROLE, roleDto.get());
+			return taskIsSavedResponse(ROLE, roleDto.get().getName(), UrlUtil.getUrl(ROLE));
 		} catch (Exception ex) {
 			log.error(ex.getLocalizedMessage(), ex);
 			return errorResponse(ex);

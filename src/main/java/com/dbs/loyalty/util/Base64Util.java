@@ -2,7 +2,7 @@ package com.dbs.loyalty.util;
 
 import org.apache.commons.codec.binary.Base64;
 
-import com.dbs.loyalty.config.Constant;
+import com.dbs.loyalty.config.constant.Constant;
 
 public class Base64Util {
 

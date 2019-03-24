@@ -5,28 +5,36 @@
 
 <body>
     <div th:replace="fragment/navbar.html :: content"></div>
-    <div class="container-fluid bg-white">
-        <div class="row no-gutters">
-            <div class="col-12">
-                <div class="border min-height my-3 p-3">
-                    <div class="border-bottom pb-2">
-                        <i class="icon-attention"></i> <span>Error</span> : <span th:text="${errorData.statusCode}"></span>
-                    </div>
-                    <div class="py-2">
-                        <span th:text="${errorData.requestURI}"></span>
-                        <p nl2br:text="${errorData.message}"></p>
-                        <a class="btn btn-sm btn-dark" data-toggle="collapse" href="#error-detail" role="button"
-                            aria-expanded="false" aria-controls="error-detail" th:if="${not #strings.isEmpty(errorData.detail)}">
-                            <i class="icon-down-dir"></i> <span th:text="#{detail}"></span>
-                        </a>
-                        <div class="collapse border-top mt-3 pt-2 font-08" id="error-detail">
-                            <p class="no-break" nl2br:text="${errorData.detail}"></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div class="bg-white">
+	    <nav aria-label="breadcrumb">
+			<ol class="breadcrumb border-bottom">
+				<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{home}"></a></li>
+		 		<li class="breadcrumb-item active" aria-current="page" th:text="#{error}"></li>
+			</ol>
+		</nav>
+	    <div class="container-fluid pb-3">
+	        <div class="row no-gutters">
+	            <div class="col-12">
+	                <div class="border min-height my-3 p-3">
+	                    <div class="border-bottom pb-2">
+	                        <i class="icon-attention"></i> <span>Error</span> : <span th:text="${errorData.statusCode}"></span>
+	                    </div>
+	                    <div class="py-2">
+	                        <span th:text="${errorData.requestURI}"></span>
+	                        <p nl2br:text="${errorData.message}"></p>
+	                        <a class="btn btn-sm btn-dark" data-toggle="collapse" href="#error-detail" role="button"
+	                            aria-expanded="false" aria-controls="error-detail" th:if="${not #strings.isEmpty(errorData.detail)}">
+	                            <i class="icon-down-dir"></i> <span th:text="#{detail}"></span>
+	                        </a>
+	                        <div class="collapse border-top mt-3 pt-2 font-08" id="error-detail">
+	                            <p class="no-break" nl2br:text="${errorData.detail}"></p>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+	    </div>
+	</div>
     <div th:replace="fragment/footer.html :: content"></div>
     <div th:replace="fragment/scripts.html :: content"></div>
 </body>

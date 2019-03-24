@@ -1,7 +1,7 @@
 package com.dbs.loyalty.web.controller;
 
-import static com.dbs.loyalty.config.Constant.BR;
-import static com.dbs.loyalty.config.Constant.EMPTY;
+import static com.dbs.loyalty.config.constant.Constant.BR;
+import static com.dbs.loyalty.config.constant.Constant.EMPTY;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

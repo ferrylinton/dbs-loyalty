@@ -2,7 +2,7 @@ package com.dbs.loyalty.model;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.dbs.loyalty.config.Constant;
+import com.dbs.loyalty.config.constant.Constant;
 
 public class File {
 

@@ -12,8 +12,8 @@
 	<property name="USER_CK" value="GmI8ESO3" />
 	<property name="CUSTOMER_MK" value="V6evDSIi" />
 	<property name="CUSTOMER_CK" value="GiATHOgx" />
-	<property name="CAT_PROMO_MK" value="CyvXButR" />
-	<property name="CAT_PROMO_CK" value="hYMMkMXN" />
+	<property name="PROMO_CATEGORY_MK" value="CyvXButR" />
+	<property name="PROMO_CATEGORY_CK" value="hYMMkMXN" />
 	<property name="PROMO_MK" value="FU2toQJa" />
 	<property name="PROMO_CK" value="LFVeEiRv" />
 	<property name="LOVED_ONE" value="MzFttlUa" />
@@ -57,13 +57,13 @@
         </insert>
         
 		<insert tableName="m_authority">
-            <column name="id" value="${CAT_PROMO_MK}"/>
-            <column name="name" value="CAT_PROMO_MK"/>
+            <column name="id" value="${PROMO_CATEGORY_MK}"/>
+            <column name="name" value="PROMO_CATEGORY_MK"/>
         </insert>
         
         <insert tableName="m_authority">
-            <column name="id" value="${CAT_PROMO_CK}"/>
-            <column name="name" value="CAT_PROMO_CK"/>
+            <column name="id" value="${PROMO_CATEGORY_CK}"/>
+            <column name="name" value="PROMO_CATEGORY_CK"/>
         </insert>
         
         <insert tableName="m_authority">

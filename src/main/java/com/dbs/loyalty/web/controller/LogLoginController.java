@@ -1,6 +1,6 @@
 package com.dbs.loyalty.web.controller;
 
-import static com.dbs.loyalty.config.Constant.PAGE;
+import static com.dbs.loyalty.config.constant.Constant.PAGE;
 
 import java.util.Map;
 

@@ -14,7 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
-import com.dbs.loyalty.config.Constant;
+import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.model.BadRequestResponse;
 import com.dbs.loyalty.model.SuccessResponse;
 import com.dbs.loyalty.service.MessageService;

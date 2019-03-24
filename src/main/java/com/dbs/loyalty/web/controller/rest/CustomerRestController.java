@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbs.loyalty.config.TagConstant;
+import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.service.CustomerService;
 
@@ -17,7 +17,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
 
-@Api(tags = { TagConstant.Customer })
+@Api(tags = { SwaggerConstant.Customer })
 @RestController
 @RequestMapping("/api")
 public class CustomerRestController {

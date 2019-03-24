@@ -1,4 +1,4 @@
-package com.dbs.loyalty.config;
+package com.dbs.loyalty.config.constant;
 
 public class Constant {
 
@@ -9,10 +9,6 @@ public class Constant {
 	public static final String NAME_REGEX 			= "^[a-zA-Z0-9\\d\\-_\\s]*$";
 	
 	public static final String EMPTY 				= "";
-	
-	public static final String DTO 					= "Dto";
-	
-	public static final String TYPE 				= "type";
 	
 	public static final String COMMA 				= ",";
 	

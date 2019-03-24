@@ -1,8 +1,9 @@
 package com.dbs.loyalty.web.controller;
 
-import static com.dbs.loyalty.config.Constant.ERROR;
-import static com.dbs.loyalty.config.Constant.PAGE;
-import static com.dbs.loyalty.config.Constant.ZERO;
+import static com.dbs.loyalty.config.constant.Constant.ERROR;
+import static com.dbs.loyalty.config.constant.Constant.PAGE;
+import static com.dbs.loyalty.config.constant.Constant.ZERO;
+import static com.dbs.loyalty.config.constant.EntityConstant.PROMO;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -34,10 +35,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dbs.loyalty.domain.Promo;
-import com.dbs.loyalty.domain.PromoCategory;
 import com.dbs.loyalty.service.PromoCategoryService;
 import com.dbs.loyalty.service.PromoService;
 import com.dbs.loyalty.service.TaskService;
+import com.dbs.loyalty.service.dto.PromoCategoryDto;
 import com.dbs.loyalty.service.dto.PromoDto;
 import com.dbs.loyalty.util.Base64Util;
 import com.dbs.loyalty.util.UrlUtil;
@@ -52,8 +53,6 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/promo")
 public class PromoController extends AbstractPageController {
 
-	private String ENTITY			= "promo";
-	
 	private String REDIRECT 		= "redirect:/promo";
 
 	private String VIEW_TEMPLATE 	= "promo/view";
@@ -63,8 +62,6 @@ public class PromoController extends AbstractPageController {
 	private String SORT_BY 			= "title";
 	
 	private Order ORDER				= Order.asc(SORT_BY).ignoreCase();
-	
-	private String NAME				= "name";
 
 	private final PromoService promoService;
 
@@ -72,7 +69,7 @@ public class PromoController extends AbstractPageController {
 	
 	private final TaskService taskService;
 
-	@PreAuthorize("hasAnyRole('PROMO', 'PROMO_VIEW')")
+	@PreAuthorize("hasAnyRole('PROMO_MK', 'PROMO_CK')")
 	@GetMapping
 	public String view(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
 		Order order = (sort.getOrderFor(SORT_BY) == null) ? ORDER : sort.getOrderFor(SORT_BY);
@@ -88,16 +85,16 @@ public class PromoController extends AbstractPageController {
 		return VIEW_TEMPLATE;
 	}
 
-	@PreAuthorize("hasAnyRole('PROMO', 'PROMO_VIEW')")
+	@PreAuthorize("hasAnyRole('PROMO_MK', 'PROMO_CK')")
 	@GetMapping("/{id}")
 	public String view(ModelMap model, @PathVariable String id){
 		if (id.equals(ZERO)) {
-			model.addAttribute(ENTITY, new Promo());
+			model.addAttribute(PROMO, new PromoDto());
 		} else {
-			Optional<PromoDto> promo = promoService.findById(id);
+			Optional<PromoDto> promoDto = promoService.findById(id);
 			
-			if (promo.isPresent()) {
-				model.addAttribute(ENTITY, promo.get());
+			if (promoDto.isPresent()) {
+				model.addAttribute(PROMO, promoDto.get());
 			} else {
 				model.addAttribute(ERROR, getNotFoundMessage(id));
 			}
@@ -106,7 +103,7 @@ public class PromoController extends AbstractPageController {
 		return FORM_TEMPLATE;
 	}
 
-	@PreAuthorize("hasRole('PROMO')")
+	@PreAuthorize("hasRole('PROMO_MK')")
 	@PostMapping
 	@ResponseBody
 	public ResponseEntity<?> save(@ModelAttribute @Valid PromoDto promoDto, BindingResult result) {
@@ -115,7 +112,7 @@ public class PromoController extends AbstractPageController {
 				return badRequestResponse(result);
 			} else {
 				if(promoDto.getId() == null) {
-					taskService.saveTaskAdd(promoDto);
+					taskService.saveTaskAdd(PROMO, promoDto);
 				}else {
 					Optional<PromoDto> current = promoService.findById(promoDto.getId());
 					
@@ -125,10 +122,10 @@ public class PromoController extends AbstractPageController {
 						promoDto.setImageString(Base64Util.getString(promoDto.getFile().getBytes()));
 					}
 					
-					taskService.saveTaskModify(current.get(), promoDto);
+					taskService.saveTaskModify(PROMO, current.get(), promoDto);
 				}
 
-				return taskIsSavedResponse(Promo.class.getSimpleName(), promoDto.getTitle(), UrlUtil.getUrl(ENTITY));
+				return taskIsSavedResponse(Promo.class.getSimpleName(), promoDto.getTitle(), UrlUtil.getUrl(PROMO));
 			}
 			
 		} catch (Exception ex) {
@@ -137,14 +134,14 @@ public class PromoController extends AbstractPageController {
 		}
 	}
 
-	@PreAuthorize("hasRole('PROMO')")
+	@PreAuthorize("hasRole('PROMO_MK')")
 	@DeleteMapping("/{id}")
 	@ResponseBody
 	public ResponseEntity<?> delete(@PathVariable String id){
 		try {
-			Optional<PromoDto> promo = promoService.findById(id);
-			taskService.saveTaskDelete(promo.get());
-			return taskIsSavedResponse(Promo.class.getSimpleName(), promo.get().getTitle(), UrlUtil.getUrl(ENTITY));
+			Optional<PromoDto> promoDto = promoService.findById(id);
+			taskService.saveTaskDelete(PROMO, promoDto.get());
+			return taskIsSavedResponse(PROMO, promoDto.get().getTitle(), UrlUtil.getUrl(PROMO));
 		} catch (Exception ex) {
 			log.error(ex.getLocalizedMessage(), ex);
 			return errorResponse(ex);
@@ -152,11 +149,11 @@ public class PromoController extends AbstractPageController {
 	}
 
 	@ModelAttribute("promoCategories")
-	public List<PromoCategory> getPromoCategories() {
-		return promoCategoryService.findAll(Sort.by(NAME));
+	public List<PromoCategoryDto> getPromoCategories() {
+		return promoCategoryService.findAll();
 	}
 	
-	@InitBinder("promo")
+	@InitBinder("promoDto")
 	protected void initBinder(WebDataBinder binder) {
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("dd-MM-yyyy"), true, 10)); 
 		binder.addValidators(new PromoValidator(promoService));

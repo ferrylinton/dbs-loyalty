@@ -50,32 +50,24 @@ public class PromoService{
 				.collect(Collectors.toList());
 	}
 	
-	public boolean isCodeExist(PromoDto promo) {
-		Optional<Promo> obj = promoRepository.findByCodeIgnoreCase(promo.getCode());
+	public boolean isCodeExist(PromoDto promoDto) {
+		Optional<Promo> promo = promoRepository.findByCodeIgnoreCase(promoDto.getCode());
 
-		if (obj.isPresent()) {
-			if (promo.getId() == null) {
-				return true;
-			} else if (!promo.getId().equals(obj.get().getId())) {
-				return true;
-			}
+		if (promo.isPresent()) {
+			return (promoDto.getId() == null) || (!promoDto.getId().equals(promo.get().getId()));
+		}else {
+			return false;
 		}
-
-		return false;
 	}
 	
 	public boolean isTitleExist(PromoDto promoDto) {
 		Optional<Promo> promo = promoRepository.findByTitleIgnoreCase(promoDto.getTitle());
 
 		if (promo.isPresent()) {
-			if (promoDto.getId() == null) {
-				return true;
-			} else if (!promoDto.getId().equals(promo.get().getId())) {
-				return true;
-			}
+			return (promoDto.getId() == null) || (!promoDto.getId().equals(promo.get().getId()));
+		}else {
+			return false;
 		}
-
-		return false;
 	}
 
 	public String execute(TaskDto taskDto) throws JsonParseException, JsonMappingException, IOException {

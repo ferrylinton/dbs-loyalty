@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbs.loyalty.config.TagConstant;
+import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.model.ErrorResponse;
 import com.dbs.loyalty.model.JWTToken;
 import com.dbs.loyalty.model.Login;
@@ -28,7 +28,7 @@ import io.swagger.annotations.ExampleProperty;
 /**
  * Controller to authenticate users.
  */
-@Api(tags = { TagConstant.Authentication })
+@Api(tags = { SwaggerConstant.Authentication })
 @RestController
 @RequestMapping("/api")
 public class JWTRestController {

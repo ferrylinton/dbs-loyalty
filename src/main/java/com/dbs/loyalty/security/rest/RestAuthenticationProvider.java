@@ -1,6 +1,6 @@
 package com.dbs.loyalty.security.rest;
 
-import static com.dbs.loyalty.config.Constant.EMPTY;
+import static com.dbs.loyalty.config.constant.Constant.EMPTY;
 
 import java.util.Optional;
 

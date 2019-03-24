@@ -3,16 +3,11 @@ package com.dbs.loyalty;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.dbs.loyalty.config.ApplicationProperties;
-import com.dbs.loyalty.config.LdapProperties;
-
 @SpringBootApplication
 @EnableTransactionManagement
-@EnableConfigurationProperties({ApplicationProperties.class, LdapProperties.class})
 public class Application extends SpringBootServletInitializer{
 
 	@Override

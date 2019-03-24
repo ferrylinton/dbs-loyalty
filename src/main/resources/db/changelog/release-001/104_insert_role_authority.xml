@@ -33,7 +33,7 @@
         
         <insert tableName="m_role_authority">
             <column name="role_id" value="${Maker}"/>
-            <column name="authority_id" value="${CAT_PROMO_MK}"/>
+            <column name="authority_id" value="${PROMO_CATEGORY_MK}"/>
         </insert>
         
         <insert tableName="m_role_authority">
@@ -60,7 +60,7 @@
         
         <insert tableName="m_role_authority">
             <column name="role_id" value="${Checker}"/>
-            <column name="authority_id" value="${CAT_PROMO_CK}"/>
+            <column name="authority_id" value="${PROMO_CATEGORY_CK}"/>
         </insert>
         
         <insert tableName="m_role_authority">

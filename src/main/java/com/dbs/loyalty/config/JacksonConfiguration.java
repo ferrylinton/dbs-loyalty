@@ -9,6 +9,7 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.zalando.problem.ProblemModule;
 import org.zalando.problem.validation.ConstraintViolationProblemModule;
 
+import com.dbs.loyalty.config.property.ApplicationProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;

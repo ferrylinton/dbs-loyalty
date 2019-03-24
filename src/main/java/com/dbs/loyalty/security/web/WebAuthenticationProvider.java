@@ -1,5 +1,7 @@
 package com.dbs.loyalty.security.web;
 
+import static com.dbs.loyalty.config.constant.Constant.*;
+
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
@@ -14,7 +16,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import static com.dbs.loyalty.config.Constant.*;
 import com.dbs.loyalty.domain.Authority;
 import com.dbs.loyalty.domain.User;
 import com.dbs.loyalty.ldap.LdapService;

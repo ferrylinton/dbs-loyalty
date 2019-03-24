@@ -3,33 +3,32 @@ package com.dbs.loyalty.web.validator;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import com.dbs.loyalty.domain.PromoCategory;
 import com.dbs.loyalty.service.MessageService;
 import com.dbs.loyalty.service.PromoCategoryService;
+import com.dbs.loyalty.service.dto.PromoCategoryDto;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 public class PromoCategoryValidator implements Validator {
 
-	private final String NAME_EXIST = "validation.exist.name";
+	private String NAME_EXIST = "validation.exist.name";
 
-	private final String NAME = "name";
+	private String NAME = "name";
 
 	private final PromoCategoryService promoCategoryService;
 
-	public PromoCategoryValidator(final PromoCategoryService promoCategoryService) {
-		this.promoCategoryService = promoCategoryService;
-	}
-
 	@Override
 	public boolean supports(Class<?> clazz) {
-		return PromoCategory.class.equals(clazz);
+		return PromoCategoryDto.class.equals(clazz);
 	}
 
 	@Override
 	public void validate(Object target, Errors errors) {
-		PromoCategory promoCategory = (PromoCategory) target;
+		PromoCategoryDto promoCategoryDto = (PromoCategoryDto) target;
 
-		if (promoCategoryService.isNameExist(promoCategory)) {
-			Object[] errorArgs = new String[] { promoCategory.getName() };
+		if (promoCategoryService.isNameExist(promoCategoryDto)) {
+			Object[] errorArgs = new String[] { promoCategoryDto.getName() };
 			String defaultMessage = MessageService.getMessage(NAME_EXIST, errorArgs);
 			errors.rejectValue(NAME, NAME_EXIST, errorArgs, defaultMessage);
 		}

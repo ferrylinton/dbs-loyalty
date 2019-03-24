@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbs.loyalty.config.TagConstant;
+import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.domain.Promo;
 import com.dbs.loyalty.service.PromoService;
 import com.dbs.loyalty.service.dto.PromoDto;
 
 import io.swagger.annotations.Api;
 
-@Api(tags = { TagConstant.Promo })
+@Api(tags = { SwaggerConstant.Promo })
 @RestController
 @RequestMapping("/api")
 public class PromoRestController {

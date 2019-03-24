@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.naming.AuthenticationException;
+import javax.naming.CommunicationException;
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
@@ -15,8 +16,6 @@ import javax.naming.directory.InitialDirContext;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.CredentialsExpiredException;
@@ -24,15 +23,17 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.stereotype.Service;
 
-import com.dbs.loyalty.config.Constant;
-import com.dbs.loyalty.config.LdapProperties;
+import com.dbs.loyalty.config.constant.Constant;
+import com.dbs.loyalty.config.property.LdapProperties;
+import com.dbs.loyalty.exception.LdapConnectException;
 import com.dbs.loyalty.service.MessageService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class LdapService {
-
-	private final Logger LOG = LoggerFactory.getLogger(LdapService.class);
-			
+	
 	private static final String LDAP_CTX_FACTORY = "com.sun.jndi.ldap.LdapCtxFactory";
 	
 	private static final String SIMPLE = "simple";
@@ -83,18 +84,19 @@ public class LdapService {
 			ctx = new InitialDirContext(getEnv(username, password));
 			authenticated = true;
 		} catch (NamingException e) {
-			LOG.error(e.getLocalizedMessage(), e);
+			log.error(e.getLocalizedMessage(), e);
 			if ((e instanceof AuthenticationException) || (e instanceof OperationNotSupportedException)) {
 				handleBindException(username, e);
 				throw badCredentials(e);
+			}else if(e instanceof CommunicationException) {
+				throw new LdapConnectException(MessageService.getMessage("message.ldapConnectException"));
 			}else {
 				throw new RuntimeException(e);
 			}
 		}finally {
 			closeContext(ctx);
 		}
-		
-		System.out.println("authenticated : " + authenticated);
+
 		return authenticated;
 	}
 	
@@ -104,12 +106,10 @@ public class LdapService {
 		env.put(Context.PROVIDER_URL, ldapProperties.getUrl());
 		
 		if(ldapProperties.getPrincipal() != null && ldapProperties.getCredentials() != null) {
-			System.out.println(SIMPLE);
 			env.put(Context.SECURITY_AUTHENTICATION, SIMPLE);
 			env.put(Context.SECURITY_PRINCIPAL, ldapProperties.getPrincipal());
 			env.put(Context.SECURITY_CREDENTIALS, ldapProperties.getCredentials());
 		}else {
-			System.out.println(NONE);
 			env.put(Context.SECURITY_AUTHENTICATION, NONE);
 		}
 		
@@ -199,9 +199,9 @@ public class LdapService {
 			try {
 				context.close();
 			}catch (NamingException ex) {
-				LOG.debug("Could not close JNDI DirContext", ex);
+				log.debug("Could not close JNDI DirContext", ex);
 			}catch (Throwable ex) {
-				LOG.debug("Unexpected exception on closing JNDI DirContext", ex);
+				log.debug("Unexpected exception on closing JNDI DirContext", ex);
 			}
 		}
 	}

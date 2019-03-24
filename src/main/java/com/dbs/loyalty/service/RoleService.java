@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class RoleService{
 
-	private final static Sort SORT_BY_NAME = Sort.by("name");
+	private Sort SORT_BY_NAME = Sort.by("name");
 	
 	private final ObjectMapper objectMapper;
 	
@@ -66,17 +66,13 @@ public class RoleService{
 	}
 
 	public boolean isNameExist(RoleDto roleDto) {
-		Optional<Role> obj = roleRepository.findByNameIgnoreCase(roleDto.getName());
+		Optional<Role> role = roleRepository.findByNameIgnoreCase(roleDto.getName());
 
-		if (obj.isPresent()) {
-			if (roleDto.getId() == null) {
-				return true;
-			} else if (!roleDto.getId().equals(obj.get().getId())) {
-				return true;
-			}
+		if (role.isPresent()) {
+			return (roleDto.getId() == null) || (!roleDto.getId().equals(role.get().getId()));
+		}else {
+			return false;
 		}
-
-		return false;
 	}
 
 	public String execute(TaskDto taskDto) throws JsonParseException, JsonMappingException, IOException {

@@ -1,8 +1,9 @@
 package com.dbs.loyalty.web.controller;
 
-import static com.dbs.loyalty.config.Constant.ERROR;
-import static com.dbs.loyalty.config.Constant.PAGE;
-import static com.dbs.loyalty.config.Constant.ZERO;
+import static com.dbs.loyalty.config.constant.Constant.ERROR;
+import static com.dbs.loyalty.config.constant.Constant.PAGE;
+import static com.dbs.loyalty.config.constant.Constant.ZERO;
+import static com.dbs.loyalty.config.constant.EntityConstant.USER;
 
 import java.util.List;
 import java.util.Map;
@@ -11,8 +12,6 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
@@ -32,7 +31,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.dbs.loyalty.domain.Role;
 import com.dbs.loyalty.domain.User;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.RoleService;
@@ -44,36 +42,30 @@ import com.dbs.loyalty.util.PasswordUtil;
 import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.validator.UserValidator;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
+@RequiredArgsConstructor
 @Controller
 @RequestMapping("/user")
 public class UserController extends AbstractPageController{
 
-	private final Logger LOG 			= LoggerFactory.getLogger(UserController.class);
+	private String REDIRECT 		= "redirect:/user";
 
-	private final String ENTITY 		= "user";
+	private String VIEW_TEMPLATE 	= "user/view";
+
+	private String FORM_TEMPLATE 	= "user/form";
+
+	private String SORT_BY 			= "username";
 	
-	private final String REDIRECT 		= "redirect:/user";
-
-	private final String VIEW_TEMPLATE 	= "user/view";
-
-	private final String FORM_TEMPLATE 	= "user/form";
-
-	private final String SORT_BY 		= "username";
-	
-	private final Order ORDER			= Order.asc(SORT_BY).ignoreCase();
+	private Order ORDER				= Order.asc(SORT_BY).ignoreCase();
 	
 	private final UserService userService;
 	
 	private final RoleService roleService;
 	
 	private final TaskService taskService;
-
-	public UserController(UserService userService, RoleService roleService, TaskService taskService) {
-		this.userService = userService;
-		this.roleService = roleService;
-		this.taskService = taskService;
-	}
-
 	
 	@PreAuthorize("hasAnyRole('USER_MK', 'USER_CK')")
 	@GetMapping
@@ -91,16 +83,16 @@ public class UserController extends AbstractPageController{
 		return VIEW_TEMPLATE;
 	}
 	
-	@PreAuthorize("hasAnyRole('USER', 'USER_VIEW')")
+	@PreAuthorize("hasAnyRole('USER_MK', 'USER_CK')")
 	@GetMapping("/{id}")
 	public String view(ModelMap model, @PathVariable String id) {
 		if (id.equals(ZERO)) {
-			model.addAttribute(ENTITY, new User());
+			model.addAttribute(USER, new User());
 		} else {
 			Optional<UserDto> user = userService.findById(id);
 			
 			if (user.isPresent()) {
-				model.addAttribute(ENTITY, user.get());
+				model.addAttribute(USER, user.get());
 			} else {
 				model.addAttribute(ERROR, getNotFoundMessage(id));
 			}
@@ -109,7 +101,7 @@ public class UserController extends AbstractPageController{
 		return FORM_TEMPLATE;
 	}
 	
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasRole('USER_CK')")
 	@PostMapping
 	@ResponseBody
 	public ResponseEntity<?> save(@Valid @ModelAttribute User user, BindingResult result) {
@@ -121,32 +113,32 @@ public class UserController extends AbstractPageController{
 				if(user.getId() == null) {
 					user.setPasswordHash(PasswordUtil.getInstance().encode(user.getPasswordPlain()));
 					user.setPasswordPlain(null);
-					taskService.saveTaskAdd(user);
+					taskService.saveTaskAdd(USER, user);
 				}else {
 					Optional<UserDto> current = userService.findWithRoleById(user.getId());
 					user.setPasswordHash(current.get().getPasswordHash());
-					taskService.saveTaskModify(current.get(), user);
+					taskService.saveTaskModify(USER, current.get(), user);
 				}
 
-				return taskIsSavedResponse(User.class.getSimpleName(), user.getUsername(), UrlUtil.getUrl(ENTITY));
+				return taskIsSavedResponse(USER,  user.getUsername(), UrlUtil.getUrl(USER));
 			}
 			
 		} catch (Exception ex) {
-			LOG.error(ex.getLocalizedMessage(), ex);
+			log.error(ex.getLocalizedMessage(), ex);
 			return errorResponse(ex);
 		}
 	}
 	
-	@PreAuthorize("hasRole('USER')")
+	@PreAuthorize("hasRole('USER_CK')")
 	@DeleteMapping("/{id}")
 	@ResponseBody
 	public ResponseEntity<?> delete(@PathVariable String id) throws NotFoundException {
 		try {
 			Optional<UserDto> user = userService.findWithRoleById(id);
-			taskService.saveTaskDelete(user.get());
-			return taskIsSavedResponse(User.class.getSimpleName(), user.get().getEmail(), UrlUtil.getUrl(ENTITY));
+			taskService.saveTaskDelete(USER, user.get());
+			return taskIsSavedResponse(USER, user.get().getEmail(), UrlUtil.getUrl(USER));
 		} catch (Exception ex) {
-			LOG.error(ex.getLocalizedMessage(), ex);
+			log.error(ex.getLocalizedMessage(), ex);
 			return errorResponse(ex);
 		}
 	}
@@ -156,7 +148,7 @@ public class UserController extends AbstractPageController{
 	    return roleService.findAll();
 	}
 
-	@InitBinder("user")
+	@InitBinder("userDto")
 	protected void initBinder(WebDataBinder binder) {
 		binder.addValidators(new UserValidator(userService));
 	}

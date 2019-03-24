@@ -1,6 +1,7 @@
 package com.dbs.loyalty.web.controller;
 
-import static com.dbs.loyalty.config.Constant.*;
+import static com.dbs.loyalty.config.constant.Constant.*;
+
 
 import java.util.HashMap;
 import java.util.Map;
