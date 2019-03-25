@@ -100,7 +100,7 @@ public class UserController extends AbstractPageController{
 		return FORM_TEMPLATE;
 	}
 	
-	@PreAuthorize("hasRole('USER_CK')")
+	@PreAuthorize("hasRole('USER_MK')")
 	@PostMapping
 	@ResponseBody
 	public ResponseEntity<?> save(@Valid @ModelAttribute UserDto userDto, BindingResult result) {
@@ -128,14 +128,14 @@ public class UserController extends AbstractPageController{
 		}
 	}
 	
-	@PreAuthorize("hasRole('USER_CK')")
+	@PreAuthorize("hasRole('USER_MK')")
 	@DeleteMapping("/{id}")
 	@ResponseBody
 	public ResponseEntity<?> delete(@PathVariable String id) throws NotFoundException {
 		try {
 			Optional<UserDto> userDto = userService.findWithRoleById(id);
 			taskService.saveTaskDelete(USER, userDto.get());
-			return taskIsSavedResponse(USER, userDto.get().getEmail(), UrlUtil.getUrl(USER));
+			return taskIsSavedResponse(USER, userDto.get().getUsername(), UrlUtil.getUrl(USER));
 		} catch (Exception ex) {
 			log.error(ex.getLocalizedMessage(), ex);
 			return errorResponse(ex);

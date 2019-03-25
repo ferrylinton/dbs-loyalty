@@ -5,7 +5,6 @@ import static com.dbs.loyalty.config.constant.Constant.PAGE;
 import static com.dbs.loyalty.config.constant.Constant.ZERO;
 import static com.dbs.loyalty.config.constant.EntityConstant.PROMO_CATEGORY;
 
-
 import java.util.Map;
 import java.util.Optional;
 

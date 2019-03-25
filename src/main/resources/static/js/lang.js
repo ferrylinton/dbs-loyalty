@@ -36,7 +36,9 @@ var Lang = (function () {
 				"showInCarousel": "Show In Carousel",
 				"promoCategory": "Promo Category",
 				"imageString": "Image",
-				"code": "Code"
+				"code": "Code",
+				"locked": "Locked",
+				"userType": "Type"
 			},
 			"label":{
 				"activated" : "Activated",
@@ -97,7 +99,9 @@ var Lang = (function () {
 				"showInCarousel": "Tampilkan di Carousel",
 				"promoCategory": "Kategori Promo",
 				"imageString": "Gambar",
-				"code": "Kode"
+				"code": "Kode",
+				"locked": "Dikunci",
+				"userType": "Tipe"
 			},
 			"label":{
 				"activated" : "Aktif",

@@ -41,13 +41,15 @@
 						<thead>
 							<tr th:with="ascending=${order.getDirection().name() == 'ASC'}">
 								<th width="40px"></th>
-								<th width="40px">#</th>
+								<th width="50px">#</th>
 								<th width="220px" th:with="sort=|&sort=username,${ascending ? 'DESC' : 'ASC'}|">
                                 	<a th:href="@{|?page=${page.getNumber()}${params}${sort}|}" class="text-decoration-none">
                                 		<span th:text="#{username}"></span> <i th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></i>
                                 	</a>
                                 </th>
-								<th width="90px" th:text="#{status}"></th>
+                                <th th:text="#{userType}"></th>
+								<th th:text="#{activated}"></th>
+								<th th:text="#{locked}"></th>
 								<th th:text="#{role}"></th>
 							</tr>
 						</thead>
@@ -71,8 +73,12 @@
 								</td>
 								<td th:text="${row.count + (page.number * page.size)}"></td>
 								<td th:text="${user.username}"></td>
+								<td th:text="${user.userType}"></td>
 								<td th:with="class=${user.activated} ? 'badge badge-success' : 'badge badge-danger'">
-									<span th:class="${class}" th:text="${user.activated} ? #{activated} : #{deactivated}"></span>
+									<span th:class="${class}" th:text="${user.activated} ? #{yes} : #{no}"></span>
+								</td>
+								<td th:with="class=${user.locked} ? 'badge badge-success' : 'badge badge-danger'">
+									<span th:class="${class}" th:text="${user.locked} ? #{yes} : #{no}"></span>
 								</td>
 								<td th:text="${user.role == null ? '-' : user.role.name}"></td>
 							</tr>

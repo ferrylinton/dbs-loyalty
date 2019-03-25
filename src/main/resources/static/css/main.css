@@ -3,6 +3,11 @@ body{
 	background-color: #000;
 }
 
+.custom-select option {
+    padding: 8px 4px;
+    margin: 4px;
+}
+
 .navbar{
 	height: 60px;
 }

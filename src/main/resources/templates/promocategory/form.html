@@ -3,7 +3,7 @@
 
 <head th:replace="fragment/head.html :: content(title=#{promoCategory})"></head>
 
-<body>
+<body th:with="isMaker=${#authorization.expression('hasAuthority(''PROMO_CATEGORY_MK'')')}">
 	<div th:replace="fragment/navbar.html :: content"></div>
 	<div class="bg-white">
 		<nav aria-label="breadcrumb">
@@ -35,7 +35,7 @@
 								<a class="btn btn-sm btn-secondary px-3" th:href="@{/promocategory}">
 									<i class="icon-left"></i> <span th:text="#{back}"></span>
 								</a>
-								<button class="btn btn-sm btn-primary px-3" type="submit" sec:authorize="hasRole('PROMO')">
+								<button class="btn btn-sm btn-primary px-3" type="submit" th:if="isMaker">
 									<i class="icon-floppy"></i> <span th:text="#{save}"></span>
 								</button>
 							</form>

@@ -3,6 +3,7 @@ package com.dbs.loyalty.web.validator;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import com.dbs.loyalty.domain.enumeration.UserType;
 import com.dbs.loyalty.service.MessageService;
 import com.dbs.loyalty.service.dto.UserDto;
 
@@ -19,9 +20,9 @@ public class UserValidator implements Validator {
 
 	@Override
 	public void validate(Object target, Errors errors) {
-		UserDto user = (UserDto) target;
+		UserDto userDto = (UserDto) target;
 		
-		if(user.getId() == null && user.getAuthenticateFromDb() && (user.getPasswordPlain() == null || user.getPasswordPlain().trim().length() < 6 || user.getPasswordPlain().trim().length() > 30)) {
+		if(userDto.getId() == null && (userDto.getUserType() == UserType.External) && (userDto.getPasswordPlain() == null || userDto.getPasswordPlain().trim().length() < 6 || userDto.getPasswordPlain().trim().length() > 30)) {
 			String defaultMessage = MessageService.getMessage(PASSWORD_SIZE);
 			errors.rejectValue(PASSWORD, PASSWORD_SIZE, defaultMessage);
 		}

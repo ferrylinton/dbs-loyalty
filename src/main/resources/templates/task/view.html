@@ -9,7 +9,7 @@
 		<nav aria-label="breadcrumb">
 			<ol class="breadcrumb border-bottom">
 				<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{home}"></a></li>
-				<li class="breadcrumb-item active" aria-current="page" th:text="#{task}"></li>
+				<li class="breadcrumb-item active" aria-current="page" th:text="|#{task} - #{${type}}|"></li>
 			</ol>
 		</nav>
 		<div class="container-fluid pb-3">
@@ -21,17 +21,17 @@
 								<div class="col-12 col-sm-12 col-md-9 col-lg-8 col-xl-7 pb-1">
 									<div class="input-group">
 										<select name="st" class="custom-select text-secondary" id="status">
-										    <option value="ALL" selected th:text="#{ALL_STATUS}" th:selected="${st.name() == 'ALL'}"></option>
-										    <option value="PENDING" th:text="#{PENDING}" th:selected="${st.name() == 'PENDING'}">PENDING</option>
-										    <option value="REJECTED" th:text="#{REJECTED}" th:selected="${st.name() == 'REJECTED'}">REJECTED</option>
-										    <option value="VERIFIED"th:text="#{VERIFIED}" th:selected="${st.name() == 'VERIFIED'}">VERIFIED</option>
-										    <option value="FAILED"th:text="#{FAILED}" th:selected="${st.name() == 'FAILED'}">FAILED</option>
+										    <option value="All" selected th:text="#{All}" th:selected="${st.name() == 'All'}"></option>
+										    <option value="Pending" th:text="#{Pending}" th:selected="${st.name() == 'Pending'}">Pending</option>
+										    <option value="Rejected" th:text="#{Rejected}" th:selected="${st.name() == 'Rejected'}">Rejected</option>
+										    <option value="Verified"th:text="#{Verified}" th:selected="${st.name() == 'Verified'}">Verified</option>
+										    <option value="Failed"th:text="#{Failed}" th:selected="${st.name() == 'Failed'}">Failed</option>
 										</select>
 										<select name="op" class="custom-select text-secondary" id="op">
-										    <option value="ALL" selected th:text="#{ALL_OPERATION}" th:selected="${op.name() == 'ALL'}"></option>
-										    <option value="ADD" th:text="#{ADD}" th:selected="${op.name() == 'ADD'}">ADD</option>
-										    <option value="MODIFY" th:text="#{MODIFY}" th:selected="${op.name() == 'MODIFY'}">MODIFY</option>
-										    <option value="DELETE"th:text="#{DELETE}" th:selected="${op.name() == 'DELETE'}">DELETE</option>
+										    <option value="All" selected th:text="#{All}" th:selected="${op.name() == 'All'}"></option>
+										    <option value="Add" th:text="#{Add}" th:selected="${op.name() == 'Add'}">Add</option>
+										    <option value="Modify" th:text="#{Modify}" th:selected="${op.name() == 'Modify'}">Modify</option>
+										    <option value="Delete"th:text="#{Delete}" th:selected="${op.name() == 'Delete'}">Delete</option>
 										</select>
 									</div>
 								</div>

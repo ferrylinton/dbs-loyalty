@@ -25,4 +25,13 @@ public final class SecurityUtil {
 		return result;
     }
 	
+	public static void printAuthorities() {
+		for(Object obj : SecurityContextHolder.getContext().getAuthentication().getAuthorities()) {
+			if(obj instanceof SimpleGrantedAuthority) {
+				SimpleGrantedAuthority authority = (SimpleGrantedAuthority) obj;
+				System.out.println(authority.getAuthority());
+			}
+        }
+    }
+	
 }

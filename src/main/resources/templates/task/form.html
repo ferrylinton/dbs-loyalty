@@ -3,13 +3,13 @@
 
 <head th:replace="fragment/head.html :: content(title=#{task})"></head>
 
-<body>
+<body th:with="isChecker=${#authorization.expression('hasAnyAuthority(''ROLE_CK'',''USER_CK'', ''PROMO_CATEGORY_CK'', ''PROMO_CK'')')}">
 	<div th:replace="fragment/navbar.html :: content"></div>
 	<div class="bg-white">
 		<nav aria-label="breadcrumb">
 	        <ol class="breadcrumb border-bottom">
 	            <li class="breadcrumb-item"><a th:href="@{/}" th:text="#{home}"></a></li>
-	            <li class="breadcrumb-item"><a th:href="@{/task/${type}}" th:text="#{task}"></a></li>
+	            <li class="breadcrumb-item"><a th:href="@{|/task/${type}|}" th:text="|#{task} - #{${type}}|"></a></li>
 	            <li class="breadcrumb-item active" aria-current="page" th:text="#{form}"></li>
 	        </ol>
 	    </nav>
@@ -65,13 +65,13 @@
 								<input class="form-control" type="text" id="checkedDateView" th:value="${#dates.format(task.checkedDate, format)}" readonly="readonly" />
 								<input type="hidden" th:value="*{checkedDate}"/>
 							</div>
-							<div class="form-group" th:if="${task.taskStatus.name() != 'PENDING'}">
+							<div class="form-group" th:if="${task.taskStatus.name() != 'Pending'}">
 								<label for="taskStatusView" th:text="#{taskStatus}">Task Status</label>
 								<input class="form-control" type="text" id="taskStatusView" th:value="#{*{taskStatus}}" readonly="readonly" />
 								<input type="hidden" th:value="*{taskStatus}"/>
 							</div>
-							<th:block sec:authorize="hasRole('ROLE_CK')">
-								<div class="custom-control custom-switch mb-3" th:if="${task.taskStatus.name() == 'PENDING'}" >
+							<th:block th:if="${isChecker}">
+								<div class="custom-control custom-switch mb-3" th:if="${task.taskStatus.name() == 'Pending'}" >
 									<input type="checkbox" th:field="*{verified}" class="custom-control-input" onchange="verify(this)" id="verified">
 									<label class="custom-control-label" for="verified" th:text="*{verified} ? #{verify} : #{reject}"></label>
 								</div>
@@ -98,7 +98,7 @@
 							<a class="btn btn-sm btn-secondary px-3" th:href="@{|/task/${type}|}">
 								<i class="icon-left"></i> <span th:text="#{back}"></span>
 							</a>
-							<th:block sec:authorize="hasRole('ROLE_CK')" th:if="${task.taskStatus.name() == 'PENDING'}">
+							<th:block th:if="${isChecker}">
 								<button class="btn btn-sm btn-success px-3" type="submit" style="display: none;">
 									<i class="icon-ok"></i> <span th:text="#{verify}"></span>
 								</button>
