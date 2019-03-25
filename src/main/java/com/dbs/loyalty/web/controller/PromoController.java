@@ -111,6 +111,7 @@ public class PromoController extends AbstractPageController {
 				return badRequestResponse(result);
 			} else {
 				if(promoDto.getId() == null) {
+					promoDto.setImageString(Base64Util.getString(promoDto.getFile().getBytes()));
 					taskService.saveTaskAdd(PROMO, promoDto);
 				}else {
 					Optional<PromoDto> current = promoService.findById(promoDto.getId());

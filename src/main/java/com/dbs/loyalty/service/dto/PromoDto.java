@@ -7,6 +7,8 @@ import javax.validation.constraints.Size;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -34,6 +36,7 @@ public class PromoDto extends AbstractAuditDto {
 	
 	private String imageString;
 	
+	@JsonIgnore
 	private MultipartFile file;
 	
 	@NotNull(message = "{validation.notnull.startPeriod}")

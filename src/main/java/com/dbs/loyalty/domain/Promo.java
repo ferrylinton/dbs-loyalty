@@ -68,10 +68,10 @@ public class Promo extends AbstractId implements Serializable {
     private Date endPeriod;
     
     @Column(name = "show_in_carousel", nullable = false)
-	private Boolean showInCarousel = false;
+	private boolean showInCarousel;
     
     @Column(name = "activated", nullable = false)
-	private Boolean activated = true;
+	private boolean activated;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "promo_category_id", nullable = false, foreignKey = @ForeignKey(name = "c_promo_fk"))

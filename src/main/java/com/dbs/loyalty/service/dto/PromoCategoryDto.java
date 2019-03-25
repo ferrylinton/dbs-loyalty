@@ -26,6 +26,7 @@ public class PromoCategoryDto extends AbstractAuditDto {
 	@NonNull
 	private String id;
 	
+	@NonNull
 	@NotNull(message = "{validation.notnull.name}")
 	@Pattern(regexp = Constant.NAME_REGEX, message = "{validation.pattern.name}")
     @Size(min = 2, max = 100, message = "{validation.size.name}")

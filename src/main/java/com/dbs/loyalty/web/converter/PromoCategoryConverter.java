@@ -4,23 +4,20 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 import com.dbs.loyalty.config.constant.Constant;
-import com.dbs.loyalty.domain.PromoCategory;
+import com.dbs.loyalty.service.dto.PromoCategoryDto;
 
 @Component
-public class PromoCategoryConverter implements Converter<String, PromoCategory> {
+public class PromoCategoryConverter implements Converter<String, PromoCategoryDto> {
 	
 	@Override
-	public PromoCategory convert(String content) {
+	public PromoCategoryDto convert(String content) {
 		String[] str = content.split(Constant.COMMA);
 		
-		PromoCategory promoCategory = new PromoCategory();
-		
 		if(str.length == 2) {
-			promoCategory.setId(str[0]);
-			promoCategory.setName(str[1]);
+			return new PromoCategoryDto(str[0], str[1]);
+		}else {
+			return null;
 		}
-		
-		return promoCategory;
 	}
 
 }
