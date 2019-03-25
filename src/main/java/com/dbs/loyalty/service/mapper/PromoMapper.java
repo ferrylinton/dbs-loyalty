@@ -10,7 +10,7 @@ import com.dbs.loyalty.domain.Promo;
 import com.dbs.loyalty.service.dto.PromoDto;
 import com.dbs.loyalty.util.Base64Util;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {PromoCategoryMapper.class})
 public interface PromoMapper extends EntityMapper<PromoDto, Promo> {
 
 	@Mapping(source = "imageString", target = "imageBytes", qualifiedByName = "base64ToBytes")

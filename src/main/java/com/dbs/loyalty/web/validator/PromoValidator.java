@@ -3,7 +3,6 @@ package com.dbs.loyalty.web.validator;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import com.dbs.loyalty.domain.Promo;
 import com.dbs.loyalty.service.MessageService;
 import com.dbs.loyalty.service.PromoService;
 import com.dbs.loyalty.service.dto.PromoDto;
@@ -30,7 +29,7 @@ public class PromoValidator implements Validator {
 
 	@Override
 	public boolean supports(Class<?> clazz) {
-		return Promo.class.equals(clazz);
+		return PromoDto.class.equals(clazz);
 	}
 
 	@Override

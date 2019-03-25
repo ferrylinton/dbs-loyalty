@@ -35,7 +35,7 @@
 								<a class="btn btn-sm btn-secondary px-3" th:href="@{/promocategory}">
 									<i class="icon-left"></i> <span th:text="#{back}"></span>
 								</a>
-								<button class="btn btn-sm btn-primary px-3" type="submit" th:if="isMaker">
+								<button class="btn btn-sm btn-primary px-3" type="submit" th:if="${isMaker}">
 									<i class="icon-floppy"></i> <span th:text="#{save}"></span>
 								</button>
 							</form>

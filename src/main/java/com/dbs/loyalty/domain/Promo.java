@@ -16,8 +16,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
-import org.hibernate.annotations.Type;
-
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -58,8 +56,7 @@ public class Promo extends AbstractId implements Serializable {
     private String termAndCondition;
 
     @Lob
-    @Column(name = "image_bytes", nullable = false)
-    @Type(type = "org.hibernate.type.BlobType")
+    @Column(name = "image_bytes", nullable = false, columnDefinition="BLOB")
     private byte[] imageBytes;
 
     @Temporal(TemporalType.DATE)

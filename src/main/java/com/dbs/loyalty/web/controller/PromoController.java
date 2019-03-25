@@ -34,7 +34,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.dbs.loyalty.domain.Promo;
 import com.dbs.loyalty.service.PromoCategoryService;
 import com.dbs.loyalty.service.PromoService;
 import com.dbs.loyalty.service.TaskService;
@@ -125,7 +124,7 @@ public class PromoController extends AbstractPageController {
 					taskService.saveTaskModify(PROMO, current.get(), promoDto);
 				}
 
-				return taskIsSavedResponse(Promo.class.getSimpleName(), promoDto.getTitle(), UrlUtil.getUrl(PROMO));
+				return taskIsSavedResponse(PROMO, promoDto.getTitle(), UrlUtil.getUrl(PROMO));
 			}
 			
 		} catch (Exception ex) {

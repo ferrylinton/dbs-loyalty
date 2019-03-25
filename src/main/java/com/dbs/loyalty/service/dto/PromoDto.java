@@ -12,7 +12,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class PromoDto {
+public class PromoDto extends AbstractAuditDto {
 
 	private String id;
 	
@@ -46,6 +46,6 @@ public class PromoDto {
 	
 	private boolean activated = true;
 	
-	private PromoCategoryDto promoCategoryDto;
+	private PromoCategoryDto promoCategory;
 	
 }
