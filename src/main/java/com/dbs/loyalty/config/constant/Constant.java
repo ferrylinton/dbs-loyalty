@@ -38,7 +38,7 @@ public class Constant {
 	
 	public static final String BASE64_TO_STRING		= "Base64";
 	
-	public static final String ROLE_CUSTOMER		= "ROLE_CUSTOMER";
+	public static final String ROLE_CUSTOMER		= "CUSTOMER";
 	
 	public static final int	SIZE					= 10;
 	

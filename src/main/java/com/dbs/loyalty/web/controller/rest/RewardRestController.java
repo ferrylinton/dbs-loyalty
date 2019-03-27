@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.domain.Reward;
 import com.dbs.loyalty.service.RewardService;
-import com.dbs.loyalty.web.swagger.ApiPageable;
 
 import io.swagger.annotations.Api;
 
@@ -27,7 +26,6 @@ public class RewardRestController {
 	}
 
 	@GetMapping
-	@ApiPageable
 	public Page<Reward> get(Pageable pageable, Principal principal){
 		return rewardService.findByExpiryDate(principal.getName(), pageable);
 	}

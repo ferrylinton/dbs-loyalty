@@ -1,26 +1,11 @@
-# MyBlog
+# DBS Loyalty
 
-
-## Liquibase
-```
-mvn liquibase:generateChangeLog -Dliquibase.outputChangeLogFile=src/main/resources/db/changelog/release-001/000_init_data.xml
-
-mvn liquibase:generateChangeLog -Dliquibase.outputChangeLogFile=src/main/resources/db/changelog/release-001/002_init_data.xml -Dliquibase.diffTypes=data
-```
-
-
-## Run With Embedded Tomcat 7
+## Run With Embedded Server
 
 ```
-mvn tomcat7:run
-mvn clean tomcat7:run -Dmaven.tomcat.port=8181
+mvn spring-boot:run
 ```
 ## Build
-
-### Minify html
-```
-mvn htmlcompressor:html
-```
 
 ### Build war
 ```

@@ -49,6 +49,7 @@ public class PromoDto extends AbstractAuditDto {
 	
 	private boolean activated = true;
 	
+	@JsonIgnore
 	private PromoCategoryDto promoCategory;
 	
 }

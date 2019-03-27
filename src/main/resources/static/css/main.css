@@ -248,3 +248,14 @@ legend {
 .close {
     font-size: 1.2rem;
 }
+.swagger-ui .markdown{
+	border: solid 1px red;
+}
+.swagger-ui .markdown table {
+    width: auto;
+    padding: 0 10px;
+}
+.swagger-ui .markdown table th, .swagger-ui .markdown table td{
+	padding: 4px 8px;
+	border-bottom: solid 1px #ccc;	
+}
