@@ -10,7 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.domain.Customer;
-import com.dbs.loyalty.model.Login;
+import com.dbs.loyalty.service.dto.JWTLoginDto;
 
 
 public class RestAuthentication implements Authentication {
@@ -33,15 +33,9 @@ public class RestAuthentication implements Authentication {
 		this.authenticated = true;
 	}
 	
-	public RestAuthentication(String email, String password) {
-		this.principal = email;
-		this.credentials = password;
-		this.authenticated = false;
-	}
-	
-	public RestAuthentication(Login login) {
-		this.principal = login.getEmail();
-		this.credentials = login.getPassword();
+	public RestAuthentication(JWTLoginDto jwtLoginDto) {
+		this.principal = jwtLoginDto.getEmail();
+		this.credentials = jwtLoginDto.getPassword();
 		this.authenticated = false;
 	}
 	

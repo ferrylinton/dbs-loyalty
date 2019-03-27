@@ -1,22 +1,14 @@
 package com.dbs.loyalty.model;
 
-import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
+@Setter
+@Getter
+@RequiredArgsConstructor
 public class ErrorResponse {
 
-	@ApiModelProperty(value = "Error's message", example = "Wrong Email or Password")
-	private String message;
+	private final String message;
 
-	public ErrorResponse(String message) {
-		this.message = message;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-	
 }

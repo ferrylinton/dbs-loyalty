@@ -15,6 +15,8 @@ import com.dbs.loyalty.util.SecurityUtil;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
 import lombok.RequiredArgsConstructor;
 
@@ -26,16 +28,20 @@ public class CustomerRestController {
 
     private final CustomerService customerService;
 
-    @ApiOperation(value = "Get Customer Information", authorizations = { @Authorization(value="JWT") })
+    @ApiOperation(nickname="getCustomerInfo", value="getCustomerInfo", notes="Get Customer Information",
+    		produces=MediaType.APPLICATION_JSON_VALUE, authorizations = { @Authorization(value="JWT") })
+    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = CustomerDto.class)})
     @GetMapping("/customers/info")
-	public ResponseEntity<?> getCustomerById(){
+	public ResponseEntity<?> getCustomerInfo(){
 		Optional<CustomerDto> customerDto = customerService.findByEmail(SecurityUtil.getCurrentEmail());
 		return ResponseEntity.ok().body(customerDto.get());
 	}
     
-    @ApiOperation(value = "Get Customer Image", authorizations = { @Authorization(value="JWT") })
+    @ApiOperation(nickname="getCustomerImage", value="getCustomerImage", notes="Get Customer Image", 
+    		produces=MediaType.IMAGE_JPEG_VALUE, authorizations = { @Authorization(value="JWT") })
+    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Byte.class)})
     @GetMapping(value = "/customers/image", produces = MediaType.IMAGE_JPEG_VALUE)
-	public byte[] getImage() {
+	public byte[] getCustomerImage() {
     	Optional<CustomerDto> customerDto = customerService.findByEmail(SecurityUtil.getCurrentEmail());
 		return customerDto.get().getImageBytes();
 	}

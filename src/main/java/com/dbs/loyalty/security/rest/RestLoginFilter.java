@@ -18,7 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-import com.dbs.loyalty.model.Login;
+import com.dbs.loyalty.service.dto.JWTLoginDto;
 import com.dbs.loyalty.util.JsonUtil;
 import com.dbs.loyalty.util.ResponseUtil;
 
@@ -40,7 +40,7 @@ public class RestLoginFilter extends AbstractAuthenticationProcessingFilter {
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws ServletException {
 		try {
-			Login login = jsonUtil.getObjectMapper().readValue(request.getInputStream(), Login.class);
+			JWTLoginDto login = jsonUtil.getObjectMapper().readValue(request.getInputStream(), JWTLoginDto.class);
 	        return getAuthenticationManager().authenticate(new RestAuthentication(login));
 		} catch (IOException e) {
             throw new RuntimeException(e);

@@ -3,9 +3,9 @@ package com.dbs.loyalty.web.controller.rest;
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,18 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.model.ErrorResponse;
-import com.dbs.loyalty.model.JWTToken;
-import com.dbs.loyalty.model.Login;
-import com.dbs.loyalty.security.rest.RestAuthentication;
-import com.dbs.loyalty.security.rest.RestAuthenticationProvider;
-import com.dbs.loyalty.security.rest.RestTokenProvider;
+import com.dbs.loyalty.service.JWTAuthenticationService;
+import com.dbs.loyalty.service.dto.JWTLoginDto;
+import com.dbs.loyalty.service.dto.JWTTokenDto;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.Example;
-import io.swagger.annotations.ExampleProperty;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -38,32 +35,18 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api")
 public class JWTRestController {
 
-    private final RestTokenProvider restTokenProvider;
-
-    private final RestAuthenticationProvider provider;
+    private final JWTAuthenticationService jwtAuthenticationService;
 
     @PostMapping("/authenticate")
-    @ApiOperation(
-    	nickname = "authenticate",
-    	notes="${JWTController.authenticate.notes}", 
-    	value="${JWTController.authenticate.value}"
-    )
-	@ApiResponses(value={
-			@ApiResponse(code=200, message="Ok", response = JWTToken.class),
-			@ApiResponse(code=500, message="Internal Server Error", response = ErrorResponse.class),
-			@ApiResponse(code=401, message="Unauthorize", response = ErrorResponse.class, 
-							examples = @Example(
-								value = @ExampleProperty(value = "{\"message\"： \"Wrong Email or Password\"}", mediaType = "application/json")
-							))
-    })
-    public ResponseEntity<?> authenticate(@Valid @RequestBody Login login) {
+    @ApiOperation(nickname = "authenticate", value="authenticate", notes="Authenticate customer to access DBS API", produces=MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses(value={@ApiResponse(code=200, message="OK", response = JWTTokenDto.class)})
+    public ResponseEntity<?> authenticate(
+    		@ApiParam(name = "JWTLoginDto", value = "Customer's login data to get access token") 
+    		@Valid @RequestBody JWTLoginDto jwtLoginDto) {
+    	
     	try {
-    		System.out.println("login : " + login.getEmail());
-    		RestAuthentication authentication = provider.authenticate(new RestAuthentication(login.getEmail(), login.getPassword()));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            boolean rememberMe = (login.getRememberMe() == null) ? false : login.getRememberMe();
-            String token = restTokenProvider.createToken(authentication, rememberMe);
-            return new ResponseEntity<>(new JWTToken(token, authentication.getCustomer()), HttpStatus.OK);
+    		JWTTokenDto jwtTokenDto = jwtAuthenticationService.authenticate(jwtLoginDto);
+            return new ResponseEntity<>(jwtTokenDto, HttpStatus.OK);
 		} catch (BadCredentialsException e) {
 			log.error(e.getLocalizedMessage(), e);
 			return new ResponseEntity<>(new ErrorResponse("Wrong Email or Password"), HttpStatus.UNAUTHORIZED);

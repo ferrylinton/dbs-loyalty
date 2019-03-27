@@ -1,4 +1,0 @@
-JWTController:
-  authenticate:
-    value: authenticate
-    notes: Authenticate customer to access DBS API

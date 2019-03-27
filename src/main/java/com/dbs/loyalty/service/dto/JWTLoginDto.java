@@ -1,4 +1,4 @@
-package com.dbs.loyalty.model;
+package com.dbs.loyalty.service.dto;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -6,8 +6,8 @@ import javax.validation.constraints.Size;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-@ApiModel(description = "Authentication's request data")
-public class Login {
+@ApiModel(value="Payload", description = "Authentication's request data")
+public class JWTLoginDto {
 
 	@ApiModelProperty(value = "Customer's email", example = "johnsmith@dbs.com", required = true)
 	@NotNull
@@ -19,7 +19,8 @@ public class Login {
     @Size(min = 6, max = 30)
 	private String password;
 	
-	private Boolean rememberMe;
+	@ApiModelProperty(value = "Remember me flag", required = false)
+	private boolean rememberMe;
 
 	public String getEmail() {
 		return email;
