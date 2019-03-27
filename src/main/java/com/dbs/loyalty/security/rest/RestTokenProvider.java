@@ -1,18 +1,14 @@
 package com.dbs.loyalty.security.rest;
 
-import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
 import javax.annotation.PostConstruct;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
-import com.dbs.loyalty.config.property.SecurityProperties;
+import com.dbs.loyalty.config.ApplicationProperties;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -22,11 +18,13 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
+@RequiredArgsConstructor
 @Component
 public class RestTokenProvider {
-	
-	private final Logger log = LoggerFactory.getLogger(RestTokenProvider.class);
 
 	private Key key;
 	
@@ -34,27 +32,13 @@ public class RestTokenProvider {
 
     private long tokenValidityInMillisecondsForRememberMe;
     
-    private final SecurityProperties securityProperties;
-    
-    public RestTokenProvider(SecurityProperties securityProperties) {
-    	this.securityProperties = securityProperties;
-    }
+    private final ApplicationProperties applicationProperties;
 
     @PostConstruct
     public void init() {
-        byte[] keyBytes;
-        String secret = securityProperties.getSecret();
-        
-        if (!StringUtils.isEmpty(secret)) {
-            log.warn("Warning: the JWT key used is not Base64-encoded.");
-            keyBytes = secret.getBytes(StandardCharsets.UTF_8);
-        } else {
-            keyBytes = Decoders.BASE64.decode(securityProperties.getBase64Secret());
-        }
-        
-        this.key = Keys.hmacShaKeyFor(keyBytes);
-        this.tokenValidityInMilliseconds = 1000 * securityProperties.getTokenValidityInSeconds();
-        this.tokenValidityInMillisecondsForRememberMe = 1000 * securityProperties.getTokenValidityInSecondsForRememberMe();
+        this.key = Keys.hmacShaKeyFor(Decoders.BASE64.decode( applicationProperties.getSecurity().getSecret()));
+        this.tokenValidityInMilliseconds = 1000 *  applicationProperties.getSecurity().getTokenValidityInSeconds();
+        this.tokenValidityInMillisecondsForRememberMe = 1000 *  applicationProperties.getSecurity().getTokenValidityInSecondsForRememberMe();
     }
     
     public String createToken(Authentication authentication, boolean rememberMe) {

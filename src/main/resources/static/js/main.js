@@ -12,7 +12,17 @@ $(document).ready(function() {
 	
 	initFileBrowser();
 	
+	checkMenuGroup();
+	
 });
+
+function checkMenuGroup(){
+	$('.menu-group').each(function(){
+		if($(this).has('a.btn').length == 0){
+			$(this).hide();
+		}
+	});
+}
 
 function openNewTab(el) {
     url = $(el).attr('href');

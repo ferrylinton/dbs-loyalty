@@ -15,32 +15,31 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.dbs.loyalty.domain.LogLogin;
 import com.dbs.loyalty.service.LogLoginService;
+import com.dbs.loyalty.service.dto.LogLoginDto;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Controller
 @RequestMapping("/loglogin")
 public class LogLoginController extends AbstractPageController {
 
-	private final String REDIRECT		= "redirect:/loglogin";
+	private String REDIRECT			= "redirect:/loglogin";
 	
-	private final String VIEW_TEMPLATE 	= "loglogin/view";
+	private String VIEW_TEMPLATE 	= "loglogin/view";
 
-	private final String SORT_BY 		= "createdDate";
+	private String SORT_BY 			= "createdDate";
 	
-	private final Order ORDER			= Order.desc(SORT_BY).ignoreCase();
+	private Order ORDER				= Order.desc(SORT_BY).ignoreCase();
 
 	private final LogLoginService logLoginService;
-
-	public LogLoginController(LogLoginService logLoginService) {
-		this.logLoginService = logLoginService;
-	}
 
 	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping
 	public String view(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
 		Order order = (sort.getOrderFor(SORT_BY) == null) ? ORDER : sort.getOrderFor(SORT_BY);
-		Page<LogLogin> page = logLoginService.findAll(getPageable(params, order), request);
+		Page<LogLoginDto> page = logLoginService.findAll(getPageable(params, order), request);
 		
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
 			return REDIRECT;

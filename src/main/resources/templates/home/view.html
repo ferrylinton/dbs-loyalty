@@ -8,86 +8,96 @@
     <div class="container-fluid bg-white">
         <div class="pt-3">
       		<div class="row no-gutters min-height">
-     			<th:block th:if="${#authorization.expression('hasAnyAuthority(''USER_MK'', ''USER_CK'')')}">
-     				<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 px-1 pb-3">
-                		<fieldset>
- 							<legend th:text="#{userManagement}"></legend>
- 							<div class="row no-gutters">
+      			<!-- USER MANAGEMENT -->
+    			<div class="menu-group col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 px-1 pb-3">
+               		<fieldset>
+						<legend th:text="#{userManagement}"></legend>
+						<div class="row no-gutters">
+							<th:block th:if="${#authorization.expression('hasAnyAuthority(''USER_MK'', ''USER_CK'')')}">
 			                	<div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-4 p-1 mb-1">
 			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/user}">
 										<i class="icon-user font-icon"></i>
 										<span class="font-label" th:text="#{user}"></span>
 									</a>
 			                	</div>
+		                	</th:block>
+		                	<th:block th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MK'', ''ROLE_CK'')')}">
 			                	<div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-4 p-1 mb-1">
 			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/role}">
 										<i class="icon-user-secret font-icon"></i>
 										<span class="font-label" th:text="#{role}"></span>
 									</a>
 			                	</div>
-			                </div>
- 						</fieldset>
- 					</div>
-                </th:block>
-
-      			
-      			<th:block th:if="${#authorization.expression('hasAnyAuthority(''PROMO_MK'', ''PROMO_CK'')')}">
-	                <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 px-1 pb-3">
-	                	<fieldset>
-  							<legend th:text="#{promo}"></legend>
-  							<div class="row no-gutters">
+		                	</th:block>
+		                </div>
+					</fieldset>
+				</div>
+                <!-- PROMO -->
+                <div class="menu-group col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 px-1 pb-3">
+                	<fieldset>
+ 						<legend th:text="#{promo}"></legend>
+ 						<div class="row no-gutters">
+ 							<th:block th:if="${#authorization.expression('hasAnyAuthority(''PROMO_CATEGORY_MK'', ''PROMO_CATEGORY_CK'')')}">
 			                	<div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-4 p-1 mb-1">
 			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/promocategory}">
 										<i class="icon-birthday font-icon"></i>
 										<span class="font-label" th:text="#{promoCategory}"></span>
 									</a>
 			                	</div>
+		                	</th:block>
+		                	<th:block th:if="${#authorization.expression('hasAnyAuthority(''PROMO_MK'', ''PROMO_CK'')')}">
 			                	<div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-4 p-1 mb-1">
 			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/promo}">
 										<i class="icon-birthday font-icon"></i>
 										<span class="font-label" th:text="#{promo}"></span>
 									</a>
 			                	</div>
-			                </div>
-  						</fieldset>
-  					</div>
-	            </th:block>
-
-      			<th:block th:if="${#authorization.expression('hasAnyAuthority(''USER_MK'', ''USER_CK'')')}">
-	                <div class="col-12 px-1 pb-3">
-	                	<fieldset>
-  							<legend th:text="#{task}"></legend>
-  							<div class="row no-gutters">
+		                	</th:block>
+		                </div>
+ 					</fieldset>
+ 				</div>
+				<!-- TASK -->
+                <div class="menu-group col-12 px-1 pb-3">
+                	<fieldset>
+ 						<legend th:text="#{task}"></legend>
+ 						<div class="row no-gutters">
+ 							<th:block th:if="${#authorization.expression('hasAnyAuthority(''USER_MK'', ''USER_CK'')')}">
 			                	<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 p-1 mb-1">
 			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/task/user}">
 										<i class="icon-user font-icon"></i>
 										<span class="font-label" th:text="#{user}"></span>
 									</a>
 			                	</div>
+		                	</th:block>
+		                	<th:block th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MK'', ''ROLE_CK'')')}">
 			                	<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 p-1 mb-1">
 			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/task/role}">
 										<i class="icon-user-secret font-icon"></i>
 										<span class="font-label" th:text="#{role}"></span>
 									</a>
 			                	</div>
+			                </th:block>
+			                <th:block th:if="${#authorization.expression('hasAnyAuthority(''PROMO_CATEGORY_MK'', ''PROMO_CATEGORY_CK'')')}">
 			                	<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 p-1 mb-1">
 			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/task/promocategory}">
 										<i class="icon-birthday font-icon"></i>
 										<span class="font-label" th:text="#{promoCategory}"></span>
 									</a>
 			                	</div>
+			                </th:block>
+			                <th:block th:if="${#authorization.expression('hasAnyAuthority(''PROMO_MK'', ''PROMO_CK'')')}">
 			                	<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 p-1 mb-1">
 			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/task/promo}">
 										<i class="icon-birthday font-icon"></i>
 										<span class="font-label" th:text="#{promo}"></span>
 									</a>
 			                	</div>
-			                </div>
-  						</fieldset>
-  					</div>
-	            </th:block>
-      			
-      			<div class="col-12 px-1 pb-3">
+			                </th:block>
+		                </div>
+ 					</fieldset>
+ 				</div>
+	            <!-- TOOL -->
+      			<div class="menu-group col-12 px-1 pb-3">
                 	<fieldset>
  						<legend th:text="#{tool}"></legend>
  						<div class="row no-gutters">
@@ -97,12 +107,14 @@
 									<span class="font-label" th:text="#{swagger}"></span>
 								</a>
 		                	</div>
-		                	<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 p-1 mb-1">
-		                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/loglogin}">
-									<i class="icon-history font-icon"></i>
-									<span class="font-label" th:text="#{logLogin}"></span>
-								</a>
-		                	</div>
+		                	<th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+			                	<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 p-1 mb-1">
+			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/loglogin}">
+										<i class="icon-history font-icon"></i>
+										<span class="font-label" th:text="#{logLogin}"></span>
+									</a>
+			                	</div>
+		                	</th:block>
 		                </div>
  					</fieldset>
  				</div>

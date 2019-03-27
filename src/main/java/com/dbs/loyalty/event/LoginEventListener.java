@@ -5,20 +5,24 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import com.dbs.loyalty.service.LogLoginService;
+import com.dbs.loyalty.service.dto.LogLoginDto;
+import com.dbs.loyalty.service.mapper.LogLoginMapper;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Component
 public class LoginEventListener implements ApplicationListener<LoginEvent> {
 		
 	private final LogLoginService logLoginService;
 	
-	public LoginEventListener(LogLoginService logLoginService) {
-		this.logLoginService = logLoginService;
-	}
-
+	private final LogLoginMapper logLoginMapper;
+	
 	@Async
 	@Override
 	public void onApplicationEvent(LoginEvent event) {
-		logLoginService.save(event.getLoginLog());
+		LogLoginDto logLoginDto = logLoginMapper.toDto(event.getLoginLog());
+		logLoginService.save(logLoginDto);
 	}
 	
 }

@@ -23,24 +23,26 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.stereotype.Service;
 
+import com.dbs.loyalty.config.ApplicationProperties;
 import com.dbs.loyalty.config.constant.Constant;
-import com.dbs.loyalty.config.property.LdapProperties;
 import com.dbs.loyalty.exception.LdapConnectException;
 import com.dbs.loyalty.service.MessageService;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@RequiredArgsConstructor
 @Service
 public class LdapService {
 	
-	private static final String LDAP_CTX_FACTORY = "com.sun.jndi.ldap.LdapCtxFactory";
+	private String LDAP_CTX_FACTORY = "com.sun.jndi.ldap.LdapCtxFactory";
 	
-	private static final String SIMPLE = "simple";
+	private String SIMPLE = "simple";
 	
-	private static final String NONE = "none";
+	private String NONE = "none";
 	
-	private static final Pattern SUB_ERROR_CODE = Pattern.compile(".*data\\s([0-9a-f]{3,4}).*");
+	private Pattern SUB_ERROR_CODE = Pattern.compile(".*data\\s([0-9a-f]{3,4}).*");
 
 	private static final int PASSWORD_EXPIRED = 0x532;
 	
@@ -49,14 +51,10 @@ public class LdapService {
 	private static final int ACCOUNT_EXPIRED = 0x701;
 
 	private static final int ACCOUNT_LOCKED = 0x775;
-	
-	private LdapProperties ldapProperties;
 
 	private DirContext searchContext = null;
 	
-	public LdapService(LdapProperties ldapProperties) {
-		this.ldapProperties = ldapProperties;
-	}
+	private final ApplicationProperties applicationProperties;
 	
 	public String getDn(String username) throws NamingException {
 		SearchControls searchCtrls = new SearchControls();
@@ -67,7 +65,7 @@ public class LdapService {
 			searchContext = new InitialDirContext(getDnEnv());
 		}
 		
-		NamingEnumeration<SearchResult> answer = searchContext.search(ldapProperties.getBase(), String.format(ldapProperties.getSearchFilter(username)), searchCtrls);
+		NamingEnumeration<SearchResult> answer = searchContext.search(applicationProperties.getLdap().getBase(), String.format(applicationProperties.getLdap().getSearchFilter(username)), searchCtrls);
 		
 		if (answer.hasMore()) {
 			return answer.next().getNameInNamespace();
@@ -103,12 +101,12 @@ public class LdapService {
 	private Hashtable<String, Object> getDnEnv(){
 		Hashtable<String, Object> env = new Hashtable<>();
 		env.put(Context.INITIAL_CONTEXT_FACTORY, LDAP_CTX_FACTORY);
-		env.put(Context.PROVIDER_URL, ldapProperties.getUrl());
+		env.put(Context.PROVIDER_URL, applicationProperties.getLdap().getUrl());
 		
-		if(ldapProperties.getPrincipal() != null && ldapProperties.getCredentials() != null) {
+		if(applicationProperties.getLdap().getPrincipal() != null && applicationProperties.getLdap().getCredentials() != null) {
 			env.put(Context.SECURITY_AUTHENTICATION, SIMPLE);
-			env.put(Context.SECURITY_PRINCIPAL, ldapProperties.getPrincipal());
-			env.put(Context.SECURITY_CREDENTIALS, ldapProperties.getCredentials());
+			env.put(Context.SECURITY_PRINCIPAL, applicationProperties.getLdap().getPrincipal());
+			env.put(Context.SECURITY_CREDENTIALS, applicationProperties.getLdap().getCredentials());
 		}else {
 			env.put(Context.SECURITY_AUTHENTICATION, NONE);
 		}
@@ -119,7 +117,7 @@ public class LdapService {
 	private Hashtable<String, Object> getEnv(String username, String password) throws NamingException{
 		Hashtable<String, Object> env = new Hashtable<>();
 		env.put(Context.INITIAL_CONTEXT_FACTORY, LDAP_CTX_FACTORY);
-		env.put(Context.PROVIDER_URL, ldapProperties.getUrl());
+		env.put(Context.PROVIDER_URL, applicationProperties.getLdap().getUrl());
 		env.put(Context.SECURITY_AUTHENTICATION, SIMPLE);
 		env.put(Context.SECURITY_PRINCIPAL, getDn(username));
 		env.put(Context.SECURITY_CREDENTIALS, password);

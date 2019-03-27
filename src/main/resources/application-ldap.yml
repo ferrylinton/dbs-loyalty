@@ -1,6 +1,0 @@
-ldap:
-  url: ldap://localhost:10389
-  base: dc=dbs,dc=com
-  # principal: uid=admin,ou=users,dc=dbs,dc=com
-  # credentials: password
-  searchFilter: (&(uid=%s))
