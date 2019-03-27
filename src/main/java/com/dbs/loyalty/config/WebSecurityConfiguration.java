@@ -20,16 +20,15 @@ import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.event.LoginEventPublisher;
-import com.dbs.loyalty.ldap.LdapService;
+import com.dbs.loyalty.ldap.service.UserLdapService;
+import com.dbs.loyalty.repository.CustomerRepository;
 import com.dbs.loyalty.repository.UserRepository;
 import com.dbs.loyalty.security.rest.RestAuthenticationProvider;
 import com.dbs.loyalty.security.web.WebAuthenticationFailureHandler;
 import com.dbs.loyalty.security.web.WebAuthenticationProvider;
 import com.dbs.loyalty.security.web.WebAuthenticationSuccessHandler;
-import com.dbs.loyalty.service.CustomerService;
 
 import lombok.RequiredArgsConstructor;
-
 
 @RequiredArgsConstructor
 @Configuration
@@ -100,18 +99,18 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	}
 	
 	@Bean
-	public AuthenticationManager authenticationManager(UserRepository userRepository, LdapService ldapService, CustomerService customerService) {
-	    return new ProviderManager(Arrays.asList(webAuthenticationProvider(userRepository, ldapService), restAuthenticationProvider(customerService)));
+	public AuthenticationManager authenticationManager(UserRepository userRepository, UserLdapService userLdapRepository, CustomerRepository customerRepository) {
+	    return new ProviderManager(Arrays.asList(webAuthenticationProvider(userRepository, userLdapRepository), restAuthenticationProvider(customerRepository)));
 	}
  
 	@Bean("webAuthenticationProvider")
-	public WebAuthenticationProvider webAuthenticationProvider(UserRepository userRepository, LdapService ldapService) {
-		return new WebAuthenticationProvider(userRepository, ldapService);
+	public WebAuthenticationProvider webAuthenticationProvider(UserRepository userRepository, UserLdapService userLdapRepository) {
+		return new WebAuthenticationProvider(userRepository, userLdapRepository);
 	}
 	
 	@Bean("restAuthenticationProvider")
-	public RestAuthenticationProvider restAuthenticationProvider(CustomerService customerService){
-		return new RestAuthenticationProvider(customerService);
+	public RestAuthenticationProvider restAuthenticationProvider(CustomerRepository customerRepository){
+		return new RestAuthenticationProvider(customerRepository);
 	}
 	
 	@Bean  

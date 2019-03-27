@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
@@ -50,6 +52,7 @@ public class User extends AbstractId implements Serializable {
 	@Column(name = "locked", nullable = false)
 	private boolean locked;
 	
+	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "user_type", nullable = false, columnDefinition="TINYINT")
 	private UserType userType;
 	

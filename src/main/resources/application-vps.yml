@@ -4,6 +4,8 @@ application:
     secret: OTE1ZWVlYTZjZWIyODY5ODQ1ZDFkYmI3ZmM1YjNmNDdkOWU3NjUyMGYwOTcwMzEzMWY5MzU1YmU0Mzk5MzUzODY2NDVkYTA1OGI5NmRiYjNkNDQ3NzBmZGVmYTFmODcyNzliNmE2MmZmN2JlZThkMmU2Y2E3M2U4YjgyNTFhNjk=
     token-validity-in-seconds: 86400
     token-validity-in-seconds-for-remember-me: 2592000
+  ldap: 
+    attribute: uid
   async: 
     core-pool-size: 5
     max-pool-size: 10
@@ -14,11 +16,10 @@ application:
     date-time-full: dd-MM-yyyy HH:mm:ss.SSS
 spring:
   datasource:
-    platform: h2
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:h2:file:./target/h2db/dbs;MODE=MySQL;AUTO_SERVER=TRUE
-    username: sa
-    password:
+    url: jdbc:mariadb://localhost:3306/loyalty?useLegacyDatetimeCode=false&serverTimezone=UTC
+    username: root
+    password: 
     hikari:
       poolName: Hikari
       auto-commit: false
@@ -29,19 +30,22 @@ spring:
         useServerPrepStmts: true
   h2:
     console:
-      enabled: true
-      path: /h2-console
+      enabled: false
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.mariadb.jdbc.Driver
+    database: MYSQL
     show-sql: true
     properties:
-      hibernate.hbm2ddl.auto: validate
+      hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
+      hibernate.hbm2ddl.auto: none
       hibernate.format_sql: true
       hibernate.jdbc.lob.non_contextual_creation: true
       hibernate.integration.envers.enabled: false
   liquibase: 
-    enabled: true
+    enabled: false
     change-log: classpath:/db/changelog/db.changelog-master.xml
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/generated/,classpath:/public/
   mvc:
     ignore-default-model-on-redirect: true
     static-path-pattern: /static/**
@@ -51,22 +55,12 @@ spring:
       max-request-size: 5MB
   thymeleaf:
     prefix: classpath:/templates/
-    suffix: .html
-    cache: false
+    cache: true
   messages:
     basename: i18n/messages
-  devtools:
-    livereload:
-      enabled: true
-      port: 35729
   ldap:
-    authenticate:
-      attribute: uid
-    base: dc=lwproject,dc=com
-    embedded:
-      base-dn: dc=lwproject,dc=com
-      ldif: classpath:schema.ldif
-      port: 10389
-      credential:
-        username: uid=admin
-        password: password
+    urls: ldap://192.227.166.217:389 
+    username: uid=admin
+    password: password
+    base: ou=users,ou=dbs,dc=lwproject,dc=com
+      

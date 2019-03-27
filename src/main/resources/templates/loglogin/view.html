@@ -71,7 +71,7 @@
 								<td class="text-center" th:text="${row.count + (page.number * page.size)}"></td>
 								<td th:text="${#dates.format(logLogin.createdDate, @environment.getProperty('application.format.date-time'))}"></td>
 								<td>
-									<span th:class="${logLogin.loginStatus.name() == 'SUCCESS'} ? 'badge badge-success' : 'badge badge-danger'" th:text="#{${logLogin.loginStatus}}">Success</span>
+									<span th:class="${logLogin.loginStatus.getValue()} ? 'badge badge-success' : 'badge badge-danger'" th:text="#{${logLogin.loginStatus}}">Success</span>
 								</td>
 								<td th:text="${logLogin.ip}"></td>
 								<td th:text="${#strings.isEmpty(logLogin.username)} ? '-' : ${logLogin.username}"></td>

@@ -17,8 +17,6 @@ public class ApplicationProperties {
 	private Format format;
 	
 	private Async async;
-	
-	private Ldap ldap;
 
 	@Getter
 	@Setter
@@ -56,32 +54,6 @@ public class ApplicationProperties {
 	    
 	    private int queueCapacity = 1000;
 	    
-	}
-	
-	@Getter
-	@Setter
-	public static class Ldap{
-		
-		private String domain;
-		
-		private String url;
-		
-		private String principal;
-		
-		private String credentials;
-		
-		private String base;
-		
-		private String searchFilter = "(&(sAMAccountName=%s@%s))";
-		
-		public String getSearchFilter(String username) {
-			if(domain == null) {
-				return String.format(searchFilter, username);
-			}else {
-				return String.format(searchFilter, username, domain);
-			}
-		}
-		
 	}
 	
 }

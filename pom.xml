@@ -96,6 +96,21 @@
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 		
+		<!-- LDAP -->
+		
+		<dependency>
+			<groupId>org.springframework.ldap</groupId>
+			<artifactId>spring-ldap-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-ldap</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.unboundid</groupId>
+		 	<artifactId>unboundid-ldapsdk</artifactId>
+		</dependency>
+		
 		<!-- SWAGGER -->
 		
         <dependency>
@@ -120,19 +135,6 @@
 			<groupId>io.swagger</groupId>
 			<artifactId>swagger-models</artifactId>
 			<version>1.5.22</version>
-		</dependency>
-
-		<!-- LDAP -->
-		
-		<dependency>
-			<groupId>org.springframework.ldap</groupId>
-			<artifactId>spring-ldap-core</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.unboundid</groupId>
-		 	<artifactId>unboundid-ldapsdk</artifactId>
-		 	<scope>test</scope>
 		</dependency>
 		
 		<!-- JWT -->

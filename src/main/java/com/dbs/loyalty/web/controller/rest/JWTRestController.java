@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,11 +25,15 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Example;
 import io.swagger.annotations.ExampleProperty;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Controller to authenticate users.
  */
 @Api(tags = { SwaggerConstant.Authentication })
+@RequiredArgsConstructor
+@Slf4j
 @RestController
 @RequestMapping("/api")
 public class JWTRestController {
@@ -36,11 +41,6 @@ public class JWTRestController {
     private final RestTokenProvider restTokenProvider;
 
     private final RestAuthenticationProvider provider;
-
-    public JWTRestController(RestTokenProvider restTokenProvider, RestAuthenticationProvider restAuthenticationProvider) {
-        this.restTokenProvider = restTokenProvider;
-        this.provider = restAuthenticationProvider;
-    }
 
     @PostMapping("/authenticate")
     @ApiOperation(
@@ -58,13 +58,18 @@ public class JWTRestController {
     })
     public ResponseEntity<?> authenticate(@Valid @RequestBody Login login) {
     	try {
+    		System.out.println("login : " + login.getEmail());
     		RestAuthentication authentication = provider.authenticate(new RestAuthentication(login.getEmail(), login.getPassword()));
             SecurityContextHolder.getContext().setAuthentication(authentication);
             boolean rememberMe = (login.getRememberMe() == null) ? false : login.getRememberMe();
             String token = restTokenProvider.createToken(authentication, rememberMe);
             return new ResponseEntity<>(new JWTToken(token, authentication.getCustomer()), HttpStatus.OK);
-		} catch (Exception e) {
+		} catch (BadCredentialsException e) {
+			log.error(e.getLocalizedMessage(), e);
 			return new ResponseEntity<>(new ErrorResponse("Wrong Email or Password"), HttpStatus.UNAUTHORIZED);
+		} catch (Exception e) {
+			log.error(e.getLocalizedMessage(), e);
+			return new ResponseEntity<>(new ErrorResponse(e.getLocalizedMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
     	
     }

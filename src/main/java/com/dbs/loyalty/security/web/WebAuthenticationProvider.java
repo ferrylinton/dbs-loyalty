@@ -1,6 +1,6 @@
 package com.dbs.loyalty.security.web;
 
-import static com.dbs.loyalty.config.constant.Constant.*;
+import static com.dbs.loyalty.config.constant.Constant.EMPTY;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -19,7 +19,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import com.dbs.loyalty.domain.Authority;
 import com.dbs.loyalty.domain.User;
 import com.dbs.loyalty.domain.enumeration.UserType;
-import com.dbs.loyalty.ldap.LdapService;
+import com.dbs.loyalty.ldap.service.UserLdapService;
 import com.dbs.loyalty.repository.UserRepository;
 import com.dbs.loyalty.util.PasswordUtil;
 
@@ -30,7 +30,7 @@ public class WebAuthenticationProvider implements AuthenticationProvider {
 		
     private final UserRepository userRepository;
     
-    private final LdapService ldapService;
+    private final UserLdapService userLdapRepository;
 
 	@Override
 	public Authentication authenticate(Authentication authentication) {
@@ -69,7 +69,7 @@ public class WebAuthenticationProvider implements AuthenticationProvider {
 	
 	private boolean isAuthenticated(String password, User user) {
 		if(user.getUserType() == UserType.Internal) {
-			return ldapService.authenticate(user.getUsername(), password);
+			return userLdapRepository.authenticate(user.getUsername(), password);
 		}else{
 			return PasswordUtil.getInstance().matches(password, user.getPasswordHash());
         }

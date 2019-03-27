@@ -23,8 +23,10 @@ public class UserDto extends AbstractAuditDto {
 	@Size(min = 2, max = 50, message = "{validation.size.username}")
 	private String username;
 	
+	@JsonIgnore
 	private String passwordPlain;
 	
+	@JsonIgnore
 	private String passwordHash;
 	
 	private boolean activated;

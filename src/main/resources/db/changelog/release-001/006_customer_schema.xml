@@ -37,6 +37,9 @@
             <column name="phone" type="VARCHAR(20)">
                 <constraints nullable="false"/>
             </column>
+            <column name="customer_type" type="VARCHAR(4)">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
     
