@@ -15,7 +15,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class UserLdapService {
+public class AuthenticateLdapService {
 	
 	private final LdapTemplate ldapTemplate;
 

@@ -20,7 +20,7 @@ import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.event.LoginEventPublisher;
-import com.dbs.loyalty.ldap.service.UserLdapService;
+import com.dbs.loyalty.ldap.service.AuthenticateLdapService;
 import com.dbs.loyalty.repository.CustomerRepository;
 import com.dbs.loyalty.repository.UserRepository;
 import com.dbs.loyalty.security.rest.RestAuthenticationProvider;
@@ -99,13 +99,13 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	}
 	
 	@Bean
-	public AuthenticationManager authenticationManager(UserRepository userRepository, UserLdapService userLdapRepository, CustomerRepository customerRepository) {
-	    return new ProviderManager(Arrays.asList(webAuthenticationProvider(userRepository, userLdapRepository), restAuthenticationProvider(customerRepository)));
+	public AuthenticationManager authenticationManager(UserRepository userRepository, AuthenticateLdapService authenticateLdapService, CustomerRepository customerRepository) {
+	    return new ProviderManager(Arrays.asList(webAuthenticationProvider(userRepository, authenticateLdapService), restAuthenticationProvider(customerRepository)));
 	}
  
 	@Bean("webAuthenticationProvider")
-	public WebAuthenticationProvider webAuthenticationProvider(UserRepository userRepository, UserLdapService userLdapRepository) {
-		return new WebAuthenticationProvider(userRepository, userLdapRepository);
+	public WebAuthenticationProvider webAuthenticationProvider(UserRepository userRepository, AuthenticateLdapService authenticateLdapService) {
+		return new WebAuthenticationProvider(userRepository, authenticateLdapService);
 	}
 	
 	@Bean("restAuthenticationProvider")

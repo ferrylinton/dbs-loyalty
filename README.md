@@ -5,9 +5,14 @@
 ```
 mvn spring-boot:run
 ```
-## Build
+## Deploy
 
 ### Build war
 ```
-mvn clean package
+mvn clean package -DskipTests
+```
+
+### Copy To Server
+```
+scp target/loyalty-0.0.1-SNAPSHOT.war root@192.227.166.217:/loyalty
 ```
