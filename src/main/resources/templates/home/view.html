@@ -56,6 +56,22 @@
 		                </div>
  					</fieldset>
  				</div>
+ 				<!-- CUSTOMER -->
+                <div class="menu-group col-12 px-1 pb-3">
+                	<fieldset>
+ 						<legend th:text="#{customer}"></legend>
+ 						<div class="row no-gutters">
+ 							<th:block th:if="${#authorization.expression('hasAnyAuthority(''CUSTOMER_MK'', ''CUSTOMER_CK'')')}">
+			                	<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 p-1 mb-1">
+			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/customer}">
+										<i class="icon-user font-icon"></i>
+										<span class="font-label" th:text="#{customer}"></span>
+									</a>
+			                	</div>
+		                	</th:block>
+		                </div>
+ 					</fieldset>
+ 				</div>
 				<!-- TASK -->
                 <div class="menu-group col-12 px-1 pb-3">
                 	<fieldset>
@@ -90,6 +106,14 @@
 			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/task/promo}">
 										<i class="icon-birthday font-icon"></i>
 										<span class="font-label" th:text="#{promo}"></span>
+									</a>
+			                	</div>
+			                </th:block>
+			                <th:block th:if="${#authorization.expression('hasAnyAuthority(''CUSTOMER_MK'', ''CUSTOMER_CK'')')}">
+			                	<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 p-1 mb-1">
+			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/task/customer}">
+										<i class="icon-birthday font-icon"></i>
+										<span class="font-label" th:text="#{customer}"></span>
 									</a>
 			                	</div>
 			                </th:block>

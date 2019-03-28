@@ -19,8 +19,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import com.dbs.loyalty.domain.Authority;
 import com.dbs.loyalty.domain.User;
 import com.dbs.loyalty.domain.enumeration.UserType;
-import com.dbs.loyalty.ldap.service.AuthenticateLdapService;
 import com.dbs.loyalty.repository.UserRepository;
+import com.dbs.loyalty.service.AuthenticateLdapService;
 import com.dbs.loyalty.util.PasswordUtil;
 
 import lombok.RequiredArgsConstructor;

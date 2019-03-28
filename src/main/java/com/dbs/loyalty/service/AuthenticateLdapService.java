@@ -1,4 +1,4 @@
-package com.dbs.loyalty.ldap.service;
+package com.dbs.loyalty.service;
 
 import static org.springframework.ldap.query.LdapQueryBuilder.query;
 

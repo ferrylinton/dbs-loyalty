@@ -3,17 +3,19 @@ package com.dbs.loyalty.service;
 import java.io.IOException;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.CustomerRepository;
 import com.dbs.loyalty.service.dto.CustomerDto;
 import com.dbs.loyalty.service.dto.TaskDto;
 import com.dbs.loyalty.service.mapper.CustomerMapper;
+import com.dbs.loyalty.service.specification.CustomerSpecification;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -38,12 +40,8 @@ public class CustomerService{
 		return customerRepository.findById(id).map(customerMapper::toDto);
 	}
 	
-	public Page<Customer> findAll(String keyword, Pageable pageable) {
-		if(keyword.equals(Constant.EMPTY)) {
-			return customerRepository.findAll(pageable);
-		}else {
-			return customerRepository.findAllByEmailContainingAllIgnoreCase(keyword, pageable);
-		}
+	public Page<CustomerDto> findAll(Pageable pageable, HttpServletRequest request) {
+		return customerRepository.findAll(CustomerSpecification.getSpec(request), pageable).map(customerMapper::toDto);
 	}
 	
 	public boolean isEmailExist(CustomerDto customerDto) {

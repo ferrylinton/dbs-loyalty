@@ -3,9 +3,8 @@ package com.dbs.loyalty.web.controller;
 import static com.dbs.loyalty.config.constant.Constant.ERROR;
 import static com.dbs.loyalty.config.constant.Constant.PAGE;
 import static com.dbs.loyalty.config.constant.Constant.ZERO;
-import static com.dbs.loyalty.config.constant.EntityConstant.USER;
+import static com.dbs.loyalty.config.constant.EntityConstant.CUSTOMER;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -32,14 +31,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dbs.loyalty.exception.NotFoundException;
-import com.dbs.loyalty.service.RoleService;
+import com.dbs.loyalty.service.CustomerService;
 import com.dbs.loyalty.service.TaskService;
-import com.dbs.loyalty.service.UserService;
-import com.dbs.loyalty.service.dto.RoleDto;
-import com.dbs.loyalty.service.dto.UserDto;
+import com.dbs.loyalty.service.dto.CustomerDto;
 import com.dbs.loyalty.util.PasswordUtil;
 import com.dbs.loyalty.util.UrlUtil;
-import com.dbs.loyalty.web.validator.UserValidator;
+import com.dbs.loyalty.web.validator.CustomerValidator;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,30 +44,28 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 @Controller
-@RequestMapping("/user")
-public class UserController extends AbstractPageController{
+@RequestMapping("/customer")
+public class CusomerController extends AbstractPageController{
 
-	private String REDIRECT 		= "redirect:/user";
+	private String REDIRECT 		= "redirect:/customer";
 
-	private String VIEW_TEMPLATE 	= "user/view";
+	private String VIEW_TEMPLATE 	= "customer/view";
 
-	private String FORM_TEMPLATE 	= "user/form";
+	private String FORM_TEMPLATE 	= "customer/form";
 
-	private String SORT_BY 			= "username";
+	private String SORT_BY 			= "name";
 	
 	private Order ORDER				= Order.asc(SORT_BY).ignoreCase();
 	
-	private final UserService userService;
-	
-	private final RoleService roleService;
+	private final CustomerService customerService;
 	
 	private final TaskService taskService;
 	
-	@PreAuthorize("hasAnyRole('USER_MK', 'USER_CK')")
+	@PreAuthorize("hasAnyRole('CUSTOMER_MK', 'CUSTOMER_CK')")
 	@GetMapping
 	public String view(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
 		Order order = (sort.getOrderFor(SORT_BY) == null) ? ORDER : sort.getOrderFor(SORT_BY);
-		Page<UserDto> page = userService.findAll(getPageable(params, order), request);
+		Page<CustomerDto> page = customerService.findAll(getPageable(params, order), request);
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
 			return REDIRECT;
@@ -82,16 +77,16 @@ public class UserController extends AbstractPageController{
 		return VIEW_TEMPLATE;
 	}
 	
-	@PreAuthorize("hasAnyRole('USER_MK', 'USER_CK')")
+	@PreAuthorize("hasAnyRole('CUSTOMER_MK', 'CUSTOMER_CK')")
 	@GetMapping("/{id}")
 	public String view(ModelMap model, @PathVariable String id) {
 		if (id.equals(ZERO)) {
-			model.addAttribute(USER, new UserDto());
+			model.addAttribute(CUSTOMER, new CustomerDto());
 		} else {
-			Optional<UserDto> userDto = userService.findById(id);
+			Optional<CustomerDto> customerDto = customerService.findById(id);
 			
-			if (userDto.isPresent()) {
-				model.addAttribute(USER, userDto.get());
+			if (customerDto.isPresent()) {
+				model.addAttribute(CUSTOMER, customerDto.get());
 			} else {
 				model.addAttribute(ERROR, getNotFoundMessage(id));
 			}
@@ -100,26 +95,26 @@ public class UserController extends AbstractPageController{
 		return FORM_TEMPLATE;
 	}
 	
-	@PreAuthorize("hasRole('USER_MK')")
+	@PreAuthorize("hasRole('CUSTOMER_MK')")
 	@PostMapping
 	@ResponseBody
-	public ResponseEntity<?> save(@Valid @ModelAttribute UserDto userDto, BindingResult result) {
+	public ResponseEntity<?> save(@Valid @ModelAttribute CustomerDto customerDto, BindingResult result) {
 		try {
 			if (result.hasErrors()) {
 				return badRequestResponse(result);
 			} else {
 				
-				if(userDto.getId() == null) {
-					userDto.setPasswordHash(PasswordUtil.getInstance().encode(userDto.getPasswordPlain()));
-					userDto.setPasswordPlain(null);
-					taskService.saveTaskAdd(USER, userDto);
+				if(customerDto.getId() == null) {
+					customerDto.setPasswordHash(PasswordUtil.getInstance().encode(customerDto.getPasswordPlain()));
+					customerDto.setPasswordPlain(null);
+					taskService.saveTaskAdd(CUSTOMER, customerDto);
 				}else {
-					Optional<UserDto> current = userService.findWithRoleById(userDto.getId());
-					userDto.setPasswordHash(current.get().getPasswordHash());
-					taskService.saveTaskModify(USER, current.get(), userDto);
+					Optional<CustomerDto> current = customerService.findById(customerDto.getId());
+					customerDto.setPasswordHash(current.get().getPasswordHash());
+					taskService.saveTaskModify(CUSTOMER, current.get(), customerDto);
 				}
 
-				return taskIsSavedResponse(USER,  userDto.getUsername(), UrlUtil.getUrl(USER));
+				return taskIsSavedResponse(CUSTOMER,  customerDto.getName(), UrlUtil.getUrl(CUSTOMER));
 			}
 			
 		} catch (Exception ex) {
@@ -128,28 +123,23 @@ public class UserController extends AbstractPageController{
 		}
 	}
 	
-	@PreAuthorize("hasRole('USER_MK')")
+	@PreAuthorize("hasRole('CUSTOMER_MK')")
 	@DeleteMapping("/{id}")
 	@ResponseBody
 	public ResponseEntity<?> delete(@PathVariable String id) throws NotFoundException {
 		try {
-			Optional<UserDto> userDto = userService.findWithRoleById(id);
-			taskService.saveTaskDelete(USER, userDto.get());
-			return taskIsSavedResponse(USER, userDto.get().getUsername(), UrlUtil.getUrl(USER));
+			Optional<CustomerDto> customerDto = customerService.findById(id);
+			taskService.saveTaskDelete(CUSTOMER, customerDto.get());
+			return taskIsSavedResponse(CUSTOMER, customerDto.get().getName(), UrlUtil.getUrl(CUSTOMER));
 		} catch (Exception ex) {
 			log.error(ex.getLocalizedMessage(), ex);
 			return errorResponse(ex);
 		}
 	}
-	
-	@ModelAttribute("roles")
-	public List<RoleDto> getRoles() {
-	    return roleService.findAll();
-	}
 
-	@InitBinder("userDto")
+	@InitBinder("customerDto")
 	protected void initBinder(WebDataBinder binder) {
-		binder.addValidators(new UserValidator());
+		binder.addValidators(new CustomerValidator(customerService));
 	}
 	
 }

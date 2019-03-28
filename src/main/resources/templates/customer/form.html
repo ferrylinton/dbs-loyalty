@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en" th:lang="${#locale}" xmlns:th="http://www.org">
+
+<head th:replace="fragment/head.html :: content(title=#{user})"></head>
+
+<body>
+	<div th:replace="fragment/navbar.html :: content"></div>
+	<div class="bg-white">
+		<nav aria-label="breadcrumb">
+	        <ol class="breadcrumb border-bottom">
+	            <li class="breadcrumb-item"><a th:href="@{/}" th:text="#{home}"></a></li>
+	            <li class="breadcrumb-item"><a th:href="@{/user}" th:text="#{user}"></a></li>
+	            <li class="breadcrumb-item active" aria-current="page" th:text="#{form}"></li>
+	        </ol>
+	    </nav>
+		<div class="container-fluid p-3">
+			<div class="min-height border p-3">
+					<div class="row no-gutters">
+						<div class="col-12" th:if="${error}">
+							<div class="border alert alert-light text-center" role="alert">
+				                <i class="icon-attention"></i> <span th:text="${error}"></span>
+				            </div>
+						</div>
+						<div class="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-6" th:if="${user}">
+							<form th:action="@{/user}" th:object="${user}" method="post" autocomplete="off" onsubmit="return Data.submit(this)">
+								<div class="form-group" th:if="${user.id != null}">
+									<label for="id" th:text="#{id}">Id</label>
+									<input class="form-control" type="text" th:field="*{id}" readonly="readonly" />
+								</div>
+								<div class="form-group">
+									<label for="userType" th:text="#{userType}">User Type</label>
+									<select class="custom-select" th:field="*{userType}">
+										<option value="Internal">Internal</option>
+										<option value="External">External</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<label for="username" th:text="#{username}">Username *</label>
+									<input class="form-control" type="text" th:field="*{username}" maxlength="50" />
+								</div>
+								<div class="form-group" th:if="${user.id == null}">
+									<label for="password" th:text="#{password}">Password</label>
+									<input class="form-control" type="password" th:field="*{passwordPlain}" maxlength="30" />
+								</div>
+								<div class="form-group">
+									<label for="role" th:text="#{role}">Role</label>
+									<select class="custom-select" th:field="*{role}">
+										<option th:each="_role: ${roles}" th:value="${_role}" th:text="${_role.name}">Role</option>
+									</select>
+								</div>
+								<div class="form-row">
+									<div class="form-group col">
+										<label th:text="#{activated}">Activated</label>
+										<div class="custom-control custom-switch">
+										  	<input type="checkbox" th:field="*{activated}" class="custom-control-input" onchange="changeStatus(this)" id="activated">
+										  	<label class="custom-control-label" for="activated" th:text="*{activated} ? #{yes} : #{no}"></label>
+										</div>
+									</div>
+									<div class="form-group col">
+										<label th:text="#{locked}">Locked</label>
+										<div class="custom-control custom-switch">
+										  	<input type="checkbox" th:field="*{locked}" class="custom-control-input" onchange="changeStatus(this)" id="locked">
+										  	<label class="custom-control-label" for="locked" th:text="*{locked} ? #{yes} : #{no}"></label>
+										</div>
+									</div>
+								</div>
+								<div th:replace="fragment/audit.html :: content(${user})"></div>
+								<a class="btn btn-sm btn-secondary px-3" th:href="@{/user}">
+									<i class="icon-left"></i> <span th:text="#{back}"></span>
+								</a>
+								<button class="btn btn-sm btn-primary px-3" type="submit">
+									<i class="icon-floppy"></i> <span th:text="#{save}"></span>
+								</button>
+							</form>
+						</div>
+					</div>
+				</div>
+		</div>
+	</div>
+	<div th:replace="fragment/footer.html :: content"></div>
+    <div th:replace="fragment/scripts.html :: content"></div>
+</body>
+
+</html>

@@ -10,6 +10,8 @@ public class EntityConstant {
 	
 	public static final String USER 			= "user";
 	
+	public static final String CUSTOMER			= "customer";
+	
 	public static final String PROMO_CATEGORY 	= "promocategory";
 	
 	public static final String PROMO 			= "promo";

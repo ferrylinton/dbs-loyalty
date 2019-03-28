@@ -2,7 +2,7 @@ spring:
   application:
     name: DBS Loyalty
   profiles:
-    active: vps
+    active: dev
 server:
   port: 8181
   servlet:

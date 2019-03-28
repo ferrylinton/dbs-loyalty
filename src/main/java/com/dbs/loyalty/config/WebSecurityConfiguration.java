@@ -20,13 +20,13 @@ import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.event.LoginEventPublisher;
-import com.dbs.loyalty.ldap.service.AuthenticateLdapService;
 import com.dbs.loyalty.repository.CustomerRepository;
 import com.dbs.loyalty.repository.UserRepository;
 import com.dbs.loyalty.security.rest.RestAuthenticationProvider;
 import com.dbs.loyalty.security.web.WebAuthenticationFailureHandler;
 import com.dbs.loyalty.security.web.WebAuthenticationProvider;
 import com.dbs.loyalty.security.web.WebAuthenticationSuccessHandler;
+import com.dbs.loyalty.service.AuthenticateLdapService;
 
 import lombok.RequiredArgsConstructor;
 
