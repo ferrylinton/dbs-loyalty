@@ -10,8 +10,6 @@ import com.dbs.loyalty.exception.NotFoundException;
 @Controller
 public class HomeController{
 
-	public static final String HOME_URL = "/home";
-	
 	public static final String VIEW_TEMPLATE = "home/view";
 	
 	public static final String REDIRECT_HOME = "redirect:/home";
@@ -21,7 +19,7 @@ public class HomeController{
 		return REDIRECT_HOME;
 	}
 	
-	@GetMapping(HOME_URL)
+	@GetMapping("/home")
 	public String view(HttpServletRequest request) throws NotFoundException {
 		return VIEW_TEMPLATE;
 	}

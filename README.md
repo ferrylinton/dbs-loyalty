@@ -16,3 +16,9 @@ mvn clean package -DskipTests
 ```
 scp target/loyalty-0.0.1-SNAPSHOT.war root@192.227.166.217:/loyalty
 ```
+
+### Run
+```
+nohup mvn spring-boot:run &
+nohup java -jar target/loyalty-0.0.1-SNAPSHOT.war &
+```

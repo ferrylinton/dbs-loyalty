@@ -1,40 +1,54 @@
 package com.dbs.loyalty.web.controller;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.Arrays;
-
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class HomeControllerTest {
 
 	@Autowired
-	private TestRestTemplate restTemplate;
+    private WebApplicationContext context;
 
-	@LocalServerPort
-	private int port;
+    private MockMvc mvc;
+
+    @Before
+    public void setup() {
+        mvc = MockMvcBuilders
+                .webAppContextSetup(context)
+                .apply(springSecurity())
+                .build();
+    }
 	
 	@Test
-	public void testView() {
-		HttpHeaders headers = new HttpHeaders();
-		headers.setAccept(Arrays.asList(MediaType.TEXT_HTML));
-		ResponseEntity<String> entity = this.restTemplate.exchange(HomeController.HOME_URL, HttpMethod.GET, new HttpEntity<Void>(headers), String.class);
-		assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
+	public void testView_not_authenticated() throws Exception {
+		mvc.perform(get("/home"))
+			.andDo(print())
+			.andExpect(status().is3xxRedirection());
+	}
+	
+	@Test
+	@WithMockUser(username = "admintest", authorities = {"ADMIN"})
+	public void testView_authenticated() throws Exception {
+		mvc.perform(get("/home"))
+			.andExpect(status().isOk())
+			.andExpect(content().string(containsString("admintest")));
 	}
 	
 }

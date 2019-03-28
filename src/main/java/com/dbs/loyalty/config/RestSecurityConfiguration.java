@@ -1,7 +1,5 @@
 package com.dbs.loyalty.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,57 +14,48 @@ import com.dbs.loyalty.security.rest.RestTokenProvider;
 import com.dbs.loyalty.security.rest.RestUnauthorizedEntryPoint;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Order(1)
 @Configuration
 public class RestSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
-	private final Logger LOG = LoggerFactory.getLogger(RestSecurityConfiguration.class);
-	
     private final ObjectMapper objectMapper;
 
-    private RestTokenProvider jwtService;
-
-    public RestSecurityConfiguration(ObjectMapper objectMapper, RestTokenProvider jwtService) {
-    	this.objectMapper = objectMapper;
-		this.jwtService = jwtService;
-	}
+    private final RestTokenProvider restTokenProvider;
 
     @Override
-    public void configure(HttpSecurity http){
-    	try {
-            http
-	            .formLogin().disable()
-	            .httpBasic().disable()
-            	.headers().frameOptions().disable();
-            
-            http
-            	.csrf().disable();
-            
-            http
-            	.sessionManagement()
-                	.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-            
-            http
-            	.antMatcher("/api/**")
-		    		.authorizeRequests()
-		    		.antMatchers("/api/authenticate").permitAll()
-		    		.anyRequest().authenticated();
-            
-            http
-            	.requestCache()
-            	.requestCache(new NullRequestCache());
-            
-            http
-           		.exceptionHandling()
-             	.authenticationEntryPoint(new RestUnauthorizedEntryPoint(objectMapper))
-             	.accessDeniedHandler(new RestAccessDeniedHandler(objectMapper));
-
-            http
-            	.addFilterBefore(new RestAccessFilter(jwtService), UsernamePasswordAuthenticationFilter.class);
-        } catch (Exception e) {   
-            LOG.error(e.getLocalizedMessage(), e);
-        }
-
-    }
+    public void configure(HttpSecurity http) throws Exception{
+    	http
+	        .formLogin().disable()
+	        .httpBasic().disable()
+	    	.headers().frameOptions().disable();
+	    
+	    http
+	    	.csrf().disable();
+	    
+	    http
+	    	.sessionManagement()
+	        	.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+	    
+	    http
+	    	.antMatcher("/api/**")
+	    		.authorizeRequests()
+	    		.antMatchers("/api/authenticate").permitAll()
+	    		.anyRequest().authenticated();
+	    
+	    http
+	    	.requestCache()
+	    	.requestCache(new NullRequestCache());
+	    
+	    http
+	   		.exceptionHandling()
+	     	.authenticationEntryPoint(new RestUnauthorizedEntryPoint(objectMapper))
+	     	.accessDeniedHandler(new RestAccessDeniedHandler(objectMapper));
+	
+	    http
+	    	.addFilterBefore(new RestAccessFilter(restTokenProvider), UsernamePasswordAuthenticationFilter.class);
+	    }
 
 }
