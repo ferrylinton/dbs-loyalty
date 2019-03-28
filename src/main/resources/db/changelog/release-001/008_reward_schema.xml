@@ -57,12 +57,4 @@
         </createIndex>
     </changeSet>
     
-    <changeSet author="FLH" id="008-10">
-    	<dropDefaultValue tableName="c_reward" columnName="created_date" columnDataType="timestamp"/>
-    </changeSet>
-    
-    <changeSet author="FLH" id="008-11">
-    	<dropDefaultValue tableName="c_reward" columnName="expiry_date" columnDataType="date"/>
-    </changeSet>
-    
 </databaseChangeLog>

@@ -59,8 +59,4 @@
         </createIndex>
     </changeSet>
     
-    <changeSet author="FLH" id="009-7">
-    	<dropDefaultValue tableName="c_loved_one" columnName="created_date" columnDataType="timestamp"/>
-    </changeSet>
-    
 </databaseChangeLog>

@@ -30,7 +30,7 @@ public class WebAuthenticationProvider implements AuthenticationProvider {
 		
     private final UserRepository userRepository;
     
-    private final UserLdapService userLdapRepository;
+    private final UserLdapService userLdapService;
 
 	@Override
 	public Authentication authenticate(Authentication authentication) {
@@ -69,7 +69,7 @@ public class WebAuthenticationProvider implements AuthenticationProvider {
 	
 	private boolean isAuthenticated(String password, User user) {
 		if(user.getUserType() == UserType.Internal) {
-			return userLdapRepository.authenticate(user.getUsername(), password);
+			return userLdapService.authenticate(user.getUsername(), password);
 		}else{
 			return PasswordUtil.getInstance().matches(password, user.getPasswordHash());
         }
