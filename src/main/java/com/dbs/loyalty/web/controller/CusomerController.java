@@ -5,12 +5,15 @@ import static com.dbs.loyalty.config.constant.Constant.PAGE;
 import static com.dbs.loyalty.config.constant.Constant.ZERO;
 import static com.dbs.loyalty.config.constant.EntityConstant.CUSTOMER;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
@@ -34,6 +37,7 @@ import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.CustomerService;
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.service.dto.CustomerDto;
+import com.dbs.loyalty.util.Base64Util;
 import com.dbs.loyalty.util.PasswordUtil;
 import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.validator.CustomerValidator;
@@ -105,11 +109,19 @@ public class CusomerController extends AbstractPageController{
 			} else {
 				
 				if(customerDto.getId() == null) {
+					customerDto.setImageString(Base64Util.getString(customerDto.getFile().getBytes()));
 					customerDto.setPasswordHash(PasswordUtil.getInstance().encode(customerDto.getPasswordPlain()));
 					customerDto.setPasswordPlain(null);
 					taskService.saveTaskAdd(CUSTOMER, customerDto);
 				}else {
 					Optional<CustomerDto> current = customerService.findById(customerDto.getId());
+					
+					if(customerDto.getFile().isEmpty()) {
+						customerDto.setImageString(Base64Util.getString(current.get().getFile().getBytes()));
+					}else {
+						customerDto.setImageString(Base64Util.getString(customerDto.getFile().getBytes()));
+					}
+					
 					customerDto.setPasswordHash(current.get().getPasswordHash());
 					taskService.saveTaskModify(CUSTOMER, current.get(), customerDto);
 				}
@@ -139,6 +151,7 @@ public class CusomerController extends AbstractPageController{
 
 	@InitBinder("customerDto")
 	protected void initBinder(WebDataBinder binder) {
+		binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("dd-MM-yyyy"), true, 10)); 
 		binder.addValidators(new CustomerValidator(customerService));
 	}
 	

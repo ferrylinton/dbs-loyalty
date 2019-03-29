@@ -131,6 +131,7 @@ function objectJsonToString(obj){
 function initDatePicker(){
 	initSearchDatePicker();
 	initPromoDatePicker();
+	initDobDatePicker();
 }
 
 function initSearchDatePicker(){
@@ -193,6 +194,16 @@ function initPromoDatePicker(){
 			}
 		});
 	
+}
+
+function initDobDatePicker(){
+	var dobInput = $('input[name="dob"]');
+	var dob;
+
+	initDatePickerLang(null, new Date());
+	dob = dobInput
+		.datepicker({language: getLocale()})
+		.datepicker('setDate', (dobInput.val() == null) ? new Date() : dobInput.val());
 }
 
 function initDatePickerLang(startDate, endDate){

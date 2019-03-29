@@ -13,6 +13,7 @@ import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.model.ErrorResponse;
 import com.dbs.loyalty.service.CustomerService;
 import com.dbs.loyalty.service.dto.CustomerDto;
+import com.dbs.loyalty.util.Base64Util;
 import com.dbs.loyalty.util.SecurityUtil;
 
 import io.swagger.annotations.Api;
@@ -55,7 +56,7 @@ public class CustomerRestController {
 	public ResponseEntity<?> getCustomerImage() {
     	try {
 	    	Optional<CustomerDto> customerDto = customerService.findByEmail(SecurityUtil.getCurrentEmail());
-			return ResponseEntity.ok().body(customerDto.get().getImageBytes());
+			return ResponseEntity.ok().body(Base64Util.getBytes(customerDto.get().getImageString()));
     	} catch (Exception e) {
 			log.error(e.getLocalizedMessage(), e);
 			return ResponseEntity.status(500).body(new ErrorResponse(e.getLocalizedMessage()));

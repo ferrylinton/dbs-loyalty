@@ -32,13 +32,16 @@ var Lang = (function () {
 				"false": "No",
 				"termAndCondition": "Term And Condition",
 				"startPeriod": "Start Period",
-				"endPeriod": "Endi Period",
+				"endPeriod": "End Period",
 				"showInCarousel": "Show In Carousel",
 				"promoCategory": "Promo Category",
 				"imageString": "Image",
 				"code": "Code",
 				"locked": "Locked",
-				"userType": "Type"
+				"userType": "Type",
+				"phone": "Phone",
+				"customerType": "Type",
+				"dob": "Date Of Birth"
 			},
 			"label":{
 				"activated" : "Activated",
@@ -101,7 +104,10 @@ var Lang = (function () {
 				"imageString": "Gambar",
 				"code": "Kode",
 				"locked": "Dikunci",
-				"userType": "Tipe"
+				"userType": "Tipe",
+				"phone": "Telepon",
+				"customerType": "Tipe",
+				"dob": "Tanggal Lahir"
 			},
 			"label":{
 				"activated" : "Aktif",

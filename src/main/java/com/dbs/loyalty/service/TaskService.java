@@ -1,6 +1,6 @@
 package com.dbs.loyalty.service;
 
-import static com.dbs.loyalty.config.constant.Constant.EMPTY;
+import static com.dbs.loyalty.config.constant.EntityConstant.CUSTOMER;
 import static com.dbs.loyalty.config.constant.EntityConstant.PROMO;
 import static com.dbs.loyalty.config.constant.EntityConstant.PROMO_CATEGORY;
 import static com.dbs.loyalty.config.constant.EntityConstant.ROLE;
@@ -111,9 +111,11 @@ public class TaskService {
 			return context.getBean(PromoCategoryService.class).execute(taskDto);
 		}else if(taskDto.getTaskDataType().equals(PROMO)) {
 			return context.getBean(PromoService.class).execute(taskDto);
+		}else if(taskDto.getTaskDataType().equals(CUSTOMER)) {
+			return context.getBean(CustomerService.class).execute(taskDto);
 		}
 		
-		return EMPTY;
+		return String.format("No service for %s", taskDto.getTaskDataType());
 	}
 	
 	@Transactional(propagation=Propagation.REQUIRES_NEW)

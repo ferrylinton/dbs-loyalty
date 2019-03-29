@@ -6,6 +6,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.domain.enumeration.CustomerType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -18,7 +20,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @ApiModel(description = "Customer's data")
-public class CustomerDto {
+public class CustomerDto extends AbstractAuditDto {
 	
 	private String id;
 
@@ -56,7 +58,9 @@ public class CustomerDto {
 	@JsonIgnore
 	private boolean activated;
 
+	private String imageString;
+	
 	@JsonIgnore
-    private byte[] imageBytes;
+	private MultipartFile file;
     
 }
