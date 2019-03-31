@@ -6,11 +6,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import com.dbs.loyalty.config.constant.Constant;
-import com.dbs.loyalty.domain.enumeration.CustomerType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -20,10 +16,13 @@ import lombok.Setter;
 @Setter
 @Getter
 @ApiModel(value="CustomerData", description = "Customer's data")
-public class CustomerDto extends AbstractAuditDto {
-	
-	private String id;
+public class CustomerUpdateDto {
 
+	@ApiModelProperty(value = "Customer's id", example = "646e8a2a-4ca4-459a-9da8-2a31daaecd38", required = true)
+	@NotNull(message = "{validation.notnull.id}")
+	@Size(min = 36, max = 36, message = "{validation.size.id}")
+	private String id;
+	
 	@ApiModelProperty(value = "Customer's email", example = "johnsmith@dbs.com", required = true)
 	@NotNull(message = "{validation.notnull.email}")
 	@Pattern(regexp = Constant.EMAIL_REGEX, message = "{validation.pattern.email}")
@@ -41,32 +40,11 @@ public class CustomerDto extends AbstractAuditDto {
 	@Size(min = 6, max = 20, message = "{validation.size.phone}")
 	private String phone;
 	
-	@ApiModelProperty(value = "Customer's type", example = "TPC", required = true)
-	private CustomerType customerType;
-	
-	@ApiModelProperty(value = "Customer's date of birth", example = "1980-01-21", required = true)
+	@ApiModelProperty(value = "Customer's date of birth", example = "21-01-1980", required = true)
 	@NotNull(message = "{validation.notnull.dob}")
 	private Date dob;
-	
-	@ApiModelProperty(value = "passwordPlain", hidden = true)
-	@JsonIgnore
-	@Size(min=6, max = 30, message = "{validation.size.password}")
-	private String passwordPlain;
-	
-	@ApiModelProperty(value = "passwordHash", hidden = true)
-	@JsonIgnore
-	private String passwordHash;
 
-	@ApiModelProperty(value = "activated", hidden = true)
-	@JsonIgnore
-	private boolean activated;
-
-	@ApiModelProperty(value = "imageString", hidden = true)
-	@JsonIgnore
+	@ApiModelProperty(value = "Customer's file image in Base64", example = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD//gA+Q1JFQVRPUjogZ2QtanBlZyB ...", required = true)
 	private String imageString;
 	
-	@ApiModelProperty(value = "Customer's file image", dataType = "java.io.File", required = true)
-	@JsonIgnore
-	private MultipartFile file;
-    
 }

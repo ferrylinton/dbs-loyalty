@@ -25,6 +25,8 @@ public class Constant {
 	public static final String KEYWORD 				= "keyword";
 	
 	public static final String MESSAGE				= "message";
+	
+	public static final String SUCCESS				= "success";
 
 	public static final String ENTITY				= "entity";
 	
@@ -33,9 +35,7 @@ public class Constant {
 	public static final String HTML 				= "html";
 
 	public static final String BR 					= "<br>";
-	
-	public static final String BASE64_PREFIX 		= "data:image/jpg;base64, ";
-	
+
 	public static final String BASE64_TO_STRING		= "Base64";
 	
 	public static final String ROLE_CUSTOMER		= "CUSTOMER";

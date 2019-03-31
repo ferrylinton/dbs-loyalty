@@ -6,9 +6,13 @@ import com.dbs.loyalty.config.constant.Constant;
 
 public class Base64Util {
 
+	private final static String PATTERN 		= "^data:image/[a-z]+;base64,";
+	
+	public static final String BASE64_PREFIX	= "data:image/jpg;base64,";
+	
 	public static String getString(byte[] bytes) {
 		if (bytes != null) {
-			return Constant.BASE64_PREFIX + new String(Base64.encodeBase64String(bytes));
+			return BASE64_PREFIX + new String(Base64.encodeBase64String(bytes));
 		}else {
 			return null;
 		}
@@ -16,11 +20,11 @@ public class Base64Util {
 	
 	public static byte[] getBytes(String base64String) {
 		if (base64String != null) {
-			base64String = base64String.replace(Constant.BASE64_PREFIX, Constant.EMPTY);
-			return Base64.decodeBase64(base64String);
+			base64String = base64String.trim().replaceFirst(PATTERN, Constant.EMPTY);
+			return Base64.decodeBase64(base64String.trim());
 		}else {
 			return null;
 		}
 	}
-	
+
 }

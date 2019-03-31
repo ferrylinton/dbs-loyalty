@@ -6,7 +6,7 @@ import javax.validation.constraints.Size;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-@ApiModel(value="Payload", description = "Authentication's request data")
+@ApiModel(value="JWTLoginData", description = "Authentication's request data")
 public class JWTLoginDto {
 
 	@ApiModelProperty(value = "Customer's email", example = "johnsmith@dbs.com", required = true)

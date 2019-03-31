@@ -49,7 +49,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/customer")
-public class CusomerController extends AbstractPageController{
+public class CustomerController extends AbstractPageController{
 
 	private String REDIRECT 		= "redirect:/customer";
 

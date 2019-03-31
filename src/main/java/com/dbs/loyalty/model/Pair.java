@@ -1,30 +1,21 @@
 package com.dbs.loyalty.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+
+@Setter
+@Getter
+@RequiredArgsConstructor
+@ApiModel(value="SimpleData", description = "Simple data")
 public class Pair<K, V> {
 
-	private K key;
+	@ApiModelProperty(value = "Data's key", example = "message", required = true)
+	private final K key;
 	
-	private V value;
+	@ApiModelProperty(value = "Data's value", example = "success", required = true)
+	private final V value;
 
-	public Pair(K key, V value) {
-		this.key = key;
-		this.value = value;
-	}
-
-	public K getKey() {
-		return key;
-	}
-
-	public void setKey(K key) {
-		this.key = key;
-	}
-
-	public V getValue() {
-		return value;
-	}
-
-	public void setValue(V value) {
-		this.value = value;
-	}
-	
 }

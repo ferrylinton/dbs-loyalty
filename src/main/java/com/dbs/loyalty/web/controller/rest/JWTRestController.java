@@ -42,7 +42,7 @@ public class JWTRestController {
     @ApiNotes("authenticate.md")
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = JWTTokenDto.class)})
     public ResponseEntity<?> authenticate(
-    		@ApiParam(name = "JWTLoginDto", value = "Customer's login data to get access token") 
+    		@ApiParam(name = "JWTLoginData", value = "Customer's login data to get access token") 
     		@Valid @RequestBody JWTLoginDto jwtLoginDto) {
     	
     	try {

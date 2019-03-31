@@ -14,11 +14,11 @@ import com.dbs.loyalty.util.Base64Util;
 public interface CustomerMapper extends EntityMapper<CustomerDto, Customer> {
 	
 	@Mapping(source = "imageString", target = "imageBytes", qualifiedByName = "base64ToBytes")
-	Customer toEntity(CustomerDto promoDto);
+	Customer toEntity(CustomerDto customerDto);
 	
 	@Mapping(source = "imageBytes", target = "imageString", qualifiedByName = "bytesToBase64")
-	CustomerDto toDto(Customer promo);
-	
+	CustomerDto toDto(Customer customer);
+
 	@Named("base64ToBytes")
     default byte[] base64ToBytes(String imageString) throws IOException {
 		return Base64Util.getBytes(imageString);

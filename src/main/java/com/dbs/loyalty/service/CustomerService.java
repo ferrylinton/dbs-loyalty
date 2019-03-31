@@ -1,6 +1,7 @@
 package com.dbs.loyalty.service;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,9 +14,14 @@ import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.CustomerRepository;
 import com.dbs.loyalty.service.dto.CustomerDto;
+import com.dbs.loyalty.service.dto.CustomerPasswordDto;
+import com.dbs.loyalty.service.dto.CustomerUpdateDto;
 import com.dbs.loyalty.service.dto.TaskDto;
 import com.dbs.loyalty.service.mapper.CustomerMapper;
 import com.dbs.loyalty.service.specification.CustomerSpecification;
+import com.dbs.loyalty.util.Base64Util;
+import com.dbs.loyalty.util.PasswordUtil;
+import com.dbs.loyalty.util.SecurityUtil;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -52,6 +58,38 @@ public class CustomerService{
 		}else {
 			return false;
 		}
+	}
+	
+	public boolean isEmailExist(CustomerUpdateDto customerUpdateDto) {
+		Optional<Customer> customer = customerRepository.findByEmailIgnoreCase(customerUpdateDto.getEmail());
+
+		if (customer.isPresent()) {
+			return (customerUpdateDto.getId() == null) || (!customerUpdateDto.getId().equals(customer.get().getId()));
+		}else {
+			return false;
+		}
+	}
+	
+	public CustomerDto update(CustomerUpdateDto customerUpdateDto) throws IOException {
+		Optional<Customer> current = customerRepository.findByEmail(SecurityUtil.getCurrentEmail());
+		
+		Customer customer = current.get();
+		customer.setEmail(customerUpdateDto.getEmail());
+		customer.setName(customerUpdateDto.getName());
+		customer.setPhone(customerUpdateDto.getPhone());
+		customer.setDob(customerUpdateDto.getDob());
+		customer.setImageBytes(Base64Util.getBytes(customerUpdateDto.getImageString()));
+		customer.setLastModifiedBy(SecurityUtil.getCurrentEmail());
+		customer.setLastModifiedDate(Instant.now());
+		
+		customer = customerRepository.save(customer);
+		return customerMapper.toDto(customer);
+	}
+	
+	public void changePassword(CustomerPasswordDto customerPasswordDto) {
+		String passwordHash = PasswordUtil.getInstance().encode(customerPasswordDto.getNewPassword());
+		String email = SecurityUtil.getCurrentEmail();
+		customerRepository.changePassword(passwordHash, email);
 	}
 	
 	public String execute(TaskDto taskDto) throws JsonParseException, JsonMappingException, IOException {

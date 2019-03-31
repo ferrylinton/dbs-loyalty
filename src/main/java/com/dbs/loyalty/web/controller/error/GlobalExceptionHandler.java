@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
 	private final String FILE = "file";
 	
 	@ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
-    public ResponseEntity<?> methodNotSupportErrorHandler(HttpServletRequest request, Exception ex) throws Exception {
+    public ResponseEntity<?> methodNotSupportErrorHandler(HttpServletRequest request, Exception ex){
         ErrorResponse response = new ErrorResponse(ex.getLocalizedMessage());
         return ResponseEntity
 	            .status(HttpStatus.NOT_FOUND)

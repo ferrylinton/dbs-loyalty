@@ -4,6 +4,11 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dbs.loyalty.domain.Customer;
 
@@ -13,4 +18,9 @@ public interface CustomerRepository extends JpaRepository<Customer, String>, Jpa
 	
 	Optional<Customer> findByEmailIgnoreCase(String email);
 	
+	@Transactional(propagation=Propagation.REQUIRED)
+	@Modifying
+	@Query("update Customer c set c.passwordHash = :passwordHash where c.email = :email")
+	void changePassword(@Param("passwordHash") String passwordHash, @Param("email") String email);
+
 }
