@@ -5,6 +5,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
 
+import com.dbs.loyalty.util.JwtUtil;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -14,41 +16,24 @@ import java.io.IOException;
 
 public class RestAccessFilter extends GenericFilterBean {
 
-    public static final String AUTHORIZATION_HEADER = "Authorization";
+    private RestTokenProvider restTokenProvider;
 
-    public static final String AUTHORIZATION_TOKEN = "access_token";
-
-    private RestTokenProvider jwtService;
-
-    public RestAccessFilter(RestTokenProvider jwtService) {
-        this.jwtService = jwtService;
+    public RestAccessFilter(RestTokenProvider restTokenProvider) {
+        this.restTokenProvider = restTokenProvider;
     }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
         throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-        String jwt = resolveToken(httpServletRequest);
+        String jwt = JwtUtil.resolveToken(httpServletRequest);
         
-        if (StringUtils.hasText(jwt) && jwtService.validateToken(jwt)) {
-            Authentication authentication = jwtService.getAuthentication(jwt);
-            System.out.println("authentication : " + authentication.getName());
-            System.out.println("getAuthorities size : " + authentication.getAuthorities().size());
+        if (StringUtils.hasText(jwt) && restTokenProvider.validateToken(jwt)) {
+            Authentication authentication = restTokenProvider.getAuthentication(jwt);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
-    private String resolveToken(HttpServletRequest request){
-        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7);
-        }
-        String jwt = request.getParameter(AUTHORIZATION_TOKEN);
-        if (StringUtils.hasText(jwt)) {
-            return jwt;
-        }
-        return null;
-    }
 }

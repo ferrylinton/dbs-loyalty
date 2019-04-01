@@ -23,8 +23,8 @@ public class CustomerPasswordDto {
 	@Size(min=4, max = 100, message = "{validation.size.password}")
 	private String newPassword;
 	
-	@ApiModelProperty(value = "Customer's new password", example = "new100", required = true)
-	@NotNull(message = "{validation.notnull.newPassword}")
+	@ApiModelProperty(value = "Confirmation of Customer's new password", example = "new100", required = true)
+	@NotNull(message = "{validation.notnull.confirmNewPassword}")
 	@Size(min=4, max = 100, message = "{validation.size.password}")
 	private String confirmNewPassword;
 	

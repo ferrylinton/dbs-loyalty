@@ -22,50 +22,49 @@ import lombok.Setter;
 @ApiModel(value="CustomerData", description = "Customer's data")
 public class CustomerDto extends AbstractAuditDto {
 	
+	@ApiModelProperty(value = "Customer's id", example = "646e8a2a-4ca4-459a-9da8-2a31daaecd38", position = 0)
 	private String id;
 
-	@ApiModelProperty(value = "Customer's email", example = "johnsmith@dbs.com", required = true)
+	@ApiModelProperty(value = "Customer's email", example = "johnsmith@dbs.com", position = 1)
 	@NotNull(message = "{validation.notnull.email}")
 	@Pattern(regexp = Constant.EMAIL_REGEX, message = "{validation.pattern.email}")
     @Size(min = 5, max = 50, message = "{validation.size.email}")
 	private String email;
 	
-	@ApiModelProperty(value = "Customer's name", example = "John Smith", required = true)
+	@ApiModelProperty(value = "Customer's name", example = "John Smith", position = 2)
 	@NotNull(message = "{validation.notnull.name}")
 	@Pattern(regexp = Constant.NAME_REGEX, message = "{validation.pattern.name}")
 	@Size(min = 2, max = 50, message = "{validation.size.name}")
 	private String name;
 	
-	@ApiModelProperty(value = "Customer's phone", example = "+62 8123456789", required = true)
+	@ApiModelProperty(value = "Customer's phone", example = "+62 8123456789", position = 3)
 	@NotNull(message = "{validation.notnull.phone}")
 	@Size(min = 6, max = 20, message = "{validation.size.phone}")
 	private String phone;
 	
-	@ApiModelProperty(value = "Customer's type", example = "TPC", required = true)
+	@ApiModelProperty(value = "Customer's type", example = "TPC", position = 4)
 	private CustomerType customerType;
 	
-	@ApiModelProperty(value = "Customer's date of birth", example = "1980-01-21", required = true)
+	@ApiModelProperty(value = "Customer's date of birth", example = "21-01-1980", position = 5)
 	@NotNull(message = "{validation.notnull.dob}")
 	private Date dob;
 	
-	@ApiModelProperty(value = "passwordPlain", hidden = true)
+	@ApiModelProperty(value = "Customer's image url", example = "/api/customers/image", position = 5)
+	private String imageUrl;
+	
 	@JsonIgnore
 	@Size(min=6, max = 30, message = "{validation.size.password}")
 	private String passwordPlain;
 	
-	@ApiModelProperty(value = "passwordHash", hidden = true)
 	@JsonIgnore
 	private String passwordHash;
 
-	@ApiModelProperty(value = "activated", hidden = true)
 	@JsonIgnore
 	private boolean activated;
 
-	@ApiModelProperty(value = "imageString", hidden = true)
 	@JsonIgnore
 	private String imageString;
 	
-	@ApiModelProperty(value = "Customer's file image", dataType = "java.io.File", required = true)
 	@JsonIgnore
 	private MultipartFile file;
     

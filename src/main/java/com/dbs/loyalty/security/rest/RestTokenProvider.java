@@ -12,6 +12,7 @@ import com.dbs.loyalty.config.ApplicationProperties;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -56,6 +57,32 @@ public class RestTokenProvider {
             .setExpiration(validity)
             .compact();
     }
+    
+    public String createToken(String email, String token) {
+        try {
+        	Jws<Claims> jws = Jwts.parser().setSigningKey(key).parseClaimsJws(token);
+        	return Jwts.builder()
+                    .setSubject(email)
+                    .signWith(key, SignatureAlgorithm.HS512)
+                    .setExpiration(jws.getBody().getExpiration())
+                    .compact();
+        	
+        } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
+            log.info("Invalid JWT signature.");
+            log.trace("Invalid JWT signature trace: {}", e);
+        } catch (ExpiredJwtException e) {
+            log.info("Expired JWT token.");
+            log.trace("Expired JWT token trace: {}", e);
+        } catch (UnsupportedJwtException e) {
+            log.info("Unsupported JWT token.");
+            log.trace("Unsupported JWT token trace: {}", e);
+        } catch (IllegalArgumentException e) {
+            log.info("JWT token compact of handler are invalid.");
+            log.trace("JWT token compact of handler are invalid trace: {}", e);
+        }
+
+        return null;
+    }
 
     public Authentication getAuthentication(String token) {
         Claims claims = Jwts.parser()
@@ -68,7 +95,8 @@ public class RestTokenProvider {
 
     public boolean validateToken(String authToken) {
         try {
-            Jwts.parser().setSigningKey(key).parseClaimsJws(authToken);
+        	Jws<Claims> jws = Jwts.parser().setSigningKey(key).parseClaimsJws(authToken);
+        	jws.getBody().getExpiration();
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             log.info("Invalid JWT signature.");

@@ -94,7 +94,13 @@ public class PromoRestController {
     	
     	try {
 	    	Optional<PromoDto> promoDto = promoService.findById(id);
-	    	return ResponseEntity.ok().body(Base64Util.getBytes(promoDto.get().getImageString()));
+	    	
+	    	if(promoDto.isPresent()) {
+	    		return ResponseEntity.ok().body(Base64Util.getBytes(promoDto.get().getImageString()));
+	    	}else {
+	    		return ResponseEntity.notFound().build();
+	    	}
+	    	
     	} catch (Exception e) {
 			log.error(e.getLocalizedMessage(), e);
 			return ResponseEntity.status(500).body(new ErrorResponse(e.getLocalizedMessage()));
@@ -116,7 +122,13 @@ public class PromoRestController {
     	
     	try {
 	    	Optional<PromoDto> promoDto = promoService.findById(id);
-	    	return ResponseEntity.ok().body(promoDto.get().getTermAndCondition());
+	    	
+	    	if(promoDto.isPresent()) {
+	    		return ResponseEntity.ok().body(promoDto.get().getTermAndCondition());
+	    	}else {
+	    		return ResponseEntity.notFound().build();
+	    	}
+	    	
     	} catch (Exception e) {
 			log.error(e.getLocalizedMessage(), e);
 			return ResponseEntity.status(500).body(new ErrorResponse(e.getLocalizedMessage()));

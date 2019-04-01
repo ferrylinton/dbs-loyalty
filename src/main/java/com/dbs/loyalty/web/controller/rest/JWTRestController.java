@@ -37,10 +37,14 @@ public class JWTRestController {
 
     private final JWTAuthenticationService jwtAuthenticationService;
 
-    @PostMapping("/authenticate")
-    @ApiOperation(nickname = "authenticate", value="authenticate", produces=MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(
+    		nickname = "authenticate", 
+    		value="authenticate", 
+    		consumes=MediaType.APPLICATION_JSON_VALUE,
+    		produces=MediaType.APPLICATION_JSON_VALUE)
     @ApiNotes("authenticate.md")
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = JWTTokenDto.class)})
+    @PostMapping("/authenticate")
     public ResponseEntity<?> authenticate(
     		@ApiParam(name = "JWTLoginData", value = "Customer's login data to get access token") 
     		@Valid @RequestBody JWTLoginDto jwtLoginDto) {

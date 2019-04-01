@@ -37,13 +37,15 @@ public class CustomerService{
 	private final CustomerRepository customerRepository;
 	
 	private final CustomerMapper customerMapper;
+	
+	private final UrlService urlService;
 
 	public Optional<CustomerDto> findByEmail(String email){
-		return customerRepository.findByEmail(email).map(customerMapper::toDto);
+		return customerRepository.findByEmail(email).map((customer) -> customerMapper.toDto(customer, urlService));
 	}
 	
 	public Optional<CustomerDto> findById(String id) {
-		return customerRepository.findById(id).map(customerMapper::toDto);
+		return customerRepository.findById(id).map((customer) -> customerMapper.toDto(customer, urlService));
 	}
 	
 	public Page<CustomerDto> findAll(Pageable pageable, HttpServletRequest request) {
@@ -83,7 +85,7 @@ public class CustomerService{
 		customer.setLastModifiedDate(Instant.now());
 		
 		customer = customerRepository.save(customer);
-		return customerMapper.toDto(customer);
+		return customerMapper.toDto(customer, urlService);
 	}
 	
 	public void changePassword(CustomerPasswordDto customerPasswordDto) {
