@@ -33,20 +33,22 @@ public class PromoService{
 	private final ObjectMapper objectMapper;
 	
 	private final PromoMapper promoMapper;
+	
+	private final UrlService urlService;
 
 	public Optional<PromoDto> findById(String id){
-		return promoRepository.findById(id).map(promoMapper::toDto);
+		return promoRepository.findById(id).map((promo) -> promoMapper.toDto(promo, urlService));
 	}
 
 	public Page<PromoDto> findAll(Pageable pageable, HttpServletRequest request) {
 		return promoRepository.findAll(PromoSpecification.getSpec(request), pageable)
-				.map(promoMapper::toDto);
+				.map((promo) -> promoMapper.toDto(promo, urlService));
 	}
 
 	public List<PromoDto> findByPromoCategoryId(String promoCategoryId){
 		return promoRepository.findByPromoCategoryId(promoCategoryId)
 				.stream()
-				.map(promoMapper::toDto)
+				.map((promo) -> promoMapper.toDto(promo, urlService))
 				.collect(Collectors.toList());
 	}
 	

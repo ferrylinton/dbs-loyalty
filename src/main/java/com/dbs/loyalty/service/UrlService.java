@@ -2,7 +2,6 @@ package com.dbs.loyalty.service;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.mapstruct.Named;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -12,9 +11,8 @@ import lombok.RequiredArgsConstructor;
 public class UrlService {
 
 	private final HttpServletRequest request;
-	
-	@Named("getUrl")
-	public String getUrl(String resource, String type) {
+
+	public String getUrl(String resource, String type, String id) {
 		String scheme = request.getScheme();
 	    String serverName = request.getServerName();
 	    int serverPort = request.getServerPort();
@@ -27,7 +25,13 @@ public class UrlService {
 	        url.append(":").append(serverPort);
 	    }
 
-	    url.append(contextPath).append("/").append(resource).append("/").append(type);
+	    url.append(contextPath).append("/").append(resource);
+	    
+	    if(id != null) {
+	    	 url.append("/").append(id);
+	    }
+	    
+	    url.append("/").append(type);
 	    return url.toString();
 	}
 	

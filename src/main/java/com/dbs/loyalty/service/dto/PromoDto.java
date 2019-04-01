@@ -37,9 +37,16 @@ public class PromoDto extends AbstractAuditDto {
     @Size(min=2, max = 255, message = "{validation.size.description}")
 	private String description;
 	
-	@JsonIgnore@NotNull(message = "{validation.notnull.termAndCondition}")
+	@JsonIgnore
+	@NotNull(message = "{validation.notnull.termAndCondition}")
     @Size(min=2, max = 50000, message = "{validation.size.termAndCondition}")
 	private String termAndCondition;
+	
+	@ApiModelProperty(value = "Promo's image url", example = "/api/promos/{id}/image", position = 5)
+	private String imageUrl;
+	
+	@ApiModelProperty(value = "Promo's term and condition url", example = "/api/promos/{id}/term", position = 6)
+	private String termAndConditionUrl;
 	
 	@JsonIgnore
 	private String imageString;

@@ -36,7 +36,7 @@ public interface CustomerMapper extends EntityMapper<CustomerDto, Customer> {
 	
 	@AfterMapping
     default void doAfterMapping(@MappingTarget CustomerDto customerDto, @Context UrlService urlService){
-		customerDto.setImageUrl(urlService.getUrl("customers", "image"));
+		customerDto.setImageUrl(urlService.getUrl("customers", "image", null));
     }
 
 }

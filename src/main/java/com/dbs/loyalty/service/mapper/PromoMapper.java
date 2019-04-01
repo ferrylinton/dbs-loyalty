@@ -2,11 +2,15 @@ package com.dbs.loyalty.service.mapper;
 
 import java.io.IOException;
 
+import org.mapstruct.AfterMapping;
+import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 
 import com.dbs.loyalty.domain.Promo;
+import com.dbs.loyalty.service.UrlService;
 import com.dbs.loyalty.service.dto.PromoDto;
 import com.dbs.loyalty.util.Base64Util;
 
@@ -17,7 +21,9 @@ public interface PromoMapper extends EntityMapper<PromoDto, Promo> {
 	Promo toEntity(PromoDto promoDto);
 	
 	@Mapping(source = "imageBytes", target = "imageString", qualifiedByName = "bytesToBase64")
-	PromoDto toDto(Promo promo);
+	@Mapping(target = "imageUrl", ignore = true)
+	@Mapping(target = "termAndConditionUrl", ignore = true)
+	PromoDto toDto(Promo promo, @Context UrlService urlService);
 	
 	@Named("base64ToBytes")
     default byte[] base64ToBytes(String imageString) throws IOException {
@@ -29,4 +35,9 @@ public interface PromoMapper extends EntityMapper<PromoDto, Promo> {
 		return Base64Util.getString(imageBytes);
     }
 	
+	@AfterMapping
+    default void doAfterMapping(@MappingTarget PromoDto promoDto, @Context UrlService urlService){
+		promoDto.setImageUrl(urlService.getUrl("promos", "image", promoDto.getId()));
+		promoDto.setTermAndConditionUrl(urlService.getUrl("promos", "term", promoDto.getId()));
+    }
 }
