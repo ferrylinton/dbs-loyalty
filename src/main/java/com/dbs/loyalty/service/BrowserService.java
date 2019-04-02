@@ -18,7 +18,9 @@ import com.dbs.loyalty.util.IpUtil;
 @Service
 public class BrowserService {
 		
-	private final String USER_AGENT = "User-Agent";
+	private String userAgent = "User-Agent";
+	
+	private String username = "username";
 	
 	private final UserAgentParser parser;
 
@@ -27,11 +29,11 @@ public class BrowserService {
 	}
 
 	public LogLogin createLogLogin(LoginStatus loginStatus, HttpServletRequest request) {
-		Capabilities capabilities = parser.parse(request.getHeader(USER_AGENT));
+		Capabilities capabilities = parser.parse(request.getHeader(userAgent));
 		LogLogin logLogin = new LogLogin();
 		logLogin.setIp(IpUtil.getInstance().getIp(request));
 		logLogin.setCreatedDate(Instant.now());
-		logLogin.setUsername(request.getParameter("username"));
+		logLogin.setUsername(request.getParameter(username));
 		logLogin.setLoginStatus(loginStatus);
 		logLogin.setBrowser(capabilities.getBrowser());
 		logLogin.setBrowserType(capabilities.getBrowserType());

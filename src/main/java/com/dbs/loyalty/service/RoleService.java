@@ -19,8 +19,6 @@ import com.dbs.loyalty.service.dto.RoleDto;
 import com.dbs.loyalty.service.dto.TaskDto;
 import com.dbs.loyalty.service.mapper.RoleMapper;
 import com.dbs.loyalty.service.specification.RoleSpecification;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -29,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class RoleService{
 
-	private Sort SORT_BY_NAME = Sort.by("name");
+	private Sort sortByName = Sort.by("name");
 	
 	private final ObjectMapper objectMapper;
 	
@@ -54,7 +52,7 @@ public class RoleService{
 	}
 
 	public List<RoleDto> findAll(){
-		return roleRepository.findAll(SORT_BY_NAME)
+		return roleRepository.findAll(sortByName)
 				.stream()
 				.map(roleMapper::toDto)
 				.collect(Collectors.toList());
@@ -75,7 +73,7 @@ public class RoleService{
 		}
 	}
 
-	public String execute(TaskDto taskDto) throws JsonParseException, JsonMappingException, IOException {
+	public String execute(TaskDto taskDto) throws IOException {
 		RoleDto roleDto = objectMapper.readValue((taskDto.getTaskOperation() == TaskOperation.DELETE) ? taskDto.getTaskDataOld() : taskDto.getTaskDataNew(), RoleDto.class);
 		
 		if(taskDto.isVerified()) {

@@ -2,7 +2,7 @@ package com.dbs.loyalty.service.specification;
 
 import java.time.format.DateTimeFormatter;
 
-public class Constant {
+public final class Constant {
 	
 	public static final DateTimeFormatter FORMATTER =  DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
 	
@@ -43,5 +43,9 @@ public class Constant {
 	public static final String BROWSER = "browser";
 	
 	public static final String DEVICE_TYPE = "deviceType";
+	
+	private Constant() {
+		// hide constructor
+	}
 	
 }

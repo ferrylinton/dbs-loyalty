@@ -18,8 +18,6 @@ import com.dbs.loyalty.service.dto.PromoDto;
 import com.dbs.loyalty.service.dto.TaskDto;
 import com.dbs.loyalty.service.mapper.PromoMapper;
 import com.dbs.loyalty.service.specification.PromoSpecification;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -37,7 +35,7 @@ public class PromoService{
 	private final UrlService urlService;
 
 	public Optional<PromoDto> findById(String id){
-		return promoRepository.findById(id).map((promo) -> promoMapper.toDto(promo, urlService));
+		return promoRepository.findById(id).map(promo -> promoMapper.toDto(promo, urlService));
 	}
 
 	public Page<PromoDto> findAll(Pageable pageable, HttpServletRequest request) {
@@ -72,7 +70,7 @@ public class PromoService{
 		}
 	}
 
-	public String execute(TaskDto taskDto) throws JsonParseException, JsonMappingException, IOException {
+	public String execute(TaskDto taskDto) throws IOException {
 		PromoDto promoDto = objectMapper.readValue((taskDto.getTaskOperation() == TaskOperation.DELETE) ? taskDto.getTaskDataOld() : taskDto.getTaskDataNew(), PromoDto.class);
 		
 		if(taskDto.isVerified()) {

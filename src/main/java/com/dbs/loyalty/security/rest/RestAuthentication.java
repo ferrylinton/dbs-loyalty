@@ -17,9 +17,9 @@ public class RestAuthentication implements Authentication {
 
 	private static final long serialVersionUID = 1L;
 	
-	private Object principal;
+	private String principal;
 	
-	private Object credentials;
+	private String credentials;
 	
 	private String details;
 	

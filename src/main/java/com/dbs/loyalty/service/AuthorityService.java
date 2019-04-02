@@ -16,14 +16,14 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class AuthorityService{
 	
-	private final static Sort SORT_BY_NAME = Sort.by("name");
+	private Sort sortByName = Sort.by("name");
 	
 	private final AuthorityRepository authorityRepository;
 	
 	private final AuthorityMapper authorityMapper;
 
 	public List<AuthorityDto> findAll(){
-		return authorityRepository.findAll(SORT_BY_NAME)
+		return authorityRepository.findAll(sortByName)
 				.stream()
 				.map(authorityMapper::toDto)
 				.collect(Collectors.toList());

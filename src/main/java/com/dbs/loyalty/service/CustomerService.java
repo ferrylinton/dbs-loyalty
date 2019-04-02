@@ -22,8 +22,6 @@ import com.dbs.loyalty.service.specification.CustomerSpecification;
 import com.dbs.loyalty.util.Base64Util;
 import com.dbs.loyalty.util.PasswordUtil;
 import com.dbs.loyalty.util.SecurityUtil;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -41,11 +39,11 @@ public class CustomerService{
 	private final UrlService urlService;
 
 	public Optional<CustomerDto> findByEmail(String email){
-		return customerRepository.findByEmail(email).map((customer) -> customerMapper.toDto(customer, urlService));
+		return customerRepository.findByEmail(email).map(customer -> customerMapper.toDto(customer, urlService));
 	}
 	
 	public Optional<CustomerDto> findById(String id) {
-		return customerRepository.findById(id).map((customer) -> customerMapper.toDto(customer, urlService));
+		return customerRepository.findById(id).map(customer -> customerMapper.toDto(customer, urlService));
 	}
 	
 	public Page<CustomerDto> findAll(Pageable pageable, HttpServletRequest request) {
@@ -72,7 +70,7 @@ public class CustomerService{
 		}
 	}
 	
-	public CustomerDto update(CustomerUpdateDto customerUpdateDto) throws IOException {
+	public CustomerDto update(CustomerUpdateDto customerUpdateDto) {
 		Optional<Customer> current = customerRepository.findByEmail(SecurityUtil.getLogged());
 		
 		if(current.isPresent()) {
@@ -98,7 +96,7 @@ public class CustomerService{
 		customerRepository.changePassword(passwordHash, email);
 	}
 	
-	public String execute(TaskDto taskDto) throws JsonParseException, JsonMappingException, IOException {
+	public String execute(TaskDto taskDto) throws IOException {
 		CustomerDto dto = objectMapper.readValue((taskDto.getTaskOperation() == TaskOperation.DELETE) ? taskDto.getTaskDataOld() : taskDto.getTaskDataNew(), CustomerDto.class);
 		
 		if(taskDto.isVerified()) {

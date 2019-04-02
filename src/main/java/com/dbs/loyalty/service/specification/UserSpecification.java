@@ -23,4 +23,8 @@ public class UserSpecification {
 		}
 	}
 	
+	private UserSpecification() {
+		// hide constructor
+	}
+	
 }

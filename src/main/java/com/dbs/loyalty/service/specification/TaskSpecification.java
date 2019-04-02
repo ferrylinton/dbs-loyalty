@@ -112,4 +112,8 @@ public class TaskSpecification {
 		}
 	}
 	
+	private TaskSpecification() {
+		// hide constructor
+	}
+	
 }

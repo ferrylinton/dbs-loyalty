@@ -23,4 +23,8 @@ public class RoleSpecification {
 		}
 	}
 	
+	private RoleSpecification() {
+		// hide constructor
+	}
+	
 }

@@ -26,4 +26,8 @@ public class CustomerSpecification {
 		}
 	}
 	
+	private CustomerSpecification() {
+		// hide constructor
+	}
+	
 }

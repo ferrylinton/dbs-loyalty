@@ -29,4 +29,8 @@ public class PromoSpecification {
 		}
 	}
 	
+	private PromoSpecification() {
+		// hide constructor
+	}
+	
 }

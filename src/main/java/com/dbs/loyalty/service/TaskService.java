@@ -24,16 +24,13 @@ import org.springframework.transaction.annotation.Transactional;
 import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.domain.enumeration.TaskStatus;
-import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.repository.TaskRepository;
 import com.dbs.loyalty.service.dto.TaskDto;
 import com.dbs.loyalty.service.mapper.TaskMapper;
 import com.dbs.loyalty.service.specification.TaskSpecification;
 import com.dbs.loyalty.util.ErrorUtil;
 import com.dbs.loyalty.util.SecurityUtil;
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -43,6 +40,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Service
 public class TaskService {
+	
+	private String noServiceFormat = "No service for %s";
 
 	private final ApplicationContext context;
 	
@@ -52,7 +51,7 @@ public class TaskService {
 	
 	private final TaskMapper taskMapper;
 
-	public Optional<TaskDto> findById(String id) throws NotFoundException {
+	public Optional<TaskDto> findById(String id) {
 		return taskRepository.findById(id).map(taskMapper::toDto);
 	}
 	
@@ -95,7 +94,7 @@ public class TaskService {
 	}
 	
 	@Transactional
-	public String save(TaskDto taskDto) throws JsonParseException, JsonMappingException, IOException {
+	public String save(TaskDto taskDto) throws IOException {
 		Task task = taskMapper.toEntity(taskDto);
 		task.setTaskStatus(taskDto.isVerified() ? TaskStatus.VERIFIED : TaskStatus.REJECTED);
 		task.setChecker(SecurityUtil.getLogged());
@@ -115,7 +114,7 @@ public class TaskService {
 			return context.getBean(CustomerService.class).execute(taskDto);
 		}
 		
-		return String.format("No service for %s", taskDto.getTaskDataType());
+		return String.format(noServiceFormat, taskDto.getTaskDataType());
 	}
 	
 	@Transactional(propagation=Propagation.REQUIRES_NEW)

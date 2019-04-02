@@ -91,4 +91,8 @@ public class LogLoginSpecification {
 		return Instant.now();
 	}
 	
+	private LogLoginSpecification() {
+		// hide constructor
+	}
+	
 }

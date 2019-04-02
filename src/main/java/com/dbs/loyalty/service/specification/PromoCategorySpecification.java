@@ -23,4 +23,8 @@ public class PromoCategorySpecification {
 		}
 	}
 	
+	private PromoCategorySpecification() {
+		// hide constructor
+	}
+	
 }

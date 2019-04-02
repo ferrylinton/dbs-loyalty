@@ -19,8 +19,6 @@ import com.dbs.loyalty.service.dto.PromoCategoryDto;
 import com.dbs.loyalty.service.dto.TaskDto;
 import com.dbs.loyalty.service.mapper.PromoCategoryMapper;
 import com.dbs.loyalty.service.specification.PromoCategorySpecification;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -29,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class PromoCategoryService{
 	
-	private Sort SORT_BY_NAME = Sort.by("name");
+	private Sort sortByName = Sort.by("name");
 	
 	private final ObjectMapper objectMapper;
 	
@@ -42,7 +40,7 @@ public class PromoCategoryService{
 	}
 	
 	public List<PromoCategoryDto> findAll(){
-		return promoCategoryRepository.findAll(SORT_BY_NAME)
+		return promoCategoryRepository.findAll(sortByName)
 				.stream()
 				.map(promoCategoryMapper::toDto)
 				.collect(Collectors.toList());
@@ -67,7 +65,7 @@ public class PromoCategoryService{
 		}
 	}
 
-	public String execute(TaskDto taskDto) throws JsonParseException, JsonMappingException, IOException {
+	public String execute(TaskDto taskDto) throws IOException {
 		PromoCategoryDto promoCategoryDto = objectMapper.readValue((taskDto.getTaskOperation() == TaskOperation.DELETE) ? taskDto.getTaskDataOld() : taskDto.getTaskDataNew(), PromoCategoryDto.class);
 		
 		if(taskDto.isVerified()) {

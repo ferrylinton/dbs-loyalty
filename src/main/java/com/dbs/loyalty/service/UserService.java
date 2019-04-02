@@ -18,8 +18,6 @@ import com.dbs.loyalty.service.dto.UserDto;
 import com.dbs.loyalty.service.mapper.UserMapper;
 import com.dbs.loyalty.service.specification.UserSpecification;
 import com.dbs.loyalty.util.SecurityUtil;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -64,7 +62,7 @@ public class UserService{
 		return userRepository.findAll(UserSpecification.getSpec(request), pageable).map(userMapper::toDto);
 	}
 	
-	public String execute(TaskDto taskDto) throws JsonParseException, JsonMappingException, IOException {
+	public String execute(TaskDto taskDto) throws IOException {
 		UserDto dto = objectMapper.readValue((taskDto.getTaskOperation() == TaskOperation.DELETE) ? taskDto.getTaskDataOld() : taskDto.getTaskDataNew(), UserDto.class);
 		
 		if(taskDto.isVerified()) {

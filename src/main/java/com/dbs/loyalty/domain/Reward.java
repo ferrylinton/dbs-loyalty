@@ -13,7 +13,13 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
+@Setter
+@Getter
+@EqualsAndHashCode(of = { "point", "expiryDate" }, callSuper = true)
 @Entity
 @Table(name = "c_reward")
 public class Reward extends AbstractUUID implements Serializable {
@@ -35,36 +41,4 @@ public class Reward extends AbstractUUID implements Serializable {
     @JoinColumn(name = "customer_id", nullable = false, foreignKey = @ForeignKey(name = "c_reward_fk2"))
     private Customer customer;
 
-	public Integer getPoint() {
-		return point;
-	}
-
-	public void setPoint(Integer point) {
-		this.point = point;
-	}
-
-	public LocalDate getExpiryDate() {
-		return expiryDate;
-	}
-
-	public void setExpiryDate(LocalDate expiryDate) {
-		this.expiryDate = expiryDate;
-	}
-
-	public RewardOperation getRewardOperation() {
-		return rewardOperation;
-	}
-
-	public void setRewardOperation(RewardOperation rewardOperation) {
-		this.rewardOperation = rewardOperation;
-	}
-
-	public Customer getCustomer() {
-		return customer;
-	}
-
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
-	}
-	
 }
