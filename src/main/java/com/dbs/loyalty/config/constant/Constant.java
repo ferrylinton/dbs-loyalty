@@ -1,6 +1,6 @@
 package com.dbs.loyalty.config.constant;
 
-public class Constant {
+public final class Constant {
 
 	public static final String EMAIL_REGEX 			= "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$";
 	
@@ -53,5 +53,9 @@ public class Constant {
 	public static final String PREVIOUS				= "previous";
 	
 	public static final String ORDER				= "order";
+	
+	private Constant() {
+		// hide constructor
+	}
 	
 }

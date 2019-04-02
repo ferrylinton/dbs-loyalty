@@ -3,23 +3,18 @@ package com.dbs.loyalty.config;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.task.AsyncTaskExecutor;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@RequiredArgsConstructor
+@Slf4j
 public class ExceptionHandlingAsyncTaskExecutor implements AsyncTaskExecutor, InitializingBean, DisposableBean {
 
-    private final Logger LOG = LoggerFactory.getLogger(ExceptionHandlingAsyncTaskExecutor.class);
-    
-    private final String EXCEPTION_MESSAGE = "Caught async exception";
-
     private final AsyncTaskExecutor executor;
-
-    public ExceptionHandlingAsyncTaskExecutor(AsyncTaskExecutor executor) {
-        this.executor = executor;
-    }
 
     @Override
     public void execute(Runnable task) {
@@ -53,7 +48,7 @@ public class ExceptionHandlingAsyncTaskExecutor implements AsyncTaskExecutor, In
     }
 
     protected void handle(Exception e) {
-        LOG.error(EXCEPTION_MESSAGE, e);
+        log.error(e.getLocalizedMessage(), e);
     }
 
     @Override

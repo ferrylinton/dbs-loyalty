@@ -62,8 +62,8 @@ public class TaskService {
 	
 	public Task saveTaskAdd(String type, Object taskDataNew) throws JsonProcessingException {
 		Task task = new Task();
-		task.setTaskOperation(TaskOperation.Add);
-		task.setTaskStatus(TaskStatus.Pending);
+		task.setTaskOperation(TaskOperation.ADD);
+		task.setTaskStatus(TaskStatus.PENDING);
 		task.setTaskDataType(type);
 		task.setTaskDataNew(objectMapper.writeValueAsString(taskDataNew));
 		task.setMaker(SecurityUtil.getLogged());
@@ -73,8 +73,8 @@ public class TaskService {
 	
 	public Task saveTaskModify(String type, Object taskDataOld, Object taskDataNew) throws JsonProcessingException {
 		Task task = new Task();
-		task.setTaskOperation(TaskOperation.Modify);
-		task.setTaskStatus(TaskStatus.Pending);
+		task.setTaskOperation(TaskOperation.MODIFY);
+		task.setTaskStatus(TaskStatus.PENDING);
 		task.setTaskDataType(type);
 		task.setTaskDataOld(objectMapper.writeValueAsString(taskDataOld));
 		task.setTaskDataNew(objectMapper.writeValueAsString(taskDataNew));
@@ -85,8 +85,8 @@ public class TaskService {
 	
 	public Task saveTaskDelete(String type, Object taskDataOld) throws JsonProcessingException {
 		Task task = new Task();
-		task.setTaskOperation(TaskOperation.Delete);
-		task.setTaskStatus(TaskStatus.Pending);
+		task.setTaskOperation(TaskOperation.DELETE);
+		task.setTaskStatus(TaskStatus.PENDING);
 		task.setTaskDataType(type);
 		task.setTaskDataOld(objectMapper.writeValueAsString(taskDataOld));
 		task.setMaker(SecurityUtil.getLogged());
@@ -97,7 +97,7 @@ public class TaskService {
 	@Transactional
 	public String save(TaskDto taskDto) throws JsonParseException, JsonMappingException, IOException {
 		Task task = taskMapper.toEntity(taskDto);
-		task.setTaskStatus(taskDto.isVerified() ? TaskStatus.Verified : TaskStatus.Rejected);
+		task.setTaskStatus(taskDto.isVerified() ? TaskStatus.VERIFIED : TaskStatus.REJECTED);
 		task.setChecker(SecurityUtil.getLogged());
 		task.setCheckedDate(Instant.now());
 		
@@ -122,7 +122,7 @@ public class TaskService {
 	public void save(Exception ex, TaskDto taskDto) {
 		try {
 			Task task = taskMapper.toEntity(taskDto);
-			task.setTaskStatus(TaskStatus.Failed);
+			task.setTaskStatus(TaskStatus.FAILED);
 			task.setError(StringUtils.substring(ex.getLocalizedMessage(), 0, 250));
 			task.setErrorDetail(ErrorUtil.getErrorMessage(ex));
 			taskRepository.save(task);

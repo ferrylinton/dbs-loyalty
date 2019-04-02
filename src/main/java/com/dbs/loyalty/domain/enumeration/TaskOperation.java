@@ -1,10 +1,10 @@
 package com.dbs.loyalty.domain.enumeration;
 
 public enum TaskOperation {
-    All(0), 
-    Add(1), 
-    Modify(2), 
-    Delete(3);
+    ALL(0), 
+    ADD(1), 
+    MODIFY(2), 
+    DELETE(3);
     
     private final int value;
 

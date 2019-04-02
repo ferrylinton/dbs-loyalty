@@ -4,7 +4,7 @@ public enum CustomerType {
 
 	TPC("0025"),
 	
-	Treasure("0012");
+	TREASURE("0012");
 
 	private String value;
 

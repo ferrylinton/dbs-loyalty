@@ -68,20 +68,20 @@ public class PromoCategoryService{
 	}
 
 	public String execute(TaskDto taskDto) throws JsonParseException, JsonMappingException, IOException {
-		PromoCategoryDto promoCategoryDto = objectMapper.readValue((taskDto.getTaskOperation() == TaskOperation.Delete) ? taskDto.getTaskDataOld() : taskDto.getTaskDataNew(), PromoCategoryDto.class);
+		PromoCategoryDto promoCategoryDto = objectMapper.readValue((taskDto.getTaskOperation() == TaskOperation.DELETE) ? taskDto.getTaskDataOld() : taskDto.getTaskDataNew(), PromoCategoryDto.class);
 		
 		if(taskDto.isVerified()) {
 			PromoCategory promoCategory = promoCategoryMapper.toEntity(promoCategoryDto);
 			
-			if(taskDto.getTaskOperation() == TaskOperation.Add) {
+			if(taskDto.getTaskOperation() == TaskOperation.ADD) {
 				promoCategory.setCreatedBy(taskDto.getMaker());
 				promoCategory.setCreatedDate(taskDto.getMadeDate());
 				promoCategoryRepository.save(promoCategory);
-			}else if(taskDto.getTaskOperation() == TaskOperation.Modify) {
+			}else if(taskDto.getTaskOperation() == TaskOperation.MODIFY) {
 				promoCategory.setLastModifiedBy(taskDto.getMaker());
 				promoCategory.setLastModifiedDate(taskDto.getMadeDate());
 				promoCategoryRepository.save(promoCategory);
-			}else if(taskDto.getTaskOperation() == TaskOperation.Delete) {
+			}else if(taskDto.getTaskOperation() == TaskOperation.DELETE) {
 				promoCategoryRepository.delete(promoCategory);
 			}
 		}

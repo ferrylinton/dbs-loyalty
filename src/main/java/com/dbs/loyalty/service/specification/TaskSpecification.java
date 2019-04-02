@@ -52,7 +52,7 @@ public class TaskSpecification {
 	public static Specification<Task> taskStatus(Map<String, String> params, HttpServletRequest request) {
 		TaskStatus taskStatus = getTaskStatus(params, request);
 		
-		if(taskStatus != TaskStatus.All) {
+		if(taskStatus != TaskStatus.ALL) {
 			return (task, cq, cb) -> cb.equal(task.get(TASK_STATUS), taskStatus);
 		}else {
 			return null;
@@ -62,7 +62,7 @@ public class TaskSpecification {
 	public static Specification<Task> taskOperation(Map<String, String> params, HttpServletRequest request) {
 		TaskOperation taskOperation = getTaskOperation(params, request);
 		
-		if(taskOperation != TaskOperation.All) {
+		if(taskOperation != TaskOperation.ALL) {
 			return (task, cq, cb) -> cb.equal(task.get(TASK_OPERATION), taskOperation);
 		}else {
 			return null;
@@ -70,7 +70,7 @@ public class TaskSpecification {
 	}
 	
 	private static TaskStatus getTaskStatus(Map<String, String> params, HttpServletRequest request) {
-		TaskStatus taskStatus = TaskStatus.Pending;
+		TaskStatus taskStatus = TaskStatus.PENDING;
 		
 		try {
 			if(params.containsKey(ST_PARAM)) {
@@ -85,7 +85,7 @@ public class TaskSpecification {
 	}
 	
 	private static TaskOperation getTaskOperation(Map<String, String> params, HttpServletRequest request) {
-		TaskOperation taskOperation = TaskOperation.All;
+		TaskOperation taskOperation = TaskOperation.ALL;
 		
 		try {
 			if(params.containsKey(OP_PARAM)) {

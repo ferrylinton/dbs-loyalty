@@ -9,9 +9,9 @@ import com.dbs.loyalty.service.dto.UserDto;
 
 public class UserValidator implements Validator {
 	
-	private final String PASS_SIZE = "validation.size.password";
+	private String passSize = "validation.size.password";
 	
-	private final String PASS = "passwordPlain";
+	private String passPlain = "passwordPlain";
 
 	@Override
 	public boolean supports(Class<?> clazz) {
@@ -22,9 +22,9 @@ public class UserValidator implements Validator {
 	public void validate(Object target, Errors errors) {
 		UserDto userDto = (UserDto) target;
 		
-		if(userDto.getId() == null && (userDto.getUserType() == UserType.External) && (userDto.getPasswordPlain() == null || userDto.getPasswordPlain().trim().length() < 6 || userDto.getPasswordPlain().trim().length() > 30)) {
-			String defaultMessage = MessageService.getMessage(PASS_SIZE);
-			errors.rejectValue(PASS, PASS_SIZE, defaultMessage);
+		if(userDto.getId() == null && (userDto.getUserType() == UserType.EXTERNAL) && (userDto.getPasswordPlain() == null || userDto.getPasswordPlain().trim().length() < 6 || userDto.getPasswordPlain().trim().length() > 30)) {
+			String defaultMessage = MessageService.getMessage(passSize);
+			errors.rejectValue(passPlain, passSize, defaultMessage);
 		}
 
 	}

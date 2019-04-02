@@ -18,6 +18,7 @@ import javax.validation.constraints.Size;
 
 import com.dbs.loyalty.config.constant.Constant;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,6 +29,7 @@ import lombok.Setter;
  */
 @Setter
 @Getter
+@EqualsAndHashCode(of = {"name"}, callSuper = true)
 @Entity
 @Table(name = "c_loved_one")
 public class LovedOne extends AbstractUUID implements Serializable {

@@ -41,42 +41,42 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfiguration {
 
-	private ModelRef ERROR = new ModelRef("ErrorResponse");
+	private ModelRef error = new ModelRef("ErrorResponse");
 	
-	private ResponseMessage OK = new ResponseMessageBuilder()
+	private ResponseMessage ok = new ResponseMessageBuilder()
             .code(HttpStatus.OK.value())
             .message(HttpStatus.OK.name())
-            .responseModel(ERROR)
+            .responseModel(error)
             .build();
 	
-	private ResponseMessage INTERNAL_SERVER_ERROR = new ResponseMessageBuilder()
+	private ResponseMessage internalServerError = new ResponseMessageBuilder()
     		.code(HttpStatus.INTERNAL_SERVER_ERROR.value())
     		.message(HttpStatus.INTERNAL_SERVER_ERROR.name())
-            .responseModel(ERROR)
+            .responseModel(error)
             .build();
 	
-	private ResponseMessage UNAUTHORIZED = new ResponseMessageBuilder()
+	private ResponseMessage unauthorized = new ResponseMessageBuilder()
 		    .code(HttpStatus.UNAUTHORIZED.value())
 		    .message(HttpStatus.UNAUTHORIZED.name())
-		    .responseModel(ERROR)
+		    .responseModel(error)
 		    .build();
 	
-	private ResponseMessage FORBIDDEN = new ResponseMessageBuilder()
+	private ResponseMessage forbidden = new ResponseMessageBuilder()
             .code(HttpStatus.FORBIDDEN.value())
             .message(HttpStatus.FORBIDDEN.name())
-            .responseModel(ERROR)
+            .responseModel(error)
             .build();
 	
-	private ResponseMessage NOT_FOUND = new ResponseMessageBuilder()
+	private ResponseMessage notFound = new ResponseMessageBuilder()
             .code(HttpStatus.NOT_FOUND.value())
             .message(HttpStatus.NOT_FOUND.name())
-            .responseModel(ERROR)
+            .responseModel(error)
             .build();
 	
-	private ResponseMessage BAD_REQUEST = new ResponseMessageBuilder()
+	private ResponseMessage badRequest = new ResponseMessageBuilder()
             .code(HttpStatus.BAD_REQUEST.value())
             .message(HttpStatus.BAD_REQUEST.name())
-            .responseModel(ERROR)
+            .responseModel(error)
             .build();
 	
 	private final TypeResolver typeResolver;
@@ -89,10 +89,10 @@ public class SwaggerConfiguration {
 	            .genericModelSubstitutes(ResponseEntity.class)
 	            .securityContexts(Lists.newArrayList(securityContext()))
 	            .securitySchemes(Lists.newArrayList(apiKey()))
-	            .globalResponseMessage(RequestMethod.GET, GETResponseMessages())
-	            .globalResponseMessage(RequestMethod.POST, POSTResponseMessages())
-	            .globalResponseMessage(RequestMethod.PUT, PUTResponseMessages())
-	            .globalResponseMessage(RequestMethod.DELETE, DELETEResponseMessages())
+	            .globalResponseMessage(RequestMethod.GET, getResponseMessages())
+	            .globalResponseMessage(RequestMethod.POST, postResponseMessages())
+	            .globalResponseMessage(RequestMethod.PUT, putResponseMessages())
+	            .globalResponseMessage(RequestMethod.DELETE, deleteResponseMessages())
 	            .additionalModels(typeResolver.resolve(ErrorResponse.class))
 	            .tags(
 	            	new Tag(SwaggerConstant.AUTHENTICATION, Constant.EMPTY, 0),
@@ -137,20 +137,20 @@ public class SwaggerConfiguration {
         return new ApiInfo("DBS Loyalty", "API To Access DBS Loyalty", "0.0.1", null, null, null, null, Collections.emptyList());
     }
     
-    private List<ResponseMessage> GETResponseMessages() {
-    	return Arrays.asList(OK, INTERNAL_SERVER_ERROR, UNAUTHORIZED, FORBIDDEN, NOT_FOUND);
+    private List<ResponseMessage> getResponseMessages() {
+    	return Arrays.asList(ok, internalServerError, unauthorized, forbidden, notFound);
     }
     
-    private List<ResponseMessage> POSTResponseMessages() {
-    	return Arrays.asList(OK, BAD_REQUEST, INTERNAL_SERVER_ERROR, NOT_FOUND, UNAUTHORIZED);
+    private List<ResponseMessage> postResponseMessages() {
+    	return Arrays.asList(ok, badRequest, internalServerError, notFound, unauthorized);
     }
 
-    private List<ResponseMessage> PUTResponseMessages() {
-    	return Arrays.asList(OK, INTERNAL_SERVER_ERROR, BAD_REQUEST, UNAUTHORIZED, FORBIDDEN, NOT_FOUND);
+    private List<ResponseMessage> putResponseMessages() {
+    	return Arrays.asList(ok, internalServerError, badRequest, unauthorized, forbidden, notFound);
     }
     
-    private List<ResponseMessage> DELETEResponseMessages() {
-    	return Arrays.asList(OK, INTERNAL_SERVER_ERROR, UNAUTHORIZED, FORBIDDEN, NOT_FOUND);
+    private List<ResponseMessage> deleteResponseMessages() {
+    	return Arrays.asList(ok, internalServerError, unauthorized, forbidden, notFound);
     }
     
 }

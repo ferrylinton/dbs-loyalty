@@ -73,20 +73,20 @@ public class PromoService{
 	}
 
 	public String execute(TaskDto taskDto) throws JsonParseException, JsonMappingException, IOException {
-		PromoDto promoDto = objectMapper.readValue((taskDto.getTaskOperation() == TaskOperation.Delete) ? taskDto.getTaskDataOld() : taskDto.getTaskDataNew(), PromoDto.class);
+		PromoDto promoDto = objectMapper.readValue((taskDto.getTaskOperation() == TaskOperation.DELETE) ? taskDto.getTaskDataOld() : taskDto.getTaskDataNew(), PromoDto.class);
 		
 		if(taskDto.isVerified()) {
 			Promo promo = promoMapper.toEntity(promoDto);
 			
-			if(taskDto.getTaskOperation() == TaskOperation.Add) {
+			if(taskDto.getTaskOperation() == TaskOperation.ADD) {
 				promo.setCreatedBy(taskDto.getMaker());
 				promo.setCreatedDate(taskDto.getMadeDate());
 				promoRepository.save(promo);
-			}else if(taskDto.getTaskOperation() == TaskOperation.Modify) {
+			}else if(taskDto.getTaskOperation() == TaskOperation.MODIFY) {
 				promo.setLastModifiedBy(taskDto.getMaker());
 				promo.setLastModifiedDate(taskDto.getMadeDate());
 				promoRepository.save(promo);
-			}else if(taskDto.getTaskOperation() == TaskOperation.Delete) {
+			}else if(taskDto.getTaskOperation() == TaskOperation.DELETE) {
 				promoRepository.delete(promo);
 			}
 		}

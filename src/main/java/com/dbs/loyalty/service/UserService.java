@@ -65,19 +65,19 @@ public class UserService{
 	}
 	
 	public String execute(TaskDto taskDto) throws JsonParseException, JsonMappingException, IOException {
-		UserDto dto = objectMapper.readValue((taskDto.getTaskOperation() == TaskOperation.Delete) ? taskDto.getTaskDataOld() : taskDto.getTaskDataNew(), UserDto.class);
+		UserDto dto = objectMapper.readValue((taskDto.getTaskOperation() == TaskOperation.DELETE) ? taskDto.getTaskDataOld() : taskDto.getTaskDataNew(), UserDto.class);
 		
 		if(taskDto.isVerified()) {
 			User user = userMapper.toEntity(dto);
-			if(taskDto.getTaskOperation() == TaskOperation.Add) {
+			if(taskDto.getTaskOperation() == TaskOperation.ADD) {
 				user.setCreatedBy(taskDto.getMaker());
 				user.setCreatedDate(taskDto.getMadeDate());
 				userRepository.save(user);
-			}else if(taskDto.getTaskOperation() == TaskOperation.Modify) {
+			}else if(taskDto.getTaskOperation() == TaskOperation.MODIFY) {
 				user.setLastModifiedBy(taskDto.getMaker());
 				user.setLastModifiedDate(taskDto.getMadeDate());
 				userRepository.save(user);
-			}else if(taskDto.getTaskOperation() == TaskOperation.Delete) {
+			}else if(taskDto.getTaskOperation() == TaskOperation.DELETE) {
 				userRepository.delete(user);
 			}
 		}

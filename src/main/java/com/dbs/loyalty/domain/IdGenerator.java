@@ -15,10 +15,4 @@ public class IdGenerator implements IdentifierGenerator {
 		return RandomStringUtils.randomAlphanumeric(8);
 	}
 
-	public static void main(String[] args) {
-		for(int i=0; i<50; i++) {
-			System.out.println(RandomStringUtils.randomAlphanumeric(8));
-		}
-	}
-	
 }

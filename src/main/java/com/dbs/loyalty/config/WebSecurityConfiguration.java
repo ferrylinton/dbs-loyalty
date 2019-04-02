@@ -92,7 +92,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
 	@Bean
     public ServletListenerRegistrationBean<HttpSessionEventPublisher> httpSessionEventPublisher() {
-        return new ServletListenerRegistrationBean<HttpSessionEventPublisher>(new HttpSessionEventPublisher());
+        return new ServletListenerRegistrationBean<>(new HttpSessionEventPublisher());
 	}
 	
 	@Bean

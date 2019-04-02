@@ -2,9 +2,9 @@ package com.dbs.loyalty.domain.enumeration;
 
 public enum UserType {
 
-	Internal(0),
+	INTERNAL(0),
 	
-	External(1);
+	EXTERNAL(1);
 
 	private final int value;
 

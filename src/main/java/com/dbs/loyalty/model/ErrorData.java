@@ -10,7 +10,7 @@ import com.dbs.loyalty.util.ErrorUtil;
 
 public class ErrorData {
 	
-	private final String MESSAGE_404	= "Resource not found";
+	private String message404	= "Resource not found";
 	
 	private Exception exception;
 	
@@ -29,7 +29,7 @@ public class ErrorData {
 	}
 
 	private int getStatusCode(Exception exception, HttpServletRequest request) {
-		int statusCode =  (Integer) request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
+		statusCode =  (Integer) request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
 		
 		if(statusCode == 500 && exception != null) {
 			Exception ex = (Exception) ErrorUtil.getThrowable(exception);
@@ -69,7 +69,7 @@ public class ErrorData {
 
 	public String getMessage() {
 		if(statusCode == 404) {
-			message = MESSAGE_404;
+			message = message404;
 		}else if(statusCode == 501) {
 			message = exception.getMessage();
 		}else if(statusCode == 500 && exception != null) {

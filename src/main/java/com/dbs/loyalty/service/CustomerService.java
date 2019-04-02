@@ -99,19 +99,19 @@ public class CustomerService{
 	}
 	
 	public String execute(TaskDto taskDto) throws JsonParseException, JsonMappingException, IOException {
-		CustomerDto dto = objectMapper.readValue((taskDto.getTaskOperation() == TaskOperation.Delete) ? taskDto.getTaskDataOld() : taskDto.getTaskDataNew(), CustomerDto.class);
+		CustomerDto dto = objectMapper.readValue((taskDto.getTaskOperation() == TaskOperation.DELETE) ? taskDto.getTaskDataOld() : taskDto.getTaskDataNew(), CustomerDto.class);
 		
 		if(taskDto.isVerified()) {
 			Customer customer = customerMapper.toEntity(dto);
-			if(taskDto.getTaskOperation() == TaskOperation.Add) {
+			if(taskDto.getTaskOperation() == TaskOperation.ADD) {
 				customer.setCreatedBy(taskDto.getMaker());
 				customer.setCreatedDate(taskDto.getMadeDate());
 				customerRepository.save(customer);
-			}else if(taskDto.getTaskOperation() == TaskOperation.Modify) {
+			}else if(taskDto.getTaskOperation() == TaskOperation.MODIFY) {
 				customer.setLastModifiedBy(taskDto.getMaker());
 				customer.setLastModifiedDate(taskDto.getMadeDate());
 				customerRepository.save(customer);
-			}else if(taskDto.getTaskOperation() == TaskOperation.Delete) {
+			}else if(taskDto.getTaskOperation() == TaskOperation.DELETE) {
 				customerRepository.delete(customer);
 			}
 		}

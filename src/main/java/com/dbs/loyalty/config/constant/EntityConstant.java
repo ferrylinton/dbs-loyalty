@@ -1,6 +1,6 @@
 package com.dbs.loyalty.config.constant;
 
-public class EntityConstant {
+public final class EntityConstant {
 
 	public static final String TASK 			= "task";
 	
@@ -15,5 +15,9 @@ public class EntityConstant {
 	public static final String PROMO_CATEGORY 	= "promocategory";
 	
 	public static final String PROMO 			= "promo";
+	
+	private EntityConstant() {
+		// hide constructor
+	}
 	
 }

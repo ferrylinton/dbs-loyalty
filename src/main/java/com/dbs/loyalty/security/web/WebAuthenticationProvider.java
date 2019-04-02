@@ -68,7 +68,7 @@ public class WebAuthenticationProvider implements AuthenticationProvider {
 	}
 	
 	private boolean isAuthenticated(String password, User user) {
-		if(user.getUserType() == UserType.Internal) {
+		if(user.getUserType() == UserType.INTERNAL) {
 			return authenticateLdapService.authenticate(user.getUsername(), password);
 		}else{
 			return PasswordUtil.getInstance().matches(password, user.getPasswordHash());

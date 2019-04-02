@@ -23,7 +23,7 @@ public class WebAuthenticationFailureHandler extends SimpleUrlAuthenticationFail
 	
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-		loginEventPublisher.publish(LoginStatus.Failed, request);
+		loginEventPublisher.publish(LoginStatus.FAILED, request);
 		super.onAuthenticationFailure(request, response, exception);
 	}
 }

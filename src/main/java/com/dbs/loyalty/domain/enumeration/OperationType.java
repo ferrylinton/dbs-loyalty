@@ -2,9 +2,9 @@ package com.dbs.loyalty.domain.enumeration;
 
 public enum OperationType {
 
-	Debit(0),
+	DEBIT(0),
 	
-	Credit(1);
+	CREDIT(1);
 
 	private final int value;
 
