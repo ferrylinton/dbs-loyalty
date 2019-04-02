@@ -9,7 +9,7 @@ public class MessageService {
 
 	private static MessageSource messageSource;
 	
-	private MessageService(MessageSource messageSource) {
+	public MessageService(MessageSource messageSource) {
 		MessageService.messageSource = messageSource;
 	}
 

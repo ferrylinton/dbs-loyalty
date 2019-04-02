@@ -1,6 +1,19 @@
 package com.dbs.loyalty.service.specification;
 
-import static com.dbs.loyalty.service.specification.Constant.*;
+import static com.dbs.loyalty.service.specification.Constant.BROWSER;
+import static com.dbs.loyalty.service.specification.Constant.CREATED_DATE;
+import static com.dbs.loyalty.service.specification.Constant.DEVICE_TYPE;
+import static com.dbs.loyalty.service.specification.Constant.EMAIL;
+import static com.dbs.loyalty.service.specification.Constant.EMPTY;
+import static com.dbs.loyalty.service.specification.Constant.END_DATE_FORMAT;
+import static com.dbs.loyalty.service.specification.Constant.END_DATE_PARAM;
+import static com.dbs.loyalty.service.specification.Constant.FORMATTER;
+import static com.dbs.loyalty.service.specification.Constant.ID;
+import static com.dbs.loyalty.service.specification.Constant.IP;
+import static com.dbs.loyalty.service.specification.Constant.KY_PARAM;
+import static com.dbs.loyalty.service.specification.Constant.LIKE_FORMAT;
+import static com.dbs.loyalty.service.specification.Constant.START_DATE_FORMAT;
+import static com.dbs.loyalty.service.specification.Constant.START_DATE_PARAM;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -9,16 +22,15 @@ import java.time.temporal.ChronoUnit;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.domain.Specification;
 
 import com.dbs.loyalty.domain.LogLogin;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class LogLoginSpecification {
-	
-	private static final Logger LOG = LoggerFactory.getLogger(LogLoginSpecification.class);
-	
+
 	public static Specification<LogLogin> getSpec(HttpServletRequest request) {
 		return Specification
 				.where(createdDate(request))
@@ -70,7 +82,7 @@ public class LogLoginSpecification {
 				LocalDateTime localDateTime = LocalDateTime.parse(startDate, FORMATTER);
 				return localDateTime.toInstant(ZoneOffset.UTC);
 			}catch (Exception e) {
-				LOG.error(e.getLocalizedMessage());
+				log.error(e.getLocalizedMessage());
 			}
 		}
 		
@@ -84,7 +96,7 @@ public class LogLoginSpecification {
 				LocalDateTime localDateTime = LocalDateTime.parse(endDate, FORMATTER);
 				return localDateTime.toInstant(ZoneOffset.UTC);
 			}catch (Exception e) {
-				LOG.error(e.getLocalizedMessage());
+				log.error(e.getLocalizedMessage());
 			}
 		}
 		

@@ -10,9 +10,11 @@ public class JwtUtil {
 
     public static final String AUTHORIZATION_TOKEN = "access_token";
     
+    public static final String AUTHORIZATION_TOKEN_PREFIX = "Bearer ";
+    
     public static String resolveToken(HttpServletRequest request){
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(AUTHORIZATION_TOKEN_PREFIX)) {
             return bearerToken.substring(7);
         }
         String jwt = request.getParameter(AUTHORIZATION_TOKEN);
@@ -20,6 +22,10 @@ public class JwtUtil {
             return jwt;
         }
         return null;
+    }
+    
+    private JwtUtil() {
+    	// hide constructor
     }
 	
 }

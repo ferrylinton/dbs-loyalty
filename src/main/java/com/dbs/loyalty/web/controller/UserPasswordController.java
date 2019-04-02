@@ -23,7 +23,6 @@ import com.dbs.loyalty.service.UserService;
 import com.dbs.loyalty.service.dto.UserDto;
 import com.dbs.loyalty.service.dto.UserPasswordDto;
 import com.dbs.loyalty.util.PasswordUtil;
-import com.dbs.loyalty.util.ResponseUtil;
 import com.dbs.loyalty.util.UrlUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -89,7 +88,7 @@ public class UserPasswordController extends AbstractController{
 	@ResponseBody
 	public ResponseEntity<?> save(@Valid @ModelAttribute UserPasswordDto userPasswordDto, BindingResult result) throws NotFoundException {
 		if (result.hasErrors()) {
-			return ResponseUtil.createBadRequestResponse(result);
+			return badRequestResponse(result);
 		} else {
 			try {
 				String passwordHash = PasswordUtil.getInstance().encode(userPasswordDto.getPasswordPlain());
@@ -97,7 +96,7 @@ public class UserPasswordController extends AbstractController{
 
 				String message = MessageService.getMessage(successMessage, userPasswordDto.getUsername());
 				String resultUrl = UrlUtil.getUrl(userPasswordDto.isOwnPassword() ? pass : user);
-				return ResponseUtil.createSuccessResponse(message, resultUrl);
+				return saveResponse(message, resultUrl);
 			} catch (Exception ex) {
 				log.error(ex.getLocalizedMessage(), ex);
 				return errorResponse(ex);

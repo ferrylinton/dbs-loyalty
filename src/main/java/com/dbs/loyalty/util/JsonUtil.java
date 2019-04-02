@@ -11,6 +11,7 @@ public class JsonUtil {
     private ObjectMapper objectMapper = null;
 
     private JsonUtil() {
+    	// hide constructor
     }
 
     public static JsonUtil getInstance() {

@@ -125,4 +125,8 @@ public class DateConvertUtils {
             return asInstant(date).atZone(zone);
     }
 
+    private DateConvertUtils() {
+    	// hide constructor
+    }
+    
 }

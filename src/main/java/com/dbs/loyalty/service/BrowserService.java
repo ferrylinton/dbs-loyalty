@@ -31,7 +31,7 @@ public class BrowserService {
 	public LogLogin createLogLogin(LoginStatus loginStatus, HttpServletRequest request) {
 		Capabilities capabilities = parser.parse(request.getHeader(userAgent));
 		LogLogin logLogin = new LogLogin();
-		logLogin.setIp(IpUtil.getInstance().getIp(request));
+		logLogin.setIp(IpUtil.getIp(request));
 		logLogin.setCreatedDate(Instant.now());
 		logLogin.setUsername(request.getParameter(username));
 		logLogin.setLoginStatus(loginStatus);

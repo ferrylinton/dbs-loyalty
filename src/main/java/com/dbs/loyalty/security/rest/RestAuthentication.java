@@ -88,7 +88,7 @@ public class RestAuthentication implements Authentication {
 
 	@Override
 	public String getName() {
-		return (String) principal;
+		return principal;
 	}
 
 	public Customer getCustomer() {

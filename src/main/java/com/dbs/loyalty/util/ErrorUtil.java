@@ -15,4 +15,8 @@ public class ErrorUtil {
 		return ex;
 	}
 	
+	private ErrorUtil() {
+		// hide constructor
+	}
+	
 }

@@ -40,13 +40,13 @@ public class PromoService{
 
 	public Page<PromoDto> findAll(Pageable pageable, HttpServletRequest request) {
 		return promoRepository.findAll(PromoSpecification.getSpec(request), pageable)
-				.map((promo) -> promoMapper.toDto(promo, urlService));
+				.map(promo -> promoMapper.toDto(promo, urlService));
 	}
 
 	public List<PromoDto> findByPromoCategoryId(String promoCategoryId){
 		return promoRepository.findByPromoCategoryId(promoCategoryId)
 				.stream()
-				.map((promo) -> promoMapper.toDto(promo, urlService))
+				.map(promo -> promoMapper.toDto(promo, urlService))
 				.collect(Collectors.toList());
 	}
 	

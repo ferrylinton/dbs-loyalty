@@ -76,8 +76,8 @@ public class TaskSpecification {
 			if(params.containsKey(ST_PARAM)) {
 				taskStatus = TaskStatus.valueOf(params.get(ST_PARAM));
 			}
-		} catch (Exception e) {;
-		log.error(e.getLocalizedMessage(), e);
+		} catch (Exception e) {
+			log.error(e.getLocalizedMessage(), e);
 		}
 
 		request.setAttribute(ST_PARAM, taskStatus);

@@ -4,25 +4,13 @@ import javax.servlet.http.HttpServletRequest;
 
 public class IpUtil {
 
-	private static IpUtil instance;
-	
-	private final String UNKNOWN = "unknown";
+	private static final String UNKNOWN = "unknown";
 
-	private final String IP_ADDRESS_HEADER_1 = "X-Forwarded-For";
+	private static final String IP_ADDRESS_HEADER_1 = "X-Forwarded-For";
 
-	private final String IP_ADDRESS_HEADER_2 = "X_FORWARDED_FOR";
-	
-	private IpUtil() {}
-	
-	public static IpUtil getInstance() {
-		if(instance == null) {
-			instance = new IpUtil();
-		}
-		
-		return instance;
-	}
-	
-	public String getIp(HttpServletRequest request) {
+	private static final String IP_ADDRESS_HEADER_2 = "X_FORWARDED_FOR";
+ 
+	public static String getIp(HttpServletRequest request) {
 		String ipAddress = request.getHeader(IP_ADDRESS_HEADER_1);
 
 		if (ipAddress == null) {
@@ -34,6 +22,10 @@ public class IpUtil {
 		}
 
 		return ipAddress == null ? UNKNOWN : ipAddress;
+	}
+	
+	private IpUtil() {
+		// hide constructor
 	}
 	
 }

@@ -1,7 +1,6 @@
 package com.dbs.loyalty.web.controller;
 
 import static com.dbs.loyalty.config.constant.Constant.BR;
-import static com.dbs.loyalty.config.constant.Constant.EMPTY;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,14 +29,14 @@ public abstract class AbstractController {
 
 	protected ResponseEntity<?> badRequestResponse(BindingResult result) {
 		BadRequestResponse response = new BadRequestResponse();
-		String message = EMPTY;
+		StringBuilder builder = new StringBuilder();
 		
 		for (FieldError fieldError : result.getFieldErrors()) {
 			response.getFields().add(fieldError.getField());
-			message += fieldError.getDefaultMessage() + BR; 
+			builder.append(fieldError.getDefaultMessage()).append(BR);
 		}
 
-		response.setMessage(message);
+		response.setMessage(builder.toString());
 		return ResponseEntity
 	            .status(HttpStatus.BAD_REQUEST)
 	            .body(response);
