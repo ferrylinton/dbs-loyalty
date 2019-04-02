@@ -14,9 +14,9 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+@ApiModel(value="Promo", description = "Promo's data")
 @Setter
 @Getter
-@ApiModel(value="Promo", description = "Promo's data")
 public class PromoDto extends AbstractAuditDto {
 
 	@ApiModelProperty(value = "Promo's id", example = "In1IverC", required = true, position = 0)

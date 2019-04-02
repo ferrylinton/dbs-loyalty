@@ -16,7 +16,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-@ApiModel(value="CustomerNewData", description = "Customer's new data")
+@ApiModel(value="CustomerUpdateData", description = "Customer's new data")
 public class CustomerUpdateDto {
 
 	@JsonIgnore

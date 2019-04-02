@@ -12,5 +12,7 @@ public class SwaggerConstant {
 	
 	public static final String Customer = "Customer";
 	
+	public static final String LovedOne = "LovedOne";
+	
 	public static final String JWT = "JWT";
 }

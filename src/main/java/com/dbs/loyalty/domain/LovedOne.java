@@ -1,7 +1,7 @@
 package com.dbs.loyalty.domain;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,17 +10,24 @@ import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import com.dbs.loyalty.config.constant.Constant;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Class of LovedOne
  * 
  * @author Ferry L. H. <ferrylinton@gmail.com>
  */
+@Setter
+@Getter
 @Entity
 @Table(name = "c_loved_one")
 public class LovedOne extends AbstractUUID implements Serializable {
@@ -39,43 +46,12 @@ public class LovedOne extends AbstractUUID implements Serializable {
 	private String phone;
 	
 	@NotNull(message = "{validation.notnull.dob}")
+	@Temporal(TemporalType.DATE)
 	@Column(name = "dob", nullable = false, columnDefinition = "DATE")
-	private LocalDate dob;
+	private Date dob;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", nullable = false, foreignKey = @ForeignKey(name = "m_customer_fk"))
 	private Customer customer;
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	public LocalDate getDob() {
-		return dob;
-	}
-
-	public void setDob(LocalDate dob) {
-		this.dob = dob;
-	}
-
-	public Customer getCustomer() {
-		return customer;
-	}
-
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
-	}
-	
 }

@@ -99,7 +99,8 @@ public class SwaggerConfiguration {
 	            	new Tag(SwaggerConstant.Customer, Constant.EMPTY, 1),
 	            	new Tag(SwaggerConstant.PromoCategory, Constant.EMPTY, 2),
 	            	new Tag(SwaggerConstant.Promo, Constant.EMPTY, 3),
-	            	new Tag(SwaggerConstant.Reward, Constant.EMPTY, 4)
+	            	new Tag(SwaggerConstant.LovedOne, Constant.EMPTY, 4),
+	            	new Tag(SwaggerConstant.Reward, Constant.EMPTY, 5)
 	            )
 				.select()
 				.apis(RequestHandlerSelectors.basePackage("com.dbs.loyalty.web.controller.rest"))

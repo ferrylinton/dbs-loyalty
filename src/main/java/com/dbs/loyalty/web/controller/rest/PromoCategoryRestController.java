@@ -38,8 +38,12 @@ public class PromoCategoryRestController {
      *
      * @return the ResponseEntity with status 200 (OK) and the list of promoCategories in body
      */
-    @ApiOperation(nickname="getPromoCategories", value="getPromoCategories", notes="Get all Promo Category",
-    		produces=MediaType.APPLICATION_JSON_VALUE, authorizations = { @Authorization(value=SwaggerConstant.JWT) })
+    @ApiOperation(
+    		nickname="GetPromoCategories", 
+    		value="GetPromoCategories", 
+    		notes="Get all Promo Category",
+    		produces=MediaType.APPLICATION_JSON_VALUE, 
+    		authorizations = { @Authorization(value=SwaggerConstant.JWT) })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = PromoCategoryDto.class)})
     @PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping("/promo-categories")
