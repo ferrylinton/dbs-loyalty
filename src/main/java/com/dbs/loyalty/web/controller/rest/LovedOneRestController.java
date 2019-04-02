@@ -4,6 +4,7 @@ import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -28,6 +29,8 @@ import com.dbs.loyalty.service.dto.LovedOneAddDto;
 import com.dbs.loyalty.service.dto.LovedOneDto;
 import com.dbs.loyalty.service.dto.LovedOneUpdateDto;
 import com.dbs.loyalty.web.controller.AbstractController;
+import com.dbs.loyalty.web.validator.LovedOneAddValidator;
+import com.dbs.loyalty.web.validator.LovedOneUpdateValidator;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -106,17 +109,30 @@ public class LovedOneRestController extends AbstractController{
     		HttpServletRequest request)  {
 
     	try {
-    		LovedOneDto lovedOneDto = lovedOneService.update(lovedOneUpdateDto);
-    		return ResponseEntity.ok().body(lovedOneDto);
+    		Optional<LovedOneDto> lovedOneDto = lovedOneService.findById(lovedOneUpdateDto.getId());
+    		
+    		if(lovedOneDto.isPresent()) {
+        		return ResponseEntity.ok().body(lovedOneService.update(lovedOneUpdateDto));
+    		}else {
+    			return ResponseEntity.status(404).body(new ErrorResponse(String.format("%s is not found", lovedOneUpdateDto.getId())));
+    		}
+    		
     	} catch (Exception e) {
 			log.error(e.getLocalizedMessage(), e);
 			return ResponseEntity.status(500).body(new ErrorResponse(e.getLocalizedMessage()));
 		}
     }
-    
-    @InitBinder
-	protected void initBinder(WebDataBinder binder) {
+   
+    @InitBinder("lovedOneAddDto")
+	protected void initAddBinder(WebDataBinder binder) {
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("dd-MM-yyyy"), true, 10)); 
+		binder.addValidators(new LovedOneAddValidator(lovedOneService));
+	}
+    
+    @InitBinder("lovedOneUpdateDto")
+	protected void initUpdateBinder(WebDataBinder binder) {
+    	binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("dd-MM-yyyy"), true, 10)); 
+		binder.addValidators(new LovedOneUpdateValidator(lovedOneService));
 	}
     
 }

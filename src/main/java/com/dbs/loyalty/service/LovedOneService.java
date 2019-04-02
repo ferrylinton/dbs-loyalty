@@ -29,6 +29,25 @@ public class LovedOneService {
 	
 	private final LovedOneMapper lovedOneMapper;
 	
+	public Optional<LovedOneDto> findById(String id){
+		return lovedOneRepository.findById(id).map(lovedOneMapper::toDto);
+	}
+	
+	public boolean isNameExist(LovedOneAddDto lovedOneAddDto) {
+		Optional<LovedOne> lovedOne = lovedOneRepository.findByNameIgnoreCaseAndCustomerEmail(lovedOneAddDto.getName(), SecurityUtil.getCurrentEmail());
+		return lovedOne.isPresent();
+	}
+	
+	public boolean isNameExist(LovedOneUpdateDto lovedOneUpdateDto) {
+		Optional<LovedOne> lovedOne = lovedOneRepository.findByNameIgnoreCaseAndCustomerEmail(lovedOneUpdateDto.getName(), SecurityUtil.getCurrentEmail());
+
+		if (lovedOne.isPresent()) {
+			return (!lovedOneUpdateDto.getId().equals(lovedOne.get().getId()));
+		}else {
+			return false;
+		}
+	}
+	
 	public LovedOneDto add(LovedOneAddDto lovedOneAddDto) {
 		Optional<Customer> customer = customerRepository.findByEmail(SecurityUtil.getCurrentEmail());
 		LovedOne lovedOne = lovedOneMapper.toEntity(lovedOneAddDto);
