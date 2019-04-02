@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dbs.loyalty.domain.PromoCategory;
+import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.PromoCategoryService;
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.service.dto.PromoCategoryDto;
@@ -46,15 +47,15 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/promocategory")
 public class PromoCategoryController extends AbstractPageController {
 
-	private String REDIRECT 		= "redirect:/promocategory";
+	private String redirect 		= "redirect:/promocategory";
 
-	private String VIEW_TEMPLATE	= "promocategory/view";
+	private String viewTemplate		= "promocategory/view";
 
-	private String FORM_TEMPLATE	= "promocategory/form";
+	private String formTemplate		= "promocategory/form";
 
-	private String SORT_BY 			= "name";
+	private String sortBy 			= "name";
 	
-	private Order ORDER				= Order.asc(SORT_BY).ignoreCase();
+	private Order defaultOrder		= Order.asc(sortBy).ignoreCase();
 
 	private final PromoCategoryService promoCategoryService;
 
@@ -63,17 +64,17 @@ public class PromoCategoryController extends AbstractPageController {
 	@PreAuthorize("hasAnyRole('PROMO_CATEGORY_MK', 'PROMO_CATEGORY_CK')")
 	@GetMapping
 	public String view(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
-		Order order = (sort.getOrderFor(SORT_BY) == null) ? ORDER : sort.getOrderFor(SORT_BY);
+		Order order = (sort.getOrderFor(sortBy) == null) ? defaultOrder : sort.getOrderFor(sortBy);
 		Page<PromoCategoryDto> page = promoCategoryService.findAll(getPageable(params, order), request);
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
-			return REDIRECT;
+			return redirect;
 		}
 		
 		request.setAttribute(PAGE, page);
 		setParamsQueryString(params, request);
 		setPagerQueryString(order, page.getNumber(), request);
-		return VIEW_TEMPLATE;
+		return viewTemplate;
 	}
 
 	@PreAuthorize("hasAnyRole('PROMO_CATEGORY_MK', 'PROMO_CATEGORY_CK')")
@@ -82,39 +83,42 @@ public class PromoCategoryController extends AbstractPageController {
 		if (id.equals(ZERO)) {
 			model.addAttribute(PROMO_CATEGORY, new PromoCategoryDto());
 		} else {
-			Optional<PromoCategoryDto> promoCategoryDto = promoCategoryService.findById(id);
+			Optional<PromoCategoryDto> current = promoCategoryService.findById(id);
 			
-			if (promoCategoryDto.isPresent()) {
-				model.addAttribute(PROMO_CATEGORY, promoCategoryDto.get());
+			if (current.isPresent()) {
+				model.addAttribute(PROMO_CATEGORY, current.get());
 			} else {
 				model.addAttribute(ERROR, getNotFoundMessage(id));
 			}
 		}
 		
-		return FORM_TEMPLATE;
+		return formTemplate;
 	}
 
 	@PreAuthorize("hasRole('PROMO_CATEGORY_MK')")
 	@PostMapping
 	@ResponseBody
 	public ResponseEntity<?> save(@ModelAttribute @Valid PromoCategoryDto promoCategoryDto, BindingResult result) {
-		try {
-			if (result.hasErrors()) {
-				return badRequestResponse(result);
-			} else {
+		if (result.hasErrors()) {
+			return badRequestResponse(result);
+		}else {
+			try {
 				if(promoCategoryDto.getId() == null) {
 					taskService.saveTaskAdd(PROMO_CATEGORY, promoCategoryDto);
-				}else {
+				} else {
 					Optional<PromoCategoryDto> current = promoCategoryService.findById(promoCategoryDto.getId());
-					taskService.saveTaskModify(PROMO_CATEGORY, current.get(), promoCategoryDto);
+					
+					if(current.isPresent()) {
+						taskService.saveTaskModify(PROMO_CATEGORY, current.get(), promoCategoryDto);
+					}else {
+						throw new NotFoundException();
+					}
 				}
-
 				return taskIsSavedResponse(PromoCategory.class.getSimpleName(), promoCategoryDto.getName(), UrlUtil.getUrl(PROMO_CATEGORY));
+			} catch (Exception ex) {
+				log.error(ex.getLocalizedMessage(), ex);
+				return errorResponse(ex);
 			}
-			
-		} catch (Exception ex) {
-			log.error(ex.getLocalizedMessage(), ex);
-			return errorResponse(ex);
 		}
 	}
 
@@ -123,9 +127,15 @@ public class PromoCategoryController extends AbstractPageController {
 	@ResponseBody
 	public ResponseEntity<?> delete(@PathVariable String id){
 		try {
-			Optional<PromoCategoryDto> promoCategoryDto = promoCategoryService.findById(id);
-			taskService.saveTaskDelete(PROMO_CATEGORY, promoCategoryDto.get());
-			return taskIsSavedResponse(PROMO_CATEGORY, promoCategoryDto.get().getName(), UrlUtil.getUrl(PROMO_CATEGORY));
+			Optional<PromoCategoryDto> current = promoCategoryService.findById(id);
+			
+			if(current.isPresent()) {
+				taskService.saveTaskDelete(PROMO_CATEGORY, current.get());
+				return taskIsSavedResponse(PROMO_CATEGORY, current.get().getName(), UrlUtil.getUrl(PROMO_CATEGORY));
+			}else {
+				throw new NotFoundException();
+			}
+			
 		} catch (Exception ex) {
 			log.error(ex.getLocalizedMessage(), ex);
 			return errorResponse(ex);

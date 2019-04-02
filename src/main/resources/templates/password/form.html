@@ -1,7 +1,9 @@
 <!doctype html>
 <html lang="en" th:lang="${#locale}" xmlns:th="http://www.org" class="h-100">
 
-<head th:replace="fragment/head.html :: content(title=#{password})"></head>
+<head th:replace="fragment/head.html :: content(title=#{password})">
+	<title>DBS Loyalty</title>
+</head>
 
 <body>
 	<div th:replace="fragment/navbar.html :: content"></div>
@@ -32,7 +34,7 @@
 								<div class="form-group">
 									<div class="input-group">
 										<div class="input-group-prepend">
-											<div class="input-group-text"><i class="icon-user-circle-o"></i></div>
+											<div class="input-group-text"><span class="icon-user-circle-o"></span></div>
 										</div>
 										<input class="form-control" type="text" th:placeholder="#{label.username}" th:field="*{username}" readonly="readonly" />
 									</div>
@@ -40,7 +42,7 @@
 								<div class="form-group">
 									<div class="input-group">
 										<div class="input-group-prepend">
-											<div class="input-group-text"><i class="icon-lock"></i></div>
+											<div class="input-group-text"><span class="icon-lock"></span></div>
 										</div>
 										<input class="form-control" type="password" placeholder="password" th:placeholder="#{label.password}" th:field="*{passwordPlain}">
 									</div>
@@ -48,7 +50,7 @@
 								<div class="row no-gutters">
 									<div class="col-12">
 										<button class="btn btn-block btn-primary" type="submit">
-											<i class="icon-floppy"></i> <span th:text="#{label.save}">Save</span>
+											<span class="icon-floppy"></span> <span th:text="#{label.save}">Save</span>
 										</button>
 									</div>
 								</div>

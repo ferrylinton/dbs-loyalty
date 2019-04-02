@@ -1,7 +1,9 @@
 <!doctype html>
 <html lang="en" th:lang="${#locale}" xmlns:th="http://www.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head th:replace="fragment/head.html :: content(title=#{task})"></head>
+<head th:replace="fragment/head.html :: content(title=#{task})">
+	<title>DBS Loyalty</title>
+</head>
 
 <body th:with="isChecker=${#authorization.expression('hasAnyAuthority(''ROLE_CK'',''USER_CK'', ''PROMO_CATEGORY_CK'', ''PROMO_CK'')')}">
 	<div th:replace="fragment/navbar.html :: content"></div>
@@ -19,7 +21,7 @@
 					<div class="row">
 						<div class="col-12" th:if="${error}">
 							<div class="border alert alert-light text-center" role="alert">
-				                <i class="icon-attention"></i> <span th:text="${error}"></span>
+				                <span class="icon-attention"></span> <span th:text="${error}"></span>
 				            </div>
 						</div>
 						<div class="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-6">
@@ -96,14 +98,14 @@
 					<div class="row no-gutters">
 						<div class="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-6">
 							<a class="btn btn-sm btn-secondary px-3" th:href="@{|/task/${type}|}">
-								<i class="icon-left"></i> <span th:text="#{back}"></span>
+								<span class="icon-left"></span> <span th:text="#{back}"></span>
 							</a>
 							<th:block th:if="${isChecker}">
 								<button class="btn btn-sm btn-success px-3" type="submit" style="display: none;">
-									<i class="icon-ok"></i> <span th:text="#{verify}"></span>
+									<span class="icon-ok"></span> <span th:text="#{verify}"></span>
 								</button>
 								<button class="btn btn-sm btn-danger px-3" type="submit">
-									<i class="icon-block"></i> <span th:text="#{reject}"></span>
+									<span class="icon-block"></span> <span th:text="#{reject}"></span>
 								</button>
 							</th:block>
 						</div>

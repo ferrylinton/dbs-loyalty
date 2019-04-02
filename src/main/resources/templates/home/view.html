@@ -1,7 +1,9 @@
 <!doctype html>
 <html lang="en" th:lang="${#locale}" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head th:replace="fragment/head.html :: content(title=#{home})"></head>
+<head th:replace="fragment/head.html :: content(title=#{home})">
+	<title>DBS Loyalty</title>
+</head>
 
 <body>
     <div th:replace="fragment/navbar.html :: content"></div>
@@ -16,7 +18,7 @@
 							<th:block th:if="${#authorization.expression('hasAnyAuthority(''USER_MK'', ''USER_CK'')')}">
 			                	<div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-4 p-1 mb-1">
 			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/user}">
-										<i class="icon-user font-icon"></i>
+										<span class="icon-user font-icon"></span>
 										<span class="font-label" th:text="#{user}"></span>
 									</a>
 			                	</div>
@@ -24,7 +26,7 @@
 		                	<th:block th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MK'', ''ROLE_CK'')')}">
 			                	<div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-4 p-1 mb-1">
 			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/role}">
-										<i class="icon-user-secret font-icon"></i>
+										<span class="icon-user-secret font-icon"></span>
 										<span class="font-label" th:text="#{role}"></span>
 									</a>
 			                	</div>
@@ -40,7 +42,7 @@
  							<th:block th:if="${#authorization.expression('hasAnyAuthority(''PROMO_CATEGORY_MK'', ''PROMO_CATEGORY_CK'')')}">
 			                	<div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-4 p-1 mb-1">
 			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/promocategory}">
-										<i class="icon-birthday font-icon"></i>
+										<span class="icon-birthday font-icon"></span>
 										<span class="font-label" th:text="#{promoCategory}"></span>
 									</a>
 			                	</div>
@@ -48,7 +50,7 @@
 		                	<th:block th:if="${#authorization.expression('hasAnyAuthority(''PROMO_MK'', ''PROMO_CK'')')}">
 			                	<div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-4 p-1 mb-1">
 			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/promo}">
-										<i class="icon-birthday font-icon"></i>
+										<span class="icon-birthday font-icon"></span>
 										<span class="font-label" th:text="#{promo}"></span>
 									</a>
 			                	</div>
@@ -64,7 +66,7 @@
  							<th:block th:if="${#authorization.expression('hasAnyAuthority(''CUSTOMER_MK'', ''CUSTOMER_CK'')')}">
 			                	<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 p-1 mb-1">
 			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/customer}">
-										<i class="icon-user font-icon"></i>
+										<span class="icon-user font-icon"></span>
 										<span class="font-label" th:text="#{customer}"></span>
 									</a>
 			                	</div>
@@ -80,7 +82,7 @@
  							<th:block th:if="${#authorization.expression('hasAnyAuthority(''USER_MK'', ''USER_CK'')')}">
 			                	<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 p-1 mb-1">
 			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/task/user}">
-										<i class="icon-user font-icon"></i>
+										<span class="icon-user font-icon"></span>
 										<span class="font-label" th:text="#{user}"></span>
 									</a>
 			                	</div>
@@ -88,7 +90,7 @@
 		                	<th:block th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MK'', ''ROLE_CK'')')}">
 			                	<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 p-1 mb-1">
 			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/task/role}">
-										<i class="icon-user-secret font-icon"></i>
+										<span class="icon-user-secret font-icon"></span>
 										<span class="font-label" th:text="#{role}"></span>
 									</a>
 			                	</div>
@@ -96,7 +98,7 @@
 			                <th:block th:if="${#authorization.expression('hasAnyAuthority(''PROMO_CATEGORY_MK'', ''PROMO_CATEGORY_CK'')')}">
 			                	<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 p-1 mb-1">
 			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/task/promocategory}">
-										<i class="icon-birthday font-icon"></i>
+										<span class="icon-birthday font-icon"></span>
 										<span class="font-label" th:text="#{promoCategory}"></span>
 									</a>
 			                	</div>
@@ -104,7 +106,7 @@
 			                <th:block th:if="${#authorization.expression('hasAnyAuthority(''PROMO_MK'', ''PROMO_CK'')')}">
 			                	<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 p-1 mb-1">
 			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/task/promo}">
-										<i class="icon-birthday font-icon"></i>
+										<span class="icon-birthday font-icon"></span>
 										<span class="font-label" th:text="#{promo}"></span>
 									</a>
 			                	</div>
@@ -112,7 +114,7 @@
 			                <th:block th:if="${#authorization.expression('hasAnyAuthority(''CUSTOMER_MK'', ''CUSTOMER_CK'')')}">
 			                	<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 p-1 mb-1">
 			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/task/customer}">
-										<i class="icon-birthday font-icon"></i>
+										<span class="icon-birthday font-icon"></span>
 										<span class="font-label" th:text="#{customer}"></span>
 									</a>
 			                	</div>
@@ -127,14 +129,14 @@
  						<div class="row no-gutters">
 		                	<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 p-1 mb-1">
 		                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/swagger-ui.html}" onclick="return openNewTab(this);">
-									<i class="icon-cog-alt font-icon"></i>
+									<span class="icon-cog-alt font-icon"></span>
 									<span class="font-label" th:text="#{swagger}"></span>
 								</a>
 		                	</div>
 		                	<th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
 			                	<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 p-1 mb-1">
 			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/loglogin}">
-										<i class="icon-history font-icon"></i>
+										<span class="icon-history font-icon"></span>
 										<span class="font-label" th:text="#{logLogin}"></span>
 									</a>
 			                	</div>

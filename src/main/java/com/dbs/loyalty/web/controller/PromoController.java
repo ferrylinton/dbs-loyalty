@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.PromoCategoryService;
 import com.dbs.loyalty.service.PromoService;
 import com.dbs.loyalty.service.TaskService;
@@ -90,10 +91,10 @@ public class PromoController extends AbstractPageController {
 		if (id.equals(ZERO)) {
 			model.addAttribute(PROMO, new PromoDto());
 		} else {
-			Optional<PromoDto> promoDto = promoService.findById(id);
+			Optional<PromoDto> current = promoService.findById(id);
 			
-			if (promoDto.isPresent()) {
-				model.addAttribute(PROMO, promoDto.get());
+			if (current.isPresent()) {
+				model.addAttribute(PROMO, current.get());
 			} else {
 				model.addAttribute(ERROR, getNotFoundMessage(id));
 			}
@@ -116,13 +117,17 @@ public class PromoController extends AbstractPageController {
 				}else {
 					Optional<PromoDto> current = promoService.findById(promoDto.getId());
 					
-					if(promoDto.getFile().isEmpty()) {
-						promoDto.setImageString(Base64Util.getString(current.get().getFile().getBytes()));
+					if(current.isPresent()) {
+						if(promoDto.getFile().isEmpty()) {
+							promoDto.setImageString(Base64Util.getString(current.get().getFile().getBytes()));
+						}else {
+							promoDto.setImageString(Base64Util.getString(promoDto.getFile().getBytes()));
+						}
+						
+						taskService.saveTaskModify(PROMO, current.get(), promoDto);
 					}else {
-						promoDto.setImageString(Base64Util.getString(promoDto.getFile().getBytes()));
+						throw new NotFoundException();
 					}
-					
-					taskService.saveTaskModify(PROMO, current.get(), promoDto);
 				}
 
 				return taskIsSavedResponse(PROMO, promoDto.getTitle(), UrlUtil.getUrl(PROMO));
@@ -139,9 +144,15 @@ public class PromoController extends AbstractPageController {
 	@ResponseBody
 	public ResponseEntity<?> delete(@PathVariable String id){
 		try {
-			Optional<PromoDto> promoDto = promoService.findById(id);
-			taskService.saveTaskDelete(PROMO, promoDto.get());
-			return taskIsSavedResponse(PROMO, promoDto.get().getTitle(), UrlUtil.getUrl(PROMO));
+			Optional<PromoDto> current = promoService.findById(id);
+			
+			if(current.isPresent()) {
+				taskService.saveTaskDelete(PROMO, current.get());
+				return taskIsSavedResponse(PROMO, current.get().getTitle(), UrlUtil.getUrl(PROMO));
+			}else {
+				throw new NotFoundException();
+			}
+			
 		} catch (Exception ex) {
 			log.error(ex.getLocalizedMessage(), ex);
 			return errorResponse(ex);

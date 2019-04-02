@@ -32,12 +32,14 @@ public class CustomerUpdateValidator implements Validator {
 		CustomerUpdateDto customerUpdateDto = (CustomerUpdateDto) target;
 		Optional<CustomerDto> customerDto = customerService.findByEmail(SecurityUtil.getLogged());
 
-		customerUpdateDto.setId(customerDto.get().getId());
-		if (customerService.isEmailExist(customerUpdateDto)) {
-			Object[] errorArgs = new String[] { customerUpdateDto.getEmail() };
-			String defaultMessage = MessageService.getMessage(EMAIL_EXIST, errorArgs);
-			errors.rejectValue(EMAIL, EMAIL_EXIST, errorArgs, defaultMessage);
+		if(customerDto.isPresent()) {
+			customerUpdateDto.setId(customerDto.get().getId());
+			
+			if (customerService.isEmailExist(customerUpdateDto)) {
+				Object[] errorArgs = new String[] { customerUpdateDto.getEmail() };
+				String defaultMessage = MessageService.getMessage(EMAIL_EXIST, errorArgs);
+				errors.rejectValue(EMAIL, EMAIL_EXIST, errorArgs, defaultMessage);
+			}
 		}
-
 	}
 }

@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.AuthorityService;
 import com.dbs.loyalty.service.RoleService;
 import com.dbs.loyalty.service.TaskService;
@@ -86,10 +87,10 @@ public class RoleController extends AbstractPageController {
 		if (id.equals(ZERO)) {
 			model.addAttribute(ROLE, new RoleDto());
 		} else {
-			Optional<RoleDto> roleDto = roleService.findById(id);
+			Optional<RoleDto> current = roleService.findById(id);
 			
-			if (roleDto.isPresent()) {
-				model.addAttribute(ROLE, roleDto.get());
+			if (current.isPresent()) {
+				model.addAttribute(ROLE, current.get());
 			} else {
 				model.addAttribute(ERROR, getNotFoundMessage(id));
 			}
@@ -109,7 +110,12 @@ public class RoleController extends AbstractPageController {
 					taskService.saveTaskAdd(ROLE, roleDto);
 				}else {
 					Optional<RoleDto> current = roleService.findWithAuthoritiesById(roleDto.getId());
-					taskService.saveTaskModify(ROLE, current.get(), roleDto);
+					
+					if(current.isPresent()) {
+						taskService.saveTaskModify(ROLE, current.get(), roleDto);
+					}else {
+						throw new NotFoundException();
+					}
 				}
 
 				return taskIsSavedResponse(ROLE, roleDto.getName(), UrlUtil.getUrl(ROLE));
@@ -125,9 +131,15 @@ public class RoleController extends AbstractPageController {
 	@DeleteMapping("/{id}")
 	public @ResponseBody ResponseEntity<?> delete(@PathVariable String id){
 		try {
-			Optional<RoleDto> roleDto = roleService.findWithAuthoritiesById(id);
-			taskService.saveTaskDelete(ROLE, roleDto.get());
-			return taskIsSavedResponse(ROLE, roleDto.get().getName(), UrlUtil.getUrl(ROLE));
+			Optional<RoleDto> current = roleService.findWithAuthoritiesById(id);
+			
+			if(current.isPresent()) {
+				taskService.saveTaskDelete(ROLE, current.get());
+				return taskIsSavedResponse(ROLE, current.get().getName(), UrlUtil.getUrl(ROLE));
+			}else {
+				throw new NotFoundException();
+			}
+			
 		} catch (Exception ex) {
 			log.error(ex.getLocalizedMessage(), ex);
 			return errorResponse(ex);

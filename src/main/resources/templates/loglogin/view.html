@@ -1,7 +1,9 @@
 <!doctype html>
 <html th:lang="${#locale}" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="fragment/head.html :: content(title=#{logLogin})"></head>
+<head th:replace="fragment/head.html :: content(title=#{logLogin})">
+	<title>DBS Loyalty</title>
+</head>
 
 <body>
 	<div th:replace="fragment/navbar.html :: content"></div>
@@ -31,7 +33,7 @@
 									<div class="input-group">
 		                                <input type="text" class="form-control bg-white" name="ed" th:value="${param.ed}" th:placeholder="#{endDate}" readonly="readonly">
 										<div class="input-group-append">
-		                                    <div class="input-group-text bg-light"><i class="icon-calendar"></i></div>
+		                                    <div class="input-group-text bg-light"><span class="icon-calendar"></span></div>
 		                                </div>
 									</div>
 								</div>
@@ -40,10 +42,10 @@
                                 <input class="form-control" name="ky" maxlength="40" th:value="${param.ky}" th:placeholder="#{keyword}" />
                                 <div class="input-group-append">
                                     <button class="btn btn-light border text-secondary" type="submit">
-                                        <i class="icon-search"></i>
+                                        <span class="icon-search"></span>
                                     </button>
                                     <a class="btn btn-light border text-secondary" th:href="@{/loglogin}">
-                                        <i class="icon-arrows-cw"></i>
+                                        <span class="icon-arrows-cw"></span>
                                     </a>
                                 </div>
                             </div>
@@ -57,7 +59,7 @@
                                 <th class="text-center" width="60px">#</th>
                                 <th width="150px" th:with="sort=|&sort=createdDate,${ascending ? 'DESC' : 'ASC'}|">
                                 	<a th:href="@{|?page=${page.getNumber()}${params}${sort}|}" class="text-decoration-none">
-                                		<span th:text="#{date}"></span> <i th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></i>
+                                		<span th:text="#{date}"></span> <span th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></span>
                                 	</a>
                                 </th>
                                 <th width="80px" th:text="#{loginStatus}"></th>
@@ -81,14 +83,14 @@
 					</table>
 				</div>
                 <div class="border alert alert-light text-center" role="alert" th:if="${page.getTotalElements() == 0}">
-                    <i class="icon-attention"></i> <span th:text="#{message.dataNotFound}"></span>
+                    <span class="icon-attention"></span> <span th:text="#{message.dataNotFound}"></span>
                 </div>
                 <th:block th:if="${page != null && page.getTotalPages() > 1}">
                     <a class="btn btn-sm btn-secondary" th:href="@{|?${previous}${params}|}" th:classappend="${not page.hasPrevious()} ? 'disabled'">
-                    	<i class="icon-left-open"></i> <span th:text="#{previous}"></span>
+                    	<span class="icon-left-open"></span> <span th:text="#{previous}"></span>
                     </a>
                     <a class="btn btn-sm btn-secondary" th:href="@{|?${next}${params}|}" th:classappend="${not page.hasNext()} ? 'disabled'">
-                    	<span th:text="#{next}"></span> <i class="icon-right-open"></i>
+                    	<span th:text="#{next}"></span> <span class="icon-right-open"></span>
                     </a>
                 </th:block>
 			</div>

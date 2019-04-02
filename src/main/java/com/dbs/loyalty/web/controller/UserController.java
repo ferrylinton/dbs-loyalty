@@ -88,10 +88,10 @@ public class UserController extends AbstractPageController{
 		if (id.equals(ZERO)) {
 			model.addAttribute(USER, new UserDto());
 		} else {
-			Optional<UserDto> userDto = userService.findById(id);
+			Optional<UserDto> current = userService.findById(id);
 			
-			if (userDto.isPresent()) {
-				model.addAttribute(USER, userDto.get());
+			if (current.isPresent()) {
+				model.addAttribute(USER, current.get());
 			} else {
 				model.addAttribute(ERROR, getNotFoundMessage(id));
 			}
@@ -115,8 +115,13 @@ public class UserController extends AbstractPageController{
 					taskService.saveTaskAdd(USER, userDto);
 				}else {
 					Optional<UserDto> current = userService.findWithRoleById(userDto.getId());
-					userDto.setPasswordHash(current.get().getPasswordHash());
-					taskService.saveTaskModify(USER, current.get(), userDto);
+					
+					if(current.isPresent()) {
+						userDto.setPasswordHash(current.get().getPasswordHash());
+						taskService.saveTaskModify(USER, current.get(), userDto);
+					}else {
+						throw new NotFoundException();
+					}
 				}
 
 				return taskIsSavedResponse(USER,  userDto.getUsername(), UrlUtil.getUrl(USER));
@@ -133,9 +138,15 @@ public class UserController extends AbstractPageController{
 	@ResponseBody
 	public ResponseEntity<?> delete(@PathVariable String id) throws NotFoundException {
 		try {
-			Optional<UserDto> userDto = userService.findWithRoleById(id);
-			taskService.saveTaskDelete(USER, userDto.get());
-			return taskIsSavedResponse(USER, userDto.get().getUsername(), UrlUtil.getUrl(USER));
+			Optional<UserDto> current = userService.findWithRoleById(id);
+			
+			if(current.isPresent()) {
+				taskService.saveTaskDelete(USER, current.get());
+				return taskIsSavedResponse(USER, current.get().getUsername(), UrlUtil.getUrl(USER));
+			}else {
+				throw new NotFoundException();
+			}
+			
 		} catch (Exception ex) {
 			log.error(ex.getLocalizedMessage(), ex);
 			return errorResponse(ex);

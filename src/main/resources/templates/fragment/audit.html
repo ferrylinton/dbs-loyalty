@@ -1,11 +1,13 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
-
+<head>
+	<title>DBS Loyalty</title>
+</head>
 <body>
 	<div th:fragment="content(data)" th:with="format=${@environment.getProperty('application.format.date-time-full')}" th:remove="tag">
 		<th:block th:if="${data.createdBy != null}">
 			<button class="btn btn-light btn-sm btn-block mb-3 text-left p-2 font-11 border" type="button" data-toggle="collapse" data-target="#audit" aria-expanded="false" aria-controls="audit">
-			    <span th:text="#{label.auditInfo}">Audit</span><i class="icon-up-dir float-right"></i>
+			    <span th:text="#{label.auditInfo}">Audit</span><span class="icon-up-dir float-right"></span>
 			</button>
 			<div class="collapse" id="audit">
 				<div class="form-group">

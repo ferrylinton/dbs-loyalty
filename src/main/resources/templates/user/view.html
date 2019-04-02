@@ -1,7 +1,9 @@
 <!doctype html>
 <html th:lang="${#locale}" xmlns:th="http://www.org">
 
-<head th:replace="fragment/head.html :: content(title=#{user})"></head>
+<head th:replace="fragment/head.html :: content(title=#{user})">
+	<title>DBS Loyalty</title>
+</head>
 
 <body>
 	<div th:replace="fragment/navbar.html :: content"></div>
@@ -21,10 +23,10 @@
 								<input class="form-control" name="ky" maxlength="40" th:value="${param.ky}" th:placeholder="#{keyword}" />
 								<div class="input-group-append">
 									<button class="btn btn-light border text-secondary" type="submit">
-										<i class="icon-search"></i>
+										<span class="icon-search"></span>
 									</button>
 									<a class="btn btn-light border text-secondary" th:href="@{/user}">
-										<i class="icon-arrows-cw"></i>
+										<span class="icon-arrows-cw"></span>
 									</a>
 								</div>
 							</div>
@@ -32,7 +34,7 @@
 					</div>
 					<div class="col-auto">
 						<a class="btn btn-light text-secondary border" th:href="@{/user/0}">
-							<i class="icon-plus"></i>
+							<span class="icon-plus"></span>
 						</a>
 					</div>
 				</div>
@@ -44,7 +46,7 @@
 								<th width="50px">#</th>
 								<th width="220px" th:with="sort=|&sort=username,${ascending ? 'DESC' : 'ASC'}|">
                                 	<a th:href="@{|?page=${page.getNumber()}${params}${sort}|}" class="text-decoration-none">
-                                		<span th:text="#{username}"></span> <i th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></i>
+                                		<span th:text="#{username}"></span> <span th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></span>
                                 	</a>
                                 </th>
                                 <th th:text="#{userType}"></th>
@@ -58,15 +60,15 @@
 								<td class="py-0 px-1">
 									<div class="dropdown">
 										<button type="button" class="btn btn-default dropdown-toggle px-1 py-0 font-12" id="dropdownMenuButton" data-boundary="window" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										 	<i class="icon-cog"></i>
+										 	<span class="icon-cog"></span>
 										</button>
 										<div class="dropdown-menu py-0 shadow" aria-labelledby="dropdownMenuButton">
 										    <a class="dropdown-item pl-1" th:href="@{|/user/${user.id}|}">
-										    	<i class="icon-edit"></i> <span th:text="#{edit}"></span>
+										    	<span class="icon-edit"></span> <span th:text="#{edit}"></span>
 										    </a>
 										   	<div class="dropdown-divider my-0"></div>
 											<a class="dropdown-item pl-1 text-danger" th:href="@{|/user/${user.id}|}" onclick="return Data.confirm(this)">
-												<i class="icon-trash"></i> <span th:text="#{delete}"></span>
+												<span class="icon-trash"></span> <span th:text="#{delete}"></span>
 											</a>
 										</div>
 									</div>
@@ -86,14 +88,14 @@
 					</table>
 				</div>
 				<div class="border alert alert-light text-center" role="alert" th:if="${page.getTotalElements() == 0}">
-					<i class="icon-attention"></i> <span th:text="#{message.dataNotFound}"></span>
+					<span class="icon-attention"></span> <span th:text="#{message.dataNotFound}"></span>
 				</div>
 				<th:block th:if="${page != null && page.getTotalPages() > 1}">
                     <a class="btn btn-sm btn-secondary" th:href="@{|?${previous}${params}|}" th:classappend="${not page.hasPrevious()} ? 'disabled'">
-                    	<i class="icon-left-open"></i> <span th:text="#{previous}"></span>
+                    	<span class="icon-left-open"></span> <span th:text="#{previous}"></span>
                     </a>
                     <a class="btn btn-sm btn-secondary" th:href="@{|?${next}${params}|}" th:classappend="${not page.hasNext()} ? 'disabled'">
-                    	<span th:text="#{next}"></span> <i class="icon-right-open"></i>
+                    	<span th:text="#{next}"></span> <span class="icon-right-open"></span>
                     </a>
                 </th:block>
 			</div>

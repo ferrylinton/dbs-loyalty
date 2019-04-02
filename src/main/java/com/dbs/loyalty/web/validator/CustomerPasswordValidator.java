@@ -35,17 +35,20 @@ public class CustomerPasswordValidator implements Validator {
 	@Override
 	public void validate(Object target, Errors errors) {
 		CustomerPasswordDto customerPasswordDto = (CustomerPasswordDto) target;
-		Optional<CustomerDto> customerDto = customerService.findByEmail(SecurityUtil.getLogged());
+		
 		
 		if(customerPasswordDto.getOldPassword() != null && customerPasswordDto.getNewPassword() != null && customerPasswordDto.getConfirmNewPassword() != null) {
 			if(!customerPasswordDto.getNewPassword().equals(customerPasswordDto.getConfirmNewPassword())) {
 				Object[] errorArgs = new String[] { customerPasswordDto.getConfirmNewPassword() };
 				String defaultMessage = MessageService.getMessage(CONFIRM_NEW_PASS_NOT_MATCH, errorArgs);
 				errors.rejectValue(CONFIRM_NEW_PASS, CONFIRM_NEW_PASS_NOT_MATCH, errorArgs, defaultMessage);
-			}else if(!PasswordUtil.getInstance().matches(customerPasswordDto.getOldPassword(), customerDto.get().getPasswordHash())) {
-				Object[] errorArgs = new String[] { customerPasswordDto.getOldPassword() };
-				String defaultMessage = MessageService.getMessage(OLD_PASS_NOT_MATCH, errorArgs);
-				errors.rejectValue(OLD_PASS, OLD_PASS_NOT_MATCH, errorArgs, defaultMessage);
+			}else {
+				Optional<CustomerDto> current = customerService.findByEmail(SecurityUtil.getLogged());
+				if(current.isPresent() && !PasswordUtil.getInstance().matches(customerPasswordDto.getOldPassword(), current.get().getPasswordHash())) {
+					Object[] errorArgs = new String[] { customerPasswordDto.getOldPassword() };
+					String defaultMessage = MessageService.getMessage(OLD_PASS_NOT_MATCH, errorArgs);
+					errors.rejectValue(OLD_PASS, OLD_PASS_NOT_MATCH, errorArgs, defaultMessage);
+				}
 			}
 		}
 	}

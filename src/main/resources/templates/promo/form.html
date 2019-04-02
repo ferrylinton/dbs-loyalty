@@ -1,7 +1,9 @@
 <!doctype html>
 <html lang="en" th:lang="${#locale}" xmlns:th="http://www.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head th:replace="fragment/head.html :: content(title=#{promo})"></head>
+<head th:replace="fragment/head.html :: content(title=#{promo})">
+	<title>DBS Loyalty</title>
+</head>
 
 <body th:with="isMaker=${#authorization.expression('hasAuthority(''PROMO_MK'')')}">
 	<div th:replace="fragment/navbar.html :: content"></div>
@@ -18,7 +20,7 @@
 					<div class="row no-gutters" th:with="format=${@environment.getProperty('application.format.date')}">
 						<div class="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-6">
 							<div class="border alert alert-light text-center" role="alert" th:if="${error}">
-				                <i class="icon-attention"></i> <span th:text="${error}"></span>
+				                <span class="icon-attention"></span> <span th:text="${error}"></span>
 				            </div>
 							<form th:action="@{/promo}" th:object="${promo}" method="post" autocomplete="off" onsubmit="return Data.submit(this)" th:if="promo != null">
 								<div class="form-group" th:if="${promo.id != null}">
@@ -91,10 +93,10 @@
 								<div th:replace="fragment/audit.html :: content(${promo})"></div>
 								<div class="mt-3">
 									<a class="btn btn-sm btn-secondary px-3" th:href="@{/promo}">
-										<i class="icon-left"></i> <span th:text="#{back}"></span>
+										<span class="icon-left"></span> <span th:text="#{back}"></span>
 									</a>
 									<button class="btn btn-sm btn-primary px-3" type="submit" th:if="${isMaker}">
-										<i class="icon-floppy"></i> <span th:text="#{save}"></span>
+										<span class="icon-floppy"></span> <span th:text="#{save}"></span>
 									</button>
 								</div>
 							</form>

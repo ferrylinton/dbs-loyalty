@@ -71,8 +71,14 @@ public class PromoRestController {
     		@PathVariable String id){
     	
     	try {
-	    	Optional<PromoDto> promoDto = promoService.findById(id);
-	    	return ResponseEntity.ok().body(promoDto.get());
+	    	Optional<PromoDto> current = promoService.findById(id);
+	    	
+	    	if(current.isPresent()) {
+	    		return ResponseEntity.ok().body(current.get());
+	    	}else {
+	    		return ResponseEntity.notFound().build();
+	    	}
+	    	
     	} catch (Exception e) {
 			log.error(e.getLocalizedMessage(), e);
 			return ResponseEntity.status(500).body(new ErrorResponse(e.getLocalizedMessage()));
@@ -93,10 +99,10 @@ public class PromoRestController {
     		@PathVariable String id){
     	
     	try {
-	    	Optional<PromoDto> promoDto = promoService.findById(id);
+	    	Optional<PromoDto> current = promoService.findById(id);
 	    	
-	    	if(promoDto.isPresent()) {
-	    		return ResponseEntity.ok().body(Base64Util.getBytes(promoDto.get().getImageString()));
+	    	if(current.isPresent()) {
+	    		return ResponseEntity.ok().body(Base64Util.getBytes(current.get().getImageString()));
 	    	}else {
 	    		return ResponseEntity.notFound().build();
 	    	}
@@ -121,10 +127,10 @@ public class PromoRestController {
     		@PathVariable String id){
     	
     	try {
-	    	Optional<PromoDto> promoDto = promoService.findById(id);
+	    	Optional<PromoDto> current = promoService.findById(id);
 	    	
-	    	if(promoDto.isPresent()) {
-	    		return ResponseEntity.ok().body(promoDto.get().getTermAndCondition());
+	    	if(current.isPresent()) {
+	    		return ResponseEntity.ok().body(current.get().getTermAndCondition());
 	    	}else {
 	    		return ResponseEntity.notFound().build();
 	    	}
