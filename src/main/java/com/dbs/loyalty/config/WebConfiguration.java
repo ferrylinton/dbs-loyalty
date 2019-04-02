@@ -23,7 +23,7 @@ import com.github.bufferings.thymeleaf.extras.nl2br.dialect.Nl2brDialect;
 public class WebConfiguration implements WebMvcConfigurer{
 
 	public WebConfiguration(ServletContext context) {
-		UrlUtil.contextPath = context.getContextPath();
+		UrlUtil.setContextPath(context.getContextPath());
 	}
 	
 	@Bean("localeResolver")

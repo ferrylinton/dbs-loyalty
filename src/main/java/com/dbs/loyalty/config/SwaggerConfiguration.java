@@ -95,12 +95,12 @@ public class SwaggerConfiguration {
 	            .globalResponseMessage(RequestMethod.DELETE, DELETEResponseMessages())
 	            .additionalModels(typeResolver.resolve(ErrorResponse.class))
 	            .tags(
-	            	new Tag(SwaggerConstant.Authentication, Constant.EMPTY, 0),
-	            	new Tag(SwaggerConstant.Customer, Constant.EMPTY, 1),
-	            	new Tag(SwaggerConstant.PromoCategory, Constant.EMPTY, 2),
-	            	new Tag(SwaggerConstant.Promo, Constant.EMPTY, 3),
-	            	new Tag(SwaggerConstant.LovedOne, Constant.EMPTY, 4),
-	            	new Tag(SwaggerConstant.Reward, Constant.EMPTY, 5)
+	            	new Tag(SwaggerConstant.AUTHENTICATION, Constant.EMPTY, 0),
+	            	new Tag(SwaggerConstant.CUSTOMER, Constant.EMPTY, 1),
+	            	new Tag(SwaggerConstant.PROMO_CATEGORY, Constant.EMPTY, 2),
+	            	new Tag(SwaggerConstant.PROMO, Constant.EMPTY, 3),
+	            	new Tag(SwaggerConstant.LOVED_ONE, Constant.EMPTY, 4),
+	            	new Tag(SwaggerConstant.REWARD, Constant.EMPTY, 5)
 	            )
 				.select()
 				.apis(RequestHandlerSelectors.basePackage("com.dbs.loyalty.web.controller.rest"))

@@ -34,28 +34,34 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 public class UserPasswordController extends AbstractController{
 
-	private final String FORM_TEMPLATE	= "password/form";
+	private String formTemplate	= "password/form";
 	
-	private final String PWD_MESSAGE = "message.password";
+	private String successMessage = "message.changePasswordSuccess";
 	
-	private final String USER = "user";
+	private String user = "user";
 	
-	private final String PWD = "password";
+	private String userType = "userType";
+	
+	private String pass = "password";
 	
 	private final UserService userService;
 
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/password")
-	public String viewPassword(ModelMap model, Principal principal) throws NotFoundException {
+	public String viewPassword(ModelMap model, Principal principal){
 		Optional<UserDto> userDto = userService.findByUsername(principal.getName());
+		
+		if(userDto.isPresent()) {
+			model.addAttribute(userType, userDto.get().getUserType());
+		}
+		
 		UserPasswordDto userPasswordDto = new UserPasswordDto();
 		userPasswordDto.setLoggedUsername(principal.getName());
 		userPasswordDto.setUsername(principal.getName());
 
-		model.addAttribute("userType", userDto.get().getUserType());
-		model.addAttribute(PWD, userPasswordDto);
-		model.addAttribute(Constant.ENTITY_URL, UrlUtil.getUrl(PWD));
-		return FORM_TEMPLATE;
+		model.addAttribute(pass, userPasswordDto);
+		model.addAttribute(Constant.ENTITY_URL, UrlUtil.getUrl(pass));
+		return formTemplate;
 	}
 	
 	@PreAuthorize("hasRole('USER_MK')")
@@ -68,20 +74,20 @@ public class UserPasswordController extends AbstractController{
 			userPasswordDto.setLoggedUsername(principal.getName());
 			userPasswordDto.setUsername(principal.getName());
 			
-			model.addAttribute("userType", userDto.get().getUserType());
-			model.addAttribute(PWD, userPasswordDto);
-			model.addAttribute(Constant.ENTITY_URL, UrlUtil.getUrl(PWD));
+			model.addAttribute(userType, userDto.get().getUserType());
+			model.addAttribute(pass, userPasswordDto);
+			model.addAttribute(Constant.ENTITY_URL, UrlUtil.getUrl(pass));
 		}else {
 			throw new NotFoundException();
 		}
 
-		return FORM_TEMPLATE;
+		return formTemplate;
 	}
 
 	@PreAuthorize("authenticated")
 	@PostMapping("/password")
 	@ResponseBody
-	public ResponseEntity<?> save(@Valid @ModelAttribute(PWD) UserPasswordDto userPasswordDto, BindingResult result) throws NotFoundException {
+	public ResponseEntity<?> save(@Valid @ModelAttribute UserPasswordDto userPasswordDto, BindingResult result) throws NotFoundException {
 		if (result.hasErrors()) {
 			return ResponseUtil.createBadRequestResponse(result);
 		} else {
@@ -89,8 +95,8 @@ public class UserPasswordController extends AbstractController{
 				String passwordHash = PasswordUtil.getInstance().encode(userPasswordDto.getPasswordPlain());
 				userService.save(userPasswordDto.getUsername(), passwordHash);
 
-				String message = MessageService.getMessage(PWD_MESSAGE, userPasswordDto.getUsername());
-				String resultUrl = UrlUtil.getUrl(userPasswordDto.isOwnPassword() ? PWD : USER);
+				String message = MessageService.getMessage(successMessage, userPasswordDto.getUsername());
+				String resultUrl = UrlUtil.getUrl(userPasswordDto.isOwnPassword() ? pass : user);
 				return ResponseUtil.createSuccessResponse(message, resultUrl);
 			} catch (Exception ex) {
 				log.error(ex.getLocalizedMessage(), ex);

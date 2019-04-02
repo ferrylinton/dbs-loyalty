@@ -21,7 +21,7 @@ public abstract class AbstractPageController extends AbstractController{
 		params.remove(PAGE);
 		params.remove(SORT);
 		removeEmpty(params);
-		request.setAttribute(PARAMS, (params.isEmpty()) ? EMPTY : AND + Joiner.on(AND).withKeyValueSeparator(EQUALS).join(params));
+		request.setAttribute(PARAMS, (params.isEmpty()) ? EMPTY : AND + Joiner.on(AND).withKeyValueSeparator(EQ).join(params));
 	}
 	
 	protected void removeEmpty(Map<String,String> params) {
@@ -44,7 +44,7 @@ public abstract class AbstractPageController extends AbstractController{
 		Map<String,String> params = new HashMap<>();
 		params.put(PAGE, Integer.toString(page));
 		params.put(SORT, order.getProperty() + COMMA + order.getDirection().name());
-		return Joiner.on(AND).withKeyValueSeparator(EQUALS).join(params);
+		return Joiner.on(AND).withKeyValueSeparator(EQ).join(params);
 	}
 
 	protected Pageable getPageable(Map<String, String> params, Order order) {

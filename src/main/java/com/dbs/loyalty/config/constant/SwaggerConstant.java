@@ -2,17 +2,17 @@ package com.dbs.loyalty.config.constant;
 
 public class SwaggerConstant {
 
-	public static final String Authentication = "Authentication";
+	public static final String AUTHENTICATION = "Authentication";
 	
-	public static final String PromoCategory = "PromoCategory";
+	public static final String PROMO_CATEGORY = "PromoCategory";
 	
-	public static final String Promo = "Promo";
+	public static final String PROMO = "Promo";
 	
-	public static final String Reward = "Reward";
+	public static final String REWARD = "Reward";
 	
-	public static final String Customer = "Customer";
+	public static final String CUSTOMER = "Customer";
 	
-	public static final String LovedOne = "LovedOne";
+	public static final String LOVED_ONE = "LovedOne";
 	
 	public static final String JWT = "JWT";
 }

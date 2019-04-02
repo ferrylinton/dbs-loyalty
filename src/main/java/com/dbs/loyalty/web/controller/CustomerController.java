@@ -116,14 +116,18 @@ public class CustomerController extends AbstractPageController{
 				}else {
 					Optional<CustomerDto> current = customerService.findById(customerDto.getId());
 					
-					if(customerDto.getFile().isEmpty()) {
-						customerDto.setImageString(Base64Util.getString(current.get().getFile().getBytes()));
+					if(current.isPresent()) {
+						if(customerDto.getFile().isEmpty()) {
+							customerDto.setImageString(Base64Util.getString(current.get().getFile().getBytes()));
+						}else {
+							customerDto.setImageString(Base64Util.getString(customerDto.getFile().getBytes()));
+						}
+						
+						customerDto.setPasswordHash(current.get().getPasswordHash());
+						taskService.saveTaskModify(CUSTOMER, current.get(), customerDto);
 					}else {
-						customerDto.setImageString(Base64Util.getString(customerDto.getFile().getBytes()));
+						throw new NotFoundException();
 					}
-					
-					customerDto.setPasswordHash(current.get().getPasswordHash());
-					taskService.saveTaskModify(CUSTOMER, current.get(), customerDto);
 				}
 
 				return taskIsSavedResponse(CUSTOMER,  customerDto.getName(), UrlUtil.getUrl(CUSTOMER));
@@ -138,11 +142,16 @@ public class CustomerController extends AbstractPageController{
 	@PreAuthorize("hasRole('CUSTOMER_MK')")
 	@DeleteMapping("/{id}")
 	@ResponseBody
-	public ResponseEntity<?> delete(@PathVariable String id) throws NotFoundException {
+	public ResponseEntity<?> delete(@PathVariable String id) {
 		try {
-			Optional<CustomerDto> customerDto = customerService.findById(id);
-			taskService.saveTaskDelete(CUSTOMER, customerDto.get());
-			return taskIsSavedResponse(CUSTOMER, customerDto.get().getName(), UrlUtil.getUrl(CUSTOMER));
+			Optional<CustomerDto> current = customerService.findById(id);
+			
+			if(current.isPresent()) {
+				taskService.saveTaskDelete(CUSTOMER, current.get());
+				return taskIsSavedResponse(CUSTOMER, current.get().getName(), UrlUtil.getUrl(CUSTOMER));
+			}else {
+				throw new NotFoundException();
+			}
 		} catch (Exception ex) {
 			log.error(ex.getLocalizedMessage(), ex);
 			return errorResponse(ex);

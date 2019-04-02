@@ -5,91 +5,85 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.exception.LdapConnectException;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @Controller("loginController")
 public class LoginController extends AbstractController{
 	
-	private final String EXPIRED = "expired";
+	private String expired = "expired";
 	
-	private final String INVALID = "invalid";
+	private String invalid = "invalid";
 
-	private final String FORBIDDEN = "forbidden";
+	private String forbidden = "forbidden";
 	
-	private final String LOGOUT = "logout";
+	private String logout = "logout";
 	
-	private final String ERROR = "error";
+	private String error = "error";
 	
-	private final String INVALID_USERNAME_OR_PASSWORD		= "message.invalidUsernameOrPassword";
+	private String badCredentials					= "message.invalidUsernameOrPassword";
 	
-	private final String USER_IS_ALREADY_LOGGED				= "message.userIsAlreadyLogged";
+	private String userIsAlreadyLogged				= "message.userIsAlreadyLogged";
 	
-	private final String USER_IS_LOCKED						= "message.userIsLocked";
+	private String userIsLocked						= "message.userIsLocked";
 	
-	private final String USER_LOGOUT_SUCCESS				= "message.userLogoutSuccess";
+	private String userLogoutSuccess				= "message.userLogoutSuccess";
 	
-	private final String SESSION_IS_EXPIRED					= "message.sessionIsExpired";
+	private String sessionIsExpired					= "message.sessionIsExpired";
 	
-	private final String SESSION_IS_INVALID					= "message.sessionIsInvalid";
+	private String sessionIsInvalid					= "message.sessionIsInvalid";
 	
-	private final String FORBIDDEN_MESSAGE					= "message.forbidden";
+	private String forbiddenMessage					= "message.forbidden";
 	
-	private final String LDAP_CONNECT_EXCEPTION				= "message.ldapConnectException";
+	private String ldapConnectException				= "message.ldapConnectException";
 
-	private final String SPRING_SECURITY_LAST_EXCEPTION		= "SPRING_SECURITY_LAST_EXCEPTION";
+	private String springSecurityLastException		= "textDanger";
 	
-	private final String CLASS								= "class";
+	private String cssClass							= "class";
 	
-	private final String TEXT_DANGER 						= "text-danger";
+	private String textDanger 						= "text-danger";
 	
-	private final String TEXT_SUCCESS						= "text-success";
+	private String textSuccess						= "text-success";
 	
-	private final String LOGIN_TEMPLATE						= "login/form";
+	private String loginTemplate					= "login/form";
 	
-
-	@RequestMapping("/login")
+	@GetMapping("/login")
 	public String login(HttpServletRequest request) {
 		
-		if(request.getParameter(EXPIRED) != null) {
-			request.setAttribute(CLASS, TEXT_DANGER);
-			request.setAttribute(Constant.MESSAGE, SESSION_IS_EXPIRED);
+		if(request.getParameter(expired) != null) {
+			request.setAttribute(cssClass, textDanger);
+			request.setAttribute(Constant.MESSAGE, sessionIsExpired);
 			
-		}else if(request.getParameter(INVALID) != null) {
-			request.setAttribute(CLASS, TEXT_DANGER);
-			request.setAttribute(Constant.MESSAGE, SESSION_IS_INVALID);
+		}else if(request.getParameter(invalid) != null) {
+			request.setAttribute(cssClass, textDanger);
+			request.setAttribute(Constant.MESSAGE, sessionIsInvalid);
 			
-		}else if(request.getParameter(FORBIDDEN) != null) {
-			request.setAttribute(CLASS, TEXT_DANGER);
-			request.setAttribute(Constant.MESSAGE, FORBIDDEN_MESSAGE);
+		}else if(request.getParameter(forbidden) != null) {
+			request.setAttribute(cssClass, textDanger);
+			request.setAttribute(Constant.MESSAGE, forbiddenMessage);
 			
-		}else if(request.getParameter(LOGOUT) != null) {
-			request.setAttribute(CLASS, TEXT_SUCCESS);
-			request.setAttribute(Constant.MESSAGE, USER_LOGOUT_SUCCESS);
+		}else if(request.getParameter(logout) != null) {
+			request.setAttribute(cssClass, textSuccess);
+			request.setAttribute(Constant.MESSAGE, userLogoutSuccess);
 			
-		}else if (request.getParameter(ERROR) != null) {
-			Exception exception = (Exception) request.getSession().getAttribute(SPRING_SECURITY_LAST_EXCEPTION);
-			log.error("LOGIN ERROR");
-			log.error(exception.getLocalizedMessage(), exception);
+		}else if (request.getParameter(error) != null) {
+			Exception exception = (Exception) request.getSession().getAttribute(springSecurityLastException);
 			
-			request.setAttribute(CLASS, TEXT_DANGER);
+			request.setAttribute(cssClass, textDanger);
 			if(exception instanceof LockedException) {
-				request.setAttribute(Constant.MESSAGE, USER_IS_LOCKED);
+				request.setAttribute(Constant.MESSAGE, userIsLocked);
 			}else if(exception instanceof SessionAuthenticationException) {
-				request.setAttribute(Constant.MESSAGE, USER_IS_ALREADY_LOGGED);
+				request.setAttribute(Constant.MESSAGE, userIsAlreadyLogged);
 			}else if(exception instanceof LdapConnectException) {
-				request.setAttribute(Constant.MESSAGE, LDAP_CONNECT_EXCEPTION);
+				request.setAttribute(Constant.MESSAGE, ldapConnectException);
 			}else{
-				request.setAttribute(Constant.MESSAGE, INVALID_USERNAME_OR_PASSWORD);
+				request.setAttribute(Constant.MESSAGE, badCredentials);
 			}
 		}
 		
-		return LOGIN_TEMPLATE;
+		return loginTemplate;
 	}
 
 }

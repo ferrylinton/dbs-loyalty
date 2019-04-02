@@ -46,7 +46,7 @@ public class Constant {
 	
 	public static final String AND					= "&";
 	
-	public static final String EQUALS				= "=";
+	public static final String EQ					= "=";
 	
 	public static final String NEXT					= "next";
 	

@@ -10,7 +10,9 @@ import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.domain.enumeration.TaskStatus;
 
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class TaskSpecification {
 
 	public static final String TASK_STATUS = "taskStatus";
@@ -75,7 +77,7 @@ public class TaskSpecification {
 				taskStatus = TaskStatus.valueOf(params.get(ST_PARAM));
 			}
 		} catch (Exception e) {;
-			e.printStackTrace();
+		log.error(e.getLocalizedMessage(), e);
 		}
 
 		request.setAttribute(ST_PARAM, taskStatus);
@@ -90,7 +92,7 @@ public class TaskSpecification {
 				taskOperation = TaskOperation.valueOf(params.get(OP_PARAM));
 			}
 		} catch (Exception e) {;
-			e.printStackTrace();
+			log.error(e.getLocalizedMessage(), e);
 		}
 
 		request.setAttribute(OP_PARAM, taskOperation);

@@ -75,17 +75,21 @@ public class CustomerService{
 	public CustomerDto update(CustomerUpdateDto customerUpdateDto) throws IOException {
 		Optional<Customer> current = customerRepository.findByEmail(SecurityUtil.getLogged());
 		
-		Customer customer = current.get();
-		customer.setEmail(customerUpdateDto.getEmail());
-		customer.setName(customerUpdateDto.getName());
-		customer.setPhone(customerUpdateDto.getPhone());
-		customer.setDob(customerUpdateDto.getDob());
-		customer.setImageBytes(Base64Util.getBytes(customerUpdateDto.getImageString()));
-		customer.setLastModifiedBy(SecurityUtil.getLogged());
-		customer.setLastModifiedDate(Instant.now());
-		
-		customer = customerRepository.save(customer);
-		return customerMapper.toDto(customer, urlService);
+		if(current.isPresent()) {
+			Customer customer = current.get();
+			customer.setEmail(customerUpdateDto.getEmail());
+			customer.setName(customerUpdateDto.getName());
+			customer.setPhone(customerUpdateDto.getPhone());
+			customer.setDob(customerUpdateDto.getDob());
+			customer.setImageBytes(Base64Util.getBytes(customerUpdateDto.getImageString()));
+			customer.setLastModifiedBy(SecurityUtil.getLogged());
+			customer.setLastModifiedDate(Instant.now());
+			
+			customer = customerRepository.save(customer);
+			return customerMapper.toDto(customer, urlService);
+		}else {
+			return null;
+		}
 	}
 	
 	public void changePassword(CustomerPasswordDto customerPasswordDto) {

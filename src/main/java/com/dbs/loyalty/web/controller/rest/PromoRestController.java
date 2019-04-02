@@ -26,7 +26,7 @@ import io.swagger.annotations.Authorization;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Api(tags = { SwaggerConstant.Promo })
+@Api(tags = { SwaggerConstant.PROMO })
 @RequiredArgsConstructor
 @Slf4j
 @RestController

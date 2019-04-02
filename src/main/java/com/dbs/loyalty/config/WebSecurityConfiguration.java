@@ -36,6 +36,8 @@ import lombok.RequiredArgsConstructor;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
+	private static final String LOGIN = "/login";
+	
 	private final LoginEventPublisher loginEventPublisher;
 	
 	@Override
@@ -60,7 +62,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     		.antMatchers("/static/**").permitAll()
     		.antMatchers("/webjars/**").permitAll()
     		.antMatchers("/h2-console/**").permitAll()
-    		.antMatchers("/login").permitAll()
+    		.antMatchers(LOGIN).permitAll()
     		.antMatchers("/swagger-ui.html").permitAll()
     		.antMatchers("/v2/api-docs").permitAll()
     		.antMatchers("/swagger-resources/configuration/ui").permitAll()
@@ -70,8 +72,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 		
 	    http
 	    	.formLogin()
-	    		.loginPage("/login")
-	    		.loginProcessingUrl("/login")
+	    		.loginPage(LOGIN)
+	    		.loginProcessingUrl(LOGIN)
 	    		.successHandler(new WebAuthenticationSuccessHandler(loginEventPublisher))
 	    		.failureHandler(new WebAuthenticationFailureHandler(loginEventPublisher));
 	    

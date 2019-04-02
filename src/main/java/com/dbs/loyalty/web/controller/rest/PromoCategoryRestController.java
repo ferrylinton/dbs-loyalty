@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * REST controller for managing PromoCategory.
  */
-@Api(tags = { SwaggerConstant.PromoCategory })
+@Api(tags = { SwaggerConstant.PROMO_CATEGORY })
 @RequiredArgsConstructor
 @Slf4j
 @RestController

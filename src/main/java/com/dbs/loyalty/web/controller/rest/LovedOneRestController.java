@@ -41,7 +41,7 @@ import io.swagger.annotations.Authorization;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Api(tags = { SwaggerConstant.LovedOne })
+@Api(tags = { SwaggerConstant.LOVED_ONE })
 @RequiredArgsConstructor
 @Slf4j
 @RestController

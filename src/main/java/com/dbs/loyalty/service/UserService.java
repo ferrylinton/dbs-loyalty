@@ -15,7 +15,6 @@ import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.UserRepository;
 import com.dbs.loyalty.service.dto.TaskDto;
 import com.dbs.loyalty.service.dto.UserDto;
-import com.dbs.loyalty.service.dto.UserPasswordDto;
 import com.dbs.loyalty.service.mapper.UserMapper;
 import com.dbs.loyalty.service.specification.UserSpecification;
 import com.dbs.loyalty.util.SecurityUtil;
@@ -48,12 +47,16 @@ public class UserService{
 	}
 	
 	public Optional<UserDto> save(String username, String passwordHash) {
+		User result = null;
 		Optional<User> user = userRepository.findByUsernameIgnoreCase(username);
-		user.get().setPasswordHash(passwordHash);
-		user.get().setLastModifiedBy(SecurityUtil.getLogged());
-		user.get().setLastModifiedDate(Instant.now());
-		User result = userRepository.save(user.get());
 		
+		if(user.isPresent()) {
+			user.get().setPasswordHash(passwordHash);
+			user.get().setLastModifiedBy(SecurityUtil.getLogged());
+			user.get().setLastModifiedDate(Instant.now());
+			result = userRepository.save(user.get());
+		}
+
 		return Optional.of(userMapper.toDto(result));
 	}
 	

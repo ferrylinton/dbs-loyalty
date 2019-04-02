@@ -14,7 +14,7 @@ import com.dbs.loyalty.service.RewardService;
 
 import io.swagger.annotations.Api;
 
-@Api(tags = { SwaggerConstant.Reward })
+@Api(tags = { SwaggerConstant.REWARD })
 @RestController
 @RequestMapping("/api/reward")
 public class RewardRestController {

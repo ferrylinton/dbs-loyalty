@@ -49,21 +49,31 @@ public class LovedOneService {
 	}
 	
 	public LovedOneDto add(LovedOneAddDto lovedOneAddDto) {
-		Optional<Customer> customer = customerRepository.findByEmail(SecurityUtil.getLogged());
-		LovedOne lovedOne = lovedOneMapper.toEntity(lovedOneAddDto);
-		lovedOne.setCustomer(customer.get());
-		lovedOne.setCreatedBy(SecurityUtil.getLogged());
-		lovedOne.setCreatedDate(Instant.now());
-		return lovedOneMapper.toDto(lovedOneRepository.save(lovedOne));
+		Optional<Customer> current = customerRepository.findByEmail(SecurityUtil.getLogged());
+		
+		if(current.isPresent()) {
+			LovedOne lovedOne = lovedOneMapper.toEntity(lovedOneAddDto);
+			lovedOne.setCustomer(current.get());
+			lovedOne.setCreatedBy(SecurityUtil.getLogged());
+			lovedOne.setCreatedDate(Instant.now());
+			return lovedOneMapper.toDto(lovedOneRepository.save(lovedOne));
+		}else {
+			return null;
+		}
 	}
 	
 	public LovedOneDto update(LovedOneUpdateDto lovedOneUpdateDto) {
-		Optional<Customer> customer = customerRepository.findByEmail(SecurityUtil.getLogged());
-		LovedOne lovedOne = lovedOneMapper.toEntity(lovedOneUpdateDto);
-		lovedOne.setCustomer(customer.get());
-		lovedOne.setLastModifiedBy(SecurityUtil.getLogged());
-		lovedOne.setLastModifiedDate(Instant.now());
-		return lovedOneMapper.toDto(lovedOneRepository.save(lovedOne));
+		Optional<Customer> current = customerRepository.findByEmail(SecurityUtil.getLogged());
+		
+		if(current.isPresent()) {
+			LovedOne lovedOne = lovedOneMapper.toEntity(lovedOneUpdateDto);
+			lovedOne.setCustomer(current.get());
+			lovedOne.setLastModifiedBy(SecurityUtil.getLogged());
+			lovedOne.setLastModifiedDate(Instant.now());
+			return lovedOneMapper.toDto(lovedOneRepository.save(lovedOne));
+		}else {
+			return null;
+		}
 	}
 	
 	public List<LovedOneDto> findByCustomerEmail(String customerEmail){

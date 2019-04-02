@@ -25,7 +25,7 @@ function checkMenuGroup(){
 }
 
 function openNewTab(el) {
-    url = $(el).attr('href');
+    var url = $(el).attr('href');
     window.open(url, '_blank');
 
     return false;

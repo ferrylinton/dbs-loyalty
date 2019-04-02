@@ -28,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * Controller to authenticate users.
  */
-@Api(tags = { SwaggerConstant.Authentication })
+@Api(tags = { SwaggerConstant.AUTHENTICATION })
 @RequiredArgsConstructor
 @Slf4j
 @RestController
