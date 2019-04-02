@@ -34,12 +34,12 @@ public class LovedOneService {
 	}
 	
 	public boolean isNameExist(LovedOneAddDto lovedOneAddDto) {
-		Optional<LovedOne> lovedOne = lovedOneRepository.findByNameIgnoreCaseAndCustomerEmail(lovedOneAddDto.getName(), SecurityUtil.getCurrentEmail());
+		Optional<LovedOne> lovedOne = lovedOneRepository.findByNameIgnoreCaseAndCustomerEmail(lovedOneAddDto.getName(), SecurityUtil.getLogged());
 		return lovedOne.isPresent();
 	}
 	
 	public boolean isNameExist(LovedOneUpdateDto lovedOneUpdateDto) {
-		Optional<LovedOne> lovedOne = lovedOneRepository.findByNameIgnoreCaseAndCustomerEmail(lovedOneUpdateDto.getName(), SecurityUtil.getCurrentEmail());
+		Optional<LovedOne> lovedOne = lovedOneRepository.findByNameIgnoreCaseAndCustomerEmail(lovedOneUpdateDto.getName(), SecurityUtil.getLogged());
 
 		if (lovedOne.isPresent()) {
 			return (!lovedOneUpdateDto.getId().equals(lovedOne.get().getId()));
@@ -49,19 +49,19 @@ public class LovedOneService {
 	}
 	
 	public LovedOneDto add(LovedOneAddDto lovedOneAddDto) {
-		Optional<Customer> customer = customerRepository.findByEmail(SecurityUtil.getCurrentEmail());
+		Optional<Customer> customer = customerRepository.findByEmail(SecurityUtil.getLogged());
 		LovedOne lovedOne = lovedOneMapper.toEntity(lovedOneAddDto);
 		lovedOne.setCustomer(customer.get());
-		lovedOne.setCreatedBy(SecurityUtil.getCurrentEmail());
+		lovedOne.setCreatedBy(SecurityUtil.getLogged());
 		lovedOne.setCreatedDate(Instant.now());
 		return lovedOneMapper.toDto(lovedOneRepository.save(lovedOne));
 	}
 	
 	public LovedOneDto update(LovedOneUpdateDto lovedOneUpdateDto) {
-		Optional<Customer> customer = customerRepository.findByEmail(SecurityUtil.getCurrentEmail());
+		Optional<Customer> customer = customerRepository.findByEmail(SecurityUtil.getLogged());
 		LovedOne lovedOne = lovedOneMapper.toEntity(lovedOneUpdateDto);
 		lovedOne.setCustomer(customer.get());
-		lovedOne.setLastModifiedBy(SecurityUtil.getCurrentEmail());
+		lovedOne.setLastModifiedBy(SecurityUtil.getLogged());
 		lovedOne.setLastModifiedDate(Instant.now());
 		return lovedOneMapper.toDto(lovedOneRepository.save(lovedOne));
 	}

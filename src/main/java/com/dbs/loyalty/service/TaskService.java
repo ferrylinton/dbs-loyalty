@@ -66,7 +66,7 @@ public class TaskService {
 		task.setTaskStatus(TaskStatus.Pending);
 		task.setTaskDataType(type);
 		task.setTaskDataNew(objectMapper.writeValueAsString(taskDataNew));
-		task.setMaker(SecurityUtil.getCurrentEmail());
+		task.setMaker(SecurityUtil.getLogged());
 		task.setMadeDate(Instant.now());
 		return taskRepository.save(task);
 	}
@@ -78,7 +78,7 @@ public class TaskService {
 		task.setTaskDataType(type);
 		task.setTaskDataOld(objectMapper.writeValueAsString(taskDataOld));
 		task.setTaskDataNew(objectMapper.writeValueAsString(taskDataNew));
-		task.setMaker(SecurityUtil.getCurrentEmail());
+		task.setMaker(SecurityUtil.getLogged());
 		task.setMadeDate(Instant.now());
 		return taskRepository.save(task);
 	}
@@ -89,7 +89,7 @@ public class TaskService {
 		task.setTaskStatus(TaskStatus.Pending);
 		task.setTaskDataType(type);
 		task.setTaskDataOld(objectMapper.writeValueAsString(taskDataOld));
-		task.setMaker(SecurityUtil.getCurrentEmail());
+		task.setMaker(SecurityUtil.getLogged());
 		task.setMadeDate(Instant.now());
 		return taskRepository.save(task);
 	}
@@ -98,7 +98,7 @@ public class TaskService {
 	public String save(TaskDto taskDto) throws JsonParseException, JsonMappingException, IOException {
 		Task task = taskMapper.toEntity(taskDto);
 		task.setTaskStatus(taskDto.isVerified() ? TaskStatus.Verified : TaskStatus.Rejected);
-		task.setChecker(SecurityUtil.getCurrentEmail());
+		task.setChecker(SecurityUtil.getLogged());
 		task.setCheckedDate(Instant.now());
 		
 		taskRepository.save(task);

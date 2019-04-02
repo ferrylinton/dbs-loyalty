@@ -69,12 +69,12 @@ public class CustomerRestController extends AbstractController{
     @GetMapping("/customers/info")
 	public ResponseEntity<?> getCustomerInfo(){
     	try {
-			Optional<CustomerDto> customerDto = customerService.findByEmail(SecurityUtil.getCurrentEmail());
+			Optional<CustomerDto> customerDto = customerService.findByEmail(SecurityUtil.getLogged());
 			
 			if(customerDto.isPresent()) {
 				return ResponseEntity.ok().body(customerDto.get());
 			}else {
-				return ResponseEntity.status(404).body(new ErrorResponse(String.format("%s is not found", SecurityUtil.getCurrentEmail())));
+				return ResponseEntity.status(404).body(new ErrorResponse(String.format("%s is not found", SecurityUtil.getLogged())));
 			}
 			
     	} catch (Exception e) {
@@ -94,12 +94,12 @@ public class CustomerRestController extends AbstractController{
     @GetMapping(value = "/customers/image", produces = MediaType.IMAGE_JPEG_VALUE)
 	public ResponseEntity<?> getCustomerImage() {
     	try {
-	    	Optional<CustomerDto> customerDto = customerService.findByEmail(SecurityUtil.getCurrentEmail());
+	    	Optional<CustomerDto> customerDto = customerService.findByEmail(SecurityUtil.getLogged());
 	    	
 			if(customerDto.isPresent()) {
 				return ResponseEntity.ok().body(Base64Util.getBytes(customerDto.get().getImageString()));
 			}else {
-				return ResponseEntity.status(404).body(new ErrorResponse(String.format("%s is not found", SecurityUtil.getCurrentEmail())));
+				return ResponseEntity.status(404).body(new ErrorResponse(String.format("%s is not found", SecurityUtil.getLogged())));
 			}
 			
     	} catch (Exception e) {

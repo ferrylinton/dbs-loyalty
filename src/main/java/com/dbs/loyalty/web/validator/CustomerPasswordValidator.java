@@ -35,7 +35,7 @@ public class CustomerPasswordValidator implements Validator {
 	@Override
 	public void validate(Object target, Errors errors) {
 		CustomerPasswordDto customerPasswordDto = (CustomerPasswordDto) target;
-		Optional<CustomerDto> customerDto = customerService.findByEmail(SecurityUtil.getCurrentEmail());
+		Optional<CustomerDto> customerDto = customerService.findByEmail(SecurityUtil.getLogged());
 		
 		if(customerPasswordDto.getOldPassword() != null && customerPasswordDto.getNewPassword() != null && customerPasswordDto.getConfirmNewPassword() != null) {
 			if(!customerPasswordDto.getNewPassword().equals(customerPasswordDto.getConfirmNewPassword())) {

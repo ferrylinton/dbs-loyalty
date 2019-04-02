@@ -1,6 +1,7 @@
 package com.dbs.loyalty.service;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,8 +15,10 @@ import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.UserRepository;
 import com.dbs.loyalty.service.dto.TaskDto;
 import com.dbs.loyalty.service.dto.UserDto;
+import com.dbs.loyalty.service.dto.UserPasswordDto;
 import com.dbs.loyalty.service.mapper.UserMapper;
 import com.dbs.loyalty.service.specification.UserSpecification;
+import com.dbs.loyalty.util.SecurityUtil;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -42,6 +45,16 @@ public class UserService{
 	
 	public Optional<UserDto> findWithRoleById(String id) {
 		return userRepository.findWithRoleById(id).map(userMapper::toDto);
+	}
+	
+	public Optional<UserDto> save(String username, String passwordHash) {
+		Optional<User> user = userRepository.findByUsernameIgnoreCase(username);
+		user.get().setPasswordHash(passwordHash);
+		user.get().setLastModifiedBy(SecurityUtil.getLogged());
+		user.get().setLastModifiedDate(Instant.now());
+		User result = userRepository.save(user.get());
+		
+		return Optional.of(userMapper.toDto(result));
 	}
 	
 	public Page<UserDto> findAll(Pageable pageable, HttpServletRequest request) {

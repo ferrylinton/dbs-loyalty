@@ -8,7 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 public final class SecurityUtil {
  
-	public static String getCurrentEmail() {
+	public static String getLogged() {
 		return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 	
@@ -24,14 +24,5 @@ public final class SecurityUtil {
 		
 		return result;
     }
-	
-	public static void printAuthorities() {
-		for(Object obj : SecurityContextHolder.getContext().getAuthentication().getAuthorities()) {
-			if(obj instanceof SimpleGrantedAuthority) {
-				SimpleGrantedAuthority authority = (SimpleGrantedAuthority) obj;
-				System.out.println(authority.getAuthority());
-			}
-        }
-    }
-	
+
 }

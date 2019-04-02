@@ -30,7 +30,7 @@ public class CustomerUpdateValidator implements Validator {
 	@Override
 	public void validate(Object target, Errors errors) {
 		CustomerUpdateDto customerUpdateDto = (CustomerUpdateDto) target;
-		Optional<CustomerDto> customerDto = customerService.findByEmail(SecurityUtil.getCurrentEmail());
+		Optional<CustomerDto> customerDto = customerService.findByEmail(SecurityUtil.getLogged());
 
 		customerUpdateDto.setId(customerDto.get().getId());
 		if (customerService.isEmailExist(customerUpdateDto)) {
