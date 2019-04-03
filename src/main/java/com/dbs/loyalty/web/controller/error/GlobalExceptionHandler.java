@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
 	private String file = "file";
 	
 	@ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
-    public ResponseEntity<?> methodNotSupportErrorHandler(HttpServletRequest request, Exception ex){
+    public ResponseEntity<ErrorResponse> methodNotSupportErrorHandler(HttpServletRequest request, Exception ex){
         ErrorResponse response = new ErrorResponse(ex.getLocalizedMessage());
         return ResponseEntity
 	            .status(HttpStatus.NOT_FOUND)
@@ -37,7 +37,7 @@ public class GlobalExceptionHandler {
     }
 	
 	@ExceptionHandler(DataIntegrityViolationException.class)
-	public ResponseEntity<?> handleException(DataIntegrityViolationException ex){
+	public ResponseEntity<BadRequestResponse> handleException(DataIntegrityViolationException ex){
 		BadRequestResponse response = new BadRequestResponse();
 		response.setMessage(ErrorUtil.getErrorMessage(ex));
 		return ResponseEntity
@@ -46,7 +46,7 @@ public class GlobalExceptionHandler {
 	}
 	
 	@ExceptionHandler(MaxUploadSizeExceededException.class)
-	public ResponseEntity<?> handleException(MaxUploadSizeExceededException ex){
+	public ResponseEntity<BadRequestResponse> handleException(MaxUploadSizeExceededException ex){
 		BadRequestResponse response = new BadRequestResponse();
 		response.getFields().add(file);
 		response.setMessage(MessageService.getMessage(fileSizeIsNotValid));
@@ -56,7 +56,7 @@ public class GlobalExceptionHandler {
 	}
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<?> handleValidationExceptions(MethodArgumentNotValidException ex) {
+	public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
 		Map<String, String> errors = new HashMap<String, String>();
 		
 		for(ObjectError objectError : ex.getBindingResult().getAllErrors()) {

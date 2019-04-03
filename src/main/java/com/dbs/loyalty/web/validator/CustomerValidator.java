@@ -12,9 +12,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CustomerValidator implements Validator {
 
-	private String EMAIL_EXIST = "validation.exist.email";
+	private String validationExistEmail = "validation.exist.email";
 
-	private String EMAIL = "email";
+	private String email = "email";
 
 	private final CustomerService customerService;
 
@@ -29,8 +29,8 @@ public class CustomerValidator implements Validator {
 
 		if (customerService.isEmailExist(customerDto)) {
 			Object[] errorArgs = new String[] { customerDto.getEmail() };
-			String defaultMessage = MessageService.getMessage(EMAIL_EXIST, errorArgs);
-			errors.rejectValue(EMAIL, EMAIL_EXIST, errorArgs, defaultMessage);
+			String defaultMessage = MessageService.getMessage(validationExistEmail, errorArgs);
+			errors.rejectValue(email, validationExistEmail, errorArgs, defaultMessage);
 		}
 
 	}

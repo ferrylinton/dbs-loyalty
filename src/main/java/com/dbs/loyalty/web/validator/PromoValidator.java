@@ -9,17 +9,17 @@ import com.dbs.loyalty.service.dto.PromoDto;
 
 public class PromoValidator implements Validator {
 
-	private final String EMPTY_FILE = "validation.notempty.file";
+	private String validationNotEmptyFile = "validation.notempty.file";
 
-	private final String FILE = "file";
+	private String file = "file";
 	
-	private final String CODE_EXIST = "validation.exist.code";
+	private String validationExistCode = "validation.exist.code";
 
-	private final String CODE = "code";
+	private String code = "code";
 	
-	private final String TITLE_EXIST = "validation.exist.title";
+	private String validationExistTitle = "validation.exist.title";
 
-	private final String TITLE = "title";
+	private String title = "title";
 
 	private final PromoService promoService;
 
@@ -38,19 +38,19 @@ public class PromoValidator implements Validator {
 
 		if (promoService.isCodeExist(promoDto)) {
 			Object[] errorArgs = new String[] { promoDto.getCode() };
-			String defaultMessage = MessageService.getMessage(CODE_EXIST, errorArgs);
-			errors.rejectValue(CODE, CODE_EXIST, errorArgs, defaultMessage);
+			String defaultMessage = MessageService.getMessage(validationExistCode, errorArgs);
+			errors.rejectValue(code, validationExistCode, errorArgs, defaultMessage);
 		}
 		
 		if (promoService.isTitleExist(promoDto)) {
 			Object[] errorArgs = new String[] { promoDto.getCode() };
-			String defaultMessage = MessageService.getMessage(TITLE_EXIST, errorArgs);
-			errors.rejectValue(TITLE, TITLE_EXIST, errorArgs, defaultMessage);
+			String defaultMessage = MessageService.getMessage(validationExistTitle, errorArgs);
+			errors.rejectValue(title, validationExistTitle, errorArgs, defaultMessage);
 		}
 
 		if (promoDto.getId() == null && (promoDto.getFile() == null || promoDto.getFile().isEmpty())){
-			String defaultMessage = MessageService.getMessage(EMPTY_FILE);
-			errors.rejectValue(FILE, EMPTY_FILE, defaultMessage);
+			String defaultMessage = MessageService.getMessage(validationNotEmptyFile);
+			errors.rejectValue(file, validationNotEmptyFile, defaultMessage);
         }
 		
 	}

@@ -12,9 +12,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PromoCategoryValidator implements Validator {
 
-	private String NAME_EXIST = "validation.exist.name";
+	private String validationExistName = "validation.exist.name";
 
-	private String NAME = "name";
+	private String name = "name";
 
 	private final PromoCategoryService promoCategoryService;
 
@@ -29,8 +29,8 @@ public class PromoCategoryValidator implements Validator {
 
 		if (promoCategoryService.isNameExist(promoCategoryDto)) {
 			Object[] errorArgs = new String[] { promoCategoryDto.getName() };
-			String defaultMessage = MessageService.getMessage(NAME_EXIST, errorArgs);
-			errors.rejectValue(NAME, NAME_EXIST, errorArgs, defaultMessage);
+			String defaultMessage = MessageService.getMessage(validationExistName, errorArgs);
+			errors.rejectValue(name, validationExistName, errorArgs, defaultMessage);
 		}
 
 	}

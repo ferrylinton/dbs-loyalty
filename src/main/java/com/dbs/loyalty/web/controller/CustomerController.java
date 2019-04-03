@@ -51,16 +51,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/customer")
 public class CustomerController extends AbstractPageController{
 
-	private String redirect 		= "redirect:/customer";
+	private static final String SORT_BY = "name";
 
-	private String viewTemplate 	= "customer/view";
-
-	private String formTemplate 	= "customer/form";
-
-	private String sortBy 			= "name";
-	
-	private Order defaultOrder				= Order.asc(sortBy).ignoreCase();
-	
 	private final CustomerService customerService;
 	
 	private final TaskService taskService;
@@ -72,13 +64,13 @@ public class CustomerController extends AbstractPageController{
 		Page<CustomerDto> page = customerService.findAll(getPageable(params, order), request);
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
-			return redirect;
+			return "redirect:/customer";
 		}
 
 		request.setAttribute(PAGE, page);
 		setParamsQueryString(params, request);
 		setPagerQueryString(order, page.getNumber(), request);
-		return viewTemplate;
+		return "customer/view";
 	}
 	
 	@PreAuthorize("hasAnyRole('CUSTOMER_MK', 'CUSTOMER_CK')")
@@ -96,7 +88,7 @@ public class CustomerController extends AbstractPageController{
 			}
 		}
 		
-		return formTemplate;
+		return "customer/form";
 	}
 	
 	@PreAuthorize("hasRole('CUSTOMER_MK')")
@@ -165,10 +157,10 @@ public class CustomerController extends AbstractPageController{
 	}
 	
 	private Order getOrder(Sort sort) {
-		Order order = sort.getOrderFor(sortBy);
+		Order order = sort.getOrderFor(SORT_BY);
 		
 		if(order == null) {
-			order = defaultOrder;
+			order = Order.asc(SORT_BY).ignoreCase();
 		}
 		
 		return order;

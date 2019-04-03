@@ -27,7 +27,7 @@ public abstract class AbstractController {
 		return MessageService.getMessage(dataWithIdNotFound, id);
 	}
 
-	protected ResponseEntity<?> badRequestResponse(BindingResult result) {
+	protected ResponseEntity<BadRequestResponse> badRequestResponse(BindingResult result) {
 		BadRequestResponse response = new BadRequestResponse();
 		StringBuilder builder = new StringBuilder();
 		

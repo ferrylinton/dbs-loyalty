@@ -56,15 +56,15 @@
 	                <table class="table table-sm table-striped table-hover border" style="min-width: 700px;">
                         <thead>
                             <tr th:with="ascending=${order.getDirection().name() == 'ASC'}">
-                                <th class="text-center" width="60px">#</th>
-                                <th width="150px" th:with="sort=|&sort=createdDate,${ascending ? 'DESC' : 'ASC'}|">
+                                <th class="text-center" style="width:60px">#</th>
+                                <th style="width:150px" th:with="sort=|&sort=createdDate,${ascending ? 'DESC' : 'ASC'}|">
                                 	<a th:href="@{|?page=${page.getNumber()}${params}${sort}|}" class="text-decoration-none">
                                 		<span th:text="#{date}"></span> <span th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></span>
                                 	</a>
                                 </th>
-                                <th width="80px" th:text="#{loginStatus}"></th>
-                                <th width="180px" th:text="#{ip}"></th>
-                                <th width="190px" th:text="#{username}"></th>
+                                <th style="width:80px" th:text="#{loginStatus}"></th>
+                                <th style="width:180px" th:text="#{ip}"></th>
+                                <th style="width:190px" th:text="#{username}"></th>
                                 <th th:text="#{browser}"></th>
                             </tr>
                         </thead>

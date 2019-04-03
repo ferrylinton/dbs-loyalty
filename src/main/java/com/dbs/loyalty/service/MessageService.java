@@ -6,11 +6,7 @@ import org.springframework.context.i18n.LocaleContextHolder;
 public final class MessageService {
 
 	private static MessageSource messageSource;
-	
-	private MessageService() {
-		// hide constructor
-	}
-	
+
 	public static void setMessageSource(MessageSource messageSource) {
 		MessageService.messageSource = messageSource;
 	}
@@ -31,6 +27,10 @@ public final class MessageService {
 	public static String getMessage(String code, Object arg1, Object arg2) {
 		Object[] args = new Object[] {arg1, arg2};
 		return messageSource.getMessage(code, args, code, LocaleContextHolder.getLocale());
+	}
+	
+	private MessageService() {
+		// hide constructor
 	}
 	
 }

@@ -12,9 +12,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RoleValidator implements Validator {
 
-	private String NAME_EXIST = "validation.exist.name";
+	private String validationExistName = "validation.exist.name";
 
-	private String NAME = "name";
+	private String name = "name";
 
 	private final RoleService roleService;
 
@@ -29,8 +29,8 @@ public class RoleValidator implements Validator {
 
 		if (roleService.isNameExist(roleDto)) {
 			Object[] errorArgs = new String[] { roleDto.getName() };
-			String defaultMessage = MessageService.getMessage(NAME_EXIST, errorArgs);
-			errors.rejectValue(NAME, NAME_EXIST, errorArgs, defaultMessage);
+			String defaultMessage = MessageService.getMessage(validationExistName, errorArgs);
+			errors.rejectValue(name, validationExistName, errorArgs, defaultMessage);
 		}
 
 	}

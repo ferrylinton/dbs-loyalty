@@ -2,7 +2,8 @@ package com.dbs.loyalty.web.controller.task;
 
 import static com.dbs.loyalty.config.constant.Constant.ERROR;
 import static com.dbs.loyalty.config.constant.Constant.PAGE;
-import static com.dbs.loyalty.config.constant.EntityConstant.*;
+import static com.dbs.loyalty.config.constant.EntityConstant.TASK;
+import static com.dbs.loyalty.config.constant.EntityConstant.TYPE;
 
 import java.util.Map;
 import java.util.Optional;
@@ -15,7 +16,6 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
 
-import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.service.dto.TaskDto;
 import com.dbs.loyalty.util.ErrorUtil;
@@ -56,7 +56,7 @@ public class AbstractTaskController extends AbstractPageController {
 		return viewTemplate;
 	}
 	
-	protected String view(String type, ModelMap model, String id) throws NotFoundException {
+	protected String view(String type, ModelMap model, String id) {
 		Optional<TaskDto> task = taskService.findById(id);
 		
 		if (task.isPresent()) {

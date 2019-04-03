@@ -60,9 +60,9 @@
 					<table class="table table-sm table-hover table-striped border" style="min-width: 700px;">
 						<thead>
 							<tr th:with="ascending=${order.getDirection().name() == 'ASC'}">
-								<th width="50px"></th>
-								<th width="50px">#</th>
-								<th width="160px" th:with="sort=|&sort=madeDate,${ascending ? 'DESC' : 'ASC'}|">
+								<th style="width:50px"></th>
+								<th style="width:50px">#</th>
+								<th style="width:160px" th:with="sort=|&sort=madeDate,${ascending ? 'DESC' : 'ASC'}|">
                                 	<a th:href="@{|?page=${page.getNumber()}${params}${sort}|}" class="text-decoration-none">
                                 		<span th:text="#{date}"></span> <span th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></span>
                                 	</a>
