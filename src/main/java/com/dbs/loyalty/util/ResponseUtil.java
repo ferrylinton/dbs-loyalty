@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-public class ResponseUtil {
+public final class ResponseUtil {
 
 	public static void sendResponse(HttpServletRequest request, HttpServletResponse response, ObjectMapper objectMapper, String error, String message, int status) throws IOException {
         Map<String, Object> result = new HashMap<>();
@@ -48,5 +48,9 @@ public class ResponseUtil {
         response.addHeader("Access-Control-Allow-Credentials", "true");
         response.addIntHeader("Access-Control-Max-Age", 3600);    	
     }
+	
+	private ResponseUtil() {
+		// hide constructor
+	}
 	
 }

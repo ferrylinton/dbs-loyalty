@@ -49,15 +49,15 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/role")
 public class RoleController extends AbstractPageController {
 
-	private String REDIRECT 		= "redirect:/role";
+	private String redirect 		= "redirect:/role";
 
-	private String VIEW_TEMPLATE 	= "role/view";
+	private String viewTemplate 	= "role/view";
 
-	private String FORM_TEMPLATE	= "role/form";
+	private String formTemplate	= "role/form";
 
-	private String SORT_BY 			= "name";
+	private String sortBy 			= "name";
 	
-	private Order ORDER				= Order.asc(SORT_BY).ignoreCase();
+	private Order defaultOrder				= Order.asc(sortBy).ignoreCase();
 
 	private final RoleService roleService;
 
@@ -68,17 +68,17 @@ public class RoleController extends AbstractPageController {
 	@PreAuthorize("hasAnyRole('ROLE_MK', 'ROLE_CK')")
 	@GetMapping
 	public String view(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
-		Order order = (sort.getOrderFor(SORT_BY) == null) ? ORDER : sort.getOrderFor(SORT_BY);
+		Order order = getOrder(sort);
 		Page<RoleDto> page = roleService.findAll(getPageable(params, order), request);
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
-			return REDIRECT;
+			return redirect;
 		}
 		
 		request.setAttribute(PAGE, page);
 		setParamsQueryString(params, request);
 		setPagerQueryString(order, page.getNumber(), request);
-		return VIEW_TEMPLATE;
+		return viewTemplate;
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_MK', 'ROLE_CK')")
@@ -96,7 +96,7 @@ public class RoleController extends AbstractPageController {
 			}
 		}
 		
-		return FORM_TEMPLATE;
+		return formTemplate;
 	}
 
 	@PreAuthorize("hasRole('ROLE_MK')")
@@ -156,4 +156,14 @@ public class RoleController extends AbstractPageController {
 		binder.addValidators(new RoleValidator(roleService));
 	}
 
+	private Order getOrder(Sort sort) {
+		Order order = sort.getOrderFor(sortBy);
+		
+		if(order == null) {
+			order = defaultOrder;
+		}
+		
+		return order;
+	}
+	
 }

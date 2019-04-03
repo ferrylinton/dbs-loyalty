@@ -1,12 +1,8 @@
 package com.dbs.loyalty.service;
 
-import static org.springframework.ldap.query.LdapQueryBuilder.query;
-
-import javax.naming.directory.DirContext;
-
-import org.springframework.ldap.core.AuthenticatedLdapEntryContextMapper;
-import org.springframework.ldap.core.LdapEntryIdentification;
 import org.springframework.ldap.core.LdapTemplate;
+import org.springframework.ldap.filter.EqualsFilter;
+import org.springframework.ldap.support.LdapUtils;
 import org.springframework.stereotype.Service;
 
 import com.dbs.loyalty.config.AuthenticationLdapProperties;
@@ -22,14 +18,16 @@ public class AuthenticateLdapService {
     private final AuthenticationLdapProperties applicationLdapProperties;
     
     public boolean authenticate(String username, String password) {
-    	return ldapTemplate.authenticate(query().where(applicationLdapProperties.getAttribute()).is(username), password, new AuthenticatedLdapEntryContextMapper<Boolean>() {
-
-			@Override
-			public Boolean mapWithContext(DirContext ctx, LdapEntryIdentification ldapEntryIdentification) {
-				return true;
-			}
-			
-		});
+    	EqualsFilter filter = new EqualsFilter(applicationLdapProperties.getAttribute(), getUsername(username));
+    	return ldapTemplate.authenticate(LdapUtils.emptyLdapName(), filter.toString(), password);
+    }
+    
+    private String getUsername(String username) {
+    	if(applicationLdapProperties.getDomain() == null) {
+    		return username;
+    	}else {
+    		return username + "@" + applicationLdapProperties.getDomain();
+    	}
     }
     
 }

@@ -53,15 +53,15 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/promo")
 public class PromoController extends AbstractPageController {
 
-	private String REDIRECT 		= "redirect:/promo";
+	private String redirect 		= "redirect:/promo";
 
-	private String VIEW_TEMPLATE 	= "promo/view";
+	private String viewTemplate 	= "promo/view";
 
-	private String FORM_TEMPLATE 	= "promo/form";
+	private String formTemplate 	= "promo/form";
 
-	private String SORT_BY 			= "title";
+	private String sortBy 			= "title";
 	
-	private Order ORDER				= Order.asc(SORT_BY).ignoreCase();
+	private Order defaultOrder				= Order.asc(sortBy).ignoreCase();
 
 	private final PromoService promoService;
 
@@ -72,17 +72,17 @@ public class PromoController extends AbstractPageController {
 	@PreAuthorize("hasAnyRole('PROMO_MK', 'PROMO_CK')")
 	@GetMapping
 	public String view(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
-		Order order = (sort.getOrderFor(SORT_BY) == null) ? ORDER : sort.getOrderFor(SORT_BY);
+		Order order = getOrder(sort);
 		Page<PromoDto> page = promoService.findAll(getPageable(params, order), request);
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
-			return REDIRECT;
+			return redirect;
 		}
 		
 		request.setAttribute(PAGE, page);
 		setParamsQueryString(params, request);
 		setPagerQueryString(order, page.getNumber(), request);
-		return VIEW_TEMPLATE;
+		return viewTemplate;
 	}
 
 	@PreAuthorize("hasAnyRole('PROMO_MK', 'PROMO_CK')")
@@ -100,7 +100,7 @@ public class PromoController extends AbstractPageController {
 			}
 		}
 		
-		return FORM_TEMPLATE;
+		return formTemplate;
 	}
 
 	@PreAuthorize("hasRole('PROMO_MK')")
@@ -170,4 +170,14 @@ public class PromoController extends AbstractPageController {
 		binder.addValidators(new PromoValidator(promoService));
 	}
 
+	private Order getOrder(Sort sort) {
+		Order order = sort.getOrderFor(sortBy);
+		
+		if(order == null) {
+			order = defaultOrder;
+		}
+		
+		return order;
+	}
+	
 }

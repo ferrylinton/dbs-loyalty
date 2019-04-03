@@ -51,15 +51,15 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/customer")
 public class CustomerController extends AbstractPageController{
 
-	private String REDIRECT 		= "redirect:/customer";
+	private String redirect 		= "redirect:/customer";
 
-	private String VIEW_TEMPLATE 	= "customer/view";
+	private String viewTemplate 	= "customer/view";
 
-	private String FORM_TEMPLATE 	= "customer/form";
+	private String formTemplate 	= "customer/form";
 
-	private String SORT_BY 			= "name";
+	private String sortBy 			= "name";
 	
-	private Order ORDER				= Order.asc(SORT_BY).ignoreCase();
+	private Order defaultOrder				= Order.asc(sortBy).ignoreCase();
 	
 	private final CustomerService customerService;
 	
@@ -68,17 +68,17 @@ public class CustomerController extends AbstractPageController{
 	@PreAuthorize("hasAnyRole('CUSTOMER_MK', 'CUSTOMER_CK')")
 	@GetMapping
 	public String view(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
-		Order order = (sort.getOrderFor(SORT_BY) == null) ? ORDER : sort.getOrderFor(SORT_BY);
+		Order order = getOrder(sort);
 		Page<CustomerDto> page = customerService.findAll(getPageable(params, order), request);
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
-			return REDIRECT;
+			return redirect;
 		}
 
 		request.setAttribute(PAGE, page);
 		setParamsQueryString(params, request);
 		setPagerQueryString(order, page.getNumber(), request);
-		return VIEW_TEMPLATE;
+		return viewTemplate;
 	}
 	
 	@PreAuthorize("hasAnyRole('CUSTOMER_MK', 'CUSTOMER_CK')")
@@ -96,7 +96,7 @@ public class CustomerController extends AbstractPageController{
 			}
 		}
 		
-		return FORM_TEMPLATE;
+		return formTemplate;
 	}
 	
 	@PreAuthorize("hasRole('CUSTOMER_MK')")
@@ -162,6 +162,16 @@ public class CustomerController extends AbstractPageController{
 	protected void initBinder(WebDataBinder binder) {
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("dd-MM-yyyy"), true, 10)); 
 		binder.addValidators(new CustomerValidator(customerService));
+	}
+	
+	private Order getOrder(Sort sort) {
+		Order order = sort.getOrderFor(sortBy);
+		
+		if(order == null) {
+			order = defaultOrder;
+		}
+		
+		return order;
 	}
 	
 }

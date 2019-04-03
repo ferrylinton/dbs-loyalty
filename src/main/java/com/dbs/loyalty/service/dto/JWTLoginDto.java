@@ -24,6 +24,6 @@ public class JWTLoginDto {
 	private String password;
 	
 	@ApiModelProperty(value = "Remember me flag", required = false, position = 2)
-	private Boolean rememberMe;
+	private boolean rememberMe;
 	
 }

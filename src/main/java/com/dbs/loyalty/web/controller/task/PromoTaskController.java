@@ -34,20 +34,20 @@ public class PromoTaskController extends AbstractTaskController {
 
 	@PreAuthorize("hasAnyRole('PROMO_MK', 'PROMO_CK')")
 	@GetMapping
-	public String view(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
-		return super.view(PROMO, params, sort, request);
+	public String viewTask(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
+		return view(PROMO, params, sort, request);
 	}
 
 	@PreAuthorize("hasAnyRole('PROMO_MK', 'PROMO_CK')")
 	@GetMapping("/{id}")
-	public String view(ModelMap model, @PathVariable String id) throws NotFoundException {
-		return super.view(PROMO, model, id);
+	public String viewTask(ModelMap model, @PathVariable String id) throws NotFoundException {
+		return view(PROMO, model, id);
 	}
 
 	@PreAuthorize("hasRole('PROMO_CK')")
 	@PostMapping
-	public @ResponseBody ResponseEntity<?> save(@ModelAttribute TaskDto taskDto){
-		return super.save(taskDto);
+	public @ResponseBody ResponseEntity<?> saveTask(@ModelAttribute TaskDto taskDto){
+		return save(taskDto);
 	}
 
 }

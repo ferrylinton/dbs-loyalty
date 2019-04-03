@@ -34,20 +34,20 @@ public class RoleTaskController extends AbstractTaskController {
 
 	@PreAuthorize("hasAnyRole('ROLE_MK', 'ROLE_CK')")
 	@GetMapping
-	public String view(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
-		return super.view(ROLE, params, sort, request);
+	public String viewTask(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
+		return view(ROLE, params, sort, request);
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_MK', 'ROLE_CK')")
 	@GetMapping("/{id}")
-	public String view(ModelMap model, @PathVariable String id) throws NotFoundException {
-		return super.view(ROLE, model, id);
+	public String viewTask(ModelMap model, @PathVariable String id) throws NotFoundException {
+		return view(ROLE, model, id);
 	}
 
 	@PreAuthorize("hasRole('ROLE_CK')")
 	@PostMapping
-	public @ResponseBody ResponseEntity<?> save(@ModelAttribute TaskDto taskDto){
-		return super.save(taskDto);
+	public @ResponseBody ResponseEntity<?> saveTask(@ModelAttribute TaskDto taskDto){
+		return save(taskDto);
 	}
 
 }

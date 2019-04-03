@@ -34,20 +34,20 @@ public class CustomerTaskController extends AbstractTaskController {
 
 	@PreAuthorize("hasAnyRole('CUSTOMER_MK', 'CUSTOMER_CK')")
 	@GetMapping
-	public String view(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
-		return super.view(CUSTOMER, params, sort, request);
+	public String viewTask(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
+		return view(CUSTOMER, params, sort, request);
 	}
 
 	@PreAuthorize("hasAnyRole('CUSTOMER_MK', 'CUSTOMER_CK')")
 	@GetMapping("/{id}")
-	public String view(ModelMap model, @PathVariable String id) throws NotFoundException {
-		return super.view(CUSTOMER, model, id);
+	public String viewTask(ModelMap model, @PathVariable String id) throws NotFoundException {
+		return view(CUSTOMER, model, id);
 	}
 
 	@PreAuthorize("hasRole('CUSTOMER_CK')")
 	@PostMapping
-	public @ResponseBody ResponseEntity<?> save(@ModelAttribute TaskDto taskDto){
-		return super.save(taskDto);
+	public @ResponseBody ResponseEntity<?> saveTask(@ModelAttribute TaskDto taskDto){
+		return save(taskDto);
 	}
 
 }

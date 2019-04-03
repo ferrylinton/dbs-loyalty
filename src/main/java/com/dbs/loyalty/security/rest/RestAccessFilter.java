@@ -7,6 +7,8 @@ import org.springframework.web.filter.GenericFilterBean;
 
 import com.dbs.loyalty.util.JwtUtil;
 
+import lombok.RequiredArgsConstructor;
+
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -14,26 +16,21 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+@RequiredArgsConstructor
 public class RestAccessFilter extends GenericFilterBean {
 
-    private RestTokenProvider restTokenProvider;
-
-    public RestAccessFilter(RestTokenProvider restTokenProvider) {
-        this.restTokenProvider = restTokenProvider;
-    }
+    private final RestTokenProvider restTokenProvider;
 
     @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain)
-        throws IOException, ServletException {
-        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-        String jwt = JwtUtil.resolveToken(httpServletRequest);
+    public void doFilter(ServletRequest req, ServletResponse resp, FilterChain filterChain) throws IOException, ServletException {
+        String jwt = JwtUtil.resolveToken((HttpServletRequest) req);
         
         if (StringUtils.hasText(jwt) && restTokenProvider.validateToken(jwt)) {
             Authentication authentication = restTokenProvider.getAuthentication(jwt);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         
-        filterChain.doFilter(servletRequest, servletResponse);
+        filterChain.doFilter(req, resp);
     }
 
 }

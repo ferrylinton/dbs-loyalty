@@ -2,19 +2,16 @@ package com.dbs.loyalty.util;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 
+import com.dbs.loyalty.service.MessageService;
+
 @Component
-public class ApplicationContextProvider implements ApplicationContextAware {
+public class ApplicationContextUtil implements ApplicationContextAware {
     
-    private static ApplicationContext context;
- 
-    public static ApplicationContext getApplicationContext() {
-        return ApplicationContextProvider.context;
-    }
- 
     @Override
     public void setApplicationContext(ApplicationContext context) {
-    	ApplicationContextProvider.context = context;
+    	MessageService.setMessageSource(context.getBean(MessageSource.class));
     }
 }

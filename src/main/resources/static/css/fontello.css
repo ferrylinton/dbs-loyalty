@@ -1,5 +1,5 @@
 @font-face {
-  font-family: 'fontello', sans-serif;
+  font-family: 'fontello';
   src: url('../font/fontello.eot?3812410');
   src: url('../font/fontello.eot?3812410#iefix') format('embedded-opentype'),
        url('../font/fontello.woff2?3812410') format('woff2'),
@@ -21,7 +21,7 @@
 */
  
  [class^="icon-"]:before, [class*=" icon-"]:before {
-  font-family: "fontello", sans-serif;
+  font-family: "fontello";
   font-style: normal;
   font-weight: normal;
   speak: none;

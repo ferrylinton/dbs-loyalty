@@ -1,6 +1,6 @@
 package com.dbs.loyalty.util;
 
-public class UrlUtil {
+public final class UrlUtil {
 
 	public static final String RESOURCE_URL_FORMAT	= "%s/%s";
 	
@@ -20,4 +20,8 @@ public class UrlUtil {
 		UrlUtil.contextPath = contextPath;
 	}
 
+	private UrlUtil() {
+		// hide constructor
+	}
+	
 }

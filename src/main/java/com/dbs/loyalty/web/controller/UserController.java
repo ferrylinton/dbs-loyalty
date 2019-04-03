@@ -50,15 +50,15 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/user")
 public class UserController extends AbstractPageController{
 
-	private String REDIRECT 		= "redirect:/user";
+	private String redirect 		= "redirect:/user";
 
-	private String VIEW_TEMPLATE 	= "user/view";
+	private String viewTemplate 	= "user/view";
 
-	private String FORM_TEMPLATE 	= "user/form";
+	private String formTemplate 	= "user/form";
 
-	private String SORT_BY 			= "username";
+	private String sortBy 			= "username";
 	
-	private Order ORDER				= Order.asc(SORT_BY).ignoreCase();
+	private Order defaultOrder				= Order.asc(sortBy).ignoreCase();
 	
 	private final UserService userService;
 	
@@ -69,17 +69,17 @@ public class UserController extends AbstractPageController{
 	@PreAuthorize("hasAnyRole('USER_MK', 'USER_CK')")
 	@GetMapping
 	public String view(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
-		Order order = (sort.getOrderFor(SORT_BY) == null) ? ORDER : sort.getOrderFor(SORT_BY);
+		Order order = getOrder(sort);
 		Page<UserDto> page = userService.findAll(getPageable(params, order), request);
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
-			return REDIRECT;
+			return redirect;
 		}
 
 		request.setAttribute(PAGE, page);
 		setParamsQueryString(params, request);
 		setPagerQueryString(order, page.getNumber(), request);
-		return VIEW_TEMPLATE;
+		return viewTemplate;
 	}
 	
 	@PreAuthorize("hasAnyRole('USER_MK', 'USER_CK')")
@@ -97,7 +97,7 @@ public class UserController extends AbstractPageController{
 			}
 		}
 		
-		return FORM_TEMPLATE;
+		return formTemplate;
 	}
 	
 	@PreAuthorize("hasRole('USER_MK')")
@@ -161,6 +161,16 @@ public class UserController extends AbstractPageController{
 	@InitBinder("userDto")
 	protected void initBinder(WebDataBinder binder) {
 		binder.addValidators(new UserValidator());
+	}
+	
+	private Order getOrder(Sort sort) {
+		Order order = sort.getOrderFor(sortBy);
+		
+		if(order == null) {
+			order = defaultOrder;
+		}
+		
+		return order;
 	}
 	
 }

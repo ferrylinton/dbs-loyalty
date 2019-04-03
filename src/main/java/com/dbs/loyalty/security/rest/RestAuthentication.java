@@ -73,7 +73,7 @@ public class RestAuthentication implements Authentication {
 
 	@Override
 	public Object getPrincipal() {
-		return principal;
+		return getName();
 	}
 
 	@Override

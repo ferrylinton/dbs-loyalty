@@ -2,14 +2,16 @@ package com.dbs.loyalty.service;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.stereotype.Service;
 
-@Service
-public class MessageService {
+public final class MessageService {
 
 	private static MessageSource messageSource;
 	
-	public MessageService(MessageSource messageSource) {
+	private MessageService() {
+		// hide constructor
+	}
+	
+	public static void setMessageSource(MessageSource messageSource) {
 		MessageService.messageSource = messageSource;
 	}
 

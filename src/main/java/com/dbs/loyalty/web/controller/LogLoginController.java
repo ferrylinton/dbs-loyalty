@@ -25,30 +25,30 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/loglogin")
 public class LogLoginController extends AbstractPageController {
 
-	private String REDIRECT			= "redirect:/loglogin";
+	private String redirect			= "redirect:/loglogin";
 	
-	private String VIEW_TEMPLATE 	= "loglogin/view";
+	private String viewTemplate 	= "loglogin/view";
 
-	private String SORT_BY 			= "createdDate";
+	private String sortBy 			= "createdDate";
 	
-	private Order ORDER				= Order.desc(SORT_BY).ignoreCase();
+	private Order defaultOrder				= Order.desc(sortBy).ignoreCase();
 
 	private final LogLoginService logLoginService;
 
 	@PreAuthorize("hasRole('ADMIN')")
 	@GetMapping
 	public String view(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
-		Order order = (sort.getOrderFor(SORT_BY) == null) ? ORDER : sort.getOrderFor(SORT_BY);
+		Order order = (sort.getOrderFor(sortBy) == null) ? defaultOrder : sort.getOrderFor(sortBy);
 		Page<LogLoginDto> page = logLoginService.findAll(getPageable(params, order), request);
 		
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
-			return REDIRECT;
+			return redirect;
 		}
 
 		request.setAttribute(PAGE, page);
 		setParamsQueryString(params, request);
 		setPagerQueryString(order, page.getNumber(), request);
-		return VIEW_TEMPLATE;
+		return viewTemplate;
 	}
 
 }

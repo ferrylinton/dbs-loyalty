@@ -6,8 +6,7 @@ import java.io.PrintWriter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,25 +15,26 @@ import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.model.ErrorData;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@Controller
-public class ErrorController implements org.springframework.boot.web.servlet.error.ErrorController {
-	
-	private final Logger LOG		= LoggerFactory.getLogger(ErrorController.class);
-	
-	private final String TEMPLATE	= "error/view";
-	
-	private ObjectMapper objectMapper;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
-	public ErrorController(ObjectMapper objectMapper) {
-		this.objectMapper = objectMapper;
-	}
+@Slf4j
+@RequiredArgsConstructor
+@Controller
+public class CustomErrorController implements ErrorController {
+
+	private static final String API = "/api";
 	
+	private static final String ERROR_DATA = "errorData";
+	
+	private final ObjectMapper objectMapper;
+
 	@GetMapping("/error")
-	public String handleError(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public String handleError(HttpServletRequest request, HttpServletResponse response) {
 		ErrorData errorData = new ErrorData(request);
-		System.out.println(">>> errorData.getRequestURI() : " + errorData.getRequestURI());
+		log.info("RequestURI :: " + errorData.getRequestURI());
 		
-		if(errorData.getRequestURI().contains("/api")) {
+		if(errorData.getRequestURI().contains(API)) {
 			return handleApiError(errorData, response);
 		}else {
 			return handleWebError(errorData, request);
@@ -47,8 +47,8 @@ public class ErrorController implements org.springframework.boot.web.servlet.err
 	}
 
 	private String handleWebError(ErrorData errorData, HttpServletRequest request) {
-		request.setAttribute("errorData", errorData);
-		return TEMPLATE;
+		request.setAttribute(ERROR_DATA, errorData);
+		return "error/view";
 	}
 	
 	private String handleApiError(ErrorData errorData, HttpServletResponse response){
@@ -61,7 +61,7 @@ public class ErrorController implements org.springframework.boot.web.servlet.err
 	        writer.flush();
 	        writer.close();
 		} catch (IOException e) {
-			LOG.error(e.getLocalizedMessage(), e);
+			log.error(e.getLocalizedMessage(), e);
 		}
 		
 		return Constant.ERROR;

@@ -29,31 +29,31 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class AbstractTaskController extends AbstractPageController {
 
-	private String REDIRECT 		= "redirect:/task";
+	private String redirect 	= "redirect:/task";
 
-	private String VIEW_TEMPLATE 	= "task/view";
+	private String viewTemplate = "task/view";
 
-	private String FORM_TEMPLATE 	= "task/form";
+	private String formTemplate = "task/form";
 
-	private String SORT_BY 			= "madeDate";
+	private String sortBy 		= "madeDate";
 	
-	private Order ORDER				= Order.asc(SORT_BY).ignoreCase();
+	private Order defaultOrder	= Order.asc(sortBy).ignoreCase();
 
 	protected final TaskService taskService;
 	
 	protected String view(String type, Map<String, String> params, Sort sort, HttpServletRequest request) {
-		Order order = (sort.getOrderFor(SORT_BY) == null) ? ORDER : sort.getOrderFor(SORT_BY);
+		Order order = (sort.getOrderFor(sortBy) == null) ? defaultOrder : sort.getOrderFor(sortBy);
 		Page<TaskDto> page = taskService.findAll(type, params, getPageable(params, order), request);
 		
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
-			return REDIRECT;
+			return redirect;
 		}
 		
 		request.setAttribute(PAGE, page);
 		request.setAttribute(TYPE, type);
 		setParamsQueryString(params, request);
 		setPagerQueryString(order, page.getNumber(), request);
-		return VIEW_TEMPLATE;
+		return viewTemplate;
 	}
 	
 	protected String view(String type, ModelMap model, String id) throws NotFoundException {
@@ -66,7 +66,7 @@ public class AbstractTaskController extends AbstractPageController {
 		}
 		
 		model.addAttribute(TYPE, type);
-		return FORM_TEMPLATE;
+		return formTemplate;
 	}
 	
 	protected ResponseEntity<?> save(TaskDto taskDto){

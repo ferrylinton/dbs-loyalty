@@ -24,9 +24,9 @@ import com.dbs.loyalty.util.ErrorUtil;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-	private final String FILE_SIZE_IS_NOT_VALID = "message.fileSizeIsNotValid";
+	private String fileSizeIsNotValid = "message.fileSizeIsNotValid";
 	
-	private final String FILE = "file";
+	private String file = "file";
 	
 	@ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<?> methodNotSupportErrorHandler(HttpServletRequest request, Exception ex){
@@ -48,8 +48,8 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(MaxUploadSizeExceededException.class)
 	public ResponseEntity<?> handleException(MaxUploadSizeExceededException ex){
 		BadRequestResponse response = new BadRequestResponse();
-		response.getFields().add(FILE);
-		response.setMessage(MessageService.getMessage(FILE_SIZE_IS_NOT_VALID));
+		response.getFields().add(file);
+		response.setMessage(MessageService.getMessage(fileSizeIsNotValid));
 		return ResponseEntity
 	            .status(HttpStatus.BAD_REQUEST)
 	            .body(response);

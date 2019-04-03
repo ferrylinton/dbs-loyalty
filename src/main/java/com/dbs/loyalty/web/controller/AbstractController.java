@@ -15,16 +15,16 @@ import com.dbs.loyalty.service.dto.TaskDto;
 
 public abstract class AbstractController {
 
-	protected final String DATA_WITH_ID_NOT_FOUND = "message.dataWithIdNotFound";
+	protected String dataWithIdNotFound = "message.dataWithIdNotFound";
 	
-	protected final String TASK_IS_SAVED = "message.taskIsSaved";
+	protected String taskIsSaved = "message.taskIsSaved";
 	
-	protected final String TASK_IS_VERIFIED = "message.taskIsVerified";
+	protected String taskIsVerified = "message.taskIsVerified";
 	
-	protected final String TASK_IS_REJECTED = "message.taskIsRejected";
+	protected String taskIsRejected = "message.taskIsRejected";
 	
 	protected String getNotFoundMessage(String id) {
-		return MessageService.getMessage(DATA_WITH_ID_NOT_FOUND, id);
+		return MessageService.getMessage(dataWithIdNotFound, id);
 	}
 
 	protected ResponseEntity<?> badRequestResponse(BindingResult result) {
@@ -45,7 +45,7 @@ public abstract class AbstractController {
 	protected ResponseEntity<?> taskIsSavedResponse(String taskDataType, String val, String resultUrl) {
 		SuccessResponse response = new SuccessResponse();
 		taskDataType = MessageService.getMessage(taskDataType);
-		response.setMessage(MessageService.getMessage(TASK_IS_SAVED, taskDataType, val));
+		response.setMessage(MessageService.getMessage(taskIsSaved, taskDataType, val));
 		response.setResultUrl(resultUrl);
 		return ResponseEntity
 	            .status(HttpStatus.OK)
@@ -69,6 +69,6 @@ public abstract class AbstractController {
 	
 	protected String getMessage(TaskDto taskDto, String val) {
 		Object[] args = new Object[] { MessageService.getMessage(taskDto.getTaskOperation().toString()), MessageService.getMessage(taskDto.getTaskDataType()), val };
-		return MessageService.getMessage(taskDto.isVerified() ? TASK_IS_VERIFIED : TASK_IS_REJECTED, args);
+		return MessageService.getMessage(taskDto.isVerified() ? taskIsVerified : taskIsRejected, args);
 	}
 }

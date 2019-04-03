@@ -64,7 +64,7 @@ public class PromoCategoryController extends AbstractPageController {
 	@PreAuthorize("hasAnyRole('PROMO_CATEGORY_MK', 'PROMO_CATEGORY_CK')")
 	@GetMapping
 	public String view(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
-		Order order = (sort.getOrderFor(sortBy) == null) ? defaultOrder : sort.getOrderFor(sortBy);
+		Order order = getOrder(sort);
 		Page<PromoCategoryDto> page = promoCategoryService.findAll(getPageable(params, order), request);
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
@@ -147,4 +147,14 @@ public class PromoCategoryController extends AbstractPageController {
 		binder.addValidators(new PromoCategoryValidator(promoCategoryService));
 	}
 
+	private Order getOrder(Sort sort) {
+		Order order = sort.getOrderFor(sortBy);
+		
+		if(order == null) {
+			order = defaultOrder;
+		}
+		
+		return order;
+	}
+	
 }
