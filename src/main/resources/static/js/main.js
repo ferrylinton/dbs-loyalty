@@ -125,7 +125,8 @@ function objectJsonToString(obj){
 		text += ((text === '') ? '[' : ', ') + Lang.field(key) + ' = ' + obj[key];
 	}
 	
-	return text += ']';
+	text += ']';
+	return text;
 }
 
 function initDatePicker(){
@@ -198,10 +199,9 @@ function initPromoDatePicker(){
 
 function initDobDatePicker(){
 	var dobInput = $('input[name="dob"]');
-	var dob;
 
 	initDatePickerLang(null, new Date());
-	dob = dobInput
+	dobInput
 		.datepicker({language: getLocale()})
 		.datepicker('setDate', (dobInput.val() == null) ? new Date() : dobInput.val());
 }
@@ -244,7 +244,6 @@ function getQueryParam(param) {
 	var url = window.location.href;
 	
 	if(url.indexOf('?') !== -1 && url.indexOf('&') !== -1){
-		var url = window.location.href;
 		var hashes = url.split('?')[1];
 		var hash = hashes.split('&');
 	

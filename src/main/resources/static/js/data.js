@@ -90,7 +90,7 @@ var Data = (function () {
         } else if (jqXHR.status == 404 || jqXHR.status == 405 || jqXHR.status == 406) {
             Alert.error(jqXHR.url + ' : ' + Lang.error(jqXHR.status));
         } else {
-        	if(typeof jqXHR.responseJSON == undefined || typeof jqXHR.responseJSON.message == undefined){
+        	if(typeof jqXHR.responseJSON == undefined){
         		Alert.error('<span class="text-red">ERROR : ' + jqXHR.responseText + '</span>');
         	}else if(jqXHR.responseJSON.message.indexOf('uq') !== -1){
         		Alert.error('<span class="text-red">ERROR : ' + Lang.error('DuplicateEntry') + '</span><hr>' + jqXHR.responseJSON.message);

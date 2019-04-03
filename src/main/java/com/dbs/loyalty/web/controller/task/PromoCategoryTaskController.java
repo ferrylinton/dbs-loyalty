@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.service.dto.TaskDto;
+import com.dbs.loyalty.web.response.AbstractResponse;
 
 
 @Controller
@@ -40,13 +40,13 @@ public class PromoCategoryTaskController extends AbstractTaskController {
 
 	@PreAuthorize("hasAnyRole('PROMO_CATEGORY_MK', 'PROMO_CATEGORY_CK')")
 	@GetMapping("/{id}")
-	public String viewTask(ModelMap model, @PathVariable String id) throws NotFoundException {
+	public String viewTask(ModelMap model, @PathVariable String id) {
 		return view(PROMO_CATEGORY, model, id);
 	}
 
 	@PreAuthorize("hasRole('PROMO_CATEGORY_CK')")
 	@PostMapping
-	public @ResponseBody ResponseEntity<?> saveTask(@ModelAttribute TaskDto taskDto){
+	public @ResponseBody ResponseEntity<AbstractResponse> saveTask(@ModelAttribute TaskDto taskDto){
 		return save(taskDto);
 	}
 

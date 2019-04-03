@@ -1,6 +1,6 @@
 package com.dbs.loyalty.security.rest;
 
-import static com.dbs.loyalty.config.constant.MessageConstant.INVALID_EMAIL_OR_PASSWORD;
+import static com.dbs.loyalty.config.constant.MessageConstant.INVALID_EMAIL_OR_PASS;
 
 import java.util.Optional;
 
@@ -30,7 +30,7 @@ public class RestAuthenticationProvider implements AuthenticationProvider {
 		if(customer.isPresent() && PasswordUtil.getInstance().matches(password, customer.get().getPasswordHash())) {
 			return new RestAuthentication(email, password, customer.get());
         }else{
-        	throw new BadCredentialsException(MessageService.getMessage(INVALID_EMAIL_OR_PASSWORD));
+        	throw new BadCredentialsException(MessageService.getMessage(INVALID_EMAIL_OR_PASS));
         }
 	}
 

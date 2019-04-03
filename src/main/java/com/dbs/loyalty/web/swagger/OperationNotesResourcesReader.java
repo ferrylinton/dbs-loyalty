@@ -2,13 +2,14 @@ package com.dbs.loyalty.web.swagger;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 
 import org.apache.commons.codec.Charsets;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import com.google.common.base.Optional;
+
 import com.google.common.io.Resources;
 
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,7 @@ public class OperationNotesResourcesReader implements OperationBuilderPlugin {
    
     @Override
     public void apply(OperationContext context) {
-    	Optional<ApiNotes> methodAnnotation = context.findAnnotation(ApiNotes.class);
+    	Optional<ApiNotes> methodAnnotation = context.findAnnotation(ApiNotes.class).toJavaUtil();
     	
         if (methodAnnotation.isPresent() && StringUtils.hasText(methodAnnotation.get().value())) {
  

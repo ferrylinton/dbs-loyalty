@@ -30,7 +30,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.dbs.loyalty.domain.PromoCategory;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.PromoCategoryService;
 import com.dbs.loyalty.service.TaskService;
@@ -114,7 +113,7 @@ public class PromoCategoryController extends AbstractPageController {
 						throw new NotFoundException();
 					}
 				}
-				return taskIsSavedResponse(PromoCategory.class.getSimpleName(), promoCategoryDto.getName(), UrlUtil.getUrl(PROMO_CATEGORY));
+				return taskIsSavedResponse(PROMO_CATEGORY, promoCategoryDto.getName(), UrlUtil.getUrl(PROMO_CATEGORY));
 			} catch (Exception ex) {
 				log.error(ex.getLocalizedMessage(), ex);
 				return errorResponse(ex);

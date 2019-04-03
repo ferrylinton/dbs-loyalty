@@ -16,11 +16,13 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
 
+import com.dbs.loyalty.service.MessageService;
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.service.dto.TaskDto;
 import com.dbs.loyalty.util.ErrorUtil;
 import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.controller.AbstractPageController;
+import com.dbs.loyalty.web.response.AbstractResponse;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -69,7 +71,7 @@ public class AbstractTaskController extends AbstractPageController {
 		return formTemplate;
 	}
 	
-	protected ResponseEntity<?> save(TaskDto taskDto){
+	protected ResponseEntity<AbstractResponse> save(TaskDto taskDto){
 		try {
 			String val = taskService.save(taskDto);
 			String resultUrl = UrlUtil.getTaskUrl(taskDto.getTaskDataType());
@@ -79,6 +81,11 @@ public class AbstractTaskController extends AbstractPageController {
 			taskService.save(ex, taskDto);
 			return errorResponse((Exception) ErrorUtil.getThrowable(ex));
 		}
+	}
+	
+	protected String getMessage(TaskDto taskDto, String val) {
+		Object[] args = new Object[] { MessageService.getMessage(taskDto.getTaskOperation().toString()), MessageService.getMessage(taskDto.getTaskDataType()), val };
+		return MessageService.getMessage(taskDto.isVerified() ? taskIsVerified : taskIsRejected, args);
 	}
 
 }
