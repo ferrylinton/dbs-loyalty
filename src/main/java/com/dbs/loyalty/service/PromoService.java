@@ -43,6 +43,13 @@ public class PromoService{
 				.map(promo -> promoMapper.toDto(promo, urlService));
 	}
 
+	public List<PromoDto> findPromoInCarousel(){
+		return promoRepository.findPromoInCarousel()
+				.stream()
+				.map(promo -> promoMapper.toDto(promo, urlService))
+				.collect(Collectors.toList());
+	}
+	
 	public List<PromoDto> findByPromoCategoryId(String promoCategoryId){
 		return promoRepository.findByPromoCategoryId(promoCategoryId)
 				.stream()

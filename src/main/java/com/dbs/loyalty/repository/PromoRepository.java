@@ -25,7 +25,7 @@ public interface PromoRepository extends JpaRepository<Promo, String>, JpaSpecif
 	
 	@Query(value = "from Promo p "
 			+ "where p.startPeriod <= current_date() and p.endPeriod >= current_date() "
-			+ "and p.activated = true ")
-	List<Promo> findActivePromo();
+			+ "and p.activated = true and p.showInCarousel = true ")
+	List<Promo> findPromoInCarousel();
 	
 }
