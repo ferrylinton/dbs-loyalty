@@ -1,5 +1,11 @@
 package com.dbs.loyalty.web.controller.rest;
 
+import static com.dbs.loyalty.config.constant.Constant.MESSAGE;
+import static com.dbs.loyalty.config.constant.MessageConstant.DATA_WITH_VALUE_NOT_FOUND;
+import static com.dbs.loyalty.config.constant.MessageConstant.SUCCESS;
+import static com.dbs.loyalty.config.constant.SwaggerConstant.CUSTOMER;
+import static com.dbs.loyalty.config.constant.SwaggerConstant.JWT;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
@@ -21,12 +27,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbs.loyalty.config.constant.Constant;
-import com.dbs.loyalty.config.constant.SwaggerConstant;
-import com.dbs.loyalty.model.ErrorResponse;
+import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.model.Pair;
 import com.dbs.loyalty.security.rest.RestTokenProvider;
 import com.dbs.loyalty.service.CustomerService;
+import com.dbs.loyalty.service.MessageService;
 import com.dbs.loyalty.service.dto.CustomerDto;
 import com.dbs.loyalty.service.dto.CustomerPasswordDto;
 import com.dbs.loyalty.service.dto.CustomerUpdateDto;
@@ -45,15 +50,13 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Api(tags = { SwaggerConstant.CUSTOMER })
+@Api(tags = { CUSTOMER })
 @RequiredArgsConstructor
-@Slf4j
 @RestController
 @RequestMapping("/api")
 public class CustomerRestController extends AbstractController{
-
+	
     private final CustomerService customerService;
     
     private final RestTokenProvider restTokenProvider;
@@ -63,23 +66,18 @@ public class CustomerRestController extends AbstractController{
     		value="GetCustomerInfo", 
     		notes="Get Customer Information",
     		produces=MediaType.APPLICATION_JSON_VALUE, 
-    		authorizations = { @Authorization(value=SwaggerConstant.JWT) })
+    		authorizations = { @Authorization(value=JWT) })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = CustomerDto.class)})
     @PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping("/customers/info")
-	public ResponseEntity<?> getCustomerInfo(){
-    	try {
-			Optional<CustomerDto> customerDto = customerService.findByEmail(SecurityUtil.getLogged());
-			
-			if(customerDto.isPresent()) {
-				return ResponseEntity.ok().body(customerDto.get());
-			}else {
-				return ResponseEntity.status(404).body(new ErrorResponse(String.format("%s is not found", SecurityUtil.getLogged())));
-			}
-			
-    	} catch (Exception e) {
-			log.error(e.getLocalizedMessage(), e);
-			return ResponseEntity.status(500).body(new ErrorResponse(e.getLocalizedMessage()));
+	public ResponseEntity<CustomerDto> getCustomerInfo() throws NotFoundException{
+    	Optional<CustomerDto> customerDto = customerService.findByEmail(SecurityUtil.getLogged());
+		
+		if(customerDto.isPresent()) {
+			return ResponseEntity.ok().body(customerDto.get());
+		}else {
+			String message = MessageService.getMessage(DATA_WITH_VALUE_NOT_FOUND, SecurityUtil.getLogged());
+			throw new NotFoundException(message);
 		}
 	}
     
@@ -88,23 +86,18 @@ public class CustomerRestController extends AbstractController{
     		value="GetCustomerImage", 
     		notes="Get Customer Image", 
     		produces=MediaType.IMAGE_JPEG_VALUE, 
-    		authorizations = { @Authorization(value="JWT") })
+    		authorizations = { @Authorization(value=JWT) })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Byte.class)})
     @PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping(value = "/customers/image", produces = MediaType.IMAGE_JPEG_VALUE)
-	public ResponseEntity<?> getCustomerImage() {
-    	try {
-	    	Optional<CustomerDto> customerDto = customerService.findByEmail(SecurityUtil.getLogged());
-	    	
-			if(customerDto.isPresent()) {
-				return ResponseEntity.ok().body(Base64Util.getBytes(customerDto.get().getImageString()));
-			}else {
-				return ResponseEntity.status(404).body(new ErrorResponse(String.format("%s is not found", SecurityUtil.getLogged())));
-			}
-			
-    	} catch (Exception e) {
-			log.error(e.getLocalizedMessage(), e);
-			return ResponseEntity.status(500).body(new ErrorResponse(e.getLocalizedMessage()));
+	public ResponseEntity<byte[]> getCustomerImage() throws NotFoundException {
+    	Optional<CustomerDto> customerDto = customerService.findByEmail(SecurityUtil.getLogged());
+    	
+		if(customerDto.isPresent()) {
+			return ResponseEntity.ok().body(Base64Util.getBytes(customerDto.get().getImageString()));
+		}else {
+			String message = MessageService.getMessage(DATA_WITH_VALUE_NOT_FOUND, SecurityUtil.getLogged());
+			throw new NotFoundException(message);
 		}
 	}
     
@@ -114,29 +107,24 @@ public class CustomerRestController extends AbstractController{
     		notes="Update customer information, and after update customer must use new token or relogin",
     		consumes=MediaType.APPLICATION_JSON_VALUE,
     		produces=MediaType.APPLICATION_JSON_VALUE, 
-    		authorizations = { @Authorization(value=SwaggerConstant.JWT) })
+    		authorizations = { @Authorization(value=JWT) })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = JWTTokenDto.class)})
     @PreAuthorize("hasRole('CUSTOMER')")
     @PutMapping("/customers")
-    public ResponseEntity<?> updateCustomer(
+    public ResponseEntity<JWTTokenDto> updateCustomer(
     		@ApiParam(name = "CustomerNewData", value = "Customer's new data") 
     		@Valid @RequestBody CustomerUpdateDto customerUpdateDto,
     		HttpServletRequest request)  {
     	
     	String token = null;
-    	try {
-    		CustomerDto customerDto = customerService.update(customerUpdateDto);
-    		String jwt = JwtUtil.resolveToken(request);
-            
-            if (StringUtils.hasText(jwt) && restTokenProvider.validateToken(jwt)) {
-                token = restTokenProvider.createToken(customerUpdateDto.getEmail(), jwt);
-            }
-            
-    		return ResponseEntity.ok().body(new JWTTokenDto(token, customerDto));
-    	} catch (Exception e) {
-			log.error(e.getLocalizedMessage(), e);
-			return ResponseEntity.status(500).body(new ErrorResponse(e.getLocalizedMessage()));
-		}
+    	CustomerDto customerDto = customerService.update(customerUpdateDto);
+		String jwt = JwtUtil.resolveToken(request);
+        
+        if (StringUtils.hasText(jwt) && restTokenProvider.validateToken(jwt)) {
+            token = restTokenProvider.createToken(customerUpdateDto.getEmail(), jwt);
+        }
+        
+		return ResponseEntity.ok().body(new JWTTokenDto(token, customerDto));
     }
     
     @ApiOperation(
@@ -145,23 +133,17 @@ public class CustomerRestController extends AbstractController{
     		notes="Change Customer's Password",
     		consumes=MediaType.APPLICATION_JSON_VALUE,
     		produces=MediaType.APPLICATION_JSON_VALUE, 
-    		authorizations = { @Authorization(value=SwaggerConstant.JWT) })
+    		authorizations = { @Authorization(value=JWT) })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Pair.class)})
     @PreAuthorize("hasRole('CUSTOMER')")
     @PostMapping("/customers/change-password")
-    public ResponseEntity<?> changePassword(
+    public ResponseEntity<Pair<String, String>> changePassword(
     		@ApiParam(name = "ChangePasswordData", value = "Customer's password data") 
     		@Valid @RequestBody CustomerPasswordDto customerPasswordDto)  {
     	
-    	try {
-    		customerService.changePassword(customerPasswordDto);
-			Pair<String, String> result = new Pair<String, String>(Constant.MESSAGE, Constant.SUCCESS);
-    		return ResponseEntity.ok().body(result);
-    	} catch (Exception e) {
-			log.error(e.getLocalizedMessage(), e);
-			return ResponseEntity.status(500).body(new ErrorResponse(e.getLocalizedMessage()));
-		}
-    	
+    	customerService.changePassword(customerPasswordDto);
+		String message = MessageService.getMessage(SUCCESS);
+		return ResponseEntity.ok().body(new Pair<String, String>(MESSAGE, message));
     }
     
     @InitBinder("customerUpdateDto")

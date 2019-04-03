@@ -96,7 +96,7 @@ public class UserPasswordController extends AbstractController{
 
 				String message = MessageService.getMessage(successMessage, userPasswordDto.getUsername());
 				String resultUrl = UrlUtil.getUrl(userPasswordDto.isOwnPassword() ? pass : user);
-				return saveResponse(message, resultUrl);
+				return dataIsSavedResponse(message, resultUrl);
 			} catch (Exception ex) {
 				log.error(ex.getLocalizedMessage(), ex);
 				return errorResponse(ex);

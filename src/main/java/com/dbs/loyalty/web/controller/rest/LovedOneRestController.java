@@ -23,12 +23,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.config.constant.SwaggerConstant;
-import com.dbs.loyalty.model.ErrorResponse;
 import com.dbs.loyalty.service.LovedOneService;
 import com.dbs.loyalty.service.dto.LovedOneAddDto;
 import com.dbs.loyalty.service.dto.LovedOneDto;
 import com.dbs.loyalty.service.dto.LovedOneUpdateDto;
 import com.dbs.loyalty.web.controller.AbstractController;
+import com.dbs.loyalty.web.response.ErrorResponse;
 import com.dbs.loyalty.web.validator.LovedOneAddValidator;
 import com.dbs.loyalty.web.validator.LovedOneUpdateValidator;
 

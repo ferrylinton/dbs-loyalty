@@ -2,16 +2,19 @@ package com.dbs.loyalty.web.controller;
 
 import static com.dbs.loyalty.config.constant.Constant.BR;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
-import com.dbs.loyalty.model.BadRequestResponse;
-import com.dbs.loyalty.model.ErrorResponse;
-import com.dbs.loyalty.model.SuccessResponse;
 import com.dbs.loyalty.service.MessageService;
 import com.dbs.loyalty.service.dto.TaskDto;
+import com.dbs.loyalty.web.response.BadRequestResponse;
+import com.dbs.loyalty.web.response.ErrorResponse;
+import com.dbs.loyalty.web.response.SuccessResponse;
 
 public abstract class AbstractController {
 
@@ -23,34 +26,41 @@ public abstract class AbstractController {
 	
 	protected String taskIsRejected = "message.taskIsRejected";
 	
+	protected ResponseEntity<SuccessResponse> taskIsSavedResponse(String taskDataType, String val, String resultUrl) {
+		taskDataType = MessageService.getMessage(taskDataType);
+		String message = MessageService.getMessage(taskIsSaved, taskDataType, val);
+		return dataIsSavedResponse(message, resultUrl);
+	}
+	
+	protected ResponseEntity<SuccessResponse> dataIsSavedResponse(String message, String resultUrl) {
+		return ResponseEntity
+	            .status(HttpStatus.OK)
+	            .body(new SuccessResponse(message, resultUrl));
+	}
+	
+	
+	
+	
+	
 	protected String getNotFoundMessage(String id) {
 		return MessageService.getMessage(dataWithIdNotFound, id);
 	}
 
 	protected ResponseEntity<BadRequestResponse> badRequestResponse(BindingResult result) {
-		BadRequestResponse response = new BadRequestResponse();
+		List<String> fields = new ArrayList<String>();
 		StringBuilder builder = new StringBuilder();
 		
 		for (FieldError fieldError : result.getFieldErrors()) {
-			response.getFields().add(fieldError.getField());
+			fields.add(fieldError.getField());
 			builder.append(fieldError.getDefaultMessage()).append(BR);
 		}
 
-		response.setMessage(builder.toString());
 		return ResponseEntity
 	            .status(HttpStatus.BAD_REQUEST)
-	            .body(response);
+	            .body(new BadRequestResponse(builder.toString(), fields));
 	}
 	
-	protected ResponseEntity<?> taskIsSavedResponse(String taskDataType, String val, String resultUrl) {
-		SuccessResponse response = new SuccessResponse();
-		taskDataType = MessageService.getMessage(taskDataType);
-		response.setMessage(MessageService.getMessage(taskIsSaved, taskDataType, val));
-		response.setResultUrl(resultUrl);
-		return ResponseEntity
-	            .status(HttpStatus.OK)
-	            .body(response);
-	}
+	
 	
 	protected ResponseEntity<?> errorResponse(Exception ex){
 		return ResponseEntity
@@ -58,14 +68,7 @@ public abstract class AbstractController {
 	            .body(new ErrorResponse(ex.getLocalizedMessage()));
 	}
 	
-	protected ResponseEntity<?> saveResponse(String message, String resultUrl) {
-		SuccessResponse response = new SuccessResponse();
-		response.setMessage(message);
-		response.setResultUrl(resultUrl);
-		return ResponseEntity
-	            .status(HttpStatus.OK)
-	            .body(response);
-	}
+	
 	
 	protected String getMessage(TaskDto taskDto, String val) {
 		Object[] args = new Object[] { MessageService.getMessage(taskDto.getTaskOperation().toString()), MessageService.getMessage(taskDto.getTaskDataType()), val };

@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.config.constant.SwaggerConstant;
-import com.dbs.loyalty.model.ErrorResponse;
 import com.dbs.loyalty.service.PromoService;
 import com.dbs.loyalty.service.dto.PromoDto;
 import com.dbs.loyalty.util.Base64Util;
+import com.dbs.loyalty.web.response.ErrorResponse;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

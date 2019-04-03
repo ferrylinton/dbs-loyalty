@@ -7,6 +7,10 @@ public class NotFoundException extends AbstractException {
 	public NotFoundException() {
         super("message.dataNotFound");
     }
+	
+	public NotFoundException(String message) {
+        super(message);
+    }
 
 	@Override
 	public int getStatus() {

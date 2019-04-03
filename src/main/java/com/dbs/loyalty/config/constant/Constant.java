@@ -25,8 +25,6 @@ public final class Constant {
 	public static final String KEYWORD 				= "keyword";
 	
 	public static final String MESSAGE				= "message";
-	
-	public static final String SUCCESS				= "success";
 
 	public static final String ENTITY				= "entity";
 	

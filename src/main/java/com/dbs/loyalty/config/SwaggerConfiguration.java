@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
-import com.dbs.loyalty.model.ErrorResponse;
+import com.dbs.loyalty.web.response.ErrorResponse;
 import com.fasterxml.classmate.TypeResolver;
 import com.google.common.collect.Lists;
 

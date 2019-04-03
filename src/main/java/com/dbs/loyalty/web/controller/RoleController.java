@@ -101,7 +101,8 @@ public class RoleController extends AbstractPageController {
 
 	@PreAuthorize("hasRole('ROLE_MK')")
 	@PostMapping
-	public @ResponseBody ResponseEntity<?> save(@ModelAttribute @Valid RoleDto roleDto, BindingResult result) {
+	@ResponseBody
+	public ResponseEntity<?> save(@ModelAttribute @Valid RoleDto roleDto, BindingResult result) {
 		try {
 			if (result.hasErrors()) {
 				return badRequestResponse(result);

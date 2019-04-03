@@ -73,7 +73,7 @@ public class AbstractTaskController extends AbstractPageController {
 		try {
 			String val = taskService.save(taskDto);
 			String resultUrl = UrlUtil.getTaskUrl(taskDto.getTaskDataType());
-			return saveResponse(getMessage(taskDto, val), resultUrl);
+			return dataIsSavedResponse(getMessage(taskDto, val), resultUrl);
 		} catch (Exception ex) {
 			log.error(ex.getLocalizedMessage(), ex);
 			taskService.save(ex, taskDto);

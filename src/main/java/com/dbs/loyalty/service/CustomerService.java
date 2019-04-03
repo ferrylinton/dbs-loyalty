@@ -92,8 +92,7 @@ public class CustomerService{
 	
 	public void changePassword(CustomerPasswordDto customerPasswordDto) {
 		String passwordHash = PasswordUtil.getInstance().encode(customerPasswordDto.getNewPassword());
-		String email = SecurityUtil.getLogged();
-		customerRepository.changePassword(passwordHash, email);
+		customerRepository.changePassword(passwordHash, SecurityUtil.getLogged());
 	}
 	
 	public String execute(TaskDto taskDto) throws IOException {

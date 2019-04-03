@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -16,10 +17,10 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
-import com.dbs.loyalty.model.BadRequestResponse;
-import com.dbs.loyalty.model.ErrorResponse;
+import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.MessageService;
-import com.dbs.loyalty.util.ErrorUtil;
+import com.dbs.loyalty.web.response.BadRequestResponse;
+import com.dbs.loyalty.web.response.ErrorResponse;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -30,29 +31,38 @@ public class GlobalExceptionHandler {
 	
 	@ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<ErrorResponse> methodNotSupportErrorHandler(HttpServletRequest request, Exception ex){
-        ErrorResponse response = new ErrorResponse(ex.getLocalizedMessage());
-        return ResponseEntity
+       return ResponseEntity
 	            .status(HttpStatus.NOT_FOUND)
-	            .body(response);
+	            .body(new ErrorResponse(ex));
+    }
+	
+	@ExceptionHandler(value = NotFoundException.class)
+    public ResponseEntity<ErrorResponse> notFoundException(NotFoundException ex){
+       return ResponseEntity
+	            .status(HttpStatus.NOT_FOUND)
+	            .body(new ErrorResponse(ex.getLocalizedMessage()));
+    }
+	
+	@ExceptionHandler(value = BadCredentialsException.class)
+    public ResponseEntity<ErrorResponse> badCredentialsException(BadCredentialsException ex){
+       return ResponseEntity
+	            .status(HttpStatus.UNAUTHORIZED)
+	            .body(new ErrorResponse(ex.getLocalizedMessage()));
     }
 	
 	@ExceptionHandler(DataIntegrityViolationException.class)
 	public ResponseEntity<BadRequestResponse> handleException(DataIntegrityViolationException ex){
-		BadRequestResponse response = new BadRequestResponse();
-		response.setMessage(ErrorUtil.getErrorMessage(ex));
 		return ResponseEntity
 	            .status(HttpStatus.BAD_REQUEST)
-	            .body(response);
+	            .body(new BadRequestResponse(ex.getLocalizedMessage()));
 	}
 	
 	@ExceptionHandler(MaxUploadSizeExceededException.class)
 	public ResponseEntity<BadRequestResponse> handleException(MaxUploadSizeExceededException ex){
-		BadRequestResponse response = new BadRequestResponse();
-		response.getFields().add(file);
-		response.setMessage(MessageService.getMessage(fileSizeIsNotValid));
+		String message = MessageService.getMessage(fileSizeIsNotValid);
 		return ResponseEntity
 	            .status(HttpStatus.BAD_REQUEST)
-	            .body(response);
+	            .body(new BadRequestResponse(message, file));
 	}
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
