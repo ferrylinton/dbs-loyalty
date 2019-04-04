@@ -19,7 +19,7 @@ public class RoleSpecification {
 			String keyword = String.format(LIKE_FORMAT, request.getParameter(KY_PARAM).trim().toLowerCase());
 			return (role, cq, cb) -> cb.like(cb.lower(role.get(NAME)), keyword);
 		}else {
-			return (role, cq, cb) -> cb.notEqual(role.get(ID), EMPTY);
+			return null;
 		}
 	}
 	

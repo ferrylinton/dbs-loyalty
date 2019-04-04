@@ -17,7 +17,7 @@
 						<div class="row no-gutters">
 							<th:block th:if="${#authorization.expression('hasAnyAuthority(''USER_MK'', ''USER_CK'')')}">
 			                	<div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-4 p-1 mb-1">
-			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/user}">
+			                		<a class="btn btn-primary btn-block" role="button" th:href="@{/user}">
 										<span class="icon-user font-icon"></span>
 										<span class="font-label" th:text="#{user}"></span>
 									</a>
@@ -25,7 +25,7 @@
 		                	</th:block>
 		                	<th:block th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MK'', ''ROLE_CK'')')}">
 			                	<div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-4 p-1 mb-1">
-			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/role}">
+			                		<a class="btn btn-primary btn-block" role="button" th:href="@{/role}">
 										<span class="icon-user-secret font-icon"></span>
 										<span class="font-label" th:text="#{role}"></span>
 									</a>
@@ -65,7 +65,7 @@
  						<div class="row no-gutters">
  							<th:block th:if="${#authorization.expression('hasAnyAuthority(''CUSTOMER_MK'', ''CUSTOMER_CK'')')}">
 			                	<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 p-1 mb-1">
-			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/customer}">
+			                		<a class="btn btn-success btn-block" role="button" th:href="@{/customer}">
 										<span class="icon-user font-icon"></span>
 										<span class="font-label" th:text="#{customer}"></span>
 									</a>
@@ -81,7 +81,7 @@
  						<div class="row no-gutters">
  							<th:block th:if="${#authorization.expression('hasAnyAuthority(''USER_MK'', ''USER_CK'')')}">
 			                	<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 p-1 mb-1">
-			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/task/user}">
+			                		<a class="btn btn-warning btn-block" role="button" th:href="@{/task/user}">
 										<span class="icon-user font-icon"></span>
 										<span class="font-label" th:text="#{user}"></span>
 									</a>
@@ -89,7 +89,7 @@
 		                	</th:block>
 		                	<th:block th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MK'', ''ROLE_CK'')')}">
 			                	<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 p-1 mb-1">
-			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/task/role}">
+			                		<a class="btn btn-warning btn-block" role="button" th:href="@{/task/role}">
 										<span class="icon-user-secret font-icon"></span>
 										<span class="font-label" th:text="#{role}"></span>
 									</a>
@@ -97,7 +97,7 @@
 			                </th:block>
 			                <th:block th:if="${#authorization.expression('hasAnyAuthority(''PROMO_CATEGORY_MK'', ''PROMO_CATEGORY_CK'')')}">
 			                	<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 p-1 mb-1">
-			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/task/promocategory}">
+			                		<a class="btn btn-warning btn-block" role="button" th:href="@{/task/promocategory}">
 										<span class="icon-birthday font-icon"></span>
 										<span class="font-label" th:text="#{promoCategory}"></span>
 									</a>
@@ -105,7 +105,7 @@
 			                </th:block>
 			                <th:block th:if="${#authorization.expression('hasAnyAuthority(''PROMO_MK'', ''PROMO_CK'')')}">
 			                	<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 p-1 mb-1">
-			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/task/promo}">
+			                		<a class="btn btn-warning btn-block" role="button" th:href="@{/task/promo}">
 										<span class="icon-birthday font-icon"></span>
 										<span class="font-label" th:text="#{promo}"></span>
 									</a>
@@ -113,7 +113,7 @@
 			                </th:block>
 			                <th:block th:if="${#authorization.expression('hasAnyAuthority(''CUSTOMER_MK'', ''CUSTOMER_CK'')')}">
 			                	<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 p-1 mb-1">
-			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/task/customer}">
+			                		<a class="btn btn-warning btn-block" role="button" th:href="@{/task/customer}">
 										<span class="icon-birthday font-icon"></span>
 										<span class="font-label" th:text="#{customer}"></span>
 									</a>
@@ -128,14 +128,14 @@
  						<legend th:text="#{tool}"></legend>
  						<div class="row no-gutters">
 		                	<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 p-1 mb-1">
-		                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/swagger-ui.html}" onclick="return openNewTab(this);">
+		                		<a class="btn btn-info btn-block" role="button" th:href="@{/swagger-ui.html}" onclick="return openNewTab(this);">
 									<span class="icon-cog-alt font-icon"></span>
 									<span class="font-label" th:text="#{swagger}"></span>
 								</a>
 		                	</div>
 		                	<th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
 			                	<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 p-1 mb-1">
-			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/loglogin}">
+			                		<a class="btn btn-info btn-block" role="button" th:href="@{/loglogin}">
 										<span class="icon-history font-icon"></span>
 										<span class="font-label" th:text="#{logLogin}"></span>
 									</a>
