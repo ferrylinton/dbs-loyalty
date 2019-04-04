@@ -59,7 +59,7 @@ public class UserController extends AbstractPageController{
 	
 	@PreAuthorize("hasAnyRole('USER_MK', 'USER_CK')")
 	@GetMapping
-	public String view(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
+	public String viewUsers(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
 		Order order = getOrder(sort, "username");
 		Page<UserDto> page = userService.findAll(getPageable(params, order), request);
 
@@ -75,7 +75,7 @@ public class UserController extends AbstractPageController{
 	
 	@PreAuthorize("hasAnyRole('USER_MK', 'USER_CK')")
 	@GetMapping("/{id}")
-	public String view(ModelMap model, @PathVariable String id) {
+	public String viewUserForm(ModelMap model, @PathVariable String id) {
 		if (id.equals(ZERO)) {
 			model.addAttribute(USER, new UserDto());
 		} else {

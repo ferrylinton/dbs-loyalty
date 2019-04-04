@@ -58,7 +58,7 @@ public class RoleController extends AbstractPageController {
 
 	@PreAuthorize("hasAnyRole('ROLE_MK', 'ROLE_CK')")
 	@GetMapping
-	public String view(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
+	public String viewRoles(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
 		Order order = getOrder(sort, "name");
 		Page<RoleDto> page = roleService.findAll(getPageable(params, order), request);
 
@@ -74,7 +74,7 @@ public class RoleController extends AbstractPageController {
 
 	@PreAuthorize("hasAnyRole('ROLE_MK', 'ROLE_CK')")
 	@GetMapping("/{id}")
-	public String view(ModelMap model, @PathVariable String id){
+	public String viewRoleForm(ModelMap model, @PathVariable String id){
 		if (id.equals(ZERO)) {
 			model.addAttribute(ROLE, new RoleDto());
 		} else {

@@ -53,7 +53,7 @@ public class PromoCategoryController extends AbstractPageController {
 
 	@PreAuthorize("hasAnyRole('PROMO_CATEGORY_MK', 'PROMO_CATEGORY_CK')")
 	@GetMapping
-	public String view(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
+	public String viewPromoCategories(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
 		Order order = getOrder(sort, "name");
 		Page<PromoCategoryDto> page = promoCategoryService.findAll(getPageable(params, order), request);
 
@@ -69,7 +69,7 @@ public class PromoCategoryController extends AbstractPageController {
 
 	@PreAuthorize("hasAnyRole('PROMO_CATEGORY_MK', 'PROMO_CATEGORY_CK')")
 	@GetMapping("/{id}")
-	public String view(ModelMap model, @PathVariable String id){
+	public String viewPromoCategoryForm(ModelMap model, @PathVariable String id){
 		if (id.equals(ZERO)) {
 			model.addAttribute(PROMO_CATEGORY, new PromoCategoryDto());
 		} else {

@@ -63,7 +63,7 @@ public class PromoController extends AbstractPageController {
 
 	@PreAuthorize("hasAnyRole('PROMO_MK', 'PROMO_CK')")
 	@GetMapping
-	public String view(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
+	public String viewPromos(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
 		Order order = getOrder(sort, "title");
 		Page<PromoDto> page = promoService.findAll(getPageable(params, order), request);
 
@@ -79,7 +79,7 @@ public class PromoController extends AbstractPageController {
 
 	@PreAuthorize("hasAnyRole('PROMO_MK', 'PROMO_CK')")
 	@GetMapping("/{id}")
-	public String view(ModelMap model, @PathVariable String id){
+	public String viewPromoForm(ModelMap model, @PathVariable String id){
 		if (id.equals(ZERO)) {
 			model.addAttribute(PROMO, new PromoDto());
 		} else {
