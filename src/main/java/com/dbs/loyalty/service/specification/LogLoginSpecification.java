@@ -3,7 +3,7 @@ package com.dbs.loyalty.service.specification;
 import static com.dbs.loyalty.service.specification.Constant.BROWSER;
 import static com.dbs.loyalty.service.specification.Constant.CREATED_DATE;
 import static com.dbs.loyalty.service.specification.Constant.DEVICE_TYPE;
-import static com.dbs.loyalty.service.specification.Constant.EMAIL;
+import static com.dbs.loyalty.service.specification.Constant.USERNAME;
 import static com.dbs.loyalty.service.specification.Constant.EMPTY;
 import static com.dbs.loyalty.service.specification.Constant.END_DATE_FORMAT;
 import static com.dbs.loyalty.service.specification.Constant.END_DATE_PARAM;
@@ -32,9 +32,19 @@ import lombok.extern.slf4j.Slf4j;
 public class LogLoginSpecification {
 
 	public static Specification<LogLogin> getSpec(HttpServletRequest request) {
-		return Specification
-				.where(createdDate(request))
-				.and(keyword(request));
+		Specification<LogLogin> spec = Specification.where(createdDate(request));
+		
+		if(request.getParameter(KY_PARAM) != null && !Constant.EMPTY.equals(request.getParameter(KY_PARAM).trim())) {
+			String keyword = String.format(LIKE_FORMAT, request.getParameter(KY_PARAM).trim().toLowerCase());
+			return (logLogin, cq, cb) -> cb.or(
+						cb.like(cb.lower(logLogin.get(USERNAME)), keyword),
+						cb.like(cb.lower(logLogin.get(IP)), keyword),
+						cb.like(cb.lower(logLogin.get(BROWSER)), keyword),
+						cb.like(cb.lower(logLogin.get(DEVICE_TYPE)), keyword)
+			);
+		}
+		
+		return spec;
 	}
 	
 	public static Specification<LogLogin> all() {
@@ -45,8 +55,8 @@ public class LogLoginSpecification {
 		if(
 			request.getParameter(START_DATE_PARAM) != null &&
 			request.getParameter(END_DATE_PARAM) != null &&
-			!request.getParameter(START_DATE_PARAM).equals(Constant.EMPTY) &&
-			!request.getParameter(END_DATE_PARAM).equals(Constant.EMPTY)
+			!request.getParameter(START_DATE_PARAM).equals(EMPTY) &&
+			!request.getParameter(END_DATE_PARAM).equals(EMPTY)
 			) {
 			
 			Instant startDate = getStartDate(request);
@@ -59,20 +69,6 @@ public class LogLoginSpecification {
 		}else {
 			return all();
 		}		
-	}
-	
-	public static Specification<LogLogin> keyword(HttpServletRequest request) {
-		if(request.getParameter(KY_PARAM) != null && !Constant.EMPTY.equals(request.getParameter(KY_PARAM))) {
-			String keyword = String.format(LIKE_FORMAT, request.getParameter(KY_PARAM).trim().toLowerCase());
-			return (logLogin, cq, cb) -> cb.or(
-						cb.like(cb.lower(logLogin.get(EMAIL)), keyword),
-						cb.like(cb.lower(logLogin.get(IP)), keyword),
-						cb.like(cb.lower(logLogin.get(BROWSER)), keyword),
-						cb.like(cb.lower(logLogin.get(DEVICE_TYPE)), keyword)
-			);
-		}else {
-			return null;
-		}
 	}
 
 	private static Instant getStartDate(HttpServletRequest request) {

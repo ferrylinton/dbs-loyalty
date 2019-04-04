@@ -32,7 +32,7 @@ public class CustomErrorController implements ErrorController {
 	@GetMapping("/error")
 	public String handleError(HttpServletRequest request, HttpServletResponse response) {
 		ErrorData errorData = new ErrorData(request);
-		log.info("RequestURI :: " + errorData.getRequestURI());
+		log.warn("RequestURI :: " + errorData.getRequestURI());
 		
 		if(errorData.getRequestURI().contains(API)) {
 			return handleApiError(errorData, response);

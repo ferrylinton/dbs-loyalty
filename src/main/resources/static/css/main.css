@@ -156,6 +156,12 @@ legend {
 	
 }
 
+/* HOME */
+
+.menu-group{
+	display: none;
+}
+
 /* TABLE */
 
 .table tbody tr td .dropdown-toggle::after{

@@ -46,9 +46,7 @@ public class LoginController extends AbstractController{
 	private String textDanger 						= "text-danger";
 	
 	private String textSuccess						= "text-success";
-	
-	private String loginTemplate					= "login/form";
-	
+
 	@GetMapping("/login")
 	public String login(HttpServletRequest request) {
 		
@@ -83,7 +81,7 @@ public class LoginController extends AbstractController{
 			}
 		}
 		
-		return loginTemplate;
+		return "login/form";
 	}
 
 }

@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.AuthorityService;
 import com.dbs.loyalty.service.RoleService;
@@ -38,26 +39,16 @@ import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.service.dto.AuthorityDto;
 import com.dbs.loyalty.service.dto.RoleDto;
 import com.dbs.loyalty.util.UrlUtil;
+import com.dbs.loyalty.web.response.AbstractResponse;
 import com.dbs.loyalty.web.validator.RoleValidator;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/role")
 public class RoleController extends AbstractPageController {
-
-	private String redirect 		= "redirect:/role";
-
-	private String viewTemplate 	= "role/view";
-
-	private String formTemplate	= "role/form";
-
-	private String sortBy 			= "name";
-	
-	private Order defaultOrder				= Order.asc(sortBy).ignoreCase();
 
 	private final RoleService roleService;
 
@@ -68,17 +59,17 @@ public class RoleController extends AbstractPageController {
 	@PreAuthorize("hasAnyRole('ROLE_MK', 'ROLE_CK')")
 	@GetMapping
 	public String view(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
-		Order order = getOrder(sort);
+		Order order = getOrder(sort, "name");
 		Page<RoleDto> page = roleService.findAll(getPageable(params, order), request);
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
-			return redirect;
+			return "redirect:/role";
+		}else {
+			request.setAttribute(PAGE, page);
+			setParamsQueryString(params, request);
+			setPagerQueryString(order, page.getNumber(), request);
+			return "role/view";
 		}
-		
-		request.setAttribute(PAGE, page);
-		setParamsQueryString(params, request);
-		setPagerQueryString(order, page.getNumber(), request);
-		return viewTemplate;
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_MK', 'ROLE_CK')")
@@ -96,54 +87,42 @@ public class RoleController extends AbstractPageController {
 			}
 		}
 		
-		return formTemplate;
+		return "role/form";
 	}
 
 	@PreAuthorize("hasRole('ROLE_MK')")
 	@PostMapping
 	@ResponseBody
-	public ResponseEntity<?> save(@ModelAttribute @Valid RoleDto roleDto, BindingResult result) {
-		try {
-			if (result.hasErrors()) {
-				return badRequestResponse(result);
-			} else {
-				if(roleDto.getId() == null) {
-					taskService.saveTaskAdd(ROLE, roleDto);
-				}else {
-					Optional<RoleDto> current = roleService.findWithAuthoritiesById(roleDto.getId());
-					
-					if(current.isPresent()) {
-						taskService.saveTaskModify(ROLE, current.get(), roleDto);
-					}else {
-						throw new NotFoundException();
-					}
-				}
-
-				return taskIsSavedResponse(ROLE, roleDto.getName(), UrlUtil.getUrl(ROLE));
-			}
-			
-		} catch (Exception ex) {
-			log.error(ex.getLocalizedMessage(), ex);
-			return errorResponse(ex);
+	public ResponseEntity<AbstractResponse> save(@ModelAttribute @Valid RoleDto roleDto, BindingResult result) throws JsonProcessingException, NotFoundException, BadRequestException {
+		if (result.hasErrors()) {
+			throwBadRequestResponse(result);
 		}
+
+		if(roleDto.getId() == null) {
+			taskService.saveTaskAdd(ROLE, roleDto);
+		}else {
+			Optional<RoleDto> current = roleService.findWithAuthoritiesById(roleDto.getId());
+			
+			if(current.isPresent()) {
+				taskService.saveTaskModify(ROLE, current.get(), roleDto);
+			}else {
+				throw new NotFoundException();
+			}
+		}
+
+		return taskIsSavedResponse(ROLE, roleDto.getName(), UrlUtil.getUrl(ROLE));
 	}
 
 	@PreAuthorize("hasRole('ROLE_MK')")
 	@DeleteMapping("/{id}")
-	public @ResponseBody ResponseEntity<?> delete(@PathVariable String id){
-		try {
-			Optional<RoleDto> current = roleService.findWithAuthoritiesById(id);
-			
-			if(current.isPresent()) {
-				taskService.saveTaskDelete(ROLE, current.get());
-				return taskIsSavedResponse(ROLE, current.get().getName(), UrlUtil.getUrl(ROLE));
-			}else {
-				throw new NotFoundException();
-			}
-			
-		} catch (Exception ex) {
-			log.error(ex.getLocalizedMessage(), ex);
-			return errorResponse(ex);
+	public @ResponseBody ResponseEntity<AbstractResponse> delete(@PathVariable String id) throws NotFoundException, JsonProcessingException{
+		Optional<RoleDto> current = roleService.findWithAuthoritiesById(id);
+		
+		if(current.isPresent()) {
+			taskService.saveTaskDelete(ROLE, current.get());
+			return taskIsSavedResponse(ROLE, current.get().getName(), UrlUtil.getUrl(ROLE));
+		}else {
+			throw new NotFoundException();
 		}
 	}
 
@@ -157,14 +136,4 @@ public class RoleController extends AbstractPageController {
 		binder.addValidators(new RoleValidator(roleService));
 	}
 
-	private Order getOrder(Sort sort) {
-		Order order = sort.getOrderFor(sortBy);
-		
-		if(order == null) {
-			order = defaultOrder;
-		}
-		
-		return order;
-	}
-	
 }

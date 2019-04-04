@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dbs.loyalty.config.constant.Constant;
+import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.MessageService;
 import com.dbs.loyalty.service.UserService;
@@ -24,11 +25,10 @@ import com.dbs.loyalty.service.dto.UserDto;
 import com.dbs.loyalty.service.dto.UserPasswordDto;
 import com.dbs.loyalty.util.PasswordUtil;
 import com.dbs.loyalty.util.UrlUtil;
+import com.dbs.loyalty.web.response.AbstractResponse;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RequiredArgsConstructor
 @Controller
 public class UserPasswordController extends AbstractController{
@@ -86,22 +86,17 @@ public class UserPasswordController extends AbstractController{
 	@PreAuthorize("authenticated")
 	@PostMapping("/password")
 	@ResponseBody
-	public ResponseEntity<?> save(@Valid @ModelAttribute UserPasswordDto userPasswordDto, BindingResult result) throws NotFoundException {
+	public ResponseEntity<AbstractResponse> save(@Valid @ModelAttribute UserPasswordDto userPasswordDto, BindingResult result) throws BadRequestException {
 		if (result.hasErrors()) {
-			return badRequestResponse(result);
-		} else {
-			try {
-				String passwordHash = PasswordUtil.getInstance().encode(userPasswordDto.getPasswordPlain());
-				userService.save(userPasswordDto.getUsername(), passwordHash);
+			throwBadRequestResponse(result);
+		} 
 
-				String message = MessageService.getMessage(successMessage, userPasswordDto.getUsername());
-				String resultUrl = UrlUtil.getUrl(userPasswordDto.isOwnPassword() ? pass : user);
-				return dataIsSavedResponse(message, resultUrl);
-			} catch (Exception ex) {
-				log.error(ex.getLocalizedMessage(), ex);
-				return errorResponse(ex);
-			}
-		}
+		String passwordHash = PasswordUtil.getInstance().encode(userPasswordDto.getPasswordPlain());
+		userService.save(userPasswordDto.getUsername(), passwordHash);
+
+		String message = MessageService.getMessage(successMessage, userPasswordDto.getUsername());
+		String resultUrl = UrlUtil.getUrl(userPasswordDto.isOwnPassword() ? pass : user);
+		return dataIsSavedResponse(message, resultUrl);
 	}
 	
 }

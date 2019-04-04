@@ -53,4 +53,14 @@ public abstract class AbstractPageController extends AbstractController{
 		return PageRequest.of(pageNumber, SIZE, sort);
 	}
 
+	protected Order getOrder(Sort sort, String field) {
+		Order order = sort.getOrderFor(field);
+		
+		if(order == null) {
+			order = Order.asc(field).ignoreCase();
+		}
+		
+		return order;
+	}
+	
 }

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 
+import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.service.MessageService;
 import com.dbs.loyalty.web.response.AbstractResponse;
 import com.dbs.loyalty.web.response.BadRequestResponse;
@@ -54,6 +55,18 @@ public abstract class AbstractController {
 		return ResponseEntity
 	            .status(HttpStatus.BAD_REQUEST)
 	            .body(new BadRequestResponse(builder.toString(), fields));
+	}
+	
+	protected void throwBadRequestResponse(BindingResult result) throws BadRequestException {
+		List<String> fields = new ArrayList<>();
+		StringBuilder builder = new StringBuilder();
+		
+		for (FieldError fieldError : result.getFieldErrors()) {
+			fields.add(fieldError.getField());
+			builder.append(fieldError.getDefaultMessage()).append(BR);
+		}
+		
+		throw new BadRequestException(new BadRequestResponse(builder.toString(), fields));
 	}
 
 	protected ResponseEntity<AbstractResponse> errorResponse(Exception ex){

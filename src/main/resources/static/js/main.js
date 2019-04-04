@@ -18,8 +18,8 @@ $(document).ready(function() {
 
 function checkMenuGroup(){
 	$('.menu-group').each(function(){
-		if($(this).has('a.btn').length == 0){
-			$(this).hide();
+		if($(this).has('a.btn').length > 0){
+			$(this).show();
 		}
 	});
 }

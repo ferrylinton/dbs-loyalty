@@ -9,6 +9,8 @@ import lombok.Setter;
 @Getter
 public class ErrorResponse extends AbstractResponse{
 
+	private static final long serialVersionUID = 1L;
+	
 	private String detail;
 
 	public ErrorResponse(String message) {

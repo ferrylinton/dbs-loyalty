@@ -7,6 +7,8 @@ import lombok.Setter;
 @Getter
 public class SuccessResponse extends AbstractResponse {
 
+	private static final long serialVersionUID = 1L;
+	
 	private String resultUrl;
 	
 	public SuccessResponse(String message, String resultUrl) {

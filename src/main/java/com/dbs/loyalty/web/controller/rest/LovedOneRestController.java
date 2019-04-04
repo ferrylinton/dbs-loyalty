@@ -1,5 +1,7 @@
 package com.dbs.loyalty.web.controller.rest;
 
+import static com.dbs.loyalty.config.constant.MessageConstant.DATA_WITH_VALUE_NOT_FOUND;
+
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -23,12 +25,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.config.constant.SwaggerConstant;
+import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.LovedOneService;
+import com.dbs.loyalty.service.MessageService;
 import com.dbs.loyalty.service.dto.LovedOneAddDto;
 import com.dbs.loyalty.service.dto.LovedOneDto;
 import com.dbs.loyalty.service.dto.LovedOneUpdateDto;
 import com.dbs.loyalty.web.controller.AbstractController;
-import com.dbs.loyalty.web.response.ErrorResponse;
 import com.dbs.loyalty.web.validator.LovedOneAddValidator;
 import com.dbs.loyalty.web.validator.LovedOneUpdateValidator;
 
@@ -39,11 +42,9 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Api(tags = { SwaggerConstant.LOVED_ONE })
 @RequiredArgsConstructor
-@Slf4j
 @RestController
 @RequestMapping("/api")
 public class LovedOneRestController extends AbstractController{
@@ -59,14 +60,9 @@ public class LovedOneRestController extends AbstractController{
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = LovedOneDto.class)})
     @PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping("/loved-ones")
-	public ResponseEntity<?> getLovedOnes(Principal principal){
-    	try {
-			List<LovedOneDto> lovedOnes = lovedOneService.findByCustomerEmail(principal.getName());
-			return ResponseEntity.ok().body(lovedOnes);
-    	} catch (Exception e) {
-			log.error(e.getLocalizedMessage(), e);
-			return ResponseEntity.status(500).body(new ErrorResponse(e.getLocalizedMessage()));
-		}
+	public ResponseEntity<List<LovedOneDto>> getLovedOnes(Principal principal){
+    	List<LovedOneDto> lovedOnes = lovedOneService.findByCustomerEmail(principal.getName());
+		return ResponseEntity.ok().body(lovedOnes);
 	}
     
     @ApiOperation(
@@ -79,18 +75,13 @@ public class LovedOneRestController extends AbstractController{
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = LovedOneDto.class)})
     @PreAuthorize("hasRole('CUSTOMER')")
     @PostMapping("/loved-ones")
-    public ResponseEntity<?> addCustomer(
+    public ResponseEntity<LovedOneDto> addCustomer(
     		@ApiParam(name = "LovedOneData", value = "Customer's loved one new data") 
     		@Valid @RequestBody LovedOneAddDto lovedOneAddDto,
     		HttpServletRequest request)  {
 
-    	try {
-    		LovedOneDto lovedOneDto = lovedOneService.add(lovedOneAddDto);
-    		return ResponseEntity.ok().body(lovedOneDto);
-    	} catch (Exception e) {
-			log.error(e.getLocalizedMessage(), e);
-			return ResponseEntity.status(500).body(new ErrorResponse(e.getLocalizedMessage()));
-		}
+    	LovedOneDto lovedOneDto = lovedOneService.add(lovedOneAddDto);
+		return ResponseEntity.ok().body(lovedOneDto);
     }
     
     @ApiOperation(
@@ -103,23 +94,18 @@ public class LovedOneRestController extends AbstractController{
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = LovedOneDto.class)})
     @PreAuthorize("hasRole('CUSTOMER')")
     @PutMapping("/loved-ones")
-    public ResponseEntity<?> updateCustomer(
+    public ResponseEntity<LovedOneDto> updateCustomer(
     		@ApiParam(name = "LovedOneData", value = "Customer's loved one new data") 
     		@Valid @RequestBody LovedOneUpdateDto lovedOneUpdateDto,
-    		HttpServletRequest request)  {
+    		HttpServletRequest request) throws NotFoundException  {
 
-    	try {
-    		Optional<LovedOneDto> lovedOneDto = lovedOneService.findById(lovedOneUpdateDto.getId());
-    		
-    		if(lovedOneDto.isPresent()) {
-        		return ResponseEntity.ok().body(lovedOneService.update(lovedOneUpdateDto));
-    		}else {
-    			return ResponseEntity.status(404).body(new ErrorResponse(String.format("%s is not found", lovedOneUpdateDto.getId())));
-    		}
-    		
-    	} catch (Exception e) {
-			log.error(e.getLocalizedMessage(), e);
-			return ResponseEntity.status(500).body(new ErrorResponse(e.getLocalizedMessage()));
+    	Optional<LovedOneDto> lovedOneDto = lovedOneService.findById(lovedOneUpdateDto.getId());
+		
+		if(lovedOneDto.isPresent()) {
+    		return ResponseEntity.ok().body(lovedOneService.update(lovedOneUpdateDto));
+		}else {
+			String message = MessageService.getMessage(DATA_WITH_VALUE_NOT_FOUND, lovedOneUpdateDto.getId());
+			throw new NotFoundException(message);
 		}
     }
    

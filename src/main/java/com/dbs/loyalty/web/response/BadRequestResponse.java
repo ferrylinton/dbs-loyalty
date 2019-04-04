@@ -10,6 +10,8 @@ import lombok.Setter;
 @Getter
 public class BadRequestResponse extends AbstractResponse{
 
+	private static final long serialVersionUID = 1L;
+	
 	private List<String> fields;
 
 	public BadRequestResponse(String message) {

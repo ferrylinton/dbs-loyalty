@@ -36,37 +36,26 @@ public class TaskSpecification {
 	public static final String ST_PARAM = "st";
 	
 	public static Specification<Task> getSpec(String taskDataType, Map<String, String> params, HttpServletRequest request) {
-		Specification<Task> specification = Specification
-				.where(taskDataType(taskDataType))
-				.and(taskStatus(params, request))
-				.and(taskOperation(params, request))
-				.and(keyword(params));
+		Specification<Task> spec = Specification.where((task, cq, cb) -> cb.equal(task.get(TASK_DATA_TYPE), taskDataType));
 		
-		return specification;
-	}
-	
-	public static Specification<Task> taskDataType(String taskDataType) {
-		return (task, cq, cb) -> cb.equal(task.get(TASK_DATA_TYPE), taskDataType);
-	}
-	
-	public static Specification<Task> taskStatus(Map<String, String> params, HttpServletRequest request) {
-		TaskStatus taskStatus = getTaskStatus(params, request);
-		
-		if(taskStatus != TaskStatus.ALL) {
-			return (task, cq, cb) -> cb.equal(task.get(TASK_STATUS), taskStatus);
-		}else {
-			return null;
+		if(getTaskStatus(params, request) != TaskStatus.ALL) {
+			spec.and((task, cq, cb) -> cb.equal(task.get(TASK_STATUS), getTaskStatus(params, request)));
 		}
-	}
-	
-	public static Specification<Task> taskOperation(Map<String, String> params, HttpServletRequest request) {
-		TaskOperation taskOperation = getTaskOperation(params, request);
 		
-		if(taskOperation != TaskOperation.ALL) {
-			return (task, cq, cb) -> cb.equal(task.get(TASK_OPERATION), taskOperation);
-		}else {
-			return null;
+		if(getTaskOperation(params, request) != TaskOperation.ALL) {
+			spec.and((task, cq, cb) -> cb.equal(task.get(TASK_OPERATION), getTaskOperation(params, request)));
 		}
+		
+		if(request.getParameter(KY_PARAM) != null && !Constant.EMPTY.equals(request.getParameter(KY_PARAM).trim())) {
+			String keyword = String.format(LIKE_FORMAT, params.get(KY_PARAM).trim().toLowerCase());
+			spec.and((task, cq, cb) -> cb.or(
+						cb.like(cb.lower(task.get(TASK_DATA_TYPE)), keyword),
+						cb.like(cb.lower(task.get(MAKER)), keyword),
+						cb.like(cb.lower(task.get(CHECKER)), keyword)
+					));
+		}
+		
+		return spec;
 	}
 	
 	private static TaskStatus getTaskStatus(Map<String, String> params, HttpServletRequest request) {
@@ -91,25 +80,12 @@ public class TaskSpecification {
 			if(params.containsKey(OP_PARAM)) {
 				taskOperation = TaskOperation.valueOf(params.get(OP_PARAM));
 			}
-		} catch (Exception e) {;
+		} catch (Exception e) {
 			log.error(e.getLocalizedMessage(), e);
 		}
 
 		request.setAttribute(OP_PARAM, taskOperation);
 		return taskOperation;
-	}
-	
-	public static Specification<Task> keyword(Map<String, String> params) {
-		if(params.containsKey(KY_PARAM)) {
-			String keyword = String.format(LIKE_FORMAT, params.get(KY_PARAM).trim().toLowerCase());
-			return (task, cq, cb) -> cb.or(
-						cb.like(cb.lower(task.get(TASK_DATA_TYPE)), keyword),
-						cb.like(cb.lower(task.get(MAKER)), keyword),
-						cb.like(cb.lower(task.get(CHECKER)), keyword)
-					);
-		}else {
-			return null;
-		}
 	}
 	
 	private TaskSpecification() {

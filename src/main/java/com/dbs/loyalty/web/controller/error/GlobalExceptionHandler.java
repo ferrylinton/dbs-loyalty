@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.dbs.loyalty.exception.BadRequestException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,6 +49,13 @@ public class GlobalExceptionHandler {
        return ResponseEntity
 	            .status(HttpStatus.UNAUTHORIZED)
 	            .body(new ErrorResponse(ex.getLocalizedMessage()));
+    }
+	
+	@ExceptionHandler(value = BadRequestException.class)
+    public ResponseEntity<BadRequestResponse> badRequestException(BadRequestException ex){
+       return ResponseEntity
+	            .status(HttpStatus.BAD_REQUEST)
+	            .body(ex.getResponse());
     }
 	
 	@ExceptionHandler(DataIntegrityViolationException.class)
