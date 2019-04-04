@@ -14,7 +14,7 @@ import java.util.Date;
  * <p>
  * All methods are null-safe.
  */
-public class DateConvertUtils {
+public class DateUtil {
 
     /**
      * Calls {@link #asLocalDate(Date, ZoneId)} with the system default time zone.
@@ -125,7 +125,7 @@ public class DateConvertUtils {
             return asInstant(date).atZone(zone);
     }
 
-    private DateConvertUtils() {
+    private DateUtil() {
     	// hide constructor
     }
     

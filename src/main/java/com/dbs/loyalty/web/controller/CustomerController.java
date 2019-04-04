@@ -101,7 +101,7 @@ public class CustomerController extends AbstractPageController{
 		
 		if(customerDto.getId() == null) {
 			customerDto.setImageString(Base64Util.getString(customerDto.getFile().getBytes()));
-			customerDto.setPasswordHash(PasswordUtil.getInstance().encode(customerDto.getPasswordPlain()));
+			customerDto.setPasswordHash(PasswordUtil.encode(customerDto.getPasswordPlain()));
 			customerDto.setPasswordPlain(null);
 			taskService.saveTaskAdd(CUSTOMER, customerDto);
 		}else {

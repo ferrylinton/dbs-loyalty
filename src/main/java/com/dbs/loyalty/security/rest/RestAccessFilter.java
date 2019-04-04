@@ -5,7 +5,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
 
-import com.dbs.loyalty.util.JwtUtil;
+import com.dbs.loyalty.util.HeaderTokenUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,7 +23,7 @@ public class RestAccessFilter extends GenericFilterBean {
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain filterChain) throws IOException, ServletException {
-        String jwt = JwtUtil.resolveToken((HttpServletRequest) req);
+        String jwt = HeaderTokenUtil.resolveToken((HttpServletRequest) req);
         
         if (StringUtils.hasText(jwt) && restTokenProvider.validateToken(jwt)) {
             Authentication authentication = restTokenProvider.getAuthentication(jwt);

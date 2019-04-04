@@ -15,6 +15,7 @@ import com.dbs.loyalty.domain.Promo;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.PromoRepository;
 import com.dbs.loyalty.service.dto.PromoDto;
+import com.dbs.loyalty.service.dto.PromoViewDto;
 import com.dbs.loyalty.service.dto.TaskDto;
 import com.dbs.loyalty.service.mapper.PromoMapper;
 import com.dbs.loyalty.service.specification.PromoSpecification;
@@ -35,25 +36,29 @@ public class PromoService{
 	private final UrlService urlService;
 
 	public Optional<PromoDto> findById(String id){
-		return promoRepository.findById(id).map(promo -> promoMapper.toDto(promo, urlService));
+		return promoRepository.findById(id).map(promo -> promoMapper.toDto(promo));
+	}
+	
+	public Optional<PromoViewDto> findViewById(String id){
+		return promoRepository.findById(id).map(promo -> promoMapper.toViewDto(promo, urlService));
 	}
 
 	public Page<PromoDto> findAll(Pageable pageable, HttpServletRequest request) {
 		return promoRepository.findAll(PromoSpecification.getSpec(request), pageable)
-				.map(promo -> promoMapper.toDto(promo, urlService));
+				.map(promo -> promoMapper.toDto(promo));
 	}
 
-	public List<PromoDto> findPromoInCarousel(){
+	public List<PromoViewDto> findPromoInCarousel(){
 		return promoRepository.findPromoInCarousel()
 				.stream()
-				.map(promo -> promoMapper.toDto(promo, urlService))
+				.map(promo -> promoMapper.toViewDto(promo, urlService))
 				.collect(Collectors.toList());
 	}
 	
-	public List<PromoDto> findByPromoCategoryId(String promoCategoryId){
+	public List<PromoViewDto> findByPromoCategoryId(String promoCategoryId){
 		return promoRepository.findByPromoCategoryId(promoCategoryId)
 				.stream()
-				.map(promo -> promoMapper.toDto(promo, urlService))
+				.map(promo -> promoMapper.toViewDto(promo, urlService))
 				.collect(Collectors.toList());
 	}
 	

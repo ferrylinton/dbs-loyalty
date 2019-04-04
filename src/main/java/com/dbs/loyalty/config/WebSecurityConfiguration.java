@@ -40,6 +40,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
 	private final LoginEventPublisher loginEventPublisher;
 	
+	private final ApplicationProperties applicationProperties;
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		
@@ -107,7 +109,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
  
 	@Bean("webAuthenticationProvider")
 	public WebAuthenticationProvider webAuthenticationProvider(UserRepository userRepository, AuthenticateLdapService authenticateLdapService) {
-		return new WebAuthenticationProvider(userRepository, authenticateLdapService);
+		return new WebAuthenticationProvider(userRepository, authenticateLdapService, applicationProperties);
 	}
 	
 	@Bean("restAuthenticationProvider")

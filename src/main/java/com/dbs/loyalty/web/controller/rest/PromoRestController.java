@@ -19,6 +19,7 @@ import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.MessageService;
 import com.dbs.loyalty.service.PromoService;
 import com.dbs.loyalty.service.dto.PromoDto;
+import com.dbs.loyalty.service.dto.PromoViewDto;
 import com.dbs.loyalty.util.Base64Util;
 
 import io.swagger.annotations.Api;
@@ -43,11 +44,11 @@ public class PromoRestController {
 			notes="Get All Promos to be shown in Carousel",
     		produces=MediaType.APPLICATION_JSON_VALUE, 
     		authorizations = { @Authorization(value=JWT) })
-    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = PromoDto.class)})
+    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = PromoViewDto.class)})
 	@PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping("/promos/carousel")
-    public ResponseEntity<List<PromoDto>> getAllPromoInCarousel(){
-		List<PromoDto> promos = promoService.findPromoInCarousel();
+    public ResponseEntity<List<PromoViewDto>> getAllPromoInCarousel(){
+		List<PromoViewDto> promos = promoService.findPromoInCarousel();
     	return ResponseEntity.ok().body(promos);
     }
 	
@@ -57,14 +58,14 @@ public class PromoRestController {
 			notes="Get Promos by Promo Category's Id",
     		produces=MediaType.APPLICATION_JSON_VALUE, 
     		authorizations = { @Authorization(value=JWT) })
-    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = PromoDto.class)})
+    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = PromoViewDto.class)})
 	@PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping("/promos/promo-categories/{promoCategoryId}")
-    public ResponseEntity<List<PromoDto>> getAllByPromoCategoryId(
+    public ResponseEntity<List<PromoViewDto>> getAllByPromoCategoryId(
     		@ApiParam(name = "promoCategoryId", value = "Promo Category Id", example = "zO0dDp9K")
     		@PathVariable String promoCategoryId){
     	
-		List<PromoDto> promos = promoService.findByPromoCategoryId(promoCategoryId);
+		List<PromoViewDto> promos = promoService.findByPromoCategoryId(promoCategoryId);
     	return ResponseEntity.ok().body(promos);
     }
 	

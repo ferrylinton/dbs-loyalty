@@ -27,7 +27,7 @@ public class RestAuthenticationProvider implements AuthenticationProvider {
         
 		Optional<Customer> customer = customerRepository.findByEmail(email);
 		
-		if(customer.isPresent() && PasswordUtil.getInstance().matches(password, customer.get().getPasswordHash())) {
+		if(customer.isPresent() && PasswordUtil.matches(password, customer.get().getPasswordHash())) {
 			return new RestAuthentication(email, password, customer.get());
         }else{
         	throw new BadCredentialsException(MessageService.getMessage(INVALID_EMAIL_OR_PASS));

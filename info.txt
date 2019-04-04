@@ -33,7 +33,7 @@ Banner --> dipilih dari promo
 Promo --> ditampilkan berdasarkan masa aktif
 
 ---------------------------------------------------------------
-18 Maert 2018
+18 Maret 2018
 ---------------------------------------------------------------
 
 Tambah User untuk User LDAP --> dengan username aja sama role
@@ -49,3 +49,19 @@ Event
 
 Notif Loved One ada tanggal ulang tahun
 
+
+---------------------------------------------------------------
+4 April 2018
+---------------------------------------------------------------
+Tambah tanggal insert di LovedOne
+
+Bikin audit trail untuk semua proses -- > data yang ada dimasukkin
+
+Event Pdf -> file di folder
+Quisoner -> dari file
+Hasil -> disimpan
+
+Limit -> ada rule (10 M cuma bisa 2 kali)
+
+Guest Detail -> teman yang dapat fasilitas Imigrasi dan Bandara
+Kendaraan -> jumlah penumpang yang bisa tambah

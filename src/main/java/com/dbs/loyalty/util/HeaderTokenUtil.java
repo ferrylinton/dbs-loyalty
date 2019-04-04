@@ -4,7 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.util.StringUtils;
 
-public class JwtUtil {
+public class HeaderTokenUtil {
 
 	public static final String AUTHORIZATION_HEADER = "Authorization";
 
@@ -24,7 +24,7 @@ public class JwtUtil {
         return null;
     }
     
-    private JwtUtil() {
+    private HeaderTokenUtil() {
     	// hide constructor
     }
 	

@@ -12,6 +12,7 @@ import org.mapstruct.Named;
 import com.dbs.loyalty.domain.Promo;
 import com.dbs.loyalty.service.UrlService;
 import com.dbs.loyalty.service.dto.PromoDto;
+import com.dbs.loyalty.service.dto.PromoViewDto;
 import com.dbs.loyalty.util.Base64Util;
 
 @Mapper(componentModel = "spring", uses = {PromoCategoryMapper.class})
@@ -21,9 +22,11 @@ public interface PromoMapper extends EntityMapper<PromoDto, Promo> {
 	Promo toEntity(PromoDto promoDto);
 	
 	@Mapping(source = "imageBytes", target = "imageString", qualifiedByName = "bytesToBase64")
+	PromoDto toDto(Promo promo);
+
 	@Mapping(target = "imageUrl", ignore = true)
 	@Mapping(target = "termAndConditionUrl", ignore = true)
-	PromoDto toDto(Promo promo, @Context UrlService urlService);
+	PromoViewDto toViewDto(Promo promo, @Context UrlService urlService);
 	
 	@Named("base64ToBytes")
     default byte[] base64ToBytes(String imageString) throws IOException {
@@ -36,8 +39,8 @@ public interface PromoMapper extends EntityMapper<PromoDto, Promo> {
     }
 	
 	@AfterMapping
-    default void doAfterMapping(@MappingTarget PromoDto promoDto, @Context UrlService urlService){
-		promoDto.setImageUrl(urlService.getUrl("promos", "image", promoDto.getId()));
-		promoDto.setTermAndConditionUrl(urlService.getUrl("promos", "term", promoDto.getId()));
+    default void doAfterMapping(@MappingTarget PromoViewDto promoViewDto, @Context UrlService urlService){
+		promoViewDto.setImageUrl(urlService.getUrl("promos", "image", promoViewDto.getId()));
+		promoViewDto.setTermAndConditionUrl(urlService.getUrl("promos", "term", promoViewDto.getId()));
     }
 }

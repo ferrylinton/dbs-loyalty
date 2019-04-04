@@ -22,7 +22,7 @@ public class ApplicationProperties {
 	@Setter
 	public static class Security{
 		
-		private int loginAttemptCount;
+		private int maxAttempt = 3;
 
 		private String secret;
 		

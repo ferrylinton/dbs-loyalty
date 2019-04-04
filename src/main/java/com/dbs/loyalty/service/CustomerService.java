@@ -91,7 +91,7 @@ public class CustomerService{
 	}
 	
 	public void changePassword(CustomerPasswordDto customerPasswordDto) {
-		String passwordHash = PasswordUtil.getInstance().encode(customerPasswordDto.getNewPassword());
+		String passwordHash = PasswordUtil.encode(customerPasswordDto.getNewPassword());
 		customerRepository.changePassword(passwordHash, SecurityUtil.getLogged());
 	}
 	

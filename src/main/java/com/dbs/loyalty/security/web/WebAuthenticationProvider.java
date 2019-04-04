@@ -16,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import com.dbs.loyalty.config.ApplicationProperties;
 import com.dbs.loyalty.domain.Authority;
 import com.dbs.loyalty.domain.User;
 import com.dbs.loyalty.domain.enumeration.UserType;
@@ -31,6 +32,8 @@ public class WebAuthenticationProvider implements AuthenticationProvider {
     private final UserRepository userRepository;
     
     private final AuthenticateLdapService authenticateLdapService;
+    
+    private final ApplicationProperties applicationProperties;
 
 	@Override
 	public Authentication authenticate(Authentication authentication) {
@@ -71,7 +74,7 @@ public class WebAuthenticationProvider implements AuthenticationProvider {
 		if(user.getUserType() == UserType.INTERNAL) {
 			return authenticateLdapService.authenticate(user.getUsername(), password);
 		}else{
-			return PasswordUtil.getInstance().matches(password, user.getPasswordHash());
+			return PasswordUtil.matches(password, user.getPasswordHash());
         }
 	}
 	
@@ -86,7 +89,7 @@ public class WebAuthenticationProvider implements AuthenticationProvider {
     }
 	
 	public void addLoginAttemptCount(Integer loginAttemptCount, String username) {
-		loginAttemptCount = (loginAttemptCount < 3) ? (loginAttemptCount + 1) : loginAttemptCount;
+		loginAttemptCount = (loginAttemptCount < getMaxAttempt()) ? (loginAttemptCount + 1) : loginAttemptCount;
 		
 		if(loginAttemptCount == 3) {
 			userRepository.lockUser(loginAttemptCount, true, username);
@@ -98,6 +101,10 @@ public class WebAuthenticationProvider implements AuthenticationProvider {
 
 	public void resetLoginAttemptCount(String username) {
 		userRepository.updateLoginAttemptCount(0, username);
+	}
+	
+	private int getMaxAttempt() {
+		return applicationProperties.getSecurity().getMaxAttempt();
 	}
 	
 }

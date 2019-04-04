@@ -44,7 +44,7 @@ public class CustomerPasswordValidator implements Validator {
 				errors.rejectValue(confirmNewPass, validationConfirmNewPass, errorArgs, defaultMessage);
 			}else {
 				Optional<CustomerDto> current = customerService.findByEmail(SecurityUtil.getLogged());
-				if(current.isPresent() && !PasswordUtil.getInstance().matches(customerPasswordDto.getOldPassword(), current.get().getPasswordHash())) {
+				if(current.isPresent() && !PasswordUtil.matches(customerPasswordDto.getOldPassword(), current.get().getPasswordHash())) {
 					Object[] errorArgs = new String[] { customerPasswordDto.getOldPassword() };
 					String defaultMessage = MessageService.getMessage(oldPassNotMatch, errorArgs);
 					errors.rejectValue(oldPass, oldPassNotMatch, errorArgs, defaultMessage);

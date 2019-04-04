@@ -91,7 +91,7 @@ public class UserPasswordController extends AbstractController{
 			throwBadRequestResponse(result);
 		} 
 
-		String passwordHash = PasswordUtil.getInstance().encode(userPasswordDto.getPasswordPlain());
+		String passwordHash = PasswordUtil.encode(userPasswordDto.getPasswordPlain());
 		userService.save(userPasswordDto.getUsername(), passwordHash);
 
 		String message = MessageService.getMessage(successMessage, userPasswordDto.getUsername());

@@ -111,7 +111,7 @@ public class PromoController extends AbstractPageController {
 			
 			if(current.isPresent()) {
 				if(promoDto.getFile().isEmpty()) {
-					promoDto.setImageString(Base64Util.getString(current.get().getFile().getBytes()));
+					promoDto.setImageString(current.get().getImageString());
 				}else {
 					promoDto.setImageString(Base64Util.getString(promoDto.getFile().getBytes()));
 				}

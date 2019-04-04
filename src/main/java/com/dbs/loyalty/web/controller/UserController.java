@@ -100,7 +100,7 @@ public class UserController extends AbstractPageController{
 		}
 		
 		if(userDto.getId() == null) {
-			userDto.setPasswordHash(PasswordUtil.getInstance().encode(userDto.getPasswordPlain()));
+			userDto.setPasswordHash(PasswordUtil.encode(userDto.getPasswordPlain()));
 			userDto.setPasswordPlain(null);
 			taskService.saveTaskAdd(USER, userDto);
 		}else {

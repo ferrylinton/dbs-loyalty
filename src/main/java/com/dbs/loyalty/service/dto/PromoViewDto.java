@@ -1,23 +1,17 @@
 package com.dbs.loyalty.service.dto;
 
-import java.util.Date;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import org.springframework.web.multipart.MultipartFile;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
-@ApiModel(value="Promo", description = "Promo's data")
+@ApiModel(value="PromoView", description = "Promo's data")
 @Setter
 @Getter
-public class PromoDto extends AbstractAuditDto {
+public class PromoViewDto {
 
 	@ApiModelProperty(value = "Promo's id", example = "In1IverC", required = true, position = 0)
 	private String id;
@@ -37,25 +31,10 @@ public class PromoDto extends AbstractAuditDto {
     @Size(min=2, max = 255, message = "{validation.size.description}")
 	private String description;
 	
-	@NotNull(message = "{validation.notnull.termAndCondition}")
-    @Size(min=2, max = 50000, message = "{validation.size.termAndCondition}")
-	private String termAndCondition;
-
-	private String imageString;
+	@ApiModelProperty(value = "Promo's image url", example = "/api/promos/{id}/image", position = 5)
+	private String imageUrl;
 	
-	@JsonIgnore
-	private MultipartFile file;
-
-	@NotNull(message = "{validation.notnull.startPeriod}")
-	private Date startPeriod;
-
-	@NotNull(message = "{validation.notnull.endPeriod}")
-	private Date endPeriod;
-
-	private boolean showInCarousel = false;
-
-	private boolean activated = true;
-
-	private PromoCategoryDto promoCategory;
+	@ApiModelProperty(value = "Promo's term and condition url", example = "/api/promos/{id}/term", position = 6)
+	private String termAndConditionUrl;
 	
 }

@@ -1,6 +1,6 @@
 application:
   security:
-    login-attempt-count: 3
+    max-attempt: 3
     secret: OTE1ZWVlYTZjZWIyODY5ODQ1ZDFkYmI3ZmM1YjNmNDdkOWU3NjUyMGYwOTcwMzEzMWY5MzU1YmU0Mzk5MzUzODY2NDVkYTA1OGI5NmRiYjNkNDQ3NzBmZGVmYTFmODcyNzliNmE2MmZmN2JlZThkMmU2Y2E3M2U4YjgyNTFhNjk=
     token-validity-in-seconds: 86400
     token-validity-in-seconds-for-remember-me: 2592000

@@ -37,7 +37,7 @@ import com.dbs.loyalty.service.dto.CustomerPasswordDto;
 import com.dbs.loyalty.service.dto.CustomerUpdateDto;
 import com.dbs.loyalty.service.dto.JWTTokenDto;
 import com.dbs.loyalty.util.Base64Util;
-import com.dbs.loyalty.util.JwtUtil;
+import com.dbs.loyalty.util.HeaderTokenUtil;
 import com.dbs.loyalty.util.SecurityUtil;
 import com.dbs.loyalty.web.controller.AbstractController;
 import com.dbs.loyalty.web.validator.CustomerPasswordValidator;
@@ -118,7 +118,7 @@ public class CustomerRestController extends AbstractController{
     	
     	String token = null;
     	CustomerDto customerDto = customerService.update(customerUpdateDto);
-		String jwt = JwtUtil.resolveToken(request);
+		String jwt = HeaderTokenUtil.resolveToken(request);
         
         if (StringUtils.hasText(jwt) && restTokenProvider.validateToken(jwt)) {
             token = restTokenProvider.createToken(customerUpdateDto.getEmail(), jwt);
