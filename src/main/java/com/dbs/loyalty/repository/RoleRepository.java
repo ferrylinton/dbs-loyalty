@@ -19,7 +19,4 @@ public interface RoleRepository extends JpaRepository<Role, String>, JpaSpecific
 	@EntityGraph(attributePaths = { "authorities" })
 	Optional<Role> findWithAuthoritiesById(String id);
 	
-	@EntityGraph(attributePaths = { "authorities" })
-	Optional<Role> findWithAuthoritiesByName(String name);
-	
 }

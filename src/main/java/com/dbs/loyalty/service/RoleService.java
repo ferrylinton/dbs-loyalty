@@ -3,7 +3,6 @@ package com.dbs.loyalty.service;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -36,30 +35,30 @@ public class RoleService{
 	private final RoleMapper roleMapper;
 
 	public Optional<RoleDto> findById(String id){
-		return roleRepository.findById(id).map(roleMapper::toDto);
+		return roleRepository
+				.findById(id)
+				.map(roleMapper::toDto);
 	}
 	
 	public Optional<RoleDto> findByName(String name) {
-		return roleRepository.findByNameIgnoreCase(name).map(roleMapper::toDto);
+		return roleRepository
+				.findByNameIgnoreCase(name)
+				.map(roleMapper::toDto);
 	}
 	
 	public Optional<RoleDto> findWithAuthoritiesById(String id){
-		return roleRepository.findWithAuthoritiesById(id).map(roleMapper::toDto);
-	}
-	
-	public Optional<RoleDto> findWithAuthoritiesByName(String name){
-		return roleRepository.findWithAuthoritiesByName(name).map(roleMapper::toDto);
+		return roleRepository
+				.findWithAuthoritiesById(id)
+				.map(roleMapper::toDtoWithAuthorities);
 	}
 
 	public List<RoleDto> findAll(){
-		return roleRepository.findAll(sortByName)
-				.stream()
-				.map(roleMapper::toDto)
-				.collect(Collectors.toList());
+		return roleMapper.toDto(roleRepository.findAll(sortByName));
 	}
 	
 	public Page<RoleDto> findAll(Pageable pageable, HttpServletRequest request) {
-		return roleRepository.findAll(RoleSpecification.getSpec(request), pageable)
+		return roleRepository
+				.findAll(RoleSpecification.getSpec(request), pageable)
 				.map(roleMapper::toDto);
 	}
 

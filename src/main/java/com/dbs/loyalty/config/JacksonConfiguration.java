@@ -34,6 +34,7 @@ public class JacksonConfiguration {
 		jackson2ObjectMapperBuilder.dateFormat(dateFormat);
 		jackson2ObjectMapperBuilder.serializationInclusion(JsonInclude.Include.NON_EMPTY);
 		jackson2ObjectMapperBuilder.featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
 		return jackson2ObjectMapperBuilder;
 	}
 	 
@@ -59,6 +60,7 @@ public class JacksonConfiguration {
     public Hibernate5Module hibernate5Module() {
     	Hibernate5Module hibernate5Module = new Hibernate5Module();
     	hibernate5Module.disable(Hibernate5Module.Feature.USE_TRANSIENT_ANNOTATION);
+    	hibernate5Module.disable(Hibernate5Module.Feature.FORCE_LAZY_LOADING);
     	return hibernate5Module;
     }
 
