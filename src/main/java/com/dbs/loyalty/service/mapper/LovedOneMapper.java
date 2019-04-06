@@ -8,9 +8,10 @@ import com.dbs.loyalty.service.dto.LovedOneDto;
 import com.dbs.loyalty.service.dto.LovedOneUpdateDto;
 
 @Mapper(componentModel = "spring")
-public interface LovedOneMapper extends EntityMapper<LovedOneDto, LovedOne> {
+public abstract class LovedOneMapper extends EntityMapper<LovedOneDto, LovedOne> {
 
-	LovedOne toEntity(LovedOneAddDto dto);
+	public abstract LovedOne toEntity(LovedOneAddDto dto);
 	
-	LovedOne toEntity(LovedOneUpdateDto dto);
+	public abstract LovedOne toEntity(LovedOneUpdateDto dto);
+	
 }

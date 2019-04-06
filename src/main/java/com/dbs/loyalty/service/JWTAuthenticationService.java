@@ -22,15 +22,13 @@ public class JWTAuthenticationService {
     private final RestAuthenticationProvider restAuthenticationProvider;
     
 	private final CustomerMapper customerMapper;
-	
-	private final UrlService urlService;
-	
+
 	public JWTTokenDto authenticate(JWTLoginDto jwtLoginDto) {
 		RestAuthentication restAuthentication = restAuthenticationProvider.authenticate(new RestAuthentication(jwtLoginDto));
         SecurityContextHolder.getContext().setAuthentication(restAuthentication);
        
         String token = restTokenProvider.createToken(restAuthentication, jwtLoginDto.isRememberMe());
-        CustomerViewDto customerViewDto = customerMapper.toViewDto(restAuthentication.getCustomer(), urlService);
+        CustomerViewDto customerViewDto = customerMapper.toViewDto(restAuthentication.getCustomer());
         return new JWTTokenDto(token, customerViewDto);
 	}
 	

@@ -35,23 +35,29 @@ public class CustomerService{
 	private final CustomerRepository customerRepository;
 	
 	private final CustomerMapper customerMapper;
-	
-	private final UrlService urlService;
 
 	public Optional<CustomerViewDto> findViewDtoByEmail(String email){
-		return customerRepository.findByEmail(email).map(customer -> customerMapper.toViewDto(customer, urlService));
+		return customerRepository
+				.findByEmail(email)
+				.map(customerMapper::toViewDto);
 	}
 	
 	public Optional<CustomerDto> findByEmail(String email){
-		return customerRepository.findByEmail(email).map(customer -> customerMapper.toDto(customer));
+		return customerRepository
+				.findByEmail(email)
+				.map(customerMapper::toDto);
 	}
 	
-	public Optional<CustomerDto> findById(String id) {
-		return customerRepository.findById(id).map(customer -> customerMapper.toDto(customer));
+	public Optional<CustomerDto> findWithCustomerImageById(String id) {
+		return customerRepository
+				.findWithCustomerImageById(id)
+				.map(customerMapper::toDtoWithImage);
 	}
 	
 	public Page<CustomerDto> findAll(Pageable pageable, HttpServletRequest request) {
-		return customerRepository.findAll(CustomerSpecification.getSpec(request), pageable).map(customerMapper::toDto);
+		return customerRepository
+				.findAll(CustomerSpecification.getSpec(request), pageable)
+				.map(customerMapper::toDto);
 	}
 	
 	public boolean isEmailExist(CustomerDto customerDto) {
@@ -86,7 +92,7 @@ public class CustomerService{
 			customer.setLastModifiedDate(Instant.now());
 			
 			customer = customerRepository.save(customer);
-			return customerMapper.toViewDto(customer, urlService);
+			return customerMapper.toViewDto(customer);
 		}else {
 			return null;
 		}

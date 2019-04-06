@@ -63,10 +63,10 @@
 										  <label class="custom-control-label" for="activated" th:text="*{activated} ? #{yes} : #{no}"></label>
 									</div>
 								</div>
-								<div class="form-group" th:if="${customer.imageBytes}">
-									<label for="imageString" th:text="#{image}">Image</label>
-									<div class="d-block">
-										<img class="border p-1" width="100%" alt="imageString" th:src="${@base64Service.getString(customer.imageBytes, customer.imageContentType)}" />
+								<div class="form-group" th:if="${customer.image}">
+									<label for="image" th:text="#{image}">Image</label>
+									<div class="d-block overflow-auto">
+										<img class="border p-1" alt="image" th:style="|width:${customer.image.width};height:${customer.image.height};|" th:src="${@base64Service.getString(customer.image.bytes, customer.image.contentType)}" />
 									</div>
 								</div>
 								<div class="form-group">
@@ -76,7 +76,9 @@
 									</div>
 								</div>
 								<div class="form-group" id="preview-image" style="display: none;">
-									<img class="border p-1" width="100%" alt="imageString" src="" />
+									<div class="d-block overflow-auto">
+										<img class="border p-1" alt="preview" src="" />
+									</div>
 								</div>
 								<div th:replace="fragment/audit.html :: content(${customer})"></div>
 								<a class="btn btn-sm btn-secondary px-3" th:href="@{/customer}">

@@ -95,15 +95,23 @@ function initTaskDataDetail(){
 					table += '</td>';
 				}else if(jQuery.type(obj[key]) === 'object'){
 					console.log(2);
-					table += '<td>' + objectJsonToString(obj[key]) + '</td>';
+					
+					if(key === 'image'){
+						var imgSrc = 'data:' + obj[key]['contentType'] + ';base64,' + obj[key]['bytes'];
+						var cssStyle = 'style="width:' + obj[key]['width'] + 'px;height:' + obj[key]['height'] + 'px"';
+						table += '<td>';
+						table += '<img class="border p-1 bg-white" src="' + imgSrc + '" />';
+						table += '</td>'
+					}else{
+						table += '<td>' + objectJsonToString(obj[key]) + '</td>';
+					}
+					
 				}else{
 					console.log(3);
 					var val = obj[key];
 					
 					if(typeof val === 'boolean'){
 						val = Lang.field(val);
-					}else if(key === 'imageBytes'){
-						val = '<img class="border p-1 bg-white" width="100%" src="data:image/jpeg;base64,' + val + '" />';
 					}
 					
 					table += '<td>' + (val == null ? '-' : val) + '</td>';
@@ -272,12 +280,19 @@ function getLocale(){
 function showImage(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
+        var img = new Image();
 
         reader.onload = function (e) {
+        	img.src = e.target.result;
         	$('#preview-image').show();
         	$('#preview-image img').attr('src', e.target.result);
         }
-
+        
+        img.onload = function() {
+        	console.log(img.width);
+        	$('#preview-image img').width(img.width).height(img.height);
+        }
+        
         reader.readAsDataURL(input.files[0]);
     }else{
     	$('#preview-image').hide();

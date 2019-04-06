@@ -9,7 +9,6 @@ import javax.validation.constraints.Size;
 import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.domain.enumeration.CustomerType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -47,7 +46,6 @@ public class CustomerDto extends AbstractAuditDto {
 
 	private boolean activated = true;
 
-	@JsonProperty("image")
-	private ImageDto imageDto;
+	private ImageDto image;
 
 }

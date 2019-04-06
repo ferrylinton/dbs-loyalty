@@ -6,6 +6,6 @@ import com.dbs.loyalty.domain.User;
 import com.dbs.loyalty.service.dto.UserDto;
 
 @Mapper(componentModel = "spring")
-public interface UserMapper extends EntityMapper<UserDto, User> {
+public abstract class UserMapper extends EntityMapper<UserDto, User> {
 	
 }

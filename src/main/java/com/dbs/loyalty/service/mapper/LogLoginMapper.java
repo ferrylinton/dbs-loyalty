@@ -6,6 +6,6 @@ import com.dbs.loyalty.domain.LogLogin;
 import com.dbs.loyalty.service.dto.LogLoginDto;
 
 @Mapper(componentModel = "spring")
-public interface LogLoginMapper extends EntityMapper<LogLoginDto, LogLogin> {
+public abstract class LogLoginMapper extends EntityMapper<LogLoginDto, LogLogin> {
 
 }

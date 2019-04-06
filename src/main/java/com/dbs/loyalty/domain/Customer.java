@@ -62,7 +62,7 @@ public class Customer extends AbstractUUID implements Serializable {
 	@Column(name = "activated", nullable = false)
 	private boolean activated;
 
-	@OneToOne(mappedBy = "customer")
+	@OneToOne(mappedBy = "customer", optional=false, fetch = FetchType.LAZY)
     private CustomerImage customerImage;
 
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)

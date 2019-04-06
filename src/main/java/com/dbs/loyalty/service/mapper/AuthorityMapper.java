@@ -6,6 +6,6 @@ import com.dbs.loyalty.domain.Authority;
 import com.dbs.loyalty.service.dto.AuthorityDto;
 
 @Mapper(componentModel = "spring")
-public interface AuthorityMapper extends EntityMapper<AuthorityDto, Authority> {
-	
+public abstract class AuthorityMapper extends EntityMapper<AuthorityDto, Authority> {
+
 }

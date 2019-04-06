@@ -80,9 +80,10 @@ public class CustomerController extends AbstractPageController{
 		if (id.equals(ZERO)) {
 			model.addAttribute(CUSTOMER, new CustomerDto());
 		} else {
-			Optional<CustomerDto> customerDto = customerService.findById(id);
+			Optional<CustomerDto> customerDto = customerService.findWithCustomerImageById(id);
 			
 			if (customerDto.isPresent()) {
+				System.out.println("customerDto.get().getImage() : " + customerDto.get().getImage());
 				model.addAttribute(CUSTOMER, customerDto.get());
 			} else {
 				model.addAttribute(ERROR, getNotFoundMessage(id));
@@ -100,19 +101,18 @@ public class CustomerController extends AbstractPageController{
 			throwBadRequestResponse(result);
 		}
 		
+		if(!file.isEmpty()) {
+			customerDto.setImage(ImageUtil.getImageDto(file));
+		}
+		
 		if(customerDto.getId() == null) {		
 			customerDto.setPasswordHash(PasswordUtil.encode(customerDto.getPasswordPlain()));
 			customerDto.setPasswordPlain(null);
-			customerDto.setImageDto(ImageUtil.getImageDto(file));
 			taskService.saveTaskAdd(CUSTOMER, customerDto);
 		}else {
-			Optional<CustomerDto> current = customerService.findById(customerDto.getId());
+			Optional<CustomerDto> current = customerService.findWithCustomerImageById(customerDto.getId());
 			
 			if(current.isPresent()) { 
-				if(file.isEmpty()) {
-					customerDto.setImageDto(ImageUtil.getImageDto(file));
-				}
-				
 				customerDto.setPasswordHash(current.get().getPasswordHash());
 				taskService.saveTaskModify(CUSTOMER, current.get(), customerDto);
 			}else {
@@ -127,7 +127,7 @@ public class CustomerController extends AbstractPageController{
 	@DeleteMapping("/{id}")
 	@ResponseBody
 	public ResponseEntity<AbstractResponse> delete(@PathVariable String id) throws JsonProcessingException, NotFoundException {
-		Optional<CustomerDto> current = customerService.findById(id);
+		Optional<CustomerDto> current = customerService.findWithCustomerImageById(id);
 		
 		if(current.isPresent()) {
 			taskService.saveTaskDelete(CUSTOMER, current.get());
