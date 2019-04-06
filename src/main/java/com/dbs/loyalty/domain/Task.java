@@ -50,9 +50,6 @@ public class Task implements Serializable {
     @Column(name = "task_data_type", length = 30, nullable = false)
     private String taskDataType;
     
-    @Column(name = "task_data_id", length=36)
-    private String taskDataId;
-    
     @Lob
     @Column(name = "task_data_old")
     private String taskDataOld;

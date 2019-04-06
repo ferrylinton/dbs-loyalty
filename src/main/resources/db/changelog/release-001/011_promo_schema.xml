@@ -33,6 +33,9 @@
             <column name="image_bytes" type="${image.type}">
                 <constraints nullable="false"/>
             </column>
+            <column name="image_content_type" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
             <column name="show_in_carousel" type="BIT(1)">
                 <constraints nullable="false"/>
             </column>

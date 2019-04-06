@@ -58,6 +58,9 @@ public class Promo extends AbstractId implements Serializable {
     @Lob
     @Column(name = "image_bytes", nullable = false, columnDefinition="BLOB")
     private byte[] imageBytes;
+    
+    @Column(name = "image_content_type", length = 50, nullable = false)
+    private String imageContentType;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "start_period", nullable = false)

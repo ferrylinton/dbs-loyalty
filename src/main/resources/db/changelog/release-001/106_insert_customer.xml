@@ -17,8 +17,17 @@
             <column name="name" value="Customer 01"/>
             <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
-            <column name="image_bytes" valueBlobFile="image/250x250.png"/>
             <column name="customer_type" value="0025"/>
+        </insert>
+        
+        <insert tableName="c_customer_image">
+            <column name="id" value="646e8a2a-4ca4-459a-9da8-2a31daaecd38"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="bytes" valueBlobFile="image/250x250.png"/>
+            <column name="content_type" value="image/png"/>
+            <column name="width" valueNumeric="300"/>
+			<column name="height" valueNumeric="300"/>
         </insert>
         
         <insert tableName="c_customer">
@@ -31,8 +40,17 @@
             <column name="name" value="Customer 02"/>
             <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
-            <column name="image_bytes" valueBlobFile="image/250x250.png"/>
             <column name="customer_type" value="0025"/>
+        </insert>
+        
+        <insert tableName="c_customer_image">
+            <column name="id" value="0fe2b3b8-9d63-4af5-b033-6ddddd85971a"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="bytes" valueBlobFile="image/250x250.png"/>
+            <column name="content_type" value="image/png"/>
+            <column name="width" valueNumeric="300"/>
+			<column name="height" valueNumeric="300"/>
         </insert>
         
         <insert tableName="c_customer">
@@ -45,7 +63,6 @@
             <column name="name" value="Customer 03"/>
             <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
-            <column name="image_bytes" valueBlobFile="image/250x250.png"/>
             <column name="customer_type" value="0025"/>
         </insert>
         
@@ -59,7 +76,6 @@
             <column name="name" value="Customer 04"/>
             <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
-            <column name="image_bytes" valueBlobFile="image/250x250.png"/>
             <column name="customer_type" value="0025"/>
         </insert>
         
@@ -73,7 +89,6 @@
             <column name="name" value="Customer 05"/>
             <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
-            <column name="image_bytes" valueBlobFile="image/250x250.png"/>
             <column name="customer_type" value="0025"/>
         </insert>
         
@@ -87,7 +102,6 @@
             <column name="name" value="Customer 06"/>
             <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
-            <column name="image_bytes" valueBlobFile="image/250x250.png"/>
             <column name="customer_type" value="0025"/>
         </insert>
         
@@ -101,7 +115,6 @@
             <column name="name" value="Customer 07"/>
             <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
-            <column name="image_bytes" valueBlobFile="image/250x250.png"/>
             <column name="customer_type" value="0025"/>
         </insert>
         
@@ -115,7 +128,6 @@
             <column name="name" value="Customer 08"/>
             <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
-            <column name="image_bytes" valueBlobFile="image/250x250.png"/>
             <column name="customer_type" value="0025"/>
         </insert>
         
@@ -129,7 +141,6 @@
             <column name="name" value="Customer 09"/>
             <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
-            <column name="image_bytes" valueBlobFile="image/250x250.png"/>
             <column name="customer_type" value="0012"/>
         </insert>
         
@@ -143,7 +154,6 @@
             <column name="name" value="Customer 10"/>
             <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
-            <column name="image_bytes" valueBlobFile="image/250x250.png"/>
             <column name="customer_type" value="0012"/>
         </insert>
         
@@ -157,7 +167,6 @@
             <column name="name" value="Customer 11"/>
             <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
-            <column name="image_bytes" valueBlobFile="image/250x250.png"/>
             <column name="customer_type" value="0012"/>
         </insert>
         
@@ -171,7 +180,6 @@
             <column name="name" value="Customer 12"/>
             <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
-            <column name="image_bytes" valueBlobFile="image/250x250.png"/>
             <column name="customer_type" value="0012"/>
         </insert>
         

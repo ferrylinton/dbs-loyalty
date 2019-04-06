@@ -33,13 +33,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.CustomerService;
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.service.dto.CustomerDto;
-import com.dbs.loyalty.util.Base64Util;
+import com.dbs.loyalty.util.ImageUtil;
 import com.dbs.loyalty.util.PasswordUtil;
 import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.response.AbstractResponse;
@@ -94,24 +95,22 @@ public class CustomerController extends AbstractPageController{
 	@PreAuthorize("hasRole('CUSTOMER_MK')")
 	@PostMapping
 	@ResponseBody
-	public ResponseEntity<AbstractResponse> save(@Valid @ModelAttribute CustomerDto customerDto, BindingResult result) throws BadRequestException, IOException, NotFoundException {
+	public ResponseEntity<AbstractResponse> save(@RequestParam("file") MultipartFile file, @Valid @ModelAttribute CustomerDto customerDto, BindingResult result) throws BadRequestException, IOException, NotFoundException {
 		if (result.hasErrors()) {
 			throwBadRequestResponse(result);
 		}
 		
-		if(customerDto.getId() == null) {
-			customerDto.setImageString(Base64Util.getString(customerDto.getFile().getBytes()));
+		if(customerDto.getId() == null) {		
 			customerDto.setPasswordHash(PasswordUtil.encode(customerDto.getPasswordPlain()));
 			customerDto.setPasswordPlain(null);
+			customerDto.setImageDto(ImageUtil.getImageDto(file));
 			taskService.saveTaskAdd(CUSTOMER, customerDto);
 		}else {
 			Optional<CustomerDto> current = customerService.findById(customerDto.getId());
 			
-			if(current.isPresent()) {
-				if(customerDto.getFile().isEmpty()) {
-					customerDto.setImageString(Base64Util.getString(current.get().getFile().getBytes()));
-				}else {
-					customerDto.setImageString(Base64Util.getString(customerDto.getFile().getBytes()));
+			if(current.isPresent()) { 
+				if(file.isEmpty()) {
+					customerDto.setImageDto(ImageUtil.getImageDto(file));
 				}
 				
 				customerDto.setPasswordHash(current.get().getPasswordHash());

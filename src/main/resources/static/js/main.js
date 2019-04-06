@@ -102,8 +102,8 @@ function initTaskDataDetail(){
 					
 					if(typeof val === 'boolean'){
 						val = Lang.field(val);
-					}else if(key === 'imageString'){
-						val = '<img class="border p-1 bg-white" width="100%" src="' + val + '" />';
+					}else if(key === 'imageBytes'){
+						val = '<img class="border p-1 bg-white" width="100%" src="data:image/jpeg;base64,' + val + '" />';
 					}
 					
 					table += '<td>' + (val == null ? '-' : val) + '</td>';

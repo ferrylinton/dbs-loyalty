@@ -16,10 +16,10 @@ import com.dbs.loyalty.repository.CustomerRepository;
 import com.dbs.loyalty.service.dto.CustomerDto;
 import com.dbs.loyalty.service.dto.CustomerPasswordDto;
 import com.dbs.loyalty.service.dto.CustomerUpdateDto;
+import com.dbs.loyalty.service.dto.CustomerViewDto;
 import com.dbs.loyalty.service.dto.TaskDto;
 import com.dbs.loyalty.service.mapper.CustomerMapper;
 import com.dbs.loyalty.service.specification.CustomerSpecification;
-import com.dbs.loyalty.util.Base64Util;
 import com.dbs.loyalty.util.PasswordUtil;
 import com.dbs.loyalty.util.SecurityUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -38,12 +38,16 @@ public class CustomerService{
 	
 	private final UrlService urlService;
 
+	public Optional<CustomerViewDto> findViewDtoByEmail(String email){
+		return customerRepository.findByEmail(email).map(customer -> customerMapper.toViewDto(customer, urlService));
+	}
+	
 	public Optional<CustomerDto> findByEmail(String email){
-		return customerRepository.findByEmail(email).map(customer -> customerMapper.toDto(customer, urlService));
+		return customerRepository.findByEmail(email).map(customer -> customerMapper.toDto(customer));
 	}
 	
 	public Optional<CustomerDto> findById(String id) {
-		return customerRepository.findById(id).map(customer -> customerMapper.toDto(customer, urlService));
+		return customerRepository.findById(id).map(customer -> customerMapper.toDto(customer));
 	}
 	
 	public Page<CustomerDto> findAll(Pageable pageable, HttpServletRequest request) {
@@ -70,7 +74,7 @@ public class CustomerService{
 		}
 	}
 	
-	public CustomerDto update(CustomerUpdateDto customerUpdateDto) {
+	public CustomerViewDto update(CustomerUpdateDto customerUpdateDto) {
 		Optional<Customer> current = customerRepository.findByEmail(SecurityUtil.getLogged());
 		
 		if(current.isPresent()) {
@@ -78,13 +82,11 @@ public class CustomerService{
 			customer.setEmail(customerUpdateDto.getEmail());
 			customer.setName(customerUpdateDto.getName());
 			customer.setPhone(customerUpdateDto.getPhone());
-			customer.setDob(customerUpdateDto.getDob());
-			customer.setImageBytes(Base64Util.getBytes(customerUpdateDto.getImageString()));
 			customer.setLastModifiedBy(SecurityUtil.getLogged());
 			customer.setLastModifiedDate(Instant.now());
 			
 			customer = customerRepository.save(customer);
-			return customerMapper.toDto(customer, urlService);
+			return customerMapper.toViewDto(customer, urlService);
 		}else {
 			return null;
 		}

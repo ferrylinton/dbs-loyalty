@@ -30,9 +30,7 @@ public class TaskDto {
 	private TaskStatus taskStatus;
 	
 	private String taskDataType;
-	
-	private String taskDataId;
-	
+
 	private String taskDataOld;
 	
 	private String taskDataNew;

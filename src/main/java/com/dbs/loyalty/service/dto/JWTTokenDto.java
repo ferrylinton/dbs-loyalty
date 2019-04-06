@@ -18,6 +18,6 @@ public class JWTTokenDto {
 	private final String token;
     
 	@JsonProperty("customer")
-    private final CustomerDto customerDto;
+    private final CustomerViewDto customerViewDto;
    
 }

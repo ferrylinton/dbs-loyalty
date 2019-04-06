@@ -1,13 +1,10 @@
 package com.dbs.loyalty.service.dto;
 
-import java.util.Date;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import com.dbs.loyalty.config.constant.Constant;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -19,7 +16,7 @@ import lombok.Setter;
 @ApiModel(value="CustomerUpdateData", description = "Customer's new data")
 public class CustomerUpdateDto {
 
-	@JsonIgnore
+	@ApiModelProperty(value = "Customer's id", example = "646e8a2a-4ca4-459a-9da8-2a31daaecd38", position = 0)
 	private String id;
 	
 	@ApiModelProperty(value = "Customer's email", example = "johnsmith@dbs.com", required = true, position = 1)
@@ -38,13 +35,5 @@ public class CustomerUpdateDto {
 	@NotNull(message = "{validation.notnull.phone}")
 	@Size(min = 6, max = 20, message = "{validation.size.phone}")
 	private String phone;
-	
-	@ApiModelProperty(value = "Customer's date of birth", example = "21-01-1980", required = true, position = 4)
-	@NotNull(message = "{validation.notnull.dob}")
-	private Date dob;
-
-	@ApiModelProperty(value = "Customer's file image in Base64", example = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD//gA+Q1JFQVRPUjogZ2QtanBlZyB ...", required = true, position = 5)
-	@NotNull(message = "{validation.notnull.imageString}")
-	private String imageString;
 	
 }

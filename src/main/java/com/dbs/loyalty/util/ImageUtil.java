@@ -1,0 +1,59 @@
+package com.dbs.loyalty.util;
+
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import javax.imageio.ImageIO;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import com.dbs.loyalty.service.dto.ImageDto;
+
+
+public final class ImageUtil {
+
+	public BufferedImage cropImage(byte[] image) throws IOException {
+		  // Get a BufferedImage object from a byte array
+		  InputStream in = new ByteArrayInputStream(image);
+		  BufferedImage originalImage = ImageIO.read(in);
+		  
+		  // Get image dimensions
+		  int height = originalImage.getHeight();
+		  int width = originalImage.getWidth();
+		  
+		  // The image is already a square
+		  if (height == width) {
+		    return originalImage;
+		  }
+		  
+		  // Compute the size of the square
+		  int squareSize = (height > width ? width : height);
+		  
+		  // Coordinates of the image's middle
+		  int xc = width / 2;
+		  int yc = height / 2;
+		  
+		  // Crop
+		  BufferedImage croppedImage = originalImage.getSubimage(
+		      xc - (squareSize / 2), // x coordinate of the upper-left corner
+		      yc - (squareSize / 2), // y coordinate of the upper-left corner
+		      squareSize,            // widht
+		      squareSize             // height
+		  );
+		  
+		  return croppedImage;
+	}
+	
+	public static ImageDto getImageDto(MultipartFile file) throws IOException {
+		InputStream in = new ByteArrayInputStream(file.getBytes());
+		BufferedImage image = ImageIO.read(in);
+		return new ImageDto(file.getBytes(), file.getContentType(), image.getWidth(), image.getHeight());
+	}
+	
+	private ImageUtil() {
+		// hide constructor
+	}
+	
+}

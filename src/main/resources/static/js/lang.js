@@ -41,7 +41,8 @@ var Lang = (function () {
 				"userType": "Type",
 				"phone": "Phone",
 				"customerType": "Type",
-				"dob": "Date Of Birth"
+				"dob": "Date Of Birth",
+				"imageContentType": "Image Type"
 			},
 			"label":{
 				"activated" : "Activated",
@@ -107,7 +108,8 @@ var Lang = (function () {
 				"userType": "Tipe",
 				"phone": "Telepon",
 				"customerType": "Tipe",
-				"dob": "Tanggal Lahir"
+				"dob": "Tanggal Lahir",
+				"imageContentType": "Tipe Gambar"
 			},
 			"label":{
 				"activated" : "Aktif",

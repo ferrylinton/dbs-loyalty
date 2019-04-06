@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.http.CacheControl;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -35,8 +37,8 @@ import com.dbs.loyalty.service.MessageService;
 import com.dbs.loyalty.service.dto.CustomerDto;
 import com.dbs.loyalty.service.dto.CustomerPasswordDto;
 import com.dbs.loyalty.service.dto.CustomerUpdateDto;
+import com.dbs.loyalty.service.dto.CustomerViewDto;
 import com.dbs.loyalty.service.dto.JWTTokenDto;
-import com.dbs.loyalty.util.Base64Util;
 import com.dbs.loyalty.util.HeaderTokenUtil;
 import com.dbs.loyalty.util.SecurityUtil;
 import com.dbs.loyalty.web.controller.AbstractController;
@@ -70,11 +72,11 @@ public class CustomerRestController extends AbstractController{
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = CustomerDto.class)})
     @PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping("/customers/info")
-	public ResponseEntity<CustomerDto> getCustomerInfo() throws NotFoundException{
-    	Optional<CustomerDto> customerDto = customerService.findByEmail(SecurityUtil.getLogged());
+	public ResponseEntity<CustomerViewDto> getCustomerInfo() throws NotFoundException{
+    	Optional<CustomerViewDto> customerViewDto = customerService.findViewDtoByEmail(SecurityUtil.getLogged());
 		
-		if(customerDto.isPresent()) {
-			return ResponseEntity.ok().body(customerDto.get());
+		if(customerViewDto.isPresent()) {
+			return ResponseEntity.ok().body(customerViewDto.get());
 		}else {
 			String message = MessageService.getMessage(DATA_WITH_VALUE_NOT_FOUND, SecurityUtil.getLogged());
 			throw new NotFoundException(message);
@@ -89,12 +91,18 @@ public class CustomerRestController extends AbstractController{
     		authorizations = { @Authorization(value=JWT) })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Byte.class)})
     @PreAuthorize("hasRole('CUSTOMER')")
-    @GetMapping(value = "/customers/image", produces = MediaType.IMAGE_JPEG_VALUE)
+    @GetMapping("/customers/image")
 	public ResponseEntity<byte[]> getCustomerImage() throws NotFoundException {
     	Optional<CustomerDto> customerDto = customerService.findByEmail(SecurityUtil.getLogged());
     	
 		if(customerDto.isPresent()) {
-			return ResponseEntity.ok().body(Base64Util.getBytes(customerDto.get().getImageString()));
+			HttpHeaders headers = new HttpHeaders();
+			headers.setCacheControl(CacheControl.noCache().getHeaderValue());
+			
+			return ResponseEntity
+					.ok()
+					.headers(headers)
+					.body(customerDto.get().getImageDto().getBytes());
 		}else {
 			String message = MessageService.getMessage(DATA_WITH_VALUE_NOT_FOUND, SecurityUtil.getLogged());
 			throw new NotFoundException(message);
@@ -117,14 +125,14 @@ public class CustomerRestController extends AbstractController{
     		HttpServletRequest request)  {
     	
     	String token = null;
-    	CustomerDto customerDto = customerService.update(customerUpdateDto);
+    	CustomerViewDto customerViewDto = customerService.update(customerUpdateDto);
 		String jwt = HeaderTokenUtil.resolveToken(request);
         
         if (StringUtils.hasText(jwt) && restTokenProvider.validateToken(jwt)) {
             token = restTokenProvider.createToken(customerUpdateDto.getEmail(), jwt);
         }
         
-		return ResponseEntity.ok().body(new JWTTokenDto(token, customerDto));
+		return ResponseEntity.ok().body(new JWTTokenDto(token, customerViewDto));
     }
     
     @ApiOperation(

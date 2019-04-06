@@ -30,7 +30,6 @@
             <column name="name" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="image_bytes" type="${image.type}"/>
             <column name="password_hash" type="VARCHAR(100)">
                 <constraints nullable="false"/>
             </column>
@@ -44,29 +43,48 @@
     </changeSet>
     
     <changeSet author="FLH" id="006-2">
+        <createTable tableName="c_customer_image">
+            <column name="id" type="VARCHAR(36)">
+                <constraints nullable="false"/>
+            </column>
+             <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+   
+            <column name="bytes" type="${image.type}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="content_type" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="width" type="Integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="height" type="Integer">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    
+    <changeSet author="FLH" id="006-3">
         <addPrimaryKey columnNames="id" constraintName="c_customer_pkey" tableName="c_customer"/>
     </changeSet>
 
-    <changeSet author="FLH" id="006-3">
+    <changeSet author="FLH" id="006-4">
         <addUniqueConstraint columnNames="email" constraintName="c_customer_email_uq" tableName="c_customer"/>
     </changeSet>
 
-    <changeSet author="FLH" id="006-6">
-        <createIndex indexName="c_customer_name_idx" tableName="c_customer">
-            <column name="name"/>
-        </createIndex>
+	<changeSet author="FLH" id="006-5">
+        <addPrimaryKey columnNames="id" constraintName="c_customer_image_pkey" tableName="c_customer_image"/>
     </changeSet>
     
-    <changeSet author="FLH" id="006-7">
-        <createIndex indexName="c_customer_phone_idx" tableName="c_customer">
-            <column name="phone"/>
-        </createIndex>
-    </changeSet>
-    
-    <changeSet author="FLH" id="006-8">
-        <createIndex indexName="c_customer_dob_idx" tableName="c_customer">
-            <column name="dob"/>
-        </createIndex>
+    <changeSet author="FLH" id="005-6">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="c_customer_image" constraintName="c_customer_image_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="c_customer"/>
     </changeSet>
     
 </databaseChangeLog>

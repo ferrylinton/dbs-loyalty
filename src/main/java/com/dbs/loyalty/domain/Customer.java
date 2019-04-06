@@ -8,15 +8,14 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.Lob;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
 import com.dbs.loyalty.domain.enumeration.CustomerType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -57,20 +56,15 @@ public class Customer extends AbstractUUID implements Serializable {
 	@Column(name = "dob", nullable = false)
 	private Date dob;
 
-	@JsonIgnore
 	@Column(name = "password_hash", length = 100, nullable = false)
 	private String passwordHash;
 
-	@JsonIgnore
 	@Column(name = "activated", nullable = false)
 	private boolean activated;
 
-	@JsonIgnore
-    @Lob
-    @Column(name = "image_bytes", columnDefinition="BLOB")
-    private byte[] imageBytes;
+	@OneToOne(mappedBy = "customer")
+    private CustomerImage customerImage;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     private Set<LovedOne> lovedOnes = new HashSet<>();
 
