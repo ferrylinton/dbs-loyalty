@@ -52,6 +52,8 @@ public final class Constant {
 	
 	public static final String ORDER				= "order";
 	
+	public static final String DELETE				= "delete";
+	
 	private Constant() {
 		// hide constructor
 	}

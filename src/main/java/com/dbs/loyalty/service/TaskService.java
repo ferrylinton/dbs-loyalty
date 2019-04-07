@@ -102,6 +102,8 @@ public class TaskService {
 		
 		taskRepository.save(task);
 		
+		System.out.println("TaskOperation : " + taskDto.getTaskOperation());
+		
 		if(taskDto.getTaskDataType().equals(ROLE)) {
 			return context.getBean(RoleService.class).execute(taskDto);
 		}else if(taskDto.getTaskDataType().equals(USER)) {

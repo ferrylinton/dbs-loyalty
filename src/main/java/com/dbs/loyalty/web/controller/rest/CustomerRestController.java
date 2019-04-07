@@ -102,7 +102,7 @@ public class CustomerRestController extends AbstractController{
 			return ResponseEntity
 					.ok()
 					.headers(headers)
-					.body(customerDto.get().getImage().getBytes());
+					.body(customerDto.get().getCustomerImage().getBytes());
 		}else {
 			String message = MessageService.getMessage(DATA_WITH_VALUE_NOT_FOUND, SecurityUtil.getLogged());
 			throw new NotFoundException(message);

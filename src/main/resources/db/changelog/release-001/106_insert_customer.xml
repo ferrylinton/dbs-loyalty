@@ -6,7 +6,17 @@
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
     <changeSet author="FLH" id="106-1">
-
+        
+        <insert tableName="c_customer_image">
+            <column name="id" value="32ea2bec-f66d-40df-bb1d-1d4feef52b19"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="bytes" valueBlobFile="image/250x250.png"/>
+            <column name="content_type" value="image/png"/>
+            <column name="width" valueNumeric="300"/>
+			<column name="height" valueNumeric="300"/>
+        </insert>
+        
         <insert tableName="c_customer">
             <column name="id" value="646e8a2a-4ca4-459a-9da8-2a31daaecd38"/>
             <column name="created_by" value="system"/>
@@ -18,18 +28,9 @@
             <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
             <column name="customer_type" value="0025"/>
+            <column name="customer_image_id" value="32ea2bec-f66d-40df-bb1d-1d4feef52b19"/>
         </insert>
-        
-        <insert tableName="c_customer_image">
-            <column name="id" value="646e8a2a-4ca4-459a-9da8-2a31daaecd38"/>
-            <column name="created_by" value="system"/>
-            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
-            <column name="bytes" valueBlobFile="image/250x250.png"/>
-            <column name="content_type" value="image/png"/>
-            <column name="width" valueNumeric="300"/>
-			<column name="height" valueNumeric="300"/>
-        </insert>
-        
+
         <insert tableName="c_customer">
             <column name="id" value="0fe2b3b8-9d63-4af5-b033-6ddddd85971a"/>
             <column name="created_by" value="system"/>
@@ -42,17 +43,7 @@
             <column name="phone" value="+62 8123456789"/>
             <column name="customer_type" value="0025"/>
         </insert>
-        
-        <insert tableName="c_customer_image">
-            <column name="id" value="0fe2b3b8-9d63-4af5-b033-6ddddd85971a"/>
-            <column name="created_by" value="system"/>
-            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
-            <column name="bytes" valueBlobFile="image/250x250.png"/>
-            <column name="content_type" value="image/png"/>
-            <column name="width" valueNumeric="300"/>
-			<column name="height" valueNumeric="300"/>
-        </insert>
-        
+
         <insert tableName="c_customer">
             <column name="id" value="9b2186a3-24f5-4fa2-872b-f9d10aabd016"/>
             <column name="created_by" value="system"/>
@@ -65,7 +56,7 @@
             <column name="phone" value="+62 8123456789"/>
             <column name="customer_type" value="0025"/>
         </insert>
-        
+
         <insert tableName="c_customer">
             <column name="id" value="3d7e4698-092e-4b51-997a-6281995995e3"/>
             <column name="created_by" value="system"/>
@@ -78,7 +69,7 @@
             <column name="phone" value="+62 8123456789"/>
             <column name="customer_type" value="0025"/>
         </insert>
-        
+
         <insert tableName="c_customer">
             <column name="id" value="8bc972a6-8433-460b-95f5-63a2e1cbcef6"/>
             <column name="created_by" value="system"/>

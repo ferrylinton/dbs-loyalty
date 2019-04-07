@@ -39,6 +39,9 @@
             <column name="customer_type" type="VARCHAR(4)">
                 <constraints nullable="false"/>
             </column>
+            <column name="customer_image_id" type="VARCHAR(36)">
+                <constraints nullable="true"/>
+            </column>
         </createTable>
     </changeSet>
     
@@ -78,13 +81,13 @@
     <changeSet author="FLH" id="006-4">
         <addUniqueConstraint columnNames="email" constraintName="c_customer_email_uq" tableName="c_customer"/>
     </changeSet>
+    
+    <changeSet author="FLH" id="006-5">
+        <addForeignKeyConstraint baseColumnNames="customer_image_id" baseTableName="c_customer" constraintName="c_customer_image_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="c_customer_image"/>
+    </changeSet>
 
-	<changeSet author="FLH" id="006-5">
+	<changeSet author="FLH" id="006-6">
         <addPrimaryKey columnNames="id" constraintName="c_customer_image_pkey" tableName="c_customer_image"/>
     </changeSet>
-    
-    <changeSet author="FLH" id="005-6">
-        <addForeignKeyConstraint baseColumnNames="id" baseTableName="c_customer_image" constraintName="c_customer_image_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="c_customer"/>
-    </changeSet>
-    
+
 </databaseChangeLog>

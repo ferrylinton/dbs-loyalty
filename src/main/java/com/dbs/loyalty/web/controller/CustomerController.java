@@ -38,8 +38,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.CustomerService;
+import com.dbs.loyalty.service.MessageService;
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.service.dto.CustomerDto;
+import com.dbs.loyalty.service.dto.CustomerImageDto;
 import com.dbs.loyalty.util.ImageUtil;
 import com.dbs.loyalty.util.PasswordUtil;
 import com.dbs.loyalty.util.UrlUtil;
@@ -53,6 +55,8 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequestMapping("/customer")
 public class CustomerController extends AbstractPageController{
+
+	private String validationNotEmptyFile = "validation.notempty.file";
 
 	private final CustomerService customerService;
 	
@@ -83,7 +87,7 @@ public class CustomerController extends AbstractPageController{
 			Optional<CustomerDto> customerDto = customerService.findWithCustomerImageById(id);
 			
 			if (customerDto.isPresent()) {
-				System.out.println("customerDto.get().getImage() : " + customerDto.get().getImage());
+				System.out.println("customerDto.get().getCustomerImage() : " + customerDto.get().getCustomerImage());
 				model.addAttribute(CUSTOMER, customerDto.get());
 			} else {
 				model.addAttribute(ERROR, getNotFoundMessage(id));
@@ -97,22 +101,18 @@ public class CustomerController extends AbstractPageController{
 	@PostMapping
 	@ResponseBody
 	public ResponseEntity<AbstractResponse> save(@RequestParam("file") MultipartFile file, @Valid @ModelAttribute CustomerDto customerDto, BindingResult result) throws BadRequestException, IOException, NotFoundException {
-		if (result.hasErrors()) {
-			throwBadRequestResponse(result);
-		}
-		
-		if(!file.isEmpty()) {
-			customerDto.setImage(ImageUtil.getImageDto(file));
-		}
-		
-		if(customerDto.getId() == null) {		
+		validate(file, customerDto, result);
+
+		if(customerDto.getId() == null) {
 			customerDto.setPasswordHash(PasswordUtil.encode(customerDto.getPasswordPlain()));
 			customerDto.setPasswordPlain(null);
+			customerDto.setCustomerImage(ImageUtil.getImageDto(file, new CustomerImageDto(customerDto.getEmail())));
 			taskService.saveTaskAdd(CUSTOMER, customerDto);
 		}else {
 			Optional<CustomerDto> current = customerService.findWithCustomerImageById(customerDto.getId());
 			
 			if(current.isPresent()) { 
+				customerDto.setCustomerImage(file.isEmpty() ? current.get().getCustomerImage() : ImageUtil.getImageDto(file, new CustomerImageDto(customerDto.getEmail())));
 				customerDto.setPasswordHash(current.get().getPasswordHash());
 				taskService.saveTaskModify(CUSTOMER, current.get(), customerDto);
 			}else {
@@ -141,6 +141,17 @@ public class CustomerController extends AbstractPageController{
 	protected void initBinder(WebDataBinder binder) {
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("dd-MM-yyyy"), true, 10)); 
 		binder.addValidators(new CustomerValidator(customerService));
+	}
+	
+	private void validate(MultipartFile file, CustomerDto customerDto, BindingResult result) throws BadRequestException {
+		if(customerDto.getId() == null && file.isEmpty()) {
+			String defaultMessage = MessageService.getMessage(validationNotEmptyFile);
+			result.rejectValue("id", validationNotEmptyFile, defaultMessage);
+		}
+		
+		if (result.hasErrors()) {
+			throwBadRequestResponse(result);
+		}
 	}
 
 }

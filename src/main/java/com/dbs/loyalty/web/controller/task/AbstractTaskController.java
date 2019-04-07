@@ -4,6 +4,7 @@ import static com.dbs.loyalty.config.constant.Constant.ERROR;
 import static com.dbs.loyalty.config.constant.Constant.PAGE;
 import static com.dbs.loyalty.config.constant.EntityConstant.TASK;
 import static com.dbs.loyalty.config.constant.EntityConstant.TYPE;
+import static com.dbs.loyalty.config.constant.MessageConstant.*;
 
 import java.util.Map;
 import java.util.Optional;
@@ -19,7 +20,6 @@ import org.springframework.ui.ModelMap;
 import com.dbs.loyalty.service.MessageService;
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.service.dto.TaskDto;
-import com.dbs.loyalty.util.ErrorUtil;
 import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.controller.AbstractPageController;
 import com.dbs.loyalty.web.response.AbstractResponse;
@@ -79,13 +79,13 @@ public class AbstractTaskController extends AbstractPageController {
 		} catch (Exception ex) {
 			log.error(ex.getLocalizedMessage(), ex);
 			taskService.save(ex, taskDto);
-			return errorResponse((Exception) ErrorUtil.getThrowable(ex));
+			return errorResponse(ex);
 		}
 	}
 	
 	protected String getMessage(TaskDto taskDto, String val) {
 		Object[] args = new Object[] { MessageService.getMessage(taskDto.getTaskOperation().toString()), MessageService.getMessage(taskDto.getTaskDataType()), val };
-		return MessageService.getMessage(taskDto.isVerified() ? taskIsVerified : taskIsRejected, args);
+		return MessageService.getMessage(taskDto.isVerified() ? TASK_IS_VERIFIED  : TASK_IS_REJECTED, args);
 	}
 
 }

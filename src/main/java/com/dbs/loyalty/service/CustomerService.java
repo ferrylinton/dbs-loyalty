@@ -49,9 +49,11 @@ public class CustomerService{
 	}
 	
 	public Optional<CustomerDto> findWithCustomerImageById(String id) {
+		System.out.println("customer : " + customerRepository
+				.findWithCustomerImageById(id).get().getCustomerImage());
 		return customerRepository
 				.findWithCustomerImageById(id)
-				.map(customerMapper::toDtoWithImage);
+				.map(customerMapper::toDto);
 	}
 	
 	public Page<CustomerDto> findAll(Pageable pageable, HttpServletRequest request) {
@@ -106,8 +108,12 @@ public class CustomerService{
 	public String execute(TaskDto taskDto) throws IOException {
 		CustomerDto dto = objectMapper.readValue((taskDto.getTaskOperation() == TaskOperation.DELETE) ? taskDto.getTaskDataOld() : taskDto.getTaskDataNew(), CustomerDto.class);
 		
+		System.out.println("TaskOperation : " + taskDto.getTaskOperation());
+		
 		if(taskDto.isVerified()) {
 			Customer customer = customerMapper.toEntity(dto);
+			System.out.println("customer : " + customer.getId());
+			
 			if(taskDto.getTaskOperation() == TaskOperation.ADD) {
 				customer.setCreatedBy(taskDto.getMaker());
 				customer.setCreatedDate(taskDto.getMadeDate());

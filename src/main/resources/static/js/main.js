@@ -96,7 +96,7 @@ function initTaskDataDetail(){
 				}else if(jQuery.type(obj[key]) === 'object'){
 					console.log(2);
 					
-					if(key === 'image'){
+					if(key.toLowerCase().indexOf('image') !== -1){
 						var imgSrc = 'data:' + obj[key]['contentType'] + ';base64,' + obj[key]['bytes'];
 						var cssStyle = 'style="width:' + obj[key]['width'] + 'px;height:' + obj[key]['height'] + 'px"';
 						table += '<td>';

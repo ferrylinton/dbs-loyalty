@@ -10,20 +10,9 @@ import lombok.Setter;
 @RequiredArgsConstructor
 @Setter
 @Getter
-public class ImageDto{
-
-	private String id;
-	
-	@NonNull
-    private byte[] bytes;
+public class CustomerImageDto extends AbstractImageDto{
 
 	@NonNull
-    private String contentType;
-    
-	@NonNull
-    private Integer width;
+	private String email;
 
-	@NonNull
-    private Integer height;
-    
 }

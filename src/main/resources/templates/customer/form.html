@@ -63,10 +63,10 @@
 										  <label class="custom-control-label" for="activated" th:text="*{activated} ? #{yes} : #{no}"></label>
 									</div>
 								</div>
-								<div class="form-group" th:if="${customer.image}">
+								<div class="form-group" th:if="${customer.customerImage}">
 									<label for="image" th:text="#{image}">Image</label>
 									<div class="d-block overflow-auto">
-										<img class="border p-1" alt="image" th:style="|width:${customer.image.width};height:${customer.image.height};|" th:src="${@base64Service.getString(customer.image.bytes, customer.image.contentType)}" />
+										<img class="border p-1" alt="image" th:style="|width:${customer.customerImage.width};height:${customer.customerImage.height};|" th:src="${@base64Service.getString(customer.customerImage.bytes, customer.customerImage.contentType)}" />
 									</div>
 								</div>
 								<div class="form-group">
@@ -75,7 +75,7 @@
 									  	<label class="custom-file-label" th:text="#{chooseFile}"></label>
 									</div>
 								</div>
-								<div class="form-group" id="preview-image" style="display: none;">
+								<div class="form-group mb-3" id="preview-image" style="display: none;">
 									<div class="d-block overflow-auto">
 										<img class="border p-1" alt="preview" src="" />
 									</div>

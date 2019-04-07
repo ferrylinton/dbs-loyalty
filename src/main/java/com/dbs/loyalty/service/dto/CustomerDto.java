@@ -46,6 +46,6 @@ public class CustomerDto extends AbstractAuditDto {
 
 	private boolean activated = true;
 
-	private ImageDto image;
+	private CustomerImageDto customerImage;
 
 }
