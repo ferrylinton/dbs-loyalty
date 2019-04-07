@@ -68,7 +68,7 @@ public class Customer extends AbstractUUID implements Serializable {
 	@Column(name = "activated", nullable = false)
 	private boolean activated;
 
-	@OneToOne(cascade=CascadeType.ALL, optional = true, fetch = FetchType.LAZY)
+	@OneToOne(cascade=CascadeType.ALL, orphanRemoval = true, optional = true, fetch = FetchType.LAZY)
 	@JoinColumn(name = "customer_image_id", nullable = true, foreignKey = @ForeignKey(name = "c_customer_image_fk"))
 	private CustomerImage customerImage;
 

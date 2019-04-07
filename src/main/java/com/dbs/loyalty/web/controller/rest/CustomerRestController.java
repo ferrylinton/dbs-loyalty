@@ -2,10 +2,12 @@ package com.dbs.loyalty.web.controller.rest;
 
 import static com.dbs.loyalty.config.constant.Constant.MESSAGE;
 import static com.dbs.loyalty.config.constant.MessageConstant.DATA_WITH_VALUE_NOT_FOUND;
+import static com.dbs.loyalty.config.constant.MessageConstant.FILE_IS_EMPTY;
 import static com.dbs.loyalty.config.constant.MessageConstant.SUCCESS;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.CUSTOMER;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.JWT;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Optional;
@@ -27,14 +29,19 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.model.Pair;
 import com.dbs.loyalty.security.rest.RestTokenProvider;
+import com.dbs.loyalty.service.CustomerImageService;
 import com.dbs.loyalty.service.CustomerService;
 import com.dbs.loyalty.service.MessageService;
 import com.dbs.loyalty.service.dto.CustomerDto;
+import com.dbs.loyalty.service.dto.CustomerImageDto;
 import com.dbs.loyalty.service.dto.CustomerPasswordDto;
 import com.dbs.loyalty.service.dto.CustomerUpdateDto;
 import com.dbs.loyalty.service.dto.CustomerViewDto;
@@ -42,6 +49,7 @@ import com.dbs.loyalty.service.dto.JWTTokenDto;
 import com.dbs.loyalty.util.HeaderTokenUtil;
 import com.dbs.loyalty.util.SecurityUtil;
 import com.dbs.loyalty.web.controller.AbstractController;
+import com.dbs.loyalty.web.response.BadRequestResponse;
 import com.dbs.loyalty.web.validator.CustomerPasswordValidator;
 import com.dbs.loyalty.web.validator.CustomerUpdateValidator;
 
@@ -60,6 +68,8 @@ import lombok.RequiredArgsConstructor;
 public class CustomerRestController extends AbstractController{
 	
     private final CustomerService customerService;
+    
+    private final CustomerImageService customerImageService;
     
     private final RestTokenProvider restTokenProvider;
     
@@ -87,7 +97,7 @@ public class CustomerRestController extends AbstractController{
     		nickname="GetCustomerImage", 
     		value="GetCustomerImage", 
     		notes="Get Customer Image", 
-    		produces=MediaType.IMAGE_JPEG_VALUE, 
+    		produces= "image/jpeg, image/jpeg", 
     		authorizations = { @Authorization(value=JWT) })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Byte.class)})
     @PreAuthorize("hasRole('CUSTOMER')")
@@ -98,6 +108,7 @@ public class CustomerRestController extends AbstractController{
 		if(customerDto.isPresent()) {
 			HttpHeaders headers = new HttpHeaders();
 			headers.setCacheControl(CacheControl.noCache().getHeaderValue());
+			headers.setContentType(MediaType.valueOf(customerDto.get().getCustomerImage().getContentType()));
 			
 			return ResponseEntity
 					.ok()
@@ -108,6 +119,34 @@ public class CustomerRestController extends AbstractController{
 			throw new NotFoundException(message);
 		}
 	}
+	
+	@ApiOperation(
+    		nickname="UpdateCustomerImage", 
+    		value="UpdateCustomerImage", 
+    		notes="Update customer image",
+    		produces= "image/jpeg, image/jpeg", 
+    		authorizations = { @Authorization(value=JWT) })
+    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Byte.class)})
+    @PreAuthorize("hasRole('CUSTOMER')")
+    @PutMapping("/customers/image")
+    public ResponseEntity<byte[]> updateCustomerImage(
+    		@ApiParam(name = "file", value = "Customer's new image") 
+    		@RequestParam("file") MultipartFile file) throws NotFoundException, IOException, BadRequestException  {
+    	
+    	if(file.isEmpty()) {
+    		throw new BadRequestException(new BadRequestResponse(MessageService.getMessage(FILE_IS_EMPTY)));
+    	}else {
+    		CustomerImageDto customerImageDto = customerImageService.save(file);
+        	HttpHeaders headers = new HttpHeaders();
+    		headers.setCacheControl(CacheControl.noCache().getHeaderValue());
+    		headers.setContentType(MediaType.valueOf(customerImageDto.getContentType()));
+    		
+    		return ResponseEntity
+    				.ok()
+    				.headers(headers)
+    				.body(customerImageDto.getBytes());
+    	}
+    }
     
     @ApiOperation(
     		nickname="UpdateCustomer", 

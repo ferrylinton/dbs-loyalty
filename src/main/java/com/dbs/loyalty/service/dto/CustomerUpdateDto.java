@@ -16,7 +16,7 @@ import lombok.Setter;
 @ApiModel(value="CustomerUpdateData", description = "Customer's new data")
 public class CustomerUpdateDto {
 
-	@ApiModelProperty(value = "Customer's id", example = "646e8a2a-4ca4-459a-9da8-2a31daaecd38", position = 0)
+	@ApiModelProperty(value = "Customer's id", example = "646e8a2a-4ca4-459a-9da8-2a31daaecd38", position = 0, hidden = true)
 	private String id;
 	
 	@ApiModelProperty(value = "Customer's email", example = "johnsmith@dbs.com", required = true, position = 1)

@@ -49,10 +49,8 @@ public class CustomerService{
 	}
 	
 	public Optional<CustomerDto> findWithCustomerImageById(String id) {
-		System.out.println("customer : " + customerRepository
-				.findWithCustomerImageById(id).get().getCustomerImage());
 		return customerRepository
-				.findWithCustomerImageById(id)
+				.findById(id)
 				.map(customerMapper::toDto);
 	}
 	

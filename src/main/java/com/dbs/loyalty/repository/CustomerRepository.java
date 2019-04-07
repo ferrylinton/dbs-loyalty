@@ -19,8 +19,9 @@ import com.dbs.loyalty.domain.Customer;
 public interface CustomerRepository extends JpaRepository<Customer, String>, JpaSpecificationExecutor<Customer>{
 
 	@EntityGraph(attributePaths = { "customerImage" })
-	Optional<Customer> findWithCustomerImageById(String id);
+	Optional<Customer> findById(String id);
 	
+	@EntityGraph(attributePaths = { "customerImage" })
 	Optional<Customer> findByEmail(String email);
 	
 	Optional<Customer> findByEmailIgnoreCase(String email);

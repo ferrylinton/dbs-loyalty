@@ -56,7 +56,7 @@
 							<div class="form-group">
 								<label for="madeDateView" th:text="#{madeDate}">Made Date</label>
 								<input class="form-control" type="text" id="madeDateView" th:value="${#dates.format(task.madeDate, format)}" readonly="readonly" />
-								<input type="hidden" th:value="*{madeDate}"/>
+								<input type="hidden" th:field="*{madeDate}"/>
 							</div>
 							<div class="form-group" th:if="*{checker != null}">
 								<label for="checker" th:text="#{checker}">Checker</label>
@@ -65,7 +65,7 @@
 							<div class="form-group" th:if="*{checkedDate != null}">
 								<label for="checkedDateView" th:text="#{checkedDate}">Checked Date</label>
 								<input class="form-control" type="text" id="checkedDateView" th:value="${#dates.format(task.checkedDate, format)}" readonly="readonly" />
-								<input type="hidden" th:value="*{checkedDate}"/>
+								<input type="hidden" th:field="*{checkedDate}"/>
 							</div>
 							<div class="form-group" th:if="${task.taskStatus.name() != 'PENDING'}">
 								<label for="taskStatusView" th:text="#{taskStatus}">Task Status</label>

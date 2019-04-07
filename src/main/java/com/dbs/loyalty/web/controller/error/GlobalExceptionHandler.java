@@ -13,6 +13,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.multipart.MultipartException;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
@@ -53,6 +55,20 @@ public class GlobalExceptionHandler {
        return ResponseEntity
 	            .status(HttpStatus.BAD_REQUEST)
 	            .body(ex.getResponse());
+    }
+	
+	@ExceptionHandler(value = MissingServletRequestPartException.class)
+    public ResponseEntity<BadRequestResponse> missingServletRequestPartException(MissingServletRequestPartException ex){
+       return ResponseEntity
+	            .status(HttpStatus.BAD_REQUEST)
+	            .body(new BadRequestResponse(ex.getLocalizedMessage()));
+    }
+	
+	@ExceptionHandler(value = MultipartException.class)
+    public ResponseEntity<BadRequestResponse> multipartException(MultipartException ex){
+       return ResponseEntity
+	            .status(HttpStatus.BAD_REQUEST)
+	            .body(new BadRequestResponse(ex.getLocalizedMessage()));
     }
 	
 	@ExceptionHandler(MaxUploadSizeExceededException.class)

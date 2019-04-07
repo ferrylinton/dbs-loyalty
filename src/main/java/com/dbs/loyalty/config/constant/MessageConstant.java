@@ -18,6 +18,8 @@ public final class MessageConstant {
 	
 	public static final String TASK_IS_REJECTED = "message.taskIsRejected";
 	
+	public static final String FILE_IS_EMPTY = "message.fileIsEmpty";
+	
 	private MessageConstant() {
 		// hide constructor
 	}

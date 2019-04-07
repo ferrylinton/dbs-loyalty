@@ -7,6 +7,8 @@ import lombok.Setter;
 @Getter
 public class AbstractImageDto{
 
+	private String id;
+	
     private byte[] bytes;
 
     private String contentType;
