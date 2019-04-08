@@ -34,14 +34,17 @@ var Lang = (function () {
 				"endPeriod": "End Period",
 				"showInCarousel": "Show In Carousel",
 				"promoCategory": "Promo Category",
-				"customerImage": "Image",
 				"code": "Code",
 				"locked": "Locked",
 				"userType": "Type",
 				"phone": "Phone",
 				"customerType": "Type",
 				"dob": "Date Of Birth",
-				"imageContentType": "Image Type"
+				"image": "Image",
+				"imageBytes": "Image Bytes",
+				"imageContentType": "Image Type",
+				"imageWidth": "Image Width",
+				"imageHeight": "Image Height"
 			},
 			"label":{
 				"activated" : "Activated",
@@ -100,14 +103,17 @@ var Lang = (function () {
 				"endPeriod": "Periode Akhir",
 				"showInCarousel": "Tampilkan di Carousel",
 				"promoCategory": "Kategori Promo",
-				"customerImage": "Gambar",
 				"code": "Kode",
 				"locked": "Dikunci",
 				"userType": "Tipe",
 				"phone": "Telepon",
 				"customerType": "Tipe",
 				"dob": "Tanggal Lahir",
-				"imageContentType": "Tipe Gambar"
+				"image": "Gambar",
+				"imageBytes": "Isi Gambar",
+				"imageContentType": "Tipe Gambar",
+				"imageWidth": "Lebar Gambar",
+				"imageHeight": "Tinggi Gambar"
 			},
 			"label":{
 				"activated" : "Aktif",

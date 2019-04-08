@@ -1,20 +1,25 @@
 package com.dbs.loyalty.service.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
-public class AbstractImageDto{
-
-	private String id;
+public abstract class AbstractImageDto extends AbstractAuditDto{
 	
-    private byte[] bytes;
+    private byte[] imageBytes;
 
-    private String contentType;
+    private String imageContentType;
 
-    private Integer width;
+    private Integer imageWidth;
 
-    private Integer height;
+    private Integer imageHeight;
+    
+    @JsonIgnore
+    private MultipartFile file;
     
 }

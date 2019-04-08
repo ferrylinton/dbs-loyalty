@@ -75,6 +75,7 @@ function initTaskDataDetail(){
 	$('pre').each(function(){
 		if($(this).text() !== ''){
 			var obj = JSON.parse($(this).text());
+			setImage(obj);
 			var table = '<table>';
 			
 			for (var key in obj) {
@@ -97,8 +98,8 @@ function initTaskDataDetail(){
 					console.log(2);
 					
 					if(key.toLowerCase().indexOf('image') !== -1){
-						var imgSrc = 'data:' + obj[key]['contentType'] + ';base64,' + obj[key]['bytes'];
-						var cssStyle = 'style="width:' + obj[key]['width'] + 'px;height:' + obj[key]['height'] + 'px"';
+						var imgSrc = 'data:' + obj[key]['imageContentType'] + ';base64,' + obj[key]['imageBytes'];
+						var cssStyle = 'style="width:' + obj[key]['imageWidth'] + 'px;height:' + obj[key]['imageHeight'] + 'px"';
 						table += '<td>';
 						table += '<img class="border p-1 bg-white" src="' + imgSrc + '" />';
 						table += '</td>'
@@ -124,6 +125,25 @@ function initTaskDataDetail(){
 			$(this).html(table);
 		}
 	});
+}
+
+function setImage(obj){
+	if(obj.hasOwnProperty('imageBytes') && obj.hasOwnProperty('imageContentType')
+			&& obj.hasOwnProperty('imageWidth') && obj.hasOwnProperty('imageHeight')){
+		
+		var image = {
+			imageBytes : obj['imageBytes'],
+			imageContentType : obj['imageContentType'],
+			imageWidth : obj['imageWidth'],
+			imageHeight : obj['imageHeight']
+		}
+		
+		obj.image = image;
+		delete obj['imageBytes'];
+		delete obj['imageContentType'];
+		delete obj['imageWidth'];
+		delete obj['imageHeight'];
+	}
 }
 
 function objectJsonToString(obj){

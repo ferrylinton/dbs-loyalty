@@ -5,19 +5,18 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
-import javax.persistence.JoinColumn;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Proxy;
 
 import com.dbs.loyalty.domain.enumeration.CustomerType;
@@ -25,6 +24,7 @@ import com.dbs.loyalty.domain.enumeration.CustomerType;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Class of Customer
@@ -33,7 +33,8 @@ import lombok.Setter;
  */
 @Setter
 @Getter
-@EqualsAndHashCode(of = {"email"}, callSuper = true)
+@ToString(of = {"id"})
+@EqualsAndHashCode(of = {"id"}, callSuper = false)
 @Proxy(lazy=true) 
 @Entity
 @Table(	
@@ -42,9 +43,15 @@ import lombok.Setter;
 		@UniqueConstraint(name = "c_customer_email_uq", columnNames = { "email" })
 	}
 )
-public class Customer extends AbstractUUID implements Serializable {
+public class Customer extends AbstractImage implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
+	@Id
+	@Column(name = "id", length=36)
+	@GenericGenerator(name = "UUIDGenerator", strategy = "com.dbs.loyalty.domain.UUIDGenerator")
+	@GeneratedValue(generator = "UUIDGenerator")
+	private String id;
 	
 	@Column(name = "email", length = 50, nullable = false)
 	private String email;
@@ -67,10 +74,6 @@ public class Customer extends AbstractUUID implements Serializable {
 
 	@Column(name = "activated", nullable = false)
 	private boolean activated;
-
-	@OneToOne(cascade=CascadeType.ALL, orphanRemoval = true, optional = true, fetch = FetchType.LAZY)
-	@JoinColumn(name = "customer_image_id", nullable = true, foreignKey = @ForeignKey(name = "c_customer_image_fk"))
-	private CustomerImage customerImage;
 
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     private Set<LovedOne> lovedOnes = new HashSet<>();

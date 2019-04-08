@@ -12,21 +12,21 @@ import lombok.Setter;
 @Setter
 @Getter
 @MappedSuperclass
-public class AbstractImage extends AbstractUUID implements Serializable{
+public class AbstractImage extends AbstractAuditing implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
     @Lob
-    @Column(name = "bytes", nullable = false, columnDefinition="BLOB")
-    private byte[] bytes;
+    @Column(name = "image_bytes", nullable = false, columnDefinition="BLOB")
+    private byte[] imageBytes;
     
-    @Column(name = "content_type", length = 50, nullable = false)
-    private String contentType;
+    @Column(name = "image_content_type", length = 50, nullable = false)
+    private String imageContentType;
     
-    @Column(name = "width", nullable = false)
-    private Integer width;
+    @Column(name = "image_width", nullable = false)
+    private Integer imageWidth;
 
-    @Column(name = "height", nullable = false)
-    private Integer height;
+    @Column(name = "image_height", nullable = false)
+    private Integer imageHeight;
     
 }

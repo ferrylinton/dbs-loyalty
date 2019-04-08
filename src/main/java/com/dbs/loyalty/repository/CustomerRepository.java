@@ -18,15 +18,15 @@ import com.dbs.loyalty.domain.Customer;
 
 public interface CustomerRepository extends JpaRepository<Customer, String>, JpaSpecificationExecutor<Customer>{
 
-	@EntityGraph(attributePaths = { "customerImage" })
+	//@EntityGraph(attributePaths = { "customerImage" })
 	Optional<Customer> findById(String id);
 	
-	@EntityGraph(attributePaths = { "customerImage" })
+	//@EntityGraph(attributePaths = { "customerImage" })
 	Optional<Customer> findByEmail(String email);
 	
 	Optional<Customer> findByEmailIgnoreCase(String email);
 	
-	@EntityGraph(attributePaths = { "customerImage" })
+	//@EntityGraph(attributePaths = { "customerImage" })
 	Page<Customer> findAll(Specification<Customer> spec, Pageable pageable);
 	
 	@Transactional(propagation=Propagation.REQUIRED)

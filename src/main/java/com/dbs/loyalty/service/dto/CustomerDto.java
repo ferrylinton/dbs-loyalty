@@ -15,7 +15,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class CustomerDto extends AbstractAuditDto {
+public class CustomerDto extends AbstractImageDto {
 	
 	private String id;
 
@@ -45,7 +45,5 @@ public class CustomerDto extends AbstractAuditDto {
 	private String passwordHash;
 
 	private boolean activated = true;
-
-	private CustomerImageDto customerImage;
 
 }

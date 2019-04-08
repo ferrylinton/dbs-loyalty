@@ -30,13 +30,7 @@ public final class Constant {
 	
 	public static final String ENTITY_URL 			= "entityUrl";
 
-	public static final String HTML 				= "html";
-
 	public static final String BR 					= "<br>";
-
-	public static final String BASE64_TO_STRING		= "Base64";
-	
-	public static final String ROLE_CUSTOMER		= "CUSTOMER";
 	
 	public static final int	SIZE					= 10;
 	

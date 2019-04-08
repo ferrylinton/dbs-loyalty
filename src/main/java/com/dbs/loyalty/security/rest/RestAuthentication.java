@@ -8,7 +8,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.service.dto.JWTLoginDto;
 
@@ -16,6 +15,8 @@ import com.dbs.loyalty.service.dto.JWTLoginDto;
 public class RestAuthentication implements Authentication {
 
 	private static final long serialVersionUID = 1L;
+	
+	private static final String ROLE_CUSTOMER = "CUSTOMER";
 	
 	private String principal;
 	
@@ -49,7 +50,7 @@ public class RestAuthentication implements Authentication {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		Set<GrantedAuthority> authorities = new HashSet<>();
-		authorities.add(new SimpleGrantedAuthority(Constant.ROLE_CUSTOMER));
+		authorities.add(new SimpleGrantedAuthority(ROLE_CUSTOMER));
         return authorities;
     }
 
