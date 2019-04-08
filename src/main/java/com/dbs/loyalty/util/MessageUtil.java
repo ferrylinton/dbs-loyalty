@@ -1,14 +1,14 @@
-package com.dbs.loyalty.service;
+package com.dbs.loyalty.util;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 
-public final class MessageService {
+public final class MessageUtil {
 
 	private static MessageSource messageSource;
 
 	public static void setMessageSource(MessageSource messageSource) {
-		MessageService.messageSource = messageSource;
+		MessageUtil.messageSource = messageSource;
 	}
 
 	public static String getMessage(String code) {
@@ -29,7 +29,7 @@ public final class MessageService {
 		return messageSource.getMessage(code, args, code, LocaleContextHolder.getLocale());
 	}
 	
-	private MessageService() {
+	private MessageUtil() {
 		// hide constructor
 	}
 	

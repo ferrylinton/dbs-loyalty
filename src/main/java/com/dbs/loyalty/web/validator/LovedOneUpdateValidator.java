@@ -4,8 +4,8 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import com.dbs.loyalty.service.LovedOneService;
-import com.dbs.loyalty.service.MessageService;
 import com.dbs.loyalty.service.dto.LovedOneUpdateDto;
+import com.dbs.loyalty.util.MessageUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,7 +29,7 @@ public class LovedOneUpdateValidator implements Validator {
 
 		if (lovedOneService.isNameExist(lovedOneUpdateDto)) {
 			Object[] errorArgs = new String[] { lovedOneUpdateDto.getName() };
-			String defaultMessage = MessageService.getMessage(validationExistName, errorArgs);
+			String defaultMessage = MessageUtil.getMessage(validationExistName, errorArgs);
 			errors.rejectValue(name, validationExistName, errorArgs, defaultMessage);
 		}
 

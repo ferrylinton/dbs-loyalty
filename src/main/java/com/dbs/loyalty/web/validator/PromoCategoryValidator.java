@@ -3,9 +3,9 @@ package com.dbs.loyalty.web.validator;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import com.dbs.loyalty.service.MessageService;
 import com.dbs.loyalty.service.PromoCategoryService;
 import com.dbs.loyalty.service.dto.PromoCategoryDto;
+import com.dbs.loyalty.util.MessageUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,7 +29,7 @@ public class PromoCategoryValidator implements Validator {
 
 		if (promoCategoryService.isNameExist(promoCategoryDto)) {
 			Object[] errorArgs = new String[] { promoCategoryDto.getName() };
-			String defaultMessage = MessageService.getMessage(validationExistName, errorArgs);
+			String defaultMessage = MessageUtil.getMessage(validationExistName, errorArgs);
 			errors.rejectValue(name, validationExistName, errorArgs, defaultMessage);
 		}
 

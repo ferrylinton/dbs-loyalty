@@ -27,10 +27,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.LovedOneService;
-import com.dbs.loyalty.service.MessageService;
 import com.dbs.loyalty.service.dto.LovedOneAddDto;
 import com.dbs.loyalty.service.dto.LovedOneDto;
 import com.dbs.loyalty.service.dto.LovedOneUpdateDto;
+import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.web.controller.AbstractController;
 import com.dbs.loyalty.web.validator.LovedOneAddValidator;
 import com.dbs.loyalty.web.validator.LovedOneUpdateValidator;
@@ -104,7 +104,7 @@ public class LovedOneRestController extends AbstractController{
 		if(lovedOneDto.isPresent()) {
     		return ResponseEntity.ok().body(lovedOneService.update(lovedOneUpdateDto));
 		}else {
-			String message = MessageService.getMessage(DATA_WITH_VALUE_NOT_FOUND, lovedOneUpdateDto.getId());
+			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, lovedOneUpdateDto.getId());
 			throw new NotFoundException(message);
 		}
     }

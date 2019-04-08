@@ -7,6 +7,8 @@ import static com.dbs.loyalty.config.constant.SwaggerConstant.PROMO;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.http.CacheControl;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,11 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.exception.NotFoundException;
-import com.dbs.loyalty.service.MessageService;
 import com.dbs.loyalty.service.PromoService;
 import com.dbs.loyalty.service.dto.PromoDto;
 import com.dbs.loyalty.service.dto.PromoViewDto;
-import com.dbs.loyalty.util.Base64Util;
+import com.dbs.loyalty.util.MessageUtil;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -87,7 +88,7 @@ public class PromoRestController {
     	if(current.isPresent()) {
     		return ResponseEntity.ok().body(current.get());
     	}else {
-    		String message = MessageService.getMessage(DATA_WITH_VALUE_NOT_FOUND, id);
+    		String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, id);
     		throw new NotFoundException(message);
     	}
     }
@@ -96,11 +97,11 @@ public class PromoRestController {
 			nickname="GetPromoImageById", 
 			value="GetPromoImageById", 
 			notes="Get Promo Image by Id",
-    		produces=MediaType.IMAGE_JPEG_VALUE, 
+			produces= "image/png, image/jpeg", 
     		authorizations = { @Authorization(value=JWT) })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Byte.class)})
 	@PreAuthorize("hasRole('CUSTOMER')")
-    @GetMapping(value = "/promos/{id}/image", produces = MediaType.IMAGE_JPEG_VALUE)
+    @GetMapping("/promos/{id}/image")
     public ResponseEntity<byte[]> getImageById(
     		@ApiParam(name = "id", value = "Promo Id", example = "zO0dDp9K")
     		@PathVariable String id) throws NotFoundException{
@@ -108,9 +109,16 @@ public class PromoRestController {
 		Optional<PromoDto> current = promoService.findById(id);
     	
     	if(current.isPresent()) {
-    		return ResponseEntity.ok().body(Base64Util.getBytes(current.get().getImageString()));
+    		HttpHeaders headers = new HttpHeaders();
+			headers.setCacheControl(CacheControl.noCache().getHeaderValue());
+			headers.setContentType(MediaType.valueOf(current.get().getImageContentType()));
+			
+			return ResponseEntity
+					.ok()
+					.headers(headers)
+					.body(current.get().getImageBytes());
     	}else {
-    		String message = MessageService.getMessage(DATA_WITH_VALUE_NOT_FOUND, id);
+    		String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, id);
     		throw new NotFoundException(message);
     	}
     }
@@ -131,9 +139,16 @@ public class PromoRestController {
 		Optional<PromoDto> current = promoService.findById(id);
     	
     	if(current.isPresent()) {
-    		return ResponseEntity.ok().body(current.get().getTermAndCondition());
+    		HttpHeaders headers = new HttpHeaders();
+			headers.setCacheControl(CacheControl.noCache().getHeaderValue());
+			headers.setContentType(MediaType.TEXT_PLAIN);
+			
+    		return ResponseEntity
+    				.ok()
+    				.headers(headers)
+    				.body(current.get().getTermAndCondition());
     	}else {
-    		String message = MessageService.getMessage(DATA_WITH_VALUE_NOT_FOUND, id);
+    		String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, id);
     		throw new NotFoundException(message);
     	}
     }

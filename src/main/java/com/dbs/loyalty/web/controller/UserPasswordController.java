@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
-import com.dbs.loyalty.service.MessageService;
 import com.dbs.loyalty.service.UserService;
 import com.dbs.loyalty.service.dto.UserDto;
 import com.dbs.loyalty.service.dto.UserPasswordDto;
+import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.util.PasswordUtil;
 import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.response.AbstractResponse;
@@ -94,7 +94,7 @@ public class UserPasswordController extends AbstractController{
 		String passwordHash = PasswordUtil.encode(userPasswordDto.getPasswordPlain());
 		userService.save(userPasswordDto.getUsername(), passwordHash);
 
-		String message = MessageService.getMessage(successMessage, userPasswordDto.getUsername());
+		String message = MessageUtil.getMessage(successMessage, userPasswordDto.getUsername());
 		String resultUrl = UrlUtil.getUrl(userPasswordDto.isOwnPassword() ? pass : user);
 		return dataIsSavedResponse(message, resultUrl);
 	}

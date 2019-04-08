@@ -32,15 +32,13 @@ public class PromoService{
 	private final ObjectMapper objectMapper;
 	
 	private final PromoMapper promoMapper;
-	
-	private final UrlService urlService;
 
 	public Optional<PromoDto> findById(String id){
 		return promoRepository.findById(id).map(promo -> promoMapper.toDto(promo));
 	}
 	
 	public Optional<PromoViewDto> findViewById(String id){
-		return promoRepository.findById(id).map(promo -> promoMapper.toViewDto(promo, urlService));
+		return promoRepository.findById(id).map(promo -> promoMapper.toViewDto(promo));
 	}
 
 	public Page<PromoDto> findAll(Pageable pageable, HttpServletRequest request) {
@@ -51,14 +49,14 @@ public class PromoService{
 	public List<PromoViewDto> findPromoInCarousel(){
 		return promoRepository.findPromoInCarousel()
 				.stream()
-				.map(promo -> promoMapper.toViewDto(promo, urlService))
+				.map(promo -> promoMapper.toViewDto(promo))
 				.collect(Collectors.toList());
 	}
 	
 	public List<PromoViewDto> findByPromoCategoryId(String promoCategoryId){
 		return promoRepository.findByPromoCategoryId(promoCategoryId)
 				.stream()
-				.map(promo -> promoMapper.toViewDto(promo, urlService))
+				.map(promo -> promoMapper.toViewDto(promo))
 				.collect(Collectors.toList());
 	}
 	

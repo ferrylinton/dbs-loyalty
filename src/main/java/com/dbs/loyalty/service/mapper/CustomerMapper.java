@@ -27,6 +27,7 @@ public abstract class CustomerMapper extends EntityMapper<CustomerDto, Customer>
                 .path(PathConstant.CUSTOMERS)
                 .path(PathConstant.IMAGE)
                 .toUriString();
+		
 		customerViewDto.setImageUrl(imageUrl);
     }
 

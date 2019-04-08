@@ -37,16 +37,14 @@ import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.model.Pair;
 import com.dbs.loyalty.security.rest.RestTokenProvider;
-
 import com.dbs.loyalty.service.CustomerService;
-import com.dbs.loyalty.service.MessageService;
 import com.dbs.loyalty.service.dto.CustomerDto;
-import com.dbs.loyalty.service.dto.CustomerImageDto;
 import com.dbs.loyalty.service.dto.CustomerPasswordDto;
 import com.dbs.loyalty.service.dto.CustomerUpdateDto;
 import com.dbs.loyalty.service.dto.CustomerViewDto;
 import com.dbs.loyalty.service.dto.JWTTokenDto;
 import com.dbs.loyalty.util.HeaderTokenUtil;
+import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.util.SecurityUtil;
 import com.dbs.loyalty.web.controller.AbstractController;
 import com.dbs.loyalty.web.response.BadRequestResponse;
@@ -86,7 +84,7 @@ public class CustomerRestController extends AbstractController{
 		if(customerViewDto.isPresent()) {
 			return ResponseEntity.ok().body(customerViewDto.get());
 		}else {
-			String message = MessageService.getMessage(DATA_WITH_VALUE_NOT_FOUND, SecurityUtil.getLogged());
+			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, SecurityUtil.getLogged());
 			throw new NotFoundException(message);
 		}
 	}
@@ -95,56 +93,56 @@ public class CustomerRestController extends AbstractController{
     		nickname="GetCustomerImage", 
     		value="GetCustomerImage", 
     		notes="Get Customer Image", 
-    		produces= "image/jpeg, image/jpeg", 
+    		produces= "image/png, image/jpeg", 
     		authorizations = { @Authorization(value=JWT) })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Byte.class)})
     @PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping("/customers/image")
 	public ResponseEntity<byte[]> getCustomerImage() throws NotFoundException {
-    	Optional<CustomerDto> customerDto = customerService.findByEmail(SecurityUtil.getLogged());
+    	Optional<CustomerDto> current = customerService.findByEmail(SecurityUtil.getLogged());
     	
-		if(customerDto.isPresent()) {
+		if(current.isPresent()) {
 			HttpHeaders headers = new HttpHeaders();
 			headers.setCacheControl(CacheControl.noCache().getHeaderValue());
-			headers.setContentType(MediaType.valueOf(customerDto.get().getImageContentType()));
+			headers.setContentType(MediaType.valueOf(current.get().getImageContentType()));
 			
 			return ResponseEntity
 					.ok()
 					.headers(headers)
-					.body(customerDto.get().getImageBytes());
+					.body(current.get().getImageBytes());
 		}else {
-			String message = MessageService.getMessage(DATA_WITH_VALUE_NOT_FOUND, SecurityUtil.getLogged());
+			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, SecurityUtil.getLogged());
 			throw new NotFoundException(message);
 		}
 	}
 	
-//	@ApiOperation(
-//    		nickname="UpdateCustomerImage", 
-//    		value="UpdateCustomerImage", 
-//    		notes="Update customer image",
-//    		produces= "image/jpeg, image/jpeg", 
-//    		authorizations = { @Authorization(value=JWT) })
-//    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Byte.class)})
-//    @PreAuthorize("hasRole('CUSTOMER')")
-//    @PutMapping("/customers/image")
-//    public ResponseEntity<byte[]> updateCustomerImage(
-//    		@ApiParam(name = "file", value = "Customer's new image") 
-//    		@RequestParam("file") MultipartFile file) throws NotFoundException, IOException, BadRequestException  {
-//    	
-//    	if(file.isEmpty()) {
-//    		throw new BadRequestException(new BadRequestResponse(MessageService.getMessage(FILE_IS_EMPTY)));
-//    	}else {
-//    		CustomerImageDto customerImageDto = customerImageService.save(file);
-//        	HttpHeaders headers = new HttpHeaders();
-//    		headers.setCacheControl(CacheControl.noCache().getHeaderValue());
-//    		headers.setContentType(MediaType.valueOf(customerImageDto.getContentType()));
-//    		
-//    		return ResponseEntity
-//    				.ok()
-//    				.headers(headers)
-//    				.body(customerImageDto.getBytes());
-//    	}
-//    }
+	@ApiOperation(
+    		nickname="UpdateCustomerImage", 
+    		value="UpdateCustomerImage", 
+    		notes="Update customer image",
+    		produces= "image/png, image/jpeg", 
+    		authorizations = { @Authorization(value=JWT) })
+    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Byte.class)})
+    @PreAuthorize("hasRole('CUSTOMER')")
+    @PutMapping("/customers/image")
+    public ResponseEntity<byte[]> updateCustomerImage(
+    		@ApiParam(name = "file", value = "Customer's new image") 
+    		@RequestParam("file") MultipartFile file) throws NotFoundException, IOException, BadRequestException  {
+    	
+    	if(file.isEmpty()) {
+    		throw new BadRequestException(new BadRequestResponse(MessageUtil.getMessage(FILE_IS_EMPTY)));
+    	}else {
+    		CustomerDto customerDto = customerService.save(file);
+        	HttpHeaders headers = new HttpHeaders();
+    		headers.setCacheControl(CacheControl.noCache().getHeaderValue());
+    		headers.setContentType(MediaType.valueOf(customerDto.getImageContentType()));
+    		
+    		return ResponseEntity
+    				.ok()
+    				.headers(headers)
+    				.body(customerDto.getImageBytes());
+    	}
+    }
     
     @ApiOperation(
     		nickname="UpdateCustomer", 
@@ -187,7 +185,7 @@ public class CustomerRestController extends AbstractController{
     		@Valid @RequestBody CustomerPasswordDto customerPasswordDto)  {
     	
     	customerService.changePassword(customerPasswordDto);
-		String message = MessageService.getMessage(SUCCESS);
+		String message = MessageUtil.getMessage(SUCCESS);
 		return ResponseEntity.ok().body(new Pair<String, String>(MESSAGE, message));
     }
     

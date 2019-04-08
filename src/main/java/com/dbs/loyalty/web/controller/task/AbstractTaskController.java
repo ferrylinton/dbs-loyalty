@@ -17,9 +17,9 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
 
-import com.dbs.loyalty.service.MessageService;
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.service.dto.TaskDto;
+import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.controller.AbstractPageController;
 import com.dbs.loyalty.web.response.AbstractResponse;
@@ -84,8 +84,8 @@ public class AbstractTaskController extends AbstractPageController {
 	}
 	
 	protected String getMessage(TaskDto taskDto, String val) {
-		Object[] args = new Object[] { MessageService.getMessage(taskDto.getTaskOperation().toString()), MessageService.getMessage(taskDto.getTaskDataType()), val };
-		return MessageService.getMessage(taskDto.isVerified() ? TASK_IS_VERIFIED  : TASK_IS_REJECTED, args);
+		Object[] args = new Object[] { MessageUtil.getMessage(taskDto.getTaskOperation().toString()), MessageUtil.getMessage(taskDto.getTaskDataType()), val };
+		return MessageUtil.getMessage(taskDto.isVerified() ? TASK_IS_VERIFIED  : TASK_IS_REJECTED, args);
 	}
 
 }

@@ -18,7 +18,7 @@ import org.springframework.web.multipart.support.MissingServletRequestPartExcept
 
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
-import com.dbs.loyalty.service.MessageService;
+import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.web.response.BadRequestResponse;
 import com.dbs.loyalty.web.response.ErrorResponse;
 
@@ -73,7 +73,7 @@ public class GlobalExceptionHandler {
 	
 	@ExceptionHandler(MaxUploadSizeExceededException.class)
 	public ResponseEntity<BadRequestResponse> handleException(MaxUploadSizeExceededException ex){
-		String message = MessageService.getMessage(fileSizeIsNotValid);
+		String message = MessageUtil.getMessage(fileSizeIsNotValid);
 		return ResponseEntity
 	            .status(HttpStatus.BAD_REQUEST)
 	            .body(new BadRequestResponse(message, file));

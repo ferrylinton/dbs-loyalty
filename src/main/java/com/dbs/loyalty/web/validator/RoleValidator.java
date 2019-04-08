@@ -3,9 +3,9 @@ package com.dbs.loyalty.web.validator;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import com.dbs.loyalty.service.MessageService;
 import com.dbs.loyalty.service.RoleService;
 import com.dbs.loyalty.service.dto.RoleDto;
+import com.dbs.loyalty.util.MessageUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,7 +29,7 @@ public class RoleValidator implements Validator {
 
 		if (roleService.isNameExist(roleDto)) {
 			Object[] errorArgs = new String[] { roleDto.getName() };
-			String defaultMessage = MessageService.getMessage(validationExistName, errorArgs);
+			String defaultMessage = MessageUtil.getMessage(validationExistName, errorArgs);
 			errors.rejectValue(name, validationExistName, errorArgs, defaultMessage);
 		}
 

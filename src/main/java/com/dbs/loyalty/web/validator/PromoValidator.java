@@ -3,9 +3,9 @@ package com.dbs.loyalty.web.validator;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import com.dbs.loyalty.service.MessageService;
 import com.dbs.loyalty.service.PromoService;
 import com.dbs.loyalty.service.dto.PromoDto;
+import com.dbs.loyalty.util.MessageUtil;
 
 public class PromoValidator implements Validator {
 
@@ -38,18 +38,18 @@ public class PromoValidator implements Validator {
 
 		if (promoService.isCodeExist(promoDto)) {
 			Object[] errorArgs = new String[] { promoDto.getCode() };
-			String defaultMessage = MessageService.getMessage(validationExistCode, errorArgs);
+			String defaultMessage = MessageUtil.getMessage(validationExistCode, errorArgs);
 			errors.rejectValue(code, validationExistCode, errorArgs, defaultMessage);
 		}
 		
 		if (promoService.isTitleExist(promoDto)) {
 			Object[] errorArgs = new String[] { promoDto.getCode() };
-			String defaultMessage = MessageService.getMessage(validationExistTitle, errorArgs);
+			String defaultMessage = MessageUtil.getMessage(validationExistTitle, errorArgs);
 			errors.rejectValue(title, validationExistTitle, errorArgs, defaultMessage);
 		}
 
 		if (promoDto.getId() == null && (promoDto.getFile() == null || promoDto.getFile().isEmpty())){
-			String defaultMessage = MessageService.getMessage(validationNotEmptyFile);
+			String defaultMessage = MessageUtil.getMessage(validationNotEmptyFile);
 			errors.rejectValue(file, validationNotEmptyFile, defaultMessage);
         }
 		

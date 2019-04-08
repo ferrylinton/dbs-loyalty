@@ -42,7 +42,7 @@ import com.dbs.loyalty.service.PromoService;
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.service.dto.PromoCategoryDto;
 import com.dbs.loyalty.service.dto.PromoDto;
-import com.dbs.loyalty.util.Base64Util;
+import com.dbs.loyalty.util.ImageUtil;
 import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.response.AbstractResponse;
 import com.dbs.loyalty.web.validator.PromoValidator;
@@ -104,16 +104,19 @@ public class PromoController extends AbstractPageController {
 		}
 		
 		if(promoDto.getId() == null) {
-			promoDto.setImageString(Base64Util.getString(promoDto.getFile().getBytes()));
+			ImageUtil.setImageDto(promoDto);
 			taskService.saveTaskAdd(PROMO, promoDto);
 		}else {
 			Optional<PromoDto> current = promoService.findById(promoDto.getId());
 			
 			if(current.isPresent()) {
 				if(promoDto.getFile().isEmpty()) {
-					promoDto.setImageString(current.get().getImageString());
+					promoDto.setImageBytes(current.get().getImageBytes());
+					promoDto.setImageContentType(current.get().getImageContentType());
+					promoDto.setImageWidth(current.get().getImageWidth());
+					promoDto.setImageHeight(current.get().getImageHeight());
 				}else {
-					promoDto.setImageString(Base64Util.getString(promoDto.getFile().getBytes()));
+					ImageUtil.setImageDto(promoDto);
 				}
 				
 				taskService.saveTaskModify(PROMO, current.get(), promoDto);

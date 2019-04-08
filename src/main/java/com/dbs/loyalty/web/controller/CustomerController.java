@@ -33,15 +33,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.CustomerService;
-import com.dbs.loyalty.service.MessageService;
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.service.dto.CustomerDto;
-import com.dbs.loyalty.service.dto.CustomerImageDto;
 import com.dbs.loyalty.util.ImageUtil;
 import com.dbs.loyalty.util.PasswordUtil;
 import com.dbs.loyalty.util.UrlUtil;
@@ -55,8 +52,6 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequestMapping("/customer")
 public class CustomerController extends AbstractPageController{
-
-	private String validationNotEmptyFile = "validation.notempty.file";
 
 	private final CustomerService customerService;
 	
@@ -114,7 +109,10 @@ public class CustomerController extends AbstractPageController{
 			
 			if(current.isPresent()) { 
 				if(customerDto.getFile().isEmpty()) {
-					
+					customerDto.setImageBytes(current.get().getImageBytes());
+					customerDto.setImageContentType(current.get().getImageContentType());
+					customerDto.setImageWidth(current.get().getImageWidth());
+					customerDto.setImageHeight(current.get().getImageHeight());
 				}else {
 					ImageUtil.setImageDto(customerDto);
 				}
@@ -147,17 +145,6 @@ public class CustomerController extends AbstractPageController{
 	protected void initBinder(WebDataBinder binder) {
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("dd-MM-yyyy"), true, 10)); 
 		binder.addValidators(new CustomerValidator(customerService));
-	}
-	
-	private void validate(MultipartFile file, CustomerDto customerDto, BindingResult result) throws BadRequestException {
-		if(customerDto.getId() == null && file.isEmpty()) {
-			String defaultMessage = MessageService.getMessage(validationNotEmptyFile);
-			result.rejectValue("id", validationNotEmptyFile, defaultMessage);
-		}
-		
-		if (result.hasErrors()) {
-			throwBadRequestResponse(result);
-		}
 	}
 
 }

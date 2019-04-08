@@ -6,9 +6,9 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import com.dbs.loyalty.service.CustomerService;
-import com.dbs.loyalty.service.MessageService;
 import com.dbs.loyalty.service.dto.CustomerDto;
 import com.dbs.loyalty.service.dto.CustomerPasswordDto;
+import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.util.PasswordUtil;
 import com.dbs.loyalty.util.SecurityUtil;
 
@@ -40,13 +40,13 @@ public class CustomerPasswordValidator implements Validator {
 		if(customerPasswordDto.getOldPassword() != null && customerPasswordDto.getNewPassword() != null && customerPasswordDto.getConfirmNewPassword() != null) {
 			if(!customerPasswordDto.getNewPassword().equals(customerPasswordDto.getConfirmNewPassword())) {
 				Object[] errorArgs = new String[] { customerPasswordDto.getConfirmNewPassword() };
-				String defaultMessage = MessageService.getMessage(validationConfirmNewPass, errorArgs);
+				String defaultMessage = MessageUtil.getMessage(validationConfirmNewPass, errorArgs);
 				errors.rejectValue(confirmNewPass, validationConfirmNewPass, errorArgs, defaultMessage);
 			}else {
 				Optional<CustomerDto> current = customerService.findByEmail(SecurityUtil.getLogged());
 				if(current.isPresent() && !PasswordUtil.matches(customerPasswordDto.getOldPassword(), current.get().getPasswordHash())) {
 					Object[] errorArgs = new String[] { customerPasswordDto.getOldPassword() };
-					String defaultMessage = MessageService.getMessage(oldPassNotMatch, errorArgs);
+					String defaultMessage = MessageUtil.getMessage(oldPassNotMatch, errorArgs);
 					errors.rejectValue(oldPass, oldPassNotMatch, errorArgs, defaultMessage);
 				}
 			}

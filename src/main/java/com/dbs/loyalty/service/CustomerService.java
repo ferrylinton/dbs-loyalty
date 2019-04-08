@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
@@ -20,6 +21,7 @@ import com.dbs.loyalty.service.dto.CustomerViewDto;
 import com.dbs.loyalty.service.dto.TaskDto;
 import com.dbs.loyalty.service.mapper.CustomerMapper;
 import com.dbs.loyalty.service.specification.CustomerSpecification;
+import com.dbs.loyalty.util.ImageUtil;
 import com.dbs.loyalty.util.PasswordUtil;
 import com.dbs.loyalty.util.SecurityUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -77,6 +79,22 @@ public class CustomerService{
 			return (customerUpdateDto.getId() == null) || (!customerUpdateDto.getId().equals(customer.get().getId()));
 		}else {
 			return false;
+		}
+	}
+	
+	public CustomerDto save(MultipartFile file) throws IOException {
+		Optional<Customer> current = customerRepository.findByEmail(SecurityUtil.getLogged());
+		
+		if(current.isPresent()) {
+			Customer customer = current.get();
+			ImageUtil.setImageDto(customer, file);
+			customer.setLastModifiedBy(SecurityUtil.getLogged());
+			customer.setLastModifiedDate(Instant.now());
+			
+			customer = customerRepository.save(customer);
+			return customerMapper.toDto(customer);
+		}else {
+			return null;
 		}
 	}
 	

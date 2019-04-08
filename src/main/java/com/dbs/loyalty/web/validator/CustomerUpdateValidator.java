@@ -6,9 +6,9 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import com.dbs.loyalty.service.CustomerService;
-import com.dbs.loyalty.service.MessageService;
 import com.dbs.loyalty.service.dto.CustomerDto;
 import com.dbs.loyalty.service.dto.CustomerUpdateDto;
+import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.util.SecurityUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -37,7 +37,7 @@ public class CustomerUpdateValidator implements Validator {
 			
 			if (customerService.isEmailExist(customerUpdateDto)) {
 				Object[] errorArgs = new String[] { customerUpdateDto.getEmail() };
-				String defaultMessage = MessageService.getMessage(validationExistEmail, errorArgs);
+				String defaultMessage = MessageUtil.getMessage(validationExistEmail, errorArgs);
 				errors.rejectValue(email, validationExistEmail, errorArgs, defaultMessage);
 			}
 		}

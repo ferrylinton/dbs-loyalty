@@ -10,7 +10,7 @@ import org.springframework.security.core.Authentication;
 
 import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.repository.CustomerRepository;
-import com.dbs.loyalty.service.MessageService;
+import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.util.PasswordUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,7 @@ public class RestAuthenticationProvider implements AuthenticationProvider {
 		if(customer.isPresent() && PasswordUtil.matches(password, customer.get().getPasswordHash())) {
 			return new RestAuthentication(email, password, customer.get());
         }else{
-        	throw new BadCredentialsException(MessageService.getMessage(INVALID_EMAIL_OR_PASS));
+        	throw new BadCredentialsException(MessageUtil.getMessage(INVALID_EMAIL_OR_PASS));
         }
 	}
 

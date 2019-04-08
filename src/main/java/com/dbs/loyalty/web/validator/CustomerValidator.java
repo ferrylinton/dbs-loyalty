@@ -4,8 +4,8 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import com.dbs.loyalty.service.CustomerService;
-import com.dbs.loyalty.service.MessageService;
 import com.dbs.loyalty.service.dto.CustomerDto;
+import com.dbs.loyalty.util.MessageUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -13,8 +13,12 @@ import lombok.RequiredArgsConstructor;
 public class CustomerValidator implements Validator {
 
 	private String validationExistEmail = "validation.exist.email";
+	
+	private String validationNotEmptyFile = "validation.notempty.file";
 
 	private String email = "email";
+	
+	private String file = "file";
 
 	private final CustomerService customerService;
 
@@ -29,8 +33,13 @@ public class CustomerValidator implements Validator {
 
 		if (customerService.isEmailExist(customerDto)) {
 			Object[] errorArgs = new String[] { customerDto.getEmail() };
-			String defaultMessage = MessageService.getMessage(validationExistEmail, errorArgs);
+			String defaultMessage = MessageUtil.getMessage(validationExistEmail, errorArgs);
 			errors.rejectValue(email, validationExistEmail, errorArgs, defaultMessage);
+		}
+		
+		if(customerDto.getId() == null && customerDto.getFile().isEmpty()) {
+			String defaultMessage = MessageUtil.getMessage(validationNotEmptyFile);
+			errors.rejectValue(file, validationNotEmptyFile, defaultMessage);
 		}
 
 	}

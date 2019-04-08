@@ -5,8 +5,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import com.dbs.loyalty.exception.AbstractException;
-import com.dbs.loyalty.service.MessageService;
 import com.dbs.loyalty.util.ErrorUtil;
+import com.dbs.loyalty.util.MessageUtil;
 
 public class ErrorData {
 	
@@ -77,7 +77,7 @@ public class ErrorData {
 			
 			if(ex instanceof AbstractException) {
 				AbstractException abstractException = (AbstractException) ex;
-				message = MessageService.getMessage(abstractException.getMessage());
+				message = MessageUtil.getMessage(abstractException.getMessage());
 			}else {
 				message = exception.getMessage();
 			}
