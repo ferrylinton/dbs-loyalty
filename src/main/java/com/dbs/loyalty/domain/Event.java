@@ -6,13 +6,9 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -26,7 +22,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * Class of Promo
+ * Class of Event
  * 
  * @author Ferry L. H. <ferrylinton@gmail.com>
  */
@@ -36,13 +32,12 @@ import lombok.ToString;
 @EqualsAndHashCode(of = {"id"}, callSuper = false)
 @Entity
 @Table(
-	name = "c_promo",
+	name = "c_event",
 	uniqueConstraints = {
-		@UniqueConstraint(name = "c_promo_code_uq", columnNames = { "code" }),
-		@UniqueConstraint(name = "c_promo_title_uq", columnNames = { "title" })
+		@UniqueConstraint(name = "c_event_title_uq", columnNames = { "title" })
 	}
 )
-public class Promo extends AbstractImage implements Serializable {
+public class Event extends AbstractImage implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -51,11 +46,8 @@ public class Promo extends AbstractImage implements Serializable {
 	@GenericGenerator(name = "StringIdGenerator", strategy = "com.dbs.loyalty.domain.IdGenerator")
 	@GeneratedValue(generator = "StringIdGenerator")
 	private String id;
-    
-    @Column(name = "code", length = 50, nullable = false)
-    private String code;
 
-    @Column(name = "title", length = 150, nullable = false)
+    @Column(name = "title", nullable = false)
     private String title;
 
     @Column(name = "description", nullable = false)
@@ -64,10 +56,6 @@ public class Promo extends AbstractImage implements Serializable {
     @Lob
     @Column(name = "content", nullable = false, columnDefinition="TEXT")
     private String content;
-    
-    @Lob
-    @Column(name = "term_and_condition", nullable = false, columnDefinition="TEXT")
-    private String termAndCondition;
 
     @Temporal(TemporalType.DATE)
     @Column(name = "start_period", nullable = false)
@@ -77,14 +65,15 @@ public class Promo extends AbstractImage implements Serializable {
     @Column(name = "end_period", nullable = false)
     private Date endPeriod;
     
-    @Column(name = "show_in_carousel", nullable = false)
-	private boolean showInCarousel;
+    @Temporal(TemporalType.TIME)
+    @Column(name = "time_period", nullable = false)
+    private Date timePeriod;
     
-    @Column(name = "activated", nullable = false)
-	private boolean activated;
+    @Column(name = "place", nullable = false)
+    private String place;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "promo_category_id", nullable = false, foreignKey = @ForeignKey(name = "c_promo_fk"))
-    private PromoCategory promoCategory;
-
+    @Lob
+    @Column(name = "material_bytes", nullable = false, columnDefinition="BLOB")
+    private byte[] material_bytes;
+    
 }

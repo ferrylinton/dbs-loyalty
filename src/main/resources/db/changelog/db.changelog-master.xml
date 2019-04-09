@@ -20,6 +20,8 @@
     <include file="release-001/012_customer_promo_schema.xml" relativeToChangelogFile="true"/>
     <include file="release-001/013_log_login_schema.xml" relativeToChangelogFile="true"/>
     <include file="release-001/014_log_audit_schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/015_event_schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/016_customer_event_schema.xml" relativeToChangelogFile="true"/>
     
     <include file="release-001/101_insert_user_system.xml" relativeToChangelogFile="true"/>
     <include file="release-001/102_insert_authority.xml" relativeToChangelogFile="true"/>
@@ -32,5 +34,6 @@
     <include file="release-001/109_insert_loved_one.xml" relativeToChangelogFile="true"/>
     <include file="release-001/110_insert_category_promo.xml" relativeToChangelogFile="true"/>
     <include file="release-001/111_insert_promo.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/112_insert_event.xml" relativeToChangelogFile="true"/>
     
 </databaseChangeLog>
