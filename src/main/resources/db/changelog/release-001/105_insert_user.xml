@@ -71,6 +71,54 @@
         </insert>
         
         <insert tableName="m_user">
+            <column name="id" value="C5aLM1IZ"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="activated" valueBoolean="true"/>
+            <column name="locked" valueBoolean="false"/>
+            <column name="user_type" valueNumeric="0"/>
+            <column name="login_attempt_count" valueNumeric="0"/>
+            <column name="username" value="checker02"/>
+            <column name="role_id" value="${Checker}"/>
+        </insert>
+        
+        <insert tableName="m_user">
+            <column name="id" value="xsyuHkzl"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="activated" valueBoolean="true"/>
+            <column name="locked" valueBoolean="false"/>
+            <column name="user_type" valueNumeric="0"/>
+            <column name="login_attempt_count" valueNumeric="0"/>
+            <column name="username" value="checker03"/>
+            <column name="role_id" value="${Checker}"/>
+        </insert>
+        
+        <insert tableName="m_user">
+            <column name="id" value="2ObgsIjJ"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="activated" valueBoolean="true"/>
+            <column name="locked" valueBoolean="false"/>
+            <column name="user_type" valueNumeric="0"/>
+            <column name="login_attempt_count" valueNumeric="0"/>
+            <column name="username" value="checker04"/>
+            <column name="role_id" value="${Checker}"/>
+        </insert>
+        
+        <insert tableName="m_user">
+            <column name="id" value="vHrr954u"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="activated" valueBoolean="true"/>
+            <column name="locked" valueBoolean="false"/>
+            <column name="user_type" valueNumeric="0"/>
+            <column name="login_attempt_count" valueNumeric="0"/>
+            <column name="username" value="checker05"/>
+            <column name="role_id" value="${Checker}"/>
+        </insert>
+        
+        <insert tableName="m_user">
             <column name="id" value="BJAhVZdE"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
@@ -79,6 +127,54 @@
             <column name="user_type" valueNumeric="0"/>
             <column name="login_attempt_count" valueNumeric="0"/>
             <column name="username" value="maker01"/>
+            <column name="role_id" value="${Maker}"/>
+        </insert>
+        
+        <insert tableName="m_user">
+            <column name="id" value="l8M37tus"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="activated" valueBoolean="true"/>
+            <column name="locked" valueBoolean="false"/>
+            <column name="user_type" valueNumeric="0"/>
+            <column name="login_attempt_count" valueNumeric="0"/>
+            <column name="username" value="maker02"/>
+            <column name="role_id" value="${Maker}"/>
+        </insert>
+        
+        <insert tableName="m_user">
+            <column name="id" value="yAvqQh6j"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="activated" valueBoolean="true"/>
+            <column name="locked" valueBoolean="false"/>
+            <column name="user_type" valueNumeric="0"/>
+            <column name="login_attempt_count" valueNumeric="0"/>
+            <column name="username" value="maker03"/>
+            <column name="role_id" value="${Maker}"/>
+        </insert>
+        
+        <insert tableName="m_user">
+            <column name="id" value="JNL6IBN4"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="activated" valueBoolean="true"/>
+            <column name="locked" valueBoolean="false"/>
+            <column name="user_type" valueNumeric="0"/>
+            <column name="login_attempt_count" valueNumeric="0"/>
+            <column name="username" value="maker04"/>
+            <column name="role_id" value="${Maker}"/>
+        </insert>
+        
+        <insert tableName="m_user">
+            <column name="id" value="j5OagoPm"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="activated" valueBoolean="true"/>
+            <column name="locked" valueBoolean="false"/>
+            <column name="user_type" valueNumeric="0"/>
+            <column name="login_attempt_count" valueNumeric="0"/>
+            <column name="username" value="maker05"/>
             <column name="role_id" value="${Maker}"/>
         </insert>
         

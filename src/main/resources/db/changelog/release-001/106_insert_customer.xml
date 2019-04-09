@@ -52,6 +52,10 @@
             <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
             <column name="customer_type" value="0025"/>
+            <column name="image_bytes" valueBlobFile="image/250x250.png"/>
+            <column name="image_content_type" value="image/png"/>
+            <column name="image_width" valueNumeric="300"/>
+			<column name="image_height" valueNumeric="300"/>
         </insert>
 
         <insert tableName="c_customer">
@@ -65,6 +69,10 @@
             <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
             <column name="customer_type" value="0025"/>
+            <column name="image_bytes" valueBlobFile="image/250x250.png"/>
+            <column name="image_content_type" value="image/png"/>
+            <column name="image_width" valueNumeric="300"/>
+			<column name="image_height" valueNumeric="300"/>
         </insert>
 
         <insert tableName="c_customer">
@@ -78,6 +86,10 @@
             <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
             <column name="customer_type" value="0025"/>
+            <column name="image_bytes" valueBlobFile="image/250x250.png"/>
+            <column name="image_content_type" value="image/png"/>
+            <column name="image_width" valueNumeric="300"/>
+			<column name="image_height" valueNumeric="300"/>
         </insert>
         
         <insert tableName="c_customer">
@@ -91,6 +103,10 @@
             <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
             <column name="customer_type" value="0025"/>
+            <column name="image_bytes" valueBlobFile="image/250x250.png"/>
+            <column name="image_content_type" value="image/png"/>
+            <column name="image_width" valueNumeric="300"/>
+			<column name="image_height" valueNumeric="300"/>
         </insert>
         
         <insert tableName="c_customer">
@@ -104,6 +120,10 @@
             <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
             <column name="customer_type" value="0025"/>
+            <column name="image_bytes" valueBlobFile="image/250x250.png"/>
+            <column name="image_content_type" value="image/png"/>
+            <column name="image_width" valueNumeric="300"/>
+			<column name="image_height" valueNumeric="300"/>
         </insert>
         
         <insert tableName="c_customer">
@@ -117,6 +137,10 @@
             <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
             <column name="customer_type" value="0025"/>
+            <column name="image_bytes" valueBlobFile="image/250x250.png"/>
+            <column name="image_content_type" value="image/png"/>
+            <column name="image_width" valueNumeric="300"/>
+			<column name="image_height" valueNumeric="300"/>
         </insert>
         
         <insert tableName="c_customer">
@@ -130,6 +154,10 @@
             <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
             <column name="customer_type" value="0012"/>
+            <column name="image_bytes" valueBlobFile="image/250x250.png"/>
+            <column name="image_content_type" value="image/png"/>
+            <column name="image_width" valueNumeric="300"/>
+			<column name="image_height" valueNumeric="300"/>
         </insert>
         
         <insert tableName="c_customer">
@@ -143,6 +171,10 @@
             <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
             <column name="customer_type" value="0012"/>
+            <column name="image_bytes" valueBlobFile="image/250x250.png"/>
+            <column name="image_content_type" value="image/png"/>
+            <column name="image_width" valueNumeric="300"/>
+			<column name="image_height" valueNumeric="300"/>
         </insert>
         
         <insert tableName="c_customer">
@@ -156,6 +188,10 @@
             <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
             <column name="customer_type" value="0012"/>
+            <column name="image_bytes" valueBlobFile="image/250x250.png"/>
+            <column name="image_content_type" value="image/png"/>
+            <column name="image_width" valueNumeric="300"/>
+			<column name="image_height" valueNumeric="300"/>
         </insert>
         
         <insert tableName="c_customer">
@@ -169,6 +205,10 @@
             <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
             <column name="customer_type" value="0012"/>
+            <column name="image_bytes" valueBlobFile="image/250x250.png"/>
+            <column name="image_content_type" value="image/png"/>
+            <column name="image_width" valueNumeric="300"/>
+			<column name="image_height" valueNumeric="300"/>
         </insert>
         
     </changeSet>
