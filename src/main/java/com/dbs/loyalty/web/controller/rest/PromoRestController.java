@@ -14,15 +14,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dbs.loyalty.config.constant.MessageConstant;
 import com.dbs.loyalty.exception.NotFoundException;
+import com.dbs.loyalty.service.CustomerPromoService;
 import com.dbs.loyalty.service.PromoService;
 import com.dbs.loyalty.service.dto.CarouselDto;
 import com.dbs.loyalty.service.dto.PromoDto;
 import com.dbs.loyalty.service.dto.PromoViewDto;
 import com.dbs.loyalty.util.MessageUtil;
+import com.dbs.loyalty.web.response.AbstractResponse;
+import com.dbs.loyalty.web.response.SuccessResponse;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -39,6 +44,8 @@ import lombok.RequiredArgsConstructor;
 public class PromoRestController {
 
 	private final PromoService promoService;
+	
+	private final CustomerPromoService customerPromoService;
 
 	@ApiOperation(
 			nickname="GetAllPromoInCarousel", 
@@ -154,4 +161,23 @@ public class PromoRestController {
     	}
     }
 	
+	@ApiOperation(
+			nickname="AddPromoToInterested", 
+			value="AddPromoToInterested", 
+			notes="Add Promo to Customer's interested list",
+			produces=MediaType.APPLICATION_JSON_VALUE, 
+    		authorizations = { @Authorization(value=JWT) })
+    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Byte.class)})
+	@PreAuthorize("hasRole('CUSTOMER')")
+    @PostMapping("/promos/{id}")
+    public ResponseEntity<AbstractResponse> addToInterested(
+    		@ApiParam(name = "id", value = "Promo Id", example = "zO0dDp9K")
+    		@PathVariable String id) throws NotFoundException{
+    	
+    	customerPromoService.save(id);
+    	String message = MessageUtil.getMessage(MessageConstant.SUCCESS);
+    	return ResponseEntity
+				.ok()
+				.body(new SuccessResponse(message, null));
+    }
 }

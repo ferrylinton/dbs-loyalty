@@ -10,7 +10,7 @@
             <column name="id" type="VARCHAR(36)">
                 <constraints nullable="false"/>
             </column>
-             <column name="created_by" type="VARCHAR(50)">
+            <column name="created_by" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
             <column name="created_date" type="timestamp">
