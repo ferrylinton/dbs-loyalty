@@ -40,6 +40,10 @@
 									<textarea class="form-control" th:field="*{description}" rows="2" maxlength="255"></textarea>
 								</div>
 								<div class="form-group">
+									<label for="content" th:text="#{content} + ' *'">Content *</label>
+									<textarea class="form-control" th:field="*{content}" rows="6"></textarea>
+								</div>
+								<div class="form-group">
 									<label for="termAndCondition" th:text="#{termAndCondition} + ' *'">Term And Condition *</label>
 									<textarea class="form-control" th:field="*{termAndCondition}" rows="6"></textarea>
 								</div>
@@ -55,14 +59,14 @@
 								</div>
 								<div class="form-row">
 									<div class="form-group col">
-										<label for="activated" th:text="#{activated}">Activated</label>
+										<label th:text="#{activated}">Activated</label>
 										<div class="custom-control custom-switch">
 											<input type="checkbox" th:field="*{activated}" class="custom-control-input" onchange="changeStatus(this)" id="activated">
 											<label class="custom-control-label" for="activated" th:text="*{activated} ? #{yes} : #{no}"></label>
 										</div>
 									</div>
 									<div class="form-group col">
-										<label for="showInCarousel" th:text="#{showInCarousel}">Show In Carousel</label>
+										<label th:text="#{showInCarousel}">Show In Carousel</label>
 											<div class="custom-control custom-switch">
 											<input type="checkbox" th:field="*{showInCarousel}" class="custom-control-input" onchange="changeStatus(this)" id="showInCarousel">
 											<label class="custom-control-label" for="showInCarousel" th:text="*{showInCarousel} ? #{yes} : #{no}"></label>

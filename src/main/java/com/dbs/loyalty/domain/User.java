@@ -8,10 +8,14 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+
+import org.hibernate.annotations.GenericGenerator;
 
 import com.dbs.loyalty.domain.enumeration.UserType;
 
@@ -27,8 +31,8 @@ import lombok.ToString;
  */
 @Setter
 @Getter
-@EqualsAndHashCode(of = { "username" }, callSuper = true)
-@ToString
+@ToString(of = {"id"})
+@EqualsAndHashCode(of = {"id"}, callSuper = false)
 @Entity
 @Table(	
 	name = "m_user",
@@ -36,9 +40,15 @@ import lombok.ToString;
 		@UniqueConstraint(name = "m_user_username_uq", columnNames = { "username" })
 	}
 )
-public class User extends AbstractId implements Serializable {
+public class User extends AbstractAuditing implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+	
+	@Id
+	@Column(name = "id", length=8)
+	@GenericGenerator(name = "StringIdGenerator", strategy = "com.dbs.loyalty.domain.IdGenerator")
+	@GeneratedValue(generator = "StringIdGenerator")
+	private String id;
 	
 	@Column(name = "username", length = 50, nullable = false)
 	private String username;

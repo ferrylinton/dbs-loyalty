@@ -36,10 +36,19 @@
             <column name="image_content_type" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
+            <column name="image_width" type="Integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="image_height" type="Integer">
+                <constraints nullable="false"/>
+            </column>
             <column name="show_in_carousel" type="BIT(1)">
                 <constraints nullable="false"/>
             </column>
             <column name="start_period" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="content" type="TEXT">
                 <constraints nullable="false"/>
             </column>
             <column name="term_and_condition" type="TEXT">

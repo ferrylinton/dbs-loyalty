@@ -8,6 +8,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
@@ -15,6 +17,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
+
+import org.hibernate.annotations.GenericGenerator;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -28,8 +32,8 @@ import lombok.ToString;
  */
 @Setter
 @Getter
-@EqualsAndHashCode(of = { "code", "title" }, callSuper = true)
-@ToString
+@ToString(of = {"id"})
+@EqualsAndHashCode(of = {"id"}, callSuper = false)
 @Entity
 @Table(
 	name = "c_promo",
@@ -38,10 +42,16 @@ import lombok.ToString;
 		@UniqueConstraint(name = "c_promo_title_uq", columnNames = { "title" })
 	}
 )
-public class Promo extends AbstractId implements Serializable {
+public class Promo extends AbstractImage implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @Id
+	@Column(name = "id", length=8)
+	@GenericGenerator(name = "StringIdGenerator", strategy = "com.dbs.loyalty.domain.IdGenerator")
+	@GeneratedValue(generator = "StringIdGenerator")
+	private String id;
+    
     @Column(name = "code", length = 50, nullable = false)
     private String code;
 
@@ -51,6 +61,10 @@ public class Promo extends AbstractId implements Serializable {
     @Column(name = "description", nullable = false)
     private String description;
 
+    @Lob
+    @Column(name = "content", nullable = false, columnDefinition="TEXT")
+    private String content;
+    
     @Lob
     @Column(name = "term_and_condition", nullable = false, columnDefinition="TEXT")
     private String termAndCondition;

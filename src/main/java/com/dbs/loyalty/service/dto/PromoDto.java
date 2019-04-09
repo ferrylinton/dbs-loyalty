@@ -26,6 +26,10 @@ public class PromoDto extends AbstractImageDto {
     @Size(min=2, max = 255, message = "{validation.size.description}")
 	private String description;
 	
+	@NotNull(message = "{validation.notnull.content}")
+    @Size(min=2, max = 50000, message = "{validation.size.content}")
+	private String content;
+	
 	@NotNull(message = "{validation.notnull.termAndCondition}")
     @Size(min=2, max = 50000, message = "{validation.size.termAndCondition}")
 	private String termAndCondition;

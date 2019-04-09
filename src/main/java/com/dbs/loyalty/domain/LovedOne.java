@@ -7,6 +7,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -16,11 +18,14 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import com.dbs.loyalty.config.constant.Constant;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Class of LovedOne
@@ -29,13 +34,20 @@ import lombok.Setter;
  */
 @Setter
 @Getter
-@EqualsAndHashCode(of = {"name"}, callSuper = true)
+@ToString(of = {"id"})
+@EqualsAndHashCode(of = {"id"}, callSuper = false)
 @Entity
 @Table(name = "c_loved_one")
-public class LovedOne extends AbstractUUID implements Serializable {
+public class LovedOne extends AbstractAuditing implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@Id
+	@Column(name = "id", length=36)
+	@GenericGenerator(name = "UUIDGenerator", strategy = "com.dbs.loyalty.domain.UUIDGenerator")
+	@GeneratedValue(generator = "UUIDGenerator")
+	private String id;
+	
 	@NotNull(message = "{validation.notnull.name}")
 	@Pattern(regexp = Constant.NAME_REGEX, message = "{validation.pattern.name}")
 	@Size(min = 2, max = 50, message = "{validation.size.name}")

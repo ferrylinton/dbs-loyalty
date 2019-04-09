@@ -39,7 +39,7 @@
             <column name="customer_type" type="VARCHAR(4)">
                 <constraints nullable="false"/>
             </column>
-             <column name="image_bytes" type="${image.type}">
+            <column name="image_bytes" type="${image.type}">
                 <constraints nullable="false"/>
             </column>
             <column name="image_content_type" type="VARCHAR(50)">
