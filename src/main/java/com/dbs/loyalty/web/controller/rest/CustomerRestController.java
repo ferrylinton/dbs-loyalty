@@ -25,7 +25,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -120,6 +119,7 @@ public class CustomerRestController extends AbstractController{
     		nickname="UpdateCustomerImage", 
     		value="UpdateCustomerImage", 
     		notes="Update customer image",
+    		consumes="multipart/form-data",
     		produces= "image/png, image/jpeg", 
     		authorizations = { @Authorization(value=JWT) })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Byte.class)})
@@ -179,7 +179,7 @@ public class CustomerRestController extends AbstractController{
     		authorizations = { @Authorization(value=JWT) })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Pair.class)})
     @PreAuthorize("hasRole('CUSTOMER')")
-    @PostMapping("/customers/change-password")
+    @PutMapping("/customers/change-password")
     public ResponseEntity<Pair<String, String>> changePassword(
     		@ApiParam(name = "ChangePasswordData", value = "Customer's password data") 
     		@Valid @RequestBody CustomerPasswordDto customerPasswordDto)  {

@@ -2,10 +2,6 @@ package com.dbs.loyalty.repository;
 
 import java.util.Optional;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -18,16 +14,9 @@ import com.dbs.loyalty.domain.Customer;
 
 public interface CustomerRepository extends JpaRepository<Customer, String>, JpaSpecificationExecutor<Customer>{
 
-	//@EntityGraph(attributePaths = { "customerImage" })
-	Optional<Customer> findById(String id);
-	
-	//@EntityGraph(attributePaths = { "customerImage" })
 	Optional<Customer> findByEmail(String email);
 	
 	Optional<Customer> findByEmailIgnoreCase(String email);
-	
-	//@EntityGraph(attributePaths = { "customerImage" })
-	Page<Customer> findAll(Specification<Customer> spec, Pageable pageable);
 	
 	@Transactional(propagation=Propagation.REQUIRED)
 	@Modifying

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.dbs.loyalty.domain.Promo;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.PromoRepository;
+import com.dbs.loyalty.service.dto.CarouselDto;
 import com.dbs.loyalty.service.dto.PromoDto;
 import com.dbs.loyalty.service.dto.PromoViewDto;
 import com.dbs.loyalty.service.dto.TaskDto;
@@ -46,11 +47,17 @@ public class PromoService{
 				.map(promo -> promoMapper.toDto(promo));
 	}
 
-	public List<PromoViewDto> findPromoInCarousel(){
-		return promoRepository.findPromoInCarousel()
+	public List<CarouselDto> findPromoInCarousel(){
+		List<CarouselDto> carouselDtos = promoRepository.findPromoInCarousel()
 				.stream()
-				.map(promo -> promoMapper.toViewDto(promo))
+				.map(promo -> promoMapper.toCarouselDto(promo))
 				.collect(Collectors.toList());
+		
+		if(carouselDtos.size() > 3) {
+			return carouselDtos.subList(0, 3);
+		}else {
+			return carouselDtos;
+		}
 	}
 	
 	public List<PromoViewDto> findByPromoCategoryId(String promoCategoryId){

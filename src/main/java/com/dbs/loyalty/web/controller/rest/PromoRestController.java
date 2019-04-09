@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.PromoService;
+import com.dbs.loyalty.service.dto.CarouselDto;
 import com.dbs.loyalty.service.dto.PromoDto;
 import com.dbs.loyalty.service.dto.PromoViewDto;
 import com.dbs.loyalty.util.MessageUtil;
@@ -42,14 +43,14 @@ public class PromoRestController {
 	@ApiOperation(
 			nickname="GetAllPromoInCarousel", 
 			value="GetAllPromoInCarousel", 
-			notes="Get All Promos to be shown in Carousel",
+			notes="Get All Promos to be shown in Carousel. Total promos to be shown is 3",
     		produces=MediaType.APPLICATION_JSON_VALUE, 
     		authorizations = { @Authorization(value=JWT) })
-    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = PromoViewDto.class)})
+    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = CarouselDto.class)})
 	@PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping("/promos/carousel")
-    public ResponseEntity<List<PromoViewDto>> getAllPromoInCarousel(){
-		List<PromoViewDto> promos = promoService.findPromoInCarousel();
+    public ResponseEntity<List<CarouselDto>> getAllPromoInCarousel(){
+		List<CarouselDto> promos = promoService.findPromoInCarousel();
     	return ResponseEntity.ok().body(promos);
     }
 	
@@ -76,14 +77,14 @@ public class PromoRestController {
 			notes="Get Promo by Id",
     		produces=MediaType.APPLICATION_JSON_VALUE, 
     		authorizations = { @Authorization(value=JWT) })
-    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = PromoDto.class)})
+    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = PromoViewDto.class)})
 	@PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping("/promos/{id}")
-    public ResponseEntity<PromoDto> getById(
+    public ResponseEntity<PromoViewDto> getById(
     		@ApiParam(name = "id", value = "Promo Id", example = "zO0dDp9K")
     		@PathVariable String id) throws NotFoundException{
     	
-		Optional<PromoDto> current = promoService.findById(id);
+		Optional<PromoViewDto> current = promoService.findViewById(id);
     	
     	if(current.isPresent()) {
     		return ResponseEntity.ok().body(current.get());
