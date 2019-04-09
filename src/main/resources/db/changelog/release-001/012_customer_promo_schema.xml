@@ -7,9 +7,6 @@
     
     <changeSet author="FLH" id="012-1">
         <createTable tableName="c_customer_promo">
-            <column name="id" type="VARCHAR(36)">
-                <constraints nullable="false"/>
-            </column>
             <column name="created_by" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
@@ -21,12 +18,14 @@
             <column name="customer_id" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="promo_id" type="VARCHAR(8)"/>
+            <column name="promo_id" type="VARCHAR(8)">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
     
 	<changeSet author="FLH" id="012-2">
-        <addPrimaryKey columnNames="id" constraintName="c_customer_promoPK" tableName="c_customer_promo"/>
+        <addPrimaryKey columnNames="customer_id,promo_id" constraintName="c_customer_promoPK" tableName="c_customer_promo"/>
     </changeSet>
     
     <changeSet author="FLH" id="012-3">

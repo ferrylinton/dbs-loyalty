@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 public class CustomerPromoDto extends AbstractAuditDto {
 	
-	private String id;
+	private CustomerPromoIdDto id;
 
 	private Customer customer;
 

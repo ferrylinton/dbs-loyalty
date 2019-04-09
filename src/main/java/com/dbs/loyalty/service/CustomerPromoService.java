@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.domain.CustomerPromo;
+import com.dbs.loyalty.domain.CustomerPromoId;
 import com.dbs.loyalty.domain.Promo;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.repository.CustomerPromoRepository;
@@ -45,14 +46,22 @@ public class CustomerPromoService{
 			message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, promoId);
 			throw new NotFoundException(message);
 		}else {
-			CustomerPromo customerPromo = new CustomerPromo();
-			customerPromo.setCustomer(customer.get());
-			customerPromo.setPromo(promo.get());
-			customerPromo.setCreatedBy(SecurityUtil.getLogged());
-			customerPromo.setCreatedDate(Instant.now());
-			customerPromo = customerPromoRepository.save(customerPromo);
+			CustomerPromoId id = new CustomerPromoId(customer.get().getId(), promoId);
+			Optional<CustomerPromo> current = customerPromoRepository.findById(id);
 			
-			return customerPromoMapper.toDto(customerPromo);
+			if(current.isPresent()) {
+				return customerPromoMapper.toDto(current.get());
+			}else {
+				CustomerPromo customerPromo = new CustomerPromo();
+				customerPromo.setId(id);
+				customerPromo.setCustomer(customer.get());
+				customerPromo.setPromo(promo.get());
+				customerPromo.setCreatedBy(SecurityUtil.getLogged());
+				customerPromo.setCreatedDate(Instant.now());
+				customerPromo = customerPromoRepository.save(customerPromo);
+				
+				return customerPromoMapper.toDto(customerPromo);
+			}
 		}
 	}
 	
