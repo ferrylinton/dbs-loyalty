@@ -6,29 +6,23 @@
 <body>
 	<div th:fragment="content" th:remove="tag">
 		<nav class="navbar navbar-dark bg-black fixed-top border-bottom border-red border-3">
-			<a class="navbar-brand clearfix" href="index.html">
-				<img class="float-left" alt="/static/image/dbs.png" th:src="@{/static/image/dbs.png}"></img>
-				<span class="float-left ml-1 mt-2 text-secondary" th:text=#{application.subname}></span>
-			</a>
-			<div class="ml-auto">
-				<div class="btn-group dropdown">
-                    <a class="btn dropdown-toggle text-light" href="#" role="button" id="user-account" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                        <span class="icon-user-circle"></span> <span sec:authentication="name"></span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="user-account">
-                        <a class="dropdown-item" th:href="@{/password}">
-                            <span class="icon-lock"></span> <span th:text="#{changePassword}">Change Password</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" th:href="@{/logout}">
-                            <span class="icon-logout"></span> <span th:text="#{logout}">Logout</span>
-                        </a>
-                    </div>
-                </div>
-			</div>
-			
-		</nav>
+	        <a class="navbar-brand clearfix" href="index.html" th:href="@{/}">
+            	<img class="float-left" alt="dbs.png" src="/image/dbs.png" th:src="@{/static/image/dbs.png}"></img>
+        	</a>
+	        <div class="ml-auto">
+	            <div class="btn-group dropdown">
+	                <a class="btn dropdown-toggle text-light" href="#" role="button" id="user-account" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+	                    <span class="icon-user-circle" sec:authentication="name">ferrylinton</span>
+	                </a>
+	                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="user-account">
+	                    <a class="dropdown-item" th:href="@{/logout}">
+	                        <span class="icon-logout" th:text="#{logout}">Logout</span>
+	                    </a>
+	                </div>
+	            </div>
+	            <button class="btn btn-menu" type="button" onclick="Sidenav.toggle()">&#9776;</button>
+	        </div>
+	    </nav>
 	</div>
 </body>
 

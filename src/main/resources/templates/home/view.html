@@ -7,147 +7,23 @@
 
 <body>
     <div th:replace="fragment/navbar.html :: content"></div>
-    <div class="container-fluid bg-white">
-        <div class="pt-3">
-      		<div class="row no-gutters min-height">
-      			<!-- USER MANAGEMENT -->
-    			<div class="menu-group col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 px-1 pb-3">
-               		<fieldset>
-						<legend th:text="#{userManagement}"></legend>
-						<div class="row no-gutters">
-							<th:block th:if="${#authorization.expression('hasAnyAuthority(''USER_MK'', ''USER_CK'')')}">
-			                	<div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-4 p-1 mb-1">
-			                		<a class="btn btn-primary btn-block" role="button" th:href="@{/user}">
-										<span class="icon-user font-icon"></span>
-										<span class="font-label" th:text="#{user}"></span>
-									</a>
-			                	</div>
-		                	</th:block>
-		                	<th:block th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MK'', ''ROLE_CK'')')}">
-			                	<div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-4 p-1 mb-1">
-			                		<a class="btn btn-primary btn-block" role="button" th:href="@{/role}">
-										<span class="icon-user-secret font-icon"></span>
-										<span class="font-label" th:text="#{role}"></span>
-									</a>
-			                	</div>
-		                	</th:block>
-		                </div>
-					</fieldset>
-				</div>
-                <!-- PROMO -->
-                <div class="menu-group col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6 px-1 pb-3">
-                	<fieldset>
- 						<legend th:text="#{promo}"></legend>
- 						<div class="row no-gutters">
- 							<th:block th:if="${#authorization.expression('hasAnyAuthority(''PROMO_CATEGORY_MK'', ''PROMO_CATEGORY_CK'')')}">
-			                	<div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-4 p-1 mb-1">
-			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/promocategory}">
-										<span class="icon-birthday font-icon"></span>
-										<span class="font-label" th:text="#{promoCategory}"></span>
-									</a>
-			                	</div>
-		                	</th:block>
-		                	<th:block th:if="${#authorization.expression('hasAnyAuthority(''PROMO_MK'', ''PROMO_CK'')')}">
-			                	<div class="col-12 col-sm-4 col-md-6 col-lg-4 col-xl-4 p-1 mb-1">
-			                		<a class="btn btn-secondary btn-block" role="button" th:href="@{/promo}">
-										<span class="icon-birthday font-icon"></span>
-										<span class="font-label" th:text="#{promo}"></span>
-									</a>
-			                	</div>
-		                	</th:block>
-		                </div>
- 					</fieldset>
- 				</div>
- 				<!-- CUSTOMER -->
-                <div class="menu-group col-12 px-1 pb-3">
-                	<fieldset>
- 						<legend th:text="#{customer}"></legend>
- 						<div class="row no-gutters">
- 							<th:block th:if="${#authorization.expression('hasAnyAuthority(''CUSTOMER_MK'', ''CUSTOMER_CK'')')}">
-			                	<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 p-1 mb-1">
-			                		<a class="btn btn-success btn-block" role="button" th:href="@{/customer}">
-										<span class="icon-user font-icon"></span>
-										<span class="font-label" th:text="#{customer}"></span>
-									</a>
-			                	</div>
-		                	</th:block>
-		                </div>
- 					</fieldset>
- 				</div>
-				<!-- TASK -->
-                <div class="menu-group col-12 px-1 pb-3">
-                	<fieldset>
- 						<legend th:text="#{task}"></legend>
- 						<div class="row no-gutters">
- 							<th:block th:if="${#authorization.expression('hasAnyAuthority(''USER_MK'', ''USER_CK'')')}">
-			                	<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 p-1 mb-1">
-			                		<a class="btn btn-warning btn-block" role="button" th:href="@{/task/user}">
-										<span class="icon-user font-icon"></span>
-										<span class="font-label" th:text="#{user}"></span>
-									</a>
-			                	</div>
-		                	</th:block>
-		                	<th:block th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MK'', ''ROLE_CK'')')}">
-			                	<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 p-1 mb-1">
-			                		<a class="btn btn-warning btn-block" role="button" th:href="@{/task/role}">
-										<span class="icon-user-secret font-icon"></span>
-										<span class="font-label" th:text="#{role}"></span>
-									</a>
-			                	</div>
-			                </th:block>
-			                <th:block th:if="${#authorization.expression('hasAnyAuthority(''PROMO_CATEGORY_MK'', ''PROMO_CATEGORY_CK'')')}">
-			                	<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 p-1 mb-1">
-			                		<a class="btn btn-warning btn-block" role="button" th:href="@{/task/promocategory}">
-										<span class="icon-birthday font-icon"></span>
-										<span class="font-label" th:text="#{promoCategory}"></span>
-									</a>
-			                	</div>
-			                </th:block>
-			                <th:block th:if="${#authorization.expression('hasAnyAuthority(''PROMO_MK'', ''PROMO_CK'')')}">
-			                	<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 p-1 mb-1">
-			                		<a class="btn btn-warning btn-block" role="button" th:href="@{/task/promo}">
-										<span class="icon-birthday font-icon"></span>
-										<span class="font-label" th:text="#{promo}"></span>
-									</a>
-			                	</div>
-			                </th:block>
-			                <th:block th:if="${#authorization.expression('hasAnyAuthority(''CUSTOMER_MK'', ''CUSTOMER_CK'')')}">
-			                	<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 p-1 mb-1">
-			                		<a class="btn btn-warning btn-block" role="button" th:href="@{/task/customer}">
-										<span class="icon-birthday font-icon"></span>
-										<span class="font-label" th:text="#{customer}"></span>
-									</a>
-			                	</div>
-			                </th:block>
-		                </div>
- 					</fieldset>
- 				</div>
-	            <!-- TOOL -->
-      			<div class="menu-group col-12 px-1 pb-3">
-                	<fieldset>
- 						<legend th:text="#{tool}"></legend>
- 						<div class="row no-gutters">
-		                	<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 p-1 mb-1">
-		                		<a class="btn btn-info btn-block" role="button" th:href="@{/swagger-ui.html}" onclick="return openNewTab(this);">
-									<span class="icon-cog-alt font-icon"></span>
-									<span class="font-label" th:text="#{swagger}"></span>
-								</a>
-		                	</div>
-		                	<th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
-			                	<div class="col-12 col-sm-4 col-md-3 col-lg-2 col-xl-2 p-1 mb-1">
-			                		<a class="btn btn-info btn-block" role="button" th:href="@{/loglogin}">
-										<span class="icon-history font-icon"></span>
-										<span class="font-label" th:text="#{logLogin}"></span>
-									</a>
-			                	</div>
-		                	</th:block>
-		                </div>
- 					</fieldset>
- 				</div>
-	        </div>
-  		</div>
+    <div id="content-box">
+        <div class="container-fluid p-3 bg-white">
+            <div class="row no-gutters">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                    <div class="border p-3 min-height welcome-box">
+                        <h3>Welcome <span>ferrylinton</span> !!!</h3>
+                        <div>Last login 11-04-2018 18:47</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div th:replace="fragment/footer.html :: content"></div>
     </div>
-    <div th:replace="fragment/footer.html :: content"></div>
+    <div id="sidenav-box">
+        <div th:replace="fragment/sidenav.html :: content"></div>
+    </div>
     <div th:replace="fragment/scripts.html :: content"></div>
 </body>
 
