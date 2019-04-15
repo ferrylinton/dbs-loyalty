@@ -81,7 +81,7 @@ public class LoginController extends AbstractController{
 			}
 		}
 		
-		return "login/form";
+		return "login/login-form";
 	}
 
 }

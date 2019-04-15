@@ -7,6 +7,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import com.dbs.loyalty.domain.User;
+import com.dbs.loyalty.security.web.WebAuthentication;
+
 public final class SecurityUtil {
 
 	public static String getLogged() {
@@ -24,6 +27,15 @@ public final class SecurityUtil {
         }
 		
 		return result;
+    }
+	
+	public static User getCurrentUser() {
+		if(SecurityContextHolder.getContext().getAuthentication() instanceof WebAuthentication) {
+			WebAuthentication webAuthentication = (WebAuthentication) SecurityContextHolder.getContext().getAuthentication();
+			return webAuthentication.getUser();
+		}else {
+			return null;
+		}
     }
 
 	private SecurityUtil() {

@@ -2,10 +2,7 @@ package com.dbs.loyalty.security.web;
 
 import static com.dbs.loyalty.config.constant.Constant.EMPTY;
 
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -13,11 +10,8 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import com.dbs.loyalty.config.ApplicationProperties;
-import com.dbs.loyalty.domain.Authority;
 import com.dbs.loyalty.domain.User;
 import com.dbs.loyalty.domain.enumeration.UserType;
 import com.dbs.loyalty.repository.UserRepository;
@@ -63,7 +57,7 @@ public class WebAuthenticationProvider implements AuthenticationProvider {
 	private Authentication authenticate(String password, User user) {
 		if(isAuthenticated(password, user)) {
 			resetLoginAttemptCount(user.getUsername());
-    		return new UsernamePasswordAuthenticationToken(user.getUsername(), EMPTY, getAuthorities(user));
+			return new WebAuthentication(user);
 		}else {
 			addLoginAttemptCount(user.getLoginAttemptCount(), user.getUsername());
         	throw new BadCredentialsException(EMPTY);
@@ -77,16 +71,6 @@ public class WebAuthenticationProvider implements AuthenticationProvider {
 			return PasswordUtil.matches(password, user.getPasswordHash());
         }
 	}
-	
-	private Collection<? extends GrantedAuthority> getAuthorities(User user) {
-		Set<GrantedAuthority> authorities = new HashSet<>();
-		
-		for(Authority authority : user.getRole().getAuthorities()){
-			authorities.add(new SimpleGrantedAuthority(authority.getName()));
-		}
-		
-        return authorities;
-    }
 	
 	public void addLoginAttemptCount(Integer loginAttemptCount, String username) {
 		loginAttemptCount = (loginAttemptCount < getMaxAttempt()) ? (loginAttemptCount + 1) : loginAttemptCount;

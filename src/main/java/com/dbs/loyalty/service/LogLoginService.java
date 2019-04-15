@@ -1,5 +1,7 @@
 package com.dbs.loyalty.service;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.data.domain.Page;
@@ -11,6 +13,7 @@ import com.dbs.loyalty.repository.LogLoginRepository;
 import com.dbs.loyalty.service.dto.LogLoginDto;
 import com.dbs.loyalty.service.mapper.LogLoginMapper;
 import com.dbs.loyalty.service.specification.LogLoginSpecification;
+import com.dbs.loyalty.util.SecurityUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,4 +35,13 @@ public class LogLoginService {
 				.map(logLoginMapper::toDto);
 	}
 	
+	public LogLoginDto getLastLogin() {
+		List<LogLogin> logLogins = logLoginRepository.findTop2ByUsernameOrderByCreatedDateDesc(SecurityUtil.getLogged());
+		
+		if(logLogins.size() > 1) {
+			return logLoginMapper.toDto(logLogins.get(1));
+		}else {
+			return logLoginMapper.toDto(logLogins.get(0));
+		}
+	}
 }

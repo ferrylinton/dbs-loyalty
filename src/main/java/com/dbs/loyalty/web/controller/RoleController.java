@@ -68,7 +68,7 @@ public class RoleController extends AbstractPageController {
 			request.setAttribute(PAGE, page);
 			setParamsQueryString(params, request);
 			setPagerQueryString(order, page.getNumber(), request);
-			return "role/view";
+			return "role/role-view";
 		}
 	}
 	
@@ -83,7 +83,7 @@ public class RoleController extends AbstractPageController {
 			model.addAttribute(ERROR, getNotFoundMessage(id));
 		}
 		
-		return "role/detail";
+		return "role/role-detail";
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_MK')")
@@ -101,7 +101,7 @@ public class RoleController extends AbstractPageController {
 			}
 		}
 		
-		return "role/form";
+		return "role/role-form";
 	}
 
 	@PreAuthorize("hasRole('ROLE_MK')")

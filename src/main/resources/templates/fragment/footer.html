@@ -1,23 +1,24 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
-	<title>DBS Loyalty</title>
+    <title>DBS Loyalty</title>
 </head>
+
 <body>
     <div th:fragment="content" th:remove="tag">
-        <footer>
-	        <div class="container-fluid">
-	            <div class="row text-uppercase text-center">
-	                <div class="col-12 col-sm-6 text-sm-left">
-	                    <p class="m-0" th:utext="#{application.copyright}">Copyright &copy; 2019 by Bank DBS</p>
-	                </div>
-	                <div class="col-12 col-sm-6 text-sm-right">
-	                    <a href="#">English</a> |
-	                    <a href="#">Bahasa Indonesia</a>
-	                </div>
-	            </div>
-	        </div>
-    	</footer>
+        <div class="footer">
+            <div class="container-fluid">
+                <div class="row no-gutters text-uppercase text-center">
+                    <div class="col-12 col-sm-6 text-sm-left">
+                        <p class="m-0" th:utext="#{application.copyright}">Copyright &copy; 2019 by Bank DBS</p>
+                    </div>
+                    <div class="col-12 col-sm-6 text-sm-right">
+                        <a href="#" th:text="#{english}">English</a> <a href="#" th:text="#{indonesia}">Indonesia</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 
