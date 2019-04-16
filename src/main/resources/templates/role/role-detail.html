@@ -25,21 +25,18 @@
                     <div class="container-fluid pb-3">
                         <div class="min-height border p-3">
                             <!-- TABLE DETAIL -->
-                            <table class="table table-sm table-borderless table-detail">
+                            <table class="table table-sm table-detail border">
                                 <tbody th:with="format=${@environment.getProperty('application.format.date-time-full')}">
                                     <tr>
                                         <th th:text="#{id}">Id</th>
-                                        <td>:</td>
                                         <td th:text="${role.id}">ZwOkjFmG</td>
                                     </tr>
                                     <tr>
                                         <th th:text="#{name}">Name</th>
-                                        <td>:</td>
                                         <td th:text="${role.name}">Admin</td>
                                     </tr>
                                     <tr>
                                         <th th:text="#{authorities}">Authorities</th>
-                                        <td>:</td>
                                         <td>
                                             <ol th:remove="all-but-first">
                                                 <li th:each="authority : ${role.authorities}" th:text="#{${authority.name}}">Admin</li>
@@ -49,28 +46,24 @@
                                     </tr>
                                     <tr>
                                         <th th:text="#{createdBy}">Created By</th>
-                                        <td>:</td>
                                         <td th:text="${role.createdBy}">System</td>
                                     </tr>
                                     <tr>
                                         <th th:text="#{createdDate}">Created Date</th>
-                                        <td>:</td>
                                         <td th:text="${#dates.format(role.createdDate, format)}">09-04-2019 19:06:53.279</td>
                                     </tr>
                                     <tr th:if="${role.lastModifiedBy}">
                                         <th th:text="#{lastModifiedBy}">Last Modified By</th>
-                                        <td>:</td>
                                         <td th:text="${role.lastModifiedBy}">System</td>
                                     </tr>
                                     <tr th:if="${role.lastModifiedDate}">
                                         <th th:text="${role.lastModifiedDate}">Last ModifiedDate Date</th>
-                                        <td>:</td>
                                         <td th:text="${#dates.format(lastModifiedDate, format)}">09-04-2019 19:06:53.279</td>
                                     </tr>
                                 </tbody>
                             </table>
                             <div class="toolbar">
-                                <a class="btn btn-light" href="/role/view.html" th:href="@{/role}">
+                                <a class="btn btn-light" href="/role/role-view.html" th:href="@{/role}">
                                     <span class="icon-left" th:text="#{back}">Back</span>
                                 </a>
                             </div>

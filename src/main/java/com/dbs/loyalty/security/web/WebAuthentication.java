@@ -8,15 +8,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import com.dbs.loyalty.domain.Authority;
 import com.dbs.loyalty.domain.User;
 
 
 public class WebAuthentication implements Authentication {
 
 	private static final long serialVersionUID = 1L;
-	
-	private static final String ROLE_CUSTOMER = "CUSTOMER";
-	
+
 	private String principal;
 	
 	private String credentials;
@@ -36,7 +35,11 @@ public class WebAuthentication implements Authentication {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		Set<GrantedAuthority> authorities = new HashSet<>();
-		authorities.add(new SimpleGrantedAuthority(ROLE_CUSTOMER));
+		
+		for(Authority authority : user.getRole().getAuthorities()){
+			authorities.add(new SimpleGrantedAuthority(authority.getName()));
+		}
+		
         return authorities;
     }
 

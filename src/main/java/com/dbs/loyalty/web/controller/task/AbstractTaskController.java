@@ -1,19 +1,13 @@
 package com.dbs.loyalty.web.controller.task;
 
 import static com.dbs.loyalty.config.constant.Constant.ERROR;
-import static com.dbs.loyalty.config.constant.Constant.PAGE;
 import static com.dbs.loyalty.config.constant.EntityConstant.TASK;
 import static com.dbs.loyalty.config.constant.EntityConstant.TYPE;
-import static com.dbs.loyalty.config.constant.MessageConstant.*;
+import static com.dbs.loyalty.config.constant.MessageConstant.TASK_IS_REJECTED;
+import static com.dbs.loyalty.config.constant.MessageConstant.TASK_IS_VERIFIED;
 
-import java.util.Map;
 import java.util.Optional;
 
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
 
@@ -31,34 +25,9 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class AbstractTaskController extends AbstractPageController {
 
-	private String redirect 	= "redirect:/task";
-
-	private String viewTemplate = "task/view";
-
-	private String formTemplate = "task/form";
-
-	private String sortBy 		= "madeDate";
-	
-	private Order defaultOrder	= Order.asc(sortBy).ignoreCase();
-
 	protected final TaskService taskService;
 	
-	protected String view(String type, Map<String, String> params, Sort sort, HttpServletRequest request) {
-		Order order = (sort.getOrderFor(sortBy) == null) ? defaultOrder : sort.getOrderFor(sortBy);
-		Page<TaskDto> page = taskService.findAll(type, params, getPageable(params, order), request);
-		
-		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
-			return redirect;
-		}
-		
-		request.setAttribute(PAGE, page);
-		request.setAttribute(TYPE, type);
-		setParamsQueryString(params, request);
-		setPagerQueryString(order, page.getNumber(), request);
-		return viewTemplate;
-	}
-	
-	protected String view(String type, ModelMap model, String id) {
+	protected void view(String type, ModelMap model, String id) {
 		Optional<TaskDto> task = taskService.findById(id);
 		
 		if (task.isPresent()) {
@@ -68,7 +37,6 @@ public class AbstractTaskController extends AbstractPageController {
 		}
 		
 		model.addAttribute(TYPE, type);
-		return formTemplate;
 	}
 	
 	protected ResponseEntity<AbstractResponse> save(TaskDto taskDto){

@@ -75,14 +75,7 @@ public class RoleController extends AbstractPageController {
 	@PreAuthorize("hasAnyRole('ROLE_MK', 'ROLE_CK')")
 	@GetMapping("/{id}/detail")
 	public String viewRoleDetail(ModelMap model, @PathVariable String id){
-		Optional<RoleDto> current = roleService.findWithAuthoritiesById(id);
-		
-		if (current.isPresent()) {
-			model.addAttribute(ROLE, current.get());
-		} else {
-			model.addAttribute(ERROR, getNotFoundMessage(id));
-		}
-		
+		getRoleById(model, id);		
 		return "role/role-detail";
 	}
 
@@ -92,13 +85,7 @@ public class RoleController extends AbstractPageController {
 		if (id.equals(ZERO)) {
 			model.addAttribute(ROLE, new RoleDto());
 		} else {
-			Optional<RoleDto> current = roleService.findWithAuthoritiesById(id);
-			
-			if (current.isPresent()) {
-				model.addAttribute(ROLE, current.get());
-			} else {
-				model.addAttribute(ERROR, getNotFoundMessage(id));
-			}
+			getRoleById(model, id);
 		}
 		
 		return "role/role-form";
@@ -137,6 +124,16 @@ public class RoleController extends AbstractPageController {
 			return taskIsSavedResponse(ROLE, current.get().getName(), UrlUtil.getUrl(ROLE));
 		}else {
 			throw new NotFoundException();
+		}
+	}
+	
+	private void getRoleById(ModelMap model, String id){
+		Optional<RoleDto> current = roleService.findWithAuthoritiesById(id);
+		
+		if (current.isPresent()) {
+			model.addAttribute(ROLE, current.get());
+		} else {
+			model.addAttribute(ERROR, getNotFoundMessage(id));
 		}
 	}
 
