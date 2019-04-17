@@ -69,26 +69,27 @@ public class UserController extends AbstractPageController{
 			request.setAttribute(PAGE, page);
 			setParamsQueryString(params, request);
 			setPagerQueryString(order, page.getNumber(), request);
-			return "user/view";
+			return "user/user-view";
 		}
 	}
 	
 	@PreAuthorize("hasAnyRole('USER_MK', 'USER_CK')")
+	@GetMapping("/{id}/detail")
+	public String viewRoleDetail(ModelMap model, @PathVariable String id){
+		getById(model, id);		
+		return "user/user-detail";
+	}
+	
+	@PreAuthorize("hasRole('USER_MK')")
 	@GetMapping("/{id}")
 	public String viewUserForm(ModelMap model, @PathVariable String id) {
 		if (id.equals(ZERO)) {
 			model.addAttribute(USER, new UserDto());
 		} else {
-			Optional<UserDto> current = userService.findById(id);
-			
-			if (current.isPresent()) {
-				model.addAttribute(USER, current.get());
-			} else {
-				model.addAttribute(ERROR, getNotFoundMessage(id));
-			}
+			getById(model, id);
 		}
 		
-		return "user/form";
+		return "user/user-form";
 	}
 	
 	@PreAuthorize("hasRole('USER_MK')")
@@ -141,4 +142,18 @@ public class UserController extends AbstractPageController{
 		binder.addValidators(new UserValidator());
 	}
 
+	public void getById(ModelMap model, String id) {
+		if (id.equals(ZERO)) {
+			model.addAttribute(USER, new UserDto());
+		} else {
+			Optional<UserDto> current = userService.findById(id);
+			
+			if (current.isPresent()) {
+				model.addAttribute(USER, current.get());
+			} else {
+				model.addAttribute(ERROR, getNotFoundMessage(id));
+			}
+		}
+	}
+	
 }

@@ -4,7 +4,7 @@
 <head th:replace="fragment/head.html :: content(title=#{role})">
     <title>DBS Loyalty : Role</title>
     <link href="/static/image/favicon.png" rel="shorcut icon" />
-    <link href="/static/css/main.min.css" rel="stylesheet" />
+    <link href="/static/css/all.min.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -14,8 +14,8 @@
         <!-- BREADCRUMB -->
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Role</li>
+                <li class="breadcrumb-item"><a href="/" th:href="@{/}" th:text="#{home}">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page" th:text="#{role}">Role</li>
             </ol>
         </nav>
         <div class="container-fluid pb-3">
@@ -30,10 +30,10 @@
                                     <button class="btn btn-light" type="submit">
                                         <span class="icon-search"></span>
                                     </button>
-                                    <a class="btn btn-light" href="/role/view.html" th:href="@{/role}">
+                                    <a class="btn btn-light" href="/role/role-view.html" th:href="@{/role}">
                                         <span class="icon-arrows-cw"></span>
                                     </a>
-                                    <a class="btn btn-light" href="/role/form.html" th:href="@{/role/0}" sec:authorize="hasRole('ROLE_MK')">
+                                    <a class="btn btn-light" href="/role/role-form.html" th:href="@{/role/0}" sec:authorize="hasRole('ROLE_MK')">
                                         <span class="icon-plus"></span>
                                     </a>
                                 </div>
@@ -63,15 +63,15 @@
 										 	<span class="icon-cog"></span>
 										</button>
 										<div class="dropdown-menu py-0 shadow" aria-labelledby="dropdownMenuButton">
-										    <a class="dropdown-item pl-1" th:href="@{|/role/${role.id}/detail|}">
+										    <a class="dropdown-item pl-1" href="/role/role-detail.html" th:href="@{|/role/${role.id}/detail|}">
 										    	<span class="icon-eye"></span> <span th:text="#{detail}">Detail</span>
                                             </a>
                                             <th:block sec:authorize="hasRole('ROLE_MK')">
-                                                <a class="dropdown-item pl-1" th:href="@{|/role/${role.id}|}">
+                                                <a class="dropdown-item pl-1" href="/role/role-form.html" th:href="@{|/role/${role.id}|}">
                                                     <span class="icon-edit"></span> <span th:text="#{edit}">Edit</span>
                                                 </a>
 											   	<div class="dropdown-divider my-0"></div>
-												<a class="dropdown-item pl-1 text-danger" th:href="@{|/role/${role.id}|}" onclick="return Data.confirm(this)">
+												<a class="dropdown-item pl-1 text-danger" href="/role/role-view.html/1" th:href="@{|/role/${role.id}|}" onclick="return Data.confirm(this)">
 													<span class="icon-trash"></span> <span th:text="#{delete}">Delete</span>
 												</a>
 											</th:block>
@@ -88,12 +88,12 @@
                 <div class="border alert alert-light text-center" role="alert" th:if="${page.getTotalElements() == 0}">
 	                <span class="icon-attention"></span> <span th:text="#{message.dataNotFound}">Data not found</span>
 	            </div>
-                <!-- PAGER -->
-                <div class="pager" th:if="${page != null && page.getTotalPages() > 1}">
-                    <a class="btn btn-sm btn-light" th:href="@{|?${previous}${params}|}" th:classappend="${not page.hasPrevious()} ? 'disabled'">
+                <!-- TOOLBAR -->
+                <div class="toolbar" th:if="${page != null && page.getTotalPages() > 1}">
+                    <a class="btn btn-light" th:href="@{|?${previous}${params}|}" th:classappend="${not page.hasPrevious()} ? 'disabled'">
                         <span class="icon-left-open"></span> <span th:text="#{previous}">Previous</span>
                     </a>
-                    <a class="btn btn-sm btn-light" th:href="@{|?${next}${params}|}" th:classappend="${not page.hasNext()} ? 'disabled'">
+                    <a class="btn btn-light" th:href="@{|?${next}${params}|}" th:classappend="${not page.hasNext()} ? 'disabled'">
                         <span th:text="#{next}">Next</span> <span class="icon-right-open"></span>
                     </a>
                 </div>
@@ -108,7 +108,7 @@
     </div>
     <!-- SCRIPTS -->
     <div th:replace="fragment/scripts.html :: content"></div>
-    <script src="/static/js/main.min.js" th:remove="all"></script>
+    <script src="/static/js/all.min.js" th:remove="all"></script>
     <script src="/static/js/fragment.js" th:remove="all"></script>
 </body>
 

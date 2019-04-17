@@ -63,10 +63,10 @@
                         <span th:text="#{userManagement}">User Management</span>
                         <ul>
                             <li th:if="${#authorization.expression('hasAnyAuthority(''USER_MK'', ''USER_CK'')')}">
-                                <a href="/task/task-view.html" th:href="@{/task/user}">User Task</a>
+                                <a href="/task/user/task-role-view.html" th:href="@{/task/user}">User Task</a>
                             </li>
                             <li th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MK'', ''ROLE_CK'')')}">
-                                <a href="/task/task-view.html" th:href="@{/task/role}">Role Task</a>
+                                <a href="/task/role/task-role-view.html" th:href="@{/task/role}">Role Task</a>
                             </li>
                         </ul>
                     </li>
