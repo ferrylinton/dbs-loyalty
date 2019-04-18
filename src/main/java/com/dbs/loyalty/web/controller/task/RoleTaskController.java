@@ -2,6 +2,7 @@ package com.dbs.loyalty.web.controller.task;
 
 import static com.dbs.loyalty.config.constant.Constant.PAGE;
 import static com.dbs.loyalty.config.constant.EntityConstant.ROLE;
+import static com.dbs.loyalty.config.constant.EntityConstant.TYPE;
 
 import java.util.Map;
 
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.service.dto.TaskDto;
+import com.dbs.loyalty.util.SecurityUtil;
 import com.dbs.loyalty.web.response.AbstractResponse;
 
 
@@ -31,6 +33,10 @@ import com.dbs.loyalty.web.response.AbstractResponse;
 @RequestMapping("/task/role")
 public class RoleTaskController extends AbstractTaskController {
 
+	private static final String ROLE_CK = "ROLE_CK";
+	
+	private static final String REDIRECT = "redirect:/task/role";
+	
 	public RoleTaskController(final TaskService taskService) {
 		super(taskService);
 	}
@@ -38,31 +44,33 @@ public class RoleTaskController extends AbstractTaskController {
 	@PreAuthorize("hasAnyRole('ROLE_MK', 'ROLE_CK')")
 	@GetMapping
 	public String viewTaskRoles(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
-		Order order = getOrder(sort, "madeDate");
+		Order order = getOrder(sort, MADE_DATE);
 		Page<TaskDto> page = taskService.findAll(ROLE, params, getPageable(params, order), request);
 		
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
-			return "redirect:/task/role";
+			return REDIRECT;
 		}
 		
 		request.setAttribute(PAGE, page);
+		request.setAttribute(TYPE, ROLE);
+		request.setAttribute(IS_CHECKER, SecurityUtil.hasAuthority(ROLE_CK));
 		setParamsQueryString(params, request);
 		setPagerQueryString(order, page.getNumber(), request);
-		return "task/role/task-role-view";
+		return TASK_VIEW_TEMPLATE;
 	}
 	
 	@PreAuthorize("hasAnyRole('ROLE_MK', 'ROLE_CK')")
 	@GetMapping("/{id}/detail")
 	public String viewTaskRoleDetail(ModelMap model, @PathVariable String id) {
 		view(ROLE, model, id);
-		return "task/role/task-role-detail";
+		return TASK_DETAIL_TEMPLATE;
 	}
 
 	@PreAuthorize("hasRole('ROLE_CK')")
 	@GetMapping("/{id}")
 	public String viewTaskRole(ModelMap model, @PathVariable String id) {
 		view(ROLE, model, id);
-		return "task/role/task-role-form";
+		return TASK_FORM_TEMPLATE;
 	}
 
 	@PreAuthorize("hasRole('ROLE_CK')")

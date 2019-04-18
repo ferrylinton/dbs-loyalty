@@ -2,120 +2,165 @@
 <html lang="en" th:lang="${#locale}" xmlns:th="http://www.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="fragment/head.html :: content(title=#{task})">
-	<title>DBS Loyalty</title>
+    <title>DBS Loyalty : Task</title>
+    <link href="/static/image/favicon.png" rel="shorcut icon" />
+    <link href="/static/css/main.min.css" rel="stylesheet" />
 </head>
 
-<body th:with="isChecker=${#authorization.expression('hasAnyAuthority(''ROLE_CK'',''USER_CK'', ''PROMO_CATEGORY_CK'', ''PROMO_CK'')')}">
-	<div th:replace="fragment/navbar.html :: content"></div>
-	<div class="bg-white">
-		<nav aria-label="breadcrumb">
-	        <ol class="breadcrumb border-bottom">
-	            <li class="breadcrumb-item"><a th:href="@{/}" th:text="#{home}"></a></li>
-	            <li class="breadcrumb-item"><a th:href="@{|/task/${type}|}" th:text="|#{task} - #{${type}}|"></a></li>
-	            <li class="breadcrumb-item active" aria-current="page" th:text="#{form}"></li>
-	        </ol>
-	    </nav>
-		<div class="container-fluid pb-3" th:with="format=${@environment.getProperty('application.format.date-time-full')}">
-			<div class="min-height border p-3">
-				<form th:action="@{|/task/${type}|}" th:object="${task}" method="post" autocomplete="off" onsubmit="return Data.submit(this)" th:if="${task}">
-					<div class="row">
-						<div class="col-12" th:if="${error}">
-							<div class="border alert alert-light text-center" role="alert">
-				                <span class="icon-attention"></span> <span th:text="${error}"></span>
-				            </div>
-						</div>
-						<div class="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-6">
-							<div class="form-group" th:if="${task.id != null}">
-								<label for="id" th:text="#{id}">Id</label>
-								<input class="form-control" type="text" th:field="*{id}" readonly="readonly" />
-							</div>
-							<div class="form-group">
-								<label for="taskDataTypeView" th:text="#{taskDataType}">Task Data Type</label>
-								<input class="form-control" type="text" id="taskDataTypeView" th:value="#{${task.taskDataType}}" readonly="readonly" />
-								<input type="hidden" th:field="*{taskDataType}" />
-							</div>
-							<div class="form-group">
-								<label for="taskOperationView" th:text="#{taskOperation}">Task Operation</label>
-								<input class="form-control" type="text" id="taskOperationView" th:value="#{${task.taskOperation}}" readonly="readonly" />
-								<input type="hidden" th:field="*{taskOperation}" />
-							</div>
-							<div class="form-group" th:if="*{taskDataOld}">
-								<label for="taskDataOldDetail" th:text="#{taskDataOld}">Task Data Old</label>
-								<input type="hidden" th:field="*{taskDataOld}" />
-								<pre class="border bg-readonly border-readonly p-3" id="taskDataOldDetail" th:text="*{taskDataOld}"></pre>
-							</div>
-							<div class="form-group" th:if="*{taskDataNew}">
-								<label for="taskDataNewDetail" th:text="#{taskDataNew}">Task Data New</label>
-								<input type="hidden" th:field="*{taskDataNew}" />
-								<pre class="border bg-readonly border-readonly p-3" id="taskDataNewDetail" th:text="*{taskDataNew}"></pre>
-							</div>
-							<div class="form-group">
-								<label for="maker" th:text="#{maker}">Maker</label>
-								<input class="form-control" type="text" th:field="*{maker}" readonly="readonly" />
-							</div>
-							<div class="form-group">
-								<label for="madeDateView" th:text="#{madeDate}">Made Date</label>
-								<input class="form-control" type="text" id="madeDateView" th:value="${#dates.format(task.madeDate, format)}" readonly="readonly" />
-								<input type="hidden" th:field="*{madeDate}"/>
-							</div>
-							<div class="form-group" th:if="*{checker != null}">
-								<label for="checker" th:text="#{checker}">Checker</label>
-								<input class="form-control" type="text" th:field="*{checker}" readonly="readonly" />
-							</div>
-							<div class="form-group" th:if="*{checkedDate != null}">
-								<label for="checkedDateView" th:text="#{checkedDate}">Checked Date</label>
-								<input class="form-control" type="text" id="checkedDateView" th:value="${#dates.format(task.checkedDate, format)}" readonly="readonly" />
-								<input type="hidden" th:field="*{checkedDate}"/>
-							</div>
-							<div class="form-group" th:if="${task.taskStatus.name() != 'PENDING'}">
-								<label for="taskStatusView" th:text="#{taskStatus}">Task Status</label>
-								<input class="form-control" type="text" id="taskStatusView" th:value="#{*{taskStatus}}" readonly="readonly" />
-								<input type="hidden" th:value="*{taskStatus}"/>
-							</div>
-							<th:block th:if="${isChecker}">
-								<div class="custom-control custom-switch mb-3" th:if="${task.taskStatus.name() == 'PENDING'}" >
-									<input type="checkbox" th:field="*{verified}" class="custom-control-input" onchange="verify(this)" id="verified">
-									<label class="custom-control-label" for="verified" th:text="*{verified} ? #{verify} : #{reject}"></label>
-								</div>
-							</th:block>
-							<div class="form-group">
-								<label for="message" th:text="#{message}">Message</label>
-								<textarea class="form-control" th:field="*{message}" rows="2" maxlength="250"></textarea>
-							</div>
-						</div>
-						<div class="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-6">
-							<div class="form-group" th:if="*{error}">
-								<label for="error" th:text="#{error}">Error</label>
-								<textarea class="form-control font-09 text-danger" th:field="*{error}" rows="10" readonly="readonly"></textarea>
-							</div>
-							<div class="form-group" th:if="*{errorDetail}">
-								<label for="errorDetail" th:text="#{errorDetail}">Error Detail</label>
-								<textarea class="form-control font-09 text-danger" th:field="*{errorDetail}" rows="20" readonly="readonly"></textarea>
-							</div>
-						</div>
-						
-					</div>
-					<div class="row no-gutters">
-						<div class="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-6">
-							<a class="btn btn-sm btn-secondary px-3" th:href="@{|/task/${type}|}">
-								<span class="icon-left"></span> <span th:text="#{back}"></span>
-							</a>
-							<th:block th:if="${isChecker}">
-								<button class="btn btn-sm btn-success px-3" type="submit" style="display: none;">
-									<span class="icon-ok"></span> <span th:text="#{verify}"></span>
-								</button>
-								<button class="btn btn-sm btn-danger px-3" type="submit">
-									<span class="icon-block"></span> <span th:text="#{reject}"></span>
-								</button>
-							</th:block>
-						</div>
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
-	<div th:replace="fragment/footer.html :: content"></div>
+<body onload="onLoadTask()">
+    <!-- NAVBAR -->
+    <div id="navbar" th:replace="fragment/navbar.html :: content"></div>
+    <div id="content-box">
+        <!-- BREADCRUMB -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/home/home-view.html" th:href="@{/}" th:text="#{home}">Home</a></li>
+                <li class="breadcrumb-item"><a href="/task/task-view.html" th:href="@{|/task/${type}|}" th:text="|#{task} - #{role}|">Task Type</a></li>
+                <li class="breadcrumb-item active" aria-current="page" th:text="#{edit}">Edit</li>
+            </ol>
+        </nav>
+        <div class="container-fluid px-3 pt-1 pb-3 bg-white">
+            <div class="min-height border p-3">
+                <!-- FORM -->
+                <div class="row no-gutters" th:if="${task}">
+                    <div class="col-12" th:with="format=${@environment.getProperty('application.format.date-time-full')}">
+                        <form id="task-form" action="/task/task-view.html" th:action="@{/task/role}" method="post" autocomplete="off">
+                            <div class="row">
+                                <div class="col-12 col-sm-12 col-md-12 col-lg-8 col-xl-8">
+                                    <div class="form-group" th:if="${task.id != null}">
+                                        <label th:text="#{id}">Id</label>
+                                        <input class="form-control" type="text" th:field="${task.id}"/>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
+                                    <div class="form-group">
+                                        <label th:text="#{taskDataType}">Task Data Type</label>
+                                        <div class="form-control" th:text="#{${task.taskDataType}}">Role</div>
+                                        <input type="hidden" th:field="${task.taskDataType}"/>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
+                                    <div class="form-group">
+                                        <label th:text="#{taskOperation}">Task Operation</label>
+                                        <div class="form-control" th:text="#{${task.taskOperation}}">Add</div>
+                                        <input type="hidden" th:field="${task.taskOperation}"/>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
+                                    <div class="form-group">
+                                        <label th:text="#{taskStatus}">Task Status</label>
+                                        <div class="form-control" th:text="#{${task.taskStatus}}">PENDING</div>
+                                        <input type="hidden" th:field="${task.taskStatus}"/>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
+                                    <div class="form-group">
+                                        <label th:text="#{maker}">Maker</label>
+                                        <input class="form-control" th:field="${task.maker}" />
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
+                                    <div class="form-group">
+                                        <label th:text="#{madeDate}">Made Date</label>
+                                        <div class="form-control" th:text="${#dates.format(task.madeDate, format)}">09-04-2019 19:06:53.279</div>
+                                    	<input type="hidden" th:field="${task.madeDate}"/>
+                                    </div>
+                                </div>
+                                <div class="col-12" th:if="${task.taskDataOld != null}">
+                                    <div class="form-group">
+                                        <label th:text="#{taskDataOld}">Task Data Old</label>
+                                        <input type="hidden" th:field="${task.taskDataOld}"/>
+                                        <pre class="json" th:text="${task.taskDataOld}">
+                                                {
+                                                    "name" : "test",
+                                                    "authorities" : [ {
+                                                      "id" : "ZwOkjFmG",
+                                                      "name" : "ADMIN"
+                                                    }, {
+                                                      "id" : "V6evDSIi",
+                                                      "name" : "CUSTOMER_MK"
+                                                    }, {
+                                                      "id" : "hYMMkMXN",
+                                                      "name" : "PROMO_CATEGORY_CK"
+                                                    }, {
+                                                      "id" : "LFVeEiRv",
+                                                      "name" : "PROMO_CK"
+                                                    }, {
+                                                      "id" : "tx1zwTpY",
+                                                      "name" : "REWARD"
+                                                    }, {
+                                                      "id" : "o6o0pHGS",
+                                                      "name" : "ROLE_MK"
+                                                    } ]
+                                                  }
+                                        </pre>
+                                    </div>
+                                </div>
+                                <div class="col-12" th:if="${task.taskDataNew != null}">
+                                    <div class="form-group">
+                                        <label th:text="#{taskDataNew}">Task Data New</label>
+                                        <input type="hidden" th:field="${task.taskDataNew}"/>
+                                        <pre class="json" th:text="${task.taskDataNew}">
+                                                {
+                                                    "name" : "test",
+                                                    "authorities" : [ {
+                                                      "id" : "ZwOkjFmG",
+                                                      "name" : "ADMIN"
+                                                    }, {
+                                                      "id" : "V6evDSIi",
+                                                      "name" : "CUSTOMER_MK"
+                                                    }, {
+                                                      "id" : "hYMMkMXN",
+                                                      "name" : "PROMO_CATEGORY_CK"
+                                                    }, {
+                                                      "id" : "LFVeEiRv",
+                                                      "name" : "PROMO_CK"
+                                                    }, {
+                                                      "id" : "tx1zwTpY",
+                                                      "name" : "REWARD"
+                                                    }, {
+                                                      "id" : "o6o0pHGS",
+                                                      "name" : "ROLE_MK"
+                                                    } ]
+                                                  }
+                                        </pre>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-sm-8 col-md-8 col-lg-6 col-xl-6">
+                                    <div class="form-group">
+                                        <label for="message" th:text="#{message}">Message</label>
+                                        <textarea class="form-control" placeholder="Message" th:placeholder="#{message}" th:field="${task.message}" rows="2" maxlength="250"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <input type="hidden" th:field="${task.verified}" />
+                            <div class="toolbar">
+                                <a class="btn btn-light" href="/task/role/task-role-view.html" th:href="@{/task/role}">
+                                    <span class="icon-left" th:text="#{back}">Back</span>
+                                </a>
+                                <button class="btn btn-light text-success" type="button" onclick="Task.verify()">
+                                    <span class="icon-ok" th:text="#{verify}">Verify</span>
+                                </button>
+                                <button class="btn btn-light text-danger" type="button" onclick="Task.reject()">
+                                    <span class="icon-cancel" th:text="#{reject}">Reject</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- FOOTER -->
+        <div id="footer" th:replace="fragment/footer.html :: content"></div>
+    </div>
+    <!-- SIDENAV -->
+    <div id="sidenav-box">
+        <div th:replace="fragment/sidenav.html :: content"></div>
+    </div>
+    <!-- SCRIPTS -->
     <div th:replace="fragment/scripts.html :: content"></div>
+    <script src="/static/js/main.min.js" th:remove="all"></script>
+    <script src="/static/js/fragment.js" th:remove="all"></script>
 </body>
 
 </html>

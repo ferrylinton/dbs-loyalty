@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.service.dto.TaskDto;
+import com.dbs.loyalty.util.SecurityUtil;
 import com.dbs.loyalty.web.response.AbstractResponse;
 
 
@@ -32,6 +33,10 @@ import com.dbs.loyalty.web.response.AbstractResponse;
 @RequestMapping("/task/promo")
 public class PromoTaskController extends AbstractTaskController {
 
+	private static final String PROMO_CK = "PROMO_CK";
+	
+	private static final String REDIRECT = "redirect:/task/promo";
+	
 	public PromoTaskController(final TaskService taskService) {
 		super(taskService);
 	}
@@ -39,32 +44,33 @@ public class PromoTaskController extends AbstractTaskController {
 	@PreAuthorize("hasAnyRole('PROMO_MK', 'PROMO_CK')")
 	@GetMapping
 	public String viewTaskPromos(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
-		Order order = getOrder(sort, "madeDate");
+		Order order = getOrder(sort, MADE_DATE);
 		Page<TaskDto> page = taskService.findAll(PROMO, params, getPageable(params, order), request);
 		
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
-			return "redirect:/task/promo";
+			return REDIRECT;
 		}
 		
 		request.setAttribute(PAGE, page);
 		request.setAttribute(TYPE, PROMO);
+		request.setAttribute(IS_CHECKER, SecurityUtil.hasAuthority(PROMO_CK));
 		setParamsQueryString(params, request);
 		setPagerQueryString(order, page.getNumber(), request);
-		return "task/promo/task-promo-view";
+		return TASK_VIEW_TEMPLATE;
 	}
 	
 	@PreAuthorize("hasAnyRole('PROMO_MK', 'PROMO_CK')")
 	@GetMapping("/{id}/detail")
 	public String viewTaskPromoDetail(ModelMap model, @PathVariable String id) {
 		view(PROMO, model, id);
-		return "task/promo/task-promo-detail";
+		return TASK_DETAIL_TEMPLATE;
 	}
 
 	@PreAuthorize("hasRole('PROMO_CK')")
 	@GetMapping("/{id}")
 	public String viewTaskPromo(ModelMap model, @PathVariable String id) {
 		view(PROMO, model, id);
-		return "task/promo/task-promo-form";
+		return TASK_FORM_TEMPLATE;
 	}
 
 	@PreAuthorize("hasRole('PROMO_CK')")

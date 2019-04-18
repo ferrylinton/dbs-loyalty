@@ -25,6 +25,16 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class AbstractTaskController extends AbstractPageController {
 
+	protected static final String IS_CHECKER = "isChecker";
+	
+	protected static final String MADE_DATE = "madeDate";
+	
+	protected static final String TASK_VIEW_TEMPLATE = "task/task-view";
+	
+	protected static final String TASK_DETAIL_TEMPLATE = "task/task-detail";
+	
+	protected static final String TASK_FORM_TEMPLATE = "task/task-form";
+	
 	protected final TaskService taskService;
 	
 	protected void view(String type, ModelMap model, String id) {

@@ -29,6 +29,20 @@ public final class SecurityUtil {
 		return result;
     }
 	
+	public static boolean hasAuthority(String authorityName) {
+		for(GrantedAuthority obj : SecurityContextHolder.getContext().getAuthentication().getAuthorities()) {
+			if(obj instanceof SimpleGrantedAuthority) {
+				SimpleGrantedAuthority authority = (SimpleGrantedAuthority) obj;
+				
+				if(authority.getAuthority().equals(authorityName)) {
+					return true;
+				}
+			}
+        }
+		
+		return false;
+    }
+	
 	public static User getCurrentUser() {
 		if(SecurityContextHolder.getContext().getAuthentication() instanceof WebAuthentication) {
 			WebAuthentication webAuthentication = (WebAuthentication) SecurityContextHolder.getContext().getAuthentication();

@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.service.dto.TaskDto;
+import com.dbs.loyalty.util.SecurityUtil;
 import com.dbs.loyalty.web.response.AbstractResponse;
 
 
@@ -32,6 +33,10 @@ import com.dbs.loyalty.web.response.AbstractResponse;
 @RequestMapping("/task/customer")
 public class CustomerTaskController extends AbstractTaskController {
 
+	private static final String CUSTOMER_CK = "CUSTOMER_CK";
+	
+	private static final String REDIRECT = "redirect:/task/customer";
+	
 	public CustomerTaskController(final TaskService taskService) {
 		super(taskService);
 	}
@@ -39,32 +44,33 @@ public class CustomerTaskController extends AbstractTaskController {
 	@PreAuthorize("hasAnyRole('CUSTOMER_MK', 'CUSTOMER_CK')")
 	@GetMapping
 	public String viewTaskCustomers(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
-		Order order = getOrder(sort, "madeDate");
+		Order order = getOrder(sort, MADE_DATE);
 		Page<TaskDto> page = taskService.findAll(CUSTOMER, params, getPageable(params, order), request);
 		
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
-			return "redirect:/task/customer";
+			return REDIRECT;
 		}
 		
 		request.setAttribute(PAGE, page);
 		request.setAttribute(TYPE, CUSTOMER);
+		request.setAttribute(IS_CHECKER, SecurityUtil.hasAuthority(CUSTOMER_CK));
 		setParamsQueryString(params, request);
 		setPagerQueryString(order, page.getNumber(), request);
-		return "task/customer/task-customer-view";
+		return TASK_VIEW_TEMPLATE;
 	}
 	
 	@PreAuthorize("hasAnyRole('CUSTOMER_MK', 'CUSTOMER_CK')")
 	@GetMapping("/{id}/detail")
 	public String viewTaskCustomerDetail(ModelMap model, @PathVariable String id) {
 		view(CUSTOMER, model, id);
-		return "task/customer/task-customer-detail";
+		return TASK_DETAIL_TEMPLATE;
 	}
 
 	@PreAuthorize("hasRole('CUSTOMER_CK')")
 	@GetMapping("/{id}")
 	public String viewTaskCustomer(ModelMap model, @PathVariable String id) {
 		view(CUSTOMER, model, id);
-		return "task/customer/task-customer-form";
+		return TASK_FORM_TEMPLATE;
 	}
 
 	@PreAuthorize("hasRole('CUSTOMER_CK')")
