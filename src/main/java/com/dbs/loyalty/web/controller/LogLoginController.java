@@ -39,7 +39,7 @@ public class LogLoginController extends AbstractPageController {
 			request.setAttribute(PAGE, page);
 			setParamsQueryString(params, request);
 			setPagerQueryString(order, page.getNumber(), request);
-			return "loglogin/view";
+			return "loglogin/loglogin-view";
 		}
 	}
 

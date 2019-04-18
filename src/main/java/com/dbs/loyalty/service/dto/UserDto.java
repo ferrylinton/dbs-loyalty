@@ -26,12 +26,11 @@ public class UserDto extends AbstractAuditDto {
 	@JsonIgnore
 	private String passwordPlain;
 	
-	@JsonIgnore
 	private String passwordHash;
 	
-	private boolean activated;
+	private boolean activated = true;
 	
-	private boolean locked;
+	private boolean locked = false;
 	
 	private UserType userType;
 	
