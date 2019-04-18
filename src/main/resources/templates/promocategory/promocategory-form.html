@@ -14,18 +14,19 @@
         <!-- BREADCRUMB -->
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/" th:href="@{/}" th:text="#{home}">Home</a></li>
+                <li class="breadcrumb-item"><a href="/home/home-view.html" th:href="@{/}" th:text="#{home}">Home</a></li>
                 <li class="breadcrumb-item"><a href="/promocategory/promocategory-view.html" th:href="@{/promocategory}" th:text="#{promoCategory}">Promo Category</a></li>
                 <li class="breadcrumb-item active" aria-current="page" th:text="#{form}">Form</li>
             </ol>
         </nav>
-        <div class="container-fluid">
+        <div id="main-content">
+            <!-- MESSAGE -->
+            <div class="border alert alert-light text-center" role="alert" th:if="${error}">
+                <span class="icon-attention"></span> <span th:text="${error}">Data ['xxxx'] is not found</span>
+            </div>
             <!-- FORM -->
-            <div class="min-height p-3 border">
-                <div class="border alert alert-light text-center" role="alert" th:if="${error}">
-                    <span class="icon-attention"></span> <span th:text="${error}">Data ['xxxx'] is not found</span>
-                </div>
-                <form action="/promocategory/promocategory-view.html" th:action="@{/promocategory}" method="post" autocomplete="off" onsubmit="return Data.submit(this)" th:if="${promocategory}">
+            <th:block th:if="${promocategory}">
+                <form action="/promocategory/promocategory-view.html" th:object="${promocategory}" th:action="@{/promocategory}" method="post" autocomplete="off" onsubmit="return Data.submit(this)">
                     <div class="row" th:object="${promocategory}">
                         <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6" th:if="${promocategory.id != null}">
                             <div class="form-group">
@@ -50,7 +51,7 @@
                         </button>
                     </div>
                 </form>
-            </div>
+            </th:block>
         </div>
         <!-- FOOTER -->
         <div id="footer" th:replace="fragment/footer.html :: content"></div>

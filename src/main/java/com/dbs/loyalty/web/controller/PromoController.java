@@ -73,32 +73,33 @@ public class PromoController extends AbstractPageController {
 			request.setAttribute(PAGE, page);
 			setParamsQueryString(params, request);
 			setPagerQueryString(order, page.getNumber(), request);
-			return "promo/view";
+			return "promo/promo-view";
 		}
 	}
-
+	
 	@PreAuthorize("hasAnyRole('PROMO_MK', 'PROMO_CK')")
+	@GetMapping("/{id}/detail")
+	public String viewPromoDetail(ModelMap model, @PathVariable String id){
+		getById(model, id);
+		return "promo/promo-detail";
+	}
+
+	@PreAuthorize("hasRole('PROMO_MK')")
 	@GetMapping("/{id}")
 	public String viewPromoForm(ModelMap model, @PathVariable String id){
 		if (id.equals(ZERO)) {
 			model.addAttribute(PROMO, new PromoDto());
 		} else {
-			Optional<PromoDto> current = promoService.findById(id);
-			
-			if (current.isPresent()) {
-				model.addAttribute(PROMO, current.get());
-			} else {
-				model.addAttribute(ERROR, getNotFoundMessage(id));
-			}
+			getById(model, id);
 		}
 		
-		return "promo/form";
+		return "promo/promo-form";
 	}
 
 	@PreAuthorize("hasRole('PROMO_MK')")
 	@PostMapping
 	@ResponseBody
-	public ResponseEntity<AbstractResponse> save(@ModelAttribute @Valid PromoDto promoDto, BindingResult result) throws BadRequestException, IOException, NotFoundException {
+	public ResponseEntity<AbstractResponse> savePromo(@ModelAttribute @Valid PromoDto promoDto, BindingResult result) throws BadRequestException, IOException, NotFoundException {
 		if (result.hasErrors()) {
 			throwBadRequestResponse(result);
 		}
@@ -131,7 +132,7 @@ public class PromoController extends AbstractPageController {
 	@PreAuthorize("hasRole('PROMO_MK')")
 	@DeleteMapping("/{id}")
 	@ResponseBody
-	public ResponseEntity<AbstractResponse> delete(@PathVariable String id) throws JsonProcessingException, NotFoundException{
+	public ResponseEntity<AbstractResponse> deletePromo(@PathVariable String id) throws JsonProcessingException, NotFoundException{
 		Optional<PromoDto> current = promoService.findById(id);
 		
 		if(current.isPresent()) {
@@ -153,4 +154,14 @@ public class PromoController extends AbstractPageController {
 		binder.addValidators(new PromoValidator(promoService));
 	}
 
+	private void getById(ModelMap model, String id){
+		Optional<PromoDto> current = promoService.findById(id);
+		
+		if (current.isPresent()) {
+			model.addAttribute(PROMO, current.get());
+		} else {
+			model.addAttribute(ERROR, getNotFoundMessage(id));
+		}
+	}
+	
 }

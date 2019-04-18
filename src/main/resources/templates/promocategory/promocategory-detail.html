@@ -14,16 +14,20 @@
         <!-- BREADCRUMB -->
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/" th:href="@{/}" th:text="#{home}">Home</a></li>
+                <li class="breadcrumb-item"><a href="/home/home-view.html" th:href="@{/}" th:text="#{home}">Home</a></li>
                 <li class="breadcrumb-item"><a href="/promocategory/promocategory-view.html" th:href="@{/promocategory}" th:text="#{promoCategory}">Promo Category</a></li>
                 <li class="breadcrumb-item active" aria-current="page" th:text="#{detail}">Detail</li>
             </ol>
         </nav>
-        <div class="container-fluid">
-            <div class="min-height border p-3">
-                <!-- TABLE DETAIL -->
-                <div class="table-responsive">
-                    <table class="table table-bordered table-sm table-detail">
+        <div id="main-content">
+            <!-- MESSAGE -->
+            <div class="border alert alert-light text-center" role="alert" th:if="${error}">
+                <span class="icon-attention"></span> <span th:text="${error}">Data ['xxxx'] is not found</span>
+            </div>
+            <!-- TABLE DETAIL -->
+            <th:block th:if="${promocategory}">
+                <div class="table-responsive border border-top-0">
+                    <table class="table table-sm table-detail">
                         <tbody th:with="format=${@environment.getProperty('application.format.date-time-full')}">
                             <tr>
                                 <th th:text="#{id}">Id</th>
@@ -57,7 +61,7 @@
                         <span class="icon-left" th:text="#{back}">Back</span>
                     </a>
                 </div>
-            </div>
+            </th:block>
         </div>
         <!-- FOOTER -->
         <div id="footer" th:replace="fragment/footer.html :: content"></div>

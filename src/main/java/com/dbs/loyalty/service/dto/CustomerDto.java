@@ -45,5 +45,7 @@ public class CustomerDto extends AbstractImageDto {
 	private String passwordHash;
 
 	private boolean activated = true;
+	
+	private boolean locked = false;
 
 }

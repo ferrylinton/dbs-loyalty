@@ -69,32 +69,33 @@ public class CustomerController extends AbstractPageController{
 			request.setAttribute(PAGE, page);
 			setParamsQueryString(params, request);
 			setPagerQueryString(order, page.getNumber(), request);
-			return "customer/view";
+			return "customer/customer-view";
 		}
 	}
 	
 	@PreAuthorize("hasAnyRole('CUSTOMER_MK', 'CUSTOMER_CK')")
+	@GetMapping("/{id}/detail")
+	public String viewCustomerDetail(ModelMap model, @PathVariable String id){
+		getById(model, id);
+		return "customer/customer-detail";
+	}
+	
+	@PreAuthorize("hasRole('CUSTOMER_MK')")
 	@GetMapping("/{id}")
 	public String viewCustomerForm(ModelMap model, @PathVariable String id) {
 		if (id.equals(ZERO)) {
 			model.addAttribute(CUSTOMER, new CustomerDto());
 		} else {
-			Optional<CustomerDto> customerDto = customerService.findWithCustomerImageById(id);
-			
-			if (customerDto.isPresent()) {
-				model.addAttribute(CUSTOMER, customerDto.get());
-			} else {
-				model.addAttribute(ERROR, getNotFoundMessage(id));
-			}
+			getById(model, id);
 		}
 		
-		return "customer/form";
+		return "customer/customer-form";
 	}
 	
 	@PreAuthorize("hasRole('CUSTOMER_MK')")
 	@PostMapping
 	@ResponseBody
-	public ResponseEntity<AbstractResponse> save(@Valid @ModelAttribute CustomerDto customerDto, BindingResult result) throws BadRequestException, IOException, NotFoundException {
+	public ResponseEntity<AbstractResponse> saveCustomer(@Valid @ModelAttribute CustomerDto customerDto, BindingResult result) throws BadRequestException, IOException, NotFoundException {
 		if (result.hasErrors()) {
 			throwBadRequestResponse(result);
 		}
@@ -130,7 +131,7 @@ public class CustomerController extends AbstractPageController{
 	@PreAuthorize("hasRole('CUSTOMER_MK')")
 	@DeleteMapping("/{id}")
 	@ResponseBody
-	public ResponseEntity<AbstractResponse> delete(@PathVariable String id) throws JsonProcessingException, NotFoundException {
+	public ResponseEntity<AbstractResponse> deleteCustomer(@PathVariable String id) throws JsonProcessingException, NotFoundException {
 		Optional<CustomerDto> current = customerService.findWithCustomerImageById(id);
 		
 		if(current.isPresent()) {
@@ -147,4 +148,14 @@ public class CustomerController extends AbstractPageController{
 		binder.addValidators(new CustomerValidator(customerService));
 	}
 
+	private void getById(ModelMap model, String id){
+		Optional<CustomerDto> customerDto = customerService.findWithCustomerImageById(id);
+		
+		if (customerDto.isPresent()) {
+			model.addAttribute(CUSTOMER, customerDto.get());
+		} else {
+			model.addAttribute(ERROR, getNotFoundMessage(id));
+		}
+	}
+	
 }

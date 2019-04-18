@@ -1,102 +1,113 @@
 <!doctype html>
-<html lang="en" th:lang="${#locale}" xmlns:th="http://www.org">
+<html lang="en" th:lang="${#locale}" xmlns:th="http://www.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="fragment/head.html :: content(title=#{customer})">
-	<title>DBS Loyalty</title>
+    <title>DBS Loyalty : Customer</title>
+    <link href="/static/image/favicon.png" rel="shorcut icon" />
+    <link href="/static/css/all.min.css" rel="stylesheet" />
 </head>
 
-<body th:with="isMaker=${#authorization.expression('hasAuthority(''CUSTOMER_MK'')')}">
-	<div th:replace="fragment/navbar.html :: content"></div>
-	<div class="bg-white">
-		<nav aria-label="breadcrumb">
-	        <ol class="breadcrumb border-bottom">
-	            <li class="breadcrumb-item"><a th:href="@{/}" th:text="#{home}"></a></li>
-	            <li class="breadcrumb-item"><a th:href="@{/customer}" th:text="#{customer}"></a></li>
-	            <li class="breadcrumb-item active" aria-current="page" th:text="#{form}"></li>
-	        </ol>
-	    </nav>
-		<div class="container-fluid p-3">
-			<div class="min-height border p-3">
-					<div class="row no-gutters" th:with="format=${@environment.getProperty('application.format.date')}">
-						<div class="col-12" th:if="${error}">
-							<div class="border alert alert-light text-center" role="alert">
-				                <span class="icon-attention"></span> <span th:text="${error}"></span>
-				            </div>
-						</div>
-						<div class="col-12 col-sm-12 col-md-8 col-lg-6 col-xl-6" th:if="${customer}">
-							<form th:action="@{/customer}" th:object="${customer}" method="post" autocomplete="off" onsubmit="return Data.submit(this)">
-								<div class="form-group" th:if="${customer.id != null}">
-									<label for="id" th:text="#{id}">Id</label>
-									<input class="form-control" type="text" th:field="*{id}" readonly="readonly" />
-								</div>
-								<div class="form-group">
-									<label for="customerType" th:text="#{customerType}">Customer Type</label>
-									<select class="custom-select" th:field="*{customerType}">
-										<option value="TPC">TPC</option>
-										<option value="TREASURE">TREASURE</option>
-									</select>
-								</div>
-								<div class="form-group">
-									<label for="email" th:text="#{email}">Email *</label>
-									<input class="form-control" type="text" th:field="*{email}" maxlength="50" />
-								</div>
-								<div class="form-group" th:if="${customer.id == null}">
-									<label for="password" th:text="#{password}">Password</label>
-									<input class="form-control" type="password" th:field="*{passwordPlain}" maxlength="30" />
-								</div>
-								<div class="form-group">
-									<label for="name" th:text="#{name}">Name *</label>
-									<input class="form-control" type="text" th:field="*{name}" maxlength="50" />
-								</div>
-								<div class="form-group">
-									<label for="phone" th:text="#{phone}">Phone *</label>
-									<input class="form-control" type="text" th:field="*{phone}" maxlength="20" />
-								</div>
-								<div class="form-group">
-									<label for="dob" th:text="|#{dob} *|">DOB *</label>
-									<input class="form-control" type="text" th:placeholder="#{dob}" id="dob" name="dob" th:value="${#dates.format(customer.dob, format)}" readonly="readonly" />
-								</div>
-								<div class="form-group">
-									<label th:text="#{activated}">Activated</label>
-									<div class="custom-control custom-switch">
-										  <input type="checkbox" th:field="*{activated}" class="custom-control-input" onchange="changeStatus(this)" id="activated">
-										  <label class="custom-control-label" for="activated" th:text="*{activated} ? #{yes} : #{no}"></label>
-									</div>
-								</div>
-								<div class="form-group" th:if="${customer.imageContentType}">
-									<label for="image" th:text="#{image}">Image</label>
-									<div class="d-block overflow-auto">
-										<img class="border p-1" alt="image" th:style="|width:${customer.imageWidth};height:${customer.imageHeight};|" th:src="${@base64Service.getString(customer.imageBytes, customer.imageContentType)}" />
-									</div>
-								</div>
-								<div class="form-group">
-									<div class="custom-file">
-										<input type="file" class="custom-file-input" id="file" name="file" onchange="showImage(this)">
-									  	<label class="custom-file-label" th:text="#{chooseFile}"></label>
-									</div>
-								</div>
-								<div class="form-group" id="preview-image" style="display: none;">
-									<div class="d-block overflow-auto">
-										<img class="border p-1" alt="preview" src="" />
-									</div>
-								</div>
-								<div th:replace="fragment/audit.html :: content(${customer})"></div>
-								<div class="mt-3">
-									<a class="btn btn-sm btn-secondary px-3" th:href="@{/customer}">
-										<span class="icon-left"></span> <span th:text="#{back}"></span>
-									</a>
-									<button class="btn btn-sm btn-primary px-3" type="submit" th:if="${isMaker}">
-										<span class="icon-floppy"></span> <span th:text="#{save}"></span>
-									</button>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-		</div>
-	</div>
-	<div th:replace="fragment/footer.html :: content"></div>
+<body>
+    <!-- NAVBAR -->
+    <div id="navbar" th:replace="fragment/navbar.html :: content"></div>
+    <div id="content-box">
+        <!-- BREADCRUMB -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/home/home-view.html" th:href="@{/}" th:text="#{home}">Home</a></li>
+                <li class="breadcrumb-item"><a href="/customer/customer-view.html" th:href="@{/customer}" th:text="#{customer}">Customer</a></li>
+                <li class="breadcrumb-item active" aria-current="page" th:text="#{detail}">Detail</li>
+            </ol>
+        </nav>
+        <div id="main-content">
+            <!-- MESSAGE -->
+            <div class="border alert alert-light text-center" role="alert" th:if="${error}">
+                <span class="icon-attention"></span> <span th:text="${error}">Data ['xxxx'] is not found</span>
+            </div>
+            <!-- TABLE DETAIL -->
+            <th:block th:if="${customer}">
+                <div class="table-responsive border border-top-0">
+                    <table class="table table-sm table-detail">
+                        <tbody th:with="format=${@environment.getProperty('application.format.date-time-full')}">
+                            <tr>
+                                <th th:text="#{id}">Id</th>
+                                <td th:text="${customer.id}">ZwOkjFmG</td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{name}">Name</th>
+                                <td th:text="${customer.name}">Ferry Linton Hutapea</td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{email}">Email</th>
+                                <td th:text="${customer.name}">ferrylinton@gmail.com</td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{customerType}">Customer Type</th>
+                                <td th:text="${customer.customerType}">TREASURE</td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{phone}">Phone</th>
+                                <td th:text="${customer.phone}">1234567890</td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{dob}">DOB</th>
+                                <td th:text="${#dates.format(customer.dob, format)}">01-02-1999</td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{activated}">Activated</th>
+                                <td><span class="text-success icon-ok" th:class="${customer.activated} ? 'text-success icon-ok' : 'text-danger icon-cancel'"></span></td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{image}">Image</th>
+                                <td>
+                                    <div class="d-block overflow-auto">
+                                        <img class="border p-1" 
+                                            alt="/static/image/200x300.png" 
+                                            style="width:200px;height:300px"
+                                            src="/static/image/200x300.png" 
+                                            th:style="|width:${customer.imageWidth};height:${customer.imageHeight};|" 
+                                            th:src="${@base64Service.getString(customer.imageBytes, customer.imageContentType)}" />
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{createdBy}">Created By</th>
+                                <td th:text="${customer.createdBy}">System</td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{createdDate}">Created Date</th>
+                                <td th:text="${#dates.format(customer.createdDate, format)}">09-04-2019 19:06:53.279</td>
+                            </tr>
+                            <tr th:if="${customer.lastModifiedBy}">
+                                <th th:text="#{lastModifiedBy}">Last Modified By</th>
+                                <td th:text="${customer.lastModifiedBy}">System</td>
+                            </tr>
+                            <tr th:if="${customer.lastModifiedDate}">
+                                <th th:text="${customer.lastModifiedDate}">Last ModifiedDate Date</th>
+                                <td th:text="${#dates.format(customer.lastModifiedDate, format)}">09-04-2019 19:06:53.279</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- TOOLBAR -->
+                <div class="toolbar">
+                    <a class="btn btn-light" href="/customer/customer-view.html" th:href="@{/customer}">
+                        <span class="icon-left" th:text="#{back}">Back</span>
+                    </a>
+                </div>
+            </th:block>
+        </div>
+        <!-- FOOTER -->
+        <div id="footer" th:replace="fragment/footer.html :: content"></div>
+    </div>
+    <!-- SIDENAV -->
+    <div id="sidenav-box">
+        <div th:replace="fragment/sidenav.html :: content"></div>
+    </div>
+    <!-- SCRIPTS -->
     <div th:replace="fragment/scripts.html :: content"></div>
+    <script src="/static/js/all.min.js" th:remove="all"></script>
+    <script src="/static/js/fragment.js" th:remove="all"></script>
 </body>
 
 </html>

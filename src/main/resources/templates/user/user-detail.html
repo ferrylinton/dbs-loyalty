@@ -14,15 +14,19 @@
         <!-- BREADCRUMB -->
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/" th:href="@{/}" th:text="#{home}">Home</a></li>
+                <li class="breadcrumb-item"><a href="/home/home-view.html" th:href="@{/}" th:text="#{home}">Home</a></li>
                 <li class="breadcrumb-item"><a href="/user/user-view.html" th:href="@{/user}" th:text="#{user}">User</a></li>
                 <li class="breadcrumb-item active" aria-current="page" th:text="#{detail}">Detail</li>
             </ol>
         </nav>
-        <div class="container-fluid">
-            <div class="min-height">
-                <!-- TABLE DETAIL -->
-                <div class="table-responsive border">
+        <div id="main-content">
+            <!-- MESSAGE -->
+            <div class="border alert alert-light text-center" role="alert" th:if="${error}">
+                <span class="icon-attention"></span> <span th:text="${error}">Data ['xxxx'] is not found</span>
+            </div>
+            <!-- TABLE DETAIL -->
+            <th:block th:if="${user}">
+                <div class="table-responsive border border-top-0">
                     <table class="table table-sm table-detail">
                         <tbody th:with="format=${@environment.getProperty('application.format.date-time-full')}">
                             <tr>
@@ -65,7 +69,7 @@
                         <span class="icon-left" th:text="#{back}">Back</span>
                     </a>
                 </div>
-            </div>
+            </th:block>
         </div>
         <!-- FOOTER -->
         <div id="footer" th:replace="fragment/footer.html :: content"></div>

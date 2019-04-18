@@ -126,16 +126,6 @@ public class RoleController extends AbstractPageController {
 			throw new NotFoundException();
 		}
 	}
-	
-	private void getById(ModelMap model, String id){
-		Optional<RoleDto> current = roleService.findWithAuthoritiesById(id);
-		
-		if (current.isPresent()) {
-			model.addAttribute(ROLE, current.get());
-		} else {
-			model.addAttribute(ERROR, getNotFoundMessage(id));
-		}
-	}
 
 	@ModelAttribute("authorities")
 	public List<AuthorityDto> getAuthorities() {
@@ -147,4 +137,14 @@ public class RoleController extends AbstractPageController {
 		binder.addValidators(new RoleValidator(roleService));
 	}
 
+	private void getById(ModelMap model, String id){
+		Optional<RoleDto> current = roleService.findWithAuthoritiesById(id);
+		
+		if (current.isPresent()) {
+			model.addAttribute(ROLE, current.get());
+		} else {
+			model.addAttribute(ERROR, getNotFoundMessage(id));
+		}
+	}
+	
 }

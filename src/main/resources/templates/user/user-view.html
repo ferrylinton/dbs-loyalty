@@ -14,12 +14,11 @@
         <!-- BREADCRUMB -->
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/" th:href="@{/}" th:text="#{home}">Home</a></li>
+                <li class="breadcrumb-item"><a href="/home/home-view.html" th:href="@{/}" th:text="#{home}">Home</a></li>
                 <li class="breadcrumb-item active" aria-current="page" th:text="#{user}">User</li>
             </ol>
         </nav>
-        <div class="container-fluid pb-3">
-            <div class="min-height border p-3">
+        <div id="main-content">
                 <!-- SEARCH FORM -->
                 <div class="row no-gutters mb-3">
                     <div class="col-12 col-sm-12 col-md-10 col-lg-7 col-xl-6">
@@ -106,7 +105,6 @@
                         <span th:text="#{next}">Next</span> <span class="icon-right-open"></span>
                     </a>
                 </div>
-            </div>
         </div>
         <!-- FOOTER -->
         <div id="footer" th:replace="fragment/footer.html :: content"></div>
