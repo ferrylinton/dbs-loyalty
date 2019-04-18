@@ -2,7 +2,7 @@ package com.dbs.loyalty.web.controller;
 
 import static com.dbs.loyalty.config.constant.Constant.BR;
 import static com.dbs.loyalty.config.constant.Constant.DELETE;
-import static com.dbs.loyalty.config.constant.MessageConstant.DATA_WITH_ID_NOT_FOUND;
+import static com.dbs.loyalty.config.constant.MessageConstant.DATA_WITH_VALUE_NOT_FOUND;
 import static com.dbs.loyalty.config.constant.MessageConstant.DELETE_CONSTRAINT_VIOLATION;
 import static com.dbs.loyalty.config.constant.MessageConstant.TASK_IS_SAVED;
 
@@ -37,7 +37,7 @@ public abstract class AbstractController {
 	}
 
 	protected String getNotFoundMessage(String id) {
-		return MessageUtil.getMessage(DATA_WITH_ID_NOT_FOUND, id);
+		return MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, id);
 	}
 
 	protected ResponseEntity<BadRequestResponse> badRequestResponse(BindingResult result) {

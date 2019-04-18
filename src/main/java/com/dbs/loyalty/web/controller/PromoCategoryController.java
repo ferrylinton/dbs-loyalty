@@ -63,26 +63,27 @@ public class PromoCategoryController extends AbstractPageController {
 			request.setAttribute(PAGE, page);
 			setParamsQueryString(params, request);
 			setPagerQueryString(order, page.getNumber(), request);
-			return "promocategory/view";
+			return "promocategory/promocategory-view";
 		}
 	}
-
+	
 	@PreAuthorize("hasAnyRole('PROMO_CATEGORY_MK', 'PROMO_CATEGORY_CK')")
+	@GetMapping("/{id}/detail")
+	public String viewPromoCategoruDetail(ModelMap model, @PathVariable String id){
+		getById(model, id);		
+		return "promocategory/promocategory-detail";
+	}
+
+	@PreAuthorize("hasAnyRole('PROMO_CATEGORY_MK')")
 	@GetMapping("/{id}")
 	public String viewPromoCategoryForm(ModelMap model, @PathVariable String id){
 		if (id.equals(ZERO)) {
 			model.addAttribute(PROMO_CATEGORY, new PromoCategoryDto());
 		} else {
-			Optional<PromoCategoryDto> current = promoCategoryService.findById(id);
-			
-			if (current.isPresent()) {
-				model.addAttribute(PROMO_CATEGORY, current.get());
-			} else {
-				model.addAttribute(ERROR, getNotFoundMessage(id));
-			}
+			getById(model, id);
 		}
 		
-		return "promocategory/form";
+		return "promocategory/promocategory-form";
 	}
 
 	@PreAuthorize("hasRole('PROMO_CATEGORY_MK')")
@@ -125,6 +126,16 @@ public class PromoCategoryController extends AbstractPageController {
 	@InitBinder("promoCategoryDto")
 	protected void initBinder(WebDataBinder binder) {
 		binder.addValidators(new PromoCategoryValidator(promoCategoryService));
+	}
+	
+	public void getById(ModelMap model, String id){
+		Optional<PromoCategoryDto> current = promoCategoryService.findById(id);
+		
+		if (current.isPresent()) {
+			model.addAttribute(PROMO_CATEGORY, current.get());
+		} else {
+			model.addAttribute(ERROR, getNotFoundMessage(id));
+		}
 	}
 
 }

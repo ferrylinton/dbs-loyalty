@@ -10,8 +10,6 @@ public final class MessageConstant {
 	
 	public static final String DELETE_CONSTRAINT_VIOLATION = "message.deleteConstraintViolation";
 	
-	public static final String DATA_WITH_ID_NOT_FOUND = "message.dataWithIdNotFound";
-	
 	public static final String TASK_IS_SAVED = "message.taskIsSaved";
 	
 	public static final String TASK_IS_VERIFIED = "message.taskIsVerified";

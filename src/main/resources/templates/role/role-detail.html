@@ -4,7 +4,7 @@
 <head th:replace="fragment/head.html :: content(title=#{role})">
     <title>DBS Loyalty : Role</title>
     <link href="/static/image/favicon.png" rel="shorcut icon" />
-    <link href="/static/css/main.min.css" rel="stylesheet" />
+    <link href="/static/css/all.min.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -14,64 +14,64 @@
         <!-- BREADCRUMB -->
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/" th:href="@{/}" th:text="#{home}">Home</a></li>
-                <li class="breadcrumb-item"><a href="/role/view.html" th:href="@{/role}" th:text="#{role}">Role</a></li>
+                <li class="breadcrumb-item"><a href="/home/home-view.html" th:href="@{/}" th:text="#{home}">Home</a></li>
+                <li class="breadcrumb-item"><a href="/role/role-view.html" th:href="@{/role}" th:text="#{role}">Role</a></li>
                 <li class="breadcrumb-item active" aria-current="page" th:text="#{detail}">Detail</li>
             </ol>
         </nav>
-        <div class="container-fluid p-0 bg-white">
-            <div class="row no-gutters">
-                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                    <div class="container-fluid pb-3">
-                        <div class="min-height border p-3">
-                            <!-- TABLE DETAIL -->
-                            <table class="table table-sm table-detail border">
-                                <tbody th:with="format=${@environment.getProperty('application.format.date-time-full')}">
-                                    <tr>
-                                        <th th:text="#{id}">Id</th>
-                                        <td th:text="${role.id}">ZwOkjFmG</td>
-                                    </tr>
-                                    <tr>
-                                        <th th:text="#{name}">Name</th>
-                                        <td th:text="${role.name}">Admin</td>
-                                    </tr>
-                                    <tr>
-                                        <th th:text="#{authorities}">Authorities</th>
-                                        <td>
-                                            <ol th:remove="all-but-first">
-                                                <li th:each="authority : ${role.authorities}" th:text="#{${authority.name}}">Admin</li>
-                                                <li>Pembuat Pelanggan</li>
-                                            </ol>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th th:text="#{createdBy}">Created By</th>
-                                        <td th:text="${role.createdBy}">System</td>
-                                    </tr>
-                                    <tr>
-                                        <th th:text="#{createdDate}">Created Date</th>
-                                        <td th:text="${#dates.format(role.createdDate, format)}">09-04-2019 19:06:53.279</td>
-                                    </tr>
-                                    <tr th:if="${role.lastModifiedBy}">
-                                        <th th:text="#{lastModifiedBy}">Last Modified By</th>
-                                        <td th:text="${role.lastModifiedBy}">System</td>
-                                    </tr>
-                                    <tr th:if="${role.lastModifiedDate}">
-                                        <th th:text="${role.lastModifiedDate}">Last ModifiedDate Date</th>
-                                        <td th:text="${#dates.format(lastModifiedDate, format)}">09-04-2019 19:06:53.279</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <div class="toolbar">
-                                <a class="btn btn-light" href="/role/role-view.html" th:href="@{/role}">
-                                    <span class="icon-left" th:text="#{back}">Back</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
+        <div id="main-content">
+                <!-- MESSAGE -->
+                <div class="border alert alert-light text-center" role="alert" th:if="${error}">
+                    <span class="icon-attention"></span> <span th:text="${error}">Data ['xxxx'] is not found</span>
                 </div>
-            </div>
+                <!-- TABLE DETAIL -->
+                <th:block th:if="${role}">
+                    <div class="table-responsive border border-top-0">
+                        <table class="table table-sm table-detail">
+                            <tbody th:with="format=${@environment.getProperty('application.format.date-time-full')}">
+                                <tr>
+                                    <th th:text="#{id}">Id</th>
+                                    <td th:text="${role.id}">ZwOkjFmG</td>
+                                </tr>
+                                <tr>
+                                    <th th:text="#{name}">Name</th>
+                                    <td th:text="${role.name}">Admin</td>
+                                </tr>
+                                <tr>
+                                    <th th:text="#{authorities}">Authorities</th>
+                                    <td>
+                                        <ol th:remove="all-but-first">
+                                            <li th:each="authority : ${role.authorities}" th:text="#{${authority.name}}">Admin</li>
+                                            <li>Pembuat Pelanggan</li>
+                                        </ol>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th th:text="#{createdBy}">Created By</th>
+                                    <td th:text="${role.createdBy}">System</td>
+                                </tr>
+                                <tr>
+                                    <th th:text="#{createdDate}">Created Date</th>
+                                    <td th:text="${#dates.format(role.createdDate, format)}">09-04-2019 19:06:53.279</td>
+                                </tr>
+                                <tr th:if="${role.lastModifiedBy}">
+                                    <th th:text="#{lastModifiedBy}">Last Modified By</th>
+                                    <td th:text="${role.lastModifiedBy}">System</td>
+                                </tr>
+                                <tr th:if="${role.lastModifiedDate}">
+                                    <th th:text="${role.lastModifiedDate}">Last ModifiedDate Date</th>
+                                    <td th:text="${#dates.format(role.lastModifiedDate, format)}">09-04-2019 19:06:53.279</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- TOOLBAR -->
+                    <div class="toolbar">
+                        <a class="btn btn-light" href="/role/role-view.html" th:href="@{/role}">
+                            <span class="icon-left" th:text="#{back}">Back</span>
+                        </a>
+                    </div>
+                </th:block>
         </div>
         <!-- FOOTER -->
         <div id="footer" th:replace="fragment/footer.html :: content"></div>
@@ -82,7 +82,7 @@
     </div>
     <!-- SCRIPTS -->
     <div th:replace="fragment/scripts.html :: content"></div>
-    <script src="/static/js/main.min.js" th:remove="all"></script>
+    <script src="/static/js/all.min.js" th:remove="all"></script>
     <script src="/static/js/fragment.js" th:remove="all"></script>
 </body>
 

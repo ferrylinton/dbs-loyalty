@@ -1,45 +1,48 @@
 <!doctype html>
-<html th:lang="${#locale}" xmlns:th="http://www.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="en" th:lang="${#locale}" xmlns:th="http://www.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head th:replace="fragment/head.html :: content(title=#{promoCategory})">
-	<title>DBS Loyalty</title>
+    <title>DBS Loyalty : Promo Category</title>
+    <link href="/static/image/favicon.png" rel="shorcut icon" />
+    <link href="/static/css/all.min.css" rel="stylesheet" />
 </head>
 
-<body th:with="isMaker=${#authorization.expression('hasAuthority(''PROMO_CATEGORY_MK'')')}">
-    <div th:replace="fragment/navbar.html :: content"></div>
-    <div class="bg-white">
-	    <nav aria-label="breadcrumb">
-	        <ol class="breadcrumb border-bottom">
-	            <li class="breadcrumb-item"><a th:href="@{/}" th:text="#{home}"></a></li>
-	            <li class="breadcrumb-item active" aria-current="page" th:text="#{promoCategory}"></li>
-	        </ol>
-	    </nav>
-	    <div th:replace="fragment/toast.html :: content"></div>
-	    <div class="container-fluid pb-3">
-			<div class="min-height border p-3">
-	            <div class="row no-gutters mb-3">
-	                <div class="col-10 col-sm-8 col-md-5 col-lg-4 col-xl-3 mr-auto">
-	                    <form th:action="@{/promocategory}" method="get" autocomplete="off" >
-							<div class="input-group">
-								<input class="form-control" name="ky" maxlength="40" th:value="${param.ky}" th:placeholder="#{name}" />
-								<div class="input-group-append">
-									<button class="btn btn-light border text-secondary" type="submit">
-										<span class="icon-search"></span>
-									</button>
-									<a class="btn btn-light border text-secondary" th:href="@{/promocategory}">
-										<span class="icon-arrows-cw"></span>
-									</a>
-								</div>
-							</div>
-						</form>
-	                </div>
-	                <div class="col-auto" th:if="${isMaker}">
-	                    <a class="btn btn-light text-secondary border" th:href="@{/promocategory/0}">
-	                        <span class="icon-plus"></span>
-	                    </a>
-	                </div>
-	            </div>
-	            <div class="table-responsive" th:if="${page.getTotalElements() > 0}">
+<body>
+    <!-- NAVBAR -->
+    <div id="navbar" th:replace="fragment/navbar.html :: content"></div>
+    <div id="content-box">
+        <!-- BREADCRUMB -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/" th:href="@{/}" th:text="#{home}">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page" th:text="#{promoCategory}">Promo Category</li>
+            </ol>
+        </nav>
+        <div class="container-fluid pb-3">
+            <div class="min-height border p-3">
+                <!-- SEARCH FORM -->
+                <div class="row no-gutters mb-3">
+                    <div class="col-12 col-sm-12 col-md-10 col-lg-7 col-xl-6">
+                        <form action="/#" th:action="@{/promocategory}" method="get" autocomplete="off" >
+                            <div class="input-group">
+                                <input class="form-control" name="ky" maxlength="40" th:value="${param.ky}" placeholder="keyword" th:placeholder="#{keyword}" />
+                                <div class="input-group-append">
+                                    <button class="btn btn-light" type="submit">
+                                        <span class="icon-search"></span>
+                                    </button>
+                                    <a class="btn btn-light" href="/promocategory/promocategory-view.html" th:href="@{/promocategory}">
+                                        <span class="icon-arrows-cw"></span>
+                                    </a>
+                                    <a class="btn btn-light" href="/promocategory/promocategory-form.html" th:href="@{/promocategory/0}" sec:authorize="hasRole('ROLE_MK')">
+                                        <span class="icon-plus"></span>
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- TABLE DATA -->
+                <div class="table-responsive" th:if="${page.getTotalElements() > 0}">
 	                <table class="table table-sm table-striped table-hover border">
 	                    <thead>
 	                        <tr th:with="ascending=${order.getDirection().name() == 'ASC'}">
@@ -47,53 +50,66 @@
 								<th style="width:40px">#</th>
 	                            <th th:with="sort=|&sort=name,${ascending ? 'DESC' : 'ASC'}|">
                                 	<a th:href="@{|?page=${page.getNumber()}${params}${sort}|}" class="text-decoration-none">
-                                		<span th:text="#{name}"></span> <span th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></span>
+                                		<span th:text="#{name}">Name</span> <span th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></span>
                                 	</a>
                                 </th>
 	                        </tr>
 	                    </thead>
-	                    <tbody>
-	                        <tr th:each="role,row : ${page}">
+	                    <tbody th:remove="all-but-first">
+	                        <tr th:each="promocategory,row : ${page}">
 	                        	<td class="py-0 px-1">
 									<div class="dropdown">
 										<button type="button" class="btn btn-default dropdown-toggle px-1 py-0 font-12" id="dropdownMenuButton" data-boundary="window" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 										 	<span class="icon-cog"></span>
 										</button>
 										<div class="dropdown-menu py-0 shadow" aria-labelledby="dropdownMenuButton">
-										    <a class="dropdown-item pl-1" th:href="@{|/promocategory/${role.id}|}">
-										    	<span class="icon-eye"></span> <span th:text="#{view}"></span>
-										    </a>
-										    <th:block th:if="${isMaker}">
+										    <a class="dropdown-item pl-1" href="/promocategory/promocategory-detail.html" th:href="@{|/promocategory/${promocategory.id}/detail|}">
+										    	<span class="icon-eye"></span> <span th:text="#{detail}">Detail</span>
+                                            </a>
+                                            <th:block sec:authorize="hasRole('ROLE_MK')">
+                                                <a class="dropdown-item pl-1" href="/promocategory/promocategory-form.html" th:href="@{|/promocategory/${promocategory.id}|}">
+                                                    <span class="icon-edit"></span> <span th:text="#{edit}">Edit</span>
+                                                </a>
 											   	<div class="dropdown-divider my-0"></div>
-												<a class="dropdown-item pl-1 text-danger" th:href="@{|/promocategory/${role.id}|}" onclick="return Data.confirm(this)">
-													<span class="icon-trash"></span> <span th:text="#{delete}"></span>
+												<a class="dropdown-item pl-1 text-danger" href="/promocategory/promocategory-view.html/1" th:href="@{|/promocategory/${promocategory.id}|}" onclick="return Data.confirm(this)">
+													<span class="icon-trash"></span> <span th:text="#{delete}">Delete</span>
 												</a>
 											</th:block>
 										</div>
 									</div>
 								</td>
-	                            <td th:text="${row.count + (page.number * page.size)}"></td>
-	                            <td th:text="${role.name}"></td>
+	                            <td th:text="${row.count + (page.number * page.size)}">1</td>
+	                            <td th:text="${promocategory.name}">Promo Category Name</td>
 	                        </tr>
 	                    </tbody>
 	                </table>
+                </div>
+                <!-- NOT FOUND MESSAGE -->
+                <div class="border alert alert-light text-center" role="alert" th:if="${page.getTotalElements() == 0}">
+	                <span class="icon-attention"></span> <span th:text="#{message.dataNotFound}">Data not found</span>
 	            </div>
-	            <div class="border alert alert-light text-center" role="alert" th:if="${page.getTotalElements() == 0}">
-	                <span class="icon-attention"></span> <span th:text="#{message.dataNotFound}"></span>
-	            </div>
-	            <th:block th:if="${page != null && page.getTotalPages() > 1}">
-                    <a class="btn btn-sm btn-secondary" th:href="@{|?${previous}${params}|}" th:classappend="${not page.hasPrevious()} ? 'disabled'">
-                    	<span class="icon-left-open"></span> <span th:text="#{previous}"></span>
+                <!-- TOOLBAR -->
+                <div class="toolbar" th:if="${page != null && page.getTotalPages() > 1}">
+                    <a class="btn btn-light" th:href="@{|?${previous}${params}|}" th:classappend="${not page.hasPrevious()} ? 'disabled'">
+                        <span class="icon-left-open"></span> <span th:text="#{previous}">Previous</span>
                     </a>
-                    <a class="btn btn-sm btn-secondary" th:href="@{|?${next}${params}|}" th:classappend="${not page.hasNext()} ? 'disabled'">
-                    	<span th:text="#{next}"></span> <span class="icon-right-open"></span>
+                    <a class="btn btn-light" th:href="@{|?${next}${params}|}" th:classappend="${not page.hasNext()} ? 'disabled'">
+                        <span th:text="#{next}">Next</span> <span class="icon-right-open"></span>
                     </a>
-                </th:block>
-	        </div>
-	    </div>
-	</div>
-    <div th:replace="fragment/footer.html :: content"></div>
+                </div>
+            </div>
+        </div>
+        <!-- FOOTER -->
+        <div id="footer" th:replace="fragment/footer.html :: content"></div>
+    </div>
+    <!-- SIDENAV -->
+    <div id="sidenav-box">
+        <div th:replace="fragment/sidenav.html :: content"></div>
+    </div>
+    <!-- SCRIPTS -->
     <div th:replace="fragment/scripts.html :: content"></div>
+    <script src="/static/js/all.min.js" th:remove="all"></script>
+    <script src="/static/js/fragment.js" th:remove="all"></script>
 </body>
 
 </html>
