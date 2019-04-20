@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="en" th:lang="${#locale}" xmlns:th="http://www.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-<head th:replace="fragment/head.html :: content(title=#{customer})">
-    <title>DBS Loyalty : Customer</title>
+<head th:replace="fragment/head.html :: content(title=#{event})">
+    <title>DBS Loyalty : Event</title>
     <link href="/static/image/favicon.png" rel="shorcut icon" />
     <link href="/static/css/all.min.css" rel="stylesheet" />
 </head>
@@ -15,7 +15,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/home/home-view.html" th:href="@{/}" th:text="#{home}">Home</a></li>
-                <li class="breadcrumb-item"><a href="/customer/customer-view.html" th:href="@{/customer}" th:text="#{customer}">Customer</a></li>
+                <li class="breadcrumb-item"><a href="/event/event-view.html" th:href="@{/event}" th:text="#{event}">Event</a></li>
                 <li class="breadcrumb-item active" aria-current="page" th:text="#{detail}">Detail</li>
             </ol>
         </nav>
@@ -25,37 +25,41 @@
                 <span class="icon-attention"></span> <span th:text="${error}">Data ['xxxx'] is not found</span>
             </div>
             <!-- TABLE DETAIL -->
-            <th:block th:if="${customer}">
+            <th:block th:if="${event}">
                 <div class="table-responsive border border-top-0">
                     <table class="table table-sm table-detail">
                         <tbody th:with="format=${@environment.getProperty('application.format.date-time-full')}">
                             <tr>
                                 <th th:text="#{id}">Id</th>
-                                <td th:text="${customer.id}">ZwOkjFmG</td>
+                                <td th:text="${event.id}">qNj1ZAsi</td>
                             </tr>
                             <tr>
-                                <th th:text="#{name}">Name</th>
-                                <td th:text="${customer.name}">Ferry Linton Hutapea</td>
+                                <th th:text="#{title}">Title</th>
+                                <td th:text="${event.title}">Digital Marketing Leaders Summit Jakarta 2019</td>
                             </tr>
                             <tr>
-                                <th th:text="#{email}">Email</th>
-                                <td th:text="${customer.name}">ferrylinton@gmail.com</td>
+                                <th th:text="#{description}">Description</th>
+                                <td th:text="${event.description}">Join us at Asia's most anticipated and influential Digital Marketing conference, taking your place alongside more than 100 senior marketers and digital strategists over 2 days of networking and learning.</td>
                             </tr>
                             <tr>
-                                <th th:text="#{customerType}">Customer Type</th>
-                                <td th:text="${customer.customerType}">TREASURE</td>
+                                <th th:text="#{content}">Content</th>
+                                <td th:text="${event.content}">Join us at Asia's most anticipated and influential Digital Marketing conference, taking your place alongside more than 100 senior marketers and digital strategists over 2 days of networking and learning.</td>
                             </tr>
                             <tr>
-                                <th th:text="#{phone}">Phone</th>
-                                <td th:text="${customer.phone}">1234567890</td>
+                                <th th:text="#{startPeriod}">Start Period</th>
+                                <td th:text="${event.startPeriod}">2019-08-01</td>
                             </tr>
                             <tr>
-                                <th th:text="#{dob}">DOB</th>
-                                <td th:text="${#dates.format(customer.dob, format)}">01-02-1999</td>
+                                <th th:text="#{endPeriod}">End Period</th>
+                                <td th:text="${event.endPeriod}">2019-18-02</td>
                             </tr>
                             <tr>
-                                <th th:text="#{activated}">Activated</th>
-                                <td><span class="text-success icon-ok" th:class="${customer.activated} ? 'text-success icon-ok' : 'text-danger icon-cancel'"></span></td>
+                                <th th:text="#{timePeriod}">Time Period</th>
+                                <td th:text="${event.timePeriod}">08:00</td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{place}">Place</th>
+                                <td th:text="${event.place}">Crown Plaza Jakarta</td>
                             </tr>
                             <tr>
                                 <th th:text="#{image}">Image</th>
@@ -71,28 +75,36 @@
                                 </td>
                             </tr>
                             <tr>
-                                <th th:text="#{createdBy}">Created By</th>
-                                <td th:text="${customer.createdBy}">System</td>
+                                <th th:text="#{material}">Material</th>
+                                <td th:text="${event.pdf}">
+                                    <a class="btn btn-sm btn-light" role="button" aria-pressed="true" href="/sample.pdf" onclick="return openNewTab(this);">
+                                        <span class="icon-file-pdf text-danger"></span> <span th:text="#{view}">View</span>
+                                    </a>
+                                </td>
                             </tr>
                             <tr>
-                                <th th:text="#{createdDate}">Created Date</th>
-                                <td th:text="${#dates.format(customer.createdDate, format)}">09-04-2019 19:06:53.279</td>
+                                <th th:text="#{createdBy}">Created By</th>
+                                <td th:text="${event.createdBy}">System</td>
                             </tr>
-                            <tr th:if="${customer.lastModifiedBy}">
+                            <tr>
+                                <th th:text="#{createdDate}">Created Dt</th>
+                                <td th:text="${#dates.format(event.createdDate, format)}">09-04-2019 19:06:53.279</td>
+                            </tr>
+                            <tr th:if="${event.lastModifiedBy}">
                                 <th th:text="#{lastModifiedBy}">Last Modified By</th>
-                                <td th:text="${customer.lastModifiedBy}">System</td>
+                                <td th:text="${event.lastModifiedBy}">System</td>
                             </tr>
-                            <tr th:if="${customer.lastModifiedDate}">
+                            <tr th:if="${event.lastModifiedDate}">
                                 <th th:text="#{lastModifiedDate}">Last Modified Dt</th>
-                                <td th:text="${#dates.format(customer.lastModifiedDate, format)}">09-04-2019 19:06:53.279</td>
+                                <td th:text="${#dates.format(event.lastModifiedDate, format)}">09-04-2019 19:06:53.279</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <!-- TOOLBAR -->
                 <div class="toolbar">
-                    <a class="btn btn-light" href="/customer/customer-view.html" th:href="@{/customer}">
-                        <span class="icon-left"></span> <span th:text="#{back}">Back</span>
+                    <a class="btn btn-light" href="/event/event-view.html" th:href="@{/event}">
+                        <span class="icon-left" th:text="#{back}">Back</span>
                     </a>
                 </div>
             </th:block>

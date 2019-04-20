@@ -10,7 +10,7 @@
 <body>
     <!-- NAVBAR -->
     <div id="navbar" th:replace="fragment/navbar.html :: content"></div>
-    <div id="content-box">
+    <div id="content-box" th:with="isMaker=${#authorization.expression('hasAuthority(''CUSTOMER_MK'')')}">
         <!-- BREADCRUMB -->
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
@@ -19,30 +19,30 @@
             </ol>
         </nav>
         <div id="main-content">
-                <!-- SEARCH FORM -->
-                <div class="row no-gutters mb-3">
-                    <div class="col-12 col-sm-12 col-md-10 col-lg-7 col-xl-6">
-                        <form action="/#" th:action="@{/customer}" method="get" autocomplete="off" >
-                            <div class="input-group">
-                                <input class="form-control" name="ky" maxlength="40" th:value="${param.ky}" placeholder="keyword" th:placeholder="#{keyword}" />
-                                <div class="input-group-append">
-                                    <button class="btn btn-light" type="submit">
-                                        <span class="icon-search"></span>
-                                    </button>
-                                    <a class="btn btn-light" href="/customer/customer-view.html" th:href="@{/customer}">
-                                        <span class="icon-arrows-cw"></span>
-                                    </a>
-                                    <a class="btn btn-light" href="/customer/customer-form.html" th:href="@{/customer/0}" th:if="${#authorization.expression('hasAuthority(''CUSTOMER_MK'')')}">
-                                        <span class="icon-plus"></span>
-                                    </a>
-                                </div>
+            <!-- SEARCH FORM -->
+            <div class="row no-gutters mb-3">
+                <div class="col-12 col-sm-12 col-md-10 col-lg-7 col-xl-6">
+                    <form action="/#" th:action="@{/customer}" method="get" autocomplete="off" >
+                        <div class="input-group">
+                            <input class="form-control" name="ky" maxlength="40" th:value="${param.ky}" placeholder="keyword" th:placeholder="#{keyword}" />
+                            <div class="input-group-append">
+                                <button class="btn btn-light" type="submit">
+                                    <span class="icon-search"></span>
+                                </button>
+                                <a class="btn btn-light" href="/customer/customer-view.html" th:href="@{/customer}">
+                                    <span class="icon-arrows-cw"></span>
+                                </a>
+                                <a class="btn btn-light" href="/customer/customer-form.html" th:href="@{/customer/0}" th:if="${isMaker}">
+                                    <span class="icon-plus"></span>
+                                </a>
                             </div>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                 </div>
+            </div>
                 <!-- TABLE DATA -->
-                <div class="table-responsive" th:if="${page.getTotalElements() > 0}">
-	                <table class="table table-sm table-striped table-hover border">
+                <div class="table-responsive border border-top-0" th:if="${page.getTotalElements() > 0}">
+	                <table class="table table-sm table-striped table-hover border-bottom" style="min-width: 800px;">
 	                    <thead>
 	                        <tr th:with="ascending=${order.getDirection().name() == 'ASC'}">
 	                            <th style="width:40px"></th>
@@ -69,12 +69,12 @@
 										    <a class="dropdown-item pl-1" href="/customer/customer-detail.html" th:href="@{|/customer/${customer.id}/detail|}">
 										    	<span class="icon-eye"></span> <span th:text="#{detail}">Detail</span>
                                             </a>
-                                            <th:block th:if="${#authorization.expression('hasAuthority(''CUSTOMER_MK'')')}">
+                                            <th:block th:if="${isMaker}">
                                                 <a class="dropdown-item pl-1" href="/customer/customer-form.html" th:href="@{|/customer/${customer.id}|}">
                                                     <span class="icon-edit"></span> <span th:text="#{edit}">Edit</span>
                                                 </a>
 											   	<div class="dropdown-divider my-0"></div>
-												<a class="dropdown-item pl-1 text-danger" href="/customer/customer-view.html/1" th:href="@{|/customer/${customer.id}|}" onclick="return Data.confirm(this)">
+												<a class="dropdown-item pl-1 text-danger" href="/customer/customer-view.html/1" th:href="@{|/customer/${customer.id}|}" onclick="return AjaxUtil.confirm(this)">
 													<span class="icon-trash"></span> <span th:text="#{delete}">Delete</span>
 												</a>
 											</th:block>

@@ -15,14 +15,14 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/home/home-view.html" th:href="@{/}" th:text="#{home}">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page" th:text="|#{task} - #{${type}}|">Task</li>
+                <li class="breadcrumb-item active" aria-current="page" th:text="|#{task} - #{${type}}|">Task Type</li>
             </ol>
         </nav>
         <div id="main-content">
             <!-- SEARCH FORM -->
             <div class="row no-gutters mb-3">
                 <div class="col-12 col-sm-12 col-md-10 col-lg-7 col-xl-6">
-                    <form action="#" th:action="@{/task/role}" method="get" autocomplete="off">
+                    <form action="#" th:action="@{|/task/${type}|}" method="get" autocomplete="off">
                         <div class="input-group mb-2">
                             <select name="st" class="custom-select text-secondary" id="status">
                                 <option value="ALL" selected th:text="#{ALL}" th:selected="${st.name() == 'ALL'}">ALL</option>
@@ -44,7 +44,7 @@
                                 <button class="btn btn-light border text-secondary" type="submit">
                                     <span class="icon-search"></span>
                                 </button>
-                                <a class="btn btn-light border text-secondary" th:href="@{/task/role}">
+                                <a class="btn btn-light border text-secondary" th:href="@{|/task/${type}|}">
                                     <span class="icon-arrows-cw"></span>
                                 </a>
                             </div>
@@ -79,12 +79,12 @@
                                             <span class="icon-cog"></span>
                                         </button>
                                         <div class="dropdown-menu py-0 shadow" aria-labelledby="dropdownMenuButton">
-                                            <a class="dropdown-item pl-1" href="/task/task-detail.html" th:href="@{|/task/role/${task.id}/detail|}">
+                                            <a class="dropdown-item pl-1" href="/task/task-detail.html" th:href="@{|/task/${type}/${task.id}/detail|}">
                                                 <span class="icon-eye"></span> <span th:text="#{detail}">Detail</span>
                                             </a>
                                             <th:block th:if="${isChecker}">
                                                 <div class="dropdown-divider my-0"></div>
-                                                <a class="dropdown-item pl-1" href="/task/task-form.html" th:href="@{|/task/role/${task.id}|}">
+                                                <a class="dropdown-item pl-1" href="/task/task-form.html" th:href="@{|/task/${type}/${task.id}|}">
                                                     <span class="icon-edit"></span> <span th:text="#{confirm}">Confirm</span>
                                                 </a>
                                             </th:block>

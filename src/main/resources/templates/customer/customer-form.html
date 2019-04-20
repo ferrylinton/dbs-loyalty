@@ -26,7 +26,7 @@
             </div>
             <!-- FORM -->
             <th:block th:if="${customer}">
-                <form action="/customer/customer-view.html" th:action="@{/customer}" th:object="${customer}" method="post" autocomplete="off" onsubmit="return Data.submit(this)">
+                <form action="/customer/customer-view.html" th:action="@{/customer}" th:object="${customer}" method="post" autocomplete="off" onsubmit="return AjaxUtil.submit(this)">
                     <div class="row" th:object="${customer}">
                         <div class="col-12 col-sm-12 col-md-12 col-lg-8 col-xl-8" th:if="${customer.id != null}">
                             <div class="form-group">
