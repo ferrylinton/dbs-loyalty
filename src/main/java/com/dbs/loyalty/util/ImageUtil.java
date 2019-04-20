@@ -47,9 +47,9 @@ public final class ImageUtil {
 	}
 	
 	public static <T extends AbstractImageDto> void setImageDto(T t) throws IOException {
-		BufferedImage image = getBufferedImage(t.getFile());
-		t.setImageBytes(t.getFile().getBytes());
-		t.setImageContentType(t.getFile().getContentType());
+		BufferedImage image = getBufferedImage(t.getImageFile());
+		t.setImageBytes(t.getImageFile().getBytes());
+		t.setImageContentType(t.getImageFile().getContentType());
 		t.setImageWidth(image.getHeight());
 		t.setImageHeight(image.getHeight());
 	}

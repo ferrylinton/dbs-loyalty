@@ -16,6 +16,12 @@
 	<property name="PROMO_CATEGORY_CK" value="hYMMkMXN" />
 	<property name="PROMO_MK" value="FU2toQJa" />
 	<property name="PROMO_CK" value="LFVeEiRv" />
+	<property name="EVENT_MK" value="hyR8jsNF" />
+	<property name="EVENT_CK" value="6bb16t36" />
+	<property name="TRAVEL_ASSISTANCE_MK" value="mYpK38w4" />
+	<property name="TRAVEL_ASSISTANCE_CK" value="gC4yV4fI" />
+	<property name="WELLNESS_MK" value="OTrnNQme" />
+	<property name="WELLNESS_CK" value="hfmdxEIU" />
 	<property name="LOVED_ONE" value="MzFttlUa" />
 	<property name="REWARD" value="tx1zwTpY" />
 	
@@ -74,6 +80,36 @@
         <insert tableName="m_authority">
             <column name="id" value="${PROMO_CK}"/>
             <column name="name" value="PROMO_CK"/>
+        </insert>
+        
+        <insert tableName="m_authority">
+            <column name="id" value="${EVENT_MK}"/>
+            <column name="name" value="EVENT_MK"/>
+        </insert>
+        
+        <insert tableName="m_authority">
+            <column name="id" value="${EVENT_CK}"/>
+            <column name="name" value="EVENT_CK"/>
+        </insert>
+
+        <insert tableName="m_authority">
+            <column name="id" value="${TRAVEL_ASSISTANCE_MK}"/>
+            <column name="name" value="TRAVEL_ASSISTANCE_MK"/>
+        </insert>
+        
+        <insert tableName="m_authority">
+            <column name="id" value="${TRAVEL_ASSISTANCE_CK}"/>
+            <column name="name" value="TRAVEL_ASSISTANCE_CK"/>
+        </insert>
+
+        <insert tableName="m_authority">
+            <column name="id" value="${WELLNESS_MK}"/>
+            <column name="name" value="WELLNESS_MK"/>
+        </insert>
+        
+        <insert tableName="m_authority">
+            <column name="id" value="${WELLNESS_CK}"/>
+            <column name="name" value="WELLNESS_CK"/>
         </insert>
         
         <insert tableName="m_authority">

@@ -40,8 +40,10 @@ public class LogLoginService {
 		
 		if(logLogins.size() > 1) {
 			return logLoginMapper.toDto(logLogins.get(1));
-		}else {
+		}else if(logLogins.size() == 1) {
 			return logLoginMapper.toDto(logLogins.get(0));
+		}else {
+			return null;
 		}
 	}
 }

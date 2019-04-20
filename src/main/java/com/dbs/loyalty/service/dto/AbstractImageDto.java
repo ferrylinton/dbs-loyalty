@@ -20,6 +20,6 @@ public abstract class AbstractImageDto extends AbstractAuditDto{
     private Integer imageHeight;
     
     @JsonIgnore
-    private MultipartFile file;
+    private MultipartFile imageFile;
     
 }

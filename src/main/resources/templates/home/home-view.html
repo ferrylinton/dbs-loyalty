@@ -14,9 +14,9 @@
             <!-- CONTENT -->
             <div id="main-content">
                 <div class="welcome-box">
-                    <span th:text="#{welcome}">Welcome</span> <span sec:authentication="name" class="font-weight-bold">ferrylinton</span> !!!
-                
-                    <table class="table table-bordered table-sm">
+                    <span th:text="#{welcome}">Welcome</span> <span sec:authentication="name" class="font-weight-bold">ferrylinton</span> <span>!!!</span>
+                    <!-- LOG LOGIN INFO -->
+                    <table class="table table-bordered table-sm" th:if="${logLogin}">
                         <tbody>
                             <tr>
                                 <th th:text="#{lastLoginDate}">Last login date</th>
@@ -28,7 +28,8 @@
                             </tr>
                         </tbody>
                     </table>
-                    <table class="table table-bordered table-sm">
+                    <!-- USER INFO -->
+                    <table class="table table-bordered table-sm" th:if="${user}">
                         <tbody>
                             <tr>
                                 <th th:text="#{userType}">User Type</th>

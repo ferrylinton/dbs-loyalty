@@ -14,11 +14,11 @@ public class CustomerValidator implements Validator {
 
 	private String validationExistEmail = "validation.exist.email";
 	
-	private String validationNotEmptyFile = "validation.notempty.file";
+	private String validationNotEmptyImageFile = "validation.notempty.imageFile";
 
 	private String email = "email";
 	
-	private String file = "file";
+	private String imageFile = "imageFile";
 
 	private final CustomerService customerService;
 
@@ -37,9 +37,9 @@ public class CustomerValidator implements Validator {
 			errors.rejectValue(email, validationExistEmail, errorArgs, defaultMessage);
 		}
 		
-		if(customerDto.getId() == null && customerDto.getFile().isEmpty()) {
-			String defaultMessage = MessageUtil.getMessage(validationNotEmptyFile);
-			errors.rejectValue(file, validationNotEmptyFile, defaultMessage);
+		if(customerDto.getId() == null && customerDto.getImageFile().isEmpty()) {
+			String defaultMessage = MessageUtil.getMessage(validationNotEmptyImageFile);
+			errors.rejectValue(imageFile, validationNotEmptyImageFile, defaultMessage);
 		}
 
 	}

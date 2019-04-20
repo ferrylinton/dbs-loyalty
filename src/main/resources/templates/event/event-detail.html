@@ -47,15 +47,15 @@
                             </tr>
                             <tr>
                                 <th th:text="#{startPeriod}">Start Period</th>
-                                <td th:text="${event.startPeriod}">2019-08-01</td>
+                                <td th:text="${#dates.format(event.startPeriod, 'dd-MM-yyyy')}">2019-08-01</td>
                             </tr>
                             <tr>
                                 <th th:text="#{endPeriod}">End Period</th>
-                                <td th:text="${event.endPeriod}">2019-18-02</td>
+                                <td th:text="${#dates.format(event.endPeriod, 'dd-MM-yyyy')}">2019-18-02</td>
                             </tr>
                             <tr>
                                 <th th:text="#{timePeriod}">Time Period</th>
-                                <td th:text="${event.timePeriod}">08:00</td>
+                                <td th:text="${#dates.format(event.timePeriod, 'HH:mm')}">08:00</td>
                             </tr>
                             <tr>
                                 <th th:text="#{place}">Place</th>
@@ -69,17 +69,22 @@
                                             alt="/static/image/200x300.png" 
                                             style="width:200px;height:300px"
                                             src="/static/image/200x300.png" 
-                                            th:style="|width:${customer.imageWidth};height:${customer.imageHeight};|" 
-                                            th:src="${@base64Service.getString(customer.imageBytes, customer.imageContentType)}" />
+                                            th:style="|width:${event.imageWidth};height:${event.imageHeight};|" 
+                                            th:src="${@base64Service.getString(event.imageBytes, event.imageContentType)}" />
                                     </div>
                                 </td>
                             </tr>
                             <tr>
-                                <th th:text="#{material}">Material</th>
-                                <td th:text="${event.pdf}">
-                                    <a class="btn btn-sm btn-light" role="button" aria-pressed="true" href="/sample.pdf" onclick="return openNewTab(this);">
+                                <th rowspan="2" th:text="#{material}">Material</th>
+                                <td>
+                                	<a class="btn btn-sm btn-light" role="button" aria-pressed="true" href="/sample.pdf" th:href="@{|/event/${event.id}/material|}" onclick="return openNewTab(this);">
                                         <span class="icon-file-pdf text-danger"></span> <span th:text="#{view}">View</span>
                                     </a>
+                                </td>
+                            </tr>
+                            <tr>
+                            	<td>
+                                    <embed class="border" width="100%" height="400px" src="/sample.pdf" th:src="@{|/event/${event.id}/material|}" type="application/pdf">
                                 </td>
                             </tr>
                             <tr>

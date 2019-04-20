@@ -16,6 +16,8 @@ public final class EntityConstant {
 	
 	public static final String PROMO 			= "promo";
 	
+	public static final String EVENT 			= "event";
+	
 	private EntityConstant() {
 		// hide constructor
 	}

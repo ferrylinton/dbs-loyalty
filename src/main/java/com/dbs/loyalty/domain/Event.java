@@ -74,6 +74,6 @@ public class Event extends AbstractImage implements Serializable {
 
     @Lob
     @Column(name = "material_bytes", nullable = false, columnDefinition="BLOB")
-    private byte[] material_bytes;
+    private byte[] materialBytes;
     
 }

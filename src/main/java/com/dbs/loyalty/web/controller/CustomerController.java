@@ -109,7 +109,7 @@ public class CustomerController extends AbstractPageController{
 			Optional<CustomerDto> current = customerService.findWithCustomerImageById(customerDto.getId());
 			
 			if(current.isPresent()) { 
-				if(customerDto.getFile().isEmpty()) {
+				if(customerDto.getImageFile().isEmpty()) {
 					customerDto.setImageBytes(current.get().getImageBytes());
 					customerDto.setImageContentType(current.get().getImageContentType());
 					customerDto.setImageWidth(current.get().getImageWidth());

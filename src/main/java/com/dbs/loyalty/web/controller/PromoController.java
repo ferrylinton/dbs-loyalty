@@ -111,7 +111,7 @@ public class PromoController extends AbstractPageController {
 			Optional<PromoDto> current = promoService.findById(promoDto.getId());
 			
 			if(current.isPresent()) {
-				if(promoDto.getFile().isEmpty()) {
+				if(promoDto.getImageFile().isEmpty()) {
 					promoDto.setImageBytes(current.get().getImageBytes());
 					promoDto.setImageContentType(current.get().getImageContentType());
 					promoDto.setImageWidth(current.get().getImageWidth());
