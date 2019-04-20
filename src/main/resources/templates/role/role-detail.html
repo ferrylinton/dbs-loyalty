@@ -27,7 +27,7 @@
                 <!-- TABLE DETAIL -->
                 <th:block th:if="${role}">
                     <div class="table-responsive border border-top-0">
-                        <table class="table table-sm table-detail">
+                        <table class="table table-sm table-detail" style="min-width: 400px;">
                             <tbody th:with="format=${@environment.getProperty('application.format.date-time-full')}">
                                 <tr>
                                     <th th:text="#{id}">Id</th>
@@ -68,7 +68,7 @@
                     <!-- TOOLBAR -->
                     <div class="toolbar">
                         <a class="btn btn-light" href="/role/role-view.html" th:href="@{/role}">
-                            <span class="icon-left" th:text="#{back}">Back</span>
+                            <span class="icon-left"></span> <span th:text="#{back}">Back</span>
                         </a>
                     </div>
                 </th:block>

@@ -79,12 +79,12 @@
                                             <span class="icon-cog"></span>
                                         </button>
                                         <div class="dropdown-menu py-0 shadow" aria-labelledby="dropdownMenuButton">
-                                            <a class="dropdown-item pl-1" href="/task/role/task-role-detail.html" th:href="@{|/task/role/${task.id}/detail|}">
+                                            <a class="dropdown-item pl-1" href="/task/task-detail.html" th:href="@{|/task/role/${task.id}/detail|}">
                                                 <span class="icon-eye"></span> <span th:text="#{detail}">Detail</span>
                                             </a>
                                             <th:block th:if="${isChecker}">
                                                 <div class="dropdown-divider my-0"></div>
-                                                <a class="dropdown-item pl-1" href="/task/role/task-role-form.html" th:href="@{|/task/role/${task.id}|}">
+                                                <a class="dropdown-item pl-1" href="/task/task-form.html" th:href="@{|/task/role/${task.id}|}">
                                                     <span class="icon-edit"></span> <span th:text="#{confirm}">Confirm</span>
                                                 </a>
                                             </th:block>

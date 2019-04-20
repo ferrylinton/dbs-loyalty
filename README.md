@@ -7,6 +7,11 @@ mvn spring-boot:run
 ```
 ## Deploy
 
+### Minify HTML
+```
+mvn htmlcompressor:html
+```
+
 ### Build war
 ```
 mvn clean package -DskipTests

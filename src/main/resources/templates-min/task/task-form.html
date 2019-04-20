@@ -1,0 +1,47 @@
+<!doctype html> <html lang="en" th:lang="${#locale}" xmlns:th="http://www.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"> <head th:replace="fragment/head.html :: content(title=#{task})"> <title>DBS Loyalty : Task</title> <link href="/static/image/favicon.png" rel="shorcut icon"/> <link href="/static/css/all.min.css" rel="stylesheet"/> </head> <body onload="onLoadTask()"> <div id="navbar" th:replace="fragment/navbar.html :: content"></div> <div id="content-box"> <nav aria-label="breadcrumb"> <ol class="breadcrumb"> <li class="breadcrumb-item"><a href="/home/home-view.html" th:href="@{/}" th:text="#{home}">Home</a></li> <li class="breadcrumb-item"><a href="/task/task-view.html" th:href="@{|/task/${type}|}" th:text="|#{task} - #{role}|">Task Type</a></li> <li class="breadcrumb-item active" aria-current="page" th:text="#{edit}">Edit</li> </ol> </nav> <div id="main-content" th:with="format=${@environment.getProperty('application.format.date-time-full')}"> <div class="border alert alert-light text-center" role="alert" th:if="${error}"> <span class="icon-attention"></span> <span th:text="${error}">Data ['xxxx'] is not found</span> </div> <th:block th:if="${task}"> <form id="task-form" action="/task/task-view.html" th:action="@{/task/role}" method="post" autocomplete="off"> <div class="row"> <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4"> <div class="form-group"> <label th:text="#{taskOperation}">Task Operation</label> <div class="form-control" th:text="#{${task.taskOperation}}">Add</div> </div> </div> <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4"> <div class="form-group"> <label th:text="#{maker}">Maker</label> <input class="form-control" th:field="${task.maker}"/> </div> </div> <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4"> <div class="form-group"> <label th:text="#{madeDate}">Made Date</label> <div class="form-control" th:text="${#dates.format(task.madeDate, format)}">09-04-2019 19:06:53.279</div> </div> </div> <div class="col-12" th:if="${task.taskDataOld != null}"> <div class="form-group"> <label th:text="#{taskDataOld}">Task Data Old</label> <pre class="json" th:text="${task.taskDataOld}">
+                                                {
+                                                    "name" : "test",
+                                                    "authorities" : [ {
+                                                      "id" : "ZwOkjFmG",
+                                                      "name" : "ADMIN"
+                                                    }, {
+                                                      "id" : "V6evDSIi",
+                                                      "name" : "CUSTOMER_MK"
+                                                    }, {
+                                                      "id" : "hYMMkMXN",
+                                                      "name" : "PROMO_CATEGORY_CK"
+                                                    }, {
+                                                      "id" : "LFVeEiRv",
+                                                      "name" : "PROMO_CK"
+                                                    }, {
+                                                      "id" : "tx1zwTpY",
+                                                      "name" : "REWARD"
+                                                    }, {
+                                                      "id" : "o6o0pHGS",
+                                                      "name" : "ROLE_MK"
+                                                    } ]
+                                                  }
+                                </pre> </div> </div> <div class="col-12" th:if="${task.taskDataNew != null}"> <div class="form-group"> <label th:text="#{taskDataNew}">Task Data New</label> <pre class="json" th:text="${task.taskDataNew}">
+                                                {
+                                                    "name" : "test",
+                                                    "authorities" : [ {
+                                                      "id" : "ZwOkjFmG",
+                                                      "name" : "ADMIN"
+                                                    }, {
+                                                      "id" : "V6evDSIi",
+                                                      "name" : "CUSTOMER_MK"
+                                                    }, {
+                                                      "id" : "hYMMkMXN",
+                                                      "name" : "PROMO_CATEGORY_CK"
+                                                    }, {
+                                                      "id" : "LFVeEiRv",
+                                                      "name" : "PROMO_CK"
+                                                    }, {
+                                                      "id" : "tx1zwTpY",
+                                                      "name" : "REWARD"
+                                                    }, {
+                                                      "id" : "o6o0pHGS",
+                                                      "name" : "ROLE_MK"
+                                                    } ]
+                                                  }
+                                </pre> </div> </div> <div class="col-12 col-sm-12 col-md-10 col-lg-8 col-xl-6"> <div class="form-group"> <label for="message" th:text="#{message}">Message</label> <textarea class="form-control" placeholder="Message" th:placeholder="#{message}" th:field="${task.message}" rows="2" maxlength="250"></textarea> </div> </div> </div> <input type="hidden" id="id" th:field="*{id}"/> <input type="hidden" id="taskDataType" th:field="${task.taskDataType}"/> <input type="hidden" id="taskOperation" th:field="${task.taskOperation}"/> <input type="hidden" id="taskStatus" th:field="${task.taskStatus}"/> <input type="hidden" id="madeDate" th:field="${task.madeDate}"/> <input type="hidden" id="taskDataOld" th:field="${task.taskDataOld}"/> <input type="hidden" id="taskDataNew" th:field="${task.taskDataNew}"/> <input type="hidden" id="verified" th:field="${task.verified}"/> <div class="toolbar"> <a class="btn btn-light" href="/task/task-view.html" th:href="@{/task/role}"> <span class="icon-left"></span> <span th:text="#{back}">Back</span> </a> <button class="btn btn-light text-success" type="button" onclick="TaskUtil.verify()"> <span class="icon-ok"></span> <span th:text="#{verify}">Verify</span> </button> <button class="btn btn-light text-danger" type="button" onclick="TaskUtil.reject()"> <span class="icon-block"></span> <span th:text="#{reject}">Reject</span> </button> </div> </form> </th:block> </div> <div id="footer" th:replace="fragment/footer.html :: content"></div> </div> <div id="sidenav-box"> <div th:replace="fragment/sidenav.html :: content"></div> </div> <div th:replace="fragment/scripts.html :: content"></div> <script src="/static/js/all.min.js" th:remove="all"></script> <script src="/static/js/fragment.js" th:remove="all"></script> </body> </html>
