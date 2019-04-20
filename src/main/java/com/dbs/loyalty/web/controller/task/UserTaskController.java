@@ -30,12 +30,12 @@ import com.dbs.loyalty.web.response.AbstractResponse;
 
 
 @Controller
-@RequestMapping("/task/user")
+@RequestMapping("/taskuser")
 public class UserTaskController extends AbstractTaskController {
 
 	private static final String USER_CK = "USER_CK";
 	
-	private static final String REDIRECT = "redirect:/task/user";
+	private static final String REDIRECT = "redirect:/taskuser";
 	
 	public UserTaskController(final TaskService taskService) {
 		super(taskService);

@@ -46,19 +46,22 @@
                 </ul>
             </li>
             <li>
-                <span>Task</span>
+                <span th:text="#{task}">Task</span>
                 <ul>
                     <li>
                         <span th:text="#{data}">Data</span>
                         <ul>
                             <li th:if="${#authorization.expression('hasAnyAuthority(''CUSTOMER_MK'', ''CUSTOMER_CK'')')}">
-                                <a rel="/task/customer" href="/task/task-view.html" th:href="@{/task/customer}">Customer Task</a>
+                                <a rel="/taskcustomer" href="/task/task-view.html" th:href="@{/taskcustomer}" th:text="#{customer}">Customer</a>
                             </li>
                             <li th:if="${#authorization.expression('hasAnyAuthority(''PROMO_MK'', ''PROMO_CK'')')}">
-                                <a rel="/task/promo" href="/task/task-view.html" th:href="@{/task/promo}">Promo Task</a>
+                                <a rel="/taskpromo" href="/task/task-view.html" th:href="@{/taskpromo}" th:text="#{promo}">Promo</a>
                             </li>
                             <li th:if="${#authorization.expression('hasAnyAuthority(''PROMO_CATEGORY_MK'', ''PROMO_CATEGORY_CK'')')}">
-                                <a rel="/task/promocategory" href="/task/task-view.html" th:href="@{/task/promocategory}">Promo Category Task</a>
+                                <a rel="/taskpromocategory" href="/task/task-view.html" th:href="@{/taskpromocategory}" th:text="#{promocategory}">Promo Category</a>
+                            </li>
+                            <li th:if="${#authorization.expression('hasAnyAuthority(''EVENT_MK'', ''EVENT_CK'')')}">
+                                <a rel="/taskevent" href="/task/task-view.html" th:href="@{/taskevent}" th:text="#{event}">Event</a>
                             </li>
                         </ul>
                     </li>
@@ -66,10 +69,10 @@
                         <span th:text="#{userManagement}">User Management</span>
                         <ul>
                             <li th:if="${#authorization.expression('hasAnyAuthority(''USER_MK'', ''USER_CK'')')}">
-                                <a rel="/task/user" href="/task/task-view.html" th:href="@{/task/user}">User Task</a>
+                                <a rel="/taskuser" href="/task/task-view.html" th:href="@{/taskuser}" th:text="#{user}">User</a>
                             </li>
                             <li th:if="${#authorization.expression('hasAnyAuthority(''ROLE_MK'', ''ROLE_CK'')')}">
-                                <a rel="/task/role" href="/task/task-view.html" th:href="@{/task/role}">Role Task</a>
+                                <a rel="/taskrole" href="/task/task-view.html" th:href="@{/taskrole}" th:text="#{role}">Role</a>
                             </li>
                         </ul>
                     </li>

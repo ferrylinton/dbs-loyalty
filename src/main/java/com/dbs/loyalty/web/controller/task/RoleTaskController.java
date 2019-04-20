@@ -30,12 +30,12 @@ import com.dbs.loyalty.web.response.AbstractResponse;
 
 
 @Controller
-@RequestMapping("/task/role")
+@RequestMapping("/taskrole")
 public class RoleTaskController extends AbstractTaskController {
 
 	private static final String ROLE_CK = "ROLE_CK";
 	
-	private static final String REDIRECT = "redirect:/task/role";
+	private static final String REDIRECT = "redirect:/taskrole";
 	
 	public RoleTaskController(final TaskService taskService) {
 		super(taskService);

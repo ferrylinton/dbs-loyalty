@@ -30,12 +30,12 @@ import com.dbs.loyalty.web.response.AbstractResponse;
 
 
 @Controller
-@RequestMapping("/task/promo")
+@RequestMapping("/taskpromo")
 public class PromoTaskController extends AbstractTaskController {
 
 	private static final String PROMO_CK = "PROMO_CK";
 	
-	private static final String REDIRECT = "redirect:/task/promo";
+	private static final String REDIRECT = "redirect:/taskpromo";
 	
 	public PromoTaskController(final TaskService taskService) {
 		super(taskService);
