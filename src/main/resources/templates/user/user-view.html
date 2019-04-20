@@ -10,7 +10,7 @@
 <body>
     <!-- NAVBAR -->
     <div id="navbar" th:replace="fragment/navbar.html :: content"></div>
-    <div id="content-box">
+    <div id="content-box" th:with="isMaker=${#authorization.expression('hasAuthority(''USER_MK'')')}">
         <!-- BREADCRUMB -->
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
@@ -32,7 +32,7 @@
                                     <a class="btn btn-light" href="/user/user-view.html" th:href="@{/user}">
                                         <span class="icon-arrows-cw"></span>
                                     </a>
-                                    <a class="btn btn-light" href="/user/user-form.html" th:href="@{/user/0}" sec:authorize="hasRole('ROLE_MK')">
+                                    <a class="btn btn-light" href="/user/user-form.html" th:href="@{/user/0}" th:if="${isMaker}">
                                         <span class="icon-plus"></span>
                                     </a>
                                 </div>
@@ -70,12 +70,12 @@
                                             <a class="dropdown-item pl-1" href="/user/user-detail.html" th:href="@{|/user/${user.id}/detail|}">
                                                 <span class="icon-eye"></span> <span th:text="#{detail}">Detail</span>
                                             </a>
-                                            <th:block sec:authorize="hasRole('ROLE_MK')">
+                                            <th:block th:if="${isMaker}">
                                                 <a class="dropdown-item pl-1" href="/user/user-form.html" th:href="@{|/user/${user.id}|}">
                                                     <span class="icon-edit"></span> <span th:text="#{edit}">Edit</span>
                                                 </a>
                                                 <div class="dropdown-divider my-0"></div>
-                                                <a class="dropdown-item pl-1 text-danger" href="/user/user-view.html/1" th:href="@{|/user/${user.id}|}" onclick="return Data.confirm(this)">
+                                                <a class="dropdown-item pl-1 text-danger" href="/user/user-view.html/1" th:href="@{|/user/${user.id}|}" onclick="return AjaxUtil.confirm(this)">
                                                     <span class="icon-trash"></span> <span th:text="#{delete}">Delete</span>
                                                 </a>
                                             </th:block>

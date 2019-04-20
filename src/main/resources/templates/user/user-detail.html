@@ -27,7 +27,7 @@
             <!-- TABLE DETAIL -->
             <th:block th:if="${user}">
                 <div class="table-responsive border border-top-0">
-                    <table class="table table-sm table-detail">
+                    <table class="table table-sm table-detail" style="min-width: 400px;">
                         <tbody th:with="format=${@environment.getProperty('application.format.date-time-full')}">
                             <tr>
                                 <th th:text="#{id}">Id</th>
@@ -50,7 +50,7 @@
                                 <td th:text="${user.createdBy}">System</td>
                             </tr>
                             <tr>
-                                <th th:text="#{createdDate}">Created Date</th>
+                                <th th:text="#{createdDate}">Created Dt</th>
                                 <td th:text="${#dates.format(user.createdDate, format)}">09-04-2019 19:06:53.279</td>
                             </tr>
                             <tr th:if="${user.lastModifiedBy}">
@@ -58,7 +58,7 @@
                                 <td th:text="${user.lastModifiedBy}">System</td>
                             </tr>
                             <tr th:if="${user.lastModifiedDate}">
-                                <th th:text="${user.lastModifiedDate}">Last ModifiedDate Date</th>
+                                <th th:text="#{lastModifiedDate}">Last Modified Dt</th>
                                 <td th:text="${#dates.format(user.lastModifiedDate, format)}">09-04-2019 19:06:53.279</td>
                             </tr>
                         </tbody>
@@ -66,7 +66,7 @@
                 </div>
                 <div class="toolbar">
                     <a class="btn btn-light" href="/user/user-view.html" th:href="@{/user}">
-                        <span class="icon-left" th:text="#{back}">Back</span>
+                        <span class="icon-left"></span> <span th:text="#{back}">Back</span>
                     </a>
                 </div>
             </th:block>

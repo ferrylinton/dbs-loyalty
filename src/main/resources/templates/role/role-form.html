@@ -20,47 +20,47 @@
             </ol>
         </nav>
         <div id="main-content">
-                <!-- MESSAGE -->
-                <div class="border alert alert-light text-center" role="alert" th:if="${error}">
-                    <span class="icon-attention"></span> <span th:text="${error}">Data ['xxxx'] is not found</span>
-                </div>
-                <!-- FORM -->
-                <th:block th:if="${role}">
-                    <form action="/role/role-view.html" th:action="@{/role}" th:object="${role}" method="post" autocomplete="off" onsubmit="return AjaxUtil.submit(this)">
-                        <div class="row">
-                            <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
-                                <div class="form-group">
-                                    <label for="name" th:text="|#{name} *|">Name *</label>
-                                    <input class="form-control" type="text" th:placeholder="#{name}" th:field="*{name}" maxlength="40" />
-                                </div>
+            <!-- MESSAGE -->
+            <div class="border alert alert-light text-center" role="alert" th:if="${error}">
+                <span class="icon-attention"></span> <span th:text="${error}">Data ['xxxx'] is not found</span>
+            </div>
+            <!-- FORM -->
+            <th:block th:if="${role}">
+                <form action="/role/role-view.html" th:action="@{/role}" th:object="${role}" method="post" autocomplete="off" onsubmit="return AjaxUtil.submit(this)">
+                    <div class="row">
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <div class="form-group">
+                                <label for="name" th:text="|#{name} *|">Name *</label>
+                                <input class="form-control" type="text" th:placeholder="#{name}" th:field="*{name}" maxlength="40" />
                             </div>
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <label for="authorities" th:text="|#{authorities} *|">Authorities *</label>
-                                    <div class="form-check">
-                                        <div class="row">
-                                            <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4" th:each="authority : ${authorities}">
-                                                <input class="form-check-input" type="checkbox" th:field="*{authorities}" th:value="${authority}" />
-                                                <label th:text="#{${authority.name}}">Description</label>
-                                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="authorities" th:text="|#{authorities} *|">Authorities *</label>
+                                <div class="form-check">
+                                    <div class="row">
+                                        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4" th:each="authority : ${authorities}">
+                                            <input class="form-check-input" type="checkbox" th:field="*{authorities}" th:value="${authority}" />
+                                            <label th:text="#{${authority.name}}">Description</label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- HIDDEN -->
-                        <input type="hidden" th:field="*{id}"/>
-                        <!-- TOOLBAR -->
-                        <div class="toolbar">
-                            <a class="btn btn-light" href="/role/role-view.html" th:href="@{/role}">
-                                <span class="icon-left"></span> <span th:text="#{back}">Back</span>
-                            </a>
-                            <button class="btn btn-light text-primary" type="submit">
-                                <span class="icon-floppy"></span> <span th:text="#{save}">Save</span>
-                            </button>
-                        </div>
-                    </form>
-                </th:block>
+                    </div>
+                    <!-- HIDDEN -->
+                    <input type="hidden" id="id" th:field="*{id}" th:if="*{id != null}"/>
+                    <!-- TOOLBAR -->
+                    <div class="toolbar">
+                        <a class="btn btn-light" href="/role/role-view.html" th:href="@{/role}">
+                            <span class="icon-left"></span> <span th:text="#{back}">Back</span>
+                        </a>
+                        <button class="btn btn-light text-primary" type="submit">
+                            <span class="icon-floppy"></span> <span th:text="#{save}">Save</span>
+                        </button>
+                    </div>
+                </form>
+            </th:block>
         </div>
         <!-- FOOTER -->
         <div id="footer" th:replace="fragment/footer.html :: content"></div>
