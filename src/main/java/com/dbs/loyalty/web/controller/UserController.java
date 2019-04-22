@@ -31,13 +31,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.dbs.loyalty.domain.Role;
+import com.dbs.loyalty.domain.User;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.RoleService;
 import com.dbs.loyalty.service.TaskService;
+import com.dbs.loyalty.service.UserLdapService;
 import com.dbs.loyalty.service.UserService;
-import com.dbs.loyalty.service.dto.RoleDto;
-import com.dbs.loyalty.service.dto.UserDto;
 import com.dbs.loyalty.util.PasswordUtil;
 import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.response.AbstractResponse;
@@ -53,6 +54,8 @@ public class UserController extends AbstractPageController{
 
 	private final UserService userService;
 	
+	private final UserLdapService userLdapService;
+	
 	private final RoleService roleService;
 	
 	private final TaskService taskService;
@@ -61,7 +64,7 @@ public class UserController extends AbstractPageController{
 	@GetMapping
 	public String viewUsers(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
 		Order order = getOrder(sort, "username");
-		Page<UserDto> page = userService.findAll(getPageable(params, order), request);
+		Page<User> page = userService.findAll(getPageable(params, order), request);
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
 			return "redirect:/user";
@@ -84,7 +87,7 @@ public class UserController extends AbstractPageController{
 	@GetMapping("/{id}")
 	public String viewUserForm(ModelMap model, @PathVariable String id) {
 		if (id.equals(ZERO)) {
-			model.addAttribute(USER, new UserDto());
+			model.addAttribute(USER, new User());
 		} else {
 			getById(model, id);
 		}
@@ -95,34 +98,34 @@ public class UserController extends AbstractPageController{
 	@PreAuthorize("hasRole('USER_MK')")
 	@PostMapping
 	@ResponseBody
-	public ResponseEntity<AbstractResponse> save(@Valid @ModelAttribute UserDto userDto, BindingResult result) throws BadRequestException, JsonProcessingException, NotFoundException {
+	public ResponseEntity<AbstractResponse> save(@Valid @ModelAttribute User user, BindingResult result) throws BadRequestException, JsonProcessingException, NotFoundException {
 		if (result.hasErrors()) {
 			throwBadRequestResponse(result);
 		}
 		
-		if(userDto.getId() == null) {
-			userDto.setPasswordHash(PasswordUtil.encode(userDto.getPasswordPlain()));
-			userDto.setPasswordPlain(null);
-			taskService.saveTaskAdd(USER, userDto);
+		if(user.getId() == null) {
+			user.setPasswordHash(PasswordUtil.encode(user.getPasswordPlain()));
+			user.setPasswordPlain(null);
+			taskService.saveTaskAdd(USER, user);
 		}else {
-			Optional<UserDto> current = userService.findWithRoleById(userDto.getId());
+			Optional<User> current = userService.findWithRoleById(user.getId());
 			
 			if(current.isPresent()) {
-				userDto.setPasswordHash(current.get().getPasswordHash());
-				taskService.saveTaskModify(USER, current.get(), userDto);
+				user.setPasswordHash(current.get().getPasswordHash());
+				taskService.saveTaskModify(USER, current.get(), user);
 			}else {
 				throw new NotFoundException();
 			}
 		}
 
-		return taskIsSavedResponse(USER,  userDto.getUsername(), UrlUtil.getUrl(USER));
+		return taskIsSavedResponse(USER,  user.getUsername(), UrlUtil.getUrl(USER));
 	}
 	
 	@PreAuthorize("hasRole('USER_MK')")
 	@DeleteMapping("/{id}")
 	@ResponseBody
 	public ResponseEntity<AbstractResponse> delete(@PathVariable String id) throws NotFoundException, JsonProcessingException {
-		Optional<UserDto> current = userService.findWithRoleById(id);
+		Optional<User> current = userService.findWithRoleById(id);
 		
 		if(current.isPresent()) {
 			taskService.saveTaskDelete(USER, current.get());
@@ -133,20 +136,20 @@ public class UserController extends AbstractPageController{
 	}
 	
 	@ModelAttribute("roles")
-	public List<RoleDto> getRoles() {
+	public List<Role> getRoles() {
 	    return roleService.findAll();
 	}
 
-	@InitBinder("userDto")
+	@InitBinder("user")
 	protected void initBinder(WebDataBinder binder) {
-		binder.addValidators(new UserValidator());
+		binder.addValidators(new UserValidator(userService, userLdapService));
 	}
 
 	public void getById(ModelMap model, String id) {
 		if (id.equals(ZERO)) {
-			model.addAttribute(USER, new UserDto());
+			model.addAttribute(USER, new User());
 		} else {
-			Optional<UserDto> current = userService.findById(id);
+			Optional<User> current = userService.findById(id);
 			
 			if (current.isPresent()) {
 				model.addAttribute(USER, current.get());

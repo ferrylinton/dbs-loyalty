@@ -49,7 +49,7 @@
             <column name="promo_category_id" value="${DebitCardPromo}"/>
         </insert>
         
-        <insert tableName="c_promo">
+        <insert tableName="f_image">
             <column name="id" value="d2c35a7d-4e11-4cb3-bdbc-2fd08b19c37e"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
@@ -75,7 +75,7 @@
             <column name="promo_category_id" value="${DebitCardPromo}"/>
         </insert>
         
-        <insert tableName="c_promo">
+        <insert tableName="f_image">
             <column name="id" value="492533b6-a685-474a-90f9-b3d3c2eb602b"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
@@ -101,7 +101,7 @@
             <column name="promo_category_id" value="${PromoInvestasi}"/>
         </insert>
         
-        <insert tableName="c_promo">
+        <insert tableName="f_image">
             <column name="id" value="a603ce50-3138-4231-83f5-c620ef828547"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
@@ -127,7 +127,7 @@
             <column name="promo_category_id" value="${PromoPinjaman}"/>
         </insert>
         
-        <insert tableName="c_promo">
+        <insert tableName="f_image">
             <column name="id" value="fc14108b-7999-4269-b66f-bf753b10ac91"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>

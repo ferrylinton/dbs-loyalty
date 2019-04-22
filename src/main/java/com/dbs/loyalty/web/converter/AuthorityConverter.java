@@ -4,17 +4,20 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 import com.dbs.loyalty.config.constant.Constant;
-import com.dbs.loyalty.service.dto.AuthorityDto;
+import com.dbs.loyalty.domain.Authority;
 
 @Component
-public class AuthorityConverter implements Converter<String, AuthorityDto> {
+public class AuthorityConverter implements Converter<String, Authority> {
 	
 	@Override
-	public AuthorityDto convert(String content) {
+	public Authority convert(String content) {
 		String[] str = content.split(Constant.COMMA);
 
 		if(str.length == 2) {
-			return new AuthorityDto(str[0], str[1]);
+			Authority authority = new Authority();
+			authority.setId(str[0]);
+			authority.setName(str[1]);
+			return authority;
 		}else {
 			return null;
 		}

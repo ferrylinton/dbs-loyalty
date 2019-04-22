@@ -31,13 +31,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.dbs.loyalty.domain.Authority;
+import com.dbs.loyalty.domain.Role;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.AuthorityService;
 import com.dbs.loyalty.service.RoleService;
 import com.dbs.loyalty.service.TaskService;
-import com.dbs.loyalty.service.dto.AuthorityDto;
-import com.dbs.loyalty.service.dto.RoleDto;
 import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.response.AbstractResponse;
 import com.dbs.loyalty.web.validator.RoleValidator;
@@ -60,7 +60,7 @@ public class RoleController extends AbstractPageController {
 	@GetMapping
 	public String viewRoles(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
 		Order order = getOrder(sort, "name");
-		Page<RoleDto> page = roleService.findAll(getPageable(params, order), request);
+		Page<Role> page = roleService.findAll(getPageable(params, order), request);
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
 			return "redirect:/role";
@@ -83,7 +83,7 @@ public class RoleController extends AbstractPageController {
 	@GetMapping("/{id}")
 	public String viewRoleForm(ModelMap model, @PathVariable String id){
 		if (id.equals(ZERO)) {
-			model.addAttribute(ROLE, new RoleDto());
+			model.addAttribute(ROLE, new Role());
 		} else {
 			getById(model, id);
 		}
@@ -94,30 +94,30 @@ public class RoleController extends AbstractPageController {
 	@PreAuthorize("hasRole('ROLE_MK')")
 	@PostMapping
 	@ResponseBody
-	public ResponseEntity<AbstractResponse> save(@ModelAttribute @Valid RoleDto roleDto, BindingResult result) throws JsonProcessingException, NotFoundException, BadRequestException {
+	public ResponseEntity<AbstractResponse> save(@ModelAttribute @Valid Role role, BindingResult result) throws JsonProcessingException, NotFoundException, BadRequestException {
 		if (result.hasErrors()) {
 			throwBadRequestResponse(result);
 		}
 
-		if(roleDto.getId() == null) {
-			taskService.saveTaskAdd(ROLE, roleDto);
+		if(role.getId() == null) {
+			taskService.saveTaskAdd(ROLE, role);
 		}else {
-			Optional<RoleDto> current = roleService.findWithAuthoritiesById(roleDto.getId());
+			Optional<Role> current = roleService.findWithAuthoritiesById(role.getId());
 			
 			if(current.isPresent()) {
-				taskService.saveTaskModify(ROLE, current.get(), roleDto);
+				taskService.saveTaskModify(ROLE, current.get(), role);
 			}else {
 				throw new NotFoundException();
 			}
 		}
 
-		return taskIsSavedResponse(ROLE, roleDto.getName(), UrlUtil.getUrl(ROLE));
+		return taskIsSavedResponse(ROLE, role.getName(), UrlUtil.getUrl(ROLE));
 	}
 
 	@PreAuthorize("hasRole('ROLE_MK')")
 	@DeleteMapping("/{id}")
 	public @ResponseBody ResponseEntity<AbstractResponse> delete(@PathVariable String id) throws NotFoundException, JsonProcessingException{
-		Optional<RoleDto> current = roleService.findWithAuthoritiesById(id);
+		Optional<Role> current = roleService.findWithAuthoritiesById(id);
 		
 		if(current.isPresent()) {
 			taskService.saveTaskDelete(ROLE, current.get());
@@ -128,17 +128,17 @@ public class RoleController extends AbstractPageController {
 	}
 
 	@ModelAttribute("authorities")
-	public List<AuthorityDto> getAuthorities() {
+	public List<Authority> getAuthorities() {
 		return authorityService.findAll();
 	}
 
-	@InitBinder("roleDto")
+	@InitBinder("role")
 	protected void initBinder(WebDataBinder binder) {
 		binder.addValidators(new RoleValidator(roleService));
 	}
 
 	private void getById(ModelMap model, String id){
-		Optional<RoleDto> current = roleService.findWithAuthoritiesById(id);
+		Optional<Role> current = roleService.findWithAuthoritiesById(id);
 		
 		if (current.isPresent()) {
 			model.addAttribute(ROLE, current.get());

@@ -13,9 +13,8 @@
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="title" value="Digital Marketing Leaders Summit Jakarta 2019"/>
             <column name="description" value="Join us at Asia's most anticipated and influential Digital Marketing conference, taking your place alongside more than 100 senior marketers and digital strategists over 2 days of networking and learning."/>
-            <column name="start_period" valueDate="2019-08-01"/>
-            <column name="end_period" valueDate="2019-18-02"/>
-            <column name="time_period" value="08:00"/>
+            <column name="start_period" valueDate="2019-08-01T08:00:00"/>
+            <column name="end_period" valueDate="2019-08-01T08:00:00"/>
             <column name="place" value="Crown Plaza Jakarta"/>
 			<column name="content" valueBlobFile="txt/qNj1ZAsi.txt"/>
         </insert>

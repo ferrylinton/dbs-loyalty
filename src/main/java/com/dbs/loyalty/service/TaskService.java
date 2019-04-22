@@ -13,7 +13,6 @@ import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,8 +24,6 @@ import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.domain.enumeration.TaskStatus;
 import com.dbs.loyalty.repository.TaskRepository;
-import com.dbs.loyalty.service.dto.TaskDto;
-import com.dbs.loyalty.service.mapper.TaskMapper;
 import com.dbs.loyalty.service.specification.TaskSpecification;
 import com.dbs.loyalty.util.ErrorUtil;
 import com.dbs.loyalty.util.SecurityUtil;
@@ -48,15 +45,13 @@ public class TaskService {
 	private final TaskRepository taskRepository;
 	
 	private final ObjectMapper objectMapper;
-	
-	private final TaskMapper taskMapper;
 
-	public Optional<TaskDto> findById(String id) {
-		return taskRepository.findById(id).map(taskMapper::toDto);
+	public Optional<Task> findById(String id) {
+		return taskRepository.findById(id);
 	}
 	
-	public Page<TaskDto> findAll(String taskDataType, Map<String, String> params, Pageable pageable, HttpServletRequest request){
-		return taskRepository.findAll(TaskSpecification.getSpec(taskDataType, params, request), pageable).map(taskMapper::toDto);
+	public Page<Task> findAll(String taskDataType, Map<String, String> params, Pageable pageable, HttpServletRequest request){
+		return taskRepository.findAll(TaskSpecification.getSpec(taskDataType, params, request), pageable);
 	}
 	
 	public Task saveTaskAdd(String type, Object taskDataNew) throws JsonProcessingException {
@@ -94,35 +89,31 @@ public class TaskService {
 	}
 	
 	@Transactional
-	public String save(TaskDto taskDto) throws IOException {
-		Task task = taskMapper.toEntity(taskDto);
-		task.setTaskStatus(taskDto.isVerified() ? TaskStatus.VERIFIED : TaskStatus.REJECTED);
+	public String save(Task task) throws IOException {
+		task.setTaskStatus(task.getVerified() ? TaskStatus.VERIFIED : TaskStatus.REJECTED);
 		task.setChecker(SecurityUtil.getLogged());
 		task.setCheckedDate(Instant.now());
 		
 		taskRepository.save(task);
-		
-		System.out.println("TaskOperation : " + taskDto.getTaskOperation());
-		
-		if(taskDto.getTaskDataType().equals(ROLE)) {
-			return context.getBean(RoleService.class).execute(taskDto);
-		}else if(taskDto.getTaskDataType().equals(USER)) {
-			return context.getBean(UserService.class).execute(taskDto);
-		}else if(taskDto.getTaskDataType().equals(PROMO_CATEGORY)) {
-			return context.getBean(PromoCategoryService.class).execute(taskDto);
-		}else if(taskDto.getTaskDataType().equals(PROMO)) {
-			return context.getBean(PromoService.class).execute(taskDto);
-		}else if(taskDto.getTaskDataType().equals(CUSTOMER)) {
-			return context.getBean(CustomerService.class).execute(taskDto);
+
+		if(task.getTaskDataType().equals(ROLE)) {
+			return context.getBean(RoleService.class).execute(task);
+		}else if(task.getTaskDataType().equals(USER)) {
+			return context.getBean(UserService.class).execute(task);
+		}else if(task.getTaskDataType().equals(PROMO_CATEGORY)) {
+			return context.getBean(PromoCategoryService.class).execute(task);
+		}else if(task.getTaskDataType().equals(PROMO)) {
+			return context.getBean(PromoService.class).execute(task);
+		}else if(task.getTaskDataType().equals(CUSTOMER)) {
+			return context.getBean(CustomerService.class).execute(task);
 		}
 		
-		return String.format(noServiceFormat, taskDto.getTaskDataType());
+		return String.format(noServiceFormat, task.getTaskDataType());
 	}
 	
 	@Transactional(propagation=Propagation.REQUIRES_NEW)
-	public void save(Exception ex, TaskDto taskDto) {
+	public void save(Exception ex, Task task) {
 		try {
-			Task task = taskMapper.toEntity(taskDto);
 			task.setTaskStatus(TaskStatus.FAILED);
 			task.setError(ErrorUtil.getErrorMessage(ex));
 			taskRepository.save(task);

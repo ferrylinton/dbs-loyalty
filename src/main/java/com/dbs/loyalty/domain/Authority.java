@@ -43,4 +43,9 @@ public class Authority implements Serializable {
 	@Column(name = "name", length = 50, nullable = false)
 	private String name;
 	
+	@Override
+	public String toString() {
+		return id + "," + name;
+	}
+	
 }

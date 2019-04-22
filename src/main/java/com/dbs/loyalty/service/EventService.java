@@ -10,12 +10,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.dbs.loyalty.domain.Event;
+import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.EventRepository;
 import com.dbs.loyalty.service.dto.EventDto;
 import com.dbs.loyalty.service.dto.EventFormDto;
 import com.dbs.loyalty.service.dto.EventViewDto;
-import com.dbs.loyalty.service.dto.TaskDto;
 import com.dbs.loyalty.service.mapper.EventMapper;
 import com.dbs.loyalty.service.specification.EventSpecification;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -56,21 +56,21 @@ public class EventService{
 		}
 	}
 
-	public String execute(TaskDto taskDto) throws IOException {
-		EventFormDto eventDto = objectMapper.readValue((taskDto.getTaskOperation() == TaskOperation.DELETE) ? taskDto.getTaskDataOld() : taskDto.getTaskDataNew(), EventFormDto.class);
+	public String execute(Task task) throws IOException {
+		EventFormDto eventDto = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), EventFormDto.class);
 		
-		if(taskDto.isVerified()) {
+		if(task.getVerified()) {
 			Event event = eventMapper.toEntity(eventDto);
 			
-			if(taskDto.getTaskOperation() == TaskOperation.ADD) {
-				event.setCreatedBy(taskDto.getMaker());
-				event.setCreatedDate(taskDto.getMadeDate());
+			if(task.getTaskOperation() == TaskOperation.ADD) {
+				event.setCreatedBy(task.getMaker());
+				event.setCreatedDate(task.getMadeDate());
 				eventRepository.save(event);
-			}else if(taskDto.getTaskOperation() == TaskOperation.MODIFY) {
-				event.setLastModifiedBy(taskDto.getMaker());
-				event.setLastModifiedDate(taskDto.getMadeDate());
+			}else if(task.getTaskOperation() == TaskOperation.MODIFY) {
+				event.setLastModifiedBy(task.getMaker());
+				event.setLastModifiedDate(task.getMadeDate());
 				eventRepository.save(event);
-			}else if(taskDto.getTaskOperation() == TaskOperation.DELETE) {
+			}else if(task.getTaskOperation() == TaskOperation.DELETE) {
 				eventRepository.delete(event);
 			}
 		}

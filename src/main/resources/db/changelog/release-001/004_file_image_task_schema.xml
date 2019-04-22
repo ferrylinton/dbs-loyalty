@@ -2,12 +2,12 @@
 <databaseChangeLog 
 	xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
 	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" 
-	xmlns:xsi="http://www.w3.org/2004/XMLSchema-instance" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
-     
+    
     <changeSet author="FLH" id="004-1">
     
-        <createTable tableName="f_image">
+        <createTable tableName="f_image_task">
             <column name="id" type="VARCHAR(36)">
                 <constraints nullable="false"/>
             </column>
@@ -34,7 +34,7 @@
     </changeSet>
     
     <changeSet author="FLH" id="004-2">
-        <addPrimaryKey columnNames="id" constraintName="f_image_pkey" tableName="f_image"/>
+        <addPrimaryKey columnNames="id" constraintName="f_image_task_pkey" tableName="f_image_task"/>
     </changeSet>
 
 </databaseChangeLog>

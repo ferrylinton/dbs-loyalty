@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -77,4 +78,6 @@ public class Task implements Serializable {
     @Column(name = "error")
     private String error;
 
+    @Transient
+    private Boolean verified;
 }

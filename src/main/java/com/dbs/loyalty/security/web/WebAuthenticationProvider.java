@@ -37,9 +37,9 @@ public class WebAuthenticationProvider implements AuthenticationProvider {
         Optional<User> user = userRepository.findWithRoleByUsername(username);
         
         if(user.isPresent()) {
-        	if(!user.get().isActivated()) {
+        	if(!user.get().getActivated()) {
         		throw new DisabledException(EMPTY);
-            }else if(user.get().isLocked()) {
+            }else if(user.get().getLocked()) {
         		throw new LockedException(EMPTY);
         	}else {
         		return authenticate(password, user.get());

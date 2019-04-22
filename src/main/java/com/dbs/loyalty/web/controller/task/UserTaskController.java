@@ -23,8 +23,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.service.TaskService;
-import com.dbs.loyalty.service.dto.TaskDto;
 import com.dbs.loyalty.util.SecurityUtil;
 import com.dbs.loyalty.web.response.AbstractResponse;
 
@@ -45,7 +45,7 @@ public class UserTaskController extends AbstractTaskController {
 	@GetMapping
 	public String viewTaskUsers(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
 		Order order = getOrder(sort, MADE_DATE);
-		Page<TaskDto> page = taskService.findAll(USER, params, getPageable(params, order), request);
+		Page<Task> page = taskService.findAll(USER, params, getPageable(params, order), request);
 		
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
 			return REDIRECT;
@@ -75,8 +75,8 @@ public class UserTaskController extends AbstractTaskController {
 
 	@PreAuthorize("hasRole('USER_CK')")
 	@PostMapping
-	public @ResponseBody ResponseEntity<AbstractResponse> saveTaskUser(@ModelAttribute TaskDto taskDto){
-		return save(taskDto);
+	public @ResponseBody ResponseEntity<AbstractResponse> saveTaskUser(@ModelAttribute Task task){
+		return save(task);
 	}
 
 }

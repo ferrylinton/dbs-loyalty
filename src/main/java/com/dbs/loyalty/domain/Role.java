@@ -15,13 +15,17 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.GenericGenerator;
+
+import com.dbs.loyalty.config.constant.Constant;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 /**
  * Class of Role
@@ -30,8 +34,7 @@ import lombok.ToString;
  */
 @Setter
 @Getter
-@ToString(of = {"id"})
-@EqualsAndHashCode(of = {"id"}, callSuper = false)
+@EqualsAndHashCode(of = { "id", "name" }, callSuper = false)
 @Entity
 @Table(	
 	name = "m_role", 
@@ -49,9 +52,12 @@ public class Role extends AbstractAuditing implements Serializable {
 	@GeneratedValue(generator = "UUIDGenerator")
 	private String id;
 	
+	@Pattern(regexp = Constant.NAME_REGEX, message = "{validation.pattern.name}")
+	@Size(min = 2, max = 40, message = "{validation.size.name}")
     @Column(name = "name", length = 40, nullable = false)
     private String name;
 	
+	@NotEmpty(message = "{validation.notempty.authorities}")
 	@ManyToMany(fetch=FetchType.LAZY)
     @JoinTable(	
     	name = "m_role_authority",
@@ -60,4 +66,9 @@ public class Role extends AbstractAuditing implements Serializable {
     )
     private Set<Authority> authorities = new HashSet<>();
 
+	@Override
+	public String toString() {
+		return id + "," + name;
+	}
+	
 }

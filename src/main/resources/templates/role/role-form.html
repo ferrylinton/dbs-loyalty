@@ -50,6 +50,10 @@
                     </div>
                     <!-- HIDDEN -->
                     <input type="hidden" id="id" th:field="*{id}" th:if="*{id != null}"/>
+                    <input type="hidden" th:field="*{createdBy}"/>
+                    <input type="hidden" th:field="*{createdDate}"/>
+                    <input type="hidden" th:field="*{lastModifiedBy}"/>
+                    <input type="hidden" th:field="*{lastModifiedDate}"/>
                     <!-- TOOLBAR -->
                     <div class="toolbar">
                         <a class="btn btn-light" href="/role/role-view.html" th:href="@{/role}">

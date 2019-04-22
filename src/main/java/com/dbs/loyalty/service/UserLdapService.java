@@ -1,5 +1,7 @@
 package com.dbs.loyalty.service;
 
+import java.util.List;
+
 import javax.naming.NamingException;
 
 import org.springframework.ldap.core.ContextMapper;
@@ -24,7 +26,7 @@ public class UserLdapService {
     public boolean isUserExist(String username) {
     	EqualsFilter filter = new EqualsFilter(applicationLdapProperties.getAttribute(), getUsername(username));
     	
-    	String result = ldapTemplate.searchForObject(LdapUtils.emptyLdapName(), filter.toString(), new ContextMapper<String>() {
+    	List<String> result = ldapTemplate.search(LdapUtils.emptyLdapName(), filter.toString(), new ContextMapper<String>() {
 
 			@Override
 			public String mapFromContext(Object ctx) throws NamingException {
@@ -33,7 +35,7 @@ public class UserLdapService {
 			}
 		});
     	
-    	return result != null;
+    	return result.size() > 0;
     }
     
     private String getUsername(String username) {

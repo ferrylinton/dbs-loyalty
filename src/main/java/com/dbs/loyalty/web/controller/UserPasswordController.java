@@ -17,10 +17,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dbs.loyalty.config.constant.Constant;
+import com.dbs.loyalty.domain.User;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.UserService;
-import com.dbs.loyalty.service.dto.UserDto;
 import com.dbs.loyalty.service.dto.UserPasswordDto;
 import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.util.PasswordUtil;
@@ -48,10 +48,10 @@ public class UserPasswordController extends AbstractController{
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/password")
 	public String viewPassword(ModelMap model, Principal principal){
-		Optional<UserDto> userDto = userService.findByUsername(principal.getName());
+		Optional<User> user = userService.findByUsername(principal.getName());
 		
-		if(userDto.isPresent()) {
-			model.addAttribute(userType, userDto.get().getUserType());
+		if(user.isPresent()) {
+			model.addAttribute(userType, user.get().getUserType());
 		}
 		
 		UserPasswordDto userPasswordDto = new UserPasswordDto();
@@ -66,14 +66,14 @@ public class UserPasswordController extends AbstractController{
 	@PreAuthorize("hasRole('USER_MK')")
 	@GetMapping("/password/{username}")
 	public String viewPassword(ModelMap model, @PathVariable String username, Principal principal) throws NotFoundException {
-		Optional<UserDto> userDto = userService.findByUsername(username);
+		Optional<User> user = userService.findByUsername(username);
 		
-		if(userDto.isPresent()) {
+		if(user.isPresent()) {
 			UserPasswordDto userPasswordDto = new UserPasswordDto();
 			userPasswordDto.setLoggedUsername(principal.getName());
 			userPasswordDto.setUsername(principal.getName());
 			
-			model.addAttribute(userType, userDto.get().getUserType());
+			model.addAttribute(userType, user.get().getUserType());
 			model.addAttribute(pass, userPasswordDto);
 			model.addAttribute(Constant.ENTITY_URL, UrlUtil.getUrl(pass));
 		}else {

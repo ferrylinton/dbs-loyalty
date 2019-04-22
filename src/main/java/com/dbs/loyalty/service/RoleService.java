@@ -12,11 +12,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.dbs.loyalty.domain.Role;
+import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.RoleRepository;
-import com.dbs.loyalty.service.dto.RoleDto;
-import com.dbs.loyalty.service.dto.TaskDto;
-import com.dbs.loyalty.service.mapper.RoleMapper;
 import com.dbs.loyalty.service.specification.RoleSpecification;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -31,67 +29,57 @@ public class RoleService{
 	private final ObjectMapper objectMapper;
 	
 	private final RoleRepository roleRepository;
-	
-	private final RoleMapper roleMapper;
 
-	public Optional<RoleDto> findById(String id){
-		return roleRepository
-				.findById(id)
-				.map(roleMapper::toDto);
+	public Optional<Role> findById(String id){
+		return roleRepository.findById(id);
 	}
 	
-	public Optional<RoleDto> findByName(String name) {
-		return roleRepository
-				.findByNameIgnoreCase(name)
-				.map(roleMapper::toDto);
+	public Optional<Role> findByName(String name) {
+		return roleRepository.findByNameIgnoreCase(name);
 	}
 	
-	public Optional<RoleDto> findWithAuthoritiesById(String id){
-		return roleRepository
-				.findWithAuthoritiesById(id)
-				.map(roleMapper::toDtoWithAuthorities);
+	public Optional<Role> findWithAuthoritiesById(String id){
+		return roleRepository.findWithAuthoritiesById(id);
 	}
 
-	public List<RoleDto> findAll(){
-		return roleMapper.toDto(roleRepository.findAll(sortByName));
+	public List<Role> findAll(){
+		return roleRepository.findAll(sortByName);
 	}
 	
-	public Page<RoleDto> findAll(Pageable pageable, HttpServletRequest request) {
+	public Page<Role> findAll(Pageable pageable, HttpServletRequest request) {
 		return roleRepository
-				.findAll(RoleSpecification.getSpec(request), pageable)
-				.map(roleMapper::toDto);
+				.findAll(RoleSpecification.getSpec(request), pageable);
 	}
 
-	public boolean isNameExist(RoleDto roleDto) {
-		Optional<Role> role = roleRepository.findByNameIgnoreCase(roleDto.getName());
+	public boolean isNameExist(String id, String name) {
+		Optional<Role> role = roleRepository.findByNameIgnoreCase(name);
 
 		if (role.isPresent()) {
-			return (roleDto.getId() == null) || (!roleDto.getId().equals(role.get().getId()));
+			return (id == null) || (!id.equals(role.get().getId()));
 		}else {
 			return false;
 		}
 	}
 
-	public String execute(TaskDto taskDto) throws IOException {
-		RoleDto roleDto = objectMapper.readValue((taskDto.getTaskOperation() == TaskOperation.DELETE) ? taskDto.getTaskDataOld() : taskDto.getTaskDataNew(), RoleDto.class);
+	public String execute(Task task) throws IOException {
+		Role role = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), Role.class);
 		
-		if(taskDto.isVerified()) {
-			Role role = roleMapper.toEntity(roleDto);
+		if(task.getVerified()) {
 			
-			if(taskDto.getTaskOperation() == TaskOperation.ADD) {
-				role.setCreatedBy(taskDto.getMaker());
-				role.setCreatedDate(taskDto.getMadeDate());
+			if(task.getTaskOperation() == TaskOperation.ADD) {
+				role.setCreatedBy(task.getMaker());
+				role.setCreatedDate(task.getMadeDate());
 				roleRepository.save(role);
-			}else if(taskDto.getTaskOperation() == TaskOperation.MODIFY) {
-				role.setLastModifiedBy(taskDto.getMaker());
-				role.setLastModifiedDate(taskDto.getMadeDate());
+			}else if(task.getTaskOperation() == TaskOperation.MODIFY) {
+				role.setLastModifiedBy(task.getMaker());
+				role.setLastModifiedDate(task.getMadeDate());
 				roleRepository.save(role);
-			}else if(taskDto.getTaskOperation() == TaskOperation.DELETE) {
+			}else if(task.getTaskOperation() == TaskOperation.DELETE) {
 				roleRepository.delete(role);
 			}
 		}
 
-		return roleDto.getName();
+		return role.getName();
 	}
 	
 }

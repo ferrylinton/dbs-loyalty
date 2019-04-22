@@ -13,10 +13,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.dbs.loyalty.domain.PromoCategory;
+import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.PromoCategoryRepository;
 import com.dbs.loyalty.service.dto.PromoCategoryDto;
-import com.dbs.loyalty.service.dto.TaskDto;
 import com.dbs.loyalty.service.mapper.PromoCategoryMapper;
 import com.dbs.loyalty.service.specification.PromoCategorySpecification;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -65,21 +65,21 @@ public class PromoCategoryService{
 		}
 	}
 
-	public String execute(TaskDto taskDto) throws IOException {
-		PromoCategoryDto promoCategoryDto = objectMapper.readValue((taskDto.getTaskOperation() == TaskOperation.DELETE) ? taskDto.getTaskDataOld() : taskDto.getTaskDataNew(), PromoCategoryDto.class);
+	public String execute(Task task) throws IOException {
+		PromoCategoryDto promoCategoryDto = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), PromoCategoryDto.class);
 		
-		if(taskDto.isVerified()) {
+		if(task.getVerified()) {
 			PromoCategory promoCategory = promoCategoryMapper.toEntity(promoCategoryDto);
 			
-			if(taskDto.getTaskOperation() == TaskOperation.ADD) {
-				promoCategory.setCreatedBy(taskDto.getMaker());
-				promoCategory.setCreatedDate(taskDto.getMadeDate());
+			if(task.getTaskOperation() == TaskOperation.ADD) {
+				promoCategory.setCreatedBy(task.getMaker());
+				promoCategory.setCreatedDate(task.getMadeDate());
 				promoCategoryRepository.save(promoCategory);
-			}else if(taskDto.getTaskOperation() == TaskOperation.MODIFY) {
-				promoCategory.setLastModifiedBy(taskDto.getMaker());
-				promoCategory.setLastModifiedDate(taskDto.getMadeDate());
+			}else if(task.getTaskOperation() == TaskOperation.MODIFY) {
+				promoCategory.setLastModifiedBy(task.getMaker());
+				promoCategory.setLastModifiedDate(task.getMadeDate());
 				promoCategoryRepository.save(promoCategory);
-			}else if(taskDto.getTaskOperation() == TaskOperation.DELETE) {
+			}else if(task.getTaskOperation() == TaskOperation.DELETE) {
 				promoCategoryRepository.delete(promoCategory);
 			}
 		}

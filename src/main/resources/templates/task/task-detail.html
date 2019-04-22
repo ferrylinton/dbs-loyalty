@@ -117,16 +117,6 @@
                                                         } ]
                                                       }
                                     </pre>
-                                    <embed id="embeddedPdf" class="border" width="100%" height="400px" src="" type="application/pdf">
-                                    <script th:inline="javascript">
-
-									    var taskDataNew = [[${task.taskDataNew}]];
-									    var obj = JSON.parse(taskDataNew);
-									    var base64String = btoa(String.fromCharCode.apply(null, new Uint8Array(obj.materialBytes)));
-									    document.getElementById('embeddedPdf').setAttribute('src', "data:application/pdf;base64, " + base64String);
-
-									</script>
-									
                                 </td>
                             </tr>
                             <tr th:if="${task.message}">
@@ -136,10 +126,6 @@
                             <tr th:if="${task.error}">
                                 <th th:text="#{error}">Error</th>
                                 <td th:text="${task.error}">Error</td>
-                            </tr>
-                            <tr th:if="${task.errorDetail}">
-                                <th th:text="#{errorDetail}">Error Detail</th>
-                                <td th:text="${task.errorDetail}">Error Detail</td>
                             </tr>
                         </tbody>
                     </table>

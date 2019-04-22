@@ -82,7 +82,7 @@
                                             <a class="dropdown-item pl-1" href="/task/task-detail.html" th:href="@{|/task${type}/${task.id}/detail|}">
                                                 <span class="icon-eye"></span> <span th:text="#{detail}">Detail</span>
                                             </a>
-                                            <th:block th:if="${isChecker}">
+                                            <th:block th:if="${isChecker && task.taskStatus.name() == 'PENDING'}">
                                                 <div class="dropdown-divider my-0"></div>
                                                 <a class="dropdown-item pl-1" href="/task/task-form.html" th:href="@{|/task${type}/${task.id}|}">
                                                     <span class="icon-edit"></span> <span th:text="#{confirm}">Confirm</span>

@@ -11,8 +11,8 @@ import java.util.Optional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
 
+import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.service.TaskService;
-import com.dbs.loyalty.service.dto.TaskDto;
 import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.controller.AbstractPageController;
@@ -38,7 +38,7 @@ public class AbstractTaskController extends AbstractPageController {
 	protected final TaskService taskService;
 	
 	protected void view(String type, ModelMap model, String id) {
-		Optional<TaskDto> task = taskService.findById(id);
+		Optional<Task> task = taskService.findById(id);
 		
 		if (task.isPresent()) {
 			model.addAttribute(TASK, task.get());
@@ -49,21 +49,21 @@ public class AbstractTaskController extends AbstractPageController {
 		model.addAttribute(TYPE, type);
 	}
 	
-	protected ResponseEntity<AbstractResponse> save(TaskDto taskDto){
+	protected ResponseEntity<AbstractResponse> save(Task task){
 		try {
-			String val = taskService.save(taskDto);
-			String resultUrl = UrlUtil.getTaskUrl(taskDto.getTaskDataType());
-			return dataIsSavedResponse(getMessage(taskDto, val), resultUrl);
+			String val = taskService.save(task);
+			String resultUrl = UrlUtil.getTaskUrl(task.getTaskDataType());
+			return dataIsSavedResponse(getMessage(task, val), resultUrl);
 		} catch (Exception ex) {
 			log.error(ex.getLocalizedMessage(), ex);
-			taskService.save(ex, taskDto);
+			taskService.save(ex, task);
 			return errorResponse(ex);
 		}
 	}
 	
-	protected String getMessage(TaskDto taskDto, String val) {
-		Object[] args = new Object[] { MessageUtil.getMessage(taskDto.getTaskOperation().toString()), MessageUtil.getMessage(taskDto.getTaskDataType()), val };
-		return MessageUtil.getMessage(taskDto.isVerified() ? TASK_IS_VERIFIED  : TASK_IS_REJECTED, args);
+	protected String getMessage(Task task, String val) {
+		Object[] args = new Object[] { MessageUtil.getMessage(task.getTaskOperation().toString()), MessageUtil.getMessage(task.getTaskDataType()), val };
+		return MessageUtil.getMessage(task.getVerified() ? TASK_IS_VERIFIED  : TASK_IS_REJECTED, args);
 	}
 
 }

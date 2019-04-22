@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.domain.FileImage;
+import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.CustomerRepository;
 import com.dbs.loyalty.repository.FileImageRepository;
@@ -22,7 +23,6 @@ import com.dbs.loyalty.service.dto.CustomerFormDto;
 import com.dbs.loyalty.service.dto.CustomerPasswordDto;
 import com.dbs.loyalty.service.dto.CustomerUpdateDto;
 import com.dbs.loyalty.service.dto.CustomerViewDto;
-import com.dbs.loyalty.service.dto.TaskDto;
 import com.dbs.loyalty.service.mapper.CustomerMapper;
 import com.dbs.loyalty.service.specification.CustomerSpecification;
 import com.dbs.loyalty.util.ImageUtil;
@@ -132,21 +132,21 @@ public class CustomerService{
 		customerRepository.changePassword(passwordHash, SecurityUtil.getLogged());
 	}
 	
-	public String execute(TaskDto taskDto) throws IOException {
-		CustomerFormDto dto = objectMapper.readValue((taskDto.getTaskOperation() == TaskOperation.DELETE) ? taskDto.getTaskDataOld() : taskDto.getTaskDataNew(), CustomerFormDto.class);
+	public String execute(Task task) throws IOException {
+		CustomerFormDto dto = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), CustomerFormDto.class);
 
-		if(taskDto.isVerified()) {
+		if(task.getVerified()) {
 			Customer customer = customerMapper.toEntity(dto);
 			
-			if(taskDto.getTaskOperation() == TaskOperation.ADD) {
-				customer.setCreatedBy(taskDto.getMaker());
-				customer.setCreatedDate(taskDto.getMadeDate());
+			if(task.getTaskOperation() == TaskOperation.ADD) {
+				customer.setCreatedBy(task.getMaker());
+				customer.setCreatedDate(task.getMadeDate());
 				customerRepository.save(customer);
-			}else if(taskDto.getTaskOperation() == TaskOperation.MODIFY) {
-				customer.setLastModifiedBy(taskDto.getMaker());
-				customer.setLastModifiedDate(taskDto.getMadeDate());
+			}else if(task.getTaskOperation() == TaskOperation.MODIFY) {
+				customer.setLastModifiedBy(task.getMaker());
+				customer.setLastModifiedDate(task.getMadeDate());
 				customerRepository.save(customer);
-			}else if(taskDto.getTaskOperation() == TaskOperation.DELETE) {
+			}else if(task.getTaskOperation() == TaskOperation.DELETE) {
 				customerRepository.delete(customer);
 			}
 		}

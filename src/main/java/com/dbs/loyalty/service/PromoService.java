@@ -12,13 +12,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.dbs.loyalty.domain.Promo;
+import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.PromoRepository;
 import com.dbs.loyalty.service.dto.CarouselDto;
 import com.dbs.loyalty.service.dto.PromoDto;
 import com.dbs.loyalty.service.dto.PromoFormDto;
 import com.dbs.loyalty.service.dto.PromoViewDto;
-import com.dbs.loyalty.service.dto.TaskDto;
 import com.dbs.loyalty.service.mapper.PromoMapper;
 import com.dbs.loyalty.service.specification.PromoSpecification;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -92,21 +92,21 @@ public class PromoService{
 		}
 	}
 
-	public String execute(TaskDto taskDto) throws IOException {
-		PromoFormDto promoDto = objectMapper.readValue((taskDto.getTaskOperation() == TaskOperation.DELETE) ? taskDto.getTaskDataOld() : taskDto.getTaskDataNew(), PromoFormDto.class);
+	public String execute(Task task) throws IOException {
+		PromoFormDto promoDto = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), PromoFormDto.class);
 		
-		if(taskDto.isVerified()) {
+		if(task.getVerified()) {
 			Promo promo = promoMapper.toEntity(promoDto);
 			
-			if(taskDto.getTaskOperation() == TaskOperation.ADD) {
-				promo.setCreatedBy(taskDto.getMaker());
-				promo.setCreatedDate(taskDto.getMadeDate());
+			if(task.getTaskOperation() == TaskOperation.ADD) {
+				promo.setCreatedBy(task.getMaker());
+				promo.setCreatedDate(task.getMadeDate());
 				promoRepository.save(promo);
-			}else if(taskDto.getTaskOperation() == TaskOperation.MODIFY) {
-				promo.setLastModifiedBy(taskDto.getMaker());
-				promo.setLastModifiedDate(taskDto.getMadeDate());
+			}else if(task.getTaskOperation() == TaskOperation.MODIFY) {
+				promo.setLastModifiedBy(task.getMaker());
+				promo.setLastModifiedDate(task.getMadeDate());
 				promoRepository.save(promo);
-			}else if(taskDto.getTaskOperation() == TaskOperation.DELETE) {
+			}else if(task.getTaskOperation() == TaskOperation.DELETE) {
 				promoRepository.delete(promo);
 			}
 		}

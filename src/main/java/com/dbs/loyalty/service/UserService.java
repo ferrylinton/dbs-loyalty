@@ -10,12 +10,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.domain.User;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.UserRepository;
-import com.dbs.loyalty.service.dto.TaskDto;
-import com.dbs.loyalty.service.dto.UserDto;
-import com.dbs.loyalty.service.mapper.UserMapper;
 import com.dbs.loyalty.service.specification.UserSpecification;
 import com.dbs.loyalty.util.SecurityUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,22 +27,30 @@ public class UserService{
 	private final ObjectMapper objectMapper;
 
 	private final UserRepository userRepository;
-	
-	private final UserMapper userMapper;
 
-	public Optional<UserDto> findByUsername(String username){
-		return userRepository.findWithRoleByUsername(username).map(userMapper::toDto);
+	public Optional<User> findByUsername(String username){
+		return userRepository.findWithRoleByUsername(username);
 	}
 	
-	public Optional<UserDto> findById(String id) {
-		return userRepository.findById(id).map(userMapper::toDto);
+	public Optional<User> findById(String id) {
+		return userRepository.findById(id);
 	}
 	
-	public Optional<UserDto> findWithRoleById(String id) {
-		return userRepository.findWithRoleById(id).map(userMapper::toDto);
+	public Optional<User> findWithRoleById(String id) {
+		return userRepository.findWithRoleById(id);
 	}
 	
-	public Optional<UserDto> save(String username, String passwordHash) {
+	public boolean isUsernameExist(String id, String username) {
+		Optional<User> user = userRepository.findByUsernameIgnoreCase(username);
+
+		if (user.isPresent()) {
+			return (id == null) || (!id.equals(user.get().getId()));
+		}else {
+			return false;
+		}
+	}
+	
+	public Optional<User> save(String username, String passwordHash) {
 		User result = null;
 		Optional<User> user = userRepository.findByUsernameIgnoreCase(username);
 		
@@ -55,32 +61,31 @@ public class UserService{
 			result = userRepository.save(user.get());
 		}
 
-		return Optional.of(userMapper.toDto(result));
+		return Optional.of(result);
 	}
 	
-	public Page<UserDto> findAll(Pageable pageable, HttpServletRequest request) {
-		return userRepository.findAll(UserSpecification.getSpec(request), pageable).map(userMapper::toDto);
+	public Page<User> findAll(Pageable pageable, HttpServletRequest request) {
+		return userRepository.findAll(UserSpecification.getSpec(request), pageable);
 	}
 	
-	public String execute(TaskDto taskDto) throws IOException {
-		UserDto dto = objectMapper.readValue((taskDto.getTaskOperation() == TaskOperation.DELETE) ? taskDto.getTaskDataOld() : taskDto.getTaskDataNew(), UserDto.class);
+	public String execute(Task task) throws IOException {
+		User user = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), User.class);
 		
-		if(taskDto.isVerified()) {
-			User user = userMapper.toEntity(dto);
-			if(taskDto.getTaskOperation() == TaskOperation.ADD) {
-				user.setCreatedBy(taskDto.getMaker());
-				user.setCreatedDate(taskDto.getMadeDate());
+		if(task.getVerified()) {
+			if(task.getTaskOperation() == TaskOperation.ADD) {
+				user.setCreatedBy(task.getMaker());
+				user.setCreatedDate(task.getMadeDate());
 				userRepository.save(user);
-			}else if(taskDto.getTaskOperation() == TaskOperation.MODIFY) {
-				user.setLastModifiedBy(taskDto.getMaker());
-				user.setLastModifiedDate(taskDto.getMadeDate());
+			}else if(task.getTaskOperation() == TaskOperation.MODIFY) {
+				user.setLastModifiedBy(task.getMaker());
+				user.setLastModifiedDate(task.getMadeDate());
 				userRepository.save(user);
-			}else if(taskDto.getTaskOperation() == TaskOperation.DELETE) {
+			}else if(task.getTaskOperation() == TaskOperation.DELETE) {
 				userRepository.delete(user);
 			}
 		}
 
-		return dto.getUsername();
+		return user.getUsername();
 	}
 	
 }
