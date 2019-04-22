@@ -43,7 +43,7 @@ import lombok.ToString;
 		@UniqueConstraint(name = "c_customer_email_uq", columnNames = { "email" })
 	}
 )
-public class Customer extends AbstractImage implements Serializable {
+public class Customer extends AbstractAuditing implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -74,6 +74,9 @@ public class Customer extends AbstractImage implements Serializable {
 
 	@Column(name = "activated", nullable = false)
 	private boolean activated;
+	
+	@Column(name = "locked", nullable = false)
+	private boolean locked;
 
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     private Set<LovedOne> lovedOnes = new HashSet<>();

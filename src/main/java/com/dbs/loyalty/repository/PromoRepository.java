@@ -12,6 +12,9 @@ import com.dbs.loyalty.domain.Promo;
 
 public interface PromoRepository extends JpaRepository<Promo, String>, JpaSpecificationExecutor<Promo>{
 
+	@Query(value = "select p.termAndCondition from Promo p where id= ?1")
+	Optional<String> findTermAndConditionById(String id);
+	
 	Optional<Promo> findByCodeIgnoreCase(String code);
 	
 	Optional<Promo> findByTitleIgnoreCase(String title);

@@ -35,13 +35,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.dbs.loyalty.domain.FileImage;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
+import com.dbs.loyalty.service.FileImageService;
 import com.dbs.loyalty.service.PromoCategoryService;
 import com.dbs.loyalty.service.PromoService;
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.service.dto.PromoCategoryDto;
 import com.dbs.loyalty.service.dto.PromoDto;
+import com.dbs.loyalty.service.dto.PromoFormDto;
 import com.dbs.loyalty.util.ImageUtil;
 import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.response.AbstractResponse;
@@ -56,6 +59,8 @@ import lombok.RequiredArgsConstructor;
 public class PromoController extends AbstractPageController {
 
 	private final PromoService promoService;
+	
+	private final FileImageService fileImageservice;
 
 	private final PromoCategoryService promoCategoryService;
 	
@@ -99,34 +104,33 @@ public class PromoController extends AbstractPageController {
 	@PreAuthorize("hasRole('PROMO_MK')")
 	@PostMapping
 	@ResponseBody
-	public ResponseEntity<AbstractResponse> savePromo(@ModelAttribute @Valid PromoDto promoDto, BindingResult result) throws BadRequestException, IOException, NotFoundException {
+	public ResponseEntity<AbstractResponse> savePromo(@ModelAttribute @Valid PromoFormDto promoFormDto, BindingResult result) throws BadRequestException, IOException, NotFoundException {
 		if (result.hasErrors()) {
 			throwBadRequestResponse(result);
 		}
 		
-		if(promoDto.getId() == null) {
-			ImageUtil.setImageDto(promoDto);
-			taskService.saveTaskAdd(PROMO, promoDto);
+		if(promoFormDto.getId() == null) {
+			FileImage fileImage = fileImageservice.save(promoFormDto.getImageFile());
+			promoFormDto.setFileImageId(fileImage.getId());
+			taskService.saveTaskAdd(PROMO, promoFormDto);
 		}else {
-			Optional<PromoDto> current = promoService.findById(promoDto.getId());
+			Optional<PromoDto> current = promoService.findById(promoFormDto.getId());
 			
 			if(current.isPresent()) {
-				if(promoDto.getImageFile().isEmpty()) {
-					promoDto.setImageBytes(current.get().getImageBytes());
-					promoDto.setImageContentType(current.get().getImageContentType());
-					promoDto.setImageWidth(current.get().getImageWidth());
-					promoDto.setImageHeight(current.get().getImageHeight());
+				if(promoFormDto.getImageFile().isEmpty()) {
+					promoFormDto.setFileImageId(promoFormDto.getId());
 				}else {
-					ImageUtil.setImageDto(promoDto);
+					FileImage fileImage = fileImageservice.save(promoFormDto.getImageFile());
+					promoFormDto.setFileImageId(fileImage.getId());
 				}
 				
-				taskService.saveTaskModify(PROMO, current.get(), promoDto);
+				taskService.saveTaskModify(PROMO, current.get(), promoFormDto);
 			}else {
 				throw new NotFoundException();
 			}
 		}
 
-		return taskIsSavedResponse(PROMO, promoDto.getTitle(), UrlUtil.getUrl(PROMO));
+		return taskIsSavedResponse(PROMO, promoFormDto.getTitle(), UrlUtil.getUrl(PROMO));
 	}
 
 	@PreAuthorize("hasRole('PROMO_MK')")

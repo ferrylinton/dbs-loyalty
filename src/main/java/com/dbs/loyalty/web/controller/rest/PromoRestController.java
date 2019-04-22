@@ -19,11 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.config.constant.MessageConstant;
+import com.dbs.loyalty.domain.FileImage;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.CustomerPromoService;
+import com.dbs.loyalty.service.FileImageService;
 import com.dbs.loyalty.service.PromoService;
 import com.dbs.loyalty.service.dto.CarouselDto;
-import com.dbs.loyalty.service.dto.PromoDto;
 import com.dbs.loyalty.service.dto.PromoViewDto;
 import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.web.response.AbstractResponse;
@@ -43,6 +44,8 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api")
 public class PromoRestController {
 
+	private final FileImageService fileImageService;
+	
 	private final PromoService promoService;
 	
 	private final CustomerPromoService customerPromoService;
@@ -114,17 +117,17 @@ public class PromoRestController {
     		@ApiParam(name = "id", value = "Promo Id", example = "zO0dDp9K")
     		@PathVariable String id) throws NotFoundException{
     	
-		Optional<PromoDto> current = promoService.findById(id);
+    	Optional<FileImage> fileImage = fileImageService.findOneByPromoId(id);
     	
-    	if(current.isPresent()) {
+    	if(fileImage.isPresent()) {
     		HttpHeaders headers = new HttpHeaders();
 			headers.setCacheControl(CacheControl.noCache().getHeaderValue());
-			headers.setContentType(MediaType.valueOf(current.get().getImageContentType()));
+			headers.setContentType(MediaType.valueOf(fileImage.get().getContentType()));
 			
 			return ResponseEntity
 					.ok()
 					.headers(headers)
-					.body(current.get().getImageBytes());
+					.body(fileImage.get().getBytes());
     	}else {
     		String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, id);
     		throw new NotFoundException(message);
@@ -144,7 +147,7 @@ public class PromoRestController {
     		@ApiParam(name = "id", value = "Promo Id", example = "zO0dDp9K")
     		@PathVariable String id) throws NotFoundException{
     	
-		Optional<PromoDto> current = promoService.findById(id);
+		Optional<String> current = promoService.findTermAndConditionById(id);
     	
     	if(current.isPresent()) {
     		HttpHeaders headers = new HttpHeaders();
@@ -154,7 +157,7 @@ public class PromoRestController {
     		return ResponseEntity
     				.ok()
     				.headers(headers)
-    				.body(current.get().getTermAndCondition());
+    				.body(current.get());
     	}else {
     		String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, id);
     		throw new NotFoundException(message);

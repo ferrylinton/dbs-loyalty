@@ -124,8 +124,7 @@ public class TaskService {
 		try {
 			Task task = taskMapper.toEntity(taskDto);
 			task.setTaskStatus(TaskStatus.FAILED);
-			task.setError(StringUtils.substring(ex.getLocalizedMessage(), 0, 250));
-			task.setErrorDetail(ErrorUtil.getErrorMessage(ex));
+			task.setError(ErrorUtil.getErrorMessage(ex));
 			taskRepository.save(task);
 		} catch (Exception e) {
 			log.error(e.getLocalizedMessage(), e);

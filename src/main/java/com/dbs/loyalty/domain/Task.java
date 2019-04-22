@@ -73,11 +73,8 @@ public class Task implements Serializable {
     @Column(name = "message")
     private String message;
     
+    @Lob
     @Column(name = "error")
     private String error;
-    
-    @Lob
-    @Column(name = "errorDetail")
-    private String errorDetail;
 
 }

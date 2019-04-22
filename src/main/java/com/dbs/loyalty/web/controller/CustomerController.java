@@ -34,11 +34,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.dbs.loyalty.domain.FileImage;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.CustomerService;
+import com.dbs.loyalty.service.FileImageService;
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.service.dto.CustomerDto;
+import com.dbs.loyalty.service.dto.CustomerFormDto;
 import com.dbs.loyalty.util.ImageUtil;
 import com.dbs.loyalty.util.PasswordUtil;
 import com.dbs.loyalty.util.UrlUtil;
@@ -53,6 +56,8 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/customer")
 public class CustomerController extends AbstractPageController{
 
+	private final FileImageService fileImageservice;
+	
 	private final CustomerService customerService;
 	
 	private final TaskService taskService;
@@ -95,37 +100,36 @@ public class CustomerController extends AbstractPageController{
 	@PreAuthorize("hasRole('CUSTOMER_MK')")
 	@PostMapping
 	@ResponseBody
-	public ResponseEntity<AbstractResponse> saveCustomer(@Valid @ModelAttribute CustomerDto customerDto, BindingResult result) throws BadRequestException, IOException, NotFoundException {
+	public ResponseEntity<AbstractResponse> saveCustomer(@Valid @ModelAttribute CustomerFormDto customerFormDto, BindingResult result) throws BadRequestException, IOException, NotFoundException {
 		if (result.hasErrors()) {
 			throwBadRequestResponse(result);
 		}
 
-		if(customerDto.getId() == null) {
-			customerDto.setPasswordHash(PasswordUtil.encode(customerDto.getPasswordPlain()));
-			customerDto.setPasswordPlain(null);
-			ImageUtil.setImageDto(customerDto);
-			taskService.saveTaskAdd(CUSTOMER, customerDto);
+		if(customerFormDto.getId() == null) {
+			FileImage fileImage = fileImageservice.save(customerFormDto.getImageFile());
+			
+			customerFormDto.setFileImageId(fileImage.getId());
+			customerFormDto.setPasswordHash(PasswordUtil.encode(customerFormDto.getPasswordPlain()));
+			taskService.saveTaskAdd(CUSTOMER, customerFormDto);
 		}else {
-			Optional<CustomerDto> current = customerService.findWithCustomerImageById(customerDto.getId());
+			Optional<CustomerDto> current = customerService.findWithCustomerImageById(customerFormDto.getId());
 			
 			if(current.isPresent()) { 
-				if(customerDto.getImageFile().isEmpty()) {
-					customerDto.setImageBytes(current.get().getImageBytes());
-					customerDto.setImageContentType(current.get().getImageContentType());
-					customerDto.setImageWidth(current.get().getImageWidth());
-					customerDto.setImageHeight(current.get().getImageHeight());
+				if(customerFormDto.getImageFile().isEmpty()) {
+					customerFormDto.setFileImageId(customerFormDto.getId());
 				}else {
-					ImageUtil.setImageDto(customerDto);
+					FileImage fileImage = fileImageservice.save(customerFormDto.getImageFile());
+					customerFormDto.setFileImageId(fileImage.getId());
 				}
 				
-				customerDto.setPasswordHash(current.get().getPasswordHash());
-				taskService.saveTaskModify(CUSTOMER, current.get(), customerDto);
+				//customerFormDto.setPasswordHash(current.get().getPasswordHash());
+				taskService.saveTaskModify(CUSTOMER, current.get(), customerFormDto);
 			}else {
 				throw new NotFoundException();
 			}
 		}
 
-		return taskIsSavedResponse(CUSTOMER,  customerDto.getName(), UrlUtil.getUrl(CUSTOMER));
+		return taskIsSavedResponse(CUSTOMER,  customerFormDto.getName(), UrlUtil.getUrl(CUSTOMER));
 	}
 	
 	@PreAuthorize("hasRole('CUSTOMER_MK')")

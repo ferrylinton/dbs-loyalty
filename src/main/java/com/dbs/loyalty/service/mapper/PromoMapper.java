@@ -8,11 +8,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.dbs.loyalty.config.constant.PathConstant;
 import com.dbs.loyalty.domain.Promo;
 import com.dbs.loyalty.service.dto.CarouselDto;
-import com.dbs.loyalty.service.dto.PromoDto;
+import com.dbs.loyalty.service.dto.PromoFormDto;
 import com.dbs.loyalty.service.dto.PromoViewDto;
 
 @Mapper(componentModel = "spring", uses = {PromoCategoryMapper.class})
-public abstract class PromoMapper extends EntityMapper<PromoDto, Promo> {
+public abstract class PromoMapper extends EntityMapper<PromoFormDto, Promo> {
 
 	public abstract PromoViewDto toViewDto(Promo promo);
 	
@@ -33,7 +33,7 @@ public abstract class PromoMapper extends EntityMapper<PromoDto, Promo> {
                 .toUriString();
 		
 		promoViewDto.setImageUrl(imageUrl);
-		promoViewDto.setTermAndConditionUrl(termUrl);
+		promoViewDto.setTermUrl(termUrl);
     }
 	
 	@AfterMapping

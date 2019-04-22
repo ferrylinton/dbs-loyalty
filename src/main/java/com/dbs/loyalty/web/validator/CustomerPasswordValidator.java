@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.service.CustomerService;
 import com.dbs.loyalty.service.dto.CustomerDto;
 import com.dbs.loyalty.service.dto.CustomerPasswordDto;
@@ -43,7 +44,8 @@ public class CustomerPasswordValidator implements Validator {
 				String defaultMessage = MessageUtil.getMessage(validationConfirmNewPass, errorArgs);
 				errors.rejectValue(confirmNewPass, validationConfirmNewPass, errorArgs, defaultMessage);
 			}else {
-				Optional<CustomerDto> current = customerService.findByEmail(SecurityUtil.getLogged());
+				Optional<Customer> current = customerService.findByEmail(SecurityUtil.getLogged());
+				
 				if(current.isPresent() && !PasswordUtil.matches(customerPasswordDto.getOldPassword(), current.get().getPasswordHash())) {
 					Object[] errorArgs = new String[] { customerPasswordDto.getOldPassword() };
 					String defaultMessage = MessageUtil.getMessage(oldPassNotMatch, errorArgs);

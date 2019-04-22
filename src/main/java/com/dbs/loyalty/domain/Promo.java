@@ -42,14 +42,14 @@ import lombok.ToString;
 		@UniqueConstraint(name = "c_promo_title_uq", columnNames = { "title" })
 	}
 )
-public class Promo extends AbstractImage implements Serializable {
+public class Promo extends AbstractAuditing implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-	@Column(name = "id", length=8)
-	@GenericGenerator(name = "StringIdGenerator", strategy = "com.dbs.loyalty.domain.IdGenerator")
-	@GeneratedValue(generator = "StringIdGenerator")
+	@Column(name = "id", length=36)
+	@GenericGenerator(name = "UUIDGenerator", strategy = "com.dbs.loyalty.domain.UUIDGenerator")
+	@GeneratedValue(generator = "UUIDGenerator")
 	private String id;
     
     @Column(name = "code", length = 50, nullable = false)
@@ -60,7 +60,7 @@ public class Promo extends AbstractImage implements Serializable {
 
     @Column(name = "description", nullable = false)
     private String description;
-
+    
     @Lob
     @Column(name = "content", nullable = false, columnDefinition="TEXT")
     private String content;

@@ -13,6 +13,7 @@ import com.dbs.loyalty.domain.Event;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.EventRepository;
 import com.dbs.loyalty.service.dto.EventDto;
+import com.dbs.loyalty.service.dto.EventFormDto;
 import com.dbs.loyalty.service.dto.EventViewDto;
 import com.dbs.loyalty.service.dto.TaskDto;
 import com.dbs.loyalty.service.mapper.EventMapper;
@@ -45,18 +46,18 @@ public class EventService{
 	}
 
 	
-	public boolean isTitleExist(EventDto eventDto) {
-		Optional<Event> event = eventRepository.findByTitleIgnoreCase(eventDto.getTitle());
+	public boolean isTitleExist(String id, String title) {
+		Optional<Event> event = eventRepository.findByTitleIgnoreCase(title);
 
 		if (event.isPresent()) {
-			return (eventDto.getId() == null) || (!eventDto.getId().equals(event.get().getId()));
+			return (id == null) || (!id.equals(event.get().getId()));
 		}else {
 			return false;
 		}
 	}
 
 	public String execute(TaskDto taskDto) throws IOException {
-		EventDto eventDto = objectMapper.readValue((taskDto.getTaskOperation() == TaskOperation.DELETE) ? taskDto.getTaskDataOld() : taskDto.getTaskDataNew(), EventDto.class);
+		EventFormDto eventDto = objectMapper.readValue((taskDto.getTaskOperation() == TaskOperation.DELETE) ? taskDto.getTaskDataOld() : taskDto.getTaskDataNew(), EventFormDto.class);
 		
 		if(taskDto.isVerified()) {
 			Event event = eventMapper.toEntity(eventDto);

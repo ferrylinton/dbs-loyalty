@@ -1,0 +1,142 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="FLH" id="111-1">
+
+        <insert tableName="c_promo">
+            <column name="id" value="80db859e-e574-41b7-bcc3-a8dd0bf0eae2"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="activated" valueBoolean="true"/>
+            <column name="show_in_carousel" valueBoolean="true"/>
+            <column name="code" value="101"/>
+            <column name="title" value="Nilai Tukar Kompetitif"/>
+            <column name="description" value="Nikmati nilai tukar kompetitif Dollar Singapura terhadap Rupiah"/>
+            <column name="start_period" valueDate="2019-04-01"/>
+            <column name="end_period" valueDate="2019-12-31"/>
+			<column name="content" valueBlobFile="txt/In1IverC.txt"/>
+            <column name="term_and_condition" valueBlobFile="txt/term_and_condition.txt"/>
+            <column name="promo_category_id" value="${DebitCardPromo}"/>
+        </insert>
+        
+        <insert tableName="f_image">
+            <column name="id" value="80db859e-e574-41b7-bcc3-a8dd0bf0eae2"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="bytes" valueBlobFile="image/In1IverC.png"/>
+            <column name="content_type" value="image/png"/>
+            <column name="width" valueNumeric="300"/>
+			<column name="height" valueNumeric="300"/>
+        </insert>
+        
+        <insert tableName="c_promo">
+            <column name="id" value="d2c35a7d-4e11-4cb3-bdbc-2fd08b19c37e"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="activated" valueBoolean="true"/>
+            <column name="show_in_carousel" valueBoolean="true"/>
+            <column name="code" value="102"/>
+            <column name="title" value="digibank by DBS"/>
+            <column name="description" value="Siapkan eKTP dan NPWP untuk buka rekening digibank by DBS langsung dari ponsel kamu dan dapatkan cash reward Rp50.000!"/>
+            <column name="start_period" valueDate="2019-04-01"/>
+            <column name="end_period" valueDate="2019-12-31"/>
+			<column name="content" valueBlobFile="txt/dP1DenfF.txt"/>
+            <column name="term_and_condition" valueBlobFile="txt/term_and_condition.txt"/>
+            <column name="promo_category_id" value="${DebitCardPromo}"/>
+        </insert>
+        
+        <insert tableName="c_promo">
+            <column name="id" value="d2c35a7d-4e11-4cb3-bdbc-2fd08b19c37e"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="bytes" valueBlobFile="image/dP1DenfF.png"/>
+            <column name="content_type" value="image/png"/>
+            <column name="width" valueNumeric="300"/>
+			<column name="height" valueNumeric="300"/>
+        </insert>
+        
+        <insert tableName="c_promo">
+            <column name="id" value="492533b6-a685-474a-90f9-b3d3c2eb602b"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="activated" valueBoolean="true"/>
+            <column name="show_in_carousel" valueBoolean="true"/>
+            <column name="code" value="103"/>
+            <column name="title" value="Member Get Member"/>
+            <column name="description" value="Sebarkan keistimewaan tentang DBS Treasures kepada teman Anda, dan dapatkan hadiah apresiasi yang lebih berwarna dari kami."/>
+            <column name="start_period" valueDate="2019-04-01"/>
+            <column name="end_period" valueDate="2019-12-31"/>
+			<column name="content" valueBlobFile="txt/eUTtk73T.txt"/>
+            <column name="term_and_condition" valueBlobFile="txt/term_and_condition.txt"/>
+            <column name="promo_category_id" value="${DebitCardPromo}"/>
+        </insert>
+        
+        <insert tableName="c_promo">
+            <column name="id" value="492533b6-a685-474a-90f9-b3d3c2eb602b"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="bytes" valueBlobFile="image/eUTtk73T.png"/>
+            <column name="content_type" value="image/png"/>
+            <column name="width" valueNumeric="300"/>
+			<column name="height" valueNumeric="300"/>
+        </insert>
+        
+        <insert tableName="c_promo">
+            <column name="id" value="a603ce50-3138-4231-83f5-c620ef828547"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="activated" valueBoolean="true"/>
+            <column name="show_in_carousel" valueBoolean="true"/>
+            <column name="code" value="201"/>
+            <column name="title" value="RHB SRI KEHATI Index Fund"/>
+            <column name="description" value="Lengkapi variasi produk Reksa Dana yang sudah ada, kamu menawarkan alternatif produk dalam mata uang IDR."/>
+            <column name="start_period" valueDate="2019-04-01"/>
+            <column name="end_period" valueDate="2019-12-31"/>
+			<column name="content" valueBlobFile="txt/7mITGaI3.txt"/>
+            <column name="term_and_condition" valueBlobFile="txt/term_and_condition.txt"/>
+            <column name="promo_category_id" value="${PromoInvestasi}"/>
+        </insert>
+        
+        <insert tableName="c_promo">
+            <column name="id" value="a603ce50-3138-4231-83f5-c620ef828547"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="bytes" valueBlobFile="image/7mITGaI3.png"/>
+            <column name="content_type" value="image/png"/>
+            <column name="width" valueNumeric="300"/>
+			<column name="height" valueNumeric="300"/>
+        </insert>
+        
+        <insert tableName="c_promo">
+            <column name="id" value="fc14108b-7999-4269-b66f-bf753b10ac91"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="activated" valueBoolean="true"/>
+            <column name="show_in_carousel" valueBoolean="true"/>
+            <column name="code" value="301"/>
+            <column name="title" value="DBS Home Loan"/>
+            <column name="description" value="Rumah idaman bukan lagi sebuah impian belaka, wujudkan sekarang juga dengan DBS Home Loan!"/>
+            <column name="start_period" valueDate="2019-04-01"/>
+            <column name="end_period" valueDate="2019-12-31"/>
+			<column name="content" valueBlobFile="txt/kUWEbMEH.txt"/>
+            <column name="term_and_condition" valueBlobFile="txt/term_and_condition.txt"/>
+            <column name="promo_category_id" value="${PromoPinjaman}"/>
+        </insert>
+        
+        <insert tableName="c_promo">
+            <column name="id" value="fc14108b-7999-4269-b66f-bf753b10ac91"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="bytes" valueBlobFile="image/kUWEbMEH.png"/>
+            <column name="content_type" value="image/png"/>
+            <column name="width" valueNumeric="300"/>
+			<column name="height" valueNumeric="300"/>
+        </insert>
+        
+    </changeSet>
+    
+</databaseChangeLog>

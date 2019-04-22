@@ -1,0 +1,42 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog 
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    
+    <changeSet author="FLH" id="019-1">
+    
+        <createTable tableName="c_customer_event">
+            <column name="customer_id" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="event_id" type="VARCHAR(8)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="event_answer" type="TINYINT"/>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+        
+    </changeSet>
+    
+	<changeSet author="FLH" id="019-2">
+        <addPrimaryKey columnNames="customer_id,event_id" constraintName="c_customer_event_pkey" tableName="c_customer_event"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="019-3">
+        <addForeignKeyConstraint baseColumnNames="customer_id" baseTableName="c_customer_event" constraintName="c_customer_event_fk1" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="c_customer"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="019-4">
+        <addForeignKeyConstraint baseColumnNames="event_id" baseTableName="c_customer_event" constraintName="c_customer_event_fk2" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="c_event"/>
+    </changeSet>
+    
+</databaseChangeLog>

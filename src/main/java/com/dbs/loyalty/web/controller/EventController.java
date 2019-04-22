@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
@@ -38,11 +40,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.dbs.loyalty.domain.FileImage;
+import com.dbs.loyalty.domain.FilePdf;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.EventService;
+import com.dbs.loyalty.service.FileImageService;
+import com.dbs.loyalty.service.FilePdfService;
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.service.dto.EventDto;
+import com.dbs.loyalty.service.dto.EventFormDto;
 import com.dbs.loyalty.util.ImageUtil;
 import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.util.SecurityUtil;
@@ -58,6 +65,10 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/event")
 public class EventController extends AbstractPageController {
 
+	private final FileImageService fileImageservice;
+	
+	private final FilePdfService filePdfService;
+	
 	private final EventService eventService;
 
 	private final TaskService taskService;
@@ -99,8 +110,8 @@ public class EventController extends AbstractPageController {
 	
 	@PreAuthorize("hasAnyRole('EVENT_MK', 'EVENT_CK')")
 	@GetMapping("/{id}/material")
-	public ResponseEntity<byte[]> getEventMaterial(ModelMap model, @PathVariable String id) throws NotFoundException {
-		Optional<EventDto> current = eventService.findById(id);
+	public ResponseEntity<byte[]> getEventMaterial(@PathVariable String id) throws NotFoundException {
+		Optional<FileImage> current = fileImageservice.findOneByEventId(id);
     	
 		if(current.isPresent()) {
 			HttpHeaders headers = new HttpHeaders();
@@ -110,7 +121,29 @@ public class EventController extends AbstractPageController {
 			return ResponseEntity
 					.ok()
 					.headers(headers)
-					.body(current.get().getMaterialBytes());
+					.body(current.get().getBytes());
+		}else {
+			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, SecurityUtil.getLogged());
+			throw new NotFoundException(message);
+		}
+	}
+	
+	@PreAuthorize("hasAnyRole('EVENT_MK', 'EVENT_CK')")
+	@GetMapping("/{id}/material/download")
+	public ResponseEntity<InputStreamResource> downloadEventMaterial(@PathVariable String id) throws NotFoundException, IOException {
+		Optional<FilePdf> current = filePdfService.findOneByEventId(id);
+    	
+		if(current.isPresent()) {
+			HttpHeaders headers = new HttpHeaders();
+			headers.setCacheControl(CacheControl.noCache().getHeaderValue());
+			headers.setContentType(MediaType.APPLICATION_PDF);
+			headers.add("content-disposition", "attachment;filename=" + id + ".pdf");
+			ByteArrayResource resource = new ByteArrayResource(current.get().getBytes());
+			
+			return ResponseEntity
+					.ok()
+					.headers(headers)
+					.body(new InputStreamResource(resource.getInputStream()));
 		}else {
 			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, SecurityUtil.getLogged());
 			throw new NotFoundException(message);
@@ -120,34 +153,33 @@ public class EventController extends AbstractPageController {
 	@PreAuthorize("hasRole('EVENT_MK')")
 	@PostMapping
 	@ResponseBody
-	public ResponseEntity<AbstractResponse> saveEvent(@ModelAttribute @Valid EventDto eventDto, BindingResult result) throws BadRequestException, IOException, NotFoundException {
+	public ResponseEntity<AbstractResponse> saveEvent(@ModelAttribute @Valid EventFormDto eventFormDto, BindingResult result) throws BadRequestException, IOException, NotFoundException {
 		if (result.hasErrors()) {
 			throwBadRequestResponse(result);
 		}
 		
-		if(eventDto.getId() == null) {
-			ImageUtil.setImageDto(eventDto);
-			taskService.saveTaskAdd(EVENT, eventDto);
+		if(eventFormDto.getId() == null) {
+			FileImage fileImage = fileImageservice.save(eventFormDto.getImageFile());
+			eventFormDto.setImageFileId(fileImage.getId());
+			taskService.saveTaskAdd(EVENT, eventFormDto);
 		}else {
-			Optional<EventDto> current = eventService.findById(eventDto.getId());
+			Optional<EventDto> current = eventService.findById(eventFormDto.getId());
 			
 			if(current.isPresent()) {
-				if(eventDto.getImageFile().isEmpty()) {
-					eventDto.setImageBytes(current.get().getImageBytes());
-					eventDto.setImageContentType(current.get().getImageContentType());
-					eventDto.setImageWidth(current.get().getImageWidth());
-					eventDto.setImageHeight(current.get().getImageHeight());
+				if(eventFormDto.getImageFile().isEmpty()) {
+					eventFormDto.setImageFileId(eventFormDto.getId());
 				}else {
-					ImageUtil.setImageDto(eventDto);
+					FileImage fileImage = fileImageservice.save(eventFormDto.getImageFile());
+					eventFormDto.setImageFileId(fileImage.getId());
 				}
 				
-				taskService.saveTaskModify(EVENT, current.get(), eventDto);
+				taskService.saveTaskModify(EVENT, current.get(), eventFormDto);
 			}else {
 				throw new NotFoundException();
 			}
 		}
 
-		return taskIsSavedResponse(EVENT, eventDto.getTitle(), UrlUtil.getUrl(EVENT));
+		return taskIsSavedResponse(EVENT, eventFormDto.getTitle(), UrlUtil.getUrl(EVENT));
 	}
 
 	@PreAuthorize("hasRole('EVENT_MK')")

@@ -41,9 +41,9 @@ public class PromoCategory extends AbstractAuditing implements Serializable {
     private static final long serialVersionUID = 1L;
   
     @Id
-	@Column(name = "id", length=8)
-	@GenericGenerator(name = "StringIdGenerator", strategy = "com.dbs.loyalty.domain.IdGenerator")
-	@GeneratedValue(generator = "StringIdGenerator")
+	@Column(name = "id", length=36)
+	@GenericGenerator(name = "UUIDGenerator", strategy = "com.dbs.loyalty.domain.UUIDGenerator")
+	@GeneratedValue(generator = "UUIDGenerator")
 	private String id;
     
     @Column(name = "name", length = 100, nullable = false)

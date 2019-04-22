@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.service.CustomerService;
 import com.dbs.loyalty.service.dto.CustomerDto;
 import com.dbs.loyalty.service.dto.CustomerUpdateDto;
@@ -30,10 +31,10 @@ public class CustomerUpdateValidator implements Validator {
 	@Override
 	public void validate(Object target, Errors errors) {
 		CustomerUpdateDto customerUpdateDto = (CustomerUpdateDto) target;
-		Optional<CustomerDto> customerDto = customerService.findByEmail(SecurityUtil.getLogged());
+		Optional<Customer> current = customerService.findByEmail(SecurityUtil.getLogged());
 
-		if(customerDto.isPresent()) {
-			customerUpdateDto.setId(customerDto.get().getId());
+		if(current.isPresent()) {
+			customerUpdateDto.setId(current.get().getId());
 			
 			if (customerService.isEmailExist(customerUpdateDto)) {
 				Object[] errorArgs = new String[] { customerUpdateDto.getEmail() };

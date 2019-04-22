@@ -1,0 +1,42 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="FLH" id="132-1">
+
+        <insert tableName="c_reward">
+            <column name="id" value="646e8a2a-4ca4-459a-9da8-2a31daaecd38"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="expiry_date" valueDate="2019-06-30"/>
+            <column name="point" value="10"/>
+            <column name="customer_id" value="646e8a2a-4ca4-459a-9da8-2a31daaecd38"/>
+            <column name="reward_operation_id" value="001"/>
+        </insert>
+        
+        <insert tableName="c_reward">
+            <column name="id" value="c624c586-d871-49c9-aeb4-7b1da728eec7"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="expiry_date" valueDate="2019-07-30"/>
+            <column name="point" value="10"/>
+            <column name="customer_id" value="646e8a2a-4ca4-459a-9da8-2a31daaecd38"/>
+            <column name="reward_operation_id" value="001"/>
+        </insert>
+        
+        <insert tableName="c_reward">
+            <column name="id" value="ae3f7700-396f-483d-b216-1eb5a02a070a"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="expiry_date" valueDate="2018-06-30"/>
+            <column name="point" value="10"/>
+            <column name="customer_id" value="646e8a2a-4ca4-459a-9da8-2a31daaecd38"/>
+            <column name="reward_operation_id" value="001"/>
+        </insert>
+ 
+    </changeSet>
+    
+</databaseChangeLog>

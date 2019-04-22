@@ -9,12 +9,16 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dbs.loyalty.domain.Customer;
+import com.dbs.loyalty.domain.FileImage;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.CustomerRepository;
+import com.dbs.loyalty.repository.FileImageRepository;
 import com.dbs.loyalty.service.dto.CustomerDto;
+import com.dbs.loyalty.service.dto.CustomerFormDto;
 import com.dbs.loyalty.service.dto.CustomerPasswordDto;
 import com.dbs.loyalty.service.dto.CustomerUpdateDto;
 import com.dbs.loyalty.service.dto.CustomerViewDto;
@@ -36,6 +40,8 @@ public class CustomerService{
 	
 	private final CustomerRepository customerRepository;
 	
+	private final FileImageRepository fileImageRepository;
+	
 	private final CustomerMapper customerMapper;
 
 	public Optional<CustomerViewDto> findViewDtoByEmail(String email){
@@ -44,10 +50,8 @@ public class CustomerService{
 				.map(customerMapper::toViewDto);
 	}
 	
-	public Optional<CustomerDto> findByEmail(String email){
-		return customerRepository
-				.findByEmail(email)
-				.map(customerMapper::toDto);
+	public Optional<Customer> findByEmail(String email){
+		return customerRepository.findByEmail(email);
 	}
 	
 	public Optional<CustomerDto> findWithCustomerImageById(String id) {
@@ -62,11 +66,11 @@ public class CustomerService{
 				.map(customerMapper::toDto);
 	}
 	
-	public boolean isEmailExist(CustomerDto customerDto) {
-		Optional<Customer> customer = customerRepository.findByEmailIgnoreCase(customerDto.getEmail());
+	public boolean isEmailExist(String id, String email) {
+		Optional<Customer> customer = customerRepository.findByEmailIgnoreCase(email);
 
 		if (customer.isPresent()) {
-			return (customerDto.getId() == null) || (!customerDto.getId().equals(customer.get().getId()));
+			return (id == null) || (!id.equals(customer.get().getId()));
 		}else {
 			return false;
 		}
@@ -82,17 +86,24 @@ public class CustomerService{
 		}
 	}
 	
-	public CustomerDto save(MultipartFile file) throws IOException {
+	@Transactional
+	public FileImage save(MultipartFile file) throws IOException {
 		Optional<Customer> current = customerRepository.findByEmail(SecurityUtil.getLogged());
 		
 		if(current.isPresent()) {
 			Customer customer = current.get();
-			ImageUtil.setImageDto(customer, file);
 			customer.setLastModifiedBy(SecurityUtil.getLogged());
 			customer.setLastModifiedDate(Instant.now());
-			
 			customer = customerRepository.save(customer);
-			return customerMapper.toDto(customer);
+			
+			FileImage fileImage = new FileImage();
+			fileImage.setId(customer.getId());
+			fileImage.setLastModifiedBy(SecurityUtil.getLogged());
+			fileImage.setLastModifiedDate(Instant.now());
+			ImageUtil.setFileImage(fileImage, file);
+			fileImageRepository.save(fileImage);
+
+			return fileImage;
 		}else {
 			return null;
 		}
@@ -122,13 +133,10 @@ public class CustomerService{
 	}
 	
 	public String execute(TaskDto taskDto) throws IOException {
-		CustomerDto dto = objectMapper.readValue((taskDto.getTaskOperation() == TaskOperation.DELETE) ? taskDto.getTaskDataOld() : taskDto.getTaskDataNew(), CustomerDto.class);
-		
-		System.out.println("TaskOperation : " + taskDto.getTaskOperation());
-		
+		CustomerFormDto dto = objectMapper.readValue((taskDto.getTaskOperation() == TaskOperation.DELETE) ? taskDto.getTaskDataOld() : taskDto.getTaskDataNew(), CustomerFormDto.class);
+
 		if(taskDto.isVerified()) {
 			Customer customer = customerMapper.toEntity(dto);
-			System.out.println("customer : " + customer.getId());
 			
 			if(taskDto.getTaskOperation() == TaskOperation.ADD) {
 				customer.setCreatedBy(taskDto.getMaker());

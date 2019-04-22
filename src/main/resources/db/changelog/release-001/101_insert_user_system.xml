@@ -7,7 +7,7 @@
  
 	<changeSet author="FLH" id="101-1">
 		<insert tableName="m_user">
-			<column name="id" value="xnn6QDJN" />
+			<column name="id" value="8863dab5-993f-40cc-8d85-1b816d7821b9" />
 			<column name="username" value="system" />
 			<column name="activated" valueBoolean="false" />
 			<column name="locked" valueBoolean="false" />

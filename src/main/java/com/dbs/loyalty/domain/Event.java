@@ -37,14 +37,14 @@ import lombok.ToString;
 		@UniqueConstraint(name = "c_event_title_uq", columnNames = { "title" })
 	}
 )
-public class Event extends AbstractImage implements Serializable {
+public class Event extends AbstractAuditing implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-	@Column(name = "id", length=8)
-	@GenericGenerator(name = "StringIdGenerator", strategy = "com.dbs.loyalty.domain.IdGenerator")
-	@GeneratedValue(generator = "StringIdGenerator")
+	@Column(name = "id", length=36)
+	@GenericGenerator(name = "UUIDGenerator", strategy = "com.dbs.loyalty.domain.UUIDGenerator")
+	@GeneratedValue(generator = "UUIDGenerator")
 	private String id;
 
     @Column(name = "title", nullable = false)
@@ -57,23 +57,15 @@ public class Event extends AbstractImage implements Serializable {
     @Column(name = "content", nullable = false, columnDefinition="TEXT")
     private String content;
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "start_period", nullable = false)
     private Date startPeriod;
 
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "end_period", nullable = false)
     private Date endPeriod;
     
-    @Temporal(TemporalType.TIME)
-    @Column(name = "time_period", nullable = false)
-    private Date timePeriod;
-    
     @Column(name = "place", nullable = false)
     private String place;
-
-    @Lob
-    @Column(name = "material_bytes", nullable = false, columnDefinition="BLOB")
-    private byte[] materialBytes;
     
 }

@@ -80,6 +80,9 @@
                                 	<a class="btn btn-sm btn-light" role="button" aria-pressed="true" href="/sample.pdf" th:href="@{|/event/${event.id}/material|}" onclick="return openNewTab(this);">
                                         <span class="icon-file-pdf text-danger"></span> <span th:text="#{view}">View</span>
                                     </a>
+                                    <a class="btn btn-sm btn-light" role="button" aria-pressed="true" href="/sample.pdf" th:href="@{|/event/${event.id}/material/download|}">
+                                        <span th:text="#{download}">Download</span>
+                                    </a>
                                 </td>
                             </tr>
                             <tr>

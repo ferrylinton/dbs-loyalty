@@ -4,7 +4,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import com.dbs.loyalty.service.EventService;
-import com.dbs.loyalty.service.dto.EventDto;
+import com.dbs.loyalty.service.dto.EventFormDto;
 import com.dbs.loyalty.util.MessageUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -28,25 +28,25 @@ public class EventValidator implements Validator {
 
 	@Override
 	public boolean supports(Class<?> clazz) {
-		return EventDto.class.equals(clazz);
+		return EventFormDto.class.equals(clazz);
 	}
 
 	@Override
 	public void validate(Object target, Errors errors) {
-		EventDto eventDto = (EventDto) target;
+		EventFormDto eventFormDto = (EventFormDto) target;
 
-		if (eventService.isTitleExist(eventDto)) {
-			Object[] errorArgs = new String[] { eventDto.getTitle() };
+		if (eventService.isTitleExist(eventFormDto.getId(), eventFormDto.getTitle())) {
+			Object[] errorArgs = new String[] { eventFormDto.getTitle() };
 			String defaultMessage = MessageUtil.getMessage(validationExistTitle, errorArgs);
 			errors.rejectValue(title, validationExistTitle, errorArgs, defaultMessage);
 		}
 
-		if (eventDto.getId() == null && (eventDto.getImageFile() == null || eventDto.getImageFile().isEmpty())){
+		if (eventFormDto.getId() == null && (eventFormDto.getImageFile() == null || eventFormDto.getImageFile().isEmpty())){
 			String defaultMessage = MessageUtil.getMessage(validationNotEmptyImageFile);
 			errors.rejectValue(imageFile, validationNotEmptyImageFile, defaultMessage);
         }
 		
-		if (eventDto.getId() == null && (eventDto.getMaterialFile() == null || eventDto.getMaterialFile().isEmpty())){
+		if (eventFormDto.getId() == null && (eventFormDto.getMaterialFile() == null || eventFormDto.getMaterialFile().isEmpty())){
 			String defaultMessage = MessageUtil.getMessage(validationNotEmptyMaterialFile);
 			errors.rejectValue(materialFile, validationNotEmptyImageFile, defaultMessage);
         }

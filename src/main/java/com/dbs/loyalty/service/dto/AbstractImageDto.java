@@ -11,15 +11,15 @@ import lombok.Setter;
 @Getter
 public abstract class AbstractImageDto extends AbstractAuditDto{
 	
-    private byte[] imageBytes;
-
-    private String imageContentType;
-
-    private Integer imageWidth;
-
-    private Integer imageHeight;
-    
-    @JsonIgnore
-    private MultipartFile imageFile;
+//    private byte[] imageBytes;
+//
+//    private String imageContentType;
+//
+//    private Integer imageWidth;
+//
+//    private Integer imageHeight;
+//    
+//    @JsonIgnore
+//    private MultipartFile imageFile;
     
 }

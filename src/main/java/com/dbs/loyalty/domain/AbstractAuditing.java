@@ -25,7 +25,7 @@ public abstract class AbstractAuditing implements Serializable {
     @JsonIgnore
     @Column(name = "created_date", nullable = false, updatable = false)
     private Instant createdDate;
-
+    
     @JsonIgnore
     @Column(name = "last_modified_by", length = 50)
     private String lastModifiedBy;

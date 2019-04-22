@@ -65,12 +65,12 @@
                             <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                 <div class="form-group">
                                     <label for="place" th:text="|#{place} *|">Place *</label>
-                                    <input class="form-control" type="text" th:field="*{place}" readonly="readonly" />
+                                    <input class="form-control" type="text" th:field="*{place}" />
                                 </div>
                             </div>
                         </div>
-                        <div class="row" th:if="${event.imageBytes}">
-                            <div class="col-12">
+                        <div class="row">
+                            <div class="col-12" th:if="${event.imageBytes}">
                                 <div class="form-group">
                                     <label for="image" th:text="#{image}">Image</label>
                                     <div class="d-block overflow-auto">
@@ -86,8 +86,8 @@
                             <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
                                 <div class="form-group">
                                     <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="file" name="file" onchange="ImageUtil.show(this)">
-                                        <label class="custom-file-label" th:text="#{chooseFile}"></label>
+                                        <input type="file" class="custom-file-input" id="imageFile" name="imageFile" onchange="ImageUtil.show(this)">
+                                        <label class="custom-file-label" th:text="#{chooseImageFile}"></label>
                                     </div>
                                 </div>
                             </div>
@@ -99,8 +99,18 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                        	<div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+                                <div class="form-group">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="materialFile" name="materialFile">
+                                        <label class="custom-file-label" th:text="#{chooseMaterialFile}"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <!-- TOOLBAR -->
-                        <input type="hidden" th:field="*{id}" />
+                        <input type="hidden" id="id" th:field="*{id}" th:if="*{id != null}"/>
                         <div class="toolbar">
                             <a class="btn btn-light" href="/event/event-view.html" th:href="@{/event}">
                                 <span class="icon-left" th:text="#{back}">Back</span>

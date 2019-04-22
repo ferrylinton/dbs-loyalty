@@ -9,8 +9,7 @@ import javax.imageio.ImageIO;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.dbs.loyalty.domain.AbstractImage;
-import com.dbs.loyalty.service.dto.AbstractImageDto;
+import com.dbs.loyalty.domain.AbstractFileImage;
 
 public final class ImageUtil {
 
@@ -46,20 +45,12 @@ public final class ImageUtil {
 		  return croppedImage;
 	}
 	
-	public static <T extends AbstractImageDto> void setImageDto(T t) throws IOException {
-		BufferedImage image = getBufferedImage(t.getImageFile());
-		t.setImageBytes(t.getImageFile().getBytes());
-		t.setImageContentType(t.getImageFile().getContentType());
-		t.setImageWidth(image.getHeight());
-		t.setImageHeight(image.getHeight());
-	}
-	
-	public static <T extends AbstractImage> void setImageDto(T t, MultipartFile file) throws IOException {
+	public static <T extends AbstractFileImage> void setFileImage(T t, MultipartFile file) throws IOException {
 		BufferedImage image = getBufferedImage(file);
-		t.setImageBytes(file.getBytes());
-		t.setImageContentType(file.getContentType());
-		t.setImageWidth(image.getHeight());
-		t.setImageHeight(image.getHeight());
+		t.setBytes(file.getBytes());
+		t.setContentType(file.getContentType());
+		t.setWidth(image.getHeight());
+		t.setHeight(image.getHeight());
 	}
 	
 	private static BufferedImage getBufferedImage(MultipartFile file) throws IOException {

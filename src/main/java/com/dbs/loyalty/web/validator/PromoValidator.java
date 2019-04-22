@@ -4,7 +4,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import com.dbs.loyalty.service.PromoService;
-import com.dbs.loyalty.service.dto.PromoDto;
+import com.dbs.loyalty.service.dto.PromoFormDto;
 import com.dbs.loyalty.util.MessageUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -28,26 +28,26 @@ public class PromoValidator implements Validator {
 
 	@Override
 	public boolean supports(Class<?> clazz) {
-		return PromoDto.class.equals(clazz);
+		return PromoFormDto.class.equals(clazz);
 	}
 
 	@Override
 	public void validate(Object target, Errors errors) {
-		PromoDto promoDto = (PromoDto) target;
+		PromoFormDto promoFormDto = (PromoFormDto) target;
 
-		if (promoService.isCodeExist(promoDto)) {
-			Object[] errorArgs = new String[] { promoDto.getCode() };
+		if (promoService.isCodeExist(promoFormDto)) {
+			Object[] errorArgs = new String[] { promoFormDto.getCode() };
 			String defaultMessage = MessageUtil.getMessage(validationExistCode, errorArgs);
 			errors.rejectValue(code, validationExistCode, errorArgs, defaultMessage);
 		}
 		
-		if (promoService.isTitleExist(promoDto)) {
-			Object[] errorArgs = new String[] { promoDto.getCode() };
+		if (promoService.isTitleExist(promoFormDto)) {
+			Object[] errorArgs = new String[] { promoFormDto.getCode() };
 			String defaultMessage = MessageUtil.getMessage(validationExistTitle, errorArgs);
 			errors.rejectValue(title, validationExistTitle, errorArgs, defaultMessage);
 		}
 
-		if (promoDto.getId() == null && (promoDto.getImageFile() == null || promoDto.getImageFile().isEmpty())){
+		if (promoFormDto.getId() == null && (promoFormDto.getImageFile() == null || promoFormDto.getImageFile().isEmpty())){
 			String defaultMessage = MessageUtil.getMessage(validationNotEmptyImageFile);
 			errors.rejectValue(imageFile, validationNotEmptyImageFile, defaultMessage);
         }

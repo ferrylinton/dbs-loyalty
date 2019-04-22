@@ -16,6 +16,7 @@ import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.PromoRepository;
 import com.dbs.loyalty.service.dto.CarouselDto;
 import com.dbs.loyalty.service.dto.PromoDto;
+import com.dbs.loyalty.service.dto.PromoFormDto;
 import com.dbs.loyalty.service.dto.PromoViewDto;
 import com.dbs.loyalty.service.dto.TaskDto;
 import com.dbs.loyalty.service.mapper.PromoMapper;
@@ -36,6 +37,10 @@ public class PromoService{
 
 	public Optional<PromoDto> findById(String id){
 		return promoRepository.findById(id).map(promo -> promoMapper.toDto(promo));
+	}
+	
+	public Optional<String> findTermAndConditionById(String id){
+		return promoRepository.findTermAndConditionById(id);
 	}
 	
 	public Optional<PromoViewDto> findViewById(String id){
@@ -88,7 +93,7 @@ public class PromoService{
 	}
 
 	public String execute(TaskDto taskDto) throws IOException {
-		PromoDto promoDto = objectMapper.readValue((taskDto.getTaskOperation() == TaskOperation.DELETE) ? taskDto.getTaskDataOld() : taskDto.getTaskDataNew(), PromoDto.class);
+		PromoFormDto promoDto = objectMapper.readValue((taskDto.getTaskOperation() == TaskOperation.DELETE) ? taskDto.getTaskDataOld() : taskDto.getTaskDataNew(), PromoFormDto.class);
 		
 		if(taskDto.isVerified()) {
 			Promo promo = promoMapper.toEntity(promoDto);
