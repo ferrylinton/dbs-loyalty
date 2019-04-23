@@ -18,7 +18,7 @@ import lombok.Setter;
 @ApiModel(value="PromoCategory", description = "Promo Category's data")
 @Setter
 @Getter
-public class PromoCategoryDto extends AbstractAuditDto {
+public class PromoCategoryDto {
 
 	@ApiModelProperty(value = "Promo Category's id", example = "In1IverC", required = true, position = 0)
 	private String id;
@@ -41,5 +41,5 @@ public class PromoCategoryDto extends AbstractAuditDto {
 	public String toString() {
 		return id + "," + name;
 	}
-
+	
 }

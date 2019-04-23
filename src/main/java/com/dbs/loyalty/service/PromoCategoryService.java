@@ -3,7 +3,6 @@ package com.dbs.loyalty.service;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,8 +15,6 @@ import com.dbs.loyalty.domain.PromoCategory;
 import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.PromoCategoryRepository;
-import com.dbs.loyalty.service.dto.PromoCategoryDto;
-import com.dbs.loyalty.service.mapper.PromoCategoryMapper;
 import com.dbs.loyalty.service.specification.PromoCategorySpecification;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -32,30 +29,24 @@ public class PromoCategoryService{
 	private final ObjectMapper objectMapper;
 	
 	private final PromoCategoryRepository promoCategoryRepository;
-	
-	private final PromoCategoryMapper promoCategoryMapper;
 
-	public Optional<PromoCategoryDto> findById(String id){
-		return promoCategoryRepository.findById(id).map(promoCategoryMapper::toDto);
+	public Optional<PromoCategory> findById(String id){
+		return promoCategoryRepository.findById(id);
 	}
 	
-	public List<PromoCategoryDto> findAll(){
-		return promoCategoryRepository.findAll(sortByName)
-				.stream()
-				.map(promoCategoryMapper::toDto)
-				.collect(Collectors.toList());
+	public List<PromoCategory> findAll(){
+		return promoCategoryRepository.findAll(sortByName);
 	}
 
-	public Page<PromoCategoryDto> findAll(Pageable pageable, HttpServletRequest request) {
-		return promoCategoryRepository.findAll(PromoCategorySpecification.getSpec(request), pageable)
-				.map(promoCategoryMapper::toDto);
+	public Page<PromoCategory> findAll(Pageable pageable, HttpServletRequest request) {
+		return promoCategoryRepository.findAll(PromoCategorySpecification.getSpec(request), pageable);
 	}
 	
-	public Optional<PromoCategoryDto> findByName(String name) {
-		return promoCategoryRepository.findByNameIgnoreCase(name).map(promoCategoryMapper::toDto);
+	public Optional<PromoCategory> findByName(String name) {
+		return promoCategoryRepository.findByNameIgnoreCase(name);
 	}
 
-	public boolean isNameExist(PromoCategoryDto promoCategoryDto) {
+	public boolean isNameExist(PromoCategory promoCategoryDto) {
 		Optional<PromoCategory> promoCategory = promoCategoryRepository.findByNameIgnoreCase(promoCategoryDto.getName());
 
 		if (promoCategory.isPresent()) {
@@ -66,10 +57,9 @@ public class PromoCategoryService{
 	}
 
 	public String execute(Task task) throws IOException {
-		PromoCategoryDto promoCategoryDto = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), PromoCategoryDto.class);
+		PromoCategory promoCategory = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), PromoCategory.class);
 		
 		if(task.getVerified()) {
-			PromoCategory promoCategory = promoCategoryMapper.toEntity(promoCategoryDto);
 			
 			if(task.getTaskOperation() == TaskOperation.ADD) {
 				promoCategory.setCreatedBy(task.getMaker());
@@ -84,7 +74,7 @@ public class PromoCategoryService{
 			}
 		}
 
-		return promoCategoryDto.getName();
+		return promoCategory.getName();
 	}
 	
 }

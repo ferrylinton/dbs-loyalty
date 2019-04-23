@@ -3,23 +3,18 @@ package com.dbs.loyalty.service;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dbs.loyalty.domain.Promo;
 import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.PromoRepository;
-import com.dbs.loyalty.service.dto.CarouselDto;
-import com.dbs.loyalty.service.dto.PromoDto;
-import com.dbs.loyalty.service.dto.PromoFormDto;
-import com.dbs.loyalty.service.dto.PromoViewDto;
-import com.dbs.loyalty.service.mapper.PromoMapper;
 import com.dbs.loyalty.service.specification.PromoSpecification;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -31,87 +26,79 @@ public class PromoService{
 
 	private final PromoRepository promoRepository;
 	
-	private final ObjectMapper objectMapper;
+	private final ImageService imageService;
 	
-	private final PromoMapper promoMapper;
+	private final ObjectMapper objectMapper;
 
-	public Optional<PromoDto> findById(String id){
-		return promoRepository.findById(id).map(promo -> promoMapper.toDto(promo));
+	public Optional<Promo> findById(String id){
+		return promoRepository.findById(id);
 	}
 	
 	public Optional<String> findTermAndConditionById(String id){
 		return promoRepository.findTermAndConditionById(id);
 	}
-	
-	public Optional<PromoViewDto> findViewById(String id){
-		return promoRepository.findById(id).map(promo -> promoMapper.toViewDto(promo));
+
+
+	public Page<Promo> findAll(Pageable pageable, HttpServletRequest request) {
+		return promoRepository.findAll(PromoSpecification.getSpec(request), pageable);
 	}
 
-	public Page<PromoDto> findAll(Pageable pageable, HttpServletRequest request) {
-		return promoRepository.findAll(PromoSpecification.getSpec(request), pageable)
-				.map(promo -> promoMapper.toDto(promo));
-	}
-
-	public List<CarouselDto> findPromoInCarousel(){
-		List<CarouselDto> carouselDtos = promoRepository.findPromoInCarousel()
-				.stream()
-				.map(promo -> promoMapper.toCarouselDto(promo))
-				.collect(Collectors.toList());
+	public List<Promo> findPromoInCarousel(){
+		List<Promo> promos = promoRepository.findPromoInCarousel();
 		
-		if(carouselDtos.size() > 3) {
-			return carouselDtos.subList(0, 3);
+		if(promos.size() > 3) {
+			return promos.subList(0, 3);
 		}else {
-			return carouselDtos;
+			return promos;
 		}
 	}
 	
-	public List<PromoViewDto> findByPromoCategoryId(String promoCategoryId){
-		return promoRepository.findByPromoCategoryId(promoCategoryId)
-				.stream()
-				.map(promo -> promoMapper.toViewDto(promo))
-				.collect(Collectors.toList());
+	public List<Promo> findByPromoCategoryId(String promoCategoryId){
+		return promoRepository.findByPromoCategoryId(promoCategoryId);
 	}
 	
-	public boolean isCodeExist(PromoDto promoDto) {
-		Optional<Promo> promo = promoRepository.findByCodeIgnoreCase(promoDto.getCode());
+	public boolean isCodeExist(String id, String code) {
+		Optional<Promo> promo = promoRepository.findByCodeIgnoreCase(code);
 
 		if (promo.isPresent()) {
-			return (promoDto.getId() == null) || (!promoDto.getId().equals(promo.get().getId()));
+			return (id == null) || (!id.equals(promo.get().getId()));
 		}else {
 			return false;
 		}
 	}
 	
-	public boolean isTitleExist(PromoDto promoDto) {
-		Optional<Promo> promo = promoRepository.findByTitleIgnoreCase(promoDto.getTitle());
+	public boolean isTitleExist(String id, String title) {
+		Optional<Promo> promo = promoRepository.findByTitleIgnoreCase(title);
 
 		if (promo.isPresent()) {
-			return (promoDto.getId() == null) || (!promoDto.getId().equals(promo.get().getId()));
+			return (id == null) || (!id.equals(promo.get().getId()));
 		}else {
 			return false;
 		}
 	}
-
+	
+	@Transactional
 	public String execute(Task task) throws IOException {
-		PromoFormDto promoDto = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), PromoFormDto.class);
+		Promo promo = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), Promo.class);
 		
 		if(task.getVerified()) {
-			Promo promo = promoMapper.toEntity(promoDto);
-			
 			if(task.getTaskOperation() == TaskOperation.ADD) {
 				promo.setCreatedBy(task.getMaker());
 				promo.setCreatedDate(task.getMadeDate());
 				promoRepository.save(promo);
+				imageService.add(promo.getId(), promo.getImage(), task.getMaker(), task.getMadeDate());
 			}else if(task.getTaskOperation() == TaskOperation.MODIFY) {
 				promo.setLastModifiedBy(task.getMaker());
 				promo.setLastModifiedDate(task.getMadeDate());
 				promoRepository.save(promo);
+				imageService.update(promo.getId(), promo.getImage(), task.getMaker(), task.getMadeDate());
 			}else if(task.getTaskOperation() == TaskOperation.DELETE) {
 				promoRepository.delete(promo);
+				imageService.delete(promo.getId());
 			}
 		}
 
-		return promoDto.getTitle();
+		return promo.getTitle();
 	}
 	
 }

@@ -59,6 +59,42 @@ sn: 03
 uid: maker03
 userPassword: password
 
+dn: uid=maker04,ou=users,ou=dbs,dc=lwproject,dc=com
+objectClass: top
+objectClass: person
+objectClass: inetOrgPerson
+cn: Maker 04
+sn: 04
+uid: maker04
+userPassword: password
+
+dn: uid=maker05,ou=users,ou=dbs,dc=lwproject,dc=com
+objectClass: top
+objectClass: person
+objectClass: inetOrgPerson
+cn: Maker 05
+sn: 05
+uid: maker05
+userPassword: password
+
+dn: uid=maker06,ou=users,ou=dbs,dc=lwproject,dc=com
+objectClass: top
+objectClass: person
+objectClass: inetOrgPerson
+cn: Maker 06
+sn: 06
+uid: maker06
+userPassword: password
+
+dn: uid=maker07,ou=users,ou=dbs,dc=lwproject,dc=com
+objectClass: top
+objectClass: person
+objectClass: inetOrgPerson
+cn: Maker 07
+sn: 07
+uid: maker07
+userPassword: password
+
 dn: uid=checker01,ou=users,ou=dbs,dc=lwproject,dc=com
 objectClass: top
 objectClass: person
@@ -86,6 +122,33 @@ sn: 03
 uid: checker03
 userPassword: password
 
+dn: uid=checker04,ou=users,ou=dbs,dc=lwproject,dc=com
+objectClass: top
+objectClass: person
+objectClass: inetOrgPerson
+cn: Checker 04
+sn: 04
+uid: checker04
+userPassword: password
+
+dn: uid=checker05,ou=users,ou=dbs,dc=lwproject,dc=com
+objectClass: top
+objectClass: person
+objectClass: inetOrgPerson
+cn: Checker 05
+sn: 05
+uid: checker05
+userPassword: password
+
+dn: uid=checker06,ou=users,ou=dbs,dc=lwproject,dc=com
+objectClass: top
+objectClass: person
+objectClass: inetOrgPerson
+cn: Checker 06
+sn: 06
+uid: checker06
+userPassword: password
+
 dn: uid=user01,ou=users,ou=dbs,dc=lwproject,dc=com
 objectClass: top
 objectClass: person
@@ -111,6 +174,33 @@ objectClass: inetOrgPerson
 cn: User 03
 sn: 03
 uid: user03
+userPassword: password
+
+dn: uid=user04,ou=users,ou=dbs,dc=lwproject,dc=com
+objectClass: top
+objectClass: person
+objectClass: inetOrgPerson
+cn: User 04
+sn: 04
+uid: user04
+userPassword: password
+
+dn: uid=user05,ou=users,ou=dbs,dc=lwproject,dc=com
+objectClass: top
+objectClass: person
+objectClass: inetOrgPerson
+cn: User 05
+sn: 05
+uid: user05
+userPassword: password
+
+dn: uid=user06,ou=users,ou=dbs,dc=lwproject,dc=com
+objectClass: top
+objectClass: person
+objectClass: inetOrgPerson
+cn: User 06
+sn: 06
+uid: user06
 userPassword: password
 
 dn: cn=admin,dc=lwproject,dc=com

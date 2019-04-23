@@ -28,6 +28,7 @@
             </column>
             <column name="password_hash" type="VARCHAR(100)"/>
             <column name="role_id" type="VARCHAR(36)"/>
+            <column name="pending" type="BIT(1)"/>
             <column name="created_by" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>

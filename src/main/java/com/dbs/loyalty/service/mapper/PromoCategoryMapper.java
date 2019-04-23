@@ -6,6 +6,8 @@ import com.dbs.loyalty.domain.PromoCategory;
 import com.dbs.loyalty.service.dto.PromoCategoryDto;
 
 @Mapper(componentModel = "spring")
-public abstract class PromoCategoryMapper extends EntityMapper<PromoCategoryDto, PromoCategory> {
-
+public abstract class PromoCategoryMapper{
+ 
+	public abstract PromoCategoryDto toDto(PromoCategory PromoCategory);
+	
 }

@@ -8,32 +8,31 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.dbs.loyalty.config.constant.PathConstant;
 import com.dbs.loyalty.domain.Promo;
 import com.dbs.loyalty.service.dto.CarouselDto;
-import com.dbs.loyalty.service.dto.PromoFormDto;
-import com.dbs.loyalty.service.dto.PromoViewDto;
+import com.dbs.loyalty.service.dto.PromoDto;
 
-@Mapper(componentModel = "spring", uses = {PromoCategoryMapper.class})
-public abstract class PromoMapper extends EntityMapper<PromoFormDto, Promo> {
+@Mapper(componentModel = "spring")
+public abstract class PromoMapper{
 
-	public abstract PromoViewDto toViewDto(Promo promo);
+	public abstract PromoDto toDto(Promo promo);
 	
 	public abstract CarouselDto toCarouselDto(Promo promo);
 	
 	@AfterMapping
-    public void doAfterMapping(@MappingTarget PromoViewDto promoViewDto){
+    public void doAfterMapping(@MappingTarget PromoDto promoDto){
 		String imageUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(PathConstant.PROMOS)
-                .path("/" + promoViewDto.getId())
+                .path("/" + promoDto.getId())
                 .path(PathConstant.IMAGE)
                 .toUriString();
 		
 		String termUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(PathConstant.PROMOS)
-                .path("/" + promoViewDto.getId())
+                .path("/" + promoDto.getId())
                 .path(PathConstant.TERM)
                 .toUriString();
 		
-		promoViewDto.setImageUrl(imageUrl);
-		promoViewDto.setTermUrl(termUrl);
+		promoDto.setImageUrl(imageUrl);
+		promoDto.setTermUrl(termUrl);
     }
 	
 	@AfterMapping

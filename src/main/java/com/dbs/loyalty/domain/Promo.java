@@ -16,9 +16,16 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -52,19 +59,29 @@ public class Promo extends AbstractAuditing implements Serializable {
 	@GeneratedValue(generator = "UUIDGenerator")
 	private String id;
     
+    @NotNull(message = "{validation.notnull.code}")
+    @Size(min=2, max = 50, message = "{validation.size.code}")
     @Column(name = "code", length = 50, nullable = false)
     private String code;
 
+    @NotNull(message = "{validation.notnull.title}")
+    @Size(min=2, max = 150, message = "{validation.size.title}")
     @Column(name = "title", length = 150, nullable = false)
     private String title;
 
+    @NotNull(message = "{validation.notnull.description}")
+    @Size(min=2, max = 255, message = "{validation.size.description}")
     @Column(name = "description", nullable = false)
     private String description;
     
+    @NotNull(message = "{validation.notnull.content}")
+    @Size(min=2, max = 50000, message = "{validation.size.content}")
     @Lob
     @Column(name = "content", nullable = false, columnDefinition="TEXT")
     private String content;
     
+    @NotNull(message = "{validation.notnull.termAndCondition}")
+    @Size(min=2, max = 50000, message = "{validation.size.termAndCondition}")
     @Lob
     @Column(name = "term_and_condition", nullable = false, columnDefinition="TEXT")
     private String termAndCondition;
@@ -83,8 +100,16 @@ public class Promo extends AbstractAuditing implements Serializable {
     @Column(name = "activated", nullable = false)
 	private boolean activated;
 
+    @JsonIgnoreProperties("promos")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "promo_category_id", nullable = false, foreignKey = @ForeignKey(name = "c_promo_fk"))
     private PromoCategory promoCategory;
 
+    @Transient
+    private String image;
+    
+    @JsonIgnore
+    @Transient
+    private MultipartFile multipartFileImage;
+    
 }

@@ -30,11 +30,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.dbs.loyalty.domain.PromoCategory;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.PromoCategoryService;
 import com.dbs.loyalty.service.TaskService;
-import com.dbs.loyalty.service.dto.PromoCategoryDto;
 import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.response.AbstractResponse;
 import com.dbs.loyalty.web.validator.PromoCategoryValidator;
@@ -55,7 +55,7 @@ public class PromoCategoryController extends AbstractPageController {
 	@GetMapping
 	public String viewPromoCategories(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
 		Order order = getOrder(sort, "name");
-		Page<PromoCategoryDto> page = promoCategoryService.findAll(getPageable(params, order), request);
+		Page<PromoCategory> page = promoCategoryService.findAll(getPageable(params, order), request);
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
 			return "redirect:/promocategory";
@@ -69,7 +69,7 @@ public class PromoCategoryController extends AbstractPageController {
 	
 	@PreAuthorize("hasAnyRole('PROMO_CATEGORY_MK', 'PROMO_CATEGORY_CK')")
 	@GetMapping("/{id}/detail")
-	public String viewPromoCategoruDetail(ModelMap model, @PathVariable String id){
+	public String viewPromoCategoryDetail(ModelMap model, @PathVariable String id){
 		getById(model, id);		
 		return "promocategory/promocategory-detail";
 	}
@@ -78,7 +78,7 @@ public class PromoCategoryController extends AbstractPageController {
 	@GetMapping("/{id}")
 	public String viewPromoCategoryForm(ModelMap model, @PathVariable String id){
 		if (id.equals(ZERO)) {
-			model.addAttribute(PROMO_CATEGORY, new PromoCategoryDto());
+			model.addAttribute(PROMO_CATEGORY, new PromoCategory());
 		} else {
 			getById(model, id);
 		}
@@ -89,31 +89,31 @@ public class PromoCategoryController extends AbstractPageController {
 	@PreAuthorize("hasRole('PROMO_CATEGORY_MK')")
 	@PostMapping
 	@ResponseBody
-	public ResponseEntity<AbstractResponse> save(@ModelAttribute @Valid PromoCategoryDto promoCategoryDto, BindingResult result) throws BadRequestException, JsonProcessingException, NotFoundException {
+	public ResponseEntity<AbstractResponse> save(@ModelAttribute @Valid PromoCategory promoCategory, BindingResult result) throws BadRequestException, JsonProcessingException, NotFoundException {
 		if (result.hasErrors()) {
 			throwBadRequestResponse(result);
 		}
 		
-		if(promoCategoryDto.getId() == null) {
-			taskService.saveTaskAdd(PROMO_CATEGORY, promoCategoryDto);
+		if(promoCategory.getId() == null) {
+			taskService.saveTaskAdd(PROMO_CATEGORY, promoCategory);
 		} else {
-			Optional<PromoCategoryDto> current = promoCategoryService.findById(promoCategoryDto.getId());
+			Optional<PromoCategory> current = promoCategoryService.findById(promoCategory.getId());
 			
 			if(current.isPresent()) {
-				taskService.saveTaskModify(PROMO_CATEGORY, current.get(), promoCategoryDto);
+				taskService.saveTaskModify(PROMO_CATEGORY, current.get(), promoCategory);
 			}else {
 				throw new NotFoundException();
 			}
 		}
 		
-		return taskIsSavedResponse(PROMO_CATEGORY, promoCategoryDto.getName(), UrlUtil.getUrl(PROMO_CATEGORY));
+		return taskIsSavedResponse(PROMO_CATEGORY, promoCategory.getName(), UrlUtil.getUrl(PROMO_CATEGORY));
 	}
 
 	@PreAuthorize("hasRole('PROMO_CATEGORY_MK')")
 	@DeleteMapping("/{id}")
 	@ResponseBody
 	public ResponseEntity<AbstractResponse> delete(@PathVariable String id) throws JsonProcessingException, NotFoundException{
-		Optional<PromoCategoryDto> current = promoCategoryService.findById(id);
+		Optional<PromoCategory> current = promoCategoryService.findById(id);
 		
 		if(current.isPresent()) {
 			taskService.saveTaskDelete(PROMO_CATEGORY, current.get());
@@ -123,13 +123,13 @@ public class PromoCategoryController extends AbstractPageController {
 		}
 	}
 
-	@InitBinder("promoCategoryDto")
+	@InitBinder("promoCategory")
 	protected void initBinder(WebDataBinder binder) {
 		binder.addValidators(new PromoCategoryValidator(promoCategoryService));
 	}
 	
 	public void getById(ModelMap model, String id){
-		Optional<PromoCategoryDto> current = promoCategoryService.findById(id);
+		Optional<PromoCategory> current = promoCategoryService.findById(id);
 		
 		if (current.isPresent()) {
 			model.addAttribute(PROMO_CATEGORY, current.get());

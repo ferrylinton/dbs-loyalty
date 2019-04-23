@@ -35,10 +35,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dbs.loyalty.domain.FileImage;
+import com.dbs.loyalty.domain.FileImageTask;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.CustomerService;
-import com.dbs.loyalty.service.FileImageService;
+import com.dbs.loyalty.service.ImageService;
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.service.dto.CustomerDto;
 import com.dbs.loyalty.service.dto.CustomerFormDto;
@@ -56,7 +57,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/customer")
 public class CustomerController extends AbstractPageController{
 
-	private final FileImageService fileImageservice;
+	private final ImageService imageService;
 	
 	private final CustomerService customerService;
 	
@@ -106,9 +107,9 @@ public class CustomerController extends AbstractPageController{
 		}
 
 		if(customerFormDto.getId() == null) {
-			FileImage fileImage = fileImageservice.save(customerFormDto.getImageFile());
+			FileImageTask fileImageTask = imageService.save(customerFormDto.getImageFile());
 			
-			customerFormDto.setFileImageId(fileImage.getId());
+			customerFormDto.setFileImageId(fileImageTask.getId());
 			customerFormDto.setPasswordHash(PasswordUtil.encode(customerFormDto.getPasswordPlain()));
 			taskService.saveTaskAdd(CUSTOMER, customerFormDto);
 		}else {
@@ -118,8 +119,8 @@ public class CustomerController extends AbstractPageController{
 				if(customerFormDto.getImageFile().isEmpty()) {
 					customerFormDto.setFileImageId(customerFormDto.getId());
 				}else {
-					FileImage fileImage = fileImageservice.save(customerFormDto.getImageFile());
-					customerFormDto.setFileImageId(fileImage.getId());
+					FileImageTask fileImageTask = imageService.save(customerFormDto.getImageFile());
+					customerFormDto.setFileImageId(fileImageTask.getId());
 				}
 				
 				//customerFormDto.setPasswordHash(current.get().getPasswordHash());

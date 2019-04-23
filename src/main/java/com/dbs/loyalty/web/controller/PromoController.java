@@ -22,6 +22,7 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -35,17 +36,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.dbs.loyalty.domain.FileImage;
+import com.dbs.loyalty.domain.FileImageTask;
+import com.dbs.loyalty.domain.Promo;
+import com.dbs.loyalty.domain.PromoCategory;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
-import com.dbs.loyalty.service.FileImageService;
+import com.dbs.loyalty.service.ImageService;
 import com.dbs.loyalty.service.PromoCategoryService;
 import com.dbs.loyalty.service.PromoService;
 import com.dbs.loyalty.service.TaskService;
-import com.dbs.loyalty.service.dto.PromoCategoryDto;
-import com.dbs.loyalty.service.dto.PromoDto;
-import com.dbs.loyalty.service.dto.PromoFormDto;
-import com.dbs.loyalty.util.ImageUtil;
 import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.response.AbstractResponse;
 import com.dbs.loyalty.web.validator.PromoValidator;
@@ -60,7 +59,7 @@ public class PromoController extends AbstractPageController {
 
 	private final PromoService promoService;
 	
-	private final FileImageService fileImageservice;
+	private final ImageService imageService;
 
 	private final PromoCategoryService promoCategoryService;
 	
@@ -70,7 +69,7 @@ public class PromoController extends AbstractPageController {
 	@GetMapping
 	public String viewPromos(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
 		Order order = getOrder(sort, "title");
-		Page<PromoDto> page = promoService.findAll(getPageable(params, order), request);
+		Page<Promo> page = promoService.findAll(getPageable(params, order), request);
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
 			return "redirect:/promo";
@@ -93,7 +92,7 @@ public class PromoController extends AbstractPageController {
 	@GetMapping("/{id}")
 	public String viewPromoForm(ModelMap model, @PathVariable String id){
 		if (id.equals(ZERO)) {
-			model.addAttribute(PROMO, new PromoDto());
+			model.addAttribute(PROMO, new Promo());
 		} else {
 			getById(model, id);
 		}
@@ -101,43 +100,46 @@ public class PromoController extends AbstractPageController {
 		return "promo/promo-form";
 	}
 
+	@Transactional
 	@PreAuthorize("hasRole('PROMO_MK')")
 	@PostMapping
 	@ResponseBody
-	public ResponseEntity<AbstractResponse> savePromo(@ModelAttribute @Valid PromoFormDto promoFormDto, BindingResult result) throws BadRequestException, IOException, NotFoundException {
+	public ResponseEntity<AbstractResponse> savePromo(@ModelAttribute @Valid Promo promo, BindingResult result) throws BadRequestException, IOException, NotFoundException {
 		if (result.hasErrors()) {
 			throwBadRequestResponse(result);
 		}
 		
-		if(promoFormDto.getId() == null) {
-			FileImage fileImage = fileImageservice.save(promoFormDto.getImageFile());
-			promoFormDto.setFileImageId(fileImage.getId());
-			taskService.saveTaskAdd(PROMO, promoFormDto);
+		if(promo.getId() == null) {
+			FileImageTask fileImageTask = imageService.save(promo.getMultipartFileImage());
+			promo.setImage(fileImageTask.getId());
+
+			taskService.saveTaskAdd(PROMO, promo);
 		}else {
-			Optional<PromoDto> current = promoService.findById(promoFormDto.getId());
+			Optional<Promo> current = promoService.findById(promo.getId());
 			
 			if(current.isPresent()) {
-				if(promoFormDto.getImageFile().isEmpty()) {
-					promoFormDto.setFileImageId(promoFormDto.getId());
+				if(promo.getMultipartFileImage().isEmpty()) {
+					promo.setImage(promo.getId());
 				}else {
-					FileImage fileImage = fileImageservice.save(promoFormDto.getImageFile());
-					promoFormDto.setFileImageId(fileImage.getId());
+					FileImageTask fileImageTask = imageService.save(promo.getMultipartFileImage());
+					promo.setImage(fileImageTask.getId());
 				}
 				
-				taskService.saveTaskModify(PROMO, current.get(), promoFormDto);
+				current.get().setImage(promo.getId());
+				taskService.saveTaskModify(PROMO, current.get(), promo);
 			}else {
 				throw new NotFoundException();
 			}
 		}
 
-		return taskIsSavedResponse(PROMO, promoFormDto.getTitle(), UrlUtil.getUrl(PROMO));
+		return taskIsSavedResponse(PROMO, promo.getTitle(), UrlUtil.getUrl(PROMO));
 	}
 
 	@PreAuthorize("hasRole('PROMO_MK')")
 	@DeleteMapping("/{id}")
 	@ResponseBody
 	public ResponseEntity<AbstractResponse> deletePromo(@PathVariable String id) throws JsonProcessingException, NotFoundException{
-		Optional<PromoDto> current = promoService.findById(id);
+		Optional<Promo> current = promoService.findById(id);
 		
 		if(current.isPresent()) {
 			taskService.saveTaskDelete(PROMO, current.get());
@@ -148,18 +150,18 @@ public class PromoController extends AbstractPageController {
 	}
 
 	@ModelAttribute("promoCategories")
-	public List<PromoCategoryDto> getPromoCategories() {
+	public List<PromoCategory> getPromoCategories() {
 		return promoCategoryService.findAll();
 	}
 	
-	@InitBinder("promoDto")
+	@InitBinder("promo")
 	protected void initBinder(WebDataBinder binder) {
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("dd-MM-yyyy"), true, 10)); 
 		binder.addValidators(new PromoValidator(promoService));
 	}
 
 	private void getById(ModelMap model, String id){
-		Optional<PromoDto> current = promoService.findById(id);
+		Optional<Promo> current = promoService.findById(id);
 		
 		if (current.isPresent()) {
 			model.addAttribute(PROMO, current.get());
@@ -167,5 +169,5 @@ public class PromoController extends AbstractPageController {
 			model.addAttribute(ERROR, getNotFoundMessage(id));
 		}
 	}
-	
+
 }

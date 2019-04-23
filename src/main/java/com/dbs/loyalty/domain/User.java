@@ -87,4 +87,8 @@ public class User extends AbstractAuditing implements Serializable {
     @JoinColumn(name = "role_id", nullable = true, foreignKey = @ForeignKey(name = "m_user_fk"))
     private Role role;
 	
+	@JsonIgnore
+	@Column(name = "pending", nullable = true)
+	private Boolean pending = false;
+	
 }

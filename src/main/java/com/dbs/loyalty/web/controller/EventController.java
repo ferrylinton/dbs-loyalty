@@ -41,11 +41,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dbs.loyalty.domain.FileImage;
+import com.dbs.loyalty.domain.FileImageTask;
 import com.dbs.loyalty.domain.FilePdf;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.EventService;
-import com.dbs.loyalty.service.FileImageService;
+import com.dbs.loyalty.service.ImageService;
 import com.dbs.loyalty.service.FilePdfService;
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.service.dto.EventDto;
@@ -65,7 +66,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/event")
 public class EventController extends AbstractPageController {
 
-	private final FileImageService fileImageservice;
+	private final ImageService imageService;
 	
 	private final FilePdfService filePdfService;
 	
@@ -111,7 +112,7 @@ public class EventController extends AbstractPageController {
 	@PreAuthorize("hasAnyRole('EVENT_MK', 'EVENT_CK')")
 	@GetMapping("/{id}/material")
 	public ResponseEntity<byte[]> getEventMaterial(@PathVariable String id) throws NotFoundException {
-		Optional<FileImage> current = fileImageservice.findOneByEventId(id);
+		Optional<FileImage> current = imageService.findOneByEventId(id);
     	
 		if(current.isPresent()) {
 			HttpHeaders headers = new HttpHeaders();
@@ -159,8 +160,8 @@ public class EventController extends AbstractPageController {
 		}
 		
 		if(eventFormDto.getId() == null) {
-			FileImage fileImage = fileImageservice.save(eventFormDto.getImageFile());
-			eventFormDto.setImageFileId(fileImage.getId());
+			FileImageTask fileImageTask = imageService.save(eventFormDto.getImageFile());
+			eventFormDto.setImageFileId(fileImageTask.getId());
 			taskService.saveTaskAdd(EVENT, eventFormDto);
 		}else {
 			Optional<EventDto> current = eventService.findById(eventFormDto.getId());
@@ -169,8 +170,8 @@ public class EventController extends AbstractPageController {
 				if(eventFormDto.getImageFile().isEmpty()) {
 					eventFormDto.setImageFileId(eventFormDto.getId());
 				}else {
-					FileImage fileImage = fileImageservice.save(eventFormDto.getImageFile());
-					eventFormDto.setImageFileId(fileImage.getId());
+					FileImageTask fileImageTask = imageService.save(eventFormDto.getImageFile());
+					eventFormDto.setImageFileId(fileImageTask.getId());
 				}
 				
 				taskService.saveTaskModify(EVENT, current.get(), eventFormDto);
