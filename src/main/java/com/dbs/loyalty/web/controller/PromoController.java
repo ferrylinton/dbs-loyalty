@@ -110,7 +110,7 @@ public class PromoController extends AbstractPageController {
 		}
 		
 		if(promo.getId() == null) {
-			FileImageTask fileImageTask = imageService.save(promo.getMultipartFileImage());
+			FileImageTask fileImageTask = imageService.add(promo.getMultipartFileImage());
 			promo.setImage(fileImageTask.getId());
 
 			taskService.saveTaskAdd(PROMO, promo);
@@ -121,7 +121,7 @@ public class PromoController extends AbstractPageController {
 				if(promo.getMultipartFileImage().isEmpty()) {
 					promo.setImage(promo.getId());
 				}else {
-					FileImageTask fileImageTask = imageService.save(promo.getMultipartFileImage());
+					FileImageTask fileImageTask = imageService.add(promo.getMultipartFileImage());
 					promo.setImage(fileImageTask.getId());
 				}
 				

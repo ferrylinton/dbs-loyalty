@@ -28,7 +28,7 @@ public class JWTAuthenticationService {
         SecurityContextHolder.getContext().setAuthentication(restAuthentication);
        
         String token = restTokenProvider.createToken(restAuthentication, jwtLoginDto.isRememberMe());
-        CustomerViewDto customerViewDto = customerMapper.toViewDto(restAuthentication.getCustomer());
+        CustomerViewDto customerViewDto = customerMapper.toDto(restAuthentication.getCustomer());
         return new JWTTokenDto(token, customerViewDto);
 	}
 	

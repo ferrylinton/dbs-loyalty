@@ -5,6 +5,7 @@ import static com.dbs.loyalty.config.constant.EntityConstant.PROMO;
 import static com.dbs.loyalty.config.constant.EntityConstant.PROMO_CATEGORY;
 import static com.dbs.loyalty.config.constant.EntityConstant.ROLE;
 import static com.dbs.loyalty.config.constant.EntityConstant.USER;
+import static com.dbs.loyalty.config.constant.EntityConstant.EVENT;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -106,6 +107,8 @@ public class TaskService {
 			return context.getBean(PromoService.class).execute(task);
 		}else if(task.getTaskDataType().equals(CUSTOMER)) {
 			return context.getBean(CustomerService.class).execute(task);
+		}else if(task.getTaskDataType().equals(EVENT)) {
+			return context.getBean(EventService.class).execute(task);
 		}
 		
 		return String.format(noServiceFormat, task.getTaskDataType());

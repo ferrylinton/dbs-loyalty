@@ -3,7 +3,6 @@ package com.dbs.loyalty.service;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -12,7 +11,6 @@ import com.dbs.loyalty.domain.LovedOne;
 import com.dbs.loyalty.repository.CustomerRepository;
 import com.dbs.loyalty.repository.LovedOneRepository;
 import com.dbs.loyalty.service.dto.LovedOneAddDto;
-import com.dbs.loyalty.service.dto.LovedOneDto;
 import com.dbs.loyalty.service.dto.LovedOneUpdateDto;
 import com.dbs.loyalty.service.mapper.LovedOneMapper;
 import com.dbs.loyalty.util.SecurityUtil;
@@ -29,8 +27,8 @@ public class LovedOneService {
 	
 	private final LovedOneMapper lovedOneMapper;
 	
-	public Optional<LovedOneDto> findById(String id){
-		return lovedOneRepository.findById(id).map(lovedOneMapper::toDto);
+	public Optional<LovedOne> findById(String id){
+		return lovedOneRepository.findById(id);
 	}
 	
 	public boolean isNameExist(LovedOneAddDto lovedOneAddDto) {
@@ -48,7 +46,7 @@ public class LovedOneService {
 		}
 	}
 	
-	public LovedOneDto add(LovedOneAddDto lovedOneAddDto) {
+	public LovedOne add(LovedOneAddDto lovedOneAddDto) {
 		Optional<Customer> current = customerRepository.findByEmail(SecurityUtil.getLogged());
 		
 		if(current.isPresent()) {
@@ -56,13 +54,13 @@ public class LovedOneService {
 			lovedOne.setCustomer(current.get());
 			lovedOne.setCreatedBy(SecurityUtil.getLogged());
 			lovedOne.setCreatedDate(Instant.now());
-			return lovedOneMapper.toDto(lovedOneRepository.save(lovedOne));
+			return lovedOneRepository.save(lovedOne);
 		}else {
 			return null;
 		}
 	}
 	
-	public LovedOneDto update(LovedOneUpdateDto lovedOneUpdateDto) {
+	public LovedOne update(LovedOneUpdateDto lovedOneUpdateDto) {
 		Optional<Customer> current = customerRepository.findByEmail(SecurityUtil.getLogged());
 		
 		if(current.isPresent()) {
@@ -70,17 +68,14 @@ public class LovedOneService {
 			lovedOne.setCustomer(current.get());
 			lovedOne.setLastModifiedBy(SecurityUtil.getLogged());
 			lovedOne.setLastModifiedDate(Instant.now());
-			return lovedOneMapper.toDto(lovedOneRepository.save(lovedOne));
+			return lovedOneRepository.save(lovedOne);
 		}else {
 			return null;
 		}
 	}
 	
-	public List<LovedOneDto> findByCustomerEmail(String customerEmail){
-		return lovedOneRepository.findByCustomerEmail(customerEmail)
-				.stream()
-				.map(lovedOneMapper::toDto)
-				.collect(Collectors.toList());
+	public List<LovedOne> findByCustomerEmail(String customerEmail){
+		return lovedOneRepository.findByCustomerEmail(customerEmail);
 	}
 	
 }

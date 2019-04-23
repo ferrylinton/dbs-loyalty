@@ -8,15 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dbs.loyalty.domain.Event;
 import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.EventRepository;
-import com.dbs.loyalty.service.dto.EventDto;
-import com.dbs.loyalty.service.dto.EventFormDto;
-import com.dbs.loyalty.service.dto.EventViewDto;
-import com.dbs.loyalty.service.mapper.EventMapper;
 import com.dbs.loyalty.service.specification.EventSpecification;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -28,21 +25,18 @@ public class EventService{
 
 	private final EventRepository eventRepository;
 	
+	private final ImageService imageService;
+	
+	private final PdfService pdfService;
+	
 	private final ObjectMapper objectMapper;
 	
-	private final EventMapper eventMapper;
-
-	public Optional<EventDto> findById(String id){
-		return eventRepository.findById(id).map(event -> eventMapper.toDto(event));
-	}
-	
-	public Optional<EventViewDto> findViewById(String id){
-		return eventRepository.findById(id).map(event -> eventMapper.toViewDto(event));
+	public Optional<Event> findById(String id){
+		return eventRepository.findById(id);
 	}
 
-	public Page<EventDto> findAll(Pageable pageable, HttpServletRequest request) {
-		return eventRepository.findAll(EventSpecification.getSpec(request), pageable)
-				.map(event -> eventMapper.toDto(event));
+	public Page<Event> findAll(Pageable pageable, HttpServletRequest request) {
+		return eventRepository.findAll(EventSpecification.getSpec(request), pageable);
 	}
 
 	
@@ -56,26 +50,31 @@ public class EventService{
 		}
 	}
 
+	@Transactional
 	public String execute(Task task) throws IOException {
-		EventFormDto eventDto = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), EventFormDto.class);
+		Event event = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), Event.class);
 		
 		if(task.getVerified()) {
-			Event event = eventMapper.toEntity(eventDto);
-			
 			if(task.getTaskOperation() == TaskOperation.ADD) {
 				event.setCreatedBy(task.getMaker());
 				event.setCreatedDate(task.getMadeDate());
 				eventRepository.save(event);
+				imageService.add(event.getId(), event.getImage(), task.getMaker(), task.getMadeDate());
+				pdfService.add(event.getId(), event.getMaterial(), task.getMaker(), task.getMadeDate());
 			}else if(task.getTaskOperation() == TaskOperation.MODIFY) {
 				event.setLastModifiedBy(task.getMaker());
 				event.setLastModifiedDate(task.getMadeDate());
 				eventRepository.save(event);
+				imageService.update(event.getId(), event.getImage(), task.getMaker(), task.getMadeDate());
+				pdfService.update(event.getId(), event.getMaterial(), task.getMaker(), task.getMadeDate());
 			}else if(task.getTaskOperation() == TaskOperation.DELETE) {
 				eventRepository.delete(event);
+				imageService.delete(event.getId());
+				pdfService.delete(event.getId());
 			}
 		}
 
-		return eventDto.getTitle();
+		return event.getTitle();
 	}
 	
 }

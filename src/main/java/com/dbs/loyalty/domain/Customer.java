@@ -14,12 +14,15 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Proxy;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.dbs.loyalty.domain.enumeration.CustomerType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -72,6 +75,10 @@ public class Customer extends AbstractAuditing implements Serializable {
 	@Column(name = "password_hash", length = 100, nullable = false)
 	private String passwordHash;
 
+	@Transient
+	@JsonIgnore
+	private String passwordPlain;
+	
 	@Column(name = "activated", nullable = false)
 	private boolean activated;
 	
@@ -81,4 +88,11 @@ public class Customer extends AbstractAuditing implements Serializable {
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     private Set<LovedOne> lovedOnes = new HashSet<>();
 
+    @Transient
+    private String image;
+    
+    @JsonIgnore
+    @Transient
+    private MultipartFile multipartFileImage;
+    
 }

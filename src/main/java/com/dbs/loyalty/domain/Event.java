@@ -12,9 +12,15 @@ import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -47,25 +53,51 @@ public class Event extends AbstractAuditing implements Serializable {
 	@GeneratedValue(generator = "UUIDGenerator")
 	private String id;
 
+    @NotNull(message = "{validation.notnull.title}")
+    @Size(min=2, max = 150, message = "{validation.size.title}")
     @Column(name = "title", nullable = false)
     private String title;
 
+    @NotNull(message = "{validation.notnull.description}")
+    @Size(min=2, max = 255, message = "{validation.size.description}")
     @Column(name = "description", nullable = false)
     private String description;
 
+    @NotNull(message = "{validation.notnull.content}")
+    @Size(min=2, max = 50000, message = "{validation.size.content}")
     @Lob
     @Column(name = "content", nullable = false, columnDefinition="TEXT")
     private String content;
 
+    @NotNull(message = "{validation.notnull.startPeriod}")
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "start_period", nullable = false)
     private Date startPeriod;
 
+    @NotNull(message = "{validation.notnull.endPeriod}")
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "end_period", nullable = false)
     private Date endPeriod;
     
+    @NotNull(message = "{validation.notnull.place}")
     @Column(name = "place", nullable = false)
     private String place;
+    
+    @Transient
+    private String image;
+    
+    @Transient
+    private String timePeriod;
+    
+    @JsonIgnore
+    @Transient
+    private MultipartFile multipartFileImage;
+    
+    @Transient
+    private String material;
+    
+    @JsonIgnore
+    @Transient
+    private MultipartFile multipartFileMaterial;
     
 }

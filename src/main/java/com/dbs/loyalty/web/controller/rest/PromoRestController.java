@@ -112,7 +112,9 @@ public class PromoRestController {
     		@ApiParam(name = "id", value = "Promo Id", example = "zO0dDp9K")
     		@PathVariable String id) throws NotFoundException{
     	
-		Optional<PromoDto> current = promoService.findById(id).map(promo -> promoMapper.toDto(promo));
+		Optional<PromoDto> current = promoService
+				.findById(id)
+				.map(promo -> promoMapper.toDto(promo));
     	
     	if(current.isPresent()) {
     		return ResponseEntity

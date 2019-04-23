@@ -15,8 +15,6 @@ import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.repository.CustomerPromoRepository;
 import com.dbs.loyalty.repository.CustomerRepository;
 import com.dbs.loyalty.repository.PromoRepository;
-import com.dbs.loyalty.service.dto.CustomerPromoDto;
-import com.dbs.loyalty.service.mapper.CustomerPromoMapper;
 import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.util.SecurityUtil;
 
@@ -31,10 +29,8 @@ public class CustomerPromoService{
 	private final PromoRepository promoRepository;
 	
 	private final CustomerPromoRepository customerPromoRepository;
-	
-	private final CustomerPromoMapper customerPromoMapper;
 
-	public CustomerPromoDto save(String promoId) throws NotFoundException {
+	public CustomerPromo save(String promoId) throws NotFoundException {
 		Optional<Customer> customer = customerRepository.findByEmail(SecurityUtil.getLogged());
 		Optional<Promo> promo = promoRepository.findById(promoId);
 		String message = null;
@@ -50,7 +46,7 @@ public class CustomerPromoService{
 			Optional<CustomerPromo> current = customerPromoRepository.findById(id);
 			
 			if(current.isPresent()) {
-				return customerPromoMapper.toDto(current.get());
+				return current.get();
 			}else {
 				CustomerPromo customerPromo = new CustomerPromo();
 				customerPromo.setId(id);
@@ -60,7 +56,7 @@ public class CustomerPromoService{
 				customerPromo.setCreatedDate(Instant.now());
 				customerPromo = customerPromoRepository.save(customerPromo);
 				
-				return customerPromoMapper.toDto(customerPromo);
+				return customerPromo;
 			}
 		}
 	}

@@ -7,11 +7,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.dbs.loyalty.config.constant.PathConstant;
 import com.dbs.loyalty.domain.Event;
-import com.dbs.loyalty.service.dto.EventFormDto;
 import com.dbs.loyalty.service.dto.EventViewDto;
 
 @Mapper(componentModel = "spring")
-public abstract class EventMapper extends EntityMapper<EventFormDto, Event> {
+public abstract class EventMapper{
 
 	public abstract EventViewDto toViewDto(Event event);
 

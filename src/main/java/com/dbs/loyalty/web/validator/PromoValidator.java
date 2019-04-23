@@ -47,7 +47,7 @@ public class PromoValidator implements Validator {
 			errors.rejectValue(title, validationExistTitle, errorArgs, defaultMessage);
 		}
 
-		if (promo.getId() == null && (promo.getMultipartFileImage() == null || promo.getMultipartFileImage().isEmpty())){
+		if (promo.getId() == null && promo.getMultipartFileImage().isEmpty()){
 			String defaultMessage = MessageUtil.getMessage(validationEmptyMultipartFileImage);
 			errors.rejectValue(multipartFileImage, validationEmptyMultipartFileImage, defaultMessage);
         }

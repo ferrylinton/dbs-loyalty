@@ -44,6 +44,7 @@ import com.dbs.loyalty.service.dto.CustomerPasswordDto;
 import com.dbs.loyalty.service.dto.CustomerUpdateDto;
 import com.dbs.loyalty.service.dto.CustomerViewDto;
 import com.dbs.loyalty.service.dto.JWTTokenDto;
+import com.dbs.loyalty.service.mapper.CustomerMapper;
 import com.dbs.loyalty.util.HeaderTokenUtil;
 import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.util.SecurityUtil;
@@ -72,6 +73,8 @@ public class CustomerRestController extends AbstractController{
 
     private final RestTokenProvider restTokenProvider;
     
+    private final CustomerMapper customerMapper;
+    
     @ApiOperation(
     		nickname="GetCustomerInfo", 
     		value="GetCustomerInfo", 
@@ -82,10 +85,12 @@ public class CustomerRestController extends AbstractController{
     @PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping("/customers/info")
 	public ResponseEntity<CustomerViewDto> getCustomerInfo() throws NotFoundException{
-    	Optional<CustomerViewDto> customerViewDto = customerService.findViewDtoByEmail(SecurityUtil.getLogged());
+    	Optional<CustomerViewDto> current = customerService
+    			.findByEmail(SecurityUtil.getLogged())
+    			.map(customer -> customerMapper.toDto(customer));
 		
-		if(customerViewDto.isPresent()) {
-			return ResponseEntity.ok().body(customerViewDto.get());
+		if(current.isPresent()) {
+			return ResponseEntity.ok().body(current.get());
 		}else {
 			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, SecurityUtil.getLogged());
 			throw new NotFoundException(message);
@@ -136,7 +141,7 @@ public class CustomerRestController extends AbstractController{
     	if(file.isEmpty()) {
     		throw new BadRequestException(new BadRequestResponse(MessageUtil.getMessage(FILE_IS_EMPTY)));
     	}else {
-    		FileImage fileImage = customerService.save(file);
+    		FileImage fileImage = customerService.updateCustomerImage(file);
         	HttpHeaders headers = new HttpHeaders();
     		headers.setCacheControl(CacheControl.noCache().getHeaderValue());
     		headers.setContentType(MediaType.valueOf(fileImage.getContentType()));
@@ -164,7 +169,7 @@ public class CustomerRestController extends AbstractController{
     		HttpServletRequest request)  {
     	
     	String token = null;
-    	CustomerViewDto customerViewDto = customerService.update(customerUpdateDto);
+    	CustomerViewDto customerViewDto = customerMapper.toDto(customerService.update(customerUpdateDto));
 		String jwt = HeaderTokenUtil.resolveToken(request);
         
         if (StringUtils.hasText(jwt) && restTokenProvider.validateToken(jwt)) {

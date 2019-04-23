@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -25,11 +26,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.config.constant.SwaggerConstant;
+import com.dbs.loyalty.domain.LovedOne;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.LovedOneService;
 import com.dbs.loyalty.service.dto.LovedOneAddDto;
 import com.dbs.loyalty.service.dto.LovedOneDto;
 import com.dbs.loyalty.service.dto.LovedOneUpdateDto;
+import com.dbs.loyalty.service.mapper.LovedOneMapper;
 import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.web.controller.AbstractController;
 import com.dbs.loyalty.web.validator.LovedOneAddValidator;
@@ -51,6 +54,8 @@ public class LovedOneRestController extends AbstractController{
 
     private final LovedOneService lovedOneService;
     
+    private final LovedOneMapper lovedOneMapper;
+    
     @ApiOperation(
     		nickname="GetLovedOnes", 
     		value="GetLovedOnes", 
@@ -61,7 +66,11 @@ public class LovedOneRestController extends AbstractController{
     @PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping("/loved-ones")
 	public ResponseEntity<List<LovedOneDto>> getLovedOnes(Principal principal){
-    	List<LovedOneDto> lovedOnes = lovedOneService.findByCustomerEmail(principal.getName());
+    	List<LovedOneDto> lovedOnes = lovedOneService
+    			.findByCustomerEmail(principal.getName())
+    			.stream()
+				.map(lovedOne -> lovedOneMapper.toDto(lovedOne))
+				.collect(Collectors.toList());;
 		return ResponseEntity.ok().body(lovedOnes);
 	}
     
@@ -80,7 +89,7 @@ public class LovedOneRestController extends AbstractController{
     		@Valid @RequestBody LovedOneAddDto lovedOneAddDto,
     		HttpServletRequest request)  {
 
-    	LovedOneDto lovedOneDto = lovedOneService.add(lovedOneAddDto);
+    	LovedOneDto lovedOneDto = lovedOneMapper.toDto(lovedOneService.add(lovedOneAddDto));
 		return ResponseEntity.ok().body(lovedOneDto);
     }
     
@@ -99,10 +108,11 @@ public class LovedOneRestController extends AbstractController{
     		@Valid @RequestBody LovedOneUpdateDto lovedOneUpdateDto,
     		HttpServletRequest request) throws NotFoundException  {
 
-    	Optional<LovedOneDto> lovedOneDto = lovedOneService.findById(lovedOneUpdateDto.getId());
+    	Optional<LovedOne> current = lovedOneService.findById(lovedOneUpdateDto.getId());
 		
-		if(lovedOneDto.isPresent()) {
-    		return ResponseEntity.ok().body(lovedOneService.update(lovedOneUpdateDto));
+		if(current.isPresent()) {
+			LovedOneDto loveOneDto = lovedOneMapper.toDto(lovedOneService.update(lovedOneUpdateDto));
+    		return ResponseEntity.ok().body(loveOneDto);
 		}else {
 			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, lovedOneUpdateDto.getId());
 			throw new NotFoundException(message);

@@ -45,17 +45,17 @@
                                 <th th:text="#{content}">Content</th>
                                 <td th:text="${event.content}">Join us at Asia's most anticipated and influential Digital Marketing conference, taking your place alongside more than 100 senior marketers and digital strategists over 2 days of networking and learning.</td>
                             </tr>
-                            <tr>
+                            <tr th:if="${event.startPeriod}">
                                 <th th:text="#{startPeriod}">Start Period</th>
                                 <td th:text="${#dates.format(event.startPeriod, 'dd-MM-yyyy')}">2019-08-01</td>
                             </tr>
-                            <tr>
+                            <tr th:if="${event.endPeriod}">
                                 <th th:text="#{endPeriod}">End Period</th>
                                 <td th:text="${#dates.format(event.endPeriod, 'dd-MM-yyyy')}">2019-18-02</td>
                             </tr>
                             <tr>
                                 <th th:text="#{timePeriod}">Time Period</th>
-                                <td th:text="${#dates.format(event.timePeriod, 'HH:mm')}">08:00</td>
+                                <td th:text="${event.timePeriod}">08:00</td>
                             </tr>
                             <tr>
                                 <th th:text="#{place}">Place</th>
@@ -65,29 +65,19 @@
                                 <th th:text="#{image}">Image</th>
                                 <td>
                                     <div class="d-block overflow-auto">
-                                        <img class="border p-1" 
-                                            alt="/static/image/200x300.png" 
-                                            style="width:200px;height:300px"
-                                            src="/static/image/200x300.png" 
-                                            th:style="|width:${event.imageWidth};height:${event.imageHeight};|" 
-                                            th:src="${@base64Service.getString(event.imageBytes, event.imageContentType)}" />
+                                        <img class="border p-1" alt="image" src="" th:src="@{|/image/${event.id}|}" />
                                     </div>
                                 </td>
                             </tr>
                             <tr>
-                                <th rowspan="2" th:text="#{material}">Material</th>
+                                <th th:text="#{material}">Material</th>
                                 <td>
-                                	<a class="btn btn-sm btn-light" role="button" aria-pressed="true" href="/sample.pdf" th:href="@{|/event/${event.id}/material|}" onclick="return openNewTab(this);">
+                                	<a class="btn btn-sm btn-light" role="button" aria-pressed="true" href="/sample.pdf" th:href="@{|/pdf/${event.id}|}" onclick="return openNewTab(this);">
                                         <span class="icon-file-pdf text-danger"></span> <span th:text="#{view}">View</span>
                                     </a>
-                                    <a class="btn btn-sm btn-light" role="button" aria-pressed="true" href="/sample.pdf" th:href="@{|/event/${event.id}/material/download|}">
-                                        <span th:text="#{download}">Download</span>
+                                    <a class="btn btn-sm btn-light" role="button" aria-pressed="true" href="/sample.pdf" th:href="@{|/pdf/download/${event.id}|}">
+                                        <span class="icon-download-alt"></span> <span th:text="#{download}">Download</span>
                                     </a>
-                                </td>
-                            </tr>
-                            <tr>
-                            	<td>
-                                    <embed class="border" width="100%" height="400px" src="/sample.pdf" th:src="@{|/event/${event.id}/material|}" type="application/pdf">
                                 </td>
                             </tr>
                             <tr>

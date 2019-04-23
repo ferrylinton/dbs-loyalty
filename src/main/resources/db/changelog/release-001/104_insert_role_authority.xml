@@ -84,17 +84,17 @@
         </insert>
         
         <insert tableName="m_role_authority">
-            <column name="role_id" value="${Maker}"/>
+            <column name="role_id" value="${Checker}"/>
             <column name="authority_id" value="${EVENT_CK}"/>
         </insert>
         
         <insert tableName="m_role_authority">
-            <column name="role_id" value="${Maker}"/>
+            <column name="role_id" value="${Checker}"/>
             <column name="authority_id" value="${TRAVEL_ASSISTANCE_CK}"/>
         </insert>
         
         <insert tableName="m_role_authority">
-            <column name="role_id" value="${Maker}"/>
+            <column name="role_id" value="${Checker}"/>
             <column name="authority_id" value="${WELLNESS_CK}"/>
         </insert>
 

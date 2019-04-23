@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dbs.loyalty.domain.Customer;
@@ -17,15 +16,9 @@ import com.dbs.loyalty.domain.FileImage;
 import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.CustomerRepository;
-import com.dbs.loyalty.repository.FileImageRepository;
-import com.dbs.loyalty.service.dto.CustomerDto;
-import com.dbs.loyalty.service.dto.CustomerFormDto;
 import com.dbs.loyalty.service.dto.CustomerPasswordDto;
 import com.dbs.loyalty.service.dto.CustomerUpdateDto;
-import com.dbs.loyalty.service.dto.CustomerViewDto;
-import com.dbs.loyalty.service.mapper.CustomerMapper;
 import com.dbs.loyalty.service.specification.CustomerSpecification;
-import com.dbs.loyalty.util.ImageUtil;
 import com.dbs.loyalty.util.PasswordUtil;
 import com.dbs.loyalty.util.SecurityUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,34 +29,22 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class CustomerService{
 
-	private final ObjectMapper objectMapper;
-	
 	private final CustomerRepository customerRepository;
 	
-	private final FileImageRepository fileImageRepository;
+	private final ImageService imageService;
 	
-	private final CustomerMapper customerMapper;
+	private final ObjectMapper objectMapper;
 
-	public Optional<CustomerViewDto> findViewDtoByEmail(String email){
-		return customerRepository
-				.findByEmail(email)
-				.map(customerMapper::toViewDto);
+	public Optional<Customer> findById(String id) {
+		return customerRepository.findById(id);
 	}
 	
 	public Optional<Customer> findByEmail(String email){
 		return customerRepository.findByEmail(email);
 	}
 	
-	public Optional<CustomerDto> findWithCustomerImageById(String id) {
-		return customerRepository
-				.findById(id)
-				.map(customerMapper::toDto);
-	}
-	
-	public Page<CustomerDto> findAll(Pageable pageable, HttpServletRequest request) {
-		return customerRepository
-				.findAll(CustomerSpecification.getSpec(request), pageable)
-				.map(customerMapper::toDto);
+	public Page<Customer> findAll(Pageable pageable, HttpServletRequest request) {
+		return customerRepository.findAll(CustomerSpecification.getSpec(request), pageable);
 	}
 	
 	public boolean isEmailExist(String id, String email) {
@@ -76,40 +57,11 @@ public class CustomerService{
 		}
 	}
 	
-	public boolean isEmailExist(CustomerUpdateDto customerUpdateDto) {
-		Optional<Customer> customer = customerRepository.findByEmailIgnoreCase(customerUpdateDto.getEmail());
-
-		if (customer.isPresent()) {
-			return (customerUpdateDto.getId() == null) || (!customerUpdateDto.getId().equals(customer.get().getId()));
-		}else {
-			return false;
-		}
+	public FileImage updateCustomerImage(MultipartFile file) throws IOException {
+		return imageService.updateCustomerImage(file);
 	}
 	
-	@Transactional
-	public FileImage save(MultipartFile file) throws IOException {
-		Optional<Customer> current = customerRepository.findByEmail(SecurityUtil.getLogged());
-		
-		if(current.isPresent()) {
-			Customer customer = current.get();
-			customer.setLastModifiedBy(SecurityUtil.getLogged());
-			customer.setLastModifiedDate(Instant.now());
-			customer = customerRepository.save(customer);
-			
-			FileImage fileImage = new FileImage();
-			fileImage.setId(customer.getId());
-			fileImage.setLastModifiedBy(SecurityUtil.getLogged());
-			fileImage.setLastModifiedDate(Instant.now());
-			ImageUtil.setFileImage(fileImage, file);
-			fileImageRepository.save(fileImage);
-
-			return fileImage;
-		}else {
-			return null;
-		}
-	}
-	
-	public CustomerViewDto update(CustomerUpdateDto customerUpdateDto) {
+	public Customer update(CustomerUpdateDto customerUpdateDto) {
 		Optional<Customer> current = customerRepository.findByEmail(SecurityUtil.getLogged());
 		
 		if(current.isPresent()) {
@@ -120,8 +72,7 @@ public class CustomerService{
 			customer.setLastModifiedBy(SecurityUtil.getLogged());
 			customer.setLastModifiedDate(Instant.now());
 			
-			customer = customerRepository.save(customer);
-			return customerMapper.toViewDto(customer);
+			return customerRepository.save(customer);
 		}else {
 			return null;
 		}
@@ -133,25 +84,25 @@ public class CustomerService{
 	}
 	
 	public String execute(Task task) throws IOException {
-		CustomerFormDto dto = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), CustomerFormDto.class);
+		Customer customer = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), Customer.class);
 
 		if(task.getVerified()) {
-			Customer customer = customerMapper.toEntity(dto);
-			
 			if(task.getTaskOperation() == TaskOperation.ADD) {
 				customer.setCreatedBy(task.getMaker());
 				customer.setCreatedDate(task.getMadeDate());
 				customerRepository.save(customer);
+				imageService.add(customer.getId(), customer.getImage(), task.getMaker(), task.getMadeDate());
 			}else if(task.getTaskOperation() == TaskOperation.MODIFY) {
 				customer.setLastModifiedBy(task.getMaker());
 				customer.setLastModifiedDate(task.getMadeDate());
 				customerRepository.save(customer);
+				imageService.update(customer.getId(), customer.getImage(), task.getMaker(), task.getMadeDate());
 			}else if(task.getTaskOperation() == TaskOperation.DELETE) {
 				customerRepository.delete(customer);
 			}
 		}
 
-		return dto.getEmail();
+		return customer.getEmail();
 	}
 
 }

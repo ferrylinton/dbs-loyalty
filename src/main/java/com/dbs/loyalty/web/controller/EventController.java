@@ -4,9 +4,10 @@ import static com.dbs.loyalty.config.constant.Constant.ERROR;
 import static com.dbs.loyalty.config.constant.Constant.PAGE;
 import static com.dbs.loyalty.config.constant.Constant.ZERO;
 import static com.dbs.loyalty.config.constant.EntityConstant.EVENT;
-import static com.dbs.loyalty.config.constant.MessageConstant.DATA_WITH_VALUE_NOT_FOUND;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
@@ -16,17 +17,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
-import org.springframework.http.CacheControl;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -40,20 +37,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.dbs.loyalty.domain.FileImage;
+import com.dbs.loyalty.domain.Event;
 import com.dbs.loyalty.domain.FileImageTask;
-import com.dbs.loyalty.domain.FilePdf;
+import com.dbs.loyalty.domain.FilePdfTask;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.EventService;
 import com.dbs.loyalty.service.ImageService;
-import com.dbs.loyalty.service.FilePdfService;
+import com.dbs.loyalty.service.PdfService;
 import com.dbs.loyalty.service.TaskService;
-import com.dbs.loyalty.service.dto.EventDto;
-import com.dbs.loyalty.service.dto.EventFormDto;
-import com.dbs.loyalty.util.ImageUtil;
-import com.dbs.loyalty.util.MessageUtil;
-import com.dbs.loyalty.util.SecurityUtil;
 import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.response.AbstractResponse;
 import com.dbs.loyalty.web.validator.EventValidator;
@@ -66,9 +58,15 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/event")
 public class EventController extends AbstractPageController {
 
+	private static final DateFormat DATETIME_FORMAT = new SimpleDateFormat("dd-MM-yyyy,HH:ss");
+	
+	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
+	
+	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("HH:ss");
+	
 	private final ImageService imageService;
 	
-	private final FilePdfService filePdfService;
+	private final PdfService pdfService;
 	
 	private final EventService eventService;
 
@@ -78,7 +76,7 @@ public class EventController extends AbstractPageController {
 	@GetMapping
 	public String viewEvents(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
 		Order order = getOrder(sort, "title");
-		Page<EventDto> page = eventService.findAll(getPageable(params, order), request);
+		Page<Event> page = eventService.findAll(getPageable(params, order), request);
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
 			return "redirect:/event";
@@ -101,93 +99,69 @@ public class EventController extends AbstractPageController {
 	@GetMapping("/{id}")
 	public String viewEventForm(ModelMap model, @PathVariable String id){
 		if (id.equals(ZERO)) {
-			model.addAttribute(EVENT, new EventDto());
+			model.addAttribute(EVENT, new Event());
 		} else {
 			getById(model, id);
 		}
 		
 		return "event/event-form";
 	}
-	
-	@PreAuthorize("hasAnyRole('EVENT_MK', 'EVENT_CK')")
-	@GetMapping("/{id}/material")
-	public ResponseEntity<byte[]> getEventMaterial(@PathVariable String id) throws NotFoundException {
-		Optional<FileImage> current = imageService.findOneByEventId(id);
-    	
-		if(current.isPresent()) {
-			HttpHeaders headers = new HttpHeaders();
-			headers.setCacheControl(CacheControl.noCache().getHeaderValue());
-			headers.setContentType(MediaType.APPLICATION_PDF);
-			
-			return ResponseEntity
-					.ok()
-					.headers(headers)
-					.body(current.get().getBytes());
-		}else {
-			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, SecurityUtil.getLogged());
-			throw new NotFoundException(message);
-		}
-	}
-	
-	@PreAuthorize("hasAnyRole('EVENT_MK', 'EVENT_CK')")
-	@GetMapping("/{id}/material/download")
-	public ResponseEntity<InputStreamResource> downloadEventMaterial(@PathVariable String id) throws NotFoundException, IOException {
-		Optional<FilePdf> current = filePdfService.findOneByEventId(id);
-    	
-		if(current.isPresent()) {
-			HttpHeaders headers = new HttpHeaders();
-			headers.setCacheControl(CacheControl.noCache().getHeaderValue());
-			headers.setContentType(MediaType.APPLICATION_PDF);
-			headers.add("content-disposition", "attachment;filename=" + id + ".pdf");
-			ByteArrayResource resource = new ByteArrayResource(current.get().getBytes());
-			
-			return ResponseEntity
-					.ok()
-					.headers(headers)
-					.body(new InputStreamResource(resource.getInputStream()));
-		}else {
-			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, SecurityUtil.getLogged());
-			throw new NotFoundException(message);
-		}
-	}
 
+	@Transactional
 	@PreAuthorize("hasRole('EVENT_MK')")
 	@PostMapping
 	@ResponseBody
-	public ResponseEntity<AbstractResponse> saveEvent(@ModelAttribute @Valid EventFormDto eventFormDto, BindingResult result) throws BadRequestException, IOException, NotFoundException {
+	public ResponseEntity<AbstractResponse> saveEvent(@ModelAttribute @Valid Event event, BindingResult result) throws BadRequestException, IOException, NotFoundException, ParseException {
 		if (result.hasErrors()) {
 			throwBadRequestResponse(result);
 		}
 		
-		if(eventFormDto.getId() == null) {
-			FileImageTask fileImageTask = imageService.save(eventFormDto.getImageFile());
-			eventFormDto.setImageFileId(fileImageTask.getId());
-			taskService.saveTaskAdd(EVENT, eventFormDto);
+		event.setStartPeriod(setTime(event.getStartPeriod(), event.getTimePeriod()));
+		event.setEndPeriod(setTime(event.getEndPeriod(), event.getTimePeriod()));
+		
+		if(event.getId() == null) {
+			FileImageTask fileImageTask = imageService.add(event.getMultipartFileImage());
+			event.setImage(fileImageTask.getId());
+			
+			FilePdfTask filePdfTask = pdfService.add(event.getMultipartFileMaterial());
+			event.setMaterial(filePdfTask.getId());
+			
+			taskService.saveTaskAdd(EVENT, event);
 		}else {
-			Optional<EventDto> current = eventService.findById(eventFormDto.getId());
+			Optional<Event> current = eventService.findById(event.getId());
 			
 			if(current.isPresent()) {
-				if(eventFormDto.getImageFile().isEmpty()) {
-					eventFormDto.setImageFileId(eventFormDto.getId());
+				if(event.getMultipartFileImage().isEmpty()) {
+					event.setImage(event.getId());
 				}else {
-					FileImageTask fileImageTask = imageService.save(eventFormDto.getImageFile());
-					eventFormDto.setImageFileId(fileImageTask.getId());
+					FileImageTask fileImageTask = imageService.add(event.getMultipartFileImage());
+					event.setImage(fileImageTask.getId());
 				}
 				
-				taskService.saveTaskModify(EVENT, current.get(), eventFormDto);
+				if(event.getMultipartFileMaterial().isEmpty()) {
+					event.setMaterial(event.getId());
+				}else {
+					FilePdfTask filePdfTask = pdfService.add(event.getMultipartFileMaterial());
+					event.setImage(filePdfTask.getId());
+				}
+				
+				current.get().setImage(event.getId());
+				current.get().setMaterial(event.getId());
+				taskService.saveTaskModify(EVENT, current.get(), event);
 			}else {
 				throw new NotFoundException();
 			}
 		}
 
-		return taskIsSavedResponse(EVENT, eventFormDto.getTitle(), UrlUtil.getUrl(EVENT));
+		return taskIsSavedResponse(EVENT, event.getTitle(), UrlUtil.getUrl(EVENT));
 	}
 
+	@Transactional
 	@PreAuthorize("hasRole('EVENT_MK')")
 	@DeleteMapping("/{id}")
 	@ResponseBody
 	public ResponseEntity<AbstractResponse> deleteEvent(@PathVariable String id) throws JsonProcessingException, NotFoundException{
-		Optional<EventDto> current = eventService.findById(id);
+		Optional<Event> current = eventService.findById(id);
 		
 		if(current.isPresent()) {
 			taskService.saveTaskDelete(EVENT, current.get());
@@ -197,21 +171,31 @@ public class EventController extends AbstractPageController {
 		}
 	}
 
-	
-	@InitBinder("eventDto")
+	@InitBinder("event")
 	protected void initBinder(WebDataBinder binder) {
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("dd-MM-yyyy"), true, 10)); 
 		binder.addValidators(new EventValidator(eventService));
 	}
 
 	private void getById(ModelMap model, String id){
-		Optional<EventDto> current = eventService.findById(id);
+		Optional<Event> current = eventService.findById(id);
 		
 		if (current.isPresent()) {
-			model.addAttribute(EVENT, current.get());
+			Event event = current.get();
+			event.setTimePeriod(getTime(event.getStartPeriod()));
+			model.addAttribute(EVENT, event);
 		} else {
 			model.addAttribute(ERROR, getNotFoundMessage(id));
 		}
+	}
+	
+	private Date setTime(Date date, String timePeriod) throws ParseException {
+		String dateString = DATE_FORMAT.format(date);
+		return DATETIME_FORMAT.parse(dateString + "," + timePeriod);
+	}
+
+	private String getTime(Date date) {
+		return TIME_FORMAT.format(date);
 	}
 	
 }

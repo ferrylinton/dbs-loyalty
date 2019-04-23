@@ -21,6 +21,7 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -34,7 +35,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.dbs.loyalty.domain.FileImage;
+import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.domain.FileImageTask;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
@@ -42,8 +43,6 @@ import com.dbs.loyalty.service.CustomerService;
 import com.dbs.loyalty.service.ImageService;
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.service.dto.CustomerDto;
-import com.dbs.loyalty.service.dto.CustomerFormDto;
-import com.dbs.loyalty.util.ImageUtil;
 import com.dbs.loyalty.util.PasswordUtil;
 import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.response.AbstractResponse;
@@ -67,7 +66,7 @@ public class CustomerController extends AbstractPageController{
 	@GetMapping
 	public String viewCustomers(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
 		Order order = getOrder(sort, "name");
-		Page<CustomerDto> page = customerService.findAll(getPageable(params, order), request);
+		Page<Customer> page = customerService.findAll(getPageable(params, order), request);
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
 			return "redirect:/customer";
@@ -98,46 +97,47 @@ public class CustomerController extends AbstractPageController{
 		return "customer/customer-form";
 	}
 	
+	@Transactional
 	@PreAuthorize("hasRole('CUSTOMER_MK')")
 	@PostMapping
 	@ResponseBody
-	public ResponseEntity<AbstractResponse> saveCustomer(@Valid @ModelAttribute CustomerFormDto customerFormDto, BindingResult result) throws BadRequestException, IOException, NotFoundException {
+	public ResponseEntity<AbstractResponse> saveCustomer(@Valid @ModelAttribute Customer customer, BindingResult result) throws BadRequestException, IOException, NotFoundException {
 		if (result.hasErrors()) {
 			throwBadRequestResponse(result);
 		}
 
-		if(customerFormDto.getId() == null) {
-			FileImageTask fileImageTask = imageService.save(customerFormDto.getImageFile());
-			
-			customerFormDto.setFileImageId(fileImageTask.getId());
-			customerFormDto.setPasswordHash(PasswordUtil.encode(customerFormDto.getPasswordPlain()));
-			taskService.saveTaskAdd(CUSTOMER, customerFormDto);
+		if(customer.getId() == null) {
+			FileImageTask fileImageTask = imageService.add(customer.getMultipartFileImage());
+			customer.setImage(fileImageTask.getId());
+			customer.setPasswordHash(PasswordUtil.encode(customer.getPasswordPlain()));
+			taskService.saveTaskAdd(CUSTOMER, customer);
 		}else {
-			Optional<CustomerDto> current = customerService.findWithCustomerImageById(customerFormDto.getId());
+			Optional<Customer> current = customerService.findById(customer.getId());
 			
 			if(current.isPresent()) { 
-				if(customerFormDto.getImageFile().isEmpty()) {
-					customerFormDto.setFileImageId(customerFormDto.getId());
+				if(customer.getMultipartFileImage().isEmpty()) {
+					customer.setImage(customer.getId());
 				}else {
-					FileImageTask fileImageTask = imageService.save(customerFormDto.getImageFile());
-					customerFormDto.setFileImageId(fileImageTask.getId());
+					FileImageTask fileImageTask = imageService.add(customer.getMultipartFileImage());
+					customer.setImage(fileImageTask.getId());
 				}
 				
-				//customerFormDto.setPasswordHash(current.get().getPasswordHash());
-				taskService.saveTaskModify(CUSTOMER, current.get(), customerFormDto);
+				customer.setPasswordHash(current.get().getPasswordHash());
+				current.get().setImage(customer.getId());
+				taskService.saveTaskModify(CUSTOMER, current.get(), customer);
 			}else {
 				throw new NotFoundException();
 			}
 		}
 
-		return taskIsSavedResponse(CUSTOMER,  customerFormDto.getName(), UrlUtil.getUrl(CUSTOMER));
+		return taskIsSavedResponse(CUSTOMER,  customer.getName(), UrlUtil.getUrl(CUSTOMER));
 	}
 	
 	@PreAuthorize("hasRole('CUSTOMER_MK')")
 	@DeleteMapping("/{id}")
 	@ResponseBody
 	public ResponseEntity<AbstractResponse> deleteCustomer(@PathVariable String id) throws JsonProcessingException, NotFoundException {
-		Optional<CustomerDto> current = customerService.findWithCustomerImageById(id);
+		Optional<Customer> current = customerService.findById(id);
 		
 		if(current.isPresent()) {
 			taskService.saveTaskDelete(CUSTOMER, current.get());
@@ -154,10 +154,10 @@ public class CustomerController extends AbstractPageController{
 	}
 
 	private void getById(ModelMap model, String id){
-		Optional<CustomerDto> customerDto = customerService.findWithCustomerImageById(id);
+		Optional<Customer> customer = customerService.findById(id);
 		
-		if (customerDto.isPresent()) {
-			model.addAttribute(CUSTOMER, customerDto.get());
+		if (customer.isPresent()) {
+			model.addAttribute(CUSTOMER, customer.get());
 		} else {
 			model.addAttribute(ERROR, getNotFoundMessage(id));
 		}

@@ -7,7 +7,6 @@ import org.springframework.validation.Validator;
 
 import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.service.CustomerService;
-import com.dbs.loyalty.service.dto.CustomerDto;
 import com.dbs.loyalty.service.dto.CustomerPasswordDto;
 import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.util.PasswordUtil;

@@ -58,7 +58,7 @@
                                     </div>
                                     <div class="form-group col">
                                         <label for="timePeriod" th:text="|#{timePeriod} *|">Time Period *</label>
-                                        <input class="form-control" type="text" id="timePeriod" name="timePeriod" readonly="readonly" />
+                                        <input class="form-control" type="text" th:field="*{timePeriod}" readonly="readonly" />
                                     </div>
                                 </div>
                             </div>
@@ -70,27 +70,22 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-12" th:if="${event.imageBytes}">
-                                <div class="form-group">
-                                    <label for="image" th:text="#{image}">Image</label>
-                                    <div class="d-block overflow-auto">
-                                        <img class="border p-1" 
-                                            alt="/static/image/500x200.png" 
-                                            style="width:500px;height:200px"
-                                            src="/static/image/500x200.png" 
-                                            th:style="|width:${event.imageWidth};height:${event.imageHeight};|" 
-                                            th:src="${@base64Service.getString(event.imageBytes, event.imageContentType)}" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
-                                <div class="form-group">
-                                    <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="imageFile" name="imageFile" onchange="ImageUtil.show(this)">
-                                        <label class="custom-file-label" th:text="#{chooseImageFile}"></label>
-                                    </div>
-                                </div>
-                            </div>
+                            <div class="col-12" th:if="*{id != null}">
+								<div class="form-group">
+									<label for="image" th:text="#{image}">Image</label>
+									<div class="d-block overflow-auto">
+										<img class="border p-1" alt="image" src="" th:src="@{|/image/${event.id}|}" />
+									</div>
+								</div>
+							</div>
+							<div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+								<div class="form-group">
+									<div class="custom-file">
+										<input type="file" class="custom-file-input" id="multipartFileImage" name="multipartFileImage" onchange="ImageUtil.show(this)">
+										<label class="custom-file-label" th:text="#{chooseImageFile}"></label>
+									</div>
+								</div>
+							</div>
                             <div class="col-12">
                                 <div class="form-group" id="preview-image" style="display: none;">
                                     <div class="d-block overflow-auto">
@@ -103,14 +98,19 @@
                         	<div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
                                 <div class="form-group">
                                     <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="materialFile" name="materialFile">
+                                        <input type="file" class="custom-file-input" id="multipartFileMaterial" name="multipartFileMaterial">
                                         <label class="custom-file-label" th:text="#{chooseMaterialFile}"></label>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- TOOLBAR -->
-                        <input type="hidden" id="id" th:field="*{id}" th:if="*{id != null}"/>
+                        <!-- HIDDEN -->
+                    	<input type="hidden" id="id" th:field="*{id}" th:if="*{id != null}"/>
+                    	<input type="hidden" th:field="*{createdBy}"/>
+                    	<input type="hidden" th:field="*{createdDate}"/>
+                    	<input type="hidden" th:field="*{lastModifiedBy}"/>
+                    	<input type="hidden" th:field="*{lastModifiedDate}"/>
+                    	<!-- TOOLBAR -->
                         <div class="toolbar">
                             <a class="btn btn-light" href="/event/event-view.html" th:href="@{/event}">
                                 <span class="icon-left" th:text="#{back}">Back</span>

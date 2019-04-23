@@ -3,8 +3,8 @@ package com.dbs.loyalty.web.validator;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import com.dbs.loyalty.domain.Event;
 import com.dbs.loyalty.service.EventService;
-import com.dbs.loyalty.service.dto.EventFormDto;
 import com.dbs.loyalty.util.MessageUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -12,13 +12,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class EventValidator implements Validator {
 
-	private String validationNotEmptyImageFile = "validation.notempty.imageFile";
+	private String validationNotEmptyImageFile = "validation.empty.multipartFileImage";
 
-	private String imageFile = "imageFile";
+	private String multipartFileImage = "multipartFileImage";
 	
-	private String validationNotEmptyMaterialFile = "validation.notempty.materialFile";
+	private String validationNotEmptyMaterialFile = "validation.empty.multipartFilePdf";
 
-	private String materialFile = "materialFile";
+	private String multipartFileMaterial = "multipartFileMaterial";
 
 	private String validationExistTitle = "validation.exist.title";
 
@@ -28,27 +28,27 @@ public class EventValidator implements Validator {
 
 	@Override
 	public boolean supports(Class<?> clazz) {
-		return EventFormDto.class.equals(clazz);
+		return Event.class.equals(clazz);
 	}
 
 	@Override
 	public void validate(Object target, Errors errors) {
-		EventFormDto eventFormDto = (EventFormDto) target;
+		Event event = (Event) target;
 
-		if (eventService.isTitleExist(eventFormDto.getId(), eventFormDto.getTitle())) {
-			Object[] errorArgs = new String[] { eventFormDto.getTitle() };
+		if (eventService.isTitleExist(event.getId(), event.getTitle())) {
+			Object[] errorArgs = new String[] { event.getTitle() };
 			String defaultMessage = MessageUtil.getMessage(validationExistTitle, errorArgs);
 			errors.rejectValue(title, validationExistTitle, errorArgs, defaultMessage);
 		}
 
-		if (eventFormDto.getId() == null && (eventFormDto.getImageFile() == null || eventFormDto.getImageFile().isEmpty())){
+		if (event.getId() == null && event.getMultipartFileImage().isEmpty()){
 			String defaultMessage = MessageUtil.getMessage(validationNotEmptyImageFile);
-			errors.rejectValue(imageFile, validationNotEmptyImageFile, defaultMessage);
+			errors.rejectValue(multipartFileImage, validationNotEmptyImageFile, defaultMessage);
         }
 		
-		if (eventFormDto.getId() == null && (eventFormDto.getMaterialFile() == null || eventFormDto.getMaterialFile().isEmpty())){
+		if (event.getId() == null && event.getMultipartFileMaterial().isEmpty()){
 			String defaultMessage = MessageUtil.getMessage(validationNotEmptyMaterialFile);
-			errors.rejectValue(materialFile, validationNotEmptyImageFile, defaultMessage);
+			errors.rejectValue(multipartFileMaterial, validationNotEmptyImageFile, defaultMessage);
         }
 		
 	}

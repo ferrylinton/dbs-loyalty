@@ -45,13 +45,26 @@ public class ImageService{
 		return fileImageRepository.findOneByEventId(id);
 	}
 	
-	public FileImageTask save(MultipartFile file) throws IOException {
+	public FileImageTask add(MultipartFile file) throws IOException {
 		FileImageTask fileTaskImage = new FileImageTask();
 		fileTaskImage.setId(UUID.randomUUID().toString());
 		fileTaskImage.setCreatedBy(SecurityUtil.getLogged());
 		fileTaskImage.setCreatedDate(Instant.now());
 		ImageUtil.setFileImage(fileTaskImage, file);
 		return fileImageTaskRepository.save(fileTaskImage);
+	}
+	
+	public FileImage updateCustomerImage(MultipartFile file) throws IOException {
+		Optional<FileImage> fileImage = fileImageRepository.findOneByCustomerEmail(SecurityUtil.getLogged());
+		
+		if(fileImage.isPresent()) {
+			fileImage.get().setLastModifiedBy(SecurityUtil.getLogged());
+			fileImage.get().setLastModifiedDate(Instant.now());
+			ImageUtil.setFileImage(fileImage.get(), file);
+			return fileImageRepository.save(fileImage.get());
+		}
+
+		return null;
 	}
 
 	public FileImage add(String id, String fileImageTaskId, String createdBy, Instant createdDate) {

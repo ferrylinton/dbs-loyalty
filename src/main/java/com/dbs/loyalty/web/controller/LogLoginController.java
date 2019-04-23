@@ -15,8 +15,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.dbs.loyalty.domain.LogLogin;
 import com.dbs.loyalty.service.LogLoginService;
-import com.dbs.loyalty.service.dto.LogLoginDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -31,7 +31,7 @@ public class LogLoginController extends AbstractPageController {
 	@GetMapping
 	public String view(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
 		Order order = getOrder(sort, "createdDate");
-		Page<LogLoginDto> page = logLoginService.findAll(getPageable(params, order), request);
+		Page<LogLogin> page = logLoginService.findAll(getPageable(params, order), request);
 		
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
 			return "redirect:/loglogin";
