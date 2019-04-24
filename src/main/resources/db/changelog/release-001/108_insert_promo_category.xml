@@ -9,7 +9,7 @@
 	<property name="PromoInvestasi" value="42855a1e-0349-4e41-a21d-b81333329c8c" />
 	<property name="PromoPinjaman" value="62c1a2ae-d848-40fd-87ae-e8b71ae565cd" />
 	
-    <changeSet author="FLH" id="110-1">
+    <changeSet author="FLH" id="108-1">
 
         <insert tableName="c_promo_category">
             <column name="id" value="${DebitCardPromo}"/>

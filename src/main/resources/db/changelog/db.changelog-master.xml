@@ -29,6 +29,8 @@
     <!-- Event -->
     <include file="release-001/018_event_schema.xml" relativeToChangelogFile="true"/>
     <include file="release-001/019_customer_event_schema.xml" relativeToChangelogFile="true"/>
+    <!-- Feedback -->
+    <include file="release-001/020_feedback_schema.xml" relativeToChangelogFile="true"/>
     <!-- Reward -->
     <include file="release-001/031_reward_operation_schema.xml" relativeToChangelogFile="true"/>
     <include file="release-001/032_reward_schema.xml" relativeToChangelogFile="true"/>
@@ -45,6 +47,8 @@
     <include file="release-001/108_insert_promo_category.xml" relativeToChangelogFile="true"/>
     <include file="release-001/109_insert_promo.xml" relativeToChangelogFile="true"/>
     <include file="release-001/110_insert_event.xml" relativeToChangelogFile="true"/>
+    
+    <include file="release-001/111_insert_feedback.xml" relativeToChangelogFile="true"/>
     
     <include file="release-001/131_insert_reward_operation.xml" relativeToChangelogFile="true"/>
     <include file="release-001/132_insert_reward.xml" relativeToChangelogFile="true"/>

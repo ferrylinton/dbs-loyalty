@@ -1,0 +1,22 @@
+[
+	{
+		"key": "a",
+		"value": "Very Dissatisfied"
+	},
+	{
+		"key": "b",
+		"value": "Dissatisfied"
+	},
+	{
+		"key": "c",
+		"value": "Neutral"
+	},
+	{
+		"key": "d",
+		"value": "Satisfied"
+	},
+	{
+		"key": "e",
+		"value": "Very Statisfied"
+	}
+]

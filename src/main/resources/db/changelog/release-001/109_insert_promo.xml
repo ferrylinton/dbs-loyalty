@@ -5,7 +5,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
-    <changeSet author="FLH" id="111-1">
+    <changeSet author="FLH" id="109-1">
 
         <insert tableName="c_promo">
             <column name="id" value="80db859e-e574-41b7-bcc3-a8dd0bf0eae2"/>

@@ -1,0 +1,125 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog 
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    
+    <changeSet author="FLH" id="020-1">
+    
+        <createTable tableName="q_feedback">
+            <column name="id" type="VARCHAR(36)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+        
+    </changeSet>
+    
+    <changeSet author="FLH" id="020-2">
+        <addPrimaryKey columnNames="id" constraintName="q_feedback_pkey" tableName="q_feedback"/>
+    </changeSet>
+         
+    <changeSet author="FLH" id="020-3">
+    
+        <createTable tableName="q_feedback_question">
+            <column name="id" type="VARCHAR(36)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="question_number" type="TINYINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="question_text" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="form_type" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="question_option" type="TEXT"/>
+            <column name="feedback_id" type="VARCHAR(36)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+        
+    </changeSet>
+    
+	<changeSet author="FLH" id="020-4">
+        <addPrimaryKey columnNames="id" constraintName="q_feedback_question_pkey" tableName="q_feedback_question"/>
+    </changeSet>
+
+	<changeSet author="FLH" id="020-5">
+    
+        <createTable tableName="q_feedback_customer">
+            <column name="customer_id" type="VARCHAR(36)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="feedback_id" type="VARCHAR(36)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+        
+    </changeSet>
+    
+    <changeSet author="FLH" id="020-6">
+        <addPrimaryKey columnNames="customer_id, feedback_id" constraintName="q_feedback_customer_pkey" tableName="q_feedback_customer"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="020-7">
+    
+        <createTable tableName="q_feedback_answer">
+            <column name="id" type="VARCHAR(36)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="question_number" type="TINYINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="question_text" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="question_answer" type="VARCHAR(255)"/>
+            <column name="feedback_id" type="VARCHAR(36)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="customer_id" type="VARCHAR(36)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+        
+    </changeSet>
+    
+    <changeSet author="FLH" id="020-8">
+        <addPrimaryKey columnNames="id" constraintName="q_feedback_answer_pkey" tableName="q_feedback_answer"/>
+    </changeSet>
+    
+</databaseChangeLog>
