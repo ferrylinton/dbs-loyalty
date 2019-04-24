@@ -27,9 +27,12 @@ public class RestAuthentication implements Authentication {
 	private boolean authenticated; 
 	
 	private Customer customer;
+	
+	private String id;
 
-	public RestAuthentication(String principal) {
-		this.principal = principal;
+	public RestAuthentication(String[] subject) {
+		this.id = subject[0];
+		this.principal = subject[1];
 		this.credentials = null;
 		this.authenticated = true;
 	}
@@ -94,6 +97,10 @@ public class RestAuthentication implements Authentication {
 
 	public Customer getCustomer() {
 		return customer;
+	}
+
+	public String getId() {
+		return id;
 	}
 
 }

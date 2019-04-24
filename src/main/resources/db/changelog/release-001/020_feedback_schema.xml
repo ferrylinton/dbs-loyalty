@@ -71,14 +71,9 @@
             <column name="feedback_id" type="VARCHAR(36)">
                 <constraints nullable="false"/>
             </column>
-            <column name="created_by" type="VARCHAR(50)">
-                <constraints nullable="false"/>
-            </column>
             <column name="created_date" type="timestamp">
                 <constraints nullable="false"/>
             </column>
-            <column name="last_modified_by" type="VARCHAR(50)"/>
-            <column name="last_modified_date" type="timestamp"/>
         </createTable>
         
     </changeSet>
@@ -106,14 +101,6 @@
             <column name="customer_id" type="VARCHAR(36)">
                 <constraints nullable="false"/>
             </column>
-            <column name="created_by" type="VARCHAR(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_date" type="timestamp">
-                <constraints nullable="false"/>
-            </column>
-            <column name="last_modified_by" type="VARCHAR(50)"/>
-            <column name="last_modified_date" type="timestamp"/>
         </createTable>
         
     </changeSet>

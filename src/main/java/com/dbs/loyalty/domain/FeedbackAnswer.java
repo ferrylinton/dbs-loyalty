@@ -24,11 +24,11 @@ import lombok.ToString;
 
 @Setter
 @Getter
-@ToString(of = {"id"})
-@EqualsAndHashCode(of = {"id"}, callSuper = false)
+@ToString(of = {"id", "questionNumber", "questionText", "questionAnswer"})
+@EqualsAndHashCode(of = {"id", "questionNumber", "questionText", "questionAnswer"})
 @Entity
 @Table(name = "q_feedback_answer")
-public class FeedbackAnswer extends AbstractAuditing implements Serializable {
+public class FeedbackAnswer implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -47,7 +47,7 @@ public class FeedbackAnswer extends AbstractAuditing implements Serializable {
     @Column(name = "question_answer")
     private String questionAnswer;
     
-    @JsonIgnoreProperties("answerMap")
+    @JsonIgnoreProperties("answers")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({
         @JoinColumn(

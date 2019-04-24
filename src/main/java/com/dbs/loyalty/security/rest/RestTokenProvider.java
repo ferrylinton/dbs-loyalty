@@ -42,7 +42,7 @@ public class RestTokenProvider {
         this.tokenValidityInMillisecondsForRememberMe = 1000 *  applicationProperties.getSecurity().getTokenValidityInSecondsForRememberMe();
     }
     
-    public String createToken(Authentication authentication, boolean rememberMe) {
+    public String createToken(RestAuthentication authentication, boolean rememberMe) {
     	long now = (new Date()).getTime();
         Date validity;
         if (rememberMe) {
@@ -52,7 +52,7 @@ public class RestTokenProvider {
         }
 
         return Jwts.builder()
-            .setSubject(authentication.getName())
+            .setSubject(authentication.getCustomer().getId() + "," + authentication.getName())
             .signWith(key, SignatureAlgorithm.HS512)
             .setExpiration(validity)
             .compact();
@@ -78,7 +78,7 @@ public class RestTokenProvider {
             .parseClaimsJws(token)
             .getBody();
 
-        return new RestAuthentication(claims.getSubject());
+        return new RestAuthentication(claims.getSubject().split(","));
     }
 
     public boolean validateToken(String token) {

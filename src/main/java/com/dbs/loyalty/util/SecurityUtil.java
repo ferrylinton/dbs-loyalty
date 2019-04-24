@@ -8,12 +8,22 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import com.dbs.loyalty.domain.User;
+import com.dbs.loyalty.security.rest.RestAuthentication;
 import com.dbs.loyalty.security.web.WebAuthentication;
 
 public final class SecurityUtil {
 
 	public static String getLogged() {
 		return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
+	
+	public static String getId() {
+		if(SecurityContextHolder.getContext().getAuthentication() instanceof RestAuthentication) {
+			RestAuthentication authentication = (RestAuthentication) SecurityContextHolder.getContext().getAuthentication();
+			return authentication.getId();
+		}
+		
+		return null;
     }
 	
 	public static List<String> getAuthorities() {
