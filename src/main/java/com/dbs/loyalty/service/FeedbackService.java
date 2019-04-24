@@ -2,7 +2,6 @@ package com.dbs.loyalty.service;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -24,14 +23,14 @@ public class FeedbackService{
 	
 	private final ObjectMapper objectMapper;
 
-	public Optional<Feedback> findById(String id) throws IOException{
-		Optional<Feedback> feedback = feedbackRepository.findById(id);
+	public Optional<Feedback> findWithQuestionsById(String id) throws IOException{
+		Optional<Feedback> feedback = feedbackRepository.findWithQuestionsById(id);
 		
 		if(feedback.isPresent()) {
-			for(Map.Entry<String, FeedbackQuestion> entry: feedback.get().getQuestionMap().entrySet()) {
-				if(entry.getValue().getQuestionOption() != null) {
-					List<Pair<String, String>> questionOptions = objectMapper.readValue(entry.getValue().getQuestionOption(), new TypeReference<List<Pair<String, String>>>() {});
-					entry.getValue().setQuestionOptions(questionOptions);
+			for(FeedbackQuestion question: feedback.get().getQuestions()) {
+				if(question.getQuestionOption() != null) {
+					List<Pair<String, String>> questionOptions = objectMapper.readValue(question.getQuestionOption(), new TypeReference<List<Pair<String, String>>>() {});
+					question.setQuestionOptions(questionOptions);
 				}
 			}
 		}

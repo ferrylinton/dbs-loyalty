@@ -1,12 +1,12 @@
 package com.dbs.loyalty.domain;
 
 import java.io.Serializable;
-import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
-import javax.persistence.MapKeyColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -29,8 +29,7 @@ public class Feedback extends AbstractAuditing implements Serializable {
 	@Column(name = "id", length=36)
 	private String id;
 
-    @OneToMany(mappedBy = "feedback")
-    @MapKeyColumn(name="id")
-    private Map<String, FeedbackQuestion> questionMap;
+    @OneToMany(mappedBy = "feedback", fetch = FetchType.LAZY)
+    private Set<FeedbackQuestion> questions;
     
 }

@@ -61,7 +61,7 @@ public class FeedbackRestController {
     		@ApiParam(name = "id", value = "Event Id / Feedback Id", example = "93643790-8aca-4b62-9dad-f3f818e3de14")
     		@PathVariable String id) throws NotFoundException, IOException{
     	
-    	Optional<Feedback> current = feedbackService.findById(id);
+    	Optional<Feedback> current = feedbackService.findWithQuestionsById(id);
 		
 		if(current.isPresent()) {
 			return ResponseEntity.ok().body(current.get());
