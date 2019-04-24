@@ -1,6 +1,7 @@
 package com.dbs.loyalty.domain;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,13 +15,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.GenericGenerator;
 
 import com.dbs.loyalty.domain.enumeration.FormType;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.dbs.loyalty.model.Pair;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -55,12 +58,17 @@ public class FeedbackQuestion extends AbstractAuditing implements Serializable {
     @Column(name = "form_type", length=20, nullable = false)
     private FormType formType;
 
+    @JsonIgnore
     @Lob
     @Column(name = "question_option", columnDefinition="TEXT")
     private String questionOption;
     
-    @JsonIgnoreProperties("questionMap")
+    @Transient
+    private List<Pair<String, String>> questionOptions;
+    
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "feedback_id", nullable = false, foreignKey = @ForeignKey(name = "q_feedback_question_fk"))
     private Feedback feedback;
+    
 }

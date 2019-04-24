@@ -85,7 +85,7 @@ public class PromoRestController {
 	@PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping("/promos/promo-categories/{promoCategoryId}")
     public ResponseEntity<List<PromoDto>> getAllByPromoCategoryId(
-    		@ApiParam(name = "promoCategoryId", value = "Promo Category Id", example = "zO0dDp9K")
+    		@ApiParam(name = "promoCategoryId", value = "Promo Category Id", example = "0073fbf2-bde7-4405-9c0d-588d2bf12017")
     		@PathVariable String promoCategoryId){
     	
 		List<PromoDto> promos = promoService
