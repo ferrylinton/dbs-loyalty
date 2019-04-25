@@ -18,6 +18,7 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -91,6 +92,7 @@ public class RoleController extends AbstractPageController {
 		return "role/role-form";
 	}
 
+	@Transactional
 	@PreAuthorize("hasRole('ROLE_MK')")
 	@PostMapping
 	@ResponseBody
@@ -114,13 +116,16 @@ public class RoleController extends AbstractPageController {
 		return taskIsSavedResponse(ROLE, role.getName(), UrlUtil.getUrl(ROLE));
 	}
 
+	@Transactional
 	@PreAuthorize("hasRole('ROLE_MK')")
 	@DeleteMapping("/{id}")
 	public @ResponseBody ResponseEntity<AbstractResponse> delete(@PathVariable String id) throws NotFoundException, JsonProcessingException{
 		Optional<Role> current = roleService.findWithAuthoritiesById(id);
 		
 		if(current.isPresent()) {
+			current.get().setPending(true);
 			taskService.saveTaskDelete(ROLE, current.get());
+			roleService.save(current.get());
 			return taskIsSavedResponse(ROLE, current.get().getName(), UrlUtil.getUrl(ROLE));
 		}else {
 			throw new NotFoundException();

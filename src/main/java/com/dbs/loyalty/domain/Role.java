@@ -22,7 +22,6 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.dbs.loyalty.config.constant.Constant;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -43,7 +42,7 @@ import lombok.Setter;
 		@UniqueConstraint(name = "m_role_name_uq", columnNames = {"name"})
 	}
 )
-public class Role extends AbstractAuditing implements Serializable {
+public class Role extends AbstractTask implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -67,10 +66,6 @@ public class Role extends AbstractAuditing implements Serializable {
     )
     private Set<Authority> authorities = new HashSet<>();
 
-	@JsonIgnore
-	@Column(name = "pending", nullable = true)
-	private Boolean pending = false;
-	
 	@Override
 	public String toString() {
 		return id + "," + name;

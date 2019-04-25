@@ -1,15 +1,19 @@
 <!doctype html>
 <html lang="en" th:lang="${#locale}" xmlns:th="http://www.org">
 
-<head th:replace="fragment/head.html :: content(title=#{event})">
-    <title>DBS Loyalty : Event</title>
-    <link href="/static/image/favicon.png" rel="shorcut icon" />
-    <link href="/static/css/all.min.css" rel="stylesheet" />
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="contextPath" content="/" th:content="@{/}" />
+    <title th:text="|#{application.name} : #{event}|"></title>
+    <link href="/static/image/favicon.png" th:href="@{/static/image/favicon.png}" rel="shorcut icon" />
+    <link href="/static/css/all.min.css" th:href="@{/static/css/all.min.css}" rel="stylesheet" />
 </head>
 
 <body>
     <!-- NAVBAR -->
-    <div id="navbar" th:replace="fragment/navbar.html :: content"></div>
+    <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
     <div id="content-box" th:with="isMaker=${#authorization.expression('hasAuthority(''EVENT_MK'')')}">
         <!-- BREADCRUMB -->
         <nav aria-label="breadcrumb">
@@ -100,15 +104,12 @@
             </div>
         </div>
         <!-- FOOTER -->
-        <div id="footer" th:replace="fragment/footer.html :: content"></div>
+        <div id="footer" th:replace="fragment/footer.html :: #footer"></div>
     </div>
     <!-- SIDENAV -->
-    <div id="sidenav-box">
-        <div th:replace="fragment/sidenav.html :: content"></div>
-    </div>
+    <div id="sidenav-box" th:replace="fragment/sidenav.html :: #sidenav-box"></div>
     <!-- SCRIPTS -->
-    <div th:replace="fragment/scripts.html :: content"></div>
-    <script src="/static/js/all.min.js" th:remove="all"></script>
+    <script src="/static/js/all.min.js" th:src="@{/static/js/all.min.js}"></script>
     <script src="/static/js/fragment.js" th:remove="all"></script>
 </body>
 

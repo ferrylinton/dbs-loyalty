@@ -1,44 +1,51 @@
 <!doctype html>
-<html th:lang="${#locale}" xmlns:th="http://www.thymeleaf.org" xmlns:nl2br="https://github.com/bufferings/thymeleaf-extras-nl2br">
+<html lang="en" th:lang="${#locale}" xmlns:th="http://www.org" xmlns:nl2br="https://github.com/bufferings/thymeleaf-extras-nl2br">
 
-<head th:replace="fragment/head.html :: content(title='Error')">
-	<title>DBS Loyalty</title>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="contextPath" content="/" th:content="@{/}" />
+    <title th:text="|#{application.name} : Error|"></title>
+    <link href="/static/image/favicon.png" th:href="@{/static/image/favicon.png}" rel="shorcut icon" />
+    <link href="/static/css/all.min.css" th:href="@{/static/css/all.min.css}" rel="stylesheet" />
 </head>
 
 <body>
-    <div th:replace="fragment/navbar.html :: content"></div>
-    <div class="bg-white">
+    <!-- NAVBAR -->
+    <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
+    <div id="content-box">
+	    <!-- BREADCRUMB -->
 	    <nav aria-label="breadcrumb">
-			<ol class="breadcrumb border-bottom">
-				<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{home}"></a></li>
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="/home/home-view.html" th:href="@{/}" th:text="#{home}"></a></li>
 		 		<li class="breadcrumb-item active" aria-current="page" th:text="#{error}"></li>
 			</ol>
 		</nav>
-	    <div class="container-fluid pb-3">
-	        <div class="row no-gutters">
-	            <div class="col-12">
-	                <div class="border min-height my-3 p-3">
-	                    <div class="border-bottom pb-2">
-	                        <span class="icon-attention"></span> <span>Error</span> : <span th:text="${errorData.statusCode}"></span>
-	                    </div>
-	                    <div class="py-2">
-	                        <span th:text="${errorData.requestURI}"></span>
-	                        <p nl2br:text="${errorData.message}"></p>
-	                        <a class="btn btn-sm btn-dark" data-toggle="collapse" href="#error-detail" role="button"
-	                            aria-expanded="false" aria-controls="error-detail" th:if="${not #strings.isEmpty(errorData.detail)}">
-	                            <span class="icon-down-dir"></span> <span th:text="#{detail}"></span>
-	                        </a>
-	                        <div class="collapse border-top mt-3 pt-2 font-08" id="error-detail">
-	                            <p class="no-break" nl2br:text="${errorData.detail}"></p>
-	                        </div>
-	                    </div>
-	                </div>
-	            </div>
-	        </div>
+	    <div id="main-content">
+	        <div class="border-bottom pb-2 text-danger">
+	       		<span class="icon-attention"></span> <span>Error</span> : <span th:text="${errorData.statusCode}"></span>
+	   		</div>
+	      	<div class="py-2">
+	        	<span th:text="${errorData.requestURI}"></span>
+	         	<p nl2br:text="${errorData.message}"></p>
+	        	<a class="btn btn-sm btn-danger" data-toggle="collapse" href="#error-detail" role="button"
+	          		aria-expanded="false" aria-controls="error-detail" th:if="${not #strings.isEmpty(errorData.detail)}">
+	          		<span class="icon-down"></span> <span th:text="#{detail}"></span>
+	         	</a>
+	      		<div class="collapse border-top mt-3 pt-2 font-08" id="error-detail">
+	     			<p class="no-break" nl2br:text="${errorData.detail}"></p>
+	         	</div>
+	    	</div>
 	    </div>
+	    <!-- FOOTER -->
+        <div id="footer" th:replace="fragment/footer.html :: #footer"></div>
 	</div>
-    <div th:replace="fragment/footer.html :: content"></div>
-    <div th:replace="fragment/scripts.html :: content"></div>
+    <!-- SIDENAV -->
+    <div id="sidenav-box" th:replace="fragment/sidenav.html :: #sidenav-box"></div>
+    <!-- SCRIPTS -->
+    <script src="/static/js/all.min.js" th:src="@{/static/js/all.min.js}"></script>
+    <script src="/static/js/fragment.js" th:remove="all"></script>
 </body>
 
 </html>

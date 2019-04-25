@@ -61,11 +61,14 @@ public class RoleService{
 		}
 	}
 
+	public Role save(Role role) {
+		return roleRepository.save(role);
+	}
+	
 	public String execute(Task task) throws IOException {
 		Role role = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), Role.class);
 		
 		if(task.getVerified()) {
-			
 			if(task.getTaskOperation() == TaskOperation.ADD) {
 				role.setCreatedBy(task.getMaker());
 				role.setCreatedDate(task.getMadeDate());
@@ -73,10 +76,14 @@ public class RoleService{
 			}else if(task.getTaskOperation() == TaskOperation.MODIFY) {
 				role.setLastModifiedBy(task.getMaker());
 				role.setLastModifiedDate(task.getMadeDate());
+				role.setPending(false);
 				roleRepository.save(role);
 			}else if(task.getTaskOperation() == TaskOperation.DELETE) {
 				roleRepository.delete(role);
 			}
+		}else {
+			role.setPending(false);
+			roleRepository.save(role);
 		}
 
 		return role.getName();
