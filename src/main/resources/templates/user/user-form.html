@@ -11,7 +11,7 @@
     <link href="/static/css/all.min.css" th:href="@{/static/css/all.min.css}" rel="stylesheet" />
 </head>
 
-<body>
+<body onload="onLoadUserForm()">
     <!-- NAVBAR -->
     <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
     <div id="content-box">
@@ -32,6 +32,15 @@
             <th:block th:if="${user}">
                 <form action="/user/user-view.html" th:action="@{/user}" th:object="${user}" method="post" autocomplete="off" onsubmit="return AjaxUtil.submit(this)">
                     <div class="row">
+                    	<div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
+                            <div class="form-group">
+                                <label for="userType" th:text="#{userType}">User Type</label>
+                                <select class="custom-select" th:field="*{userType}" onchange="FormUtil.onChangeUserType(this)">
+                                    <option value="INTERNAL">INTERNAL</option>
+                                    <option value="EXTERNAL">EXTERNAL</option>
+                                </select>
+                            </div>
+                        </div>
                         <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
                             <div class="form-group">
                                 <label for="username" th:text="#{username}">Username *</label>
@@ -40,17 +49,8 @@
                         </div>
                         <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4" th:if="*{id == null}">
                             <div class="form-group">
-                                <label for="password" th:text="#{password}">Password</label>
-                                <input class="form-control" type="password" th:field="*{passwordPlain}" maxlength="30" />
-                            </div>
-                        </div>
-                        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
-                            <div class="form-group">
-                                <label for="userType" th:text="#{userType}">User Type</label>
-                                <select class="custom-select" th:field="*{userType}">
-                                    <option value="INTERNAL">INTERNAL</option>
-                                    <option value="EXTERNAL">EXTERNAL</option>
-                                </select>
+                                <label for="passwordPlain" th:text="#{password}">Password</label>
+                                <input class="form-control" type="password" id="passwordPlain" th:field="*{passwordPlain}" maxlength="30" disabled/>
                             </div>
                         </div>
                         <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
@@ -61,23 +61,20 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-4">
+                        	<div class="mb-3 mt-lg-4" style="padding-top: 15px;">
+		                   		<div class="custom-control custom-switch d-inline-block mr-2">
+		                        	<input type="checkbox" id="activated" th:field="*{activated}" class="custom-control-input">
+		                          	<label class="custom-control-label" for="activated" th:text="#{activated}">Activated</label>
+		                    	</div>
+		                    	<div class="custom-control custom-switch d-inline-block">
+		                     		<input type="checkbox" id="locked" th:field="*{locked}" class="custom-control-input">
+		                        	<label class="custom-control-label" for="locked" th:text="#{locked}">Locked</label>
+		                    	</div>
+		                    </div>
+	             		</div>
                     </div>
-                    <div class="row">
-                        <div class="col-6 col-sm-6 col-md-6 col-lg-4 col-xl-4">
-                            <div class="custom-control custom-switch mb-3">
-                                <input type="checkbox" id="activated" th:field="*{activated}" class="custom-control-input"
-                                    onchange="FormUtil.activate(this)">
-                                <label class="custom-control-label" for="activated" th:text="#{activated}">Activated</label>
-                            </div>
-                        </div>
-                        <div class="col-6 col-sm-6 col-md-6 col-lg-4 col-xl-4">
-                            <div class="custom-control custom-switch mb-3">
-                                <input type="checkbox" id="locked" th:field="*{locked}" class="custom-control-input"
-                                    onchange="FormUtil.lock(this)">
-                                <label class="custom-control-label" for="locked" th:text="#{locked}">Locked</label>
-                            </div>
-                        </div>
-                    </div>
+					
                     <!-- HIDDEN -->
                     <input type="hidden" id="id" th:field="*{id}" th:if="*{id != null}"/>
                     <input type="hidden" th:field="*{createdBy}"/>

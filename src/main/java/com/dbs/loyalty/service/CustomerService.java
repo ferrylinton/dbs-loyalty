@@ -61,6 +61,10 @@ public class CustomerService{
 		return imageService.updateCustomerImage(file);
 	}
 	
+	public Customer save(Customer customer) {
+		return customerRepository.save(customer);
+	}
+	
 	public Customer update(CustomerUpdateDto customerUpdateDto) {
 		Optional<Customer> current = customerRepository.findByEmail(SecurityUtil.getLogged());
 		
@@ -95,11 +99,15 @@ public class CustomerService{
 			}else if(task.getTaskOperation() == TaskOperation.MODIFY) {
 				customer.setLastModifiedBy(task.getMaker());
 				customer.setLastModifiedDate(task.getMadeDate());
+				customer.setPending(false);
 				customerRepository.save(customer);
 				imageService.update(customer.getId(), customer.getImage(), task.getMaker(), task.getMadeDate());
 			}else if(task.getTaskOperation() == TaskOperation.DELETE) {
 				customerRepository.delete(customer);
 			}
+		}else {
+			customer.setPending(false);
+			customerRepository.save(customer);
 		}
 
 		return customer.getEmail();

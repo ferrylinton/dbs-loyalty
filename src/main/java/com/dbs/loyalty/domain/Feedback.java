@@ -21,7 +21,7 @@ import lombok.ToString;
 @EqualsAndHashCode(of = {"id"}, callSuper = false)
 @Entity
 @Table(name = "q_feedback")
-public class Feedback extends AbstractAuditing implements Serializable {
+public class Feedback extends AbstractTask implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

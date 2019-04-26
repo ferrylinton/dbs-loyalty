@@ -17,6 +17,7 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -86,6 +87,7 @@ public class PromoCategoryController extends AbstractPageController {
 		return "promocategory/promocategory-form";
 	}
 
+	@Transactional
 	@PreAuthorize("hasRole('PROMO_CATEGORY_MK')")
 	@PostMapping
 	@ResponseBody
@@ -101,6 +103,9 @@ public class PromoCategoryController extends AbstractPageController {
 			
 			if(current.isPresent()) {
 				taskService.saveTaskModify(PROMO_CATEGORY, current.get(), promoCategory);
+				
+				current.get().setPending(true);
+				promoCategoryService.save(current.get());
 			}else {
 				throw new NotFoundException();
 			}
@@ -109,6 +114,7 @@ public class PromoCategoryController extends AbstractPageController {
 		return taskIsSavedResponse(PROMO_CATEGORY, promoCategory.getName(), UrlUtil.getUrl(PROMO_CATEGORY));
 	}
 
+	@Transactional
 	@PreAuthorize("hasRole('PROMO_CATEGORY_MK')")
 	@DeleteMapping("/{id}")
 	@ResponseBody
@@ -117,6 +123,9 @@ public class PromoCategoryController extends AbstractPageController {
 		
 		if(current.isPresent()) {
 			taskService.saveTaskDelete(PROMO_CATEGORY, current.get());
+			
+			current.get().setPending(true);
+			promoCategoryService.save(current.get());
 			return taskIsSavedResponse(PROMO_CATEGORY, current.get().getName(), UrlUtil.getUrl(PROMO_CATEGORY));
 		}else {
 			throw new NotFoundException();

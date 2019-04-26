@@ -49,7 +49,7 @@ import lombok.ToString;
 		@UniqueConstraint(name = "c_promo_title_uq", columnNames = { "title" })
 	}
 )
-public class Promo extends AbstractAuditing implements Serializable {
+public class Promo extends AbstractTask implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

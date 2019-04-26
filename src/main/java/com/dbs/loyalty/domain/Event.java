@@ -43,7 +43,7 @@ import lombok.ToString;
 		@UniqueConstraint(name = "c_event_title_uq", columnNames = { "title" })
 	}
 )
-public class Event extends AbstractAuditing implements Serializable {
+public class Event extends AbstractTask implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

@@ -127,6 +127,9 @@ public class PromoController extends AbstractPageController {
 				
 				current.get().setImage(promo.getId());
 				taskService.saveTaskModify(PROMO, current.get(), promo);
+				
+				current.get().setPending(true);
+				promoService.save(current.get());
 			}else {
 				throw new NotFoundException();
 			}
@@ -135,6 +138,7 @@ public class PromoController extends AbstractPageController {
 		return taskIsSavedResponse(PROMO, promo.getTitle(), UrlUtil.getUrl(PROMO));
 	}
 
+	@Transactional
 	@PreAuthorize("hasRole('PROMO_MK')")
 	@DeleteMapping("/{id}")
 	@ResponseBody
@@ -143,6 +147,9 @@ public class PromoController extends AbstractPageController {
 		
 		if(current.isPresent()) {
 			taskService.saveTaskDelete(PROMO, current.get());
+			
+			current.get().setPending(true);
+			promoService.save(current.get());
 			return taskIsSavedResponse(PROMO, current.get().getTitle(), UrlUtil.getUrl(PROMO));
 		}else {
 			throw new NotFoundException();

@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.dbs.loyalty.domain.Promo;
 import com.dbs.loyalty.domain.Task;
@@ -77,7 +76,10 @@ public class PromoService{
 		}
 	}
 	
-	@Transactional
+	public Promo save(Promo promo) {
+		return promoRepository.save(promo);
+	}
+	
 	public String execute(Task task) throws IOException {
 		Promo promo = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), Promo.class);
 		
@@ -90,12 +92,16 @@ public class PromoService{
 			}else if(task.getTaskOperation() == TaskOperation.MODIFY) {
 				promo.setLastModifiedBy(task.getMaker());
 				promo.setLastModifiedDate(task.getMadeDate());
+				promo.setPending(false);
 				promoRepository.save(promo);
 				imageService.update(promo.getId(), promo.getImage(), task.getMaker(), task.getMadeDate());
 			}else if(task.getTaskOperation() == TaskOperation.DELETE) {
 				promoRepository.delete(promo);
 				imageService.delete(promo.getId());
 			}
+		}else {
+			promo.setPending(false);
+			promoRepository.save(promo);
 		}
 
 		return promo.getTitle();

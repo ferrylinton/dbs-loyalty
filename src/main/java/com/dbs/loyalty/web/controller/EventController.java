@@ -148,6 +148,9 @@ public class EventController extends AbstractPageController {
 				current.get().setImage(event.getId());
 				current.get().setMaterial(event.getId());
 				taskService.saveTaskModify(EVENT, current.get(), event);
+				
+				current.get().setPending(true);
+				eventService.save(current.get());
 			}else {
 				throw new NotFoundException();
 			}
@@ -165,6 +168,9 @@ public class EventController extends AbstractPageController {
 		
 		if(current.isPresent()) {
 			taskService.saveTaskDelete(EVENT, current.get());
+			
+			current.get().setPending(true);
+			eventService.save(current.get());
 			return taskIsSavedResponse(EVENT, current.get().getTitle(), UrlUtil.getUrl(EVENT));
 		}else {
 			throw new NotFoundException();

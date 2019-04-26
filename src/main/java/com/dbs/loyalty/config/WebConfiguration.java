@@ -16,9 +16,11 @@ import org.springframework.http.converter.ByteArrayHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.i18n.SessionLocaleResolver;
+import org.springframework.web.servlet.i18n.CookieLocaleResolver;
+import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 import com.dbs.loyalty.util.UrlUtil;
 import com.github.bufferings.thymeleaf.extras.nl2br.dialect.Nl2brDialect;
@@ -33,7 +35,7 @@ public class WebConfiguration implements WebMvcConfigurer{
 	
 	@Bean("localeResolver")
 	public LocaleResolver localeResolver() {
-		SessionLocaleResolver resolver = new SessionLocaleResolver();
+		CookieLocaleResolver resolver = new CookieLocaleResolver();
 		resolver.setDefaultLocale(new Locale("in"));
 		return resolver;
 	}
@@ -75,5 +77,12 @@ public class WebConfiguration implements WebMvcConfigurer{
 		registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
 		registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
     }
+	
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+	      LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
+	      localeChangeInterceptor.setParamName("lang");
+	      registry.addInterceptor(localeChangeInterceptor);
+	}
 	
 }

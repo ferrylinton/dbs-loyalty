@@ -70,7 +70,7 @@
 										<a class="dropdown-item pl-1" href="/event/event-detail.html" th:href="@{|/event/${event.id}/detail|}">
 										    <span class="icon-eye"></span> <span th:text="#{detail}">Detail</span>
                                         </a>
-                                        <th:block th:if="${isMaker}">
+                                        <th:block th:if="${isMaker && (event.pending == null || !event.pending)}">
                                             <a class="dropdown-item pl-1" href="/event/event-form.html" th:href="@{|/event/${event.id}|}">
                                                 <span class="icon-edit"></span> <span th:text="#{edit}">Edit</span>
                                             </a>

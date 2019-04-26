@@ -48,7 +48,7 @@ public class CustomErrorController implements ErrorController {
 
 	private String handleWebError(ErrorData errorData, HttpServletRequest request) {
 		request.setAttribute(ERROR_DATA, errorData);
-		return "error/view";
+		return "error/error-view";
 	}
 	
 	private String handleApiError(ErrorData errorData, HttpServletResponse response){

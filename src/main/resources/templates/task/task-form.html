@@ -41,7 +41,7 @@
                         <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
                             <div class="form-group">
                                 <label th:text="#{maker}">Maker</label>
-                                <input class="form-control" th:field="${task.maker}" />
+                                <div class="form-control" th:text="${task.maker}">Maker</div>
                             </div>
                         </div>
                         <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
@@ -120,6 +120,7 @@
                     <input type="hidden" id="taskDataType" th:field="${task.taskDataType}" />
                     <input type="hidden" id="taskOperation" th:field="${task.taskOperation}" />
                     <input type="hidden" id="taskStatus" th:field="${task.taskStatus}" />
+                    <input type="hidden" id="maker" th:field="${task.maker}"/>
                     <input type="hidden" id="madeDate" th:field="${task.madeDate}"/>
                     <input type="hidden" id="taskDataOld" th:field="${task.taskDataOld}"/>
                     <input type="hidden" id="taskDataNew" th:field="${task.taskDataNew}"/>

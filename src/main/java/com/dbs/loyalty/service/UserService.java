@@ -50,6 +50,10 @@ public class UserService{
 		}
 	}
 	
+	public User save(User user) {
+		return userRepository.save(user);
+	}
+	
 	public Optional<User> save(String username, String passwordHash) {
 		User result = null;
 		Optional<User> user = userRepository.findByUsernameIgnoreCase(username);
@@ -79,10 +83,14 @@ public class UserService{
 			}else if(task.getTaskOperation() == TaskOperation.MODIFY) {
 				user.setLastModifiedBy(task.getMaker());
 				user.setLastModifiedDate(task.getMadeDate());
+				user.setPending(false);
 				userRepository.save(user);
 			}else if(task.getTaskOperation() == TaskOperation.DELETE) {
 				userRepository.delete(user);
 			}
+		}else {
+			user.setPending(false);
+			userRepository.save(user);
 		}
 
 		return user.getUsername();

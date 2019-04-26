@@ -18,7 +18,6 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.dbs.loyalty.config.constant.Constant;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -42,7 +41,7 @@ import lombok.Setter;
 			@UniqueConstraint(name = "c_promo_category_name_uq", columnNames = { "name" })
 	}
 )
-public class PromoCategory extends AbstractAuditing implements Serializable {
+public class PromoCategory extends AbstractTask implements Serializable {
 
     private static final long serialVersionUID = 1L;
   
@@ -63,11 +62,6 @@ public class PromoCategory extends AbstractAuditing implements Serializable {
     @OneToMany(mappedBy = "promoCategory")
     private Set<Promo> promos = new HashSet<>();
 
-    @ApiModelProperty(hidden = true)
-    @JsonIgnore
-	@Column(name = "pending", nullable = true)
-    private Boolean pending = false;
-    
     @Override
 	public String toString() {
     	return id + "," + name;

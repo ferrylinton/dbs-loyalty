@@ -35,6 +35,7 @@
             <column name="locked" type="BIT(1)">
                 <constraints nullable="false"/>
             </column>
+            <column name="pending" type="BIT(1)"/>
             <column name="created_by" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>

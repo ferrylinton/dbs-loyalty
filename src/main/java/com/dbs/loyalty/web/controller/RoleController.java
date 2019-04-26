@@ -108,6 +108,9 @@ public class RoleController extends AbstractPageController {
 			
 			if(current.isPresent()) {
 				taskService.saveTaskModify(ROLE, current.get(), role);
+				
+				current.get().setPending(true);
+				roleService.save(current.get());
 			}else {
 				throw new NotFoundException();
 			}
@@ -123,8 +126,9 @@ public class RoleController extends AbstractPageController {
 		Optional<Role> current = roleService.findWithAuthoritiesById(id);
 		
 		if(current.isPresent()) {
-			current.get().setPending(true);
 			taskService.saveTaskDelete(ROLE, current.get());
+			
+			current.get().setPending(true);
 			roleService.save(current.get());
 			return taskIsSavedResponse(ROLE, current.get().getName(), UrlUtil.getUrl(ROLE));
 		}else {

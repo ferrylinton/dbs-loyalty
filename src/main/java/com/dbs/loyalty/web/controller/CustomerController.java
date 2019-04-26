@@ -125,6 +125,9 @@ public class CustomerController extends AbstractPageController{
 				customer.setPasswordHash(current.get().getPasswordHash());
 				current.get().setImage(customer.getId());
 				taskService.saveTaskModify(CUSTOMER, current.get(), customer);
+				
+				current.get().setPending(true);
+				customerService.save(current.get());
 			}else {
 				throw new NotFoundException();
 			}
@@ -133,6 +136,7 @@ public class CustomerController extends AbstractPageController{
 		return taskIsSavedResponse(CUSTOMER,  customer.getName(), UrlUtil.getUrl(CUSTOMER));
 	}
 	
+	@Transactional
 	@PreAuthorize("hasRole('CUSTOMER_MK')")
 	@DeleteMapping("/{id}")
 	@ResponseBody
@@ -141,6 +145,9 @@ public class CustomerController extends AbstractPageController{
 		
 		if(current.isPresent()) {
 			taskService.saveTaskDelete(CUSTOMER, current.get());
+			
+			current.get().setPending(true);
+			customerService.save(current.get());
 			return taskIsSavedResponse(CUSTOMER, current.get().getName(), UrlUtil.getUrl(CUSTOMER));
 		}else {
 			throw new NotFoundException();

@@ -40,6 +40,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="promo_category_id" type="VARCHAR(36)"/>
+            <column name="pending" type="BIT(1)"/>
             <column name="created_by" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>

@@ -56,6 +56,10 @@ public class PromoCategoryService{
 		}
 	}
 
+	public PromoCategory save(PromoCategory promoCategory) {
+		return promoCategoryRepository.save(promoCategory);
+	}
+	
 	public String execute(Task task) throws IOException {
 		PromoCategory promoCategory = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), PromoCategory.class);
 		
@@ -68,10 +72,14 @@ public class PromoCategoryService{
 			}else if(task.getTaskOperation() == TaskOperation.MODIFY) {
 				promoCategory.setLastModifiedBy(task.getMaker());
 				promoCategory.setLastModifiedDate(task.getMadeDate());
+				promoCategory.setPending(false);
 				promoCategoryRepository.save(promoCategory);
 			}else if(task.getTaskOperation() == TaskOperation.DELETE) {
 				promoCategoryRepository.delete(promoCategory);
 			}
+		}else {
+			promoCategory.setPending(false);
+			promoCategoryRepository.save(promoCategory);
 		}
 
 		return promoCategory.getName();

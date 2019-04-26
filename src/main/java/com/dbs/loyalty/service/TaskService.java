@@ -1,11 +1,11 @@
 package com.dbs.loyalty.service;
 
 import static com.dbs.loyalty.config.constant.EntityConstant.CUSTOMER;
+import static com.dbs.loyalty.config.constant.EntityConstant.EVENT;
 import static com.dbs.loyalty.config.constant.EntityConstant.PROMO;
 import static com.dbs.loyalty.config.constant.EntityConstant.PROMO_CATEGORY;
 import static com.dbs.loyalty.config.constant.EntityConstant.ROLE;
 import static com.dbs.loyalty.config.constant.EntityConstant.USER;
-import static com.dbs.loyalty.config.constant.EntityConstant.EVENT;
 
 import java.io.IOException;
 import java.time.Instant;
@@ -96,7 +96,21 @@ public class TaskService {
 		task.setCheckedDate(Instant.now());
 		
 		taskRepository.save(task);
-
+		return execute(task);
+	}
+	
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
+	public void save(Exception ex, Task task) {
+		try {
+			task.setTaskStatus(TaskStatus.FAILED);
+			task.setError(ErrorUtil.getErrorMessage(ex));
+			taskRepository.save(task);
+		} catch (Exception e) {
+			log.error(e.getLocalizedMessage(), e);
+		}
+	}
+	
+	private String execute(Task task) throws IOException {
 		if(task.getTaskDataType().equals(ROLE)) {
 			return context.getBean(RoleService.class).execute(task);
 		}else if(task.getTaskDataType().equals(USER)) {
@@ -112,17 +126,6 @@ public class TaskService {
 		}
 		
 		return String.format(noServiceFormat, task.getTaskDataType());
-	}
-	
-	@Transactional(propagation=Propagation.REQUIRES_NEW)
-	public void save(Exception ex, Task task) {
-		try {
-			task.setTaskStatus(TaskStatus.FAILED);
-			task.setError(ErrorUtil.getErrorMessage(ex));
-			taskRepository.save(task);
-		} catch (Exception e) {
-			log.error(e.getLocalizedMessage(), e);
-		}
 	}
 
 }

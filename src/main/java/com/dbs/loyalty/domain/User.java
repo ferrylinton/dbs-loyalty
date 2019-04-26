@@ -46,7 +46,7 @@ import lombok.ToString;
 		@UniqueConstraint(name = "m_user_username_uq", columnNames = { "username" })
 	}
 )
-public class User extends AbstractAuditing implements Serializable {
+public class User extends AbstractTask implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -69,10 +69,10 @@ public class User extends AbstractAuditing implements Serializable {
 	private String passwordPlain;
 
 	@Column(name = "activated", nullable = false)
-	private Boolean activated;
+	private Boolean activated = true;
 	
 	@Column(name = "locked", nullable = false)
-	private Boolean locked;
+	private Boolean locked = false;
 	
 	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "user_type", nullable = false, columnDefinition="TINYINT")
@@ -86,9 +86,5 @@ public class User extends AbstractAuditing implements Serializable {
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id", nullable = true, foreignKey = @ForeignKey(name = "m_user_fk"))
     private Role role;
-	
-	@JsonIgnore
-	@Column(name = "pending", nullable = true)
-	private Boolean pending = false;
 	
 }

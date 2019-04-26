@@ -18,6 +18,7 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -95,6 +96,7 @@ public class UserController extends AbstractPageController{
 		return "user/user-form";
 	}
 	
+	@Transactional
 	@PreAuthorize("hasRole('USER_MK')")
 	@PostMapping
 	@ResponseBody
@@ -113,6 +115,9 @@ public class UserController extends AbstractPageController{
 			if(current.isPresent()) {
 				user.setPasswordHash(current.get().getPasswordHash());
 				taskService.saveTaskModify(USER, current.get(), user);
+				
+				current.get().setPending(true);
+				userService.save(current.get());
 			}else {
 				throw new NotFoundException();
 			}
@@ -121,6 +126,7 @@ public class UserController extends AbstractPageController{
 		return taskIsSavedResponse(USER,  user.getUsername(), UrlUtil.getUrl(USER));
 	}
 	
+	@Transactional
 	@PreAuthorize("hasRole('USER_MK')")
 	@DeleteMapping("/{id}")
 	@ResponseBody
@@ -129,6 +135,9 @@ public class UserController extends AbstractPageController{
 		
 		if(current.isPresent()) {
 			taskService.saveTaskDelete(USER, current.get());
+			
+			current.get().setPending(true);
+			userService.save(current.get());
 			return taskIsSavedResponse(USER, current.get().getUsername(), UrlUtil.getUrl(USER));
 		}else {
 			throw new NotFoundException();

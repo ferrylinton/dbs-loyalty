@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.dbs.loyalty.domain.Event;
 import com.dbs.loyalty.domain.Task;
@@ -50,7 +49,10 @@ public class EventService{
 		}
 	}
 
-	@Transactional
+	public Event save(Event event) {
+		return eventRepository.save(event);
+	}
+	
 	public String execute(Task task) throws IOException {
 		Event event = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), Event.class);
 		
@@ -64,6 +66,7 @@ public class EventService{
 			}else if(task.getTaskOperation() == TaskOperation.MODIFY) {
 				event.setLastModifiedBy(task.getMaker());
 				event.setLastModifiedDate(task.getMadeDate());
+				event.setPending(false);
 				eventRepository.save(event);
 				imageService.update(event.getId(), event.getImage(), task.getMaker(), task.getMadeDate());
 				pdfService.update(event.getId(), event.getMaterial(), task.getMaker(), task.getMadeDate());
@@ -72,6 +75,9 @@ public class EventService{
 				imageService.delete(event.getId());
 				pdfService.delete(event.getId());
 			}
+		}else {
+			event.setPending(false);
+			eventRepository.save(event);
 		}
 
 		return event.getTitle();

@@ -11,7 +11,7 @@
     <link href="/static/css/all.min.css" th:href="@{/static/css/all.min.css}" rel="stylesheet" />
 </head>
 
-<body>
+<body onload="onLoadPromoForm()">
     <!-- NAVBAR -->
     <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
     <div id="content-box">
@@ -58,16 +58,16 @@
 								<textarea class="form-control" th:field="*{description}" rows="2" maxlength="255"></textarea>
 							</div>
 						</div>
-						<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6">
+						<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
 							<div class="form-group">
 								<label for="content" th:text="#{content} + ' *'">Content *</label>
-								<textarea class="form-control" th:field="*{content}" rows="6"></textarea>
+								<textarea class="form-control" id="content" th:field="*{content}" rows="6"></textarea>
 							</div>
 						</div>
-						<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6">
+						<div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
 							<div class="form-group">
 								<label for="termAndCondition" th:text="#{termAndCondition} + ' *'">Term And Condition *</label>
-								<textarea class="form-control" th:field="*{termAndCondition}" rows="6"></textarea>
+								<textarea class="form-control" id="termAndCondition" th:field="*{termAndCondition}" rows="6"></textarea>
 							</div>
 						</div>
 						<div class="col-12 col-sm-10 col-md-10 col-lg-8 col-xl-6">
@@ -102,14 +102,14 @@
 							<div class="form-group">
 								<label for="image" th:text="#{image}">Image</label>
 								<div class="d-block overflow-auto">
-									<img class="border p-1" alt="image" src="" th:src="@{|/image/${promo.id}|}" />
+									<img class="border p-1" alt="image" src="/image/500x200.png" th:src="@{|/image/${promo.id}|}" />
 								</div>
 							</div>
 						</div>
 						<div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
 							<div class="form-group">
 								<div class="custom-file">
-									<input type="file" class="custom-file-input" id="multipartFileImage" name="multipartFileImage" onchange="ImageUtil.show(this)">
+									<input type="file" accept="image/png,image/jpg,image/jpeg" class="custom-file-input" id="multipartFileImage" name="multipartFileImage" onchange="ImageUtil.show(this)">
 									<label class="custom-file-label" th:text="#{chooseImageFile}"></label>
 								</div>
 							</div>

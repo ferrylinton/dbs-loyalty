@@ -73,7 +73,7 @@
 										    <a class="dropdown-item pl-1" href="/customer/customer-detail.html" th:href="@{|/customer/${customer.id}/detail|}">
 										    	<span class="icon-eye"></span> <span th:text="#{detail}">Detail</span>
                                             </a>
-                                            <th:block th:if="${isMaker}">
+                                            <th:block th:if="${isMaker && (customer.pending == null || !customer.pending)}">
                                                 <a class="dropdown-item pl-1" href="/customer/customer-form.html" th:href="@{|/customer/${customer.id}|}">
                                                     <span class="icon-edit"></span> <span th:text="#{edit}">Edit</span>
                                                 </a>

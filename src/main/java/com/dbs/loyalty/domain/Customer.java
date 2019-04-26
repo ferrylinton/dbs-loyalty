@@ -46,7 +46,7 @@ import lombok.ToString;
 		@UniqueConstraint(name = "c_customer_email_uq", columnNames = { "email" })
 	}
 )
-public class Customer extends AbstractAuditing implements Serializable {
+public class Customer extends AbstractTask implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
