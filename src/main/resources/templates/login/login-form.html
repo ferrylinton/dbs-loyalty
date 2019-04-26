@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" th:lang="${#locale == 'id' ? 'in' : #locale}" xmlns:th="http://www.thymeleaf.org" class="h-100" style="min-height: 430px;">
+<html lang="en" th:lang="${#locale.toString() == 'in' ? 'id' : #locale}" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="utf-8" />

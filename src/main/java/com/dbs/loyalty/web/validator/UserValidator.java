@@ -38,8 +38,9 @@ public class UserValidator implements Validator {
 		User user = (User) target;
 		
 		if(user.getId() == null && (user.getUserType() == UserType.EXTERNAL) && (user.getPasswordPlain() == null || user.getPasswordPlain().trim().length() < 6 || user.getPasswordPlain().trim().length() > 30)) {
-			String defaultMessage = MessageUtil.getMessage(passSize);
-			errors.rejectValue(passPlain, passSize, defaultMessage);
+			Object[] errorArgs = new Object[] {user.getPasswordPlain(), 6, 30 };
+			String defaultMessage = MessageUtil.getMessage(passSize, errorArgs);
+			errors.rejectValue(passPlain, passSize, errorArgs, defaultMessage);
 		}
 		
 		if (userService.isUsernameExist(user.getId(), user.getUsername())) {

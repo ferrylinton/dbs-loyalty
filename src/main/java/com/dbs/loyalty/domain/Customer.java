@@ -80,10 +80,10 @@ public class Customer extends AbstractTask implements Serializable {
 	private String passwordPlain;
 	
 	@Column(name = "activated", nullable = false)
-	private boolean activated;
+	private boolean activated = true;
 	
 	@Column(name = "locked", nullable = false)
-	private boolean locked;
+	private boolean locked = false;
 
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     private Set<LovedOne> lovedOnes = new HashSet<>();

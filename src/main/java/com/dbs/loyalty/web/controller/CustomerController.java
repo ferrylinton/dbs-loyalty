@@ -42,7 +42,6 @@ import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.CustomerService;
 import com.dbs.loyalty.service.ImageService;
 import com.dbs.loyalty.service.TaskService;
-import com.dbs.loyalty.service.dto.CustomerDto;
 import com.dbs.loyalty.util.PasswordUtil;
 import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.response.AbstractResponse;
@@ -89,7 +88,7 @@ public class CustomerController extends AbstractPageController{
 	@GetMapping("/{id}")
 	public String viewCustomerForm(ModelMap model, @PathVariable String id) {
 		if (id.equals(ZERO)) {
-			model.addAttribute(CUSTOMER, new CustomerDto());
+			model.addAttribute(CUSTOMER, new Customer());
 		} else {
 			getById(model, id);
 		}
@@ -154,7 +153,7 @@ public class CustomerController extends AbstractPageController{
 		}
 	}
 
-	@InitBinder("customerDto")
+	@InitBinder("customer")
 	protected void initBinder(WebDataBinder binder) {
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("dd-MM-yyyy"), true, 10)); 
 		binder.addValidators(new CustomerValidator(customerService));
