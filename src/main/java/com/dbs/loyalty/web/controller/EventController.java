@@ -197,6 +197,7 @@ public class EventController extends AbstractPageController {
 	
 	private Date setTime(Date date, String timePeriod) throws ParseException {
 		String dateString = DATE_FORMAT.format(date);
+		System.out.println(dateString + "," + timePeriod);
 		return DATETIME_FORMAT.parse(dateString + "," + timePeriod);
 	}
 

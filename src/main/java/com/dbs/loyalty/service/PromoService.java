@@ -99,7 +99,7 @@ public class PromoService{
 				promoRepository.delete(promo);
 				imageService.delete(promo.getId());
 			}
-		}else {
+		}else if(task.getTaskOperation() != TaskOperation.ADD) {
 			promo.setPending(false);
 			promoRepository.save(promo);
 		}

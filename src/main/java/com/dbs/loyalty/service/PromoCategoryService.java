@@ -77,7 +77,7 @@ public class PromoCategoryService{
 			}else if(task.getTaskOperation() == TaskOperation.DELETE) {
 				promoCategoryRepository.delete(promoCategory);
 			}
-		}else {
+		}else if(task.getTaskOperation() != TaskOperation.ADD) {
 			promoCategory.setPending(false);
 			promoCategoryRepository.save(promoCategory);
 		}

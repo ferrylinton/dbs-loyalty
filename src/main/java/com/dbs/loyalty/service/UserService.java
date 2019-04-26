@@ -88,7 +88,7 @@ public class UserService{
 			}else if(task.getTaskOperation() == TaskOperation.DELETE) {
 				userRepository.delete(user);
 			}
-		}else {
+		}else if(task.getTaskOperation() != TaskOperation.ADD) {
 			user.setPending(false);
 			userRepository.save(user);
 		}

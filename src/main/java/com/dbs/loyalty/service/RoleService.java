@@ -81,7 +81,7 @@ public class RoleService{
 			}else if(task.getTaskOperation() == TaskOperation.DELETE) {
 				roleRepository.delete(role);
 			}
-		}else {
+		}else if(task.getTaskOperation() != TaskOperation.ADD) {
 			role.setPending(false);
 			roleRepository.save(role);
 		}

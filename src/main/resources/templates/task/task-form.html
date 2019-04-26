@@ -53,7 +53,7 @@
                         <div class="col-12" th:if="${task.taskDataOld != null}">
                             <div class="form-group">
                                 <label th:text="#{taskDataOld}">Task Data Old</label>
-                                <pre class="json" th:text="${task.taskDataOld}">
+                                <div class="json" th:text="${task.taskDataOld}">
                                                 {
                                                     "name" : "test",
                                                     "authorities" : [ {
@@ -76,13 +76,13 @@
                                                       "name" : "ROLE_MK"
                                                     } ]
                                                   }
-                                </pre>
+                                </div>
                             </div>
                         </div>
                         <div class="col-12" th:if="${task.taskDataNew != null}">
                             <div class="form-group">
                                 <label th:text="#{taskDataNew}">Task Data New</label>
-                                <pre class="json" th:text="${task.taskDataNew}">
+                                <div class="json" th:text="${task.taskDataNew}">
                                                 {
                                                     "name" : "test",
                                                     "authorities" : [ {
@@ -105,7 +105,7 @@
                                                       "name" : "ROLE_MK"
                                                     } ]
                                                   }
-                                </pre>
+                                </div>
                             </div>
                         </div>
                         <div class="col-12 col-sm-12 col-md-10 col-lg-8 col-xl-6">

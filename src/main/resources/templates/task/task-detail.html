@@ -68,7 +68,7 @@
                             <tr th:if="${task.taskDataOld}">
                                 <th th:text="#{taskDataOld}">Task Data Old</th>
                                 <td>
-                                    <pre class="json" th:text="${task.taskDataOld}">
+                                    <div class="json" th:text="${task.taskDataOld}">
                                                 {
                                                     "name" : "test",
                                                     "authorities" : [ {
@@ -91,13 +91,13 @@
                                                       "name" : "ROLE_MK"
                                                     } ]
                                                   }
-                                    </pre>
+                                    </div>
                                 </td>
                             </tr>
                             <tr th:if="${task.taskDataNew}">
                                 <th th:text="#{taskDataNew}">Task Data New</th>
                                 <td>
-                                    <pre class="json" th:text="${task.taskDataNew}">
+                                    <div class="json" th:text="${task.taskDataNew}">
                                                     {
                                                         "name" : "test",
                                                         "authorities" : [ {
@@ -120,7 +120,7 @@
                                                           "name" : "ROLE_MK"
                                                         } ]
                                                       }
-                                    </pre>
+                                    </div>
                                 </td>
                             </tr>
                             <tr th:if="${task.message}">

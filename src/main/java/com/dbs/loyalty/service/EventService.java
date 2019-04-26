@@ -75,7 +75,7 @@ public class EventService{
 				imageService.delete(event.getId());
 				pdfService.delete(event.getId());
 			}
-		}else {
+		}else if(task.getTaskOperation() != TaskOperation.ADD) {
 			event.setPending(false);
 			eventRepository.save(event);
 		}

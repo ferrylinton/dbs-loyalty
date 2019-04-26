@@ -105,7 +105,7 @@ public class CustomerService{
 			}else if(task.getTaskOperation() == TaskOperation.DELETE) {
 				customerRepository.delete(customer);
 			}
-		}else {
+		}else if(task.getTaskOperation() != TaskOperation.ADD) {
 			customer.setPending(false);
 			customerRepository.save(customer);
 		}
