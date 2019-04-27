@@ -43,7 +43,7 @@ import lombok.ToString;
 @EqualsAndHashCode(of = {"id"}, callSuper = false)
 @Entity
 @Table(
-	name = "c_promo",
+	name = "p_promo",
 	uniqueConstraints = {
 		@UniqueConstraint(name = "c_promo_code_uq", columnNames = { "code" }),
 		@UniqueConstraint(name = "c_promo_title_uq", columnNames = { "title" })

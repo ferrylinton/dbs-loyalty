@@ -13,18 +13,23 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * Class of Promo Customer
+ * 
+ * @author Ferry L. H. <ferrylinton@gmail.com>
+ */
 @Setter
 @Getter
 @ToString(of = {"id"})
 @EqualsAndHashCode(of = {"id"}, callSuper = false)
 @Entity
-@Table(name = "c_customer_promo")
-public class CustomerPromo extends AbstractAuditing {
+@Table(name = "p_promo_customer")
+public class PromoCustomer extends AbstractAuditing {
 
 	private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
-	private CustomerPromoId id;
+	private PromoCustomerId id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", insertable = false, updatable = false, nullable = false, foreignKey = @ForeignKey(name = "c_customer_promo_fk1"))

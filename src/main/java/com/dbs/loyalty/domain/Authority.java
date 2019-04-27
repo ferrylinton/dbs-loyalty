@@ -25,9 +25,9 @@ import lombok.Setter;
 @EqualsAndHashCode(of = { "id", "name" })
 @Entity
 @Table(	
-	name = "m_authority", 
+	name = "u_authority", 
 	uniqueConstraints = {
-		@UniqueConstraint(name = "m_authority_name_uq", columnNames = {"name" })
+		@UniqueConstraint(name = "u_authority_name_uq", columnNames = {"name" })
 	}
 )
 public class Authority implements Serializable {

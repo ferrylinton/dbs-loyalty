@@ -8,8 +8,8 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.dbs.loyalty.domain.Customer;
-import com.dbs.loyalty.domain.CustomerPromo;
-import com.dbs.loyalty.domain.CustomerPromoId;
+import com.dbs.loyalty.domain.PromoCustomer;
+import com.dbs.loyalty.domain.PromoCustomerId;
 import com.dbs.loyalty.domain.Promo;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.repository.CustomerPromoRepository;
@@ -30,7 +30,7 @@ public class CustomerPromoService{
 	
 	private final CustomerPromoRepository customerPromoRepository;
 
-	public CustomerPromo save(String promoId) throws NotFoundException {
+	public PromoCustomer save(String promoId) throws NotFoundException {
 		Optional<Customer> customer = customerRepository.findByEmail(SecurityUtil.getLogged());
 		Optional<Promo> promo = promoRepository.findById(promoId);
 		String message = null;
@@ -42,13 +42,13 @@ public class CustomerPromoService{
 			message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, promoId);
 			throw new NotFoundException(message);
 		}else {
-			CustomerPromoId id = new CustomerPromoId(customer.get().getId(), promoId);
-			Optional<CustomerPromo> current = customerPromoRepository.findById(id);
+			PromoCustomerId id = new PromoCustomerId(customer.get().getId(), promoId);
+			Optional<PromoCustomer> current = customerPromoRepository.findById(id);
 			
 			if(current.isPresent()) {
 				return current.get();
 			}else {
-				CustomerPromo customerPromo = new CustomerPromo();
+				PromoCustomer customerPromo = new PromoCustomer();
 				customerPromo.setId(id);
 				customerPromo.setCustomer(customer.get());
 				customerPromo.setPromo(promo.get());

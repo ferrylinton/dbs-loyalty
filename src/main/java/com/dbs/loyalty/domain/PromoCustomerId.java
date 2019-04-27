@@ -13,6 +13,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * Class of Promo Customer Composite Id
+ * 
+ * @author Ferry L. H. <ferrylinton@gmail.com>
+ */
 @Setter
 @Getter
 @RequiredArgsConstructor
@@ -20,7 +25,7 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 @Embeddable
-public class CustomerPromoId implements Serializable {
+public class PromoCustomerId implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

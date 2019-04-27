@@ -28,7 +28,7 @@ import lombok.ToString;
 @ToString(of = {"id"})
 @EqualsAndHashCode(of = {"id"}, callSuper = false)
 @Entity
-@Table(name = "q_feedback_customer")
+@Table(name = "e_feedback_customer")
 public class FeedbackCustomer implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -38,12 +38,12 @@ public class FeedbackCustomer implements Serializable{
 	
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id", insertable = false, updatable = false, nullable = false, foreignKey = @ForeignKey(name = "q_feedback_customer_fk1"))
+    @JoinColumn(name = "customer_id", insertable = false, updatable = false, nullable = false, foreignKey = @ForeignKey(name = "e_feedback_customer_fk1"))
 	private Customer customer;
 
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "feedback_id", insertable = false, updatable = false, nullable = false, foreignKey = @ForeignKey(name = "q_feedback_customer_fk3"))
+    @JoinColumn(name = "feedback_id", insertable = false, updatable = false, nullable = false, foreignKey = @ForeignKey(name = "e_feedback_customer_fk3"))
 	private Feedback feedback;
 
 	@JsonIgnoreProperties("feedbackCustomer")

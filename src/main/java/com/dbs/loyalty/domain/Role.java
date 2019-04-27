@@ -37,9 +37,9 @@ import lombok.Setter;
 @EqualsAndHashCode(of = { "id", "name" }, callSuper = false)
 @Entity
 @Table(	
-	name = "m_role", 
+	name = "u_role", 
 	uniqueConstraints = {
-		@UniqueConstraint(name = "m_role_name_uq", columnNames = {"name"})
+		@UniqueConstraint(name = "u_role_name_uq", columnNames = {"name"})
 	}
 )
 public class Role extends AbstractTask implements Serializable {
@@ -60,9 +60,9 @@ public class Role extends AbstractTask implements Serializable {
 	@NotEmpty(message = "{validation.notempty.authorities}")
 	@ManyToMany(fetch=FetchType.LAZY)
     @JoinTable(	
-    	name = "m_role_authority",
-        joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "m_role_authority_fk1")),
-        inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "m_role_authority_fk2"))
+    	name = "u_role_authority",
+        joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "u_role_authority_fk1")),
+        inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "u_role_authority_fk2"))
     )
     private Set<Authority> authorities = new HashSet<>();
 

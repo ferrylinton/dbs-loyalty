@@ -5,7 +5,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
-    <changeSet author="FLH" id="106-1">
+    <changeSet author="FLH" id="102-1">
 
         <insert tableName="c_customer">
             <column name="id" value="646e8a2a-4ca4-459a-9da8-2a31daaecd38"/>
@@ -293,6 +293,30 @@
             <column name="content_type" value="image/png"/>
             <column name="width" valueNumeric="300"/>
 			<column name="height" valueNumeric="300"/>
+        </insert>
+        
+    </changeSet>
+    
+    <changeSet author="FLH" id="102-2">
+
+        <insert tableName="c_loved_one">
+            <column name="id" value="90718c41-8f90-4f38-aee9-3e4acf145db8"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="dob" valueDate="1990-02-01"/>
+            <column name="name" value="Loved One 01 - Customer 01"/>
+            <column name="phone" value="+62 8123456789"/>
+            <column name="customer_id" value="646e8a2a-4ca4-459a-9da8-2a31daaecd38"/>
+        </insert>
+        
+        <insert tableName="c_loved_one">
+            <column name="id" value="51c96bbb-0785-4692-ad0a-d7d9dab1da6c"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="dob" valueDate="1990-02-01"/>
+            <column name="name" value="Loved One 02 - Customer 01"/>
+            <column name="phone" value="+62 8123456789"/>
+            <column name="customer_id" value="646e8a2a-4ca4-459a-9da8-2a31daaecd38"/>
         </insert>
         
     </changeSet>

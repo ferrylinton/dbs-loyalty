@@ -36,7 +36,7 @@ import lombok.Setter;
 @EqualsAndHashCode(of = {"id"}, callSuper = false)
 @Entity
 @Table(
-	name = "c_promo_category",
+	name = "p_promo_category",
 	uniqueConstraints = {
 			@UniqueConstraint(name = "c_promo_category_name_uq", columnNames = { "name" })
 	}

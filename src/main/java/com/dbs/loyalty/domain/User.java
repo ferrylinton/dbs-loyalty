@@ -41,9 +41,9 @@ import lombok.ToString;
 @EqualsAndHashCode(of = {"id"}, callSuper = false)
 @Entity
 @Table(	
-	name = "m_user",
+	name = "u_user",
 	uniqueConstraints = {
-		@UniqueConstraint(name = "m_user_username_uq", columnNames = { "username" })
+		@UniqueConstraint(name = "u_user_username_uq", columnNames = { "username" })
 	}
 )
 public class User extends AbstractTask implements Serializable {
@@ -84,7 +84,7 @@ public class User extends AbstractTask implements Serializable {
 	
 	@JsonIgnoreProperties("authorities")
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "role_id", nullable = true, foreignKey = @ForeignKey(name = "m_user_fk"))
+    @JoinColumn(name = "role_id", nullable = true, foreignKey = @ForeignKey(name = "u_user_fk"))
     private Role role;
 	
 }

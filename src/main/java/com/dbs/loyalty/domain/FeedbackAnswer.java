@@ -27,7 +27,7 @@ import lombok.ToString;
 @ToString(of = {"id", "questionNumber", "questionText", "questionAnswer"})
 @EqualsAndHashCode(of = {"id", "questionNumber", "questionText", "questionAnswer"})
 @Entity
-@Table(name = "q_feedback_answer")
+@Table(name = "e_feedback_answer")
 public class FeedbackAnswer implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -53,11 +53,11 @@ public class FeedbackAnswer implements Serializable {
         @JoinColumn(
             name = "feedback_id",
             referencedColumnName = "feedback_id",
-            nullable = false, foreignKey = @ForeignKey(name = "q_feedback_answer_fk1")),
+            nullable = false, foreignKey = @ForeignKey(name = "e_feedback_answer_fk1")),
         @JoinColumn(
             name = "customer_id",
             referencedColumnName = "customer_id",
-            nullable = false, foreignKey = @ForeignKey(name = "q_feedback_answer_fk2")),
+            nullable = false, foreignKey = @ForeignKey(name = "e_feedback_answer_fk2")),
     })
     private FeedbackCustomer feedbackCustomer;
     

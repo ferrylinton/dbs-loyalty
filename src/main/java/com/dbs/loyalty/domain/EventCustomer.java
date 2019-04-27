@@ -28,8 +28,8 @@ import lombok.ToString;
 @ToString(of = {"id"})
 @EqualsAndHashCode(of = {"id"}, callSuper = false)
 @Entity
-@Table(name = "c_customer_event")
-public class CustomerEvent implements Serializable {
+@Table(name = "e_event_customer")
+public class EventCustomer implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -37,11 +37,11 @@ public class CustomerEvent implements Serializable {
 	private CustomerEventId id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id", insertable = false, updatable = false, nullable = false, foreignKey = @ForeignKey(name = "c_customer_event_fk1"))
+    @JoinColumn(name = "customer_id", insertable = false, updatable = false, nullable = false, foreignKey = @ForeignKey(name = "e_customer_event_fk1"))
 	private Customer customer;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "event_id", insertable = false, updatable = false, nullable = false, foreignKey = @ForeignKey(name = "c_customer_event_fk2"))
+    @JoinColumn(name = "event_id", insertable = false, updatable = false, nullable = false, foreignKey = @ForeignKey(name = "e_customer_event_fk2"))
 	private Event event;
 	
 	@Enumerated(EnumType.ORDINAL)

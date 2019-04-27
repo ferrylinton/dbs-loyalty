@@ -5,50 +5,28 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
   
+	<!-- Schema -->
+	
     <include file="release-001/001_variables.xml" relativeToChangelogFile="true"/>
     <include file="release-001/002_task.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/003_file_image_schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/004_file_image_task_schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/005_file_pdf_schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/006_file_pdf_task_schema.xml" relativeToChangelogFile="true"/>
-    <!-- User Management -->
-    <include file="release-001/007_authority_schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/008_role_schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/009_role_authority_schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/010_user_schema.xml" relativeToChangelogFile="true"/>
-    <!-- Log -->
-    <include file="release-001/011_log_login_schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/012_log_audit_schema.xml" relativeToChangelogFile="true"/>
-    <!-- Customer -->
-    <include file="release-001/013_customer_schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/014_loved_one_schema.xml" relativeToChangelogFile="true"/>
-    <!-- Promo -->
-    <include file="release-001/015_promo_category_schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/016_promo_schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/017_customer_promo_schema.xml" relativeToChangelogFile="true"/>
-    <!-- Event -->
-    <include file="release-001/018_event_schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/019_customer_event_schema.xml" relativeToChangelogFile="true"/>
-    <!-- Feedback -->
-    <include file="release-001/020_feedback_schema.xml" relativeToChangelogFile="true"/>
-    <!-- Reward -->
+    <include file="release-001/003_file_schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/004_user_schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/005_log_schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/006_customer_schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/007_promo_schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/008_event_schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/009_feedback_schema.xml" relativeToChangelogFile="true"/>
+
     <include file="release-001/031_reward_operation_schema.xml" relativeToChangelogFile="true"/>
     <include file="release-001/032_reward_schema.xml" relativeToChangelogFile="true"/>
     
-    <!-- Insert User Management -->
-    <include file="release-001/101_insert_user_system.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/102_insert_authority.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/103_insert_role.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/104_insert_role_authority.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/105_insert_user.xml" relativeToChangelogFile="true"/>
+    <!-- Data -->
     
-    <include file="release-001/106_insert_customer.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/107_insert_loved_one.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/108_insert_promo_category.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/109_insert_promo.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/110_insert_event.xml" relativeToChangelogFile="true"/>
-    
-    <include file="release-001/111_insert_feedback.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/101_insert_user.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/102_insert_customer.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/103_insert_promo.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/104_insert_event.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/105_insert_feedback.xml" relativeToChangelogFile="true"/>
     
     <include file="release-001/131_insert_reward_operation.xml" relativeToChangelogFile="true"/>
     <include file="release-001/132_insert_reward.xml" relativeToChangelogFile="true"/>

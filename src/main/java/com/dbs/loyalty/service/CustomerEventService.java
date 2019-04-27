@@ -7,7 +7,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.dbs.loyalty.domain.CustomerEvent;
+import com.dbs.loyalty.domain.EventCustomer;
 import com.dbs.loyalty.domain.CustomerEventId;
 import com.dbs.loyalty.domain.Event;
 import com.dbs.loyalty.domain.enumeration.EventAnswer;
@@ -36,12 +36,12 @@ public class CustomerEventService {
 			throw new NotFoundException(message);
 		}else {
 			CustomerEventId id = new CustomerEventId(SecurityUtil.getId(), eventId);
-			Optional<CustomerEvent> current = customerEventRepository.findById(id);
+			Optional<EventCustomer> current = customerEventRepository.findById(id);
 			
 			if(current.isPresent()) {
 				return new SuccessResponse(String.format("Data [%s,%s] is already exist", eventId, current.get().getEventAnswer().toString()));
 			}else {
-				CustomerEvent customerEvent = new CustomerEvent();
+				EventCustomer customerEvent = new EventCustomer();
 				customerEvent.setId(id);
 				customerEvent.setEventAnswer(EventAnswer.valueOf(answer));
 				customerEvent.setCreatedBy(SecurityUtil.getLogged());

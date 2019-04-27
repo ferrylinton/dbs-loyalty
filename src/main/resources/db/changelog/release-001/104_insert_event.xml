@@ -5,16 +5,49 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
-    <changeSet author="FLH" id="110-1">
+    <changeSet author="FLH" id="104-1">
 
-        <insert tableName="c_event">
+		<!-- PREVIOUS -->
+		
+		<insert tableName="e_event">
+            <column name="id" value="9e7c9d8a-a411-40d6-887e-bea19e6e7bfb"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="title" value="Batam International Culture Carnival 2018"/>
+            <column name="description" value="Sebagai gerbang pintu kedatangan bagian barat, Batam hadir dengan karnaval berskala internasional."/>
+            <column name="start_period" valueDate="2018-01-01T08:00:00"/>
+            <column name="end_period" valueDate="2018-01-02T08:00:00"/>
+            <column name="place" value="Batam"/>
+			<column name="content" valueBlobFile="txt/qNj1ZAsi.txt"/>
+        </insert>
+        
+        <insert tableName="f_image">
+            <column name="id" value="9e7c9d8a-a411-40d6-887e-bea19e6e7bfb"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="bytes" valueBlobFile="image/qNj1ZAsi.png"/>
+            <column name="content_type" value="image/png"/>
+            <column name="width" valueNumeric="293"/>
+			<column name="height" valueNumeric="100"/>
+        </insert>
+        
+        <insert tableName="f_pdf">
+            <column name="id" value="9e7c9d8a-a411-40d6-887e-bea19e6e7bfb"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+			<column name="bytes" valueBlobFile="pdf/qNj1ZAsi.pdf"/>
+        </insert>
+        
+        <!-- UPCOMING -->
+        
+        <insert tableName="e_event">
             <column name="id" value="17cd7c6d-c247-446b-b4ce-df62ab714c93"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="title" value="Digital Marketing Leaders Summit Jakarta 2019"/>
             <column name="description" value="Join us at Asia's most anticipated and influential Digital Marketing conference, taking your place alongside more than 100 senior marketers and digital strategists over 2 days of networking and learning."/>
             <column name="start_period" valueDate="2019-08-01T08:00:00"/>
-            <column name="end_period" valueDate="2019-08-01T08:00:00"/>
+            <column name="end_period" valueDate="2019-08-02T08:00:00"/>
             <column name="place" value="Crown Plaza Jakarta"/>
 			<column name="content" valueBlobFile="txt/qNj1ZAsi.txt"/>
         </insert>

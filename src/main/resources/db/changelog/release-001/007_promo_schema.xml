@@ -1,0 +1,136 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog 
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    
+    <changeSet author="FLH" id="007-1">
+    
+        <createTable tableName="p_promo_category">
+            <column name="id" type="VARCHAR(36)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+             <column name="pending" type="BIT(1)"/>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+        
+    </changeSet>
+    
+	<changeSet author="FLH" id="007-2">
+        <addPrimaryKey columnNames="id" constraintName="p_promo_category_pk" tableName="p_promo_category"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="007-3">
+        <addUniqueConstraint columnNames="name" constraintName="p_promo_category_name_uq" tableName="p_promo_category"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="007-4">
+    
+        <createTable tableName="p_promo">
+            <column name="id" type="VARCHAR(36)">
+                <constraints nullable="false"/>
+            </column>
+            
+            <column name="activated" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_period" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="show_in_carousel" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="start_period" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="content" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="term_and_condition" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="title" type="VARCHAR(150)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="promo_category_id" type="VARCHAR(36)"/>
+            <column name="pending" type="BIT(1)"/>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+        
+    </changeSet>
+    
+	<changeSet author="FLH" id="007-5">
+        <addPrimaryKey columnNames="id" constraintName="p_promo_pk" tableName="p_promo"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="007-6">
+        <addUniqueConstraint columnNames="code" constraintName="p_promo_code_uq" tableName="p_promo"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="007-7">
+        <addUniqueConstraint columnNames="title" constraintName="p_promo_title_uq" tableName="p_promo"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="007-8">
+        <addForeignKeyConstraint baseColumnNames="promo_category_id" baseTableName="p_promo" constraintName="p_promo_fk" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="p_promo_category"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="007-9">
+    
+        <createTable tableName="p_promo_customer">
+            <column name="customer_id" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="promo_id" type="VARCHAR(36)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pending" type="BIT(1)"/>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+        
+    </changeSet>
+    
+	<changeSet author="FLH" id="007-10">
+        <addPrimaryKey columnNames="customer_id,promo_id" constraintName="p_promo_customer_pk" tableName="p_promo_customer"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="007-11">
+        <addForeignKeyConstraint baseColumnNames="customer_id" baseTableName="p_promo_customer" constraintName="p_promo_customer_fk1" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="c_customer"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="007-12">
+        <addForeignKeyConstraint baseColumnNames="promo_id" baseTableName="p_promo_customer" constraintName="p_promo_customer_fk2" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="p_promo"/>
+    </changeSet>
+    
+</databaseChangeLog>

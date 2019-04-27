@@ -39,9 +39,9 @@ import lombok.ToString;
 @EqualsAndHashCode(of = {"id"}, callSuper = false)
 @Entity
 @Table(
-	name = "c_event",
+	name = "e_event",
 	uniqueConstraints = {
-		@UniqueConstraint(name = "c_event_title_uq", columnNames = { "title" })
+		@UniqueConstraint(name = "e_event_title_uq", columnNames = { "title" })
 	}
 )
 public class Event extends AbstractTask implements Serializable {

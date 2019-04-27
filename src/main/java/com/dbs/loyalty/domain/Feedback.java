@@ -20,7 +20,7 @@ import lombok.ToString;
 @ToString(of = {"id"})
 @EqualsAndHashCode(of = {"id"}, callSuper = false)
 @Entity
-@Table(name = "q_feedback")
+@Table(name = "e_feedback")
 public class Feedback extends AbstractTask implements Serializable {
 
 	private static final long serialVersionUID = 1L;

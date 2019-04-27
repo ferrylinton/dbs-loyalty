@@ -5,9 +5,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
     
-    <changeSet author="FLH" id="018-1">
+    <changeSet author="FLH" id="008-1">
     
-        <createTable tableName="c_event">
+        <createTable tableName="e_event">
             <column name="id" type="VARCHAR(36)">
                 <constraints nullable="false"/>
             </column>
@@ -41,12 +41,44 @@
         </createTable>
     </changeSet>
     
-    <changeSet author="FLH" id="018-2">
-		<addPrimaryKey columnNames="id" constraintName="c_event_pkey" tableName="c_event"/>
+    <changeSet author="FLH" id="008-2">
+		<addPrimaryKey columnNames="id" constraintName="e_event_pk" tableName="e_event"/>
 	</changeSet>
     
-    <changeSet author="FLH" id="018-3">
-        <addUniqueConstraint columnNames="title" constraintName="c_event_title_uq" tableName="c_event"/>
+    <changeSet author="FLH" id="008-3">
+        <addUniqueConstraint columnNames="title" constraintName="e_event_title_uq" tableName="e_event"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="008-4">
+    
+        <createTable tableName="e_event_customer">
+            <column name="customer_id" type="VARCHAR(36)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="event_id" type="VARCHAR(36)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="event_answer" type="TINYINT"/>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+    </changeSet>
+    
+	<changeSet author="FLH" id="008-5">
+        <addPrimaryKey columnNames="customer_id,event_id" constraintName="e_event_customer_pk" tableName="e_event_customer"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="008-6">
+        <addForeignKeyConstraint baseColumnNames="customer_id" baseTableName="e_event_customer" constraintName="e_event_customer_fk1" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="c_customer"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="008-7">
+        <addForeignKeyConstraint baseColumnNames="event_id" baseTableName="e_event_customer" constraintName="e_event_customer_fk2" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="e_event"/>
     </changeSet>
     
 </databaseChangeLog>

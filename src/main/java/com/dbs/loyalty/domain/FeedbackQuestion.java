@@ -35,7 +35,7 @@ import lombok.ToString;
 @ToString(of = {"id"})
 @EqualsAndHashCode(of = {"id"}, callSuper = false)
 @Entity
-@Table(name = "q_feedback_question")
+@Table(name = "e_feedback_question")
 public class FeedbackQuestion extends AbstractAuditing implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -68,7 +68,7 @@ public class FeedbackQuestion extends AbstractAuditing implements Serializable {
     
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "feedback_id", nullable = false, foreignKey = @ForeignKey(name = "q_feedback_question_fk"))
+    @JoinColumn(name = "feedback_id", nullable = false, foreignKey = @ForeignKey(name = "e_feedback_question_fk"))
     private Feedback feedback;
     
 }
