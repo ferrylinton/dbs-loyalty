@@ -7,7 +7,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.dbs.loyalty.config.constant.PathConstant;
 import com.dbs.loyalty.domain.Customer;
-import com.dbs.loyalty.service.dto.CustomerViewDto;
+import com.dbs.loyalty.service.dto.CustomerDto;
 
 import lombok.RequiredArgsConstructor;
 
@@ -15,16 +15,16 @@ import lombok.RequiredArgsConstructor;
 @Mapper(componentModel = "spring")
 public abstract class CustomerMapper {
 
-	public abstract CustomerViewDto toDto(Customer customer);
+	public abstract CustomerDto toDto(Customer customer);
 	
 	@AfterMapping
-    public void doAfterMapping(@MappingTarget CustomerViewDto customerViewDto){
+    public void doAfterMapping(@MappingTarget CustomerDto customerDto){
 		String imageUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(PathConstant.CUSTOMERS)
                 .path(PathConstant.IMAGE)
                 .toUriString();
 		
-		customerViewDto.setImageUrl(imageUrl);
+		customerDto.setImageUrl(imageUrl);
     }
 
 }

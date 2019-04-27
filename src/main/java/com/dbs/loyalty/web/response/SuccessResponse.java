@@ -11,6 +11,10 @@ public class SuccessResponse extends AbstractResponse {
 	
 	private String resultUrl;
 	
+	public SuccessResponse(String message) {
+		super(message);
+	}
+	
 	public SuccessResponse(String message, String resultUrl) {
 		super(message);
 		this.resultUrl = resultUrl;

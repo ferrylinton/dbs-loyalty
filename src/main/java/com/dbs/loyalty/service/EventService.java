@@ -1,6 +1,7 @@
 package com.dbs.loyalty.service;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,6 +39,13 @@ public class EventService{
 		return eventRepository.findAll(EventSpecification.getSpec(request), pageable);
 	}
 
+	public List<Event> findUpcomingEvent(){
+		return eventRepository.findUpcomingEvent();
+	}
+	
+	public List<Event> findPreviousEvent(){
+		return eventRepository.findPreviousEvent();
+	}
 	
 	public boolean isTitleExist(String id, String title) {
 		Optional<Event> event = eventRepository.findByTitleIgnoreCase(title);

@@ -42,7 +42,6 @@ import com.dbs.loyalty.service.CustomerService;
 import com.dbs.loyalty.service.dto.CustomerDto;
 import com.dbs.loyalty.service.dto.CustomerPasswordDto;
 import com.dbs.loyalty.service.dto.CustomerUpdateDto;
-import com.dbs.loyalty.service.dto.CustomerViewDto;
 import com.dbs.loyalty.service.dto.JWTTokenDto;
 import com.dbs.loyalty.service.mapper.CustomerMapper;
 import com.dbs.loyalty.util.HeaderTokenUtil;
@@ -84,8 +83,8 @@ public class CustomerRestController extends AbstractController{
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = CustomerDto.class)})
     @PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping("/customers/info")
-	public ResponseEntity<CustomerViewDto> getCustomerInfo() throws NotFoundException{
-    	Optional<CustomerViewDto> current = customerService
+	public ResponseEntity<CustomerDto> getCustomerInfo() throws NotFoundException{
+    	Optional<CustomerDto> current = customerService
     			.findByEmail(SecurityUtil.getLogged())
     			.map(customer -> customerMapper.toDto(customer));
 		
@@ -169,14 +168,14 @@ public class CustomerRestController extends AbstractController{
     		HttpServletRequest request)  {
     	
     	String token = null;
-    	CustomerViewDto customerViewDto = customerMapper.toDto(customerService.update(customerUpdateDto));
+    	CustomerDto customerDto = customerMapper.toDto(customerService.update(customerUpdateDto));
 		String jwt = HeaderTokenUtil.resolveToken(request);
         
         if (StringUtils.hasText(jwt) && restTokenProvider.validateToken(jwt)) {
             token = restTokenProvider.createToken(customerUpdateDto.getEmail(), jwt);
         }
         
-		return ResponseEntity.ok().body(new JWTTokenDto(token, customerViewDto));
+		return ResponseEntity.ok().body(new JWTTokenDto(token, customerDto));
     }
     
     @ApiOperation(

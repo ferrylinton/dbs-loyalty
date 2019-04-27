@@ -19,7 +19,7 @@ public interface PromoRepository extends JpaRepository<Promo, String>, JpaSpecif
 	
 	Optional<Promo> findByTitleIgnoreCase(String title);
 	
-	@Query(value = "from Promo p "
+	@Query(value = "select p from Promo p "
 			+ "JOIN FETCH p.promoCategory c "
 			+ "where p.startPeriod <= current_date() and p.endPeriod >= current_date() "
 			+ "and p.activated = true "

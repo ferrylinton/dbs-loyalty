@@ -9,12 +9,14 @@ import javax.validation.constraints.Size;
 import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.domain.enumeration.CustomerType;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
+@ApiModel(value="Customer", description = "Customer's data")
 public class CustomerDto {
 	
 	@ApiModelProperty(value = "Customer's id", example = "646e8a2a-4ca4-459a-9da8-2a31daaecd38", position = 0)
@@ -43,5 +45,8 @@ public class CustomerDto {
 	@ApiModelProperty(value = "Customer's date of birth", example = "21-01-1980", position = 5)
 	@NotNull(message = "{validation.notnull.dob}")
 	private Date dob;
+	
+	@ApiModelProperty(value = "Customer's image url", example = "/api/customers/image", position = 6)
+	private String imageUrl;
 
 }

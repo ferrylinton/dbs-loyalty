@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import com.dbs.loyalty.security.rest.RestAuthentication;
 import com.dbs.loyalty.security.rest.RestAuthenticationProvider;
 import com.dbs.loyalty.security.rest.RestTokenProvider;
-import com.dbs.loyalty.service.dto.CustomerViewDto;
+import com.dbs.loyalty.service.dto.CustomerDto;
 import com.dbs.loyalty.service.dto.JWTLoginDto;
 import com.dbs.loyalty.service.dto.JWTTokenDto;
 import com.dbs.loyalty.service.mapper.CustomerMapper;
@@ -28,8 +28,8 @@ public class JWTAuthenticationService {
         SecurityContextHolder.getContext().setAuthentication(restAuthentication);
        
         String token = restTokenProvider.createToken(restAuthentication, jwtLoginDto.isRememberMe());
-        CustomerViewDto customerViewDto = customerMapper.toDto(restAuthentication.getCustomer());
-        return new JWTTokenDto(token, customerViewDto);
+        CustomerDto customerDto = customerMapper.toDto(restAuthentication.getCustomer());
+        return new JWTTokenDto(token, customerDto);
 	}
 	
 }

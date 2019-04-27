@@ -7,29 +7,29 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.dbs.loyalty.config.constant.PathConstant;
 import com.dbs.loyalty.domain.Event;
-import com.dbs.loyalty.service.dto.EventViewDto;
+import com.dbs.loyalty.service.dto.EventDto;
 
 @Mapper(componentModel = "spring")
 public abstract class EventMapper{
 
-	public abstract EventViewDto toViewDto(Event event);
+	public abstract EventDto toDto(Event event);
 
 	@AfterMapping
-    public void doAfterMapping(@MappingTarget EventViewDto eventViewDto){
+    public void doAfterMapping(@MappingTarget EventDto eventDto){
 		String imageUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(PathConstant.EVENTS)
-                .path(PathConstant.SLASH + eventViewDto.getId())
+                .path(PathConstant.SLASH + eventDto.getId())
                 .path(PathConstant.IMAGE)
                 .toUriString();
 		
 		String materialUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(PathConstant.EVENTS)
-                .path(PathConstant.SLASH + eventViewDto.getId())
+                .path(PathConstant.SLASH + eventDto.getId())
                 .path(PathConstant.MATERIAL)
                 .toUriString();
 		
-		eventViewDto.setImageUrl(imageUrl);
-		eventViewDto.setMaterialUrl(materialUrl);
+		eventDto.setImageUrl(imageUrl);
+		eventDto.setMaterialUrl(materialUrl);
     }
 
 }
