@@ -39,6 +39,12 @@ import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * REST controller for Promo
+ * 
+ * @author Ferry L. H. <ferrylinton@gmail.com>
+ * 
+ */
 @Api(tags = { PROMO })
 @RequiredArgsConstructor
 @RestController

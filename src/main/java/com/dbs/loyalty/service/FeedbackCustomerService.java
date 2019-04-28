@@ -24,7 +24,7 @@ import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.repository.FeedbackAnswerRepository;
 import com.dbs.loyalty.repository.FeedbackCustomerRepository;
 import com.dbs.loyalty.repository.FeedbackRepository;
-import com.dbs.loyalty.service.dto.FeedbackAnswerDto;
+import com.dbs.loyalty.service.dto.FeedbackAnswerFormDto;
 import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.util.SecurityUtil;
 
@@ -41,7 +41,7 @@ public class FeedbackCustomerService {
 	private final FeedbackCustomerRepository feedbackCustomerRepository;
 	
 	@Transactional
-	public FeedbackCustomer save(String id, List<FeedbackAnswerDto> feedbackAnswerDtos) throws NotFoundException {
+	public FeedbackCustomer save(String id, List<FeedbackAnswerFormDto> feedbackAnswerDtos) throws NotFoundException {
 		Optional<FeedbackCustomer> current = feedbackCustomerRepository.findWithAnswersById(id, SecurityUtil.getId());
 		
 		if(!current.isPresent()) {
@@ -53,7 +53,7 @@ public class FeedbackCustomerService {
 			feedbackCustomer.setCreatedDate(Instant.now());
 			feedbackCustomer = feedbackCustomerRepository.save(feedbackCustomer);
 			
-			for(FeedbackAnswerDto dto : feedbackAnswerDtos) {
+			for(FeedbackAnswerFormDto dto : feedbackAnswerDtos) {
 				FeedbackAnswer answer = new FeedbackAnswer();
 				answer.setQuestionNumber(dto.getQuestionNumber());
 				answer.setQuestionText(map.get(dto.getQuestionNumber()));

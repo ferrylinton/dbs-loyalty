@@ -15,13 +15,13 @@ public class EventDto {
 	@ApiModelProperty(value = "Event's id", example = "646e8a2a-4ca4-459a-9da8-2a31daaecd38", required = true, position = 0)
 	private String id;
 
-	@ApiModelProperty(value = "Event's title", example = "Nilai Tukar Kompetitif", required = true, position = 1)
+	@ApiModelProperty(value = "Event's title", example = "Digital Marketing Leaders Summit Jakarta 2019", required = true, position = 1)
 	private String title;
 	
-	@ApiModelProperty(value = "Event's description", example = "Nikmati nilai tukar kompetitif Dollar Singapura terhadap Rupiah", required = true, position = 2)
+	@ApiModelProperty(value = "Event's description", example = "Join us at Asia's most anticipated and influential Digital Marketing conference, taking your place alongside more than 100 senior marketers and digital strategists over 2 days of networking and learning.", required = true, position = 2)
 	private String description;
 	
-	@ApiModelProperty(value = "Event's description", example = "Nikmati nilai tukar kompetitif Dollar Singapura terhadap Rupiah", required = true, position = 3)
+	@ApiModelProperty(value = "Event's content", example = "Join us at Asia's most anticipated and influential Digital Marketing conference, taking your place alongside more than 100 senior marketers and digital strategists over 2 days of networking and learning.", required = true, position = 3)
 	private String content;
 	
 	@ApiModelProperty(value = "Event's start period date", example = "01-04-2019", required = true, position = 4)
@@ -33,7 +33,7 @@ public class EventDto {
 	@ApiModelProperty(value = "Event's time", example = "8:00 am", position = 6)
 	private String timePeriod;
 
-	@ApiModelProperty(value = "Event's place", example = "02-04-2019", required = true, position = 7)
+	@ApiModelProperty(value = "Event's place", example = "Crown Plaza Jakarta", required = true, position = 7)
 	private String place;
 	
 	@ApiModelProperty(value = "Event's image url", example = "/api/events/{id}/image", position = 8)

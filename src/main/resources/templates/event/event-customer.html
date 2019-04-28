@@ -29,7 +29,6 @@
                 <table class="table table-sm table-striped table-hover border-bottom" style="min-width: 800px;">
                     <thead>
                         <tr th:with="ascending=${order.getDirection().name() == 'ASC'}">
-                            <th style="width:40px"></th>
                             <th style="width:40px">#</th>
                             <th th:with="sort=|&sort=name,${ascending ? 'DESC' : 'ASC'}|">
                                 <a th:href="@{|?page=${page.getNumber()}${params}${sort}|}" class="text-decoration-none">
@@ -44,18 +43,6 @@
                     </thead>
                     <tbody th:remove="all-but-first">
                         <tr th:each="event,row : ${page}">
-                            <td class="py-0 px-1">
-								<div class="dropdown">
-									<button type="button" class="btn btn-default dropdown-toggle px-1 py-0 font-12" id="dropdownMenuButton" data-boundary="window" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										<span class="icon-cog"></span>
-									</button>
-									<div class="dropdown-menu py-0 shadow" aria-labelledby="dropdownMenuButton">
-										<a class="dropdown-item pl-1" href="/event/event-customer-feedback.html" th:href="@{|/event/${event.id}/customer/detail|}">
-										    <span class="icon-thumbs-up"></span> <span th:text="#{feedback}">Feedback</span>
-                                        </a>
-									</div>
-								</div>
-							</td>
                             <td th:text="${row.count + (page.number * page.size)}">1</td>
                             <td th:text="${event.customer.name}">Ferry Linton Hutapea</td>
                             <td th:text="${event.customer.customerType}">TREASURE</td>

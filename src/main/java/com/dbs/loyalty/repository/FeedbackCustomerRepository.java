@@ -14,15 +14,13 @@ public interface FeedbackCustomerRepository extends JpaRepository<FeedbackCustom
 
 	@Query(value = "select f from FeedbackCustomer f "
 			+ "join fetch f.answers a "
-			+ "where f.id.feedbackId = ?1 and f.id.customerId = ?2 "
-			+ "order by a.questionNumber asc ")
+			+ "where f.id.feedbackId = ?1 and f.id.customerId = ?2 ")
 	Optional<FeedbackCustomer> findWithAnswersById(String feedbackId, String customerId);
 	
 	@Query(value = "select f from FeedbackCustomer f "
 			+ "join fetch f.customer c "
 			+ "join fetch f.answers a "
-			+ "where f.id.feedbackId = ?1 "
-			+ "order by a.questionNumber asc ",
+			+ "where f.id.feedbackId = ?1 ",
 			countQuery = "select count(f) from FeedbackCustomer f "
 					+ "where f.id.feedbackId = ?1 ")
 	Page<FeedbackCustomer> findWithCustomerAndAnswersByFeedbackId(String feedbackId, Pageable pageable);

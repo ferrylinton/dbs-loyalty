@@ -15,7 +15,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -28,7 +28,7 @@ import lombok.ToString;
 @EqualsAndHashCode(of = {"id", "questionNumber", "questionText", "questionAnswer"})
 @Entity
 @Table(name = "e_feedback_answer")
-public class FeedbackAnswer implements Serializable {
+public class FeedbackAnswer implements Serializable, Comparable<FeedbackAnswer> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -47,7 +47,7 @@ public class FeedbackAnswer implements Serializable {
     @Column(name = "question_answer")
     private String questionAnswer;
     
-    @JsonIgnoreProperties("answers")
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({
         @JoinColumn(
@@ -60,5 +60,10 @@ public class FeedbackAnswer implements Serializable {
             nullable = false, foreignKey = @ForeignKey(name = "e_feedback_answer_fk2")),
     })
     private FeedbackCustomer feedbackCustomer;
+
+	@Override
+	public int compareTo(FeedbackAnswer obj) {
+		return (this.getQuestionNumber() - obj.getQuestionNumber());
+	}
     
 }

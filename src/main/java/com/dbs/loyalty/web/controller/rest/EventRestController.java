@@ -46,6 +46,9 @@ import lombok.RequiredArgsConstructor;
 
 /**
  * REST controller for Event
+ * 
+ * @author Ferry L. H. <ferrylinton@gmail.com>
+ * 
  */
 @Api(tags = { EVENT })
 @RequiredArgsConstructor
@@ -63,6 +66,10 @@ public class EventRestController {
     
     private final EventMapper eventMapper;;
    
+    /**
+     * 
+     * @return
+     */
 	@ApiOperation(
 			nickname="GetUpcomingEvent", 
 			value="GetUpcomingEvent", 
@@ -201,15 +208,15 @@ public class EventRestController {
 
 
     @ApiOperation(
-    		nickname="SaveCustomerEventAnswer", 
-    		value="SaveCustomerEventAnswer", 
-    		notes="Save Customer's event answer",
+    		nickname="AddCustomerEventAnswer", 
+    		value="AddCustomerEventAnswer", 
+    		notes="Add Customer's event answer",
     		produces=MediaType.APPLICATION_JSON_VALUE, 
     		authorizations = { @Authorization(value=JWT) })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = PromoCategory.class)})
     @PreAuthorize("hasRole('CUSTOMER')")
     @PostMapping("/events/{id}/{answer}")
-    public ResponseEntity<SuccessResponse> saveCustomerEvent(
+    public ResponseEntity<SuccessResponse> addCustomerEvent(
     		@ApiParam(name = "id", value = "Event Id", example = "93643790-8aca-4b62-9dad-f3f818e3de14")
     		@PathVariable String id,
     		@ApiParam(name = "answer", value = "Customer's answer", example = "NO, YES, MAYBE")

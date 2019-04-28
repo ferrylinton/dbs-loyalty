@@ -13,6 +13,7 @@ import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -48,6 +49,7 @@ public class FeedbackCustomer implements Serializable{
 
 	@JsonIgnoreProperties("feedbackCustomer")
 	@OneToMany(mappedBy = "feedbackCustomer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OrderBy(value = "questionNumber ASC")
     private Set<FeedbackAnswer> answers;
 	
     @JsonIgnore
