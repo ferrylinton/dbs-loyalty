@@ -93,7 +93,7 @@ public class FeedbackRestController {
     public ResponseEntity<FeedbackCustomer> saveFeedbackCustomer(
     		@ApiParam(name = "id", value = "Event Id / Feedback Id", example = "93643790-8aca-4b62-9dad-f3f818e3de14")
     		@PathVariable String id,
-    		@Valid @RequestBody List<FeedbackAnswerDto> feedbackAnswerDtos){
+    		@Valid @RequestBody List<FeedbackAnswerDto> feedbackAnswerDtos) throws NotFoundException{
     	
     	FeedbackCustomer feedbackCustomer = feedbackCustomerService.save(id, feedbackAnswerDtos);
     	return ResponseEntity.ok().body(feedbackCustomer);

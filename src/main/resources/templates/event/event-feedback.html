@@ -20,96 +20,68 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/home/home-view.html" th:href="@{/}" th:text="#{home}">Home</a></li>
                 <li class="breadcrumb-item"><a href="/event/event-view.html" th:href="@{/event}" th:text="#{event}">Event</a></li>
-                <li class="breadcrumb-item active" aria-current="page" th:text="#{detail}">Detail</li>
+                <li class="breadcrumb-item active" aria-current="page" th:text="#{feedback}">Feedback</li>
             </ol>
         </nav>
         <div id="main-content">
-            <!-- MESSAGE -->
-            <div class="border alert alert-light text-center" role="alert" th:if="${error}">
-                <span class="icon-attention"></span> <span th:text="${error}">Data ['xxxx'] is not found</span>
+            <!-- TABLE DATA -->
+            <div class="table-responsive border border-top-0" th:if="${page.getTotalElements() > 0}">
+                <table class="table table-sm table-striped table-hover border-bottom" style="min-width: 800px;">
+                    <thead>
+                        <tr th:with="ascending=${order.getDirection().name() == 'ASC'}">
+                            <th style="width:40px"></th>
+                            <th style="width:40px">#</th>
+                            <th th:with="sort=|&sort=customer.name,${ascending ? 'DESC' : 'ASC'}|">
+                                <a th:href="@{|?page=${page.getNumber()}${params}${sort}|}" class="text-decoration-none">
+                                    <span th:text="#{name}">Name</span> <span th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></span>
+                                </a>
+                            </th>
+                            <th th:text="#{customerType}">Type</th>
+                            <th th:text="#{email}">Email</th>
+                            <th th:text="#{phone}">Phone</th>
+                        </tr>
+                    </thead>
+                    <tbody th:remove="all-but-first">
+                        <tr th:each="feedback,row : ${page}">
+                            <td class="py-0 px-1">
+								<div class="dropdown">
+									<button type="button" class="btn btn-default dropdown-toggle px-1 py-0 font-12" id="dropdownMenuButton" data-boundary="window" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<span class="icon-cog"></span>
+									</button>
+									<div class="dropdown-menu py-0 shadow" aria-labelledby="dropdownMenuButton">
+										<a class="dropdown-item pl-1" href="/event/event-customer-detail.html" th:href="@{|/event/${feedback.id.feedbackId}/feedback/${feedback.id.customerId}|}">
+										    <span class="icon-thumbs-up"></span> <span th:text="#{detail}">Detail</span>
+                                        </a>
+									</div>
+								</div>
+							</td>
+                            <td th:text="${row.count + (page.number * page.size)}">1</td>
+                            <td th:text="${feedback.customer.name}">Ferry Linton Hutapea</td>
+                            <td th:text="${feedback.customer.customerType}">TREASURE</td>
+                            <td th:text="${feedback.customer.email}">ferrylinton@gmail.com</td>
+                            <td th:text="${feedback.customer.phone}">1234567890</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <!-- TABLE DETAIL -->
-            <th:block th:if="${event}">
-                <div class="table-responsive border border-top-0">
-                    <table class="table table-sm table-detail">
-                        <tbody th:with="format=${@environment.getProperty('application.format.date-time-full')}">
-                            <tr>
-                                <th th:text="#{id}">Id</th>
-                                <td th:text="${event.id}">qNj1ZAsi</td>
-                            </tr>
-                            <tr>
-                                <th th:text="#{title}">Title</th>
-                                <td th:text="${event.title}">Digital Marketing Leaders Summit Jakarta 2019</td>
-                            </tr>
-                            <tr>
-                                <th th:text="#{description}">Description</th>
-                                <td th:text="${event.description}">Join us at Asia's most anticipated and influential Digital Marketing conference, taking your place alongside more than 100 senior marketers and digital strategists over 2 days of networking and learning.</td>
-                            </tr>
-                            <tr>
-                                <th th:text="#{content}">Content</th>
-                                <td th:text="${event.content}">Join us at Asia's most anticipated and influential Digital Marketing conference, taking your place alongside more than 100 senior marketers and digital strategists over 2 days of networking and learning.</td>
-                            </tr>
-                            <tr th:if="${event.startPeriod}">
-                                <th th:text="#{startPeriod}">Start Period</th>
-                                <td th:text="${#dates.format(event.startPeriod, 'dd-MM-yyyy')}">2019-08-01</td>
-                            </tr>
-                            <tr th:if="${event.endPeriod}">
-                                <th th:text="#{endPeriod}">End Period</th>
-                                <td th:text="${#dates.format(event.endPeriod, 'dd-MM-yyyy')}">2019-18-02</td>
-                            </tr>
-                            <tr>
-                                <th th:text="#{timePeriod}">Time Period</th>
-                                <td th:text="${event.timePeriod}">08:00</td>
-                            </tr>
-                            <tr>
-                                <th th:text="#{place}">Place</th>
-                                <td th:text="${event.place}">Crown Plaza Jakarta</td>
-                            </tr>
-                            <tr>
-                                <th th:text="#{image}">Image</th>
-                                <td>
-                                    <div class="d-block overflow-auto">
-                                        <img class="border p-1" alt="image" src="" th:src="@{|/image/${event.id}|}" />
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th th:text="#{material}">Material</th>
-                                <td>
-                                	<a class="btn btn-sm btn-light" role="button" aria-pressed="true" href="/sample.pdf" th:href="@{|/pdf/${event.id}|}" onclick="return openNewTab(this);">
-                                        <span class="icon-file-pdf text-danger"></span> <span th:text="#{view}">View</span>
-                                    </a>
-                                    <a class="btn btn-sm btn-light" role="button" aria-pressed="true" href="/sample.pdf" th:href="@{|/pdf/download/${event.id}|}">
-                                        <span class="icon-download-alt"></span> <span th:text="#{download}">Download</span>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th th:text="#{createdBy}">Created By</th>
-                                <td th:text="${event.createdBy}">System</td>
-                            </tr>
-                            <tr>
-                                <th th:text="#{createdDate}">Created Dt</th>
-                                <td th:text="${#dates.format(event.createdDate, format)}">09-04-2019 19:06:53.279</td>
-                            </tr>
-                            <tr th:if="${event.lastModifiedBy}">
-                                <th th:text="#{lastModifiedBy}">Last Modified By</th>
-                                <td th:text="${event.lastModifiedBy}">System</td>
-                            </tr>
-                            <tr th:if="${event.lastModifiedDate}">
-                                <th th:text="#{lastModifiedDate}">Last Modified Dt</th>
-                                <td th:text="${#dates.format(event.lastModifiedDate, format)}">09-04-2019 19:06:53.279</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <!-- TOOLBAR -->
-                <div class="toolbar">
-                    <a class="btn btn-light" href="/event/event-view.html" th:href="@{/event}">
-                        <span class="icon-left" th:text="#{back}">Back</span>
-                    </a>
-                </div>
-            </th:block>
+            <!-- NOT FOUND MESSAGE -->
+            <div class="border alert alert-light text-center" role="alert" th:if="${page.getTotalElements() == 0}">
+	            <span class="icon-attention"></span> <span th:text="#{message.dataNotFound}">Data not found</span>
+	        </div>
+            <!-- TOOLBAR -->
+            <div class="toolbar">
+                <a class="btn btn-light" href="/event/event-view.html" th:href="@{/event}">
+                    <span class="icon-left"></span> <span th:text="#{back}">Back</span>
+                </a>
+                <th:block th:if="${page != null && page.getTotalPages() > 1}">
+	                <a class="btn btn-light" th:href="@{|?${previous}${params}|}" th:classappend="${not page.hasPrevious()} ? 'disabled'">
+	                    <span class="icon-left-open"></span> <span th:text="#{previous}">Previous</span>
+	                </a>
+	                <a class="btn btn-light" th:href="@{|?${next}${params}|}" th:classappend="${not page.hasNext()} ? 'disabled'">
+	                    <span th:text="#{next}">Next</span> <span class="icon-right-open"></span>
+	                </a>
+                </th:block>
+            </div>
         </div>
         <!-- FOOTER -->
         <div id="footer" th:replace="fragment/footer.html :: #footer"></div>

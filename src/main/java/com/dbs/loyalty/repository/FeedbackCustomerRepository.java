@@ -2,6 +2,8 @@ package com.dbs.loyalty.repository;
 
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -15,5 +17,14 @@ public interface FeedbackCustomerRepository extends JpaRepository<FeedbackCustom
 			+ "where f.id.feedbackId = ?1 and f.id.customerId = ?2 "
 			+ "order by a.questionNumber asc ")
 	Optional<FeedbackCustomer> findWithAnswersById(String feedbackId, String customerId);
+	
+	@Query(value = "select f from FeedbackCustomer f "
+			+ "join fetch f.customer c "
+			+ "join fetch f.answers a "
+			+ "where f.id.feedbackId = ?1 "
+			+ "order by a.questionNumber asc ",
+			countQuery = "select count(f) from FeedbackCustomer f "
+					+ "where f.id.feedbackId = ?1 ")
+	Page<FeedbackCustomer> findWithCustomerAndAnswersByFeedbackId(String feedbackId, Pageable pageable);
 	
 }

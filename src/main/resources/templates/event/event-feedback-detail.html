@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en" th:lang="${#locale.toString() == 'in' ? 'id' : #locale}" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="contextPath" content="/" th:content="@{/}" />
+    <title th:text="|#{application.name} : #{event}|"></title>
+    <link href="/static/image/favicon.png" th:href="@{/static/image/favicon.png}" rel="shorcut icon" />
+    <link href="/static/css/all.min.css" th:href="@{/static/css/all.min.css}" rel="stylesheet" />
+</head>
+
+<body>
+    <!-- NAVBAR -->
+    <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
+    <div id="content-box">
+        <!-- BREADCRUMB -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/home/home-view.html" th:href="@{/}" th:text="#{home}">Home</a></li>
+                <li class="breadcrumb-item"><a href="/event/event-view.html" th:href="@{/event}" th:text="#{event}">Event</a></li>
+                <li class="breadcrumb-item"><a href="/event/event-feedback.html" th:href="@{|/event/${eventId}/feedback|}" th:text="#{feedback}">Feedback</a></li>
+                <li class="breadcrumb-item active" aria-current="page" th:text="#{detail}">Detail</li>
+            </ol>
+        </nav>
+        <div id="main-content">
+        	<!-- MESSAGE -->
+            <div class="border alert alert-light text-center" role="alert" th:if="${error}">
+                <span class="icon-attention"></span> <span th:text="${error}">Data ['xxxx'] is not found</span>
+            </div>
+            <!-- TABLE DETAIL -->
+            <th:block th:if="${feedbackcustomer}">
+	            <div class="table-responsive border border-top-0">
+	                <table class="table table-sm table-striped table-hover border-bottom">
+	                    <tbody th:remove="all-but-first">
+	                        <tr th:each="answer,row : ${feedbackcustomer.answers}">
+	                            <td th:text="${answer.questionNumber}">1</td>
+	                            <td th:text="${answer.questionText}">1</td>
+	                            <td th:text="${answer.questionAnswer}">1</td>
+	                        </tr>
+	                    </tbody>
+	                </table>
+	            </div>
+	        </th:block>
+            <!-- TOOLBAR -->
+            <div class="toolbar">
+                <a class="btn btn-light" href="/event/event-view.html" th:href="@{|/event/${eventId}/feedback|}">
+                    <span class="icon-left"></span> <span th:text="#{back}">Back</span>
+                </a>
+            </div>
+        </div>
+        <!-- FOOTER -->
+        <div id="footer" th:replace="fragment/footer.html :: #footer"></div>
+    </div>
+    <!-- SIDENAV -->
+    <div id="sidenav-box" th:replace="fragment/sidenav.html :: #sidenav-box"></div>
+    <!-- SCRIPTS -->
+    <script src="/static/js/all.min.js" th:src="@{/static/js/all.min.js}"></script>
+    <script src="/static/js/fragment.js" th:remove="all"></script>
+</body>
+
+</html>

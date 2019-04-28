@@ -39,12 +39,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dbs.loyalty.domain.Event;
 import com.dbs.loyalty.domain.EventCustomer;
+import com.dbs.loyalty.domain.FeedbackCustomer;
 import com.dbs.loyalty.domain.FileImageTask;
 import com.dbs.loyalty.domain.FilePdfTask;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.EventCustomerService;
 import com.dbs.loyalty.service.EventService;
+import com.dbs.loyalty.service.FeedbackCustomerService;
 import com.dbs.loyalty.service.ImageService;
 import com.dbs.loyalty.service.PdfService;
 import com.dbs.loyalty.service.TaskService;
@@ -73,6 +75,8 @@ public class EventController extends AbstractPageController {
 	private final EventService eventService;
 	
 	private final EventCustomerService eventCustomerService;
+	
+	private final FeedbackCustomerService feedbackCustomerService;
 
 	private final TaskService taskService;
 
@@ -106,6 +110,38 @@ public class EventController extends AbstractPageController {
 			setPagerQueryString(order, page.getNumber(), request);
 			return "event/event-customer";
 		}
+	}
+	
+	@PreAuthorize("hasAnyRole('EVENT_MK', 'EVENT_CK')")
+	@GetMapping("/{eventId}/feedback")
+	public String viewEventFeedback(@RequestParam Map<String, String> params, @PathVariable String eventId, Sort sort, HttpServletRequest request) {
+		Order order = getOrder(sort, "customer.name");
+		Page<FeedbackCustomer> page = feedbackCustomerService.findWithCustomerAndAnswersByFeedbackId(eventId, getPageable(params, order));
+
+		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
+			return "redirect:/event" + eventId + "/feedback";
+		}else {
+			request.setAttribute("id", eventId);
+			request.setAttribute(PAGE, page);
+			setParamsQueryString(params, request);
+			setPagerQueryString(order, page.getNumber(), request);
+			return "event/event-feedback";
+		}
+	}
+	
+	@PreAuthorize("hasAnyRole('EVENT_MK', 'EVENT_CK')")
+	@GetMapping("/{eventId}/feedback/{customerId}")
+	public String viewEventFeedbackDetail(@PathVariable String eventId, @PathVariable String customerId, ModelMap model) {
+		Optional<FeedbackCustomer> current = feedbackCustomerService.findWithAnswersById(eventId, customerId);
+		
+		if (current.isPresent()) {
+			model.addAttribute("feedbackcustomer", current.get());
+		} else {
+			model.addAttribute(ERROR, getNotFoundMessage(eventId + "," + customerId));
+		}
+		
+		model.addAttribute("eventId", eventId);
+		return "event/event-feedback-detail";
 	}
 	
 	@PreAuthorize("hasAnyRole('EVENT_MK', 'EVENT_CK')")
