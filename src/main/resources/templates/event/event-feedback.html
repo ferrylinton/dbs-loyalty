@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en" th:lang="${#locale.toString() == 'in' ? 'id' : #locale}" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="contextPath" content="/" th:content="@{/}" />
+    <title th:text="|#{application.name} : #{event}|"></title>
+    <link href="/static/image/favicon.png" th:href="@{/static/image/favicon.png}" rel="shorcut icon" />
+    <link href="/static/css/all.min.css" th:href="@{/static/css/all.min.css}" rel="stylesheet" />
+</head>
+
+<body>
+    <!-- NAVBAR -->
+    <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
+    <div id="content-box">
+        <!-- BREADCRUMB -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/home/home-view.html" th:href="@{/}" th:text="#{home}">Home</a></li>
+                <li class="breadcrumb-item"><a href="/event/event-view.html" th:href="@{/event}" th:text="#{event}">Event</a></li>
+                <li class="breadcrumb-item active" aria-current="page" th:text="#{detail}">Detail</li>
+            </ol>
+        </nav>
+        <div id="main-content">
+            <!-- MESSAGE -->
+            <div class="border alert alert-light text-center" role="alert" th:if="${error}">
+                <span class="icon-attention"></span> <span th:text="${error}">Data ['xxxx'] is not found</span>
+            </div>
+            <!-- TABLE DETAIL -->
+            <th:block th:if="${event}">
+                <div class="table-responsive border border-top-0">
+                    <table class="table table-sm table-detail">
+                        <tbody th:with="format=${@environment.getProperty('application.format.date-time-full')}">
+                            <tr>
+                                <th th:text="#{id}">Id</th>
+                                <td th:text="${event.id}">qNj1ZAsi</td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{title}">Title</th>
+                                <td th:text="${event.title}">Digital Marketing Leaders Summit Jakarta 2019</td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{description}">Description</th>
+                                <td th:text="${event.description}">Join us at Asia's most anticipated and influential Digital Marketing conference, taking your place alongside more than 100 senior marketers and digital strategists over 2 days of networking and learning.</td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{content}">Content</th>
+                                <td th:text="${event.content}">Join us at Asia's most anticipated and influential Digital Marketing conference, taking your place alongside more than 100 senior marketers and digital strategists over 2 days of networking and learning.</td>
+                            </tr>
+                            <tr th:if="${event.startPeriod}">
+                                <th th:text="#{startPeriod}">Start Period</th>
+                                <td th:text="${#dates.format(event.startPeriod, 'dd-MM-yyyy')}">2019-08-01</td>
+                            </tr>
+                            <tr th:if="${event.endPeriod}">
+                                <th th:text="#{endPeriod}">End Period</th>
+                                <td th:text="${#dates.format(event.endPeriod, 'dd-MM-yyyy')}">2019-18-02</td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{timePeriod}">Time Period</th>
+                                <td th:text="${event.timePeriod}">08:00</td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{place}">Place</th>
+                                <td th:text="${event.place}">Crown Plaza Jakarta</td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{image}">Image</th>
+                                <td>
+                                    <div class="d-block overflow-auto">
+                                        <img class="border p-1" alt="image" src="" th:src="@{|/image/${event.id}|}" />
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{material}">Material</th>
+                                <td>
+                                	<a class="btn btn-sm btn-light" role="button" aria-pressed="true" href="/sample.pdf" th:href="@{|/pdf/${event.id}|}" onclick="return openNewTab(this);">
+                                        <span class="icon-file-pdf text-danger"></span> <span th:text="#{view}">View</span>
+                                    </a>
+                                    <a class="btn btn-sm btn-light" role="button" aria-pressed="true" href="/sample.pdf" th:href="@{|/pdf/download/${event.id}|}">
+                                        <span class="icon-download-alt"></span> <span th:text="#{download}">Download</span>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{createdBy}">Created By</th>
+                                <td th:text="${event.createdBy}">System</td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{createdDate}">Created Dt</th>
+                                <td th:text="${#dates.format(event.createdDate, format)}">09-04-2019 19:06:53.279</td>
+                            </tr>
+                            <tr th:if="${event.lastModifiedBy}">
+                                <th th:text="#{lastModifiedBy}">Last Modified By</th>
+                                <td th:text="${event.lastModifiedBy}">System</td>
+                            </tr>
+                            <tr th:if="${event.lastModifiedDate}">
+                                <th th:text="#{lastModifiedDate}">Last Modified Dt</th>
+                                <td th:text="${#dates.format(event.lastModifiedDate, format)}">09-04-2019 19:06:53.279</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- TOOLBAR -->
+                <div class="toolbar">
+                    <a class="btn btn-light" href="/event/event-view.html" th:href="@{/event}">
+                        <span class="icon-left" th:text="#{back}">Back</span>
+                    </a>
+                </div>
+            </th:block>
+        </div>
+        <!-- FOOTER -->
+        <div id="footer" th:replace="fragment/footer.html :: #footer"></div>
+    </div>
+    <!-- SIDENAV -->
+    <div id="sidenav-box" th:replace="fragment/sidenav.html :: #sidenav-box"></div>
+    <!-- SCRIPTS -->
+    <script src="/static/js/all.min.js" th:src="@{/static/js/all.min.js}"></script>
+    <script src="/static/js/fragment.js" th:remove="all"></script>
+</body>
+
+</html>

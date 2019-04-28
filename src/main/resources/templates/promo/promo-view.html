@@ -71,6 +71,9 @@
 										<a class="dropdown-item pl-1" href="/promo/promo-detail.html" th:href="@{|/promo/${promo.id}/detail|}">
 										    <span class="icon-eye"></span> <span th:text="#{detail}">Detail</span>
                                         </a>
+                                        <a class="dropdown-item pl-1" href="/promo/promo-customer.html" th:href="@{|/promo/${promo.id}/customer|}">
+										    <span class="icon-user-circle"></span> <span th:text="#{customer}">Customer</span>
+                                        </a>
                                         <th:block th:if="${isMaker && (promo.pending == null || !promo.pending)}">
                                             <a class="dropdown-item pl-1" href="/promo/promo-form.html" th:href="@{|/promo/${promo.id}|}">
                                                 <span class="icon-edit"></span> <span th:text="#{edit}">Edit</span>

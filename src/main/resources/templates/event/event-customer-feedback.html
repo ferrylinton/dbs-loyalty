@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en" th:lang="${#locale.toString() == 'in' ? 'id' : #locale}" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="contextPath" content="/" th:content="@{/}" />
+    <title th:text="|#{application.name} : #{event}|"></title>
+    <link href="/static/image/favicon.png" th:href="@{/static/image/favicon.png}" rel="shorcut icon" />
+    <link href="/static/css/all.min.css" th:href="@{/static/css/all.min.css}" rel="stylesheet" />
+</head>
+
+<body>
+    <!-- NAVBAR -->
+    <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
+    <div id="content-box" th:with="isMaker=${#authorization.expression('hasAuthority(''PROMO_MK'')')}">
+        <!-- BREADCRUMB -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/home/home-view.html" th:href="@{/}" th:text="#{home}">Home</a></li>
+                <li class="breadcrumb-item"><a href="/event/event-view.html" th:href="@{/event}" th:text="#{event}">Event</a></li>
+                <li class="breadcrumb-item active" aria-current="page" th:text="#{Customer}">Customer</li>
+            </ol>
+        </nav>
+        <div id="main-content">
+            <!-- TABLE DATA -->
+            <div class="table-responsive border border-top-0" th:if="${page.getTotalElements() > 0}">
+                <table class="table table-sm table-striped table-hover border-bottom" style="min-width: 800px;">
+                    <thead>
+                        <tr th:with="ascending=${order.getDirection().name() == 'ASC'}">
+                            <th style="width:40px"></th>
+                            <th style="width:40px">#</th>
+                            <th th:with="sort=|&sort=name,${ascending ? 'DESC' : 'ASC'}|">
+                                <a th:href="@{|?page=${page.getNumber()}${params}${sort}|}" class="text-decoration-none">
+                                    <span th:text="#{name}">Name</span> <span th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></span>
+                                </a>
+                            </th>
+                            <th th:text="#{customerType}">Type</th>
+                            <th th:text="#{email}">Email</th>
+                            <th th:text="#{phone}">Phone</th>
+                        </tr>
+                    </thead>
+                    <tbody th:remove="all-but-first">
+                        <tr th:each="customer,row : ${page}">
+                            <td class="py-0 px-1">
+								<div class="dropdown">
+									<button type="button" class="btn btn-default dropdown-toggle px-1 py-0 font-12" id="dropdownMenuButton" data-boundary="window" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+										<span class="icon-cog"></span>
+									</button>
+									<div class="dropdown-menu py-0 shadow" aria-labelledby="dropdownMenuButton">
+										<a class="dropdown-item pl-1" href="/event/event-feedback-detail.html" th:href="@{|/event/${event.id}/detail|}">
+										    <span class="icon-thumbs-up"></span> <span th:text="#{feedback}">Feedback</span>
+                                        </a>
+									</div>
+								</div>
+							</td>
+                            <td th:text="${row.count + (page.number * page.size)}">1</td>
+                            <td th:text="${customer.name}">Ferry Linton Hutapea</td>
+                            <td th:text="${customer.customerType}">TREASURE</td>
+                            <td th:text="${customer.email}">ferrylinton@gmail.com</td>
+                            <td th:text="${customer.phone}">1234567890</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- NOT FOUND MESSAGE -->
+            <div class="border alert alert-light text-center" role="alert" th:if="${page.getTotalElements() == 0}">
+	            <span class="icon-attention"></span> <span th:text="#{message.dataNotFound}">Data not found</span>
+	        </div>
+            <!-- TOOLBAR -->
+            <div class="toolbar" th:if="${page != null && page.getTotalPages() > 1}">
+                <a class="btn btn-light" href="/event/event-view.html" th:href="@{/event}">
+                    <span class="icon-left"></span> <span th:text="#{back}">Back</span>
+                </a>
+                <a class="btn btn-light" th:href="@{|?${previous}${params}|}" th:classappend="${not page.hasPrevious()} ? 'disabled'">
+                    <span class="icon-left-open"></span> <span th:text="#{previous}">Previous</span>
+                </a>
+                <a class="btn btn-light" th:href="@{|?${next}${params}|}" th:classappend="${not page.hasNext()} ? 'disabled'">
+                    <span th:text="#{next}">Next</span> <span class="icon-right-open"></span>
+                </a>
+            </div>
+        </div>
+        <!-- FOOTER -->
+        <div id="footer" th:replace="fragment/footer.html :: #footer"></div>
+    </div>
+    <!-- SIDENAV -->
+    <div id="sidenav-box" th:replace="fragment/sidenav.html :: #sidenav-box"></div>
+    <!-- SCRIPTS -->
+    <script src="/static/js/all.min.js" th:src="@{/static/js/all.min.js}"></script>
+    <script src="/static/js/fragment.js" th:remove="all"></script>
+</body>
+
+</html>

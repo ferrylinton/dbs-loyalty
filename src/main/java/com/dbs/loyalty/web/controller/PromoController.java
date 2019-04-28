@@ -39,10 +39,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.dbs.loyalty.domain.FileImageTask;
 import com.dbs.loyalty.domain.Promo;
 import com.dbs.loyalty.domain.PromoCategory;
+import com.dbs.loyalty.domain.PromoCustomer;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.ImageService;
 import com.dbs.loyalty.service.PromoCategoryService;
+import com.dbs.loyalty.service.PromoCustomerService;
 import com.dbs.loyalty.service.PromoService;
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.util.UrlUtil;
@@ -63,6 +65,8 @@ public class PromoController extends AbstractPageController {
 
 	private final PromoCategoryService promoCategoryService;
 	
+	private final PromoCustomerService promoCustomerService;
+	
 	private final TaskService taskService;
 
 	@PreAuthorize("hasAnyRole('PROMO_MK', 'PROMO_CK')")
@@ -78,6 +82,22 @@ public class PromoController extends AbstractPageController {
 			setParamsQueryString(params, request);
 			setPagerQueryString(order, page.getNumber(), request);
 			return "promo/promo-view";
+		}
+	}
+	
+	@PreAuthorize("hasAnyRole('PROMO_MK', 'PROMO_CK')")
+	@GetMapping("/{id}/customer")
+	public String viewPromoCustomers(@RequestParam Map<String, String> params, @PathVariable String id, Sort sort, HttpServletRequest request) {
+		Order order = getOrder(sort, "customer.name");
+		Page<PromoCustomer> page = promoCustomerService.findWithCustomerByPromoId(id, getPageable(params, order));
+
+		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
+			return "redirect:/promo" + id + "/customer";
+		}else {
+			request.setAttribute(PAGE, page);
+			setParamsQueryString(params, request);
+			setPagerQueryString(order, page.getNumber(), request);
+			return "promo/promo-customer";
 		}
 	}
 	

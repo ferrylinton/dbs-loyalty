@@ -19,11 +19,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbs.loyalty.config.constant.MessageConstant;
 import com.dbs.loyalty.domain.FileImage;
 import com.dbs.loyalty.exception.NotFoundException;
-import com.dbs.loyalty.service.CustomerPromoService;
 import com.dbs.loyalty.service.ImageService;
+import com.dbs.loyalty.service.PromoCustomerService;
 import com.dbs.loyalty.service.PromoService;
 import com.dbs.loyalty.service.dto.CarouselDto;
 import com.dbs.loyalty.service.dto.PromoDto;
@@ -50,7 +49,7 @@ public class PromoRestController {
 	
 	private final PromoService promoService;
 	
-	private final CustomerPromoService customerPromoService;
+	private final PromoCustomerService customerPromoService;
 	
 	private final PromoMapper promoMapper;
 
@@ -199,10 +198,7 @@ public class PromoRestController {
     		@ApiParam(name = "id", value = "Promo Id", example = "zO0dDp9K")
     		@PathVariable String id) throws NotFoundException{
     	
-    	customerPromoService.save(id);
-    	String message = MessageUtil.getMessage(MessageConstant.SUCCESS);
-    	return ResponseEntity
-				.ok()
-				.body(new SuccessResponse(message, null));
+		SuccessResponse response = customerPromoService.save(id);
+    	return ResponseEntity.ok().body(response);
     }
 }

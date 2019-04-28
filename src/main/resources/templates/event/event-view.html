@@ -70,7 +70,13 @@
 										<a class="dropdown-item pl-1" href="/event/event-detail.html" th:href="@{|/event/${event.id}/detail|}">
 										    <span class="icon-eye"></span> <span th:text="#{detail}">Detail</span>
                                         </a>
+                                        <a class="dropdown-item pl-1" href="/event/event-customer.html" th:href="@{|/event/${event.id}/customer|}">
+										    <span class="icon-user-circle"></span> <span th:text="#{customer}">Customer</span>
+                                        </a>
                                         <th:block th:if="${isMaker && (event.pending == null || !event.pending)}">
+                                            <a class="dropdown-item pl-1" href="/event/event-feedback.html" th:href="@{|/event/${event.id}/feedback|}">
+                                                <span class="icon-thumbs-up"></span> <span th:text="#{feedback}">Feedback</span>
+                                            </a>    
                                             <a class="dropdown-item pl-1" href="/event/event-form.html" th:href="@{|/event/${event.id}|}">
                                                 <span class="icon-edit"></span> <span th:text="#{edit}">Edit</span>
                                             </a>
