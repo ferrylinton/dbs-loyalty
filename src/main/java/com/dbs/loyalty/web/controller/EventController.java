@@ -38,10 +38,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dbs.loyalty.domain.Event;
+import com.dbs.loyalty.domain.EventCustomer;
 import com.dbs.loyalty.domain.FileImageTask;
 import com.dbs.loyalty.domain.FilePdfTask;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
+import com.dbs.loyalty.service.EventCustomerService;
 import com.dbs.loyalty.service.EventService;
 import com.dbs.loyalty.service.ImageService;
 import com.dbs.loyalty.service.PdfService;
@@ -69,6 +71,8 @@ public class EventController extends AbstractPageController {
 	private final PdfService pdfService;
 	
 	private final EventService eventService;
+	
+	private final EventCustomerService eventCustomerService;
 
 	private final TaskService taskService;
 
@@ -85,6 +89,22 @@ public class EventController extends AbstractPageController {
 			setParamsQueryString(params, request);
 			setPagerQueryString(order, page.getNumber(), request);
 			return "event/event-view";
+		}
+	}
+	
+	@PreAuthorize("hasAnyRole('EVENT_MK', 'EVENT_CK')")
+	@GetMapping("/{id}/customer")
+	public String viewEventCustomers(@RequestParam Map<String, String> params, @PathVariable String id, Sort sort, HttpServletRequest request) {
+		Order order = getOrder(sort, "customer.name");
+		Page<EventCustomer> page = eventCustomerService.findWithCustomerByEventId(id, getPageable(params, order));
+
+		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
+			return "redirect:/event" + id + "/customer";
+		}else {
+			request.setAttribute(PAGE, page);
+			setParamsQueryString(params, request);
+			setPagerQueryString(order, page.getNumber(), request);
+			return "event/event-customer";
 		}
 	}
 	

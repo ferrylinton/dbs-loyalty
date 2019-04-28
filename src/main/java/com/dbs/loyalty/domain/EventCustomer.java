@@ -23,6 +23,11 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+/**
+ * Class of Event Customer
+ * 
+ * @author Ferry L. H. <ferrylinton@gmail.com>
+ */
 @Setter
 @Getter
 @ToString(of = {"id"})
@@ -47,11 +52,6 @@ public class EventCustomer implements Serializable {
 	@Enumerated(EnumType.ORDINAL)
     @Column(name = "event_answer", nullable = false, columnDefinition="TINYINT")
     private EventAnswer eventAnswer;
-	
-	@ApiModelProperty(hidden = true)
-    @JsonIgnore
-    @Column(name = "created_by", length = 50, nullable = false, updatable = false)
-    private String createdBy;
 
     @ApiModelProperty(hidden = true)
     @JsonIgnore

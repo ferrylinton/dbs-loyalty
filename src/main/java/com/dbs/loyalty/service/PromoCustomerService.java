@@ -44,7 +44,6 @@ public class PromoCustomerService{
 			}else {
 				PromoCustomer customerPromo = new PromoCustomer();
 				customerPromo.setId(id);
-				customerPromo.setCreatedBy(SecurityUtil.getLogged());
 				customerPromo.setCreatedDate(Instant.now());
 				customerPromo = promoCustomerRepository.save(customerPromo);
 				

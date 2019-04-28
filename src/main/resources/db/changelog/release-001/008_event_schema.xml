@@ -59,9 +59,6 @@
                 <constraints nullable="false"/>
             </column>
             <column name="event_answer" type="TINYINT"/>
-            <column name="created_by" type="VARCHAR(50)">
-                <constraints nullable="false"/>
-            </column>
             <column name="created_date" type="timestamp">
                 <constraints nullable="false"/>
             </column>

@@ -46,10 +46,6 @@ public class PromoCustomer implements Serializable {
 	private Promo promo;
 
     @JsonIgnore
-    @Column(name = "created_by", length = 50, nullable = false, updatable = false)
-    private String createdBy;
-
-    @JsonIgnore
     @Column(name = "created_date", nullable = false, updatable = false)
     private Instant createdDate;
 	

@@ -26,7 +26,7 @@ import com.dbs.loyalty.domain.FileImage;
 import com.dbs.loyalty.domain.FilePdf;
 import com.dbs.loyalty.domain.PromoCategory;
 import com.dbs.loyalty.exception.NotFoundException;
-import com.dbs.loyalty.service.CustomerEventService;
+import com.dbs.loyalty.service.EventCustomerService;
 import com.dbs.loyalty.service.EventService;
 import com.dbs.loyalty.service.ImageService;
 import com.dbs.loyalty.service.PdfService;
@@ -55,7 +55,7 @@ public class EventRestController {
 
     private final EventService eventService;
     
-    private final CustomerEventService customerEventService;
+    private final EventCustomerService customerEventService;
     
     private final ImageService imageService;
     

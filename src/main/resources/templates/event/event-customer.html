@@ -20,7 +20,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/home/home-view.html" th:href="@{/}" th:text="#{home}">Home</a></li>
                 <li class="breadcrumb-item"><a href="/event/event-view.html" th:href="@{/event}" th:text="#{event}">Event</a></li>
-                <li class="breadcrumb-item active" aria-current="page" th:text="#{Customer}">Customer</li>
+                <li class="breadcrumb-item active" aria-current="page" th:text="#{customer}">Customer</li>
             </ol>
         </nav>
         <div id="main-content">
@@ -39,27 +39,29 @@
                             <th th:text="#{customerType}">Type</th>
                             <th th:text="#{email}">Email</th>
                             <th th:text="#{phone}">Phone</th>
+                            <th th:text="#{answer}">Answer</th>
                         </tr>
                     </thead>
                     <tbody th:remove="all-but-first">
-                        <tr th:each="customer,row : ${page}">
+                        <tr th:each="event,row : ${page}">
                             <td class="py-0 px-1">
 								<div class="dropdown">
 									<button type="button" class="btn btn-default dropdown-toggle px-1 py-0 font-12" id="dropdownMenuButton" data-boundary="window" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 										<span class="icon-cog"></span>
 									</button>
 									<div class="dropdown-menu py-0 shadow" aria-labelledby="dropdownMenuButton">
-										<a class="dropdown-item pl-1" href="/event/event-customer-feedback.html" th:href="@{|/event/${event.id}/detail|}">
+										<a class="dropdown-item pl-1" href="/event/event-customer-feedback.html" th:href="@{|/event/${event.id}/customer/detail|}">
 										    <span class="icon-thumbs-up"></span> <span th:text="#{feedback}">Feedback</span>
                                         </a>
 									</div>
 								</div>
 							</td>
                             <td th:text="${row.count + (page.number * page.size)}">1</td>
-                            <td th:text="${customer.name}">Ferry Linton Hutapea</td>
-                            <td th:text="${customer.customerType}">TREASURE</td>
-                            <td th:text="${customer.email}">ferrylinton@gmail.com</td>
-                            <td th:text="${customer.phone}">1234567890</td>
+                            <td th:text="${event.customer.name}">Ferry Linton Hutapea</td>
+                            <td th:text="${event.customer.customerType}">TREASURE</td>
+                            <td th:text="${event.customer.email}">ferrylinton@gmail.com</td>
+                            <td th:text="${event.customer.phone}">1234567890</td>
+                            <td th:text="#{${event.eventAnswer}}">YES</td>
                         </tr>
                     </tbody>
                 </table>
@@ -69,16 +71,18 @@
 	            <span class="icon-attention"></span> <span th:text="#{message.dataNotFound}">Data not found</span>
 	        </div>
             <!-- TOOLBAR -->
-            <div class="toolbar" th:if="${page != null && page.getTotalPages() > 1}">
+            <div class="toolbar">
                 <a class="btn btn-light" href="/event/event-view.html" th:href="@{/event}">
                     <span class="icon-left"></span> <span th:text="#{back}">Back</span>
                 </a>
-                <a class="btn btn-light" th:href="@{|?${previous}${params}|}" th:classappend="${not page.hasPrevious()} ? 'disabled'">
-                    <span class="icon-left-open"></span> <span th:text="#{previous}">Previous</span>
-                </a>
-                <a class="btn btn-light" th:href="@{|?${next}${params}|}" th:classappend="${not page.hasNext()} ? 'disabled'">
-                    <span th:text="#{next}">Next</span> <span class="icon-right-open"></span>
-                </a>
+                <th:block th:if="${page != null && page.getTotalPages() > 1}">
+	                <a class="btn btn-light" th:href="@{|?${previous}${params}|}" th:classappend="${not page.hasPrevious()} ? 'disabled'">
+	                    <span class="icon-left-open"></span> <span th:text="#{previous}">Previous</span>
+	                </a>
+	                <a class="btn btn-light" th:href="@{|?${next}${params}|}" th:classappend="${not page.hasNext()} ? 'disabled'">
+	                    <span th:text="#{next}">Next</span> <span class="icon-right-open"></span>
+	                </a>
+                </th:block>
             </div>
         </div>
         <!-- FOOTER -->
