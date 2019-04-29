@@ -56,7 +56,7 @@ public class Event extends AbstractTask implements Serializable {
 
     @NotNull(message = "{validation.notnull.title}")
     @Size(min=2, max = 150, message = "{validation.size.title}")
-    @Column(name = "title", nullable = false)
+    @Column(name = "title", nullable = false, length = 150)
     private String title;
 
     @NotNull(message = "{validation.notnull.description}")
