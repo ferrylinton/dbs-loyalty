@@ -23,13 +23,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.domain.Feedback;
-import com.dbs.loyalty.domain.PromoCategory;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.FeedbackCustomerService;
 import com.dbs.loyalty.service.FeedbackService;
 import com.dbs.loyalty.service.dto.FeedbackAnswerDto;
 import com.dbs.loyalty.service.dto.FeedbackAnswerFormDto;
-import com.dbs.loyalty.service.dto.FeedbackDto;
 import com.dbs.loyalty.service.dto.FeedbackQuestionDto;
 import com.dbs.loyalty.service.mapper.FeedbackAnswerMapper;
 import com.dbs.loyalty.service.mapper.FeedbackQuestionMapper;
@@ -74,7 +72,7 @@ public class FeedbackRestController {
     		notes="Get feedback by id",
     		produces=MediaType.APPLICATION_JSON_VALUE, 
     		authorizations = { @Authorization(value=JWT) })
-    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = FeedbackDto.class)})
+    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = FeedbackQuestionDto.class)})
     @PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping("/feedbacks/{id}")
     public ResponseEntity<List<FeedbackQuestionDto>> getFeedbackById(
@@ -106,7 +104,7 @@ public class FeedbackRestController {
     		notes="Add feedback customer",
     		produces=MediaType.APPLICATION_JSON_VALUE, 
     		authorizations = { @Authorization(value=JWT) })
-    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = PromoCategory.class)})
+    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = FeedbackAnswerDto.class)})
     @PreAuthorize("hasRole('CUSTOMER')")
     @PostMapping("/feedbacks/{id}")
     public ResponseEntity<List<FeedbackAnswerDto>> addFeedbackCustomer(

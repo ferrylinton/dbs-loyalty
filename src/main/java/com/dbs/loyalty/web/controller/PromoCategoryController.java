@@ -37,7 +37,7 @@ import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.PromoCategoryService;
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.util.UrlUtil;
-import com.dbs.loyalty.web.response.AbstractResponse;
+import com.dbs.loyalty.web.response.Response;
 import com.dbs.loyalty.web.validator.PromoCategoryValidator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -91,7 +91,7 @@ public class PromoCategoryController extends AbstractPageController {
 	@PreAuthorize("hasRole('PROMO_CATEGORY_MK')")
 	@PostMapping
 	@ResponseBody
-	public ResponseEntity<AbstractResponse> save(@ModelAttribute @Valid PromoCategory promoCategory, BindingResult result) throws BadRequestException, JsonProcessingException, NotFoundException {
+	public ResponseEntity<Response> save(@ModelAttribute @Valid PromoCategory promoCategory, BindingResult result) throws BadRequestException, JsonProcessingException, NotFoundException {
 		if (result.hasErrors()) {
 			throwBadRequestResponse(result);
 		}
@@ -118,7 +118,7 @@ public class PromoCategoryController extends AbstractPageController {
 	@PreAuthorize("hasRole('PROMO_CATEGORY_MK')")
 	@DeleteMapping("/{id}")
 	@ResponseBody
-	public ResponseEntity<AbstractResponse> delete(@PathVariable String id) throws JsonProcessingException, NotFoundException{
+	public ResponseEntity<Response> delete(@PathVariable String id) throws JsonProcessingException, NotFoundException{
 		Optional<PromoCategory> current = promoCategoryService.findById(id);
 		
 		if(current.isPresent()) {

@@ -33,7 +33,7 @@ public class PromoCustomerService{
 		Optional<Promo> promo = promoRepository.findById(promoId);
 		
 		if(!promo.isPresent()) {
-			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, SecurityUtil.getLogged());
+			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, promoId);
 			throw new NotFoundException(message);
 		}else {
 			PromoCustomerId id = new PromoCustomerId(SecurityUtil.getId(), promoId);

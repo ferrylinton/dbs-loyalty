@@ -40,7 +40,7 @@ import com.dbs.loyalty.service.AuthorityService;
 import com.dbs.loyalty.service.RoleService;
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.util.UrlUtil;
-import com.dbs.loyalty.web.response.AbstractResponse;
+import com.dbs.loyalty.web.response.Response;
 import com.dbs.loyalty.web.validator.RoleValidator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -96,7 +96,7 @@ public class RoleController extends AbstractPageController {
 	@PreAuthorize("hasRole('ROLE_MK')")
 	@PostMapping
 	@ResponseBody
-	public ResponseEntity<AbstractResponse> save(@ModelAttribute @Valid Role role, BindingResult result) throws JsonProcessingException, NotFoundException, BadRequestException {
+	public ResponseEntity<Response> save(@ModelAttribute @Valid Role role, BindingResult result) throws JsonProcessingException, NotFoundException, BadRequestException {
 		if (result.hasErrors()) {
 			throwBadRequestResponse(result);
 		}
@@ -122,7 +122,7 @@ public class RoleController extends AbstractPageController {
 	@Transactional
 	@PreAuthorize("hasRole('ROLE_MK')")
 	@DeleteMapping("/{id}")
-	public @ResponseBody ResponseEntity<AbstractResponse> delete(@PathVariable String id) throws NotFoundException, JsonProcessingException{
+	public @ResponseBody ResponseEntity<Response> delete(@PathVariable String id) throws NotFoundException, JsonProcessingException{
 		Optional<Role> current = roleService.findWithAuthoritiesById(id);
 		
 		if(current.isPresent()) {

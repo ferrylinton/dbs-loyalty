@@ -25,7 +25,7 @@ import com.dbs.loyalty.service.dto.UserPasswordDto;
 import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.util.PasswordUtil;
 import com.dbs.loyalty.util.UrlUtil;
-import com.dbs.loyalty.web.response.AbstractResponse;
+import com.dbs.loyalty.web.response.Response;
 
 import lombok.RequiredArgsConstructor;
 
@@ -86,7 +86,7 @@ public class UserPasswordController extends AbstractController{
 	@PreAuthorize("authenticated")
 	@PostMapping("/password")
 	@ResponseBody
-	public ResponseEntity<AbstractResponse> save(@Valid @ModelAttribute UserPasswordDto userPasswordDto, BindingResult result) throws BadRequestException {
+	public ResponseEntity<Response> save(@Valid @ModelAttribute UserPasswordDto userPasswordDto, BindingResult result) throws BadRequestException {
 		if (result.hasErrors()) {
 			throwBadRequestResponse(result);
 		} 

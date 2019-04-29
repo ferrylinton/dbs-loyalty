@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class ErrorResponse extends AbstractResponse{
+public class ErrorResponse extends Response{
 
 	private static final long serialVersionUID = 1L;
 	

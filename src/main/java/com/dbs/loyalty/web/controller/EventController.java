@@ -51,7 +51,7 @@ import com.dbs.loyalty.service.ImageService;
 import com.dbs.loyalty.service.PdfService;
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.util.UrlUtil;
-import com.dbs.loyalty.web.response.AbstractResponse;
+import com.dbs.loyalty.web.response.Response;
 import com.dbs.loyalty.web.validator.EventValidator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -167,7 +167,7 @@ public class EventController extends AbstractPageController {
 	@PreAuthorize("hasRole('EVENT_MK')")
 	@PostMapping
 	@ResponseBody
-	public ResponseEntity<AbstractResponse> saveEvent(@ModelAttribute @Valid Event event, BindingResult result) throws BadRequestException, IOException, NotFoundException, ParseException {
+	public ResponseEntity<Response> saveEvent(@ModelAttribute @Valid Event event, BindingResult result) throws BadRequestException, IOException, NotFoundException, ParseException {
 		if (result.hasErrors()) {
 			throwBadRequestResponse(result);
 		}
@@ -219,7 +219,7 @@ public class EventController extends AbstractPageController {
 	@PreAuthorize("hasRole('EVENT_MK')")
 	@DeleteMapping("/{id}")
 	@ResponseBody
-	public ResponseEntity<AbstractResponse> deleteEvent(@PathVariable String id) throws JsonProcessingException, NotFoundException{
+	public ResponseEntity<Response> deleteEvent(@PathVariable String id) throws JsonProcessingException, NotFoundException{
 		Optional<Event> current = eventService.findById(id);
 		
 		if(current.isPresent()) {

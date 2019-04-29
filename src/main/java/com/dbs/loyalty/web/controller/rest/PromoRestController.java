@@ -28,7 +28,7 @@ import com.dbs.loyalty.service.dto.CarouselDto;
 import com.dbs.loyalty.service.dto.PromoDto;
 import com.dbs.loyalty.service.mapper.PromoMapper;
 import com.dbs.loyalty.util.MessageUtil;
-import com.dbs.loyalty.web.response.AbstractResponse;
+import com.dbs.loyalty.web.response.Response;
 import com.dbs.loyalty.web.response.SuccessResponse;
 
 import io.swagger.annotations.Api;
@@ -200,7 +200,7 @@ public class PromoRestController {
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Byte.class)})
 	@PreAuthorize("hasRole('CUSTOMER')")
     @PostMapping("/promos/{id}")
-    public ResponseEntity<AbstractResponse> addToInterested(
+    public ResponseEntity<Response> addToInterested(
     		@ApiParam(name = "id", value = "Promo Id", example = "zO0dDp9K")
     		@PathVariable String id) throws NotFoundException{
     	

@@ -13,17 +13,17 @@ import lombok.Setter;
 @ApiModel(value="CustomerPasswordData", description = "Customer's password data")
 public class CustomerPasswordDto {
 	
-	@ApiModelProperty(value = "Customer's current password", example = "pas100", required = true)
+	@ApiModelProperty(value = "Customer's current password", example = "pas100", required = true, position = 0)
 	@NotNull(message = "{validation.notnull.oldPassword}")
 	@Size(min=4, max = 100, message = "{validation.size.password}")
 	private String oldPassword;
 	
-	@ApiModelProperty(value = "Customer's new password", example = "new100", required = true)
+	@ApiModelProperty(value = "Customer's new password", example = "new100", required = true, position = 1)
 	@NotNull(message = "{validation.notnull.newPassword}")
 	@Size(min=4, max = 100, message = "{validation.size.password}")
 	private String newPassword;
 	
-	@ApiModelProperty(value = "Confirmation of Customer's new password", example = "new100", required = true)
+	@ApiModelProperty(value = "Confirmation of Customer's new password", example = "new100", required = true, position = 2)
 	@NotNull(message = "{validation.notnull.confirmNewPassword}")
 	@Size(min=4, max = 100, message = "{validation.size.password}")
 	private String confirmNewPassword;

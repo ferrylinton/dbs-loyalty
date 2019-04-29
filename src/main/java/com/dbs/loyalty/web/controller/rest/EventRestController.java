@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.domain.FileImage;
 import com.dbs.loyalty.domain.FilePdf;
-import com.dbs.loyalty.domain.PromoCategory;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.EventCustomerService;
 import com.dbs.loyalty.service.EventService;
@@ -125,7 +124,7 @@ public class EventRestController {
     		notes="Get event by id",
     		produces=MediaType.APPLICATION_JSON_VALUE, 
     		authorizations = { @Authorization(value=JWT) })
-    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = PromoCategory.class)})
+    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = EventDto.class)})
     @PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping("/events/{id}")
     public ResponseEntity<EventDto> getEventById(
@@ -213,7 +212,7 @@ public class EventRestController {
     		notes="Add Customer's event answer",
     		produces=MediaType.APPLICATION_JSON_VALUE, 
     		authorizations = { @Authorization(value=JWT) })
-    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = PromoCategory.class)})
+    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = SuccessResponse.class)})
     @PreAuthorize("hasRole('CUSTOMER')")
     @PostMapping("/events/{id}/{answer}")
     public ResponseEntity<SuccessResponse> addCustomerEvent(

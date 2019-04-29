@@ -16,7 +16,7 @@ import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.controller.AbstractPageController;
-import com.dbs.loyalty.web.response.AbstractResponse;
+import com.dbs.loyalty.web.response.Response;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,7 +49,7 @@ public class AbstractTaskController extends AbstractPageController {
 		model.addAttribute(TYPE, type);
 	}
 	
-	protected ResponseEntity<AbstractResponse> save(Task task){
+	protected ResponseEntity<Response> save(Task task){
 		try {
 			String val = taskService.save(task);
 			String resultUrl = UrlUtil.getTaskUrl(task.getTaskDataType());

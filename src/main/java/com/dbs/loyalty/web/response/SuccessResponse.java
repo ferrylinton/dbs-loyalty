@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class SuccessResponse extends AbstractResponse {
+public class SuccessResponse extends Response {
 
 	private static final long serialVersionUID = 1L;
 	

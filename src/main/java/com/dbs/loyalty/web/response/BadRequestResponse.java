@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class BadRequestResponse extends AbstractResponse{
+public class BadRequestResponse extends Response{
 
 	private static final long serialVersionUID = 1L;
 	

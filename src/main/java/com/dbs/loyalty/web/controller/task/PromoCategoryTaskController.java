@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.util.SecurityUtil;
-import com.dbs.loyalty.web.response.AbstractResponse;
+import com.dbs.loyalty.web.response.Response;
 
 
 @Controller
@@ -76,7 +76,7 @@ public class PromoCategoryTaskController extends AbstractTaskController {
 
 	@PreAuthorize("hasRole('PROMO_CATEGORY_CK')")
 	@PostMapping
-	public @ResponseBody ResponseEntity<AbstractResponse> saveTaskPromoCategory(@ModelAttribute Task task){
+	public @ResponseBody ResponseEntity<Response> saveTaskPromoCategory(@ModelAttribute Task task){
 		return save(task);
 	}
 

@@ -44,7 +44,7 @@ import com.dbs.loyalty.service.ImageService;
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.util.PasswordUtil;
 import com.dbs.loyalty.util.UrlUtil;
-import com.dbs.loyalty.web.response.AbstractResponse;
+import com.dbs.loyalty.web.response.Response;
 import com.dbs.loyalty.web.validator.CustomerValidator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -100,7 +100,7 @@ public class CustomerController extends AbstractPageController{
 	@PreAuthorize("hasRole('CUSTOMER_MK')")
 	@PostMapping
 	@ResponseBody
-	public ResponseEntity<AbstractResponse> saveCustomer(@Valid @ModelAttribute Customer customer, BindingResult result) throws BadRequestException, IOException, NotFoundException {
+	public ResponseEntity<Response> saveCustomer(@Valid @ModelAttribute Customer customer, BindingResult result) throws BadRequestException, IOException, NotFoundException {
 		if (result.hasErrors()) {
 			throwBadRequestResponse(result);
 		}
@@ -139,7 +139,7 @@ public class CustomerController extends AbstractPageController{
 	@PreAuthorize("hasRole('CUSTOMER_MK')")
 	@DeleteMapping("/{id}")
 	@ResponseBody
-	public ResponseEntity<AbstractResponse> deleteCustomer(@PathVariable String id) throws JsonProcessingException, NotFoundException {
+	public ResponseEntity<Response> deleteCustomer(@PathVariable String id) throws JsonProcessingException, NotFoundException {
 		Optional<Customer> current = customerService.findById(id);
 		
 		if(current.isPresent()) {

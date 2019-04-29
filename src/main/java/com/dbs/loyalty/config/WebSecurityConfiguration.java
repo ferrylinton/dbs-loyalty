@@ -10,6 +10,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.core.GrantedAuthorityDefaults;
@@ -43,12 +44,24 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	private final ApplicationProperties applicationProperties;
 	
 	@Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers(
+        		"/static/**",
+        		"/webjars/**",    
+        		"/h2-console/**",
+        		"/swagger-ui.html",
+        		"/v2/api-docs",
+        		"/swagger-resources/configuration/ui",
+        		"/swagger-resources",
+        		"/swagger-resources/configuration/security");
+    }
+	
+	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		
-		http
-    		.csrf().disable()
-    		.headers().frameOptions().disable();
-    
+		 http
+         	.csrf();
+		 
 	    http
 	    	.sessionManagement()
 	    		.invalidSessionUrl("/login?invalid")
@@ -61,15 +74,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	    http
     		.authorizeRequests()
     		.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-    		.antMatchers("/static/**").permitAll()
-    		.antMatchers("/webjars/**").permitAll()
-    		.antMatchers("/h2-console/**").permitAll()
     		.antMatchers(LOGIN).permitAll()
-    		.antMatchers("/swagger-ui.html").permitAll()
-    		.antMatchers("/v2/api-docs").permitAll()
-    		.antMatchers("/swagger-resources/configuration/ui").permitAll()
-    		.antMatchers("/swagger-resources").permitAll()
-    		.antMatchers("/swagger-resources/configuration/security").permitAll()
     		.antMatchers("/**").authenticated();
 		
 	    http

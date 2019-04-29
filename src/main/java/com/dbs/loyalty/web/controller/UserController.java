@@ -42,7 +42,7 @@ import com.dbs.loyalty.service.UserLdapService;
 import com.dbs.loyalty.service.UserService;
 import com.dbs.loyalty.util.PasswordUtil;
 import com.dbs.loyalty.util.UrlUtil;
-import com.dbs.loyalty.web.response.AbstractResponse;
+import com.dbs.loyalty.web.response.Response;
 import com.dbs.loyalty.web.validator.UserValidator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -100,7 +100,7 @@ public class UserController extends AbstractPageController{
 	@PreAuthorize("hasRole('USER_MK')")
 	@PostMapping
 	@ResponseBody
-	public ResponseEntity<AbstractResponse> save(@Valid @ModelAttribute User user, BindingResult result) throws BadRequestException, JsonProcessingException, NotFoundException {
+	public ResponseEntity<Response> save(@Valid @ModelAttribute User user, BindingResult result) throws BadRequestException, JsonProcessingException, NotFoundException {
 		if (result.hasErrors()) {
 			throwBadRequestResponse(result);
 		}
@@ -130,7 +130,7 @@ public class UserController extends AbstractPageController{
 	@PreAuthorize("hasRole('USER_MK')")
 	@DeleteMapping("/{id}")
 	@ResponseBody
-	public ResponseEntity<AbstractResponse> delete(@PathVariable String id) throws NotFoundException, JsonProcessingException {
+	public ResponseEntity<Response> delete(@PathVariable String id) throws NotFoundException, JsonProcessingException {
 		Optional<User> current = userService.findWithRoleById(id);
 		
 		if(current.isPresent()) {

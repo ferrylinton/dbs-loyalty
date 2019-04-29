@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.util.SecurityUtil;
-import com.dbs.loyalty.web.response.AbstractResponse;
+import com.dbs.loyalty.web.response.Response;
 
 
 @Controller
@@ -75,7 +75,7 @@ public class CustomerTaskController extends AbstractTaskController {
 
 	@PreAuthorize("hasRole('CUSTOMER_CK')")
 	@PostMapping
-	public @ResponseBody ResponseEntity<AbstractResponse> saveTaskCustomer(@ModelAttribute Task task){
+	public @ResponseBody ResponseEntity<Response> saveTaskCustomer(@ModelAttribute Task task){
 		return save(task);
 	}
 

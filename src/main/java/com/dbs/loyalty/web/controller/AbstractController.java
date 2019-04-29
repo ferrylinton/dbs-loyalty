@@ -17,20 +17,20 @@ import org.springframework.validation.FieldError;
 
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.util.MessageUtil;
-import com.dbs.loyalty.web.response.AbstractResponse;
+import com.dbs.loyalty.web.response.Response;
 import com.dbs.loyalty.web.response.BadRequestResponse;
 import com.dbs.loyalty.web.response.ErrorResponse;
 import com.dbs.loyalty.web.response.SuccessResponse;
 
 public abstract class AbstractController {
 
-	protected ResponseEntity<AbstractResponse> taskIsSavedResponse(String taskDataType, String val, String resultUrl) {
+	protected ResponseEntity<Response> taskIsSavedResponse(String taskDataType, String val, String resultUrl) {
 		taskDataType = MessageUtil.getMessage(taskDataType);
 		String message = MessageUtil.getMessage(TASK_IS_SAVED, taskDataType, val);
 		return dataIsSavedResponse(message, resultUrl);
 	}
 	
-	protected ResponseEntity<AbstractResponse> dataIsSavedResponse(String message, String resultUrl) {
+	protected ResponseEntity<Response> dataIsSavedResponse(String message, String resultUrl) {
 		return ResponseEntity
 	            .status(HttpStatus.OK)
 	            .body(new SuccessResponse(message, resultUrl));
@@ -66,7 +66,7 @@ public abstract class AbstractController {
 		throw new BadRequestException(new BadRequestResponse(builder.toString(), fields));
 	}
 
-	protected ResponseEntity<AbstractResponse> errorResponse(Exception ex){
+	protected ResponseEntity<Response> errorResponse(Exception ex){
 		String message = ex.getLocalizedMessage();
 
 		if(ex instanceof DataIntegrityViolationException && ex.getMessage().contains(DELETE)){

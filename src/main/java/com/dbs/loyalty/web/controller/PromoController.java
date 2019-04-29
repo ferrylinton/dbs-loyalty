@@ -48,7 +48,7 @@ import com.dbs.loyalty.service.PromoCustomerService;
 import com.dbs.loyalty.service.PromoService;
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.util.UrlUtil;
-import com.dbs.loyalty.web.response.AbstractResponse;
+import com.dbs.loyalty.web.response.Response;
 import com.dbs.loyalty.web.validator.PromoValidator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -124,7 +124,7 @@ public class PromoController extends AbstractPageController {
 	@PreAuthorize("hasRole('PROMO_MK')")
 	@PostMapping
 	@ResponseBody
-	public ResponseEntity<AbstractResponse> savePromo(@ModelAttribute @Valid Promo promo, BindingResult result) throws BadRequestException, IOException, NotFoundException {
+	public ResponseEntity<Response> savePromo(@ModelAttribute @Valid Promo promo, BindingResult result) throws BadRequestException, IOException, NotFoundException {
 		if (result.hasErrors()) {
 			throwBadRequestResponse(result);
 		}
@@ -162,7 +162,7 @@ public class PromoController extends AbstractPageController {
 	@PreAuthorize("hasRole('PROMO_MK')")
 	@DeleteMapping("/{id}")
 	@ResponseBody
-	public ResponseEntity<AbstractResponse> deletePromo(@PathVariable String id) throws JsonProcessingException, NotFoundException{
+	public ResponseEntity<Response> deletePromo(@PathVariable String id) throws JsonProcessingException, NotFoundException{
 		Optional<Promo> current = promoService.findById(id);
 		
 		if(current.isPresent()) {

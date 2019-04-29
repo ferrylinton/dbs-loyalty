@@ -28,7 +28,7 @@ import lombok.ToString;
 @EqualsAndHashCode(of = {"id", "questionNumber", "questionText", "questionAnswer"})
 @Entity
 @Table(name = "e_feedback_answer")
-public class FeedbackAnswer implements Serializable, Comparable<FeedbackAnswer> {
+public class FeedbackAnswer implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
@@ -61,9 +61,4 @@ public class FeedbackAnswer implements Serializable, Comparable<FeedbackAnswer> 
     })
     private FeedbackCustomer feedbackCustomer;
 
-	@Override
-	public int compareTo(FeedbackAnswer obj) {
-		return (this.getQuestionNumber() - obj.getQuestionNumber());
-	}
-    
 }
