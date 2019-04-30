@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.dbs.loyalty.domain.EventCustomer;
-import com.dbs.loyalty.domain.CustomerEventId;
+import com.dbs.loyalty.domain.EventCustomerId;
 import com.dbs.loyalty.domain.Event;
 import com.dbs.loyalty.domain.enumeration.EventAnswer;
 import com.dbs.loyalty.exception.NotFoundException;
@@ -37,7 +37,7 @@ public class EventCustomerService {
 			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, SecurityUtil.getLogged());
 			throw new NotFoundException(message);
 		}else {
-			CustomerEventId id = new CustomerEventId(SecurityUtil.getId(), eventId);
+			EventCustomerId id = new EventCustomerId(SecurityUtil.getId(), eventId);
 			Optional<EventCustomer> current = eventCustomerRepository.findById(id);
 			
 			if(current.isPresent()) {

@@ -8,7 +8,7 @@
     <changeSet author="FLH" id="003-1">
     
         <createTable tableName="f_image">
-            <column name="id" type="VARCHAR(36)">
+            <column name="id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
             </column>
             <column name="bytes" type="${image.type}">
@@ -42,7 +42,7 @@
     <changeSet author="FLH" id="003-3">
     
         <createTable tableName="f_image_task">
-            <column name="id" type="VARCHAR(36)">
+            <column name="id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
             </column>
             <column name="bytes" type="${image.type}">
@@ -74,7 +74,7 @@
     <changeSet author="FLH" id="003-5">
     
         <createTable tableName="f_pdf">
-            <column name="id" type="VARCHAR(36)">
+            <column name="id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
             </column>
             <column name="bytes" type="${pdf.type}">
@@ -98,7 +98,7 @@
     <changeSet author="FLH" id="003-7">
         
         <createTable tableName="f_pdf_task">
-            <column name="id" type="VARCHAR(36)">
+            <column name="id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
             </column>
             <column name="bytes" type="${pdf.type}">

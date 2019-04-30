@@ -39,7 +39,7 @@ public class EventCustomer implements Serializable {
     private static final long serialVersionUID = 1L;
 
 	@EmbeddedId
-	private CustomerEventId id;
+	private EventCustomerId id;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", insertable = false, updatable = false, nullable = false, foreignKey = @ForeignKey(name = "e_customer_event_fk1"))

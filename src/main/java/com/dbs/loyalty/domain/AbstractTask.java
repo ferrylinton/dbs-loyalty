@@ -19,7 +19,7 @@ public abstract class AbstractTask extends AbstractAuditing {
     @ApiModelProperty(hidden = true)
     @JsonIgnore
 	@Column(name = "pending", nullable = true)
-	private Boolean pending;
+	private boolean pending;
 
 }
 

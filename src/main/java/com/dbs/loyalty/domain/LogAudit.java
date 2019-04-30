@@ -33,9 +33,9 @@ public class LogAudit implements Serializable {
     private static final long serialVersionUID = 1L;
     
     @Id
-	@Column(name = "id", length=36)
-	@GenericGenerator(name = "UUIDGenerator", strategy = "com.dbs.loyalty.domain.UUIDGenerator")
-	@GeneratedValue(generator = "UUIDGenerator")
+	@Column(name = "id", length=22)
+	@GenericGenerator(name = "IdGenerator", strategy = "com.dbs.loyalty.domain.IdGenerator")
+	@GeneratedValue(generator = "IdGenerator")
 	private String id;
 
     @Column(name = "audit_operation", length=50, nullable = false)

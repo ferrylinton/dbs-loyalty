@@ -30,11 +30,11 @@ public class PromoCustomerId implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@NonNull
-	@Column(name = "customer_id", length=36)
+	@Column(name = "customer_id", length=22)
     private String customerId;
  
 	@NonNull
-	@Column(name = "promo_id", length=8)
+	@Column(name = "promo_id", length=22)
     private String promoId;
     
 }

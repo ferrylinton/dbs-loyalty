@@ -5,9 +5,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
-	<property name="DebitCardPromo" value="ee769cfd-8985-444e-a21a-46d8d8a5d29c" />
-	<property name="PromoInvestasi" value="42855a1e-0349-4e41-a21d-b81333329c8c" />
-	<property name="PromoPinjaman" value="62c1a2ae-d848-40fd-87ae-e8b71ae565cd" />
+	<property name="DebitCardPromo" value="6nJfmxAD6GWtsehXfSkShg" />
+	<property name="PromoInvestasi" value="1x1QWZVCzvBKyCMBP16GRn" />
+	<property name="PromoPinjaman" value="2GR9c0vmxoZJoMxWnmk3hY" />
 	
     <changeSet author="FLH" id="103-1">
 
@@ -37,7 +37,7 @@
     <changeSet author="FLH" id="103-2">
 
         <insert tableName="p_promo">
-            <column name="id" value="80db859e-e574-41b7-bcc3-a8dd0bf0eae2"/>
+            <column name="id" value="5WTqpHYs3wZoIdhAkbWt1W"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
@@ -53,7 +53,7 @@
         </insert>
         
         <insert tableName="f_image">
-            <column name="id" value="80db859e-e574-41b7-bcc3-a8dd0bf0eae2"/>
+            <column name="id" value="5WTqpHYs3wZoIdhAkbWt1W"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="bytes" valueBlobFile="image/In1IverC.png"/>
@@ -63,7 +63,7 @@
         </insert>
         
         <insert tableName="p_promo">
-            <column name="id" value="d2c35a7d-4e11-4cb3-bdbc-2fd08b19c37e"/>
+            <column name="id" value="7aDtowdMokVdQRIr5N1XrH"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
@@ -79,7 +79,7 @@
         </insert>
         
         <insert tableName="f_image">
-            <column name="id" value="d2c35a7d-4e11-4cb3-bdbc-2fd08b19c37e"/>
+            <column name="id" value="7aDtowdMokVdQRIr5N1XrH"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="bytes" valueBlobFile="image/dP1DenfF.png"/>
@@ -89,7 +89,7 @@
         </insert>
         
         <insert tableName="p_promo">
-            <column name="id" value="492533b6-a685-474a-90f9-b3d3c2eb602b"/>
+            <column name="id" value="75MR2HfV0bGdgLoisLwp9V"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
@@ -105,7 +105,7 @@
         </insert>
         
         <insert tableName="f_image">
-            <column name="id" value="492533b6-a685-474a-90f9-b3d3c2eb602b"/>
+            <column name="id" value="75MR2HfV0bGdgLoisLwp9V"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="bytes" valueBlobFile="image/eUTtk73T.png"/>
@@ -115,7 +115,7 @@
         </insert>
         
         <insert tableName="p_promo">
-            <column name="id" value="a603ce50-3138-4231-83f5-c620ef828547"/>
+            <column name="id" value="3QvLsfD7IPSjNIqyvzRxuo"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
@@ -131,7 +131,7 @@
         </insert>
         
         <insert tableName="f_image">
-            <column name="id" value="a603ce50-3138-4231-83f5-c620ef828547"/>
+            <column name="id" value="3QvLsfD7IPSjNIqyvzRxuo"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="bytes" valueBlobFile="image/7mITGaI3.png"/>
@@ -141,7 +141,7 @@
         </insert>
         
         <insert tableName="p_promo">
-            <column name="id" value="fc14108b-7999-4269-b66f-bf753b10ac91"/>
+            <column name="id" value="6rW8eSUNNaLwCfPyLJua8j"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
@@ -157,7 +157,7 @@
         </insert>
         
         <insert tableName="f_image">
-            <column name="id" value="fc14108b-7999-4269-b66f-bf753b10ac91"/>
+            <column name="id" value="6rW8eSUNNaLwCfPyLJua8j"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="bytes" valueBlobFile="image/kUWEbMEH.png"/>

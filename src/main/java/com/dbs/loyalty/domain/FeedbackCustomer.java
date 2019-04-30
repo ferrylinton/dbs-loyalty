@@ -44,7 +44,7 @@ public class FeedbackCustomer implements Serializable{
 
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "feedback_id", insertable = false, updatable = false, nullable = false, foreignKey = @ForeignKey(name = "e_feedback_customer_fk3"))
+    @JoinColumn(name = "feedback_id", insertable = false, updatable = false, nullable = false, foreignKey = @ForeignKey(name = "e_feedback_customer_fk2"))
 	private Feedback feedback;
 
 	@JsonIgnoreProperties("feedbackCustomer")

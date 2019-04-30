@@ -30,6 +30,7 @@ public abstract class AbstractFile implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@Column(name = "id", length=22)
 	private String id;
 	
     @Lob

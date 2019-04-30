@@ -1,17 +1,18 @@
 package com.dbs.loyalty.domain;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 import org.hibernate.engine.spi.SharedSessionContractImplementor;
 import org.hibernate.id.IdentifierGenerator;
 
+import com.devskiller.friendly_id.FriendlyId;
 
-public class UUIDGenerator implements IdentifierGenerator {
+
+public class IdGenerator implements IdentifierGenerator {
 
 	@Override
 	public Serializable generate(SharedSessionContractImplementor session, Object object) {
-		return UUID.randomUUID().toString();
+		return FriendlyId.createFriendlyId();
 	}
 
 }

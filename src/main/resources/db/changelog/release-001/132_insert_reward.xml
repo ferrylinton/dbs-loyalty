@@ -8,32 +8,32 @@
     <changeSet author="FLH" id="132-1">
 
         <insert tableName="c_reward">
-            <column name="id" value="646e8a2a-4ca4-459a-9da8-2a31daaecd38"/>
+            <column name="id" value="3ZUQMtKhkagK8J3Z7JcTxG"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="expiry_date" valueDate="2019-06-30"/>
             <column name="point" value="10"/>
-            <column name="customer_id" value="646e8a2a-4ca4-459a-9da8-2a31daaecd38"/>
+            <column name="customer_id" value="1IUe73HCc9Qfjl1sxhasNI"/>
             <column name="reward_operation_id" value="001"/>
         </insert>
         
         <insert tableName="c_reward">
-            <column name="id" value="c624c586-d871-49c9-aeb4-7b1da728eec7"/>
+            <column name="id" value="6WBJoNjxKOfswNVuSna2NO"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="expiry_date" valueDate="2019-07-30"/>
             <column name="point" value="10"/>
-            <column name="customer_id" value="646e8a2a-4ca4-459a-9da8-2a31daaecd38"/>
+            <column name="customer_id" value="1IUe73HCc9Qfjl1sxhasNI"/>
             <column name="reward_operation_id" value="001"/>
         </insert>
         
         <insert tableName="c_reward">
-            <column name="id" value="ae3f7700-396f-483d-b216-1eb5a02a070a"/>
+            <column name="id" value="4gPaEpZ07TosIrekWPgba"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="expiry_date" valueDate="2018-06-30"/>
             <column name="point" value="10"/>
-            <column name="customer_id" value="646e8a2a-4ca4-459a-9da8-2a31daaecd38"/>
+            <column name="customer_id" value="1IUe73HCc9Qfjl1sxhasNI"/>
             <column name="reward_operation_id" value="001"/>
         </insert>
  

@@ -1,0 +1,121 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog 
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    
+    <changeSet author="FLH" id="010-1">
+        <createTable tableName="a_country">
+            <column name="id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueBoolean="false" name="pending" type="BIT(1)"/>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+    </changeSet>
+    
+    <changeSet author="FLH" id="010-2">
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="a_country"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="010-3">
+        <addUniqueConstraint columnNames="name" constraintName="a_country_name_uq" tableName="a_country"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="010-4">
+    
+        <createTable tableName="a_airport">
+            <column name="id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="country_id" type="VARCHAR(22)"/>
+            <column name="pending" type="BIT(1)" defaultValueBoolean="false"/>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+        
+    </changeSet>
+    
+    <changeSet author="FLH" id="010-5">
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="a_airport"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="010-6">
+        <addUniqueConstraint columnNames="name" constraintName="a_airport_name_uq" tableName="a_airport"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="010-7">
+        <createIndex indexName="a_airport_fk" tableName="a_airport">
+            <column name="country_id"/>
+        </createIndex>
+    </changeSet>
+    
+    <changeSet author="FLH" id="010-8">
+        <createTable tableName="a_airport_assistance">
+            <column name="id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="assistance_type" type="VARCHAR(150)"/>
+            <column name="customer_phone" type="VARCHAR(20)"/>
+            <column name="date" type="VARCHAR(10)"/>
+            <column name="flight_code" type="VARCHAR(50)"/>
+            <column name="flight_number" type="VARCHAR(50)"/>
+            <column name="flight_type" type="VARCHAR(10)"/>
+            <column name="guest_phone" type="VARCHAR(20)"/>
+            <column name="number_of_luggages" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="number_of_passengers" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pickup_address" type="VARCHAR(255)"/>
+            <column name="pickup_from_home" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pickup_time" type="VARCHAR(255)"/>
+            <column name="time" type="VARCHAR(5)"/>
+            <column name="type_of_service" type="VARCHAR(100)"/>
+            <column name="airport_id" type="VARCHAR(22)"/>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+    </changeSet>
+    
+    <changeSet author="FLH" id="010-9">
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="a_airport_assistance"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="010-10">
+        <createIndex indexName="a_airport_assistance_fk" tableName="a_airport_assistance">
+            <column name="airport_id"/>
+        </createIndex>
+    </changeSet>
+    
+    
+</databaseChangeLog>

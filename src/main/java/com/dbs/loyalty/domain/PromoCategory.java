@@ -19,8 +19,6 @@ import org.hibernate.annotations.GenericGenerator;
 
 import com.dbs.loyalty.config.constant.Constant;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,7 +28,6 @@ import lombok.Setter;
  * 
  * @author Ferry L. H. <ferrylinton@gmail.com>
  */
-@ApiModel(value="PromoCategory", description = "Promo Category's data")
 @Setter
 @Getter
 @EqualsAndHashCode(of = {"id"}, callSuper = false)
@@ -45,20 +42,17 @@ public class PromoCategory extends AbstractTask implements Serializable {
 
     private static final long serialVersionUID = 1L;
   
-    @ApiModelProperty(value = "Promo Category's id", example = "98781658-6977-42b7-8da5-31b84560bc71", required = true, position = 0)
     @Id
-	@Column(name = "id", length=36)
-	@GenericGenerator(name = "UUIDGenerator", strategy = "com.dbs.loyalty.domain.UUIDGenerator")
-	@GeneratedValue(generator = "UUIDGenerator")
+	@Column(name = "id", length=22)
+	@GenericGenerator(name = "IdGenerator", strategy = "com.dbs.loyalty.domain.IdGenerator")
+	@GeneratedValue(generator = "IdGenerator")
 	private String id;
     
-    @ApiModelProperty(value = "Promo Category's name", example = "Debit Card Promo", required = true, position = 0)
-	@Pattern(regexp = Constant.NAME_REGEX, message = "{validation.pattern.name}")
+    @Pattern(regexp = Constant.NAME_REGEX, message = "{validation.pattern.name}")
     @Size(min = 2, max = 100, message = "{validation.size.name}")
     @Column(name = "name", length = 100, nullable = false)
     private String name;
 
-    @ApiModelProperty(hidden = true)
     @OneToMany(mappedBy = "promoCategory")
     private Set<Promo> promos = new HashSet<>();
 

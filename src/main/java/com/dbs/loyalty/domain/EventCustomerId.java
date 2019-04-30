@@ -20,16 +20,16 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 @Embeddable
-public class CustomerEventId implements Serializable {
+public class EventCustomerId implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@NonNull
-	@Column(name = "customer_id", length=36)
+	@Column(name = "event_id", length=22)
+    private String eventId;
+	
+	@NonNull
+	@Column(name = "customer_id", length=22)
     private String customerId;
  
-	@NonNull
-	@Column(name = "event_id", length=8)
-    private String eventId;
-    
 }

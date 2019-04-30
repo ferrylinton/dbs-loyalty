@@ -25,8 +25,8 @@ public class Feedback extends AbstractTask implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-    @Id
-	@Column(name = "id", length=36)
+	@Id
+	@Column(name = "id", length=22)
 	private String id;
 
     @OneToMany(mappedBy = "feedback", fetch = FetchType.LAZY)

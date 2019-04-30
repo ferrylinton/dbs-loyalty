@@ -1,21 +1,13 @@
 package com.dbs.loyalty.domain;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -28,7 +20,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Class of Role
+ * Class of Country
  * 
  * @author Ferry L. H. <ferrylinton@gmail.com>
  */
@@ -37,12 +29,12 @@ import lombok.Setter;
 @EqualsAndHashCode(of = { "id", "name" }, callSuper = false)
 @Entity
 @Table(	
-	name = "u_role", 
+	name = "a_country", 
 	uniqueConstraints = {
-		@UniqueConstraint(name = "u_role_name_uq", columnNames = {"name"})
+		@UniqueConstraint(name = "a_country_name_uq", columnNames = {"name"})
 	}
 )
-public class Role extends AbstractTask implements Serializable {
+public class Country extends AbstractTask implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -57,15 +49,6 @@ public class Role extends AbstractTask implements Serializable {
     @Column(name = "name", length = 40, nullable = false)
     private String name;
 	
-	@NotEmpty(message = "{validation.notempty.authorities}")
-	@ManyToMany(fetch=FetchType.LAZY)
-    @JoinTable(	
-    	name = "u_role_authority",
-        joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "u_role_authority_fk1")),
-        inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "u_role_authority_fk2"))
-    )
-    private Set<Authority> authorities = new HashSet<>();
-
 	@Override
 	public String toString() {
 		return id + "," + name;

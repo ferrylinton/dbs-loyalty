@@ -25,11 +25,11 @@ public class FeedbackCustomerId implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@NonNull
-	@Column(name = "feedback_id", length=36)
+	@Column(name = "feedback_id", length=22)
     private String feedbackId;
 	
 	@NonNull
-	@Column(name = "customer_id", length=36)
+	@Column(name = "customer_id", length=22)
     private String customerId;
 
 }

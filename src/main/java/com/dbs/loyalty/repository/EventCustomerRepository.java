@@ -5,10 +5,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.dbs.loyalty.domain.CustomerEventId;
+import com.dbs.loyalty.domain.EventCustomerId;
 import com.dbs.loyalty.domain.EventCustomer;
 
-public interface EventCustomerRepository extends JpaRepository<EventCustomer, CustomerEventId> {
+public interface EventCustomerRepository extends JpaRepository<EventCustomer, EventCustomerId> {
 
 	@Query(value = "select e from EventCustomer e "
 			+ "join fetch e.customer c "

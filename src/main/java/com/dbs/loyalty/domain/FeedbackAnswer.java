@@ -32,10 +32,10 @@ public class FeedbackAnswer implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 
-    @Id
-	@Column(name = "id", length=36)
-	@GenericGenerator(name = "UUIDGenerator", strategy = "com.dbs.loyalty.domain.UUIDGenerator")
-	@GeneratedValue(generator = "UUIDGenerator")
+	@Id
+	@Column(name = "id", length=22)
+	@GenericGenerator(name = "IdGenerator", strategy = "com.dbs.loyalty.domain.IdGenerator")
+	@GeneratedValue(generator = "IdGenerator")
 	private String id;
     
     @Column(name = "question_number", nullable = false, columnDefinition="TINYINT")
