@@ -13,7 +13,7 @@
             <column name="name" type="VARCHAR(40)">
                 <constraints nullable="false"/>
             </column>
-            <column defaultValueBoolean="false" name="pending" type="BIT(1)"/>
+            <column name="pending" type="BIT(1)" defaultValueBoolean="false"/>
             <column name="created_by" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
@@ -77,7 +77,7 @@
             </column>
             <column name="assistance_type" type="VARCHAR(150)"/>
             <column name="customer_phone" type="VARCHAR(20)"/>
-            <column name="date" type="VARCHAR(10)"/>
+            <column name="flight_date" type="timestamp"/>
             <column name="flight_code" type="VARCHAR(50)"/>
             <column name="flight_number" type="VARCHAR(50)"/>
             <column name="flight_type" type="VARCHAR(10)"/>
@@ -92,8 +92,7 @@
             <column name="pickup_from_home" type="BIT(1)">
                 <constraints nullable="false"/>
             </column>
-            <column name="pickup_time" type="VARCHAR(255)"/>
-            <column name="time" type="VARCHAR(5)"/>
+            <column name="pickup_time" type="timestamp"/>
             <column name="type_of_service" type="VARCHAR(100)"/>
             <column name="airport_id" type="VARCHAR(22)"/>
             <column name="created_by" type="VARCHAR(50)">

@@ -56,7 +56,7 @@
                             </tr>
                             <tr>
                                 <th th:text="#{createdDate}">Created Dt</th>
-                                <td th:text="${#dates.format(role.createdDate, format)}">09-04-2019 19:06:53.279</td>
+                                <td th:text="${@dateService.datetime(role.createdDate)}">09-04-2019 19:06:53.279</td>
                             </tr>
                             <tr th:if="${role.lastModifiedBy}">
                                 <th th:text="#{lastModifiedBy}">Last Modified By</th>
@@ -64,7 +64,7 @@
                             </tr>
                             <tr th:if="${role.lastModifiedDate}">
                                 <th th:text="#{lastModifiedDate}">Last Modified Dt</th>
-                                <td th:text="${#dates.format(role.lastModifiedDate, format)}">09-04-2019 19:06:53.279</td>
+                                <td th:text="${@dateService.datetime(role.lastModifiedDate)}">09-04-2019 19:06:53.279</td>
                             </tr>
                         </tbody>
                     </table>

@@ -1,5 +1,7 @@
 package com.dbs.loyalty.domain;
 
+import java.time.Instant;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -49,12 +51,9 @@ public class AirportAssistance extends AbstractAuditing {
 	@Column(name = "type_of_service", length=100)
 	private String typeOfService;
 	
-	@Column(name = "date", length=10)
-	private String date;
-	
-	@Column(name = "time", length=5)
-	private String time;
-	
+	@Column(name = "flight_date")
+	private Instant flightDate;
+
 	@Column(name = "flight_code", length=50)
 	private String flightCode;
 	
