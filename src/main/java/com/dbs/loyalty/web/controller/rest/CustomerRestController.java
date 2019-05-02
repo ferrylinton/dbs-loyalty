@@ -36,9 +36,9 @@ import com.dbs.loyalty.domain.FileImage;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.model.Pair;
-import com.dbs.loyalty.repository.FileImageRepository;
 import com.dbs.loyalty.security.rest.RestTokenProvider;
 import com.dbs.loyalty.service.CustomerService;
+import com.dbs.loyalty.service.ImageService;
 import com.dbs.loyalty.service.dto.CustomerDto;
 import com.dbs.loyalty.service.dto.CustomerPasswordDto;
 import com.dbs.loyalty.service.dto.CustomerUpdateDto;
@@ -66,7 +66,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api")
 public class CustomerRestController extends AbstractController{
 	
-	private final FileImageRepository fileImageRepository;
+	private final ImageService imageService;
 	
     private final CustomerService customerService;
 
@@ -106,7 +106,7 @@ public class CustomerRestController extends AbstractController{
     @PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping("/customers/image")
 	public ResponseEntity<byte[]> getCustomerImage() throws NotFoundException {
-    	Optional<FileImage> fileImage = fileImageRepository.findOneByCustomerEmail(SecurityUtil.getLogged());
+    	Optional<FileImage> fileImage = imageService.findById(SecurityUtil.getId());
     	
 		if(fileImage.isPresent()) {
 			HttpHeaders headers = new HttpHeaders();
@@ -118,7 +118,7 @@ public class CustomerRestController extends AbstractController{
 					.headers(headers)
 					.body(fileImage.get().getBytes());
 		}else {
-			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, SecurityUtil.getLogged());
+			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, SecurityUtil.getId());
 			throw new NotFoundException(message);
 		}
 	}
@@ -172,7 +172,7 @@ public class CustomerRestController extends AbstractController{
 		String jwt = HeaderTokenUtil.resolveToken(request);
         
         if (StringUtils.hasText(jwt) && restTokenProvider.validateToken(jwt)) {
-            token = restTokenProvider.createToken(customerUpdateDto.getEmail(), jwt);
+            token = restTokenProvider.createToken(customerUpdateDto.getId(), customerUpdateDto.getEmail(), jwt);
         }
         
 		return ResponseEntity.ok().body(new JWTTokenDto(token, customerDto));

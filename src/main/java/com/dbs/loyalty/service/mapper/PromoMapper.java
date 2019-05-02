@@ -20,14 +20,16 @@ public abstract class PromoMapper{
 	@AfterMapping
     public void doAfterMapping(@MappingTarget PromoDto promoDto){
 		String imageUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
+				.path(PathConstant.API)
                 .path(PathConstant.PROMOS)
-                .path("/" + promoDto.getId())
+                .path(PathConstant.SLASH + promoDto.getId())
                 .path(PathConstant.IMAGE)
                 .toUriString();
 		
 		String termUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
+				.path(PathConstant.API)
                 .path(PathConstant.PROMOS)
-                .path("/" + promoDto.getId())
+                .path(PathConstant.SLASH + promoDto.getId())
                 .path(PathConstant.TERM)
                 .toUriString();
 		
@@ -38,8 +40,9 @@ public abstract class PromoMapper{
 	@AfterMapping
     public void doAfterMapping(@MappingTarget CarouselDto carouselDto){
 		String imageUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
+				.path(PathConstant.API)
                 .path(PathConstant.PROMOS)
-                .path("/" + carouselDto.getId())
+                .path(PathConstant.SLASH + carouselDto.getId())
                 .path(PathConstant.IMAGE)
                 .toUriString();
 		

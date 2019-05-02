@@ -14,13 +14,17 @@ public class HeaderTokenUtil {
     
     public static String resolveToken(HttpServletRequest request){
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+        
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(AUTHORIZATION_TOKEN_PREFIX)) {
             return bearerToken.substring(7);
         }
+        
         String jwt = request.getParameter(AUTHORIZATION_TOKEN);
+        
         if (StringUtils.hasText(jwt)) {
             return jwt;
         }
+        
         return null;
     }
     

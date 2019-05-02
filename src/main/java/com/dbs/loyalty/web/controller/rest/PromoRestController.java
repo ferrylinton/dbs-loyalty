@@ -144,7 +144,7 @@ public class PromoRestController {
     		@ApiParam(name = "id", value = "Promo Id", example = "zO0dDp9K")
     		@PathVariable String id) throws NotFoundException{
     	
-    	Optional<FileImage> fileImage = fileImageService.findOneByPromoId(id);
+    	Optional<FileImage> fileImage = fileImageService.findById(id);
     	
     	if(fileImage.isPresent()) {
     		HttpHeaders headers = new HttpHeaders();

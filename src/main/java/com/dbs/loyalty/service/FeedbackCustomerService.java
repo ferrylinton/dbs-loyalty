@@ -41,15 +41,19 @@ public class FeedbackCustomerService {
 	private final FeedbackCustomerRepository feedbackCustomerRepository;
 	
 	@Transactional
-	public FeedbackCustomer save(String id, List<FeedbackAnswerFormDto> feedbackAnswerDtos) throws NotFoundException {
-		Optional<FeedbackCustomer> current = feedbackCustomerRepository.findWithAnswersById(id, SecurityUtil.getId());
+	public FeedbackCustomer save(String feedbackId, List<FeedbackAnswerFormDto> feedbackAnswerDtos) throws NotFoundException {
+		Optional<FeedbackCustomer> current = feedbackCustomerRepository.findWithAnswersById(feedbackId, SecurityUtil.getId());
 		
 		if(!current.isPresent()) {
-			Map<Integer, String> map = findQuestionMap(id);
+			Map<Integer, String> map = findQuestionMap(feedbackId);
 			Set<FeedbackAnswer> answers = new HashSet<>();
 			
+			FeedbackCustomerId id = new FeedbackCustomerId();
+			id.setFeedbackId(feedbackId);
+			id.setCustomerId(SecurityUtil.getId());
+			
 			FeedbackCustomer feedbackCustomer = new FeedbackCustomer();
-			feedbackCustomer.setId(new FeedbackCustomerId(id, SecurityUtil.getId()));
+			feedbackCustomer.setId(id);
 			feedbackCustomer.setCreatedDate(Instant.now());
 			feedbackCustomer = feedbackCustomerRepository.save(feedbackCustomer);
 			
@@ -77,16 +81,16 @@ public class FeedbackCustomerService {
 		return feedbackCustomerRepository.findWithAnswersById(feedbackId, customerId);
 	}
 
-	private Map<Integer, String> findQuestionMap(String id) throws NotFoundException{
+	private Map<Integer, String> findQuestionMap(String feedbackId) throws NotFoundException{
 		Map<Integer, String> map = new HashMap<Integer, String>();
-		Optional<Feedback> feedback = feedbackRepository.findWithQuestionsById(id);
+		Optional<Feedback> feedback = feedbackRepository.findWithQuestionsById(feedbackId);
 		
 		if(feedback.isPresent()) {
 			for(FeedbackQuestion question: feedback.get().getQuestions()) {
 				map.put(question.getQuestionNumber(), question.getQuestionText());
 			}
 		}else {
-			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, id);
+			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, feedbackId);
 			throw new NotFoundException(message);
 		}
 		

@@ -13,11 +13,14 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 
+import com.dbs.loyalty.config.constant.Constant;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 public class RestAccessDeniedHandler implements AccessDeniedHandler {
 
+	private static final String FORBIDDEN = "Forbidden";
+	
 	private ObjectMapper objectMapper;
 
 	public RestAccessDeniedHandler(ObjectMapper objectMapper) {
@@ -27,8 +30,8 @@ public class RestAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException exception) throws IOException, ServletException {
     	Map<String, Object> result = new HashMap<>();
-        result.put("message", "Forbidden");
-    	result.put("requestURI", request.getRequestURI());
+        result.put(Constant.MESSAGE, FORBIDDEN);
+    	result.put(Constant.REQUEST_URI, request.getRequestURI());
 
         response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);

@@ -45,8 +45,8 @@ import lombok.ToString;
 @Table(
 	name = "p_promo",
 	uniqueConstraints = {
-		@UniqueConstraint(name = "c_promo_code_uq", columnNames = { "code" }),
-		@UniqueConstraint(name = "c_promo_title_uq", columnNames = { "title" })
+		@UniqueConstraint(name = "p_promo_code_uq", columnNames = { "code" }),
+		@UniqueConstraint(name = "p_promo_title_uq", columnNames = { "title" })
 	}
 )
 public class Promo extends AbstractTask implements Serializable {
@@ -102,7 +102,7 @@ public class Promo extends AbstractTask implements Serializable {
 
     @JsonIgnoreProperties("promos")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "promo_category_id", nullable = false, foreignKey = @ForeignKey(name = "c_promo_fk"))
+    @JoinColumn(name = "promo_category_id", nullable = false, foreignKey = @ForeignKey(name = "p_promo_fk"))
     private PromoCategory promoCategory;
 
     @Transient

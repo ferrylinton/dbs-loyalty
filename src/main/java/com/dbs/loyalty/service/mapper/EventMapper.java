@@ -17,12 +17,14 @@ public abstract class EventMapper{
 	@AfterMapping
     public void doAfterMapping(@MappingTarget EventDto eventDto){
 		String imageUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
+				.path(PathConstant.API)
                 .path(PathConstant.EVENTS)
                 .path(PathConstant.SLASH + eventDto.getId())
                 .path(PathConstant.IMAGE)
                 .toUriString();
 		
 		String materialUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
+				.path(PathConstant.API)
                 .path(PathConstant.EVENTS)
                 .path(PathConstant.SLASH + eventDto.getId())
                 .path(PathConstant.MATERIAL)

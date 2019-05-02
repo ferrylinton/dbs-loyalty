@@ -58,12 +58,12 @@ public class RestTokenProvider {
             .compact();
     }
 
-    public String createToken(String email, String token) {
+    public String createToken(String id, String email, String token) {
     	Jws<Claims> jws = parseClaimsJws(token);
     	
     	if(jws != null) {
     		return Jwts.builder()
-                    .setSubject(email)
+                    .setSubject(id + "," + email)
                     .signWith(key, SignatureAlgorithm.HS512)
                     .setExpiration(jws.getBody().getExpiration())
                     .compact();
@@ -82,7 +82,7 @@ public class RestTokenProvider {
     }
 
     public boolean validateToken(String token) {
-    	Jws<Claims> jws = Jwts.parser().setSigningKey(key).parseClaimsJws(token);
+    	Jws<Claims> jws = parseClaimsJws(token);
     	return jws != null;
     }
     

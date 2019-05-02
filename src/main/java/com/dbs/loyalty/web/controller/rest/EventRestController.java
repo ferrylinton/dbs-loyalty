@@ -32,7 +32,6 @@ import com.dbs.loyalty.service.PdfService;
 import com.dbs.loyalty.service.dto.EventDto;
 import com.dbs.loyalty.service.mapper.EventMapper;
 import com.dbs.loyalty.util.MessageUtil;
-import com.dbs.loyalty.util.SecurityUtil;
 import com.dbs.loyalty.web.response.SuccessResponse;
 
 import io.swagger.annotations.Api;
@@ -54,6 +53,10 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api")
 public class EventRestController {
+	
+	private static final String CONTENT_DISPOSITION = "content-disposition";
+	
+	private static final String CONTENT_DISPOSITION_FORMAT = "attachment;filename=%s.pdf";
 
     private final EventService eventService;
     
@@ -128,7 +131,7 @@ public class EventRestController {
     @PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping("/events/{id}")
     public ResponseEntity<EventDto> getEventById(
-    		@ApiParam(name = "id", value = "Event Id", example = "93643790-8aca-4b62-9dad-f3f818e3de14")
+    		@ApiParam(name = "id", value = "Event Id", example = "77UTTDWJX3zNWABg9ixZX9")
     		@PathVariable String id) throws NotFoundException, IOException{
     	
     	Optional<EventDto> current = eventService
@@ -138,7 +141,7 @@ public class EventRestController {
 		if(current.isPresent()) {
 			return ResponseEntity.ok().body(current.get());
 		}else {
-			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, SecurityUtil.getLogged());
+			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, id);
 			throw new NotFoundException(message);
 		}
     }
@@ -153,7 +156,7 @@ public class EventRestController {
     @PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping("/events/{id}/image")
 	public ResponseEntity<byte[]> getEventImage(
-    		@ApiParam(name = "id", value = "Event Id", example = "93643790-8aca-4b62-9dad-f3f818e3de14")
+    		@ApiParam(name = "id", value = "Event Id", example = "77UTTDWJX3zNWABg9ixZX9")
     		@PathVariable String id) throws NotFoundException, IOException{
 		
     	Optional<FileImage> fileImage = imageService.findById(id);
@@ -168,7 +171,7 @@ public class EventRestController {
 					.headers(headers)
 					.body(fileImage.get().getBytes());
 		}else {
-			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, SecurityUtil.getLogged());
+			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, id);
 			throw new NotFoundException(message);
 		}
 	}
@@ -183,7 +186,7 @@ public class EventRestController {
     @PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping("/events/{id}/material")
 	public ResponseEntity<InputStreamResource> getEventMaterial(
-    		@ApiParam(name = "id", value = "Event Id", example = "93643790-8aca-4b62-9dad-f3f818e3de14")
+    		@ApiParam(name = "id", value = "Event Id", example = "77UTTDWJX3zNWABg9ixZX9")
     		@PathVariable String id) throws NotFoundException, IOException{
 		
 		Optional<FilePdf> current = filePdfService.findById(id);
@@ -192,7 +195,7 @@ public class EventRestController {
 			HttpHeaders headers = new HttpHeaders();
 			headers.setCacheControl(CacheControl.noCache().getHeaderValue());
 			headers.setContentType(MediaType.APPLICATION_PDF);
-			headers.add("content-disposition", "attachment;filename=" + id + ".pdf");
+			headers.add(CONTENT_DISPOSITION, String.format(CONTENT_DISPOSITION_FORMAT, id));
 			ByteArrayResource resource = new ByteArrayResource(current.get().getBytes());
 			
 			return ResponseEntity
@@ -200,7 +203,7 @@ public class EventRestController {
 					.headers(headers)
 					.body(new InputStreamResource(resource.getInputStream()));
 		}else {
-			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, SecurityUtil.getLogged());
+			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, id);
 			throw new NotFoundException(message);
 		}
 	}
@@ -216,7 +219,7 @@ public class EventRestController {
     @PreAuthorize("hasRole('CUSTOMER')")
     @PostMapping("/events/{id}/{answer}")
     public ResponseEntity<SuccessResponse> addCustomerEvent(
-    		@ApiParam(name = "id", value = "Event Id", example = "93643790-8aca-4b62-9dad-f3f818e3de14")
+    		@ApiParam(name = "id", value = "Event Id", example = "10noLnNvqC4SwAUMcJ9GXm")
     		@PathVariable String id,
     		@ApiParam(name = "answer", value = "Customer's answer", example = "NO, YES, MAYBE")
     		@PathVariable String answer) throws NotFoundException{

@@ -32,19 +32,7 @@ public class ImageService{
 	public Optional<FileImageTask> findImageTaskById(String id){
 		return fileImageTaskRepository.findById(id);
 	}
-	
-	public Optional<FileImage> findOneByCustomerEmail(String email){
-		return fileImageRepository.findOneByCustomerEmail(email);
-	}
 
-	public Optional<FileImage> findOneByPromoId(String id){
-		return fileImageRepository.findOneByPromoId(id);
-	}
-	
-	public Optional<FileImage> findOneByEventId(String id){
-		return fileImageRepository.findOneByEventId(id);
-	}
-	
 	public FileImageTask add(MultipartFile file) throws IOException {
 		FileImageTask fileTaskImage = new FileImageTask();
 		fileTaskImage.setId(FriendlyId.createFriendlyId());
@@ -55,7 +43,7 @@ public class ImageService{
 	}
 	
 	public FileImage updateCustomerImage(MultipartFile file) throws IOException {
-		Optional<FileImage> fileImage = fileImageRepository.findOneByCustomerEmail(SecurityUtil.getLogged());
+		Optional<FileImage> fileImage = fileImageRepository.findById(SecurityUtil.getId());
 		
 		if(fileImage.isPresent()) {
 			fileImage.get().setLastModifiedBy(SecurityUtil.getLogged());

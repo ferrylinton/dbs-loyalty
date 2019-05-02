@@ -37,7 +37,10 @@ public class EventCustomerService {
 			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, SecurityUtil.getLogged());
 			throw new NotFoundException(message);
 		}else {
-			EventCustomerId id = new EventCustomerId(SecurityUtil.getId(), eventId);
+			EventCustomerId id = new EventCustomerId();
+			id.setEventId(eventId);
+			id.setCustomerId(SecurityUtil.getId());
+			
 			Optional<EventCustomer> current = eventCustomerRepository.findById(id);
 			
 			if(current.isPresent()) {

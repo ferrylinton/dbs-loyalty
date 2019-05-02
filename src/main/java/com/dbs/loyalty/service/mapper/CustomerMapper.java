@@ -20,6 +20,7 @@ public abstract class CustomerMapper {
 	@AfterMapping
     public void doAfterMapping(@MappingTarget CustomerDto customerDto){
 		String imageUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path(PathConstant.API)
                 .path(PathConstant.CUSTOMERS)
                 .path(PathConstant.IMAGE)
                 .toUriString();

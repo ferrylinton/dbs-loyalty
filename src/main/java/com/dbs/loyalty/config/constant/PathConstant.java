@@ -2,6 +2,8 @@ package com.dbs.loyalty.config.constant;
 
 public final class PathConstant {
 
+	public static final String API = "/api";
+	
 	public static final String CUSTOMERS = "/customers";
 	
 	public static final String PROMOS = "/promos";
