@@ -30,6 +30,18 @@ public class SettingService {
 	
 	public static final String TIME_PATTERN = "HH:mm";
 	
+	public static final String JAVA_DATETIME = "java-datetime";
+	
+	public static final String JAVA_DATETIME_PATTERN = "dd/MM/yyyy HH:mm:ss";
+	
+	public static final String JAVA_DATE = "java-date";
+	
+	public static final String JAVA_DATE_PATTERN = "dd/MM/yyyy";
+	
+	public static final String JAVA_TIME = "java-time";
+	
+	public static final String JAVA_TIME_PATTERN = "HH:mm";
+	
 	private final SettingRepository settingRepository;
 	
 	@Cacheable(CachingConstant.SETTINGS)
@@ -66,6 +78,30 @@ public class SettingService {
 			return settings().get(TIME);
 		}else {
 			return TIME_PATTERN;
+		}
+	}
+	
+	public String javadatetime() {
+		if(settings().containsKey(JAVA_DATETIME)) {
+			return settings().get(JAVA_DATETIME);
+		}else {
+			return JAVA_DATETIME_PATTERN;
+		}
+	}
+	
+	public String javadate() {
+		if(settings().containsKey(JAVA_DATE)) {
+			return settings().get(JAVA_DATE);
+		}else {
+			return JAVA_DATE_PATTERN;
+		}
+	}
+	
+	public String javatime(Instant date) {
+		if(settings().containsKey(JAVA_TIME)) {
+			return settings().get(JAVA_TIME);
+		}else {
+			return JAVA_TIME_PATTERN;
 		}
 	}
 

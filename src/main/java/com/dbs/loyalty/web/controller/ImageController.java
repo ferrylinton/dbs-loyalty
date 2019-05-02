@@ -17,7 +17,6 @@ import com.dbs.loyalty.domain.AbstractFileImage;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.ImageService;
 import com.dbs.loyalty.util.MessageUtil;
-import com.dbs.loyalty.util.SecurityUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,15 +29,15 @@ public class ImageController {
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<byte[]> getFileImage(@PathVariable String id) throws NotFoundException {
-		return getImage(imageService.findById(id));
+		return getImage(imageService.findById(id), id);
 	}
 	
 	@GetMapping("/task/{id}")
 	public ResponseEntity<byte[]> getFileImageTask(@PathVariable String id) throws NotFoundException {
-		return getImage(imageService.findImageTaskById(id));
+		return getImage(imageService.findImageTaskById(id), id);
 	}
 	
-	private ResponseEntity<byte[]> getImage(Optional<? extends AbstractFileImage> image) throws NotFoundException {
+	private ResponseEntity<byte[]> getImage(Optional<? extends AbstractFileImage> image, String id) throws NotFoundException {
 		if(image.isPresent()) {
 			HttpHeaders headers = new HttpHeaders();
 			headers.setCacheControl(CacheControl.noCache().getHeaderValue());
@@ -49,7 +48,7 @@ public class ImageController {
 					.headers(headers)
 					.body(image.get().getBytes());
 		}else {
-			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, SecurityUtil.getLogged());
+			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, id);
 			throw new NotFoundException(message);
 		}
 	}

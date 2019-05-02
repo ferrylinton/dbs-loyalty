@@ -78,6 +78,30 @@
             <column name="value" value="DD/MM/YYYY HH:mm:ss"/>
         </insert>
         
+        <insert tableName="s_setting">
+            <column name="id" value="2RkHpXRyVik0C0Y3Adx2NB"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="name" value="java-date"/>
+            <column name="value" value="dd/MM/yyyy"/>
+        </insert>
+        
+        <insert tableName="s_setting">
+            <column name="id" value="5iT5m1s2NyXo2sHwGrkf7y"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="name" value="java-time"/>
+            <column name="value" value="HH:mm"/>
+        </insert>
+        
+        <insert tableName="s_setting">
+            <column name="id" value="3aqLzHiEcqyHlokftGETnC"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="name" value="java-datetime"/>
+            <column name="value" value="dd/MM/yyyy HH:mm:ss"/>
+        </insert>
+        
     </changeSet>
     
 </databaseChangeLog>

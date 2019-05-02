@@ -16,7 +16,7 @@
 <body>
     <!-- NAVBAR -->
     <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
-    <div id="content-box">
+    <div id="content-box" th:with="isMaker=${#authorization.expression('hasAuthority(''PROMO_CATEGORY_MK'')')}">
         <!-- BREADCRUMB -->
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
@@ -52,7 +52,7 @@
                         <a class="btn btn-light" href="/promocategory/promocategory-view.html" th:href="@{/promocategory}">
                             <span class="icon-left" th:text="#{back}">Back</span>
                         </a>
-                        <button class="btn btn-light text-primary" type="submit">
+                        <button class="btn btn-light text-primary" type="submit" th:if="${isMaker && !promocategory.pending}">
                             <span class="icon-floppy" th:text="#{save}">Save</span>
                         </button>
                     </div>

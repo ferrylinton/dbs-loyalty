@@ -62,6 +62,7 @@
                                 <th th:text="#{email}">Email</th>
                                 <th th:text="#{phone}">Phone</th>
 								<th th:text="#{activated}">Activated</th>
+								<th th:text="#{locked}">Locked</th>
 	                        </tr>
 	                    </thead>
 	                    <tbody th:remove="all-but-first">
@@ -93,6 +94,7 @@
 								<td th:text="${customer.email}">ferrylinton@gmail.com</td>
 								<td th:text="${customer.phone}">1234567890</td>
 								<td><span class="text-success icon-ok" th:class="${customer.activated} ? 'text-success icon-ok' : 'text-danger icon-cancel'"></span></td>
+	                        	<td><span class="text-danger icon-cancel" th:class="${customer.locked} ? 'text-success icon-ok' : 'text-danger icon-cancel'"></span></td>
 	                        </tr>
 	                    </tbody>
 	                </table>

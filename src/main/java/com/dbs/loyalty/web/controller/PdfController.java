@@ -21,7 +21,6 @@ import com.dbs.loyalty.domain.FilePdfTask;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.PdfService;
 import com.dbs.loyalty.util.MessageUtil;
-import com.dbs.loyalty.util.SecurityUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -46,7 +45,7 @@ public class PdfController {
 					.headers(headers)
 					.body(current.get().getBytes());
 		}else {
-			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, SecurityUtil.getLogged());
+			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, id);
 			throw new NotFoundException(message);
 		}
 	}
@@ -65,7 +64,7 @@ public class PdfController {
 					.headers(headers)
 					.body(current.get().getBytes());
 		}else {
-			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, SecurityUtil.getLogged());
+			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, id);
 			throw new NotFoundException(message);
 		}
 	}
@@ -86,7 +85,7 @@ public class PdfController {
 					.headers(headers)
 					.body(new InputStreamResource(resource.getInputStream()));
 		}else {
-			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, SecurityUtil.getLogged());
+			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, id);
 			throw new NotFoundException(message);
 		}
 	}

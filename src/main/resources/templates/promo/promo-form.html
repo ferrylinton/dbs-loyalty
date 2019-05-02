@@ -16,7 +16,7 @@
 <body onload="onLoadPromoForm()">
     <!-- NAVBAR -->
     <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
-    <div id="content-box">
+    <div id="content-box" th:with="isMaker=${#authorization.expression('hasAuthority(''PROMO_MK'')')}">
 		<!-- BREADCRUMB -->
 		<nav aria-label="breadcrumb">
 			<ol class="breadcrumb">
@@ -135,7 +135,7 @@
 						<a class="btn btn-light" href="/promo/promo-view.html" th:href="@{/promo}">
 							<span class="icon-left" th:text="#{back}">Back</span>
 						</a>
-						<button class="btn btn-light text-primary" type="submit">
+						<button class="btn btn-light text-primary" type="submit" th:if="${isMaker && (promo.pending == null || !promo.pending)}">
 							<span class="icon-floppy" th:text="#{save}">Save</span>
 						</button>
 					</div>

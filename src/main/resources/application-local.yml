@@ -15,9 +15,9 @@ application:
 spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mariadb://192.227.166.217:3306/loyalty_dbs?useLegacyDatetimeCode=false&serverTimezone=UTC
-    username: loyalty_dbs_user
-    password: loyalty_dbs_password
+    url: jdbc:mariadb://localhost:3306/loyalty?useLegacyDatetimeCode=false&serverTimezone=UTC
+    username: root
+    password: 
     hikari:
       poolName: Hikari
       auto-commit: false
@@ -58,8 +58,11 @@ spring:
   ldap:
     authenticate:
       attribute: uid
-    urls: ldap://192.227.166.217:389 
-    username: uid=admin01,cn=users,ou=dbs,dc=lwproject,dc=com
-    password: password
-    base: ou=dbs,dc=lwproject,dc=com
-      
+    base: dc=lwproject,dc=com
+    embedded:
+      base-dn: dc=lwproject,dc=com
+      ldif: classpath:schema.ldif
+      port: 10389
+      credential:
+        username: uid=admin
+        password: password

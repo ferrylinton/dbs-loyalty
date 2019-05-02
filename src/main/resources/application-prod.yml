@@ -53,7 +53,7 @@ spring:
     static-path-pattern: /static/**
   servlet:
     multipart:
-      max-file-size: 1MB
+      max-file-size: 5MB
       max-request-size: 5MB
   thymeleaf:
     prefix: classpath:/templates/
