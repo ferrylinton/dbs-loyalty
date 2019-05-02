@@ -3,7 +3,6 @@ package com.dbs.loyalty.service;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,6 +12,7 @@ import com.dbs.loyalty.domain.FilePdfTask;
 import com.dbs.loyalty.repository.FilePdfRepository;
 import com.dbs.loyalty.repository.FilePdfTaskRepository;
 import com.dbs.loyalty.util.SecurityUtil;
+import com.devskiller.friendly_id.FriendlyId;
 
 import lombok.RequiredArgsConstructor;
 
@@ -38,7 +38,7 @@ public class PdfService{
 	
 	public FilePdfTask add(MultipartFile file) throws IOException {
 		FilePdfTask fileTaskPdf = new FilePdfTask();
-		fileTaskPdf.setId(UUID.randomUUID().toString());
+		fileTaskPdf.setId(FriendlyId.createFriendlyId());
 		fileTaskPdf.setBytes(file.getBytes());
 		fileTaskPdf.setCreatedBy(SecurityUtil.getLogged());
 		fileTaskPdf.setCreatedDate(Instant.now());

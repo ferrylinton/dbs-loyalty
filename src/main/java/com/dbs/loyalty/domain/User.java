@@ -17,6 +17,7 @@ import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -57,6 +58,7 @@ public class User extends AbstractTask implements Serializable {
 	private String id;
 	
 	@NotNull(message = "{validation.notnull.username}")
+	@Size(min = 5, max = 50, message = "{validation.size.username}")
 	@Pattern(regexp = Constant.USERNAME_REGEX, message = "{validation.pattern.username}")
 	@Column(name = "username", length = 50, nullable = false)
 	private String username;

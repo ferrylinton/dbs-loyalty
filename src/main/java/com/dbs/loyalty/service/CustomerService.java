@@ -29,6 +29,8 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class CustomerService{
 
+	private static final String DUMMY_PASSWORD = "dummy123";
+	
 	private final CustomerRepository customerRepository;
 	
 	private final ImageService imageService;
@@ -89,7 +91,7 @@ public class CustomerService{
 	
 	public String execute(Task task) throws IOException {
 		Customer customer = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), Customer.class);
-
+		customer.setPasswordPlain(DUMMY_PASSWORD);
 		if(task.getVerified()) {
 			if(task.getTaskOperation() == TaskOperation.ADD) {
 				customer.setCreatedBy(task.getMaker());

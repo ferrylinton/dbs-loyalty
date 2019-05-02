@@ -1,6 +1,7 @@
 package com.dbs.loyalty.domain;
 
-import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -45,19 +46,25 @@ public class AirportAssistance extends AbstractAuditing {
 	private String assistanceType;
 	
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "airport_id", nullable = true, foreignKey = @ForeignKey(name = "a_airport_assistance_fk"))
+    @JoinColumn(name = "airport_id", nullable = false, foreignKey = @ForeignKey(name = "a_airport_assistance_fk"))
     private Airport airport;
 	
-	@Column(name = "type_of_service", length=100)
+	@Column(name = "type_of_service", nullable = false, length=100)
 	private String typeOfService;
 	
-	@Column(name = "flight_date")
-	private Instant flightDate;
+	@Column(name = "flight_date", nullable = false)
+	private LocalDate flightDate;
+	
+	@Column(name = "flight_time", nullable = false)
+	private LocalTime flightTime;
+	
+	@Column(name = "zone_id", nullable = true, length=80)
+	private String zoneId;
 
-	@Column(name = "flight_code", length=50)
+	@Column(name = "flight_code", nullable = false, length=50)
 	private String flightCode;
 	
-	@Column(name = "flight_number", length=50)
+	@Column(name = "flight_number", nullable = false, length=50)
 	private String flightNumber;
 	
 	@Column(name = "customer_phone", length=20)
@@ -79,6 +86,6 @@ public class AirportAssistance extends AbstractAuditing {
 	private String pickupAddress;
 	
 	@Column(name = "pickup_time")
-	private String pickupTime;
+	private LocalTime pickupTime;
 	
 }

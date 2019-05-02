@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="contextPath" content="/" th:content="@{/}" />
+    <meta name="_csrf" content="18389837-d2fb-415d-9079-80e38e7a9520" th:content="${_csrf.token}"/>
+	<meta name="_csrf_header" content="X-CSRF-TOKEN" th:content="${_csrf.headerName}"/>
     <title th:text="|#{application.name} : #{task} - #{${type}}|"></title>
     <link href="/static/image/favicon.png" th:href="@{/static/image/favicon.png}" rel="shorcut icon" />
     <link href="/static/css/all.min.css" th:href="@{/static/css/all.min.css}" rel="stylesheet" />
@@ -32,7 +34,7 @@
             <th:block th:if="${task}">
                 <div class="table-responsive border border-top-0">
                     <table class="table table-sm table-detail">
-                        <tbody th:with="format=${@environment.getProperty('application.format.date-time-full')}">
+                        <tbody>
                             <tr>
                                 <th th:text="#{id}">Id</th>
                                 <td th:text="${task.id}">fc82c62c-ae02-4c9a-b232-e1a6ec4b7a1d</td>
@@ -55,7 +57,7 @@
                             </tr>
                             <tr>
                                 <th th:text="#{madeDate}">Made Date</th>
-                                <td th:text="${#dates.format(task.madeDate, format)}">09-04-2019 19:06:53.279</td>
+                            	<td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.datetime()}" th:text="${task.madeDate}">2019-05-01T21:24:44Z</span></td>
                             </tr>
                             <tr th:if="${task.checker}">
                                 <th th:text="#{checker}">Checker</th>

@@ -3,7 +3,6 @@ package com.dbs.loyalty.service;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.Optional;
-import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,6 +13,7 @@ import com.dbs.loyalty.repository.FileImageRepository;
 import com.dbs.loyalty.repository.FileImageTaskRepository;
 import com.dbs.loyalty.util.ImageUtil;
 import com.dbs.loyalty.util.SecurityUtil;
+import com.devskiller.friendly_id.FriendlyId;
 
 import lombok.RequiredArgsConstructor;
 
@@ -47,7 +47,7 @@ public class ImageService{
 	
 	public FileImageTask add(MultipartFile file) throws IOException {
 		FileImageTask fileTaskImage = new FileImageTask();
-		fileTaskImage.setId(UUID.randomUUID().toString());
+		fileTaskImage.setId(FriendlyId.createFriendlyId());
 		fileTaskImage.setCreatedBy(SecurityUtil.getLogged());
 		fileTaskImage.setCreatedDate(Instant.now());
 		ImageUtil.setFileImage(fileTaskImage, file);

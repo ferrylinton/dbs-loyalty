@@ -16,11 +16,15 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Proxy;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.domain.enumeration.CustomerType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -56,12 +60,20 @@ public class Customer extends AbstractTask implements Serializable {
 	@GeneratedValue(generator = "IdGenerator")
 	private String id;
 	
+	@NotNull(message = "{validation.notnull.email}")
+	@Pattern(regexp = Constant.EMAIL_REGEX, message = "{validation.pattern.email}")
+    @Size(min = 5, max = 50, message = "{validation.size.email}")
 	@Column(name = "email", length = 50, nullable = false)
 	private String email;
 	
+	@NotNull(message = "{validation.notnull.name}")
+	@Pattern(regexp = Constant.NAME_REGEX, message = "{validation.pattern.name}")
+	@Size(min = 2, max = 50, message = "{validation.size.name}")
 	@Column(name = "name", length = 50, nullable = false)
 	private String name;
 	
+	@NotNull(message = "{validation.notnull.phone}")
+	@Size(min = 6, max = 20, message = "{validation.size.phone}")
 	@Column(name = "phone", length = 20, nullable = false)
 	private String phone;
 	

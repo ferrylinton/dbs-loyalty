@@ -59,7 +59,7 @@
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="name" value="date"/>
-            <column name="value" value="dd/MM/yyyy"/>
+            <column name="value" value="DD/MM/YYYY"/>
         </insert>
         
         <insert tableName="s_setting">
@@ -75,7 +75,7 @@
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="name" value="datetime"/>
-            <column name="value" value="dd/MM/yyyy HH:mm"/>
+            <column name="value" value="DD/MM/YYYY HH:mm:ss"/>
         </insert>
         
     </changeSet>

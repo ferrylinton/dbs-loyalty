@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="contextPath" content="/" th:content="@{/}" />
+    <meta name="_csrf" content="18389837-d2fb-415d-9079-80e38e7a9520" th:content="${_csrf.token}"/>
+	<meta name="_csrf_header" content="X-CSRF-TOKEN" th:content="${_csrf.headerName}"/>
     <title th:text="|#{application.name} : #{task} - #{${type}}|"></title>
     <link href="/static/image/favicon.png" th:href="@{/static/image/favicon.png}" rel="shorcut icon" />
     <link href="/static/css/all.min.css" th:href="@{/static/css/all.min.css}" rel="stylesheet" />
@@ -23,7 +25,7 @@
                 <li class="breadcrumb-item active" aria-current="page" th:text="#{confirm}">Confirm</li>
             </ol>
         </nav>
-        <div id="main-content" th:with="format=${@environment.getProperty('application.format.date-time-full')}">
+        <div id="main-content">
             <!-- MESSAGE -->
             <div class="border alert alert-light text-center" role="alert" th:if="${error}">
                 <span class="icon-attention"></span> <span th:text="${error}">Data ['xxxx'] is not found</span>
@@ -47,7 +49,7 @@
                         <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
                             <div class="form-group">
                                 <label th:text="#{madeDate}">Made Date</label>
-                                <div class="form-control" th:text="${#dates.format(task.madeDate, format)}">09-04-2019 19:06:53.279</div>
+                                <div class="form-control"><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.datetime()}" th:text="${task.madeDate}">2019-05-01T21:24:44Z</span></div>
                             </div>
                         </div>
                         <div class="col-12" th:if="${task.taskDataOld != null}">

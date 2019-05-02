@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="contextPath" content="/" th:content="@{/}" />
+    <meta name="_csrf" content="18389837-d2fb-415d-9079-80e38e7a9520" th:content="${_csrf.token}"/>
+	<meta name="_csrf_header" content="X-CSRF-TOKEN" th:content="${_csrf.headerName}"/>
     <title th:text="|#{application.name} : #{task} - #{${type}}|"></title>
     <link href="/static/image/favicon.png" th:href="@{/static/image/favicon.png}" rel="shorcut icon" />
     <link href="/static/css/all.min.css" th:href="@{/static/css/all.min.css}" rel="stylesheet" />
@@ -74,7 +76,7 @@
                                 <th th:text="#{taskStatus}">Status</th>
                             </tr>
                         </thead>
-                        <tbody th:with="format=${@environment.getProperty('application.format.date-time')}">
+                        <tbody>
                             <tr th:each="task,row : ${page}">
                                 <td class="py-0 px-1">
                                     <div class="dropdown">
@@ -96,7 +98,7 @@
                                     </div>
                                 </td>
                                 <td th:text="${row.count + (page.number * page.size)}">1</td>
-                                <td th:text="${#dates.format(task.madeDate, format)}">14-04-2019 09:02</td>
+                                <td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.datetime()}" th:text="${task.madeDate}">2019-05-01T21:24:44Z</span></td>
                                 <td th:text="${task.maker}">Maker</td>
                                 <td th:text="#{${task.taskDataType}}">Data Type</td>
                                 <td th:text="#{${task.taskOperation}}">Operation</td>

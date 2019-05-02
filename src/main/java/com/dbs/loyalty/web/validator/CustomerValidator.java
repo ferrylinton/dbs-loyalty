@@ -20,6 +20,10 @@ public class CustomerValidator implements Validator {
 
 	private String email = "email";
 	
+	private String passSize = "validation.size.password";
+	
+	private String passPlain = "passwordPlain";
+	
 	private final CustomerService customerService;
 
 	@Override
@@ -31,6 +35,12 @@ public class CustomerValidator implements Validator {
 	public void validate(Object target, Errors errors) {
 		Customer customer = (Customer) target;
 
+		if(customer.getId() == null && (customer.getPasswordPlain() == null || customer.getPasswordPlain().trim().length() < 6 || customer.getPasswordPlain().trim().length() > 30)) {
+			Object[] errorArgs = new Object[] {customer.getPasswordPlain(), 6, 30 };
+			String defaultMessage = MessageUtil.getMessage(passSize, errorArgs);
+			errors.rejectValue(passPlain, passSize, errorArgs, defaultMessage);
+		}
+		
 		if (customerService.isEmailExist(customer.getId(), customer.getEmail())) {
 			Object[] errorArgs = new String[] { customer.getEmail() };
 			String defaultMessage = MessageUtil.getMessage(validationExistEmail, errorArgs);
