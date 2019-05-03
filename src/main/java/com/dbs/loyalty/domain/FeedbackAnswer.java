@@ -51,8 +51,8 @@ public class FeedbackAnswer implements Serializable{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({
         @JoinColumn(
-            name = "feedback_id",
-            referencedColumnName = "feedback_id",
+            name = "event_id",
+            referencedColumnName = "event_id",
             nullable = false, foreignKey = @ForeignKey(name = "e_feedback_answer_fk1")),
         @JoinColumn(
             name = "customer_id",

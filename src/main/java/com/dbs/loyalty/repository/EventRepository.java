@@ -12,6 +12,12 @@ import com.dbs.loyalty.domain.Event;
 public interface EventRepository extends JpaRepository<Event, String>, JpaSpecificationExecutor<Event>{
 
 	Optional<Event> findByTitleIgnoreCase(String title);
+	
+	@Query(value = "select e from Event e "
+			+ "join fetch e.feedback f "
+			+ "join fetch f.questions q "
+			+ "where e.id = ?1")
+	Optional<Event> findWithFeedbackById(String id);
 
 	@Query(value = "select e from Event e "
 			+ "where e.startPeriod > current_date()")

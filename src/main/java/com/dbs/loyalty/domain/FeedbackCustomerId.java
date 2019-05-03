@@ -5,6 +5,8 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+import com.dbs.loyalty.util.SecurityUtil;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,8 +23,13 @@ public class FeedbackCustomerId implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@Column(name = "feedback_id", length=22)
-    private String feedbackId;
+	public FeedbackCustomerId(String eventId) {
+		this.eventId = eventId;
+		this.customerId = SecurityUtil.getId();
+	}
+	
+	@Column(name = "event_id", length=22)
+    private String eventId;
 
 	@Column(name = "customer_id", length=22)
     private String customerId;

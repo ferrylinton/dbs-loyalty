@@ -11,10 +11,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.dbs.loyalty.domain.Event;
+import com.dbs.loyalty.domain.Feedback;
+import com.dbs.loyalty.domain.FeedbackQuestion;
 import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
+import com.dbs.loyalty.model.Pair;
 import com.dbs.loyalty.repository.EventRepository;
 import com.dbs.loyalty.service.specification.EventSpecification;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -33,6 +37,16 @@ public class EventService{
 	
 	public Optional<Event> findById(String id){
 		return eventRepository.findById(id);
+	}
+	
+	public Optional<Event> findWithFeedbackById(String id) throws IOException{
+		Optional<Event> event = eventRepository.findWithFeedbackById(id);
+		
+		if(event.isPresent()) {
+			setQuestionOptions(event.get().getFeedback());
+		}
+		
+		return event;
 	}
 
 	public Page<Event> findAll(Pageable pageable, HttpServletRequest request) {
@@ -89,6 +103,15 @@ public class EventService{
 		}
 
 		return event.getTitle();
+	}
+	
+	private void setQuestionOptions(Feedback feedback) throws IOException{
+		for(FeedbackQuestion question: feedback.getQuestions()) {
+			if(question.getQuestionOption() != null) {
+				List<Pair<String, String>> questionOptions = objectMapper.readValue(question.getQuestionOption(), new TypeReference<List<Pair<String, String>>>() {});
+				question.setQuestionOptions(questionOptions);
+			}
+		}
 	}
 	
 }

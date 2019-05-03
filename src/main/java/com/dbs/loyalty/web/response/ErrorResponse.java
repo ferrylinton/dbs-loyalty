@@ -2,6 +2,8 @@ package com.dbs.loyalty.web.response;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
+import com.dbs.loyalty.util.ErrorUtil;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,7 +21,7 @@ public class ErrorResponse extends Response{
 	
 	public ErrorResponse(Exception ex) {
 		super(ex.getLocalizedMessage());
-		this.detail = ExceptionUtils.getStackTrace(ex);
+		this.detail = ExceptionUtils.getStackTrace(ErrorUtil.getThrowable(ex));
 	}
 	
 }

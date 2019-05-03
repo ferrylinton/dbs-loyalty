@@ -1,7 +1,5 @@
 package com.dbs.loyalty.service;
 
-import static com.dbs.loyalty.config.constant.MessageConstant.DATA_WITH_VALUE_NOT_FOUND;
-
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -15,7 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dbs.loyalty.domain.Feedback;
 import com.dbs.loyalty.domain.FeedbackAnswer;
 import com.dbs.loyalty.domain.FeedbackCustomer;
 import com.dbs.loyalty.domain.FeedbackCustomerId;
@@ -23,9 +20,8 @@ import com.dbs.loyalty.domain.FeedbackQuestion;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.repository.FeedbackAnswerRepository;
 import com.dbs.loyalty.repository.FeedbackCustomerRepository;
-import com.dbs.loyalty.repository.FeedbackRepository;
+import com.dbs.loyalty.repository.FeedbackQuestionRepository;
 import com.dbs.loyalty.service.dto.FeedbackAnswerFormDto;
-import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.util.SecurityUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -34,26 +30,22 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class FeedbackCustomerService {
 
-	private final FeedbackRepository feedbackRepository;
-	
 	private final FeedbackAnswerRepository feedbackAnswerRepository;
 	
 	private final FeedbackCustomerRepository feedbackCustomerRepository;
 	
+	private final FeedbackQuestionRepository feedbackQuestionRepository;
+	
 	@Transactional
-	public FeedbackCustomer save(String feedbackId, List<FeedbackAnswerFormDto> feedbackAnswerDtos) throws NotFoundException {
-		Optional<FeedbackCustomer> current = feedbackCustomerRepository.findWithAnswersById(feedbackId, SecurityUtil.getId());
+	public FeedbackCustomer save(String eventId, List<FeedbackAnswerFormDto> feedbackAnswerDtos) throws NotFoundException {
+		Optional<FeedbackCustomer> current = feedbackCustomerRepository.findWithAnswersById(eventId, SecurityUtil.getId());
 		
 		if(!current.isPresent()) {
-			Map<Integer, String> map = findQuestionMap(feedbackId);
+			Map<Integer, String> map = findQuestionMap(eventId);
 			Set<FeedbackAnswer> answers = new HashSet<>();
-			
-			FeedbackCustomerId id = new FeedbackCustomerId();
-			id.setFeedbackId(feedbackId);
-			id.setCustomerId(SecurityUtil.getId());
-			
+		
 			FeedbackCustomer feedbackCustomer = new FeedbackCustomer();
-			feedbackCustomer.setId(id);
+			feedbackCustomer.setId(new FeedbackCustomerId(eventId));
 			feedbackCustomer.setCreatedDate(Instant.now());
 			feedbackCustomer = feedbackCustomerRepository.save(feedbackCustomer);
 			
@@ -73,25 +65,20 @@ public class FeedbackCustomerService {
 		}
 	}
 	
-	public Page<FeedbackCustomer> findWithCustomerAndAnswersByFeedbackId(String feedbackId, Pageable pageable){
-		return feedbackCustomerRepository.findWithCustomerAndAnswersByFeedbackId(feedbackId, pageable);
+	public Page<FeedbackCustomer> findWithCustomerAndAnswersByEventId(String eventId, Pageable pageable){
+		return feedbackCustomerRepository.findWithCustomerAndAnswersByEventId(eventId, pageable);
 	}
 	
 	public Optional<FeedbackCustomer> findWithAnswersById(String feedbackId, String customerId){
 		return feedbackCustomerRepository.findWithAnswersById(feedbackId, customerId);
 	}
 
-	private Map<Integer, String> findQuestionMap(String feedbackId) throws NotFoundException{
+	private Map<Integer, String> findQuestionMap(String eventId) throws NotFoundException{
 		Map<Integer, String> map = new HashMap<Integer, String>();
-		Optional<Feedback> feedback = feedbackRepository.findWithQuestionsById(feedbackId);
+		List<FeedbackQuestion> questions = feedbackQuestionRepository.findByEventId(eventId);
 		
-		if(feedback.isPresent()) {
-			for(FeedbackQuestion question: feedback.get().getQuestions()) {
-				map.put(question.getQuestionNumber(), question.getQuestionText());
-			}
-		}else {
-			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, feedbackId);
-			throw new NotFoundException(message);
+		for(FeedbackQuestion question: questions) {
+			map.put(question.getQuestionNumber(), question.getQuestionText());
 		}
 		
 		return map;

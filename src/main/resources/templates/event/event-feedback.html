@@ -26,42 +26,37 @@
             </ol>
         </nav>
         <div id="main-content">
+        	<!-- TABLE INFO -->
+        	<table class="mb-3">
+	        	<tbody th:remove="all-but-first">
+	            	<tr th:each="question : ${questions}">
+	             		<td th:text="|${question.questionNumber}. ${question.questionText}|">1</td>
+	           		</tr>
+	          	</tbody>
+	     	</table>
             <!-- TABLE DATA -->
             <div class="table-responsive border border-top-0" th:if="${page.getTotalElements() > 0}">
                 <table class="table table-sm table-striped table-hover border-bottom" style="min-width: 800px;">
                     <thead>
                         <tr th:with="ascending=${order.getDirection().name() == 'ASC'}">
-                            <th style="width:40px"></th>
                             <th style="width:40px">#</th>
                             <th th:with="sort=|&sort=customer.name,${ascending ? 'DESC' : 'ASC'}|">
                                 <a th:href="@{|?page=${page.getNumber()}${params}${sort}|}" class="text-decoration-none">
                                     <span th:text="#{name}">Name</span> <span th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></span>
                                 </a>
                             </th>
-                            <th th:text="#{customerType}">Type</th>
-                            <th th:text="#{email}">Email</th>
-                            <th th:text="#{phone}">Phone</th>
+                            <th:block th:each="answer : ${answers}">
+                            	<th title="Please rate your overall level of statisfaction with our event?" th:title="${answer.questionText}" th:text="${answer.questionNumber}">1</th>
+                            </th:block>
                         </tr>
                     </thead>
                     <tbody th:remove="all-but-first">
                         <tr th:each="feedback,row : ${page}">
-                            <td class="py-0 px-1">
-								<div class="dropdown">
-									<button type="button" class="btn btn-default dropdown-toggle px-1 py-0 font-12" id="dropdownMenuButton" data-boundary="window" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-										<span class="icon-cog"></span>
-									</button>
-									<div class="dropdown-menu py-0 shadow" aria-labelledby="dropdownMenuButton">
-										<a class="dropdown-item pl-1" href="/event/event-customer-detail.html" th:href="@{|/event/${feedback.id.feedbackId}/feedback/${feedback.id.customerId}|}">
-										    <span class="icon-thumbs-up"></span> <span th:text="#{detail}">Detail</span>
-                                        </a>
-									</div>
-								</div>
-							</td>
                             <td th:text="${row.count + (page.number * page.size)}">1</td>
                             <td th:text="${feedback.customer.name}">Ferry Linton Hutapea</td>
-                            <td th:text="${feedback.customer.customerType}">TREASURE</td>
-                            <td th:text="${feedback.customer.email}">ferrylinton@gmail.com</td>
-                            <td th:text="${feedback.customer.phone}">1234567890</td>
+                            <th:block th:each="answer : ${feedback.answers}">
+                            	<td title="Please rate your overall level of statisfaction with our event?" th:title="${answer.questionText}" th:text="${answer.questionAnswer}">1</td>
+                            </th:block>
                         </tr>
                     </tbody>
                 </table>

@@ -32,4 +32,7 @@ public class Feedback extends AbstractTask implements Serializable {
     @OneToMany(mappedBy = "feedback", fetch = FetchType.LAZY)
     private Set<FeedbackQuestion> questions;
     
+    @OneToMany(mappedBy = "feedback", fetch = FetchType.LAZY)
+    private Set<Event> events;
+    
 }

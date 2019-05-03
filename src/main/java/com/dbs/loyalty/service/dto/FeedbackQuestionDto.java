@@ -15,7 +15,7 @@ import lombok.Setter;
 @Getter
 public class FeedbackQuestionDto implements Comparable<FeedbackQuestionDto> {
 
-	@ApiModelProperty(value = "Feedback Question id", example = "646e8a2a-4ca4-459a-9da8-2a31daaecd38", required = true, position = 0)
+	@ApiModelProperty(value = "Feedback Question id", example = "77UTTDWJX3zNWABg9ixZX9", required = true, position = 0)
 	private String id;
 	
 	@ApiModelProperty(value = "Feedback's question number", example = "1", required = true, position = 1)

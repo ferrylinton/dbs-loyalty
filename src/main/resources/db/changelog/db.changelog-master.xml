@@ -15,7 +15,6 @@
     <include file="release-001/006_customer_schema.xml" relativeToChangelogFile="true"/>
     <include file="release-001/007_promo_schema.xml" relativeToChangelogFile="true"/>
     <include file="release-001/008_event_schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/009_feedback_schema.xml" relativeToChangelogFile="true"/>
     <include file="release-001/010_airport_assistance_schema.xml" relativeToChangelogFile="true"/>
 
     <include file="release-001/031_reward_operation_schema.xml" relativeToChangelogFile="true"/>
@@ -26,8 +25,8 @@
     <include file="release-001/101_insert_user.xml" relativeToChangelogFile="true"/>
     <include file="release-001/102_insert_customer.xml" relativeToChangelogFile="true"/>
     <include file="release-001/103_insert_promo.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/104_insert_event.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/105_insert_feedback.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/104_insert_feedback.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/105_insert_event.xml" relativeToChangelogFile="true"/>
     <include file="release-001/106_insert_airport.xml" relativeToChangelogFile="true"/>
     
     <include file="release-001/131_insert_reward_operation.xml" relativeToChangelogFile="true"/>

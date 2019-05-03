@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.domain.FileImage;
 import com.dbs.loyalty.domain.FilePdf;
+import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.EventCustomerService;
 import com.dbs.loyalty.service.EventService;
@@ -67,7 +68,7 @@ public class EventRestController {
     private final PdfService filePdfService;
     
     private final EventMapper eventMapper;;
-   
+
     /**
      * 
      * @return
@@ -208,7 +209,6 @@ public class EventRestController {
 		}
 	}
 
-
     @ApiOperation(
     		nickname="AddCustomerEventAnswer", 
     		value="AddCustomerEventAnswer", 
@@ -222,7 +222,7 @@ public class EventRestController {
     		@ApiParam(name = "id", value = "Event Id", example = "10noLnNvqC4SwAUMcJ9GXm")
     		@PathVariable String id,
     		@ApiParam(name = "answer", value = "Customer's answer", example = "NO, YES, MAYBE")
-    		@PathVariable String answer) throws NotFoundException{
+    		@PathVariable String answer) throws NotFoundException, BadRequestException{
     	
     	SuccessResponse response = customerEventService.save(id, answer);
     	return ResponseEntity.ok().body(response);

@@ -49,8 +49,8 @@ public class LogLogin implements Serializable {
 	@Column(name = "created_date", nullable = false, updatable = false)
 	private Instant createdDate;
 	
-	@Enumerated(EnumType.ORDINAL)
-    @Column(name = "login_status", nullable = false, updatable = false, columnDefinition="TINYINT")
+	@Enumerated(EnumType.STRING)
+    @Column(name = "login_status", length = 10, nullable = false, updatable = false)
 	private LoginStatus loginStatus;
 	
 	@Column(name = "browser", length = 50)

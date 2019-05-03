@@ -49,8 +49,8 @@ public class EventCustomer implements Serializable {
     @JoinColumn(name = "event_id", insertable = false, updatable = false, nullable = false, foreignKey = @ForeignKey(name = "e_customer_event_fk2"))
 	private Event event;
 	
-	@Enumerated(EnumType.ORDINAL)
-    @Column(name = "event_answer", nullable = false, columnDefinition="TINYINT")
+	@Enumerated(EnumType.STRING)
+    @Column(name = "event_answer", length = 10, nullable = false)
     private EventAnswer eventAnswer;
 
     @ApiModelProperty(hidden = true)

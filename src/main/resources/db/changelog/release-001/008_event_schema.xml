@@ -7,6 +7,111 @@
     
     <changeSet author="FLH" id="008-1">
     
+        <createTable tableName="e_feedback">
+            <column name="id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pending" type="BIT(1)" defaultValueBoolean="false"/>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+        
+    </changeSet>
+    
+    <changeSet author="FLH" id="008-2">
+        <addPrimaryKey columnNames="id" constraintName="e_feedback_pk" tableName="e_feedback"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="008-3">
+    
+        <createTable tableName="e_feedback_question">
+            <column name="id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="question_number" type="TINYINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="question_text" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="form_type" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="question_option" type="TEXT"/>
+            <column name="feedback_id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+        
+    </changeSet>
+    
+    <changeSet author="FLH" id="008-4">
+        <addPrimaryKey columnNames="id" constraintName="e_feedback_question_pk" tableName="e_feedback_question"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="008-5">
+    
+        <createTable tableName="e_feedback_customer">
+            <column name="customer_id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="event_id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+    </changeSet>
+    
+    <changeSet author="FLH" id="008-6">
+        <addPrimaryKey columnNames="customer_id, event_id" constraintName="e_feedback_customer_pk" tableName="e_feedback_customer"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="008-7">
+    
+        <createTable tableName="e_feedback_answer">
+            <column name="id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="question_number" type="TINYINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="question_text" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="question_answer" type="VARCHAR(255)"/>
+            <column name="event_id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="customer_id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+    </changeSet>
+    
+    <changeSet author="FLH" id="008-8">
+        <addPrimaryKey columnNames="id" constraintName="e_feedback_answer_pk" tableName="e_feedback_answer"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="008-9">
+    
         <createTable tableName="e_event">
             <column name="id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
@@ -30,6 +135,9 @@
                 <constraints nullable="false"/>
             </column>
             <column name="pending" type="BIT(1)" defaultValueBoolean="false"/>
+            <column name="feedback_id" type="VARCHAR(22)" defaultValue="default">
+                <constraints nullable="false"/>
+            </column>
             <column name="created_by" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
@@ -41,15 +149,15 @@
         </createTable>
     </changeSet>
     
-    <changeSet author="FLH" id="008-2">
+    <changeSet author="FLH" id="008-10">
 		<addPrimaryKey columnNames="id" constraintName="e_event_pk" tableName="e_event"/>
 	</changeSet>
-    
-    <changeSet author="FLH" id="008-3">
+	
+	<changeSet author="FLH" id="008-11">
         <addUniqueConstraint columnNames="title" constraintName="e_event_title_uq" tableName="e_event"/>
     </changeSet>
     
-    <changeSet author="FLH" id="008-4">
+    <changeSet author="FLH" id="008-12">
     
         <createTable tableName="e_event_customer">
             <column name="customer_id" type="VARCHAR(22)">
@@ -58,7 +166,9 @@
             <column name="event_id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
             </column>
-            <column name="event_answer" type="TINYINT"/>
+            <column name="event_answer" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
             <column name="created_date" type="timestamp">
                 <constraints nullable="false"/>
             </column>
@@ -66,15 +176,39 @@
         
     </changeSet>
     
-	<changeSet author="FLH" id="008-5">
+    <changeSet author="FLH" id="008-13">
         <addPrimaryKey columnNames="customer_id,event_id" constraintName="e_event_customer_pk" tableName="e_event_customer"/>
     </changeSet>
+
+    <changeSet author="FLH" id="008-14">
+        <addForeignKeyConstraint baseColumnNames="feedback_id" baseTableName="e_feedback_question" constraintName="e_feedback_question_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="e_feedback"/>
+    </changeSet>
+
+    <changeSet author="FLH" id="008-15">
+        <addForeignKeyConstraint baseColumnNames="event_id" baseTableName="e_feedback_customer" constraintName="e_feedback_customer_fk1" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="e_event"/>
+    </changeSet>
     
-    <changeSet author="FLH" id="008-6">
+    <changeSet author="FLH" id="008-16">
+        <addForeignKeyConstraint baseColumnNames="customer_id" baseTableName="e_feedback_customer" constraintName="e_feedback_customer_fk2" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="c_customer"/>
+    </changeSet>
+
+    <changeSet author="FLH" id="008-17">
+        <addForeignKeyConstraint baseColumnNames="event_id" baseTableName="e_feedback_answer" constraintName="e_feedback_answer_fk1" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="e_event"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="008-18">
+        <addForeignKeyConstraint baseColumnNames="customer_id" baseTableName="e_feedback_answer" constraintName="e_feedback_answer_fk2" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="c_customer"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="008-19">
+        <addForeignKeyConstraint baseColumnNames="feedback_id" baseTableName="e_event" constraintName="e_event_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="e_feedback"/>
+    </changeSet>
+
+    <changeSet author="FLH" id="008-20">
         <addForeignKeyConstraint baseColumnNames="customer_id" baseTableName="e_event_customer" constraintName="e_event_customer_fk1" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="c_customer"/>
     </changeSet>
     
-    <changeSet author="FLH" id="008-7">
+    <changeSet author="FLH" id="008-21">
         <addForeignKeyConstraint baseColumnNames="event_id" baseTableName="e_event_customer" constraintName="e_event_customer_fk2" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="e_event"/>
     </changeSet>
     

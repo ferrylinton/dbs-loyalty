@@ -19,6 +19,7 @@
             <column name="end_period" valueDate="2018-01-02T08:00:00"/>
             <column name="place" value="Batam"/>
 			<column name="content" valueBlobFile="txt/qNj1ZAsi.txt"/>
+			<column name="feedback_id" value="59pGDAsR8UoL0msGWgPndK"/>
         </insert>
         
         <insert tableName="f_image">

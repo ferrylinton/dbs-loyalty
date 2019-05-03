@@ -3,12 +3,12 @@ package com.dbs.loyalty.web.controller.error;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -18,6 +18,7 @@ import org.springframework.web.multipart.support.MissingServletRequestPartExcept
 
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
+import com.dbs.loyalty.util.ErrorUtil;
 import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.web.response.BadRequestResponse;
 import com.dbs.loyalty.web.response.ErrorResponse;
@@ -29,11 +30,11 @@ public class GlobalExceptionHandler {
 
 	private String file = "file";
 	
-	@ExceptionHandler(value = HttpRequestMethodNotSupportedException.class)
-    public ResponseEntity<ErrorResponse> methodNotSupportErrorHandler(Exception ex){
+	@ExceptionHandler(value = ConstraintViolationException.class)
+    public ResponseEntity<ErrorResponse> methodNotSupportErrorHandler(ConstraintViolationException ex){
        return ResponseEntity
-	            .status(HttpStatus.NOT_FOUND)
-	            .body(new ErrorResponse(ex));
+	            .status(HttpStatus.INTERNAL_SERVER_ERROR)
+	            .body(new ErrorResponse(ErrorUtil.getThrowable(ex).getMessage()));
     }
 	
 	@ExceptionHandler(value = NotFoundException.class)

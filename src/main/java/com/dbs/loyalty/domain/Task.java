@@ -40,12 +40,12 @@ public class Task implements Serializable {
 	@GeneratedValue(generator = "IdGenerator")
 	private String id;
 
-    @Enumerated(EnumType.ORDINAL)
-    @Column(name = "task_operation", nullable = false, columnDefinition="TINYINT")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "task_operation", length = 10, nullable = false)
     private TaskOperation taskOperation;
     
-    @Enumerated(EnumType.ORDINAL)
-    @Column(name = "task_status", nullable = false, columnDefinition="TINYINT")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "task_status", length = 10, nullable = false)
     private TaskStatus taskStatus;
 
     @Column(name = "task_data_type", length = 30, nullable = false)

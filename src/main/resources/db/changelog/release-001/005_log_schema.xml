@@ -22,7 +22,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="ip" type="VARCHAR(20)"/>
-            <column name="login_status" type="TINYINT">
+            <column name="login_status" type="VARCHAR(10)">
                 <constraints nullable="false"/>
             </column>
             <column name="platform" type="VARCHAR(50)"/>
@@ -56,7 +56,7 @@
             <column name="audit_operation" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="audit_status" type="TINYINT">
+            <column name="audit_status" type="VARCHAR(10)">
                 <constraints nullable="false"/>
             </column>
             <column name="audit_data" type="LONGTEXT"/>

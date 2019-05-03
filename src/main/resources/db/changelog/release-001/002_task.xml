@@ -11,10 +11,10 @@
             <column name="id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
             </column>
-            <column name="task_operation" type="TINYINT">
+            <column name="task_operation" type="VARCHAR(10)">
                 <constraints nullable="false"/>
             </column>
-            <column name="task_status" type="TINYINT">
+            <column name="task_status" type="VARCHAR(10)">
                 <constraints nullable="false"/>
             </column>
             <column name="task_data_type" type="VARCHAR(30)">

@@ -5,11 +5,11 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+import com.dbs.loyalty.util.SecurityUtil;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -20,7 +20,6 @@ import lombok.ToString;
  */
 @Setter
 @Getter
-@RequiredArgsConstructor
 @NoArgsConstructor
 @ToString
 @EqualsAndHashCode
@@ -29,11 +28,14 @@ public class PromoCustomerId implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@NonNull
+	public PromoCustomerId(String promoId) {
+		this.promoId = promoId;
+		this.customerId = SecurityUtil.getId();
+	}
+
 	@Column(name = "customer_id", length=22)
     private String customerId;
- 
-	@NonNull
+
 	@Column(name = "promo_id", length=22)
     private String promoId;
     

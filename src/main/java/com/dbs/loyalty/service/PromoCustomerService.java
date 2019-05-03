@@ -16,7 +16,6 @@ import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.repository.PromoCustomerRepository;
 import com.dbs.loyalty.repository.PromoRepository;
 import com.dbs.loyalty.util.MessageUtil;
-import com.dbs.loyalty.util.SecurityUtil;
 import com.dbs.loyalty.web.response.SuccessResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -36,7 +35,7 @@ public class PromoCustomerService{
 			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, promoId);
 			throw new NotFoundException(message);
 		}else {
-			PromoCustomerId id = new PromoCustomerId(SecurityUtil.getId(), promoId);
+			PromoCustomerId id = new PromoCustomerId(promoId);
 			Optional<PromoCustomer> current = promoCustomerRepository.findById(id);
 			
 			if(current.isPresent()) {

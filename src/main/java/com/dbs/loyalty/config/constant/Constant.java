@@ -50,6 +50,8 @@ public final class Constant {
 	
 	public static final String DELETE				= "delete";
 	
+	public static final String DEFAULT				= "default";
+	
 	private Constant() {
 		// hide constructor
 	}

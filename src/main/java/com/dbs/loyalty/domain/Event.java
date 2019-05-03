@@ -6,9 +6,13 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -86,6 +90,11 @@ public class Event extends AbstractTask implements Serializable {
     @Size(min=2, max = 255, message = "{validation.size.place}")
     @Column(name = "place", nullable = false)
     private String place;
+    
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "feedback_id", nullable = false, foreignKey = @ForeignKey(name = "e_event_fk"))
+    private Feedback feedback;
     
     @Transient
     private String image;

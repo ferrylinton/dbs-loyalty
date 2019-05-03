@@ -41,8 +41,8 @@ public class LogAudit implements Serializable {
     @Column(name = "audit_operation", length=50, nullable = false)
     private String auditOperation;
     
-    @Enumerated(EnumType.ORDINAL)
-    @Column(name = "audit_status", nullable = false, columnDefinition="TINYINT")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "audit_status", length=10, nullable = false)
     private AuditStatus auditStatus;
     
     @Lob

@@ -13,6 +13,7 @@ import com.dbs.loyalty.domain.EventCustomer;
 import com.dbs.loyalty.domain.EventCustomerId;
 import com.dbs.loyalty.domain.Event;
 import com.dbs.loyalty.domain.enumeration.EventAnswer;
+import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.repository.EventCustomerRepository;
 import com.dbs.loyalty.repository.EventRepository;
@@ -30,7 +31,7 @@ public class EventCustomerService {
 	
 	private final EventCustomerRepository eventCustomerRepository;
 	
-	public SuccessResponse save(String eventId, String answer) throws NotFoundException {
+	public SuccessResponse save(String eventId, String answer) throws NotFoundException, BadRequestException {
 		Optional<Event> event = eventRepository.findById(eventId);
 		
 		if(!event.isPresent()) {
@@ -48,7 +49,7 @@ public class EventCustomerService {
 			}else {
 				EventCustomer customerEvent = new EventCustomer();
 				customerEvent.setId(id);
-				customerEvent.setEventAnswer(EventAnswer.valueOf(answer));
+				customerEvent.setEventAnswer(getEventAnswer(answer));
 				customerEvent.setCreatedDate(Instant.now());
 				customerEvent = eventCustomerRepository.save(customerEvent);
 				
@@ -61,4 +62,11 @@ public class EventCustomerService {
 		return eventCustomerRepository.findWithCustomerByEventId(eventId, pageable);
 	}
 	
+	private EventAnswer getEventAnswer(String answer) throws BadRequestException {
+		try {
+			return EventAnswer.valueOf(answer.toUpperCase());
+		} catch (IllegalArgumentException e) { 
+			throw new BadRequestException(String.format("%s is not valid", answer));
+		}
+	}
 }

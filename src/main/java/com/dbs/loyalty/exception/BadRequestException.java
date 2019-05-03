@@ -6,11 +6,16 @@ public class BadRequestException extends AbstractException {
 
 	private static final long serialVersionUID = 1L;
 	
-	private final BadRequestResponse response;
+	private BadRequestResponse response;
 	
 	public BadRequestException(BadRequestResponse response) {
         super("BadRequest");
         this.response = response;
+    }
+	
+	public BadRequestException(String message) {
+        super(message);
+        this.response = new BadRequestResponse(message);
     }
 
 	@Override
