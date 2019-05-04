@@ -362,6 +362,55 @@
             	<version>${sonar-maven-plugin.version}</version>
        		</plugin>
        		<plugin>
+				<groupId>com.samaxes.maven</groupId>
+				<artifactId>minify-maven-plugin</artifactId>
+				<version>1.7.6</version>
+				<executions>
+					<execution>
+						<id>default-minify</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>minify</goal>
+						</goals>
+						<configuration>
+							<webappSourceDir>${basedir}/src/main/resources/static</webappSourceDir>
+							<webappTargetDir>${basedir}/src/main/resources/static</webappTargetDir>
+							<!-- CSS -->
+							<cssSourceDir>css</cssSourceDir>
+							<cssSourceFiles>
+								<cssSourceFile>fontello.css</cssSourceFile>
+								<cssSourceFile>input-material.css</cssSourceFile>
+								<cssSourceFile>sidenav.css</cssSourceFile>
+								<cssSourceFile>main.css</cssSourceFile>
+							</cssSourceFiles>
+							<cssTargetDir>css-dist</cssTargetDir>
+							<cssFinalFile>all.css</cssFinalFile>
+							<!-- JS -->
+							<jsSourceDir>js</jsSourceDir>
+							<jsSourceFiles>
+								<jsSourceFile>lang.js</jsSourceFile>
+								<jsSourceFile>materialize-inputs.jquery.js</jsSourceFile>
+								<jsSourceFile>jquery-confirm-defaults.js</jsSourceFile>
+								<jsSourceFile>sidenav.js</jsSourceFile>
+								<jsSourceFile>alertutil.js</jsSourceFile>
+								<jsSourceFile>ajaxutil.js</jsSourceFile>
+								<jsSourceFile>taskutil.js</jsSourceFile>
+								<jsSourceFile>jsonutil.js</jsSourceFile>
+								<jsSourceFile>dateutil.js</jsSourceFile>
+								<jsSourceFile>imageutil.js</jsSourceFile>
+								<jsSourceFile>formutil.js</jsSourceFile>
+								<jsSourceFile>main.js</jsSourceFile>
+							</jsSourceFiles>
+							<jsTargetDir>js-dist</jsTargetDir>
+							<jsFinalFile>all.js</jsFinalFile>
+							<cssEngine>YUI</cssEngine>
+							<jsEngine>CLOSURE</jsEngine>
+							<closureCompilationLevel>SIMPLE_OPTIMIZATIONS</closureCompilationLevel>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+       		<plugin>
 				<groupId>com.tunyk.mvn.plugins.htmlcompressor</groupId>
 				<artifactId>htmlcompressor-maven-plugin</artifactId>
 				<version>1.3</version>
@@ -377,7 +426,7 @@
 						<fileExt>html</fileExt>
 					</fileExt>
 					<srcFolder>${basedir}/src/main/resources/templates</srcFolder>
-					<targetFolder>${basedir}/src/main/resources/templates-min</targetFolder>
+					<targetFolder>${basedir}/src/main/resources/templates-dist</targetFolder>
 					<javascriptHtmlSpriteIntegrationFile>${basedir}/src/main/resources/integration.js </javascriptHtmlSpriteIntegrationFile>
 				</configuration>
 			</plugin>

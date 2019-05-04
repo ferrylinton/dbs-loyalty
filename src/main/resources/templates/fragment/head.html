@@ -28,7 +28,7 @@
     </th:block>
     <!-- ALL MIN CSS -->
 	<th:block th:if="${#arrays.contains(@environment.getActiveProfiles(),'min')}">
-		<link rel="stylesheet" href="/static/css/all.min.css" th:href="@{/static/css/all.min.css}" />
+		<link rel="stylesheet" href="/static/css-dist/all.min.css" th:href="@{/static/css-dist/all.min.css}" />
 	</th:block>
 	<!-- CSS -->
 	<th:block th:if="${not #arrays.contains(@environment.getActiveProfiles(),'min')}">
