@@ -3,7 +3,7 @@
 
 <head th:replace="fragment/head.html :: content(title=|#{application.name} : #{promo}|)"></head>
 
-<body onload="onLoadPromoForm()">
+<body>
     <!-- NAVBAR -->
     <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
     <div id="content-box" th:with="isMaker=${#authorization.expression('hasAuthority(''PROMO_MK'')')}">

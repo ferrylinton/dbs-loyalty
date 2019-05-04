@@ -312,3 +312,11 @@ a:hover{
     background-color: #dc0d15;
     border-color: #d40810;
 }
+
+.custom-file-input:lang(en)~.custom-file-label::after {
+    content: "Browse";
+}
+
+.custom-file-input:lang(id)~.custom-file-label::after {
+    content: "Pilih Berkas";
+}
