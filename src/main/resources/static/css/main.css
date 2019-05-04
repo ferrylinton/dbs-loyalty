@@ -19,14 +19,14 @@ body{
 }
 
 .login-header{
-	border-top: solid 4px #c00;
+	border-top: solid 4px red;
 	background-color: #000;
 	color: #fff;
+}
 
-	img{
-		float: left;
-		padding: 15px 20px
-	}
+.login-header img{
+	float: left;
+	padding: 15px 20px
 }
 
 .login-box{
@@ -251,6 +251,10 @@ a:hover{
 .jconfirm .jconfirm-box .jconfirm-buttons button{
 	border: solid 1px #dee2e6;
 }
+.jconfirm.jconfirm-bootstrap .jconfirm-box {
+    border: 0;
+    border-top: solid 7px #e74c3c;
+}
 
 .toolbar .btn{
 	min-width: 110px;
@@ -278,7 +282,9 @@ a:hover{
 .border-4{
 	border-width: 4px!important;
 }
-
+.border-red-dbs {
+    border-color: #c00 !important;
+}
 .scroll-box-md {
     height: 100px;
     overflow: auto;

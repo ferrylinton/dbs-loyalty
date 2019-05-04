@@ -1,9 +1,40 @@
 $(document).ready(function () {
 	
 	initMainContentHeight();
+	
+	initInputMaterial();
+	
 	Sidenav.init();
+	
 	initFormatDate();
+	
+	initEditor($('#content'));
+	
+	initEditor($('#termAndCondition'));
+	
+	initCustomFile();
+	
+	FormUtil.initActivated();
+	
+	FormUtil.initLocked();
+	
+	FormUtil.initShowInCarousel();
+	
+	DateUtil.initDob();
+	
+	DateUtil.startEndPeriod($('input[name="startPeriod"]'), $('input[name="endPeriod"]'));
+	
+	DateUtil.initTimePicker($('input[name="timePeriod"]'));
+	
+	DateUtil.initSearch();
+	
+	JsonUtil.toTable();
+	
 });
+
+function initInputMaterial(){
+	$('body').materializeInputs();
+}
 
 function initFormatDate(){
 	$('span[data-date]').each(function(index){
@@ -16,59 +47,22 @@ function initFormatDate(){
 	});
 }
 
-function onLoadLoginForm(){
-	$('body').materializeInputs();
-}
-
-function onLoadUserForm(){
-	FormUtil.initActivated();
-	FormUtil.initLocked();
-}
-
-function onLoadCustomerForm(){
-	FormUtil.initActivated();
-	FormUtil.initLocked();
-	DateUtil.initDob();
-}
-
-function onLoadPromoForm(){
-	FormUtil.initActivated();
-	FormUtil.initShowInCarousel();
-	DateUtil.startEndPeriod($('input[name="startPeriod"]'), $('input[name="endPeriod"]'));
-	initEditor($('#content'));
-	initEditor($('#termAndCondition'));
-	initCustomFile();
-}
-
-function onLoadEventForm(){
-	DateUtil.startEndPeriod($('input[name="startPeriod"]'), $('input[name="endPeriod"]'));
-	DateUtil.initTimePicker($('input[name="timePeriod"]'));
-	initEditor($('#content'));
-	initCustomFile();
-}
-
 function initEditor(obj){
-	obj.trumbowyg({
-		lang: $('html').attr('lang'),
-		svgPath: $('meta[name=contextPath]').attr('content') + 'static/svg/icons.svg',
-		btns: [
-			['viewHTML'],
-			['undo', 'redo'],
-			['formatting'],
-			['strong', 'em', 'del'],
-			['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
-			['unorderedList', 'orderedList']
-		],
-		autogrow: true
-	});
-}
-
-function onLoadTask(){
-	JsonUtil.toTable();
-}
-
-function onLoadLogLogin(){
-	DateUtil.initSearch();
+	if(obj.length){
+		obj.trumbowyg({
+			lang: $('html').attr('lang'),
+			svgPath: $('meta[name=contextPath]').attr('content') + 'static/svg/icons.svg',
+			btns: [
+				['viewHTML'],
+				['undo', 'redo'],
+				['formatting'],
+				['strong', 'em', 'del'],
+				['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
+				['unorderedList', 'orderedList']
+			],
+			autogrow: true
+		});
+	}
 }
 
 function initMainContentHeight(){

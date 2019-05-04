@@ -1,19 +1,9 @@
 <!doctype html>
 <html lang="en" th:lang="${#locale.toString() == 'in' ? 'id' : #locale}" xmlns:th="http://www.thymeleaf.org" class="h-100" style="min-height: 430px;">
 
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="contextPath" content="/" th:content="@{/}" />
-    <meta name="_csrf" content="18389837-d2fb-415d-9079-80e38e7a9520" th:content="${_csrf.token}"/>
-	<meta name="_csrf_header" content="X-CSRF-TOKEN" th:content="${_csrf.headerName}"/>
-    <title th:text="|#{application.name} : #{login}|"></title>
-    <link href="/static/image/favicon.png" th:href="@{/static/image/favicon.png}" rel="shorcut icon" />
-    <link href="/static/css/all.min.css" th:href="@{/static/css/all.min.css}" rel="stylesheet" />
-</head>
+<head th:replace="fragment/head.html :: content(title=login)"></head>
 
-<body class="bg-login pt-3" onload="onLoadLoginForm()">
+<body class="bg-login pt-3">
     <div class="container-fluid login-box">
         <div class="row justify-content-center align-items-center h-100">
             <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
@@ -53,7 +43,8 @@
             </div>
         </div>
     </div>
-    <script src="/static/js/all.min.js" th:src="@{/static/js/all.min.js}"></script>
+    <!-- SCRIPTS -->
+    <div th:replace="fragment/scripts.html :: content"></div>
 </body>
 
 </html>

@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en" th:lang="${#locale.toString() == 'in' ? 'id' : #locale}" xmlns:th="http://www.thymeleaf.org" xmlns:nl2br="https://github.com/bufferings/thymeleaf-extras-nl2br">
 
-<head th:replace="fragment/head.html :: content(title=error)"></head>
+<head th:replace="fragment/head.html :: content(title=|#{application.name} : Error|)"></head>
 
 <body>
     <!-- NAVBAR -->
