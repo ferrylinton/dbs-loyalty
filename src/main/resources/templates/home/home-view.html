@@ -1,17 +1,7 @@
 <!doctype html>
 <html lang="en" th:lang="${#locale.toString() == 'in' ? 'id' : #locale}" xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="contextPath" content="/" th:content="@{/}" />
-    <meta name="_csrf" content="18389837-d2fb-415d-9079-80e38e7a9520" th:content="${_csrf.token}"/>
-	<meta name="_csrf_header" content="X-CSRF-TOKEN" th:content="${_csrf.headerName}"/>
-    <title th:text="|#{application.name} : #{home}|"></title>
-    <link href="/static/image/favicon.png" th:href="@{/static/image/favicon.png}" rel="shorcut icon" />
-    <link href="/static/css/all.min.css" th:href="@{/static/css/all.min.css}" rel="stylesheet" />
-</head>
+<head th:replace="fragment/head.html :: content(title=home)"></head>
 
 <body>
     <!-- NAVBAR -->
@@ -55,8 +45,7 @@
     <!-- SIDENAV -->
     <div id="sidenav-box" th:replace="fragment/sidenav.html :: #sidenav-box"></div>
     <!-- SCRIPTS -->
-    <script src="/static/js/all.min.js" th:src="@{/static/js/all.min.js}"></script>
-    <script src="/static/js/fragment.js" th:remove="all"></script>
+    <div th:replace="fragment/scripts.html :: content"></div>
 </body>
 
 </html>

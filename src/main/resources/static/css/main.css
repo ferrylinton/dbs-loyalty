@@ -1,0 +1,308 @@
+html {
+	padding: 0;
+	margin: 0;
+}
+
+body{
+	padding: 60px 0 0 0;
+	margin: 0;
+}
+
+/* LOGIN */
+
+.bg-login{
+	height: 100%!important;
+	background-image: url("../image/login-bg.png");
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.login-header{
+	border-top: solid 4px #c00;
+	background-color: #000;
+	color: #fff;
+
+	img{
+		float: left;
+		padding: 15px 20px
+	}
+}
+
+.login-box{
+	height: calc(100% - 75px);
+}
+
+@media ( min-width : 576px) {
+	 
+	.login-box{
+		height: calc(100% - 53px);
+	}
+	
+}
+
+/* NAVBAR */
+
+.navbar{
+	height: 60px;
+	min-width: 400px;
+	background-color: #000;
+	border-bottom: solid 3px #c00;
+}
+
+.navbar .btn-menu{
+	padding: 0 10px;
+	font-size: 1.5rem;
+	color: #fff;
+	border: solid 1px #2e2e2e;
+}
+	
+.navbar .btn-nav{
+	color: #fff;
+	border: solid 1px #2e2e2e;
+}
+	
+.navbar .btn-group.btn-nav .btn{
+	border: none;
+}
+	
+.navbar .btn-menu:hover, .btn-nav:hover{
+	color: #007bff;
+	background-color: #181818;
+}
+
+/* FOOTER */
+
+#footer{
+	margin-top: 15px;
+	padding: 15px 0;
+	font-size: .9em;
+	border-top: solid 1px #dee2e6;
+}
+
+#footer a{
+	padding: 1px 4px;
+}
+
+#footer-login{
+	background: rgba(0, 0, 0, 0.2);
+	padding: 15px;
+	font-size: .9em;
+	color: #fff;
+	width: 100%;
+	position: fixed;
+	z-index: 1;
+	bottom: 0;
+	left: 0;
+	text-transform: uppercase;
+	text-align: center;
+}
+	
+#footer-login a{
+	color: #fff;
+	padding: 1px 4px;
+}
+
+#footer-login a:hover{
+	text-decoration: none;
+	color: #007bff;
+}
+
+/* LAYOUT */
+
+#content-box{
+	padding-right: 0;
+	transition: 0.8s;
+	background-color: #fff;
+	min-width: 400px;
+}
+
+#sidenav-box{
+	width: 250px;
+	height: calc(100% - (60px));
+	position: fixed;
+	z-index: 1001;
+	top: 60px;
+	right: 0;
+	overflow-x: hidden;
+	transition: 0.8s;
+	background-color: #242527;
+}
+
+@media (min-width: 768px){
+
+	#content-box{
+		padding-right: 250px;
+	}
+
+}
+
+#main-content{
+	border: solid 1px #ced4da;
+	padding: 15px;
+	margin: 15px;
+	min-height: 400px;
+}
+
+/* WELCOME BOX */
+
+.welcome-box span{
+	font-size: 1.5em;
+}
+	
+.welcome-box .table{
+	margin: 20px 0 0 0;
+}
+
+@media ( min-width : 576px) {
+
+	.welcome-box .table{
+		width: 500px;
+	}
+
+}
+
+@media (min-width: 768px){
+
+	.welcome-boxspan{
+		font-size: 2.0em;
+	}
+
+}
+
+
+/* TABLE DETAIL - JSON */
+
+.table-detail{
+	min-width: 600px;
+	font-size: .9em;
+}
+
+.table-detail th{
+	width: 140px;
+	background-color: #f7fafc;
+	border-right: solid 1px #ced4da;
+}
+
+.table-detail ol{
+	padding: 0 0 0 15px;
+	margin: 0 0 0 15px;
+}
+
+.table-detail .json{
+	padding: 15px;
+}
+
+.json{
+	padding: 0;
+	margin-bottom: 0;
+}
+.json .table{
+	margin-bottom: 0;
+}
+.json .table th{
+	font-weight: normal;
+	background-color: #f7fafc;
+}
+
+.json .btn{
+		min-width: 200px;
+}
+
+
+
+a{
+	cursor: pointer;
+}
+
+a:hover{
+	text-decoration: none;
+}
+
+.no-break{
+	/* These are technically the same, but use both */
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+
+	-ms-word-break: break-all;
+	/* This is the dangerous one in WebKit, as it breaks things wherever */
+	word-break: break-all;
+	/* Instead use this non-standard one: */
+	word-break: break-word;
+
+	/* Adds a hyphen where the word breaks, if supported (No Blink) */
+	-ms-hyphens: auto;
+	-moz-hyphens: auto;
+	-webkit-hyphens: auto;
+	hyphens: auto;
+}
+
+
+
+.breadcrumb{
+	padding: .45rem 1rem;
+}
+
+.btn-light{
+	background-color: #fff; 
+	border: solid 1px #dee2e6;
+}
+
+.jconfirm .jconfirm-box .jconfirm-buttons button{
+	border: solid 1px #dee2e6;
+}
+
+.toolbar .btn{
+	min-width: 110px;
+	border: solid 1px #ced4da;
+}
+
+.form-control[readonly] {
+    background-color: #ffffff;
+    opacity: 1;
+}
+
+.custom-select option {
+    padding: 8px 4px;
+    margin: 4px;
+}
+
+.font-12{
+	font-size: 1.225em !important;
+}
+
+.text-red{
+	color: #c00 !important;
+}
+
+.border-4{
+	border-width: 4px!important;
+}
+
+.scroll-box-md {
+    height: 100px;
+    overflow: auto;
+}
+
+.scroll-box-lg {
+    height: 150px;
+    overflow: auto;
+}
+
+.table-responsive{
+	margin-bottom: 15px;
+}
+
+.table-responsive .table{
+	margin-bottom: 0;
+}
+
+.btn-danger {
+    background-color: #ed1c24;
+    border-color: #e31a1a;
+}
+
+.btn-danger:hover,  .btn-danger:active{
+    background-color: #dc0d15;
+    border-color: #d40810;
+}

@@ -1,0 +1,54 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<body>
+    <div th:fragment="content" th:remove="tag">
+    	<!-- LIBS - CDNJS -->
+    	<th:block th:if="${#arrays.contains(@environment.getActiveProfiles(),'cdnjs')}">
+	    	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+	    	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/locale/id.js"></script>
+	    	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	    	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.15.0/umd/popper.min.js"></script>
+	    	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.4/jquery-confirm.min.js"></script>
+        	<script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.js"></script>
+        	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.js"></script>
+        	<script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.17.0/trumbowyg.min.js"></script>
+        	<script src="https://cdnjs.cloudflare.com/ajax/libs/Trumbowyg/2.17.0/langs/id.min.js"></script>
+        </th:block>
+        <!-- LIBS - LOCAL -->
+        <th:block th:if="${not #arrays.contains(@environment.getActiveProfiles(),'cdnjs')}">
+        	<script src="/static/libs/moment.js/2.24.0/moment.min.js" th:src="@{/static/libs/moment.js/2.24.0/moment.min.js}"></script>
+        	<script src="/static/libs/moment.js/2.24.0/locale/id.js" th:src="@{/static/libs/moment.js/2.24.0/locale/id.js}"></script>
+        	<script src="/static/libs/jquery/3.4.1/jquery.min.js" th:src="@{/static/libs/jquery/3.4.1/jquery.min.js}"></script>
+        	<script src="/static/libs/popper.js/1.15.0/umd/popper.min.js" th:src="@{/static/libs/popper.js/1.15.0/umd/popper.min.js}"></script>
+        	<script src="/static/libs/twitter-bootstrap/4.3.1/bootstrap.min.js" th:src="@{/static/libs/twitter-bootstrap/4.3.1/bootstrap.min.js}"></script>
+        	<script src="/static/libs/jquery-confirm/3.3.4/jquery-confirm.min.js" th:src="@{/static/libs/jquery-confirm/3.3.4/jquery-confirm.min.js}"></script>
+        	<script src="/static/libs/datepicker/0.6.5/datepicker.min.js" th:src="@{/static/libs/datepicker/0.6.5/datepicker.min.js}"></script>
+        	<script src="/static/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.js" th:src="@{/static/libs/jquery-timepicker/1.10.0/jquery.timepicker.min.js}"></script>
+        	<script src="/static/libs/Trumbowyg/2.17.0/trumbowyg.min.js" th:src="@{/static/libs/Trumbowyg/2.17.0/trumbowyg.min.js}"></script>
+        	<script src="/static/libs/Trumbowyg/2.17.0/langs/id.min.js" th:src="@{/static/libs/Trumbowyg/2.17.0/langs/id.min.js}"></script>
+        </th:block>
+        <!-- ALL MIN JS -->
+        <th:block th:if="${#arrays.contains(@environment.getActiveProfiles(),'min')}">
+        	<script src="/static/js/all.min.js" th:src="@{/static/js/all.min.js}"></script>
+        </th:block>
+        <!-- JS -->
+        <th:block th:if="${not #arrays.contains(@environment.getActiveProfiles(),'min')}">
+        	<script src="/static/js/lang.js" th:src="@{/static/js/lang.js}"></script>
+        	<script src="/static/js/materialize-inputs.jquery.js" th:src="@{/static/js/materialize-inputs.jquery.js}"></script>
+        	<script src="/static/js/jquery-confirm-defaults.js" th:src="@{/static/js/jquery-confirm-defaults.js}"></script>
+        	<script src="/static/js/sidenav.js" th:src="@{/static/js/sidenav.js}"></script>
+        	<script src="/static/js/alertutil.js" th:src="@{/static/js/alertutil.js}"></script>
+        	<script src="/static/js/ajaxutil.js" th:src="@{/static/js/ajaxutil.js}"></script>
+        	<script src="/static/js/taskutil.js" th:src="@{/static/js/taskutil.js}"></script>
+        	<script src="/static/js/jsonutil.js" th:src="@{/static/js/jsonutil.js}"></script>
+        	<script src="/static/js/dateutil.js" th:src="@{/static/js/dateutil.js}"></script>
+        	<script src="/static/js/imageutil.js" th:src="@{/static/js/imageutil.js}"></script>
+        	<script src="/static/js/formutil.js" th:src="@{/static/js/formutil.js}"></script>
+        	<script src="/static/js/main.js" th:src="@{/static/js/main.js}"></script>
+        </th:block>
+    </div>
+</body>
+
+</html>
