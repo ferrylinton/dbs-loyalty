@@ -5,6 +5,8 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
  
+ 	<!-- AUTHORITY -->
+ 	
  	<property name="ADMIN" value="7EHSGZqDYiRIzl86BNy3Pz" />
 	<property name="ROLE_MK" value="4oQQCn6EH3Nt1STb5QDPLs" />
 	<property name="ROLE_CK" value="75ZVzieeKjOL6pXwaojhnj" />
@@ -18,16 +20,20 @@
 	<property name="PROMO_CK" value="1TTQ3Krpv67mXgXSVQMxta" />
 	<property name="EVENT_MK" value="5pCE5or9qYpE8MjCmEoE1T" />
 	<property name="EVENT_CK" value="20z68J3645AKPfPZikxWjr" />
-	<property name="TRAVEL_ASSISTANCE_MK" value="7EkUrNoXxryCvNu5QVjHDT" />
-	<property name="TRAVEL_ASSISTANCE_CK" value="2YSDoYSK50AIzVE98M5BiX" />
+	<property name="TRAVEL_ASSISTANCE" value="7EkUrNoXxryCvNu5QVjHDT" />
 	<property name="WELLNESS_MK" value="7SOgeukvTpvHkBFpspq3z6" />
 	<property name="WELLNESS_CK" value="3uevL1aomxAxeduQ9ZDcAd" />
 	<property name="LOVED_ONE" value="Z1oH73CbzVYyRSbDuE4s0" />
 	<property name="REWARD" value="58RmYQyduqZ0SBK3VvHElI" />
 	
+	<!-- ROLE -->
+	
 	<property name="Admin" value="3RHlPxnhbxGfks4vgGFo9k" />
 	<property name="Maker" value="5EIWrrJFrijNCv2tISSW6O" />
 	<property name="Checker" value="3CYZnXHhxtJ3xvHzUJe6bh" />
+	<property name="TravelAssistance" value="7cyB8fi6xDBHfDTppCagyC" />
+	
+	<!-- USER -->
 	
 	<changeSet author="FLH" id="101-1">
 		<insert tableName="u_user">
@@ -110,13 +116,8 @@
         </insert>
 
         <insert tableName="u_authority">
-            <column name="id" value="${TRAVEL_ASSISTANCE_MK}"/>
-            <column name="name" value="TRAVEL_ASSISTANCE_MK"/>
-        </insert>
-        
-        <insert tableName="u_authority">
-            <column name="id" value="${TRAVEL_ASSISTANCE_CK}"/>
-            <column name="name" value="TRAVEL_ASSISTANCE_CK"/>
+            <column name="id" value="${TRAVEL_ASSISTANCE}"/>
+            <column name="name" value="TRAVEL_ASSISTANCE"/>
         </insert>
 
         <insert tableName="u_authority">
@@ -164,6 +165,13 @@
             <column name="name" value="Checker"/>
         </insert>
         
+        <insert tableName="u_role">
+            <column name="id" value="${TravelAssistance}"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="name" value="TravelAssistance"/>
+        </insert>
+        
     </changeSet>
     
     <changeSet author="FLH" id="101-4">
@@ -209,11 +217,6 @@
         
         <insert tableName="u_role_authority">
             <column name="role_id" value="${Maker}"/>
-            <column name="authority_id" value="${TRAVEL_ASSISTANCE_MK}"/>
-        </insert>
-        
-        <insert tableName="u_role_authority">
-            <column name="role_id" value="${Maker}"/>
             <column name="authority_id" value="${WELLNESS_MK}"/>
         </insert>
         
@@ -251,12 +254,14 @@
         
         <insert tableName="u_role_authority">
             <column name="role_id" value="${Checker}"/>
-            <column name="authority_id" value="${TRAVEL_ASSISTANCE_CK}"/>
+            <column name="authority_id" value="${WELLNESS_CK}"/>
         </insert>
         
+        <!-- ROLE TRAVEL ASSISTANCE -->
+		
         <insert tableName="u_role_authority">
-            <column name="role_id" value="${Checker}"/>
-            <column name="authority_id" value="${WELLNESS_CK}"/>
+            <column name="role_id" value="${TravelAssistance}"/>
+            <column name="authority_id" value="${TRAVEL_ASSISTANCE}"/>
         </insert>
 
     </changeSet>
@@ -432,6 +437,32 @@
             <column name="login_attempt_count" valueNumeric="0"/>
             <column name="username" value="maker05"/>
             <column name="role_id" value="${Maker}"/>
+        </insert>
+        
+        <insert tableName="u_user">
+            <column name="id" value="25VyipxVwSoIeGKg1KxJAW"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="activated" valueBoolean="true"/>
+            <column name="locked" valueBoolean="false"/>
+            <column name="user_type" valueNumeric="1"/>
+            <column name="login_attempt_count" valueNumeric="0"/>
+            <column name="username" value="travel01"/>
+            <column name="password_hash" value="${password}"/>
+            <column name="role_id" value="${TravelAssistance}"/>
+        </insert>
+        
+        <insert tableName="u_user">
+            <column name="id" value="4gFBc0kBC6huEE55JEg1ky"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="activated" valueBoolean="true"/>
+            <column name="locked" valueBoolean="false"/>
+            <column name="user_type" valueNumeric="1"/>
+            <column name="login_attempt_count" valueNumeric="0"/>
+            <column name="username" value="travel02"/>
+            <column name="password_hash" value="${password}"/>
+            <column name="role_id" value="${TravelAssistance}"/>
         </insert>
         
     </changeSet>

@@ -38,7 +38,7 @@
     <!-- AIRPORT - Type Of Service -->
     
     <changeSet author="FLH" id="010-4">
-        <createTable tableName="a_airport_service_type">
+        <createTable tableName="a_service_type">
             <column name="id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
             </column>
@@ -58,11 +58,11 @@
     </changeSet>
     
     <changeSet author="FLH" id="010-5">
-        <addPrimaryKey columnNames="id" constraintName="a_airport_service_type_pk" tableName="a_airport_service_type"/>
+        <addPrimaryKey columnNames="id" constraintName="a_service_type_pk" tableName="a_service_type"/>
     </changeSet>
     
     <changeSet author="FLH" id="010-6">
-        <addUniqueConstraint columnNames="name" constraintName="a_airport_service_type_name_uq" tableName="a_airport_service_type"/>
+        <addUniqueConstraint columnNames="name" constraintName="a_service_type_name_uq" tableName="a_service_type"/>
     </changeSet>
     
      <!-- AIRPORT -->
@@ -102,15 +102,19 @@
         <addForeignKeyConstraint baseColumnNames="country_id" baseTableName="a_airport" constraintName="a_airport_fk" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="a_country"/>
     </changeSet>
     
-    <!-- AIRPORT ASISSTANCE -->
+    <!-- DEPARTURE -->
     
     <changeSet author="FLH" id="010-11">
-        <createTable tableName="a_airport_assistance">
+        <createTable tableName="a_departure">
             <column name="id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
             </column>
-            <column name="assistance_type" type="VARCHAR(150)"/>
-            <column name="customer_phone" type="VARCHAR(20)"/>
+            <column name="service_type" type="VARCHAR(150)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="customer_phone" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
             <column name="flight_date" type="DATE">
                 <constraints nullable="false"/>
             </column>
@@ -123,7 +127,6 @@
             <column name="flight_number" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="flight_type" type="VARCHAR(10)"/>
             <column name="guest_phone" type="VARCHAR(20)"/>
             <column name="number_of_luggages" type="INT">
                 <constraints nullable="false"/>
@@ -136,7 +139,6 @@
                 <constraints nullable="false"/>
             </column>
             <column name="pickup_time" type="TIME WITHOUT TIME ZONE"/>
-            <column name="type_of_service" type="VARCHAR(100)"/>
             <column name="airport_id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
             </column>
@@ -155,16 +157,110 @@
     </changeSet>
     
     <changeSet author="FLH" id="010-12">
-        <addPrimaryKey columnNames="id" constraintName="a_airport_assistance_pk" tableName="a_airport_assistance"/>
+        <addPrimaryKey columnNames="id" constraintName="a_departure_pk" tableName="a_departure"/>
     </changeSet>
     
     <changeSet author="FLH" id="010-13">
-        <addForeignKeyConstraint baseColumnNames="airport_id" baseTableName="a_airport_assistance" constraintName="a_airport_assistance_fk1" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="a_airport"/>
+        <addForeignKeyConstraint baseColumnNames="airport_id" baseTableName="a_departure" constraintName="a_departure_fk1" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="a_airport"/>
     </changeSet>
     
     <changeSet author="FLH" id="011-14">
-        <addForeignKeyConstraint baseColumnNames="customer_id" baseTableName="a_airport_assistance" constraintName="a_airport_assistance_fk2" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="c_customer"/>
+        <addForeignKeyConstraint baseColumnNames="customer_id" baseTableName="a_departure" constraintName="a_departure_fk2" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="c_customer"/>
+    </changeSet>
+
+    <!-- ARRIVAL -->
+    
+    <changeSet author="FLH" id="010-15">
+        <createTable tableName="a_arrival">
+            <column name="id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="service_type" type="VARCHAR(150)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="customer_phone" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="flight_date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="flight_time" type="TIME WITHOUT TIME ZONE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="flight_code" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="flight_number" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="guest_phone" type="VARCHAR(20)"/>
+            <column name="number_of_luggages" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="number_of_passengers" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pickup_address" type="VARCHAR(255)"/>
+            <column name="pickup_from_home" type="BIT(1)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pickup_time" type="TIME WITHOUT TIME ZONE"/>
+            <column name="airport_id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="customer_id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
     </changeSet>
     
+    <changeSet author="FLH" id="010-16">
+        <addPrimaryKey columnNames="id" constraintName="a_arrival_pk" tableName="a_arrival"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="010-17">
+        <addForeignKeyConstraint baseColumnNames="airport_id" baseTableName="a_arrival" constraintName="a_arrival_fk1" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="a_airport"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="010-18">
+        <addForeignKeyConstraint baseColumnNames="customer_id" baseTableName="a_arrival" constraintName="a_arrival_fk2" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="c_customer"/>
+    </changeSet>
+    
+    <!-- TRAVEL ASSISTANCE -->
+
+    <changeSet author="FLH" id="010-19">
+        <createTable tableName="a_travel_assistance">
+            <column name="id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="total" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+    </changeSet>
+    
+    <changeSet author="FLH" id="010-20">
+        <addPrimaryKey columnNames="id" constraintName="a_travel_assistance_pk" tableName="a_travel_assistance"/>
+    </changeSet>
+ 
+    <changeSet author="FLH" id="010-21">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="a_travel_assistance" constraintName="a_travel_assistance_fk" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="c_customer"/>
+    </changeSet>
     
 </databaseChangeLog>

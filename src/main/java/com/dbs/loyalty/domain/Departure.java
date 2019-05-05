@@ -5,8 +5,6 @@ import java.time.LocalTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
@@ -17,14 +15,12 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import com.dbs.loyalty.domain.enumeration.FlightType;
-
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Class of Airport Assistance
+ * Class of Departure
  * 
  * @author Ferry L. H. <ferrylinton@gmail.com>
  */
@@ -32,8 +28,8 @@ import lombok.Setter;
 @Getter
 @EqualsAndHashCode(of = { "id" }, callSuper = false)
 @Entity
-@Table(name = "a_airport_assistance")
-public class AirportAssistance extends AbstractAuditing {
+@Table(name = "a_departure")
+public class Departure extends AbstractAuditing {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -43,15 +39,11 @@ public class AirportAssistance extends AbstractAuditing {
 	@GeneratedValue(generator = "IdGenerator")
 	private String id;
 	
-	@Enumerated(EnumType.STRING)
-	@Column(name = "flight_type", length=10)
-	private FlightType flightType;
-	
-	@Column(name = "assistance_type", length=150)
-	private String assistanceType;
+	@Column(name = "service_type", length=150)
+	private String serviceType;
 	
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "airport_id", nullable = false, foreignKey = @ForeignKey(name = "a_airport_assistance_fk"))
+    @JoinColumn(name = "airport_id", nullable = false, foreignKey = @ForeignKey(name = "a_departure_fk"))
     private Airport airport;
 
 	@Column(name = "flight_date", nullable = false)
@@ -88,7 +80,7 @@ public class AirportAssistance extends AbstractAuditing {
 	private LocalTime pickupTime;
 
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id", nullable = true, foreignKey = @ForeignKey(name = "a_airport_assistance_fk"))
+    @JoinColumn(name = "customer_id", nullable = true, foreignKey = @ForeignKey(name = "a_departure_fk"))
 	private Customer customer;
 	
 }

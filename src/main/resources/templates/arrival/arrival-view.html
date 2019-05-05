@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en" th:lang="${#locale.toString() == 'in' ? 'id' : #locale}" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="fragment/head.html :: content(title=|#{application.name} : #{${type}}|)"></head>
+<head th:replace="fragment/head.html :: content(title=|#{application.name} : #{arrival}|)"></head>
 
 <body>
     <!-- NAVBAR -->
@@ -11,7 +11,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/home/home-view.html" th:href="@{/}" th:text="#{home}">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page" th:text="#{${type}}">Departure</li>
+                <li class="breadcrumb-item active" aria-current="page" th:text="#{arrival}">Departure</li>
             </ol>
         </nav>
         <div id="main-content">
@@ -28,27 +28,27 @@
                                 </a>
                             </th>
                             <th th:text="#{name}">Name</th>
-                            <th th:text="#{assistanceType}">Assistance Type</th>
+                            <th th:text="#{serviceType}">Service Type</th>
                         </tr>
                     </thead>
 	                <tbody th:remove="all-but-first">
-	                    <tr th:each="airportassistance,row : ${page}">
+	                    <tr th:each="arrival,row : ${page}">
 	                        <td class="py-0 px-1">
 								<div class="dropdown">
 									<button type="button" class="btn btn-default dropdown-toggle px-1 py-0 font-12" id="dropdownMenuButton" data-boundary="window" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 										<span class="icon-cog"></span>
 									</button>
 									<div class="dropdown-menu py-0 shadow" aria-labelledby="dropdownMenuButton">
-										<a class="dropdown-item pl-1" href="/airportassistance/airportassistance-detail.html" th:href="@{|/${type}/${airportassistance.id}|}">
+										<a class="dropdown-item pl-1" href="/arrival/arrival-detail.html" th:href="@{|/arrival/${arrival.id}|}">
 										    <span class="icon-eye"></span> <span th:text="#{detail}">Detail</span>
                                         </a>
 									</div>
 								</div>
 							</td>
 	                        <td th:text="${row.count + (page.number * page.size)}">1</td>
-	                        <td th:text="${airportassistance.flightDate}">Date</td>
-	                        <td th:text="${airportassistance.customer.name}">Name</td>
-	                        <td th:text="${airportassistance.assistanceType}">Assistance Type</td>
+	                        <td th:text="${arrival.flightDate}">Date</td>
+	                        <td th:text="${arrival.customer.name}">Name</td>
+	                        <td th:text="${arrival.serviceType}">Service Type</td>
 	                    </tr>
 	                </tbody>
 	            </table>
