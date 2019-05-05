@@ -15,7 +15,7 @@
     <include file="release-001/006_customer_schema.xml" relativeToChangelogFile="true"/>
     <include file="release-001/007_promo_schema.xml" relativeToChangelogFile="true"/>
     <include file="release-001/008_event_schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/010_airport_assistance_schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/009_airport_assistance_schema.xml" relativeToChangelogFile="true"/>
 
     <include file="release-001/031_reward_operation_schema.xml" relativeToChangelogFile="true"/>
     <include file="release-001/032_reward_schema.xml" relativeToChangelogFile="true"/>

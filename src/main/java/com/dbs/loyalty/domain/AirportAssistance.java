@@ -5,6 +5,8 @@ import java.time.LocalTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
@@ -14,6 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+
+import com.dbs.loyalty.domain.enumeration.FlightType;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -39,8 +43,9 @@ public class AirportAssistance extends AbstractAuditing {
 	@GeneratedValue(generator = "IdGenerator")
 	private String id;
 	
+	@Enumerated(EnumType.STRING)
 	@Column(name = "flight_type", length=10)
-	private String flightType;
+	private FlightType flightType;
 	
 	@Column(name = "assistance_type", length=150)
 	private String assistanceType;
@@ -48,18 +53,12 @@ public class AirportAssistance extends AbstractAuditing {
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "airport_id", nullable = false, foreignKey = @ForeignKey(name = "a_airport_assistance_fk"))
     private Airport airport;
-	
-	@Column(name = "type_of_service", nullable = false, length=100)
-	private String typeOfService;
-	
+
 	@Column(name = "flight_date", nullable = false)
 	private LocalDate flightDate;
 	
 	@Column(name = "flight_time", nullable = false)
 	private LocalTime flightTime;
-	
-	@Column(name = "zone_id", nullable = true, length=80)
-	private String zoneId;
 
 	@Column(name = "flight_code", nullable = false, length=50)
 	private String flightCode;
@@ -87,5 +86,9 @@ public class AirportAssistance extends AbstractAuditing {
 	
 	@Column(name = "pickup_time")
 	private LocalTime pickupTime;
+
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id", nullable = true, foreignKey = @ForeignKey(name = "a_airport_assistance_fk"))
+	private Customer customer;
 	
 }

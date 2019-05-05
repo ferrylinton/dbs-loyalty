@@ -25,6 +25,17 @@
                     </li>
                 </ul>
             </li>
+            <li>
+                <span th:text="#{travelAssistance}">Travel Assistance</span>
+                <ul>
+                    <li th:if="${#authorization.expression('hasAnyAuthority(''TRAVEL_ASSISTANCE_MK'', ''TRAVEL_ASSISTANCE_CK'')')}">
+                        <a rel="/departure" href="/airportassistance/airportassistance-view.html" th:href="@{/departure}" th:text="#{departure}">Departure</a>
+                    </li>
+                    <li th:if="${#authorization.expression('hasAnyAuthority(''TRAVEL_ASSISTANCE_MK'', ''TRAVEL_ASSISTANCE_CK'')')}">
+                        <a rel="/arrival" href="/airportassistance/airportassistance-view.html" th:href="@{/arrival}" th:text="#{arrival}">Arrival</a>
+                    </li>
+                </ul>
+            </li>
             
             <li>
                 <span th:text="#{userManagement}">User Management</span>

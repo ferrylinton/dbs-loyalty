@@ -119,6 +119,11 @@
             <artifactId>problem-spring-web</artifactId>
             <version>0.23.0</version>
         </dependency>
+        <dependency>
+		    <groupId>org.thymeleaf.extras</groupId>
+		    <artifactId>thymeleaf-extras-java8time</artifactId>
+		    <version>3.0.1.RELEASE</version>
+		</dependency>
 
 		<!-- SPRING DATA JPA -->
 
@@ -430,6 +435,13 @@
 					<javascriptHtmlSpriteIntegrationFile>${basedir}/src/main/resources/integration.js </javascriptHtmlSpriteIntegrationFile>
 				</configuration>
 			</plugin>
+			<plugin>
+			    <groupId>org.apache.maven.plugins</groupId>
+			    <artifactId>maven-surefire-plugin</artifactId>
+			    <configuration>
+			        <skipTests>true</skipTests>
+			    </configuration>
+			</plugin>	
 		</plugins>
 	</build>
 </project>

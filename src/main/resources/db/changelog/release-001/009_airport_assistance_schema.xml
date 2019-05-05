@@ -5,6 +5,8 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
     
+    <!-- COUNTRY -->
+    
     <changeSet author="FLH" id="010-1">
         <createTable tableName="a_country">
             <column name="id" type="VARCHAR(22)">
@@ -33,7 +35,39 @@
         <addUniqueConstraint columnNames="name" constraintName="a_country_name_uq" tableName="a_country"/>
     </changeSet>
     
+    <!-- AIRPORT - Type Of Service -->
+    
     <changeSet author="FLH" id="010-4">
+        <createTable tableName="a_airport_service_type">
+            <column name="id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(140)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pending" type="BIT(1)" defaultValueBoolean="false"/>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+    </changeSet>
+    
+    <changeSet author="FLH" id="010-5">
+        <addPrimaryKey columnNames="id" constraintName="a_airport_service_type_pk" tableName="a_airport_service_type"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="010-6">
+        <addUniqueConstraint columnNames="name" constraintName="a_airport_service_type_name_uq" tableName="a_airport_service_type"/>
+    </changeSet>
+    
+     <!-- AIRPORT -->
+     
+    <changeSet author="FLH" id="010-7">
     
         <createTable tableName="a_airport">
             <column name="id" type="VARCHAR(22)">
@@ -56,21 +90,21 @@
         
     </changeSet>
     
-    <changeSet author="FLH" id="010-5">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="a_airport"/>
+    <changeSet author="FLH" id="010-8">
+        <addPrimaryKey columnNames="id" constraintName="a_airport_pk" tableName="a_airport"/>
     </changeSet>
     
-    <changeSet author="FLH" id="010-6">
+    <changeSet author="FLH" id="010-9">
         <addUniqueConstraint columnNames="name" constraintName="a_airport_name_uq" tableName="a_airport"/>
     </changeSet>
     
-    <changeSet author="FLH" id="010-7">
-        <createIndex indexName="a_airport_fk" tableName="a_airport">
-            <column name="country_id"/>
-        </createIndex>
+    <changeSet author="FLH" id="010-10">
+        <addForeignKeyConstraint baseColumnNames="country_id" baseTableName="a_airport" constraintName="a_airport_fk" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="a_country"/>
     </changeSet>
     
-    <changeSet author="FLH" id="010-8">
+    <!-- AIRPORT ASISSTANCE -->
+    
+    <changeSet author="FLH" id="010-11">
         <createTable tableName="a_airport_assistance">
             <column name="id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
@@ -83,7 +117,6 @@
             <column name="flight_time" type="TIME WITHOUT TIME ZONE">
                 <constraints nullable="false"/>
             </column>
-            <column name="zone_id" type="VARCHAR(80)"/>
             <column name="flight_code" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
@@ -104,7 +137,12 @@
             </column>
             <column name="pickup_time" type="TIME WITHOUT TIME ZONE"/>
             <column name="type_of_service" type="VARCHAR(100)"/>
-            <column name="airport_id" type="VARCHAR(22)"/>
+            <column name="airport_id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="customer_id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
             <column name="created_by" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
@@ -116,14 +154,16 @@
         </createTable>
     </changeSet>
     
-    <changeSet author="FLH" id="010-9">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="a_airport_assistance"/>
+    <changeSet author="FLH" id="010-12">
+        <addPrimaryKey columnNames="id" constraintName="a_airport_assistance_pk" tableName="a_airport_assistance"/>
     </changeSet>
     
-    <changeSet author="FLH" id="010-10">
-        <createIndex indexName="a_airport_assistance_fk" tableName="a_airport_assistance">
-            <column name="airport_id"/>
-        </createIndex>
+    <changeSet author="FLH" id="010-13">
+        <addForeignKeyConstraint baseColumnNames="airport_id" baseTableName="a_airport_assistance" constraintName="a_airport_assistance_fk1" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="a_airport"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="011-14">
+        <addForeignKeyConstraint baseColumnNames="customer_id" baseTableName="a_airport_assistance" constraintName="a_airport_assistance_fk2" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="c_customer"/>
     </changeSet>
     
     

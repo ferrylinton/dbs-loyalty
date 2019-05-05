@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en" th:lang="${#locale.toString() == 'in' ? 'id' : #locale}" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragment/head.html :: content(title=|#{application.name} : #{${type}}|)"></head>
+
+<body>
+    <!-- NAVBAR -->
+    <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
+    <div id="content-box">
+        <!-- BREADCRUMB -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/home/home-view.html" th:href="@{/}" th:text="#{home}">Home</a></li>
+                <li class="breadcrumb-item"><a href="/airportassistance/airportassistance-view.html" th:href="@{|/${type}|}" th:text="#{${type}}">Departure</a></li>
+                <li class="breadcrumb-item active" aria-current="page" th:text="#{detail}">Detail</li>
+            </ol>
+        </nav>
+        <div id="main-content">
+            <!-- MESSAGE -->
+            <div class="border alert alert-light text-center" role="alert" th:if="${error}">
+                <span class="icon-attention"></span> <span th:text="${error}">Data ['xxxx'] is not found</span>
+            </div>
+            <!-- TABLE DETAIL -->
+            <th:block th:if="${airportassistance}">
+                <div class="table-responsive border border-top-0">
+                    <table class="table table-sm table-detail" style="min-width: 400px;">
+                        <tbody>
+                            <tr>
+                                <th style="width:200px;" th:text="#{id}">Id</th>
+                                <td th:text="${airportassistance.id}">ZwOkjFmG</td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{assistanceType}">Assistance Type</th>
+                                <td th:text="${airportassistance.assistanceType}">Assistance Type</td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{airport}">Airport</th>
+                                <td th:text="${airportassistance.airport.name}">Airport</td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{flightDate}">Flight Date</th>
+                                <td th:text="${airportassistance.flightDate}">Flight Date</td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{flightTime}">Flight Time</th>
+                                <td th:text="${airportassistance.flightTime}">Flight Time</td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{flightCode}">Flight Code</th>
+                                <td th:text="${airportassistance.flightCode}">Flight Code</td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{flightNumber}">Flight Number</th>
+                                <td th:text="${airportassistance.flightNumber}">Flight Number</td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{name}">Name</th>
+                                <td th:text="${airportassistance.customer.name}">Name</td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{customerPhone}">Customer Phone</th>
+                                <td th:text="${airportassistance.customerPhone}">Customer Phone</td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{guestPhone}">Guest Phone</th>
+                                <td th:text="${airportassistance.guestPhone}">Guest Phone</td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{pickupFromHome}">Pickup From Home</th>
+                                <td><span class="text-success icon-ok" th:class="${airportassistance.pickupFromHome} ? 'text-success icon-ok' : 'text-danger icon-cancel'"></span></td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{pickupAddress}">Pickup Address</th>
+                                <td th:text="${airportassistance.pickupAddress}">Pickup Address</td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{pickupTime}">Pickup Time</th>
+                                <td th:text="${airportassistance.pickupTime}">08:00</td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{numberOfPassengers}">Number Of Passengers</th>
+                                <td th:text="${airportassistance.numberOfPassengers}">1</td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{numberOfLuggages}">Number Of Luggages</th>
+                                <td th:text="${airportassistance.numberOfLuggages}">1</td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{createdBy}">Created By</th>
+                                <td th:text="${airportassistance.createdBy}">System</td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{createdDate}">Created Dt</th>
+                                <td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.datetime()}" th:text="${airportassistance.createdDate}">2019-05-01T21:24:44Z</span></td>
+                            </tr>
+                            <tr th:if="${airportassistance.lastModifiedBy}">
+                                <th th:text="#{lastModifiedBy}">Last Modified By</th>
+                                <td th:text="${airportassistance.lastModifiedBy}">System</td>
+                            </tr>
+                            <tr th:if="${airportassistance.lastModifiedDate}">
+                                <th th:text="#{lastModifiedDate}">Last Modified Dt</th>
+                                <td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.datetime()}" th:text="${airportassistance.lastModifiedDate}">2019-05-01T21:24:44Z</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- TOOLBAR -->
+                <div class="toolbar">
+                    <a class="btn btn-light" href="/airportassistance/airportassistance-view.html" th:href="@{|/${type}|}">
+                        <span class="icon-left"></span> <span th:text="#{back}">Back</span>
+                    </a>
+                </div>
+            </th:block>
+        </div>
+        <!-- FOOTER -->
+        <div id="footer" th:replace="fragment/footer.html :: #footer"></div>
+    </div>
+    <!-- SIDENAV -->
+    <div id="sidenav-box" th:replace="fragment/sidenav.html :: #sidenav-box"></div>
+    <!-- SCRIPTS -->
+    <div th:replace="fragment/scripts.html :: content"></div>
+</body>
+
+</html>
