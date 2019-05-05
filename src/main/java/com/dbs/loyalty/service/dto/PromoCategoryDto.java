@@ -1,9 +1,6 @@
 package com.dbs.loyalty.service.dto;
 
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-
-import com.dbs.loyalty.config.constant.Constant;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -20,12 +17,11 @@ import lombok.Setter;
 @Getter
 public class PromoCategoryDto {
 
-	@ApiModelProperty(value = "Promo Category's id", example = "In1IverC", required = true, position = 0)
+	@ApiModelProperty(value = "Promo Category's id", example = "6nJfmxAD6GWtsehXfSkShg", required = true, position = 0)
 	private String id;
 	
 	@ApiModelProperty(value = "Promo Category's name", example = "Debit Card Promo", required = true, position = 0)
-	@Pattern(regexp = Constant.NAME_REGEX, message = "{validation.pattern.name}")
-    @Size(min = 2, max = 100, message = "{validation.size.name}")
+	@Size(min = 2, max = 100, message = "{validation.size.name}")
 	private String name;
 	
 	public PromoCategoryDto() {

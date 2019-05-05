@@ -1,6 +1,7 @@
 package com.dbs.loyalty.service.mapper;
 
 import org.mapstruct.AfterMapping;
+import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -10,7 +11,7 @@ import com.dbs.loyalty.domain.Promo;
 import com.dbs.loyalty.service.dto.CarouselDto;
 import com.dbs.loyalty.service.dto.PromoDto;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public abstract class PromoMapper{
 
 	public abstract PromoDto toDto(Promo promo);

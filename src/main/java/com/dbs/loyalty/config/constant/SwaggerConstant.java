@@ -6,6 +6,10 @@ public final class SwaggerConstant {
 	
 	public static final String PROMO_CATEGORY = "PromoCategory";
 	
+	public static final String AIRPORT = "Airport";
+	
+	public static final String TRAVEL_ASSISTANCE = "Travel Assistance";
+	
 	public static final String PROMO = "Promo";
 	
 	public static final String REWARD = "Reward";

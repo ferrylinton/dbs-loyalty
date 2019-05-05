@@ -8,6 +8,68 @@ body{
 	margin: 0;
 }
 
+a{
+	cursor: pointer;
+}
+
+a:hover{
+	text-decoration: none;
+}
+
+/* OVERRIDE BOOTSTRAP */
+
+.btn{
+	border-radius: 0;
+}
+
+.btn-danger {
+    background-color: #ed1c24;
+    border-color: #e31a1a;
+}
+
+.btn-danger:hover,  .btn-danger:active{
+    background-color: #dc0d15;
+    border-color: #d40810;
+}
+
+.btn-light{
+	background-color: #fff; 
+	border: solid 1px #dee2e6;
+}
+
+.breadcrumb{
+	padding: .45rem 1rem;
+}
+
+.form-control[readonly] {
+    background-color: #ffffff;
+    opacity: 1;
+}
+
+.custom-select option {
+    padding: 8px 4px;
+    margin: 4px;
+}
+
+.custom-file-input:lang(en)~.custom-file-label::after {
+    content: "Browse";
+}
+
+.custom-file-input:lang(id)~.custom-file-label::after {
+    content: "Pilih Berkas";
+}
+
+/* OVERRIDE JQUERY CONFIRM */
+
+.jconfirm .jconfirm-box .jconfirm-buttons button{
+	border: solid 1px #dee2e6;
+}
+
+.jconfirm.jconfirm-bootstrap .jconfirm-box {
+    border: 0;
+    border-top: solid 7px #e74c3c;
+}
+
 /* LOGIN */
 
 .bg-login{
@@ -164,12 +226,11 @@ body{
 
 @media (min-width: 768px){
 
-	.welcome-boxspan{
+	.welcome-box span{
 		font-size: 2.0em;
 	}
 
 }
-
 
 /* TABLE DETAIL - JSON */
 
@@ -209,16 +270,6 @@ body{
 		min-width: 200px;
 }
 
-
-
-a{
-	cursor: pointer;
-}
-
-a:hover{
-	text-decoration: none;
-}
-
 .no-break{
 	/* These are technically the same, but use both */
 	overflow-wrap: break-word;
@@ -238,37 +289,9 @@ a:hover{
 }
 
 
-
-.breadcrumb{
-	padding: .45rem 1rem;
-}
-
-.btn-light{
-	background-color: #fff; 
-	border: solid 1px #dee2e6;
-}
-
-.jconfirm .jconfirm-box .jconfirm-buttons button{
-	border: solid 1px #dee2e6;
-}
-.jconfirm.jconfirm-bootstrap .jconfirm-box {
-    border: 0;
-    border-top: solid 7px #e74c3c;
-}
-
 .toolbar .btn{
 	min-width: 110px;
 	border: solid 1px #ced4da;
-}
-
-.form-control[readonly] {
-    background-color: #ffffff;
-    opacity: 1;
-}
-
-.custom-select option {
-    padding: 8px 4px;
-    margin: 4px;
 }
 
 .font-12{
@@ -282,9 +305,11 @@ a:hover{
 .border-4{
 	border-width: 4px!important;
 }
+
 .border-red-dbs {
     border-color: #c00 !important;
 }
+
 .scroll-box-md {
     height: 100px;
     overflow: auto;
@@ -301,22 +326,4 @@ a:hover{
 
 .table-responsive .table{
 	margin-bottom: 0;
-}
-
-.btn-danger {
-    background-color: #ed1c24;
-    border-color: #e31a1a;
-}
-
-.btn-danger:hover,  .btn-danger:active{
-    background-color: #dc0d15;
-    border-color: #d40810;
-}
-
-.custom-file-input:lang(en)~.custom-file-label::after {
-    content: "Browse";
-}
-
-.custom-file-input:lang(id)~.custom-file-label::after {
-    content: "Pilih Berkas";
 }

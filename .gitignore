@@ -2,6 +2,9 @@ node_modules
 dist
 generated
 /target/
+/src/main/resources/templates-dist/
+/src/main/resources/static/css-dist/
+/src/main/resources/static/js-dist/
 !.mvn/wrapper/maven-wrapper.jar
 
 /log/

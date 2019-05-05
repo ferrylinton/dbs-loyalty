@@ -19,7 +19,7 @@ import lombok.Setter;
 @ApiModel(value="Customer", description = "Customer's data")
 public class CustomerDto {
 	
-	@ApiModelProperty(value = "Customer's id", example = "646e8a2a-4ca4-459a-9da8-2a31daaecd38", position = 0)
+	@ApiModelProperty(value = "Customer's id", example = "1IUe73HCc9Qfjl1sxhasNI", position = 0)
 	private String id;
 
 	@ApiModelProperty(value = "Customer's email", example = "johnsmith@dbs.com", position = 1)
@@ -30,7 +30,6 @@ public class CustomerDto {
 	
 	@ApiModelProperty(value = "Customer's name", example = "John Smith", position = 2)
 	@NotNull(message = "{validation.notnull.name}")
-	@Pattern(regexp = Constant.NAME_REGEX, message = "{validation.pattern.name}")
 	@Size(min = 2, max = 50, message = "{validation.size.name}")
 	private String name;
 	

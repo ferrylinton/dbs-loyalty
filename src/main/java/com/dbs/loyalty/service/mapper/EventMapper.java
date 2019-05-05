@@ -1,6 +1,7 @@
 package com.dbs.loyalty.service.mapper;
 
 import org.mapstruct.AfterMapping;
+import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -9,7 +10,7 @@ import com.dbs.loyalty.config.constant.PathConstant;
 import com.dbs.loyalty.domain.Event;
 import com.dbs.loyalty.service.dto.EventDto;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public abstract class EventMapper{
 
 	public abstract EventDto toDto(Event event);
