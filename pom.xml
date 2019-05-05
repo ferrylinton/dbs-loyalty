@@ -419,6 +419,14 @@
 				<groupId>com.tunyk.mvn.plugins.htmlcompressor</groupId>
 				<artifactId>htmlcompressor-maven-plugin</artifactId>
 				<version>1.3</version>
+				<executions>
+	                <execution>
+		                <phase>generate-resources</phase>
+		                <goals>
+		                    <goal>html</goal>
+		                </goals>
+	                </execution>
+	            </executions>
 				<configuration>
 					<goalPrefix>htmlcompressor</goalPrefix>
 					<enabled>true</enabled>
