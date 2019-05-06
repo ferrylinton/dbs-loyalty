@@ -26,7 +26,7 @@ public class DepartureDto {
 	@Size(min = 2, max = 150, message = "{validation.size.serviceType}")
 	private String serviceType;
 	
-	private String airportId;
+	private AirportDto airport;
 
 	private LocalDate flightDate;
 	

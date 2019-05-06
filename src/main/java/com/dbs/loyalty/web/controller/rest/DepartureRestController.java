@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
-import com.dbs.loyalty.service.ArrivalService;
-import com.dbs.loyalty.service.dto.ArrivalDto;
+import com.dbs.loyalty.service.DepartureService;
+import com.dbs.loyalty.service.dto.DepartureDto;
 import com.dbs.loyalty.service.dto.FeedbackAnswerDto;
-import com.dbs.loyalty.service.mapper.ArrivalMapper;
+import com.dbs.loyalty.service.mapper.DepartureMapper;
 import com.dbs.loyalty.web.response.Response;
 
 import io.swagger.annotations.Api;
@@ -38,25 +38,25 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api")
-public class ArrivalRestController {
+public class DepartureRestController {
 
-	private final ArrivalService arrivalService;
+	private final DepartureService departureService;
 	
-	private final ArrivalMapper arrivalMapper;
+	private final DepartureMapper departureMapper;
 
     @ApiOperation(
-    		nickname		= "AddArrival", 
-    		value			= "AddArrival", 
-    		notes			= "Add Arrival",
+    		nickname		= "AddDeparture", 
+    		value			= "AddDeparture", 
+    		notes			= "Add Departure",
     		produces		= MediaType.APPLICATION_JSON_VALUE, 
     		authorizations	= { @Authorization(value=JWT) })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = FeedbackAnswerDto.class)})
     @PreAuthorize("hasRole('CUSTOMER')")
-    @PostMapping("/arrivals")
-    public ResponseEntity<Response> addArrival(
-    		@Valid @RequestBody ArrivalDto arrivalDto) throws NotFoundException, BadRequestException{
+    @PostMapping("/departures")
+    public ResponseEntity<Response> addDeparture(
+    		@Valid @RequestBody DepartureDto departureDto) throws NotFoundException, BadRequestException{
     	
-    	Response response = arrivalService.save(arrivalMapper.toEntity(arrivalDto));
+    	Response response = departureService.save(departureMapper.toEntity(departureDto));
     	return ResponseEntity.ok().body(response);
     }
     

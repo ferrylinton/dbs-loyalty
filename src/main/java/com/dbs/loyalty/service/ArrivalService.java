@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.dbs.loyalty.domain.Arrival;
 import com.dbs.loyalty.domain.Customer;
+import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.repository.ArrivalRepository;
 import com.dbs.loyalty.repository.CustomerRepository;
 import com.dbs.loyalty.util.SecurityUtil;
@@ -32,16 +33,28 @@ public class ArrivalService {
 		return arrivalRepository.findAll(pageable);
 	}
 
-	public Response save(Arrival arrival){
+	public Response save(Arrival arrival) throws BadRequestException{
 		Optional<Customer> customer = customerRespository.findById(SecurityUtil.getId());
 		
 		if(customer.isPresent()) {
-			arrival.setCustomer(customer.get());
+			Optional<Arrival> current = arrivalRepository.findByCustomerAndAirportAndDate(
+					SecurityUtil.getId(), 
+					arrival.getAirport().getId(), 
+					arrival.getFlightDate(),
+					arrival.getFlightTime());
+			
+			if(current.isPresent()) {
+				return new Response("Data is already exist");
+			}else {
+				arrival.setCustomer(customer.get());
+				arrival.setCreatedBy(SecurityUtil.getLogged());
+				arrival.setCreatedDate(Instant.now());
+				arrival = arrivalRepository.save(arrival);
+				return new Response("Data is saved");
+			}
 		}
-		
-		arrival.setCreatedBy(SecurityUtil.getLogged());
-		arrival.setCreatedDate(Instant.now());
-		arrival = arrivalRepository.save(arrival);
-		return new Response("Data is saved");
+
+		throw new BadRequestException("Failed to save data");
 	}
+	
 }

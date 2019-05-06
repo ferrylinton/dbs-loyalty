@@ -41,10 +41,6 @@ public class Arrival extends AbstractAuditing {
 	
 	@Column(name = "service_type", length=150)
 	private String serviceType;
-	
-	@ManyToOne(optional = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "airport_id", nullable = false, foreignKey = @ForeignKey(name = "a_arrival_fk"))
-    private Airport airport;
 
 	@Column(name = "flight_date", nullable = false)
 	private LocalDate flightDate;
@@ -78,9 +74,13 @@ public class Arrival extends AbstractAuditing {
 	
 	@Column(name = "pickup_time")
 	private LocalTime pickupTime;
+	
+	@ManyToOne(optional = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "airport_id", nullable = false, foreignKey = @ForeignKey(name = "a_arrival_fk1"))
+    private Airport airport;
 
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id", nullable = true, foreignKey = @ForeignKey(name = "a_arrival_fk"))
+    @JoinColumn(name = "customer_id", nullable = true, foreignKey = @ForeignKey(name = "a_arrival_fk2"))
 	private Customer customer;
 	
 }
