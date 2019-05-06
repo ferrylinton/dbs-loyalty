@@ -6,7 +6,7 @@
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
 	<property name="BIOTEST" value="6kea4DMtva9BMJ8zR7g6aR" />
-	<property name="SINGAPOREHospital " value="5YlVrbS1SSTvPZMJ4rR1sM" />
+	<property name="SINGAPOREHospital" value="5YlVrbS1SSTvPZMJ4rR1sM" />
 
 	<!-- COUNTRY -->
 	

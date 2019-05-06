@@ -6,7 +6,7 @@ public final class PathConstant {
 	
 	public static final String CUSTOMERS = "/customers";
 	
-	public static final String HEALTH_PARTNERS = "/healthpartners";
+	public static final String HEALTH_PARTNERS = "/health-partners";
 	
 	public static final String PROMOS = "/promos";
 	

@@ -20,6 +20,7 @@ public abstract class HealthPartnerMapper{
 		String imageUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(PathConstant.API)
                 .path(PathConstant.HEALTH_PARTNERS)
+                .path(PathConstant.SLASH + healthPartnerDto.getId())
                 .path(PathConstant.IMAGE)
                 .toUriString();
 		
