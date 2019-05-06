@@ -1,0 +1,109 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog 
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    
+    <!-- HEALTH PARTNER -->
+    
+    <changeSet author="FLH" id="010-1">
+        <createTable tableName="a_health_partner">
+            <column name="id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pending" type="BIT(1)" defaultValueBoolean="false"/>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+    </changeSet>
+    
+    <changeSet author="FLH" id="010-2">
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="a_health_partner"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="010-3">
+        <addUniqueConstraint columnNames="name" constraintName="a_health_partner_name_uq" tableName="a_health_partner"/>
+    </changeSet>
+    
+    <!-- APPOINTMENT -->
+    
+    <changeSet author="FLH" id="010-4">
+        <createTable tableName="a_appointment">
+            <column name="id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="arrival_date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="message" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="health_partner_id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="customer_id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+    </changeSet>
+    
+    <changeSet author="FLH" id="010-5">
+        <addPrimaryKey columnNames="id" constraintName="a_appointment_pk" tableName="a_appointment"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="010-6">
+        <addForeignKeyConstraint baseColumnNames="health_partner_id" baseTableName="a_appointment" constraintName="a_appointment_fk1" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="a_health_partner"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="011-7">
+        <addForeignKeyConstraint baseColumnNames="customer_id" baseTableName="a_appointment" constraintName="a_appointment_fk2" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="c_customer"/>
+    </changeSet>
+    
+    <!-- WELLNESS -->
+
+    <changeSet author="FLH" id="010-8">
+        <createTable tableName="a_wellness">
+            <column name="id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="total" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+    </changeSet>
+    
+    <changeSet author="FLH" id="010-9">
+        <addPrimaryKey columnNames="id" constraintName="a_wellness_pk" tableName="a_wellness"/>
+    </changeSet>
+ 
+    <changeSet author="FLH" id="010-10">
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="a_wellness" constraintName="a_wellness_fk" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="c_customer"/>
+    </changeSet>
+    
+</databaseChangeLog>

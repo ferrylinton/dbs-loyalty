@@ -21,8 +21,7 @@
 	<property name="EVENT_MK" value="5pCE5or9qYpE8MjCmEoE1T" />
 	<property name="EVENT_CK" value="20z68J3645AKPfPZikxWjr" />
 	<property name="TRAVEL_ASSISTANCE" value="7EkUrNoXxryCvNu5QVjHDT" />
-	<property name="WELLNESS_MK" value="7SOgeukvTpvHkBFpspq3z6" />
-	<property name="WELLNESS_CK" value="3uevL1aomxAxeduQ9ZDcAd" />
+	<property name="WELLNESS" value="7SOgeukvTpvHkBFpspq3z6" />
 	<property name="LOVED_ONE" value="Z1oH73CbzVYyRSbDuE4s0" />
 	<property name="REWARD" value="58RmYQyduqZ0SBK3VvHElI" />
 	
@@ -121,13 +120,8 @@
         </insert>
 
         <insert tableName="u_authority">
-            <column name="id" value="${WELLNESS_MK}"/>
-            <column name="name" value="WELLNESS_MK"/>
-        </insert>
-        
-        <insert tableName="u_authority">
-            <column name="id" value="${WELLNESS_CK}"/>
-            <column name="name" value="WELLNESS_CK"/>
+            <column name="id" value="${WELLNESS}"/>
+            <column name="name" value="WELLNESS"/>
         </insert>
         
         <insert tableName="u_authority">
@@ -217,7 +211,7 @@
         
         <insert tableName="u_role_authority">
             <column name="role_id" value="${Maker}"/>
-            <column name="authority_id" value="${WELLNESS_MK}"/>
+            <column name="authority_id" value="${WELLNESS}"/>
         </insert>
         
         <!-- ROLE CHECKER -->
@@ -250,11 +244,6 @@
         <insert tableName="u_role_authority">
             <column name="role_id" value="${Checker}"/>
             <column name="authority_id" value="${EVENT_CK}"/>
-        </insert>
-        
-        <insert tableName="u_role_authority">
-            <column name="role_id" value="${Checker}"/>
-            <column name="authority_id" value="${WELLNESS_CK}"/>
         </insert>
         
         <!-- ROLE TRAVEL ASSISTANCE -->

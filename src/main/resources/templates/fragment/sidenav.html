@@ -23,6 +23,9 @@
                     <li th:if="${#authorization.expression('hasAnyAuthority(''EVENT_MK'', ''EVENT_CK'')')}">
                         <a rel="/event" href="/event/event-view.html" th:href="@{/event}" th:text="#{event}">Event</a>
                     </li>
+                    <li th:if="${#authorization.expression('hasAnyAuthority(''WELLNESS'')')}">
+                        <a rel="/appointment" href="/appointment/appointment-view.html" th:href="@{/appointment}" th:text="#{wellness}">Wellness</a>
+                    </li>
                 </ul>
             </li>
             <li>

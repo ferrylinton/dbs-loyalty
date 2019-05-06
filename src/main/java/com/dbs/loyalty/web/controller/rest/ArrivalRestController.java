@@ -17,7 +17,6 @@ import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.ArrivalService;
 import com.dbs.loyalty.service.dto.ArrivalDto;
-import com.dbs.loyalty.service.dto.FeedbackAnswerDto;
 import com.dbs.loyalty.service.mapper.ArrivalMapper;
 import com.dbs.loyalty.web.response.Response;
 
@@ -50,7 +49,7 @@ public class ArrivalRestController {
     		notes			= "Add Arrival",
     		produces		= MediaType.APPLICATION_JSON_VALUE, 
     		authorizations	= { @Authorization(value=JWT) })
-    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = FeedbackAnswerDto.class)})
+    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Response.class)})
     @PreAuthorize("hasRole('CUSTOMER')")
     @PostMapping("/arrivals")
     public ResponseEntity<Response> addArrival(

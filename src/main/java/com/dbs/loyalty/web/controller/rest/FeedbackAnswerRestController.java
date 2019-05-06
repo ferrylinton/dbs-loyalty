@@ -64,7 +64,7 @@ public class FeedbackAnswerRestController {
     		authorizations	= { @Authorization(value=JWT) })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = FeedbackAnswerDto.class)})
     @PreAuthorize("hasRole('CUSTOMER')")
-    @PostMapping("/feedbackanswers/{eventId}")
+    @PostMapping("/feedback-answers/{eventId}")
     public ResponseEntity<List<FeedbackAnswerDto>> addFeedbackCustomer(
     		@ApiParam(name = "eventId", value = "Event Id", example = "77UTTDWJX3zNWABg9ixZX9")
     		@PathVariable String eventId,

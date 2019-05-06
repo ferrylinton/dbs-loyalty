@@ -50,7 +50,7 @@ public class TravelAssistanceRestController {
     		authorizations	= { @Authorization(value=JWT) })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = TravelAssistanceDto.class)})
     @PreAuthorize("hasRole('CUSTOMER')")
-    @GetMapping("/travelassistances")
+    @GetMapping("/travel-assistances")
     public ResponseEntity<TravelAssistanceDto> getLimit() throws NotFoundException, BadRequestException{
     	Optional<TravelAssistance> travelAssistance = travelAssistanceService.findById();
     	

@@ -16,6 +16,7 @@
     <include file="release-001/007_promo_schema.xml" relativeToChangelogFile="true"/>
     <include file="release-001/008_event_schema.xml" relativeToChangelogFile="true"/>
     <include file="release-001/009_travel_assistance_schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/010_wellness_schema.xml" relativeToChangelogFile="true"/>
 
     <include file="release-001/031_reward_operation_schema.xml" relativeToChangelogFile="true"/>
     <include file="release-001/032_reward_schema.xml" relativeToChangelogFile="true"/>
@@ -28,6 +29,7 @@
     <include file="release-001/104_insert_feedback.xml" relativeToChangelogFile="true"/>
     <include file="release-001/105_insert_event.xml" relativeToChangelogFile="true"/>
     <include file="release-001/106_insert_travel_assistance.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/107_insert_wellness.xml" relativeToChangelogFile="true"/>
     
     <include file="release-001/131_insert_reward_operation.xml" relativeToChangelogFile="true"/>
     <include file="release-001/132_insert_reward.xml" relativeToChangelogFile="true"/>

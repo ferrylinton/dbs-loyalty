@@ -1,0 +1,94 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+	<property name="BIOTEST" value="6kea4DMtva9BMJ8zR7g6aR" />
+	<property name="SINGAPOREHospital " value="5YlVrbS1SSTvPZMJ4rR1sM" />
+
+	<!-- COUNTRY -->
+	
+    <changeSet author="FLH" id="107-1">
+
+        <insert tableName="a_health_partner">
+            <column name="id" value="${BIOTEST}"/>
+            <column name="name" value="BIOTEST"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+        
+        <insert tableName="f_image">
+            <column name="id" value="${BIOTEST}"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="bytes" valueBlobFile="image/6kea4DMtva9BMJ8zR7g6aR.png"/>
+            <column name="content_type" value="image/png"/>
+            <column name="width" valueNumeric="375"/>
+			<column name="height" valueNumeric="309"/>
+        </insert>
+       
+		<insert tableName="a_health_partner">
+            <column name="id" value="${SINGAPOREHospital}"/>
+            <column name="name" value="SINGAPORE Hospital"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+        
+        <insert tableName="f_image">
+            <column name="id" value="${SINGAPOREHospital}"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="bytes" valueBlobFile="image/5YlVrbS1SSTvPZMJ4rR1sM.png"/>
+            <column name="content_type" value="image/png"/>
+            <column name="width" valueNumeric="305"/>
+			<column name="height" valueNumeric="436"/>
+        </insert>
+
+    </changeSet>
+    
+    <!-- APPOINTMENT -->
+    
+    <changeSet author="FLH" id="107-2">
+    
+    	<insert tableName="a_appointment">
+            <column name="id" value="5Yq5GhLhw4i9J7VUgJ4S4"/>
+            <column name="health_partner_id" value="${BIOTEST}"/>
+            <column name="customer_id" value="1IUe73HCc9Qfjl1sxhasNI"/>
+            <column name="arrival_date" valueDate="2018-01-01T00:00:00"/>
+            <column name="message" value="Test 123"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+        
+    </changeSet>
+    
+    <!-- WELLNESS -->
+    
+    <changeSet author="FLH" id="106-3">
+    	
+    	<insert tableName="a_wellness">
+            <column name="id" value="1IUe73HCc9Qfjl1sxhasNI"/>
+            <column name="total" value="2"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+        
+        <insert tableName="a_wellness">
+            <column name="id" value="1WUqbiXZnscJsVJD3DVjXy"/>
+            <column name="total" value="2"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+        
+        <insert tableName="a_wellness">
+            <column name="id" value="4dIMucfQGdLNyJPPb3hfv4"/>
+            <column name="total" value="2"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+        
+    </changeSet>
+    
+</databaseChangeLog>

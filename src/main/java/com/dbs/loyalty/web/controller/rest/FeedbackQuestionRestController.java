@@ -61,7 +61,7 @@ public class FeedbackQuestionRestController {
     		authorizations	= { @Authorization(value=JWT) })
     @ApiResponses(value = { @ApiResponse(code=200, message="OK", response = FeedbackQuestionDto.class) })
     @PreAuthorize("hasRole('CUSTOMER')")
-    @GetMapping("/feedbackquestions/{eventId}")
+    @GetMapping("/feedback-questions/{eventId}")
     public ResponseEntity<List<FeedbackQuestionDto>> getFeedbackById(
     		@ApiParam(name = "eventId", value = "Event Id", example = "77UTTDWJX3zNWABg9ixZX9")
     		@PathVariable String eventId) throws IOException, NotFoundException{

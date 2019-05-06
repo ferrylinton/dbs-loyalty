@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en" th:lang="${#locale.toString() == 'in' ? 'id' : #locale}" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragment/head.html :: content(title=|#{application.name} : #{appointment}|)"></head>
+
+<body>
+    <!-- NAVBAR -->
+    <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
+    <div id="content-box">
+        <!-- BREADCRUMB -->
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/home/home-view.html" th:href="@{/}" th:text="#{home}">Home</a></li>
+                <li class="breadcrumb-item"><a href="/appointment/appointment-view.html" th:href="@{/appointment}" th:text="#{appointment}">Departure</a></li>
+                <li class="breadcrumb-item active" aria-current="page" th:text="#{detail}">Detail</li>
+            </ol>
+        </nav>
+        <div id="main-content">
+            <!-- MESSAGE -->
+            <div class="border alert alert-light text-center" role="alert" th:if="${error}">
+                <span class="icon-attention"></span> <span th:text="${error}">Data ['xxxx'] is not found</span>
+            </div>
+            <!-- TABLE DETAIL -->
+            <th:block th:if="${appointment}">
+                <div class="table-responsive border border-top-0">
+                    <table class="table table-sm table-detail" style="min-width: 400px;">
+                        <tbody>
+                            <tr>
+                                <th style="width:200px;" th:text="#{id}">Id</th>
+                                <td th:text="${appointment.id}">ZwOkjFmG</td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{name}">Name</th>
+                                <td th:text="${appointment.healthPartner.name}">Name</td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{arrivalDate}">Arrival Date</th>
+                                <td th:text="${appointment.arrivalDate}">Arrival Date</td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{name}">Name</th>
+                                <td th:text="${appointment.customer.name}">Name</td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{message}">Message</th>
+                                <td th:text="${appointment.message}">Message</td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{createdBy}">Created By</th>
+                                <td th:text="${appointment.createdBy}">System</td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{createdDate}">Created Dt</th>
+                                <td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.datetime()}" th:text="${appointment.createdDate}">2019-05-01T21:24:44Z</span></td>
+                            </tr>
+                            <tr th:if="${appointment.lastModifiedBy}">
+                                <th th:text="#{lastModifiedBy}">Last Modified By</th>
+                                <td th:text="${appointment.lastModifiedBy}">System</td>
+                            </tr>
+                            <tr th:if="${appointment.lastModifiedDate}">
+                                <th th:text="#{lastModifiedDate}">Last Modified Dt</th>
+                                <td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.datetime()}" th:text="${appointment.lastModifiedDate}">2019-05-01T21:24:44Z</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- TOOLBAR -->
+                <div class="toolbar">
+                    <a class="btn btn-light" href="/appointment/appointment-view.html" th:href="@{/appointment}">
+                        <span class="icon-left"></span> <span th:text="#{back}">Back</span>
+                    </a>
+                </div>
+            </th:block>
+        </div>
+        <!-- FOOTER -->
+        <div id="footer" th:replace="fragment/footer.html :: #footer"></div>
+    </div>
+    <!-- SIDENAV -->
+    <div id="sidenav-box" th:replace="fragment/sidenav.html :: #sidenav-box"></div>
+    <!-- SCRIPTS -->
+    <div th:replace="fragment/scripts.html :: content"></div>
+</body>
+
+</html>

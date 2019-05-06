@@ -28,6 +28,8 @@ public final class EntityConstant {
 	
 	public static final String ARRIVAL 				= "arrival";
 	
+	public static final String APPOINTMENT 			= "appointment";
+	
 	private EntityConstant() {
 		// hide constructor
 	}

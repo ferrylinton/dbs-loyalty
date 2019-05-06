@@ -7,7 +7,7 @@
     
     <!-- COUNTRY -->
     
-    <changeSet author="FLH" id="010-1">
+    <changeSet author="FLH" id="009-1">
         <createTable tableName="a_country">
             <column name="id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
@@ -27,17 +27,17 @@
         </createTable>
     </changeSet>
     
-    <changeSet author="FLH" id="010-2">
+    <changeSet author="FLH" id="009-2">
         <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="a_country"/>
     </changeSet>
     
-    <changeSet author="FLH" id="010-3">
+    <changeSet author="FLH" id="009-3">
         <addUniqueConstraint columnNames="name" constraintName="a_country_name_uq" tableName="a_country"/>
     </changeSet>
     
     <!-- AIRPORT - Type Of Service -->
     
-    <changeSet author="FLH" id="010-4">
+    <changeSet author="FLH" id="009-4">
         <createTable tableName="a_service_type">
             <column name="id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
@@ -57,17 +57,17 @@
         </createTable>
     </changeSet>
     
-    <changeSet author="FLH" id="010-5">
+    <changeSet author="FLH" id="009-5">
         <addPrimaryKey columnNames="id" constraintName="a_service_type_pk" tableName="a_service_type"/>
     </changeSet>
     
-    <changeSet author="FLH" id="010-6">
+    <changeSet author="FLH" id="009-6">
         <addUniqueConstraint columnNames="name" constraintName="a_service_type_name_uq" tableName="a_service_type"/>
     </changeSet>
     
      <!-- AIRPORT -->
      
-    <changeSet author="FLH" id="010-7">
+    <changeSet author="FLH" id="009-7">
     
         <createTable tableName="a_airport">
             <column name="id" type="VARCHAR(22)">
@@ -90,21 +90,21 @@
         
     </changeSet>
     
-    <changeSet author="FLH" id="010-8">
+    <changeSet author="FLH" id="009-8">
         <addPrimaryKey columnNames="id" constraintName="a_airport_pk" tableName="a_airport"/>
     </changeSet>
     
-    <changeSet author="FLH" id="010-9">
+    <changeSet author="FLH" id="009-9">
         <addUniqueConstraint columnNames="name" constraintName="a_airport_name_uq" tableName="a_airport"/>
     </changeSet>
     
-    <changeSet author="FLH" id="010-10">
+    <changeSet author="FLH" id="009-10">
         <addForeignKeyConstraint baseColumnNames="country_id" baseTableName="a_airport" constraintName="a_airport_fk" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="a_country"/>
     </changeSet>
     
     <!-- DEPARTURE -->
     
-    <changeSet author="FLH" id="010-11">
+    <changeSet author="FLH" id="009-11">
         <createTable tableName="a_departure">
             <column name="id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
@@ -156,11 +156,11 @@
         </createTable>
     </changeSet>
     
-    <changeSet author="FLH" id="010-12">
+    <changeSet author="FLH" id="009-12">
         <addPrimaryKey columnNames="id" constraintName="a_departure_pk" tableName="a_departure"/>
     </changeSet>
     
-    <changeSet author="FLH" id="010-13">
+    <changeSet author="FLH" id="009-13">
         <addForeignKeyConstraint baseColumnNames="airport_id" baseTableName="a_departure" constraintName="a_departure_fk1" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="a_airport"/>
     </changeSet>
     
@@ -170,7 +170,7 @@
 
     <!-- ARRIVAL -->
     
-    <changeSet author="FLH" id="010-15">
+    <changeSet author="FLH" id="009-15">
         <createTable tableName="a_arrival">
             <column name="id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
@@ -222,21 +222,21 @@
         </createTable>
     </changeSet>
     
-    <changeSet author="FLH" id="010-16">
+    <changeSet author="FLH" id="009-16">
         <addPrimaryKey columnNames="id" constraintName="a_arrival_pk" tableName="a_arrival"/>
     </changeSet>
     
-    <changeSet author="FLH" id="010-17">
+    <changeSet author="FLH" id="009-17">
         <addForeignKeyConstraint baseColumnNames="airport_id" baseTableName="a_arrival" constraintName="a_arrival_fk1" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="a_airport"/>
     </changeSet>
     
-    <changeSet author="FLH" id="010-18">
+    <changeSet author="FLH" id="009-18">
         <addForeignKeyConstraint baseColumnNames="customer_id" baseTableName="a_arrival" constraintName="a_arrival_fk2" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="c_customer"/>
     </changeSet>
     
     <!-- TRAVEL ASSISTANCE -->
 
-    <changeSet author="FLH" id="010-19">
+    <changeSet author="FLH" id="009-19">
         <createTable tableName="a_travel_assistance">
             <column name="id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
@@ -255,11 +255,11 @@
         </createTable>
     </changeSet>
     
-    <changeSet author="FLH" id="010-20">
+    <changeSet author="FLH" id="009-20">
         <addPrimaryKey columnNames="id" constraintName="a_travel_assistance_pk" tableName="a_travel_assistance"/>
     </changeSet>
  
-    <changeSet author="FLH" id="010-21">
+    <changeSet author="FLH" id="009-21">
         <addForeignKeyConstraint baseColumnNames="id" baseTableName="a_travel_assistance" constraintName="a_travel_assistance_fk" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="c_customer"/>
     </changeSet>
     
