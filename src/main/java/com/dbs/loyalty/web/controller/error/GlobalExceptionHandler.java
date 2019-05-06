@@ -1,6 +1,5 @@
 package com.dbs.loyalty.web.controller.error;
 
-import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.Map;
 
