@@ -181,7 +181,8 @@ a:hover{
 
 #sidenav-box{
 	width: 250px;
-	height: calc(100% - (60px));
+	height: 100%;
+	height: calc(100% - 60px);
 	position: fixed;
 	z-index: 1001;
 	top: 60px;
