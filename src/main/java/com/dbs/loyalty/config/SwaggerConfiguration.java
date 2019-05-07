@@ -7,13 +7,14 @@ import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
+import com.dbs.loyalty.model.ErrorDataApi;
 import com.dbs.loyalty.web.response.ErrorResponse;
+import com.dbs.loyalty.web.response.UnauthorizedResponse;
 import com.fasterxml.classmate.TypeResolver;
 import com.google.common.collect.Lists;
 
@@ -41,42 +42,34 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfiguration {
 
-	private ModelRef error = new ModelRef("ErrorResponse");
+	private ModelRef errorResponse = new ModelRef("ErrorResponse");
 	
-	private ResponseMessage ok = new ResponseMessageBuilder()
-            .code(HttpStatus.OK.value())
-            .message(HttpStatus.OK.name())
-            .responseModel(error)
-            .build();
+	private ModelRef unauthorizedResponse = new ModelRef("UnauthorizedResponse");
 	
+	private ModelRef errorDataApi = new ModelRef("ErrorDataApi");
+
 	private ResponseMessage internalServerError = new ResponseMessageBuilder()
-    		.code(HttpStatus.INTERNAL_SERVER_ERROR.value())
-    		.message(HttpStatus.INTERNAL_SERVER_ERROR.name())
-            .responseModel(error)
-            .build();
-	
-	private ResponseMessage unauthorized = new ResponseMessageBuilder()
-		    .code(HttpStatus.UNAUTHORIZED.value())
-		    .message(HttpStatus.UNAUTHORIZED.name())
-		    .responseModel(error)
-		    .build();
-	
-	private ResponseMessage forbidden = new ResponseMessageBuilder()
-            .code(HttpStatus.FORBIDDEN.value())
-            .message(HttpStatus.FORBIDDEN.name())
-            .responseModel(error)
+    		.code(500)
+    		.message("Internal Server Error")
+            .responseModel(errorDataApi)
             .build();
 	
 	private ResponseMessage notFound = new ResponseMessageBuilder()
-            .code(HttpStatus.NOT_FOUND.value())
-            .message(HttpStatus.NOT_FOUND.name())
-            .responseModel(error)
+    		.code(404)
+    		.message("Not Found")
+            .responseModel(errorDataApi)
             .build();
 	
+	private ResponseMessage unauthorized = new ResponseMessageBuilder()
+		    .code(401)
+		    .message("Unauthorized")
+		    .responseModel(unauthorizedResponse)
+		    .build();
+	
 	private ResponseMessage badRequest = new ResponseMessageBuilder()
-            .code(HttpStatus.BAD_REQUEST.value())
-            .message(HttpStatus.BAD_REQUEST.name())
-            .responseModel(error)
+            .code(400)
+            .message("Bad Request")
+            .responseModel(errorResponse)
             .build();
 	
 	private final TypeResolver typeResolver;
@@ -93,7 +86,10 @@ public class SwaggerConfiguration {
 	            .globalResponseMessage(RequestMethod.POST, postResponseMessages())
 	            .globalResponseMessage(RequestMethod.PUT, putResponseMessages())
 	            .globalResponseMessage(RequestMethod.DELETE, deleteResponseMessages())
-	            .additionalModels(typeResolver.resolve(ErrorResponse.class))
+	            .additionalModels(
+	            		typeResolver.resolve(ErrorResponse.class), 
+	            		typeResolver.resolve(UnauthorizedResponse.class),
+	            		typeResolver.resolve(ErrorDataApi.class))
 	            .tags(
 	            	new Tag(SwaggerConstant.AUTHENTICATION, Constant.EMPTY, 0),
 	            	new Tag(SwaggerConstant.CUSTOMER, Constant.EMPTY, 1),
@@ -102,7 +98,9 @@ public class SwaggerConfiguration {
 	            	new Tag(SwaggerConstant.EVENT, Constant.EMPTY, 4),
 	            	new Tag(SwaggerConstant.FEEDBACK, Constant.EMPTY, 5),
 	            	new Tag(SwaggerConstant.LOVED_ONE, Constant.EMPTY, 6),
-	            	new Tag(SwaggerConstant.REWARD, Constant.EMPTY, 7)
+	            	new Tag(SwaggerConstant.REWARD, Constant.EMPTY, 7),
+	            	new Tag(SwaggerConstant.TRAVEL_ASSISTANCE, Constant.EMPTY, 8),
+	            	new Tag(SwaggerConstant.WELLNESS, Constant.EMPTY, 9)
 	            )
 				.select()
 				.apis(RequestHandlerSelectors.basePackage("com.dbs.loyalty.web.controller.rest"))
@@ -140,19 +138,19 @@ public class SwaggerConfiguration {
     }
     
     private List<ResponseMessage> getResponseMessages() {
-    	return Arrays.asList(ok, internalServerError, unauthorized, forbidden, notFound);
+    	return Arrays.asList(internalServerError, unauthorized, notFound);
     }
     
     private List<ResponseMessage> postResponseMessages() {
-    	return Arrays.asList(ok, badRequest, internalServerError, notFound, unauthorized);
+    	return Arrays.asList(internalServerError, unauthorized, notFound, badRequest);
     }
 
     private List<ResponseMessage> putResponseMessages() {
-    	return Arrays.asList(ok, internalServerError, badRequest, unauthorized, forbidden, notFound);
+    	return Arrays.asList(internalServerError, unauthorized, notFound, badRequest);
     }
     
     private List<ResponseMessage> deleteResponseMessages() {
-    	return Arrays.asList(ok, internalServerError, unauthorized, forbidden, notFound);
+    	return Arrays.asList(internalServerError, unauthorized, notFound);
     }
     
 }

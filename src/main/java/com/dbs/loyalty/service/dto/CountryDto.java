@@ -20,6 +20,7 @@ public class CountryDto {
 	@ApiModelProperty(value = "Country's name", example = "Indonesia", position = 0)
     private String name;
 	
+	@ApiModelProperty(value = "List of airports", position = 1)
 	private List<AirportDto> airports;
 	
 }

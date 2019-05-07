@@ -5,10 +5,15 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
+	<property name="Customer01" value="1IUe73HCc9Qfjl1sxhasNI" />
+	<property name="Customer02" value="1WUqbiXZnscJsVJD3DVjXy" />
+	<property name="Customer03" value="4dIMucfQGdLNyJPPb3hfv4" />
+	<property name="Customer04" value="4ik8B4Ba7r2RZMou9LeGP0" />
+
     <changeSet author="FLH" id="102-1">
 
         <insert tableName="c_customer">
-            <column name="id" value="1IUe73HCc9Qfjl1sxhasNI"/>
+            <column name="id" value="${Customer01}"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
@@ -22,7 +27,7 @@
         </insert>
         
         <insert tableName="f_image">
-            <column name="id" value="1IUe73HCc9Qfjl1sxhasNI"/>
+            <column name="id" value="${Customer01}"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="bytes" valueBlobFile="image/250x250.png"/>
@@ -32,7 +37,7 @@
         </insert>
 
         <insert tableName="c_customer">
-            <column name="id" value="1WUqbiXZnscJsVJD3DVjXy"/>
+            <column name="id" value="${Customer02}"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
@@ -46,7 +51,7 @@
         </insert>
         
         <insert tableName="f_image">
-            <column name="id" value="1WUqbiXZnscJsVJD3DVjXy"/>
+            <column name="id" value="${Customer02}"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="bytes" valueBlobFile="image/250x250.png"/>
@@ -56,7 +61,7 @@
         </insert>
 
         <insert tableName="c_customer">
-            <column name="id" value="4dIMucfQGdLNyJPPb3hfv4"/>
+            <column name="id" value="${Customer03}"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
@@ -70,7 +75,7 @@
         </insert>
         
         <insert tableName="f_image">
-            <column name="id" value="4dIMucfQGdLNyJPPb3hfv4"/>
+            <column name="id" value="${Customer03}"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="bytes" valueBlobFile="image/250x250.png"/>
@@ -80,7 +85,7 @@
         </insert>
 
         <insert tableName="c_customer">
-            <column name="id" value="4ik8B4Ba7r2RZMou9LeGP0"/>
+            <column name="id" value="${Customer04}"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
@@ -94,7 +99,7 @@
         </insert>
         
         <insert tableName="f_image">
-            <column name="id" value="4ik8B4Ba7r2RZMou9LeGP0"/>
+            <column name="id" value="${Customer04}"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="bytes" valueBlobFile="image/250x250.png"/>
@@ -306,7 +311,7 @@
             <column name="dob" valueDate="1990-02-01"/>
             <column name="name" value="Loved One 01 - Customer 01"/>
             <column name="phone" value="+62 8123456789"/>
-            <column name="customer_id" value="1IUe73HCc9Qfjl1sxhasNI"/>
+            <column name="customer_id" value="${Customer01}"/>
         </insert>
         
         <insert tableName="c_loved_one">
@@ -316,7 +321,7 @@
             <column name="dob" valueDate="1990-02-01"/>
             <column name="name" value="Loved One 02 - Customer 01"/>
             <column name="phone" value="+62 8123456789"/>
-            <column name="customer_id" value="1IUe73HCc9Qfjl1sxhasNI"/>
+            <column name="customer_id" value="${Customer01}"/>
         </insert>
         
     </changeSet>

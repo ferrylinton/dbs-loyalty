@@ -6,14 +6,12 @@ import static com.dbs.loyalty.config.constant.SwaggerConstant.TRAVEL_ASSISTANCE;
 import java.util.Optional;
 
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.domain.TravelAssistance;
-import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.TravelAssistanceService;
 import com.dbs.loyalty.service.dto.TravelAssistanceDto;
@@ -51,13 +49,13 @@ public class TravelAssistanceRestController {
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = TravelAssistanceDto.class)})
     @PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping("/travel-assistances")
-    public ResponseEntity<TravelAssistanceDto> getLimit() throws NotFoundException, BadRequestException{
+    public TravelAssistanceDto getLimit() throws NotFoundException{
     	Optional<TravelAssistance> travelAssistance = travelAssistanceService.findById();
     	
     	if(travelAssistance.isPresent()) {
-    		return ResponseEntity.ok().body(travelAssistanceMapper.toDto(travelAssistance.get()));
+    		return travelAssistanceMapper.toDto(travelAssistance.get());
     	}else {
-    		return ResponseEntity.ok().body(new TravelAssistanceDto(0));
+    		return new TravelAssistanceDto(0);
     	}
     }
     

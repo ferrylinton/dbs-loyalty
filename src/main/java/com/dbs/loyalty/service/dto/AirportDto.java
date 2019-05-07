@@ -23,7 +23,7 @@ public class AirportDto implements Comparable<AirportDto>{
 	@ApiModelProperty(value = "Airport's id", example = "53EHfQ52dsQ8h9R7ezwUbZ", required = true, position = 0)
 	private String id;
 
-	@ApiModelProperty(value = "Airport's name", example = "53EHfQ52dsQ8h9R7ezwUbZ", required = true, position = 1)
+	@ApiModelProperty(value = "Airport's name", example = "CKG-Soekarno-Hatta", required = true, position = 1)
 	@NotNull(message = "{validation.notnull.name}")
 	@Size(min = 2, max = 100, message = "{validation.size.name}")
     private String name;

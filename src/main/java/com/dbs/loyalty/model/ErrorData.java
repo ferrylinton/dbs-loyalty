@@ -6,6 +6,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import com.dbs.loyalty.exception.AbstractException;
 import com.dbs.loyalty.util.ErrorUtil;
+import com.dbs.loyalty.util.IpUtil;
 import com.dbs.loyalty.util.MessageUtil;
 
 public class ErrorData {
@@ -24,7 +25,7 @@ public class ErrorData {
 	
 	public ErrorData(HttpServletRequest request) {
 		this.exception = (Exception) request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
-		this.requestURI = (String) request.getAttribute(RequestDispatcher.ERROR_REQUEST_URI);
+		this.requestURI = IpUtil.getPrefixUrl(request) + (String) request.getAttribute(RequestDispatcher.ERROR_REQUEST_URI);
 		this.statusCode = getStatusCode(exception, request);
 	}
 
@@ -101,5 +102,5 @@ public class ErrorData {
 	public void setDetail(String detail) {
 		this.detail = detail;
 	}
-	
+
 }

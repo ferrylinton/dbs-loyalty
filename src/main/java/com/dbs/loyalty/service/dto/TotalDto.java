@@ -8,17 +8,17 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 /**
- * Class of TravelAssistance DTO
+ * Class of Total DTO
  * 
  * @author Ferry L. H. <ferrylinton@gmail.com>
  */
-@ApiModel(value="TravelAssistance", description = "TravelAssistance's data")
+@ApiModel(value="Total", description = "Total")
 @RequiredArgsConstructor
 @Setter
 @Getter
-public class TravelAssistanceDto {
+public class TotalDto {
 
-	@ApiModelProperty(value = "Total's customer point", example = "3000", position = 0)
+	@ApiModelProperty(value = "Total", example = "5", position = 0)
 	@NonNull
 	private Integer total;
 	

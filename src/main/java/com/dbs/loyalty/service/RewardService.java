@@ -1,25 +1,35 @@
 package com.dbs.loyalty.service;
 
-import java.time.LocalDate;
+import java.util.List;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.dbs.loyalty.domain.Reward;
 import com.dbs.loyalty.repository.RewardRepository;
+import com.dbs.loyalty.service.dto.TotalDto;
+import com.dbs.loyalty.util.SecurityUtil;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Service
 public class RewardService {
 
 	private final RewardRepository rewardRepository;
 	
-	public RewardService(RewardRepository rewardRepository) {
-		this.rewardRepository = rewardRepository;
+	public List<Reward> findAllValid(){
+		return rewardRepository.findAllValid(SecurityUtil.getId());
 	}
+	
+	public TotalDto getTotal(){
+		Integer total = 0;
+		List<Reward> rewards = rewardRepository.findAllValid(SecurityUtil.getId());
+		
+		for(Reward reward : rewards) {
+			total += reward.getPoint();
+		}
 
-	public Page<Reward> findByExpiryDate(String email, Pageable pageable){
-		return rewardRepository.findByExpiryDateGreaterThanEqualAndCustomerEmailAndPointGreaterThanOrderByExpiryDateDesc(LocalDate.now(), email, 0, pageable);
+		return new TotalDto(total);
 	}
 	
 }

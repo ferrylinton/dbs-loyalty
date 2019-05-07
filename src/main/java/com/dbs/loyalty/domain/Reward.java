@@ -41,16 +41,15 @@ public class Reward extends AbstractAuditing implements Serializable {
 	@Column(name = "point", nullable = false)
 	private Integer point;
 	
-	@Column(name = "expiry_date", nullable = false, columnDefinition = "DATE")
+	@Column(name = "expiry_date", nullable = false)
 	private LocalDate expiryDate;
 
-	@ManyToOne
-    @JoinColumn(name = "reward_operation_id", nullable = false, foreignKey = @ForeignKey(name = "c_reward_fk1"))
-	private RewardOperation rewardOperation;
+	@Column(name = "description")
+	private String description;
 	
 	@JsonIgnore
 	@ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name = "customer_id", nullable = false, foreignKey = @ForeignKey(name = "c_reward_fk2"))
+    @JoinColumn(name = "customer_id", nullable = false, foreignKey = @ForeignKey(name = "c_reward_fk1"))
     private Customer customer;
 
 }

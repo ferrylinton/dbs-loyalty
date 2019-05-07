@@ -52,6 +52,12 @@ public final class Constant {
 	
 	public static final String DEFAULT				= "default";
 	
+	public static final String TOTAL				= "total";
+	
+	public static final String UNAUTHORIZED 		= "Unauthorized";
+	
+	public static final String FORBIDDEN 			= "Forbidden";
+	
 	private Constant() {
 		// hide constructor
 	}

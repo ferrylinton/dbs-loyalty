@@ -3,6 +3,8 @@ package com.dbs.loyalty.util;
 import javax.servlet.http.HttpServletRequest;
 
 public class IpUtil {
+	
+	private static final String PREFIX_URL = "%s://%s:%d";
 
 	private static final String UNKNOWN = "unknown";
 
@@ -21,7 +23,11 @@ public class IpUtil {
 			}
 		}
 
-		return ipAddress == null ? UNKNOWN : ipAddress;
+		return (ipAddress == null) ? UNKNOWN : ipAddress;
+	}
+	
+	public static String getPrefixUrl(HttpServletRequest request) {
+		return String.format(PREFIX_URL, request.getScheme(), getIp(request), request.getServerPort());
 	}
 	
 	private IpUtil() {
