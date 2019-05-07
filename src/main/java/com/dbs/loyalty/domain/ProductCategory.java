@@ -24,7 +24,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Class of Promo Category
+ * Class of Product Category
  * 
  * @author Ferry L. H. <ferrylinton@gmail.com>
  */
@@ -33,12 +33,12 @@ import lombok.Setter;
 @EqualsAndHashCode(of = {"id"}, callSuper = false)
 @Entity
 @Table(
-	name = "p_promo_category",
+	name = "p_product_category",
 	uniqueConstraints = {
-			@UniqueConstraint(name = "p_promo_category_name_uq", columnNames = { "name" })
+			@UniqueConstraint(name = "p_product_category_name_uq", columnNames = { "name" })
 	}
 )
-public class PromoCategory extends AbstractTask implements Serializable {
+public class ProductCategory extends AbstractTask implements Serializable {
 
     private static final long serialVersionUID = 1L;
   
@@ -53,8 +53,8 @@ public class PromoCategory extends AbstractTask implements Serializable {
     @Column(name = "name", length = 100, nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "promoCategory")
-    private Set<Promo> promos = new HashSet<>();
+    @OneToMany(mappedBy = "productCategory")
+    private Set<Product> products = new HashSet<>();
 
     @Override
 	public String toString() {

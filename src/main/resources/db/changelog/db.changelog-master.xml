@@ -18,6 +18,7 @@
     <include file="release-001/009_travel_assistance_schema.xml" relativeToChangelogFile="true"/>
     <include file="release-001/010_wellness_schema.xml" relativeToChangelogFile="true"/>
     <include file="release-001/011_reward_schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/012_cart_schema.xml" relativeToChangelogFile="true"/>
     
     <!-- Data -->
     
@@ -29,5 +30,6 @@
     <include file="release-001/106_insert_travel_assistance.xml" relativeToChangelogFile="true"/>
     <include file="release-001/107_insert_wellness.xml" relativeToChangelogFile="true"/>
     <include file="release-001/108_insert_reward.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/109_insert_cart.xml" relativeToChangelogFile="true"/>
     
 </databaseChangeLog>

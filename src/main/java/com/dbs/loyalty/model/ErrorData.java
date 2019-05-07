@@ -9,77 +9,55 @@ import com.dbs.loyalty.util.ErrorUtil;
 import com.dbs.loyalty.util.IpUtil;
 import com.dbs.loyalty.util.MessageUtil;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
 public class ErrorData {
-	
-	private String message404	= "Resource not found";
 	
 	private Exception exception;
 	
 	private String requestURI;
 	
-	private int statusCode;
+	private int status;
 	
 	private String message;
 	
 	private String detail;
 	
 	public ErrorData(HttpServletRequest request) {
-		if(request.getAttribute(RequestDispatcher.ERROR_EXCEPTION) instanceof Exception) {
-			this.exception = (Exception) request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
-		}
+		this.exception = getException(request);
 		this.requestURI = IpUtil.getPrefixUrl(request) + (String) request.getAttribute(RequestDispatcher.ERROR_REQUEST_URI);
-		this.statusCode = getStatusCode(request);
+		this.status = getStatusCode(request);
+		this.message = getErrorMessage();
+		
+		if(status == 500 && exception != null) {
+			this.detail = ExceptionUtils.getStackTrace(exception);
+		}
 	}
 
 	private int getStatusCode(HttpServletRequest request) {
-		if(request.getAttribute(RequestDispatcher.ERROR_EXCEPTION) instanceof Exception) {
-			statusCode =  (Integer) request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
+		status =  (Integer) request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
+		
+		if(status == 500 && exception != null) {
+			Exception ex = (Exception) ErrorUtil.getThrowable(exception);
 			
-			if(statusCode == 500 && exception != null) {
-				Exception ex = (Exception) ErrorUtil.getThrowable(exception);
-				
-				if(ex instanceof AbstractException) {
-					AbstractException abstractException = (AbstractException) ex;
-					statusCode = abstractException.getStatus();
-				}
+			if(ex instanceof AbstractException) {
+				AbstractException abstractException = (AbstractException) ex;
+				status = abstractException.getStatus();
 			}
-			
-			return statusCode;
-		}else {
-			return 500;
-		}		
+		}
+		
+		return status;
 	}
 
-	public Exception getException() {
-		return exception;
-	}
-
-	public void setException(Exception exception) {
-		this.exception = exception;
-	}
-
-	public String getRequestURI() {
-		return requestURI;
-	}
-
-	public void setRequestURI(String requestURI) {
-		this.requestURI = requestURI;
-	}
-
-	public int getStatusCode() {
-		return statusCode;
-	}
-
-	public void setStatusCode(int statusCode) {
-		this.statusCode = statusCode;
-	}
-
-	public String getMessage() {
-		if(statusCode == 404) {
-			message = message404;
-		}else if(statusCode == 501) {
+	private String getErrorMessage() {
+		if(status == 404) {
+			message = "Resource not found";
+		}else if(status == 501 && exception != null) {
 			message = exception.getMessage();
-		}else if(statusCode == 500 && exception != null) {
+		}else if(status == 500 && exception != null) {
 			Exception ex = (Exception) ErrorUtil.getThrowable(exception);
 			
 			if(ex instanceof AbstractException) {
@@ -93,20 +71,12 @@ public class ErrorData {
 		return message;
 	}
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
-	public String getDetail() {
-		if(statusCode == 500 && exception != null) {
-			this.detail = ExceptionUtils.getStackTrace(exception);
+	private Exception getException(HttpServletRequest request) {
+		if(request.getAttribute(RequestDispatcher.ERROR_EXCEPTION) instanceof Exception) {
+			return (Exception) request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
 		}
 		
-		return detail;
+		return null;
 	}
-
-	public void setDetail(String detail) {
-		this.detail = detail;
-	}
-
+	
 }

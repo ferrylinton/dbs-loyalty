@@ -10,6 +10,8 @@ public final class PathConstant {
 	
 	public static final String PROMOS = "/promos";
 	
+	public static final String PRODUCTS = "/products";
+	
 	public static final String EVENTS = "/events";
 	
 	public static final String IMAGE = "/image";
