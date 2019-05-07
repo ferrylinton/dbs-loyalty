@@ -3,6 +3,7 @@ package com.dbs.loyalty.service.dto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -12,13 +13,14 @@ import lombok.Setter;
  * 
  * @author Ferry L. H. <ferrylinton@gmail.com>
  */
-@ApiModel(value="TravelAssistance", description = "TravelAssistance's data")
+@ApiModel(value="TravelAssistance", description = "TravelAssistance's limit")
+@NoArgsConstructor
 @RequiredArgsConstructor
 @Setter
 @Getter
 public class TravelAssistanceDto {
 
-	@ApiModelProperty(value = "Total's customer point", example = "3000", position = 0)
+	@ApiModelProperty(value = "Travel Assistance's limit", example = "5", position = 0)
 	@NonNull
 	private Integer total;
 	

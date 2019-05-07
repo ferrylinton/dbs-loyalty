@@ -5,9 +5,9 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+@ApiModel(value="HealthPartner", description = "HealthPartner's data")
 @Setter
 @Getter
-@ApiModel(value="HealthPartner", description = "HealthPartner's data")
 public class HealthPartnerDto {
 
 	@ApiModelProperty(value = "HealthPartner's id", example = "1IUe73HCc9Qfjl1sxhasNI", position = 0)

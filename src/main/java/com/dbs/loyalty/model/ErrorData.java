@@ -24,24 +24,30 @@ public class ErrorData {
 	private String detail;
 	
 	public ErrorData(HttpServletRequest request) {
-		this.exception = (Exception) request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
+		if(request.getAttribute(RequestDispatcher.ERROR_EXCEPTION) instanceof Exception) {
+			this.exception = (Exception) request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
+		}
 		this.requestURI = IpUtil.getPrefixUrl(request) + (String) request.getAttribute(RequestDispatcher.ERROR_REQUEST_URI);
-		this.statusCode = getStatusCode(exception, request);
+		this.statusCode = getStatusCode(request);
 	}
 
-	private int getStatusCode(Exception exception, HttpServletRequest request) {
-		statusCode =  (Integer) request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
-		
-		if(statusCode == 500 && exception != null) {
-			Exception ex = (Exception) ErrorUtil.getThrowable(exception);
+	private int getStatusCode(HttpServletRequest request) {
+		if(request.getAttribute(RequestDispatcher.ERROR_EXCEPTION) instanceof Exception) {
+			statusCode =  (Integer) request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
 			
-			if(ex instanceof AbstractException) {
-				AbstractException abstractException = (AbstractException) ex;
-				statusCode = abstractException.getStatus();
+			if(statusCode == 500 && exception != null) {
+				Exception ex = (Exception) ErrorUtil.getThrowable(exception);
+				
+				if(ex instanceof AbstractException) {
+					AbstractException abstractException = (AbstractException) ex;
+					statusCode = abstractException.getStatus();
+				}
 			}
-		}
-		
-		return statusCode;
+			
+			return statusCode;
+		}else {
+			return 500;
+		}		
 	}
 
 	public Exception getException() {

@@ -1,5 +1,9 @@
 package com.dbs.loyalty.config;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -77,6 +81,10 @@ public class SwaggerConfiguration {
 	@Bean
 	public Docket apiDocket() {
 		return new Docket(DocumentationType.SWAGGER_2)
+				.directModelSubstitute(LocalDateTime.class, String.class)
+                .directModelSubstitute(LocalDate.class, String.class)
+                .directModelSubstitute(LocalTime.class, String.class)
+                .directModelSubstitute(ZonedDateTime.class, String.class)
 				.apiInfo(apiInfo())
 	            .forCodeGeneration(true)
 	            .genericModelSubstitutes(ResponseEntity.class)

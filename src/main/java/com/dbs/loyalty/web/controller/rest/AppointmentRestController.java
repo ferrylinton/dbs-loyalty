@@ -6,7 +6,6 @@ import static com.dbs.loyalty.config.constant.SwaggerConstant.WELLNESS;
 import javax.validation.Valid;
 
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.exception.BadRequestException;
-import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.AppointmentService;
 import com.dbs.loyalty.service.dto.AppointmentDto;
 import com.dbs.loyalty.service.mapper.AppointmentMapper;
@@ -52,11 +50,8 @@ public class AppointmentRestController {
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Response.class)})
     @PreAuthorize("hasRole('CUSTOMER')")
     @PostMapping("/appointments")
-    public ResponseEntity<Response> addAppointment(
-    		@Valid @RequestBody AppointmentDto appointmentDto) throws NotFoundException, BadRequestException{
-    	
-    	Response response = appointmentService.save(appointmentMapper.toEntity(appointmentDto));
-    	return ResponseEntity.ok().body(response);
+    public Response addAppointment(@Valid @RequestBody AppointmentDto appointmentDto) throws BadRequestException{
+    	return appointmentService.save(appointmentMapper.toEntity(appointmentDto));
     }
     
 }

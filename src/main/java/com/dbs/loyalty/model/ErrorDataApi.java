@@ -39,40 +39,50 @@ public class ErrorDataApi {
 	}
 
 	private int getStatusCode(HttpServletRequest request) {
-		Exception exception = (Exception) request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
-		status = (Integer) request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
-		
-		if(status == 500 && exception != null) {
-			Exception ex = (Exception) ErrorUtil.getThrowable(exception);
+		if(request.getAttribute(RequestDispatcher.ERROR_EXCEPTION) instanceof Exception) {
+			Exception exception = (Exception) request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
+			status = (Integer) request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
 			
-			if(ex instanceof AbstractException) {
-				AbstractException abstractException = (AbstractException) ex;
-				status = abstractException.getStatus();
+			if(status == 500 && exception != null) {
+				Object ex = ErrorUtil.getThrowable(exception);
+				
+				if(ErrorUtil.getThrowable(exception) instanceof AbstractException) {
+					AbstractException abstractException = (AbstractException) ex;
+					status = abstractException.getStatus();
+				}
 			}
+			
+			return status;
+		}else {
+			return 500;
 		}
 		
-		return status;
 	}
 
 	public String getErrorMessage(HttpServletRequest request) {
-		Exception exception = (Exception) request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
-		
-		if(status == 404) {
-			message = "Resource not found";
-		}else if(status == 501) {
-			message = exception.getMessage();
-		}else if(status == 500 && exception != null) {
-			Exception ex = (Exception) ErrorUtil.getThrowable(exception);
+		if(request.getAttribute(RequestDispatcher.ERROR_EXCEPTION) instanceof Exception) {
+			Exception exception = (Exception) request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
 			
-			if(ex instanceof AbstractException) {
-				AbstractException abstractException = (AbstractException) ex;
-				message = MessageUtil.getMessage(abstractException.getMessage());
-			}else {
+			if(status == 404) {
+				message = "Resource not found";
+			}else if(status == 501) {
 				message = exception.getMessage();
+			}else if(status == 500 && exception != null) {
+				Object ex = ErrorUtil.getThrowable(exception);
+				
+				if(ex instanceof AbstractException) {
+					AbstractException abstractException = (AbstractException) ex;
+					message = MessageUtil.getMessage(abstractException.getMessage());
+				}else {
+					message = exception.getMessage();
+				}
 			}
+			
+			return message;
+		}else {
+			Error error = (Error) request.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
+			return error.getMessage();
 		}
-		
-		return message;
 	}
 
 }

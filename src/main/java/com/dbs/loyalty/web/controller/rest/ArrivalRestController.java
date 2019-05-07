@@ -28,7 +28,7 @@ import io.swagger.annotations.Authorization;
 import lombok.RequiredArgsConstructor;
 
 /**
- * REST controller for Feedback Answer
+ * REST controller for Arrival API
  * 
  * @author Ferry L. H. <ferrylinton@gmail.com>
  * 

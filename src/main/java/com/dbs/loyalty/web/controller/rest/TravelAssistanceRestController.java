@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.domain.TravelAssistance;
-import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.TravelAssistanceService;
 import com.dbs.loyalty.service.dto.TravelAssistanceDto;
 import com.dbs.loyalty.service.mapper.TravelAssistanceMapper;
@@ -49,7 +48,7 @@ public class TravelAssistanceRestController {
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = TravelAssistanceDto.class)})
     @PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping("/travel-assistances")
-    public TravelAssistanceDto getLimit() throws NotFoundException{
+    public TravelAssistanceDto getLimit(){
     	Optional<TravelAssistance> travelAssistance = travelAssistanceService.findById();
     	
     	if(travelAssistance.isPresent()) {

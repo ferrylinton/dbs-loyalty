@@ -1,7 +1,5 @@
 package com.dbs.loyalty.service.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -13,7 +11,6 @@ import lombok.Setter;
 public class LovedOneDto extends LovedOneUpdateDto {
 
 	@ApiModelProperty(value = "Customer data", position = 6)
-	@JsonProperty("customer")
-	private CustomerDto customerDto;
+	private CustomerDto customer;
 	
 }
