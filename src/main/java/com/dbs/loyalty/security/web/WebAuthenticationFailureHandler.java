@@ -6,24 +6,34 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
 import com.dbs.loyalty.domain.enumeration.LoginStatus;
-import com.dbs.loyalty.event.LoginEventPublisher;
+import com.dbs.loyalty.service.BrowserService;
+import com.dbs.loyalty.service.LogLoginService;
 
 public class WebAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 	
-	private final LoginEventPublisher loginEventPublisher;
+	private final LogLoginService logLoginService;
 	
-	public WebAuthenticationFailureHandler(LoginEventPublisher loginEventPublisher) {
+	private final BrowserService browserService;
+	
+	public WebAuthenticationFailureHandler(LogLoginService logLoginService, BrowserService browserService) {
         super.setDefaultFailureUrl("/login?error");
-        this.loginEventPublisher = loginEventPublisher;
+        this.logLoginService = logLoginService;
+        this.browserService = browserService;
 	}
 	
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-		loginEventPublisher.publish(LoginStatus.FAILED, request);
+		save(request);
 		super.onAuthenticationFailure(request, response, exception);
+	}
+	
+	@Async
+	private void save(HttpServletRequest request) {
+		logLoginService.save(browserService.createLogLogin(LoginStatus.FAIL, request));
 	}
 }

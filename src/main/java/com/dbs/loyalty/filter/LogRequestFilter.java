@@ -32,10 +32,12 @@ import lombok.extern.slf4j.Slf4j;
 public class LogRequestFilter extends OncePerRequestFilter implements Ordered {
 	
     // put filter at the end of all other filters to make sure we are processing after all others
-    private int order = Ordered.LOWEST_PRECEDENCE - 8;
+    private final static int order = Ordered.LOWEST_PRECEDENCE - 8;
+    
+    private final static String API_AUTHENTICATE = "/api/authenticate";
     
     private final LogAuditService logAuditService;
-   
+
     @Override
     public int getOrder() {
         return order;
@@ -48,7 +50,7 @@ public class LogRequestFilter extends OncePerRequestFilter implements Ordered {
         // pass through the actual request handling
         filterChain.doFilter(wrappedRequest, response);
         
-        if(!request.getRequestURI().contains("/api/authenticate")) {
+        if(!request.getRequestURI().contains(API_AUTHENTICATE)) {
         	LogAudit logAudit = getLogAudit(request, response);
             logAudit.setBody(getBody(wrappedRequest));
             logAudit.setError(getError(request));
@@ -60,8 +62,6 @@ public class LogRequestFilter extends OncePerRequestFilter implements Ordered {
         
     }
 
-    
-    
     private LogAudit getLogAudit(HttpServletRequest request, HttpServletResponse response) {
     	LogAudit logAudit = new LogAudit();
     	logAudit.setRequestURI(request.getRequestURI());

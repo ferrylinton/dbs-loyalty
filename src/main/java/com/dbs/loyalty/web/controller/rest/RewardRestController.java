@@ -35,6 +35,7 @@ import lombok.RequiredArgsConstructor;
  */
 @Api(tags = { SwaggerConstant.REWARD })
 @RequiredArgsConstructor
+@PreAuthorize("hasRole('CUSTOMER')")
 @RestController
 @RequestMapping("/api")
 public class RewardRestController {
@@ -45,7 +46,6 @@ public class RewardRestController {
 	
 	@ApiOperation(value=GET_TOTAL_REWARDS, produces=JSON, authorizations={@Authorization(value=JWT)})
 	@ApiResponses(value={@ApiResponse(code=200, message=OK, response=TotalDto.class)})
-	@PreAuthorize("hasRole('CUSTOMER')")
 	@GetMapping("/rewards/total")
 	public TotalDto getTotalRewards(){
 		return rewardService.getTotal();
@@ -53,7 +53,6 @@ public class RewardRestController {
 	
 	@ApiOperation(value=GET_ALL_REWARDS, produces=JSON, authorizations={@Authorization(value=JWT)})
 	@ApiResponses(value={@ApiResponse(code=200, message=OK, response=RewardDto.class)})
-	@PreAuthorize("hasRole('CUSTOMER')")
 	@GetMapping("/rewards")
 	public List<RewardDto> getAllRewards(){
 		return rewardService

@@ -1,7 +1,7 @@
 package com.dbs.loyalty.web.controller.rest;
 
 import static com.dbs.loyalty.config.constant.LogConstant.GET_IMAGE_BY_PROMO_ID;
-import static com.dbs.loyalty.config.constant.MessageConstant.DATA_WITH_VALUE_NOT_FOUND;
+import static com.dbs.loyalty.config.constant.MessageConstant.DATA_IS_NOT_FOUND;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.IMAGE;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.JWT;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.OK;
@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dbs.loyalty.config.constant.EntityConstant;
 import com.dbs.loyalty.domain.FileImage;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.ImageService;
-import com.dbs.loyalty.util.MessageUtil;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,7 +33,7 @@ import io.swagger.annotations.Authorization;
 import lombok.RequiredArgsConstructor;
 
 /**
- * REST controller for Image API
+ * REST controller for Promo's Image API
  * 
  * @author Ferry L. H. <ferrylinton@gmail.com>
  * 
@@ -66,8 +66,7 @@ public class ImagePromoRestController {
 					.headers(headers)
 					.body(fileImage.get().getBytes());
     	}else {
-    		String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, id);
-    		throw new NotFoundException(message);
+    		throw new NotFoundException(String.format(DATA_IS_NOT_FOUND, EntityConstant.PROMO, id));
     	}
     }
 	

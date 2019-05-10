@@ -20,7 +20,6 @@ import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 import com.dbs.loyalty.config.constant.Constant;
-import com.dbs.loyalty.event.LoginEventPublisher;
 import com.dbs.loyalty.repository.CustomerRepository;
 import com.dbs.loyalty.repository.UserRepository;
 import com.dbs.loyalty.security.rest.RestAuthenticationProvider;
@@ -28,6 +27,9 @@ import com.dbs.loyalty.security.web.WebAuthenticationFailureHandler;
 import com.dbs.loyalty.security.web.WebAuthenticationProvider;
 import com.dbs.loyalty.security.web.WebAuthenticationSuccessHandler;
 import com.dbs.loyalty.service.AuthenticateLdapService;
+import com.dbs.loyalty.service.BrowserService;
+import com.dbs.loyalty.service.LogCustomerLoginService;
+import com.dbs.loyalty.service.LogLoginService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -39,7 +41,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
 	private static final String LOGIN = "/login";
 	
-	private final LoginEventPublisher loginEventPublisher;
+	private final LogLoginService logLoginService;
+	
+	private final BrowserService browserService;
 	
 	private final ApplicationProperties applicationProperties;
 	
@@ -81,13 +85,13 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	    	.formLogin()
 	    		.loginPage(LOGIN)
 	    		.loginProcessingUrl(LOGIN)
-	    		.successHandler(new WebAuthenticationSuccessHandler(loginEventPublisher))
-	    		.failureHandler(new WebAuthenticationFailureHandler(loginEventPublisher));
+	    		.successHandler(new WebAuthenticationSuccessHandler(logLoginService, browserService))
+	    		.failureHandler(new WebAuthenticationFailureHandler(logLoginService, browserService));
 	    
 	    http
 	    	.logout()
 	    		.deleteCookies()
-	    		.invalidateHttpSession(true)
+	    		//.invalidateHttpSession(true)
 	    		.clearAuthentication(true)
 	    		.logoutUrl("/logout");
 	    
@@ -108,8 +112,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	}
 	
 	@Bean
-	public AuthenticationManager authenticationManager(UserRepository userRepository, AuthenticateLdapService authenticateLdapService, CustomerRepository customerRepository) {
-	    return new ProviderManager(Arrays.asList(webAuthenticationProvider(userRepository, authenticateLdapService), restAuthenticationProvider(customerRepository)));
+	public AuthenticationManager authenticationManager(UserRepository userRepository, AuthenticateLdapService authenticateLdapService, CustomerRepository customerRepository, LogCustomerLoginService logCustomerLoginService) {
+	    return new ProviderManager(Arrays.asList(
+	    		webAuthenticationProvider(userRepository, authenticateLdapService), 
+	    		restAuthenticationProvider(customerRepository, logCustomerLoginService)
+	    	));
 	}
  
 	@Bean("webAuthenticationProvider")
@@ -118,8 +125,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	}
 	
 	@Bean("restAuthenticationProvider")
-	public RestAuthenticationProvider restAuthenticationProvider(CustomerRepository customerRepository){
-		return new RestAuthenticationProvider(customerRepository);
+	public RestAuthenticationProvider restAuthenticationProvider(CustomerRepository customerRepository, LogCustomerLoginService logCustomerLoginService){
+		return new RestAuthenticationProvider(customerRepository, logCustomerLoginService);
 	}
 	
 	@Bean  

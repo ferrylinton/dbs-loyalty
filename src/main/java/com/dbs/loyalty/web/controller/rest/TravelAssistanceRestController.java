@@ -33,6 +33,7 @@ import lombok.RequiredArgsConstructor;
  */
 @Api(tags = { TRAVEL_ASSISTANCE })
 @RequiredArgsConstructor
+@PreAuthorize("hasRole('CUSTOMER')")
 @RestController
 @RequestMapping("/api")
 public class TravelAssistanceRestController {
@@ -43,7 +44,6 @@ public class TravelAssistanceRestController {
 	
 	@ApiOperation(value=GET_TRAVEL_ASSISTANCE_LIMIT, produces=JSON, authorizations={@Authorization(value=JWT)})
     @ApiResponses(value={@ApiResponse(code=200, message=OK, response=TravelAssistanceDto.class)})
-    @PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping("/travel-assistances")
     public TravelAssistanceDto getLimit(){
 		Optional<TravelAssistance> travelAssistance = travelAssistanceService.findById();

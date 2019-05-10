@@ -5,10 +5,10 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
     
-    <changeSet author="FLH" id="005-1">
+    <!-- LOG LOGIN -->
     
-    	<!-- LOG LOGIN -->
-    	
+    <changeSet author="FLH" id="005-1">
+
         <createTable tableName="log_login">
             <column name="id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
@@ -49,9 +49,38 @@
         </createIndex>
     </changeSet>
     
+    <!-- LOG CUSTOMER LOGIN -->
+    
+    <changeSet author="FLH" id="005-5">
+
+        <createTable tableName="log_customer_login">
+            <column name="id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(50)"/>
+            <column name="login_status" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+    </changeSet>
+    
+	<changeSet author="FLH" id="005-6">
+        <addPrimaryKey columnNames="id" constraintName="log_customer_login_pk" tableName="log_customer_login"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="005-7">
+        <createIndex indexName="log_login_email_idx" tableName="log_customer_login">
+            <column name="email"/>
+        </createIndex>
+    </changeSet>
+    
     <!-- LOG AUDIT -->
     
-    <changeSet author="FLH" id="006-5">
+    <changeSet author="FLH" id="006-8">
     
         <createTable tableName="log_audit">
             <column name="id" type="VARCHAR(22)">
@@ -71,7 +100,7 @@
         
     </changeSet>
     
-	<changeSet author="FLH" id="006-6">
+	<changeSet author="FLH" id="006-9">
         <addPrimaryKey columnNames="id" constraintName="log_audit_pk" tableName="log_audit"/>
     </changeSet>
     

@@ -1,15 +1,17 @@
 package com.dbs.loyalty.web.controller.rest;
 
+import static com.dbs.loyalty.config.constant.LogConstant.AUTHENTICATE;
+import static com.dbs.loyalty.config.constant.SwaggerConstant.AUTHENTICATION;
+import static com.dbs.loyalty.config.constant.SwaggerConstant.JSON;
+import static com.dbs.loyalty.config.constant.SwaggerConstant.OK;
+
 import javax.validation.Valid;
 
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import static com.dbs.loyalty.config.constant.SwaggerConstant.*;
 import com.dbs.loyalty.service.JWTAuthenticationService;
 import com.dbs.loyalty.service.dto.JWTLoginDto;
 import com.dbs.loyalty.service.dto.JWTTokenDto;
@@ -23,7 +25,10 @@ import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 
 /**
- * Controller to authenticate users.
+ * REST controller for Authenticate API
+ * 
+ * @author Ferry L. H. <ferrylinton@gmail.com>
+ * 
  */
 @Api(tags = { AUTHENTICATION })
 @RequiredArgsConstructor
@@ -33,20 +38,15 @@ public class JWTRestController {
 
     private final JWTAuthenticationService jwtAuthenticationService;
 
-    @ApiOperation(
-    		nickname = "authenticate", 
-    		value="authenticate", 
-    		consumes=MediaType.APPLICATION_JSON_VALUE,
-    		produces=MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value=AUTHENTICATE, consumes=JSON, produces=JSON)
     @ApiNotes("authenticate.md")
-    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = JWTTokenDto.class)})
+    @ApiResponses(value={@ApiResponse(code=200, message=OK, response=JWTTokenDto.class)})
     @PostMapping("/authenticate")
-    public ResponseEntity<JWTTokenDto> authenticate(
+    public JWTTokenDto authenticate(
     		@ApiParam(name = "JWTLoginData", value = "Customer's login data to get access token") 
     		@Valid @RequestBody JWTLoginDto jwtLoginDto) {
     	
-    	JWTTokenDto jwtTokenDto = jwtAuthenticationService.authenticate(jwtLoginDto);
-		return ResponseEntity.ok(jwtTokenDto);
+    	return jwtAuthenticationService.authenticate(jwtLoginDto);
     }
 
 }

@@ -6,8 +6,6 @@ import static com.dbs.loyalty.config.constant.SwaggerConstant.JWT;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.OK;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.PROMO;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,8 +44,7 @@ public class PromoCustomerRestController {
     @PostMapping("/promos/{id}")
     public Response addToInterestedInPromo(
     		@ApiParam(name = "id", value = "Promo Id", example = "5WTqpHYs3wZoIdhAkbWt1W")
-    		@PathVariable String id,
-    		HttpServletRequest request) throws NotFoundException{
+    		@PathVariable String id) throws NotFoundException{
     	
 		return customerPromoService.save(id);
     }

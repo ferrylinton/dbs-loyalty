@@ -2,6 +2,8 @@ package com.dbs.loyalty.config.constant;
 
 public class LogConstant {
 	
+	public static final String AUTHENTICATE = "Authenticate";
+	
 	public static final String ADD_ARRIVAL = "AddArrival";
 	
 	public static final String ADD_DEPARTURE = "AddDeparture";
@@ -9,6 +11,8 @@ public class LogConstant {
 	public static final String GET_TRAVEL_ASSISTANCE_LIMIT = "GetTravelAssitanceLimit";
 	
 	public static final String GET_WELLNESS_LIMIT = "GetWellnessLimit";
+	
+	public static final String GET_PROMO_CATEGORIES = "GetPromoCategories";
 
 	public static final String GET_AIRPORTS = "GetAirports";
 	
