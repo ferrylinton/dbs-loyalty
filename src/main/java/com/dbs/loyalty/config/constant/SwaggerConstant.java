@@ -11,7 +11,7 @@ public final class SwaggerConstant {
 	public static final String WELLNESS 			= "Wellness";
 	
 	public static final String PROMO 				= "Promo";
-	
+
 	public static final String CART 				= "Cart";
 	
 	public static final String REWARD 				= "Reward";
@@ -25,6 +25,14 @@ public final class SwaggerConstant {
 	public static final String EVENT 				= "Event";
 	
 	public static final String JWT 					= "JWT";
+	
+	public static final String OK 					= "OK";
+	
+	public static final String JSON 				= "application/json";
+	
+	public static final String IMAGE 				= "image/png, image/jpeg";
+	
+	public static final String TEXT					= "text/plain";
 
 	private SwaggerConstant() {
 		// hide constructor

@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dbs.loyalty.config.constant.MessageConstant;
 import com.dbs.loyalty.domain.Arrival;
 import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.domain.TravelAssistance;
@@ -50,7 +51,7 @@ public class ArrivalService {
 					arrival.getFlightTime());
 			
 			if(current.isPresent()) {
-				return new Response("Data is already exist");
+				return new Response(MessageConstant.DATA_IS_ALREADY_EXIST);
 			}else {
 				Optional<TravelAssistance> travelAssistance = travelAssistanceRepository.findById(SecurityUtil.getId());
 				
@@ -62,14 +63,14 @@ public class ArrivalService {
 					arrival.setCreatedBy(SecurityUtil.getLogged());
 					arrival.setCreatedDate(Instant.now());
 					arrival = arrivalRepository.save(arrival);
-					return new Response("Data is saved");
+					return new Response(MessageConstant.DATA_IS_SAVED);
 				}else {
-					throw new BadRequestException("No limit is available");
+					throw new BadRequestException(MessageConstant.NO_LIMIT_iS_AVAILABLE);
 				}
 			}
 		}
 
-		throw new BadRequestException("Failed to save data");
+		throw new BadRequestException(MessageConstant.FAILED_TO_SAVE_DATA);
 	}
 	
 }

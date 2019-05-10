@@ -8,6 +8,7 @@ import javax.servlet.ServletContext;
 
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +23,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
+import com.dbs.loyalty.filter.LogRequestFilter;
+import com.dbs.loyalty.service.LogAuditService;
 import com.dbs.loyalty.util.UrlUtil;
 import com.github.bufferings.thymeleaf.extras.nl2br.dialect.Nl2brDialect;
 
@@ -29,8 +32,11 @@ import com.github.bufferings.thymeleaf.extras.nl2br.dialect.Nl2brDialect;
 @AutoConfigureAfter(DispatcherServletAutoConfiguration.class)
 public class WebConfiguration implements WebMvcConfigurer{
 
-	public WebConfiguration(ServletContext context) {
+	private final LogAuditService logAuditService;
+	
+	public WebConfiguration(ServletContext context, LogAuditService logAuditService) {
 		UrlUtil.setContextPath(context.getContextPath());
+		this.logAuditService = logAuditService;
 	}
 	
 	@Bean("localeResolver")
@@ -57,6 +63,14 @@ public class WebConfiguration implements WebMvcConfigurer{
 	    ByteArrayHttpMessageConverter arrayHttpMessageConverter = new ByteArrayHttpMessageConverter();
 	    arrayHttpMessageConverter.setSupportedMediaTypes(getSupportedMediaTypes());
 	    return arrayHttpMessageConverter;
+	}
+	
+	@Bean
+	public FilterRegistrationBean<LogRequestFilter> loggingFilter(){
+	    FilterRegistrationBean<LogRequestFilter> registrationBean = new FilterRegistrationBean<>();
+	    registrationBean.setFilter(new LogRequestFilter(logAuditService));
+	    registrationBean.addUrlPatterns("/api/*");
+	    return registrationBean;    
 	}
 	 
 	private List<MediaType> getSupportedMediaTypes() {

@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 public class CarouselDto {
 
-	@ApiModelProperty(value = "Promo's id", example = "In1IverC", required = true, position = 0)
+	@ApiModelProperty(value = "Promo's id", example = "6nJfmxAD6GWtsehXfSkShg", required = true, position = 0)
 	private String id;
 
 	@ApiModelProperty(value = "Promo's title", example = "Nilai Tukar Kompetitif", required = true, position = 3)

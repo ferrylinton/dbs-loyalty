@@ -1,11 +1,13 @@
 package com.dbs.loyalty.web.controller.rest;
 
+import static com.dbs.loyalty.config.constant.LogConstant.GET_WELLNESS_LIMIT;
+import static com.dbs.loyalty.config.constant.SwaggerConstant.JSON;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.JWT;
+import static com.dbs.loyalty.config.constant.SwaggerConstant.OK;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.WELLNESS;
 
 import java.util.Optional;
 
-import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +26,7 @@ import io.swagger.annotations.Authorization;
 import lombok.RequiredArgsConstructor;
 
 /**
- * REST controller for Wellness
+ * REST controller for Wellness API
  * 
  * @author Ferry L. H. <ferrylinton@gmail.com>
  * 
@@ -39,13 +41,8 @@ public class WellnessRestController {
 	
 	private final WellnessMapper wellnessMapper;
 
-    @ApiOperation(
-    		nickname		= "GetWellnessLimit", 
-    		value			= "GetWellnessLimit", 
-    		notes			= "Get Wellness Limit",
-    		produces		= MediaType.APPLICATION_JSON_VALUE, 
-    		authorizations	= { @Authorization(value=JWT) })
-    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = WellnessDto.class)})
+	@ApiOperation(value=GET_WELLNESS_LIMIT, produces=JSON, authorizations={@Authorization(value=JWT)})
+	@ApiResponses(value={@ApiResponse(code=200, message=OK, response=WellnessDto.class)})
     @PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping("/wellness")
     public WellnessDto getLimit() {

@@ -30,6 +30,8 @@ public final class EntityConstant {
 	
 	public static final String APPOINTMENT 			= "appointment";
 	
+	public static final String ID					= "id";
+	
 	private EntityConstant() {
 		// hide constructor
 	}

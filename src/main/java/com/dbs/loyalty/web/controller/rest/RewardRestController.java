@@ -1,11 +1,14 @@
 package com.dbs.loyalty.web.controller.rest;
 
+import static com.dbs.loyalty.config.constant.LogConstant.GET_ALL_REWARDS;
+import static com.dbs.loyalty.config.constant.LogConstant.GET_TOTAL_REWARDS;
+import static com.dbs.loyalty.config.constant.SwaggerConstant.JSON;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.JWT;
+import static com.dbs.loyalty.config.constant.SwaggerConstant.OK;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +27,12 @@ import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * REST controller for Reward API
+ * 
+ * @author Ferry L. H. <ferrylinton@gmail.com>
+ * 
+ */
 @Api(tags = { SwaggerConstant.REWARD })
 @RequiredArgsConstructor
 @RestController
@@ -34,29 +43,19 @@ public class RewardRestController {
 
 	private final RewardMapper rewardMapper;
 	
-	@ApiOperation(
-			nickname="GetTotalReward", 
-			value="GetTotalReward", 
-			notes="Get Total Reward",
-    		produces=MediaType.APPLICATION_JSON_VALUE, 
-    		authorizations = { @Authorization(value=JWT) })
-    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = TotalDto.class)})
+	@ApiOperation(value=GET_TOTAL_REWARDS, produces=JSON, authorizations={@Authorization(value=JWT)})
+	@ApiResponses(value={@ApiResponse(code=200, message=OK, response=TotalDto.class)})
 	@PreAuthorize("hasRole('CUSTOMER')")
 	@GetMapping("/rewards/total")
-	public TotalDto getTotal(){
+	public TotalDto getTotalRewards(){
 		return rewardService.getTotal();
 	}
 	
-	@ApiOperation(
-			nickname="GetAllReward", 
-			value="GetAllReward", 
-			notes="Get All Reward",
-    		produces=MediaType.APPLICATION_JSON_VALUE, 
-    		authorizations = { @Authorization(value=JWT) })
-    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = RewardDto.class)})
+	@ApiOperation(value=GET_ALL_REWARDS, produces=JSON, authorizations={@Authorization(value=JWT)})
+	@ApiResponses(value={@ApiResponse(code=200, message=OK, response=RewardDto.class)})
 	@PreAuthorize("hasRole('CUSTOMER')")
 	@GetMapping("/rewards")
-	public List<RewardDto> getAllReward(){
+	public List<RewardDto> getAllRewards(){
 		return rewardService
 				.findAllValid()
 				.stream()

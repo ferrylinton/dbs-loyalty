@@ -7,6 +7,8 @@
     
     <changeSet author="FLH" id="005-1">
     
+    	<!-- LOG LOGIN -->
+    	
         <createTable tableName="log_login">
             <column name="id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
@@ -47,23 +49,21 @@
         </createIndex>
     </changeSet>
     
+    <!-- LOG AUDIT -->
+    
     <changeSet author="FLH" id="006-5">
     
         <createTable tableName="log_audit">
             <column name="id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
             </column>
-            <column name="audit_operation" type="VARCHAR(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="audit_status" type="VARCHAR(10)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="audit_data" type="LONGTEXT"/>
-            <column name="audit_error" type="clob"/>
-            <column name="created_by" type="VARCHAR(50)">
-                <constraints nullable="false"/>
-            </column>
+            <column name="request_uri" type="VARCHAR(255)"/>
+            <column name="query_string" type="VARCHAR(255)"/>
+            <column name="method" type="VARCHAR(10)"/>
+            <column name="status" type="int"/>
+            <column name="body" type="clob"/>
+            <column name="error" type="clob"/>
+            <column name="created_by" type="VARCHAR(22)"/>
             <column name="created_date" type="timestamp">
                 <constraints nullable="false"/>
             </column>

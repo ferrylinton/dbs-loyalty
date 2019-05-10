@@ -1,13 +1,15 @@
 package com.dbs.loyalty.web.controller.rest;
 
+import static com.dbs.loyalty.config.constant.LogConstant.GET_AIRPORTS;
+import static com.dbs.loyalty.config.constant.SwaggerConstant.JSON;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.JWT;
+import static com.dbs.loyalty.config.constant.SwaggerConstant.OK;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.TRAVEL_ASSISTANCE;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,13 +46,8 @@ public class AirportRestController {
      *
      * @return list of airports
      */
-    @ApiOperation(
-    		nickname		= "GetAirports", 
-    		value			= "GetAirports", 
-    		notes			= "Get all Airports",
-    		produces		= MediaType.APPLICATION_JSON_VALUE, 
-    		authorizations	= { @Authorization(value = JWT) })
-    @ApiResponses(value = { @ApiResponse(code = 200, message="OK", response = CountryDto.class, responseContainer = "List")})
+    @ApiOperation(nickname=GET_AIRPORTS, value=GET_AIRPORTS, produces=JSON, authorizations={@Authorization(value=JWT)})
+    @ApiResponses(value = { @ApiResponse(code=200, message=OK, response=CountryDto.class, responseContainer="List")})
     @PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping("/airports")
     public List<CountryDto> getAirports() {

@@ -1,11 +1,13 @@
 package com.dbs.loyalty.web.controller.rest;
 
+import static com.dbs.loyalty.config.constant.LogConstant.GET_TRAVEL_ASSISTANCE_LIMIT;
+import static com.dbs.loyalty.config.constant.SwaggerConstant.JSON;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.JWT;
+import static com.dbs.loyalty.config.constant.SwaggerConstant.OK;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.TRAVEL_ASSISTANCE;
 
 import java.util.Optional;
 
-import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +26,7 @@ import io.swagger.annotations.Authorization;
 import lombok.RequiredArgsConstructor;
 
 /**
- * REST controller for Travel Assistance
+ * REST controller for Travel Assistance API
  * 
  * @author Ferry L. H. <ferrylinton@gmail.com>
  * 
@@ -38,20 +40,15 @@ public class TravelAssistanceRestController {
 	private final TravelAssistanceService travelAssistanceService;
 	
 	private final TravelAssistanceMapper travelAssistanceMapper;
-
-    @ApiOperation(
-    		nickname		= "GetTravelAssitanceLimit", 
-    		value			= "GetTravelAssitanceLimit", 
-    		notes			= "Get Travel Assitance Limit",
-    		produces		= MediaType.APPLICATION_JSON_VALUE, 
-    		authorizations	= { @Authorization(value=JWT) })
-    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = TravelAssistanceDto.class)})
+	
+	@ApiOperation(value=GET_TRAVEL_ASSISTANCE_LIMIT, produces=JSON, authorizations={@Authorization(value=JWT)})
+    @ApiResponses(value={@ApiResponse(code=200, message=OK, response=TravelAssistanceDto.class)})
     @PreAuthorize("hasRole('CUSTOMER')")
     @GetMapping("/travel-assistances")
     public TravelAssistanceDto getLimit(){
-    	Optional<TravelAssistance> travelAssistance = travelAssistanceService.findById();
-    	
-    	if(travelAssistance.isPresent()) {
+		Optional<TravelAssistance> travelAssistance = travelAssistanceService.findById();
+		
+		if(travelAssistance.isPresent()) {
     		return travelAssistanceMapper.toDto(travelAssistance.get());
     	}else {
     		return new TravelAssistanceDto(0);

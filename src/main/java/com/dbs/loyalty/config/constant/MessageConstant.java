@@ -20,6 +20,14 @@ public final class MessageConstant {
 	
 	public static final String FILE_IS_EMPTY = "message.fileIsEmpty";
 	
+	public static final String DATA_IS_SAVED = "Data is saved";
+	
+	public static final String DATA_IS_ALREADY_EXIST = "Data is already exist";
+	
+	public static final String FAILED_TO_SAVE_DATA = "Failed to save data";
+	
+	public static final String NO_LIMIT_iS_AVAILABLE = "No limit is available";
+	
 	private MessageConstant() {
 		// hide constructor
 	}

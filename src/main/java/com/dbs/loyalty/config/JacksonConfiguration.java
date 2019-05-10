@@ -16,21 +16,20 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Configuration
 public class JacksonConfiguration {
 
 	private final ApplicationProperties applicationProperties;
-	
-	public JacksonConfiguration(ApplicationProperties applicationProperties) {
-		this.applicationProperties = applicationProperties;
-	}
 	
 	@Bean
 	public Jackson2ObjectMapperBuilder jackson2ObjectMapperBuilder() {
 		SimpleDateFormat dateFormat = new SimpleDateFormat(applicationProperties.getFormat().getDate());
 		Jackson2ObjectMapperBuilder jackson2ObjectMapperBuilder = new Jackson2ObjectMapperBuilder();
 		jackson2ObjectMapperBuilder.timeZone(TimeZone.getDefault());
-		jackson2ObjectMapperBuilder.indentOutput(true);
+		jackson2ObjectMapperBuilder.indentOutput(false);
 		jackson2ObjectMapperBuilder.dateFormat(dateFormat);
 		jackson2ObjectMapperBuilder.serializationInclusion(JsonInclude.Include.NON_EMPTY);
 		jackson2ObjectMapperBuilder.featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);

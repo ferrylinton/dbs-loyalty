@@ -1,12 +1,13 @@
 package com.dbs.loyalty.web.controller.rest;
 
+import static com.dbs.loyalty.config.constant.LogConstant.ADD_DEPARTURE;
+import static com.dbs.loyalty.config.constant.SwaggerConstant.JSON;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.JWT;
+import static com.dbs.loyalty.config.constant.SwaggerConstant.OK;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.TRAVEL_ASSISTANCE;
 
 import javax.validation.Valid;
 
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.exception.BadRequestException;
-import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.DepartureService;
 import com.dbs.loyalty.service.dto.DepartureDto;
 import com.dbs.loyalty.service.mapper.DepartureMapper;
@@ -28,7 +28,7 @@ import io.swagger.annotations.Authorization;
 import lombok.RequiredArgsConstructor;
 
 /**
- * REST controller for Feedback Answer
+ * REST controller for Departure API
  * 
  * @author Ferry L. H. <ferrylinton@gmail.com>
  * 
@@ -43,20 +43,12 @@ public class DepartureRestController {
 	
 	private final DepartureMapper departureMapper;
 
-    @ApiOperation(
-    		nickname		= "AddDeparture", 
-    		value			= "AddDeparture", 
-    		notes			= "Add Departure",
-    		produces		= MediaType.APPLICATION_JSON_VALUE, 
-    		authorizations	= { @Authorization(value=JWT) })
-    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Response.class)})
+	@ApiOperation(value=ADD_DEPARTURE, produces=JSON, authorizations={@Authorization(value=JWT)})
+    @ApiResponses(value={ @ApiResponse(code=200, message=OK, response=Response.class)})
     @PreAuthorize("hasRole('CUSTOMER')")
     @PostMapping("/departures")
-    public ResponseEntity<Response> addDeparture(
-    		@Valid @RequestBody DepartureDto departureDto) throws NotFoundException, BadRequestException{
-    	
-    	Response response = departureService.save(departureMapper.toEntity(departureDto));
-    	return ResponseEntity.ok().body(response);
+    public Response addDeparture(@Valid @RequestBody DepartureDto departure) throws BadRequestException{
+		return departureService.save(departureMapper.toEntity(departure));
     }
     
 }

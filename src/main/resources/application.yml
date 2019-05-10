@@ -2,8 +2,8 @@ spring:
   application:
     name: DBS Loyalty
   profiles:
-#    active: local
-    active: vps, cdnjs, min
+    active: local
+#    active: vps, cdnjs, min
 server:
   port: 8181
   servlet:

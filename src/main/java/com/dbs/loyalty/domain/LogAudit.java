@@ -5,8 +5,6 @@ import java.time.Instant;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Lob;
@@ -14,13 +12,11 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import com.dbs.loyalty.domain.enumeration.AuditStatus;
-
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Class of Task
+ * Class of LogAudit
  * 
  * @author Ferry L. H. <ferrylinton@gmail.com>
  */
@@ -38,25 +34,36 @@ public class LogAudit implements Serializable {
 	@GeneratedValue(generator = "IdGenerator")
 	private String id;
 
-    @Column(name = "audit_operation", length=50, nullable = false)
-    private String auditOperation;
+    @Column(name = "request_uri")
+    private String requestURI;
     
-    @Enumerated(EnumType.STRING)
-    @Column(name = "audit_status", length=10, nullable = false)
-    private AuditStatus auditStatus;
+    @Column(name = "query_string")
+    private String queryString;
     
-    @Lob
-    @Column(name = "audit_data")
-    private String auditData;
+    @Column(name = "method")
+    private String method;
+    
+    @Column(name = "status")
+    private Integer status;
 
     @Lob
-    @Column(name = "audit_error")
-    private String auditError;
+    @Column(name = "body")
+    private String body;
 
-    @Column(name = "created_by", length = 50, nullable = false, updatable = false)
+    @Lob
+    @Column(name = "error")
+    private String error;
+
+    @Column(name = "created_by")
     private String createdBy;
 
-    @Column(name = "created_date", nullable = false, updatable = false)
+    @Column(name = "created_date")
     private Instant createdDate;
+
+	@Override
+	public String toString() {
+		return "[" + requestURI + "," + queryString + "," + method + "," + status + "," + createdBy + "]";
+	}
+    
     
 }

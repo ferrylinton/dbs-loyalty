@@ -1,12 +1,13 @@
 package com.dbs.loyalty.web.controller.rest;
 
+import static com.dbs.loyalty.config.constant.LogConstant.ADD_ARRIVAL;
+import static com.dbs.loyalty.config.constant.SwaggerConstant.JSON;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.JWT;
+import static com.dbs.loyalty.config.constant.SwaggerConstant.OK;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.TRAVEL_ASSISTANCE;
 
 import javax.validation.Valid;
 
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.exception.BadRequestException;
-import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.ArrivalService;
 import com.dbs.loyalty.service.dto.ArrivalDto;
 import com.dbs.loyalty.service.mapper.ArrivalMapper;
@@ -35,6 +35,7 @@ import lombok.RequiredArgsConstructor;
  */
 @Api(tags = { TRAVEL_ASSISTANCE })
 @RequiredArgsConstructor
+@PreAuthorize("hasRole('CUSTOMER')")
 @RestController
 @RequestMapping("/api")
 public class ArrivalRestController {
@@ -43,20 +44,11 @@ public class ArrivalRestController {
 	
 	private final ArrivalMapper arrivalMapper;
 
-    @ApiOperation(
-    		nickname		= "AddArrival", 
-    		value			= "AddArrival", 
-    		notes			= "Add Arrival",
-    		produces		= MediaType.APPLICATION_JSON_VALUE, 
-    		authorizations	= { @Authorization(value=JWT) })
-    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Response.class)})
-    @PreAuthorize("hasRole('CUSTOMER')")
+    @ApiOperation(value=ADD_ARRIVAL, produces=JSON, authorizations={@Authorization(value=JWT)})
+    @ApiResponses(value={@ApiResponse(code=200, message=OK, response=Response.class)})
     @PostMapping("/arrivals")
-    public ResponseEntity<Response> addArrival(
-    		@Valid @RequestBody ArrivalDto arrivalDto) throws NotFoundException, BadRequestException{
-    	
-    	Response response = arrivalService.save(arrivalMapper.toEntity(arrivalDto));
-    	return ResponseEntity.ok().body(response);
+    public Response addArrival(@Valid @RequestBody ArrivalDto arrival) throws BadRequestException{
+    	return arrivalService.save(arrivalMapper.toEntity(arrival));
     }
     
 }

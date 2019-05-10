@@ -13,7 +13,7 @@ import lombok.Setter;
 @Getter
 public class PromoDto {
 
-	@ApiModelProperty(value = "Promo's id", example = "646e8a2a-4ca4-459a-9da8-2a31daaecd38", required = true, position = 0)
+	@ApiModelProperty(value = "Promo's id", example = "6nJfmxAD6GWtsehXfSkShg", required = true, position = 0)
 	private String id;
 	
 	@ApiModelProperty(value = "Promo's code", example = "100", required = true, position = 1)
@@ -21,12 +21,12 @@ public class PromoDto {
     @Size(min=2, max = 50, message = "{validation.size.code}")
 	private String code;
 	
-	@ApiModelProperty(value = "Promo's title", example = "Nilai Tukar Kompetitif", required = true, position = 3)
+	@ApiModelProperty(value = "Promo's title", example = "Nilai Tukar Kompetitif", required = true, position = 2)
 	@NotNull(message = "{validation.notnull.title}")
     @Size(min=2, max = 150, message = "{validation.size.title}")
 	private String title;
 	
-	@ApiModelProperty(value = "Promo's description", example = "Nikmati nilai tukar kompetitif Dollar Singapura terhadap Rupiah", required = true, position = 4)
+	@ApiModelProperty(value = "Promo's description", example = "Nikmati nilai tukar kompetitif Dollar Singapura terhadap Rupiah", required = true, position = 3)
 	@NotNull(message = "{validation.notnull.description}")
     @Size(min=2, max = 255, message = "{validation.size.description}")
 	private String description;
