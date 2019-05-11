@@ -5,16 +5,12 @@ import java.time.Instant;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
-
-import com.dbs.loyalty.domain.enumeration.LoginStatus;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -27,6 +23,7 @@ import lombok.Setter;
 	name = "log_login",
 	indexes= {
 		@Index(name = "log_login_username_idx", columnList = "username"),
+		@Index(name = "log_login_created_date_idx", columnList = "created_date"),
 		@Index(name = "log_login_ip_idx", columnList = "ip")
 	}
 )
@@ -49,9 +46,8 @@ public class LogLogin implements Serializable {
 	@Column(name = "created_date", nullable = false, updatable = false)
 	private Instant createdDate;
 	
-	@Enumerated(EnumType.STRING)
-    @Column(name = "login_status", length = 10, nullable = false, updatable = false)
-	private LoginStatus loginStatus;
+    @Column(name = "status", length = 10, nullable = false, updatable = false)
+	private String status;
 	
 	@Column(name = "browser", length = 50)
 	private String browser;

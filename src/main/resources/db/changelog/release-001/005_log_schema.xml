@@ -24,7 +24,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="ip" type="VARCHAR(20)"/>
-            <column name="login_status" type="VARCHAR(10)">
+            <column name="status" type="VARCHAR(10)">
                 <constraints nullable="false"/>
             </column>
             <column name="platform" type="VARCHAR(50)"/>
@@ -38,22 +38,26 @@
     </changeSet>
     
     <changeSet author="FLH" id="005-3">
+    
         <createIndex indexName="log_login_username_idx" tableName="log_login">
             <column name="username"/>
         </createIndex>
-    </changeSet>
-    
-    <changeSet author="FLH" id="005-4">
+        
         <createIndex indexName="log_login_ip_idx" tableName="log_login">
             <column name="ip"/>
         </createIndex>
+        
+        <createIndex indexName="log_login_created_date_idx" tableName="log_login">
+            <column name="created_date"/>
+        </createIndex>
+        
     </changeSet>
     
-    <!-- LOG CUSTOMER LOGIN -->
+    <!-- LOG TOKEN -->
     
-    <changeSet author="FLH" id="005-5">
+    <changeSet author="FLH" id="005-4">
 
-        <createTable tableName="log_customer_login">
+        <createTable tableName="log_token">
             <column name="id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
             </column>
@@ -61,28 +65,34 @@
                 <constraints nullable="false"/>
             </column>
             <column name="email" type="VARCHAR(50)"/>
-            <column name="login_status" type="VARCHAR(10)">
+            <column name="status" type="VARCHAR(10)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
         
     </changeSet>
     
-	<changeSet author="FLH" id="005-6">
-        <addPrimaryKey columnNames="id" constraintName="log_customer_login_pk" tableName="log_customer_login"/>
+	<changeSet author="FLH" id="005-5">
+        <addPrimaryKey columnNames="id" constraintName="log_token_pk" tableName="log_token"/>
     </changeSet>
     
-    <changeSet author="FLH" id="005-7">
-        <createIndex indexName="log_login_email_idx" tableName="log_customer_login">
+    <changeSet author="FLH" id="005-6">
+    
+        <createIndex indexName="log_token_email_idx" tableName="log_token">
             <column name="email"/>
         </createIndex>
+        
+         <createIndex indexName="log_token_created_date_idx" tableName="log_token">
+            <column name="created_date"/>
+        </createIndex>
+        
     </changeSet>
     
-    <!-- LOG AUDIT -->
+    <!-- LOG API -->
     
-    <changeSet author="FLH" id="006-8">
+    <changeSet author="FLH" id="005-7">
     
-        <createTable tableName="log_audit">
+        <createTable tableName="log_api">
             <column name="id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
             </column>
@@ -100,8 +110,24 @@
         
     </changeSet>
     
-	<changeSet author="FLH" id="006-9">
-        <addPrimaryKey columnNames="id" constraintName="log_audit_pk" tableName="log_audit"/>
+	<changeSet author="FLH" id="005-8">
+        <addPrimaryKey columnNames="id" constraintName="log_api_pk" tableName="log_api"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="005-9">
+    
+        <createIndex indexName="log_api_created_by_idx" tableName="log_api">
+            <column name="created_by"/>
+        </createIndex>
+        
+      	<createIndex indexName="log_api_created_date_idx" tableName="log_api">
+            <column name="created_date"/>
+        </createIndex>
+        
+        <createIndex indexName="log_api_request_uri_idx" tableName="log_api">
+            <column name="request_uri"/>
+        </createIndex>
+        
     </changeSet>
     
 </databaseChangeLog>

@@ -1,6 +1,8 @@
 package com.dbs.loyalty.security.rest;
 
 import static com.dbs.loyalty.config.constant.MessageConstant.LOGIN_FAILED;
+import static com.dbs.loyalty.config.constant.StatusConstant.FAIL;
+import static com.dbs.loyalty.config.constant.StatusConstant.SUCCEED;
 
 import java.time.Instant;
 import java.util.Optional;
@@ -10,10 +12,9 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 
 import com.dbs.loyalty.domain.Customer;
-import com.dbs.loyalty.domain.LogCustomerLogin;
-import com.dbs.loyalty.domain.enumeration.LoginStatus;
+import com.dbs.loyalty.domain.LogToken;
 import com.dbs.loyalty.repository.CustomerRepository;
-import com.dbs.loyalty.service.LogCustomerLoginService;
+import com.dbs.loyalty.service.LogTokenService;
 import com.dbs.loyalty.util.PasswordUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ public class RestAuthenticationProvider implements AuthenticationProvider {
 
     private final CustomerRepository customerRepository;
     
-    private final LogCustomerLoginService logCustomerLoginService;
+    private final LogTokenService logCustomerLoginService;
  
 	@Override
 	public RestAuthentication authenticate(Authentication authentication) {
@@ -33,10 +34,10 @@ public class RestAuthenticationProvider implements AuthenticationProvider {
 		Optional<Customer> customer = customerRepository.findByEmail(email);
 		
 		if(customer.isPresent() && PasswordUtil.matches(password, customer.get().getPasswordHash())) {
-			save(email, LoginStatus.SUCCEED);
+			save(email, SUCCEED);
 			return new RestAuthentication(email, password, customer.get());
         }else{
-        	save(email, LoginStatus.FAIL);
+        	save(email, FAIL);
         	throw new BadCredentialsException(LOGIN_FAILED);
         }
 	}
@@ -46,10 +47,10 @@ public class RestAuthenticationProvider implements AuthenticationProvider {
 		return authentication.equals(RestAuthentication.class);
 	}
 	
-	private void save(String email, LoginStatus loginStatus) {
-		LogCustomerLogin logCustomerLogin = new LogCustomerLogin();
+	private void save(String email, String status) {
+		LogToken logCustomerLogin = new LogToken();
 		logCustomerLogin.setEmail(email);
-		logCustomerLogin.setLoginStatus(loginStatus);
+		logCustomerLogin.setStatus(status);
 		logCustomerLogin.setCreatedDate(Instant.now());
 		logCustomerLoginService.save(logCustomerLogin);
 	}

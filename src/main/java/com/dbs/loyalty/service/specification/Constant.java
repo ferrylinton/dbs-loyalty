@@ -36,6 +36,8 @@ public final class Constant {
 	
 	public static final String IP = "ip";
 	
+	public static final String REQUEST_URI = "requestURI";
+	
 	public static final String TITLE = "title";
 	
 	public static final String CREATED_DATE = "createdDate";

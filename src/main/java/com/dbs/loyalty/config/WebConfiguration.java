@@ -24,7 +24,7 @@ import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 import com.dbs.loyalty.filter.LogRequestFilter;
-import com.dbs.loyalty.service.LogAuditService;
+import com.dbs.loyalty.service.LogApiService;
 import com.dbs.loyalty.util.UrlUtil;
 import com.github.bufferings.thymeleaf.extras.nl2br.dialect.Nl2brDialect;
 
@@ -32,9 +32,9 @@ import com.github.bufferings.thymeleaf.extras.nl2br.dialect.Nl2brDialect;
 @AutoConfigureAfter(DispatcherServletAutoConfiguration.class)
 public class WebConfiguration implements WebMvcConfigurer{
 
-	private final LogAuditService logAuditService;
+	private final LogApiService logAuditService;
 	
-	public WebConfiguration(ServletContext context, LogAuditService logAuditService) {
+	public WebConfiguration(ServletContext context, LogApiService logAuditService) {
 		UrlUtil.setContextPath(context.getContextPath());
 		this.logAuditService = logAuditService;
 	}
@@ -69,7 +69,6 @@ public class WebConfiguration implements WebMvcConfigurer{
 	public FilterRegistrationBean<LogRequestFilter> loggingFilter(){
 	    FilterRegistrationBean<LogRequestFilter> registrationBean = new FilterRegistrationBean<>();
 	    registrationBean.setFilter(new LogRequestFilter(logAuditService));
-	    registrationBean.addUrlPatterns("/api/*");
 	    return registrationBean;    
 	}
 	 

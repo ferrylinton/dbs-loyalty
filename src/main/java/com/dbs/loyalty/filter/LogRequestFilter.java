@@ -15,8 +15,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.WebUtils;
 
-import com.dbs.loyalty.domain.LogAudit;
-import com.dbs.loyalty.service.LogAuditService;
+import com.dbs.loyalty.domain.LogApi;
+import com.dbs.loyalty.service.LogApiService;
 import com.dbs.loyalty.util.SecurityUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -31,12 +31,17 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class LogRequestFilter extends OncePerRequestFilter implements Ordered {
 	
-    // put filter at the end of all other filters to make sure we are processing after all others
     private final static int order = Ordered.LOWEST_PRECEDENCE - 8;
     
     private final static String API_AUTHENTICATE = "/api/authenticate";
     
-    private final LogAuditService logAuditService;
+    private final static String STATIC = "/static";
+    
+    private final static String API = "/api";
+    
+    private final static String EXCEPTION_ATTRIBUTE = "javax.servlet.error.exception";
+    
+    private final LogApiService logApiService;
 
     @Override
     public int getOrder() {
@@ -46,30 +51,27 @@ public class LogRequestFilter extends OncePerRequestFilter implements Ordered {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         ContentCachingRequestWrapper wrappedRequest = new ContentCachingRequestWrapper(request);
-
-        // pass through the actual request handling
         filterChain.doFilter(wrappedRequest, response);
         
-        if(!request.getRequestURI().contains(API_AUTHENTICATE)) {
-        	LogAudit logAudit = getLogAudit(request, response);
-            logAudit.setBody(getBody(wrappedRequest));
-            logAudit.setError(getError(request));
-            logAudit.setCreatedBy(SecurityUtil.getId());
-            logAudit.setCreatedDate(Instant.now());
-            logAuditService.save(logAudit);
-            log.info(logAudit.toString());
+        if(request.getRequestURI().contains(API) && !request.getRequestURI().contains(API_AUTHENTICATE) && !request.getRequestURI().contains(STATIC)) {
+        	LogApi logApi = getLogAudit(request, response);
+            logApi.setBody(getBody(wrappedRequest));
+            logApi.setError(getError(request));
+            logApi.setCreatedBy(SecurityUtil.getId());
+            logApi.setCreatedDate(Instant.now());
+            logApiService.save(logApi);
+            log.info(logApi.toString());
         }
-        
     }
 
-    private LogAudit getLogAudit(HttpServletRequest request, HttpServletResponse response) {
-    	LogAudit logAudit = new LogAudit();
-    	logAudit.setRequestURI(request.getRequestURI());
-    	logAudit.setQueryString(request.getQueryString());
-    	logAudit.setMethod(request.getMethod());
-    	logAudit.setStatus(response.getStatus());
+    private LogApi getLogAudit(HttpServletRequest request, HttpServletResponse response) {
+    	LogApi logApi = new LogApi();
+    	logApi.setRequestURI(request.getRequestURI());
+    	logApi.setQueryString(request.getQueryString());
+    	logApi.setMethod(request.getMethod());
+    	logApi.setStatus(response.getStatus());
     	
-    	return logAudit;
+    	return logApi;
     }
     
     private String getBody(ContentCachingRequestWrapper request) {
@@ -90,7 +92,7 @@ public class LogRequestFilter extends OncePerRequestFilter implements Ordered {
     }
 
     private String getError(HttpServletRequest request) {
-        Throwable exception = (Throwable) request.getAttribute("javax.servlet.error.exception");
+        Throwable exception = (Throwable) request.getAttribute(EXCEPTION_ATTRIBUTE);
         
         if(exception != null) {
         	return exception.getMessage();

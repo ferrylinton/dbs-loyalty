@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
@@ -23,8 +24,15 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-@Table(name = "log_audit")
-public class LogAudit implements Serializable {
+@Table(
+	name = "log_api",
+	indexes= {
+			@Index(name = "log_api_created_by_idx", columnList = "created_by"),
+			@Index(name = "log_api_created_date_idx", columnList = "created_date"),
+			@Index(name = "log_api_request_uri_idx", columnList = "request_uri")
+	}
+)
+public class LogApi implements Serializable {
 
     private static final long serialVersionUID = 1L;
     

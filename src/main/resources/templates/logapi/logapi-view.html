@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en" th:lang="${#locale.toString() == 'in' ? 'id' : #locale}" xmlns:th="http://www.thymeleaf.org">
 
-<head th:replace="fragment/head.html :: content(title=|#{application.name} : #{logLogin}|)"></head>
+<head th:replace="fragment/head.html :: content(title=|#{application.name} : #{logApi}|)"></head>
 
 <body>
     <!-- NAVBAR -->
@@ -11,14 +11,14 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/home/home-view.html" th:href="@{/}" th:text="#{home}">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page" th:text="#{logLogin}">Log Login</li>
+                <li class="breadcrumb-item active" aria-current="page" th:text="#{logApi}">Log Api</li>
             </ol>
         </nav>
         <div id="main-content">
                 <!-- SEARCH FORM -->
                 <div class="row no-gutters mb-3">
                     <div class="col-12 col-sm-12 col-md-10 col-lg-7 col-xl-6">
-                        <form th:action="@{/loglogin}" method="get" autocomplete="off" >
+                        <form th:action="@{/logapi}" method="get" autocomplete="off" >
 							<div class="input-group mb-2">
 								<input type="text" class="form-control" name="sd" th:value="${param.sd}" placeholder="Start Date" th:placeholder="#{startDate}" readonly="readonly">
 		                     	<input type="text" class="form-control" name="ed" th:value="${param.ed}" placeholder="End Date" th:placeholder="#{endDate}" readonly="readonly">
@@ -32,7 +32,7 @@
                                     <button class="btn btn-light border text-secondary" type="submit">
                                         <span class="icon-search"></span>
                                     </button>
-                                    <a class="btn btn-light border text-secondary" th:href="@{/loglogin}">
+                                    <a class="btn btn-light border text-secondary" th:href="@{/logapi}">
                                         <span class="icon-arrows-cw"></span>
                                     </a>
                                 </div>
@@ -52,20 +52,19 @@
                                 	</a>
                                 </th>
                                 <th th:text="#{status}">Status</th>
-                                <th th:text="#{username}">Username</th>
-                                <th th:text="#{browser}">Browser</th>
+                                <th th:text="#{id}">Id</th>
+                                <th th:text="#{requestURI}">Request URI</th>
+                                <th th:text="#{method}">Method</th>
                             </tr>
                         </thead>
 	                    <tbody th:remove="all-but-first">
-	                        <tr th:each="loglogin,row : ${page}">
+	                        <tr th:each="logapi,row : ${page}">
 	                            <td class="text-center" th:text="${row.count + (page.number * page.size)}">1</td>
-	                            <td th:text="${#dates.format(loglogin.createdDate, @environment.getProperty('application.format.date-time'))}">18-04-2019 19:09.001</td>
-								<td>
-									<span class="badge badge-success" th:class="${loglogin.status == 'Succeed'} ? 'badge badge-success' : 'badge badge-danger'" th:text="#{${loglogin.status}}">Succeed</span>
-								</td>
-								<td th:text="${#strings.isEmpty(loglogin.username)} ? '-' : ${loglogin.username}">ferrylinton</td>
-								<td th:text="${loglogin.ip}">127.0.0.1</td>
-								<td th:text="${loglogin.browser}">Chrome</td>
+	                            <td th:text="${#dates.format(logapi.createdDate, @environment.getProperty('application.format.date-time'))}">18-04-2019 19:09.001</td>
+								<td th:text="${logapi.status}">200</td>
+								<td th:text="${logapi.id}">id</td>
+								<td th:text="${logapi.requestURI}">Request URI</td>
+								<td th:text="${logapi.method}">Method</td>
 	                        </tr>
 	                    </tbody>
 	                </table>

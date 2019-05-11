@@ -57,6 +57,12 @@
                     <li th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                         <a rel="/loglogin" href="/loglogin/loglogin-view.html" th:href="@{/loglogin}" th:text="#{logLogin}">Log Login</a>
                     </li>
+                    <li th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                        <a rel="/logtoken" href="/logtoken/logtoken-view.html" th:href="@{/logtoken}" th:text="#{logToken}">Log Token</a>
+                    </li>
+                    <li th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                        <a rel="/logapi" href="/logapi/logapi-view.html" th:href="@{/logapi}" th:text="#{logApi}">Log Api</a>
+                    </li>
                 </ul>
             </li>
             <li>

@@ -5,15 +5,12 @@ import java.time.Instant;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
-
-import com.dbs.loyalty.domain.enumeration.LoginStatus;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -22,8 +19,14 @@ import lombok.Setter;
 @Setter
 @Getter
 @Entity
-@Table(name = "log_customer_login")
-public class LogCustomerLogin implements Serializable {
+@Table(
+	name = "log_token",
+	indexes= {
+		@Index(name = "log_token_email_idx", columnList = "email"),
+		@Index(name = "log_token_created_date_idx", columnList = "created_date"),
+	}
+)
+public class LogToken implements Serializable {
 
     private static final long serialVersionUID = 1L;
 	
@@ -38,9 +41,8 @@ public class LogCustomerLogin implements Serializable {
 	
 	@Column(name = "created_date", nullable = false, updatable = false)
 	private Instant createdDate;
-	
-	@Enumerated(EnumType.STRING)
-    @Column(name = "login_status", length = 10, nullable = false, updatable = false)
-	private LoginStatus loginStatus;
+
+    @Column(name = "status", length = 10, nullable = false, updatable = false)
+	private String status;
 	
 }

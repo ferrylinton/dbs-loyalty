@@ -1,5 +1,7 @@
 package com.dbs.loyalty.security.web;
 
+import static com.dbs.loyalty.config.constant.StatusConstant.FAIL;
+
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -10,7 +12,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
-import com.dbs.loyalty.domain.enumeration.LoginStatus;
 import com.dbs.loyalty.service.BrowserService;
 import com.dbs.loyalty.service.LogLoginService;
 
@@ -34,6 +35,6 @@ public class WebAuthenticationFailureHandler extends SimpleUrlAuthenticationFail
 	
 	@Async
 	private void save(HttpServletRequest request) {
-		logLoginService.save(browserService.createLogLogin(LoginStatus.FAIL, request));
+		logLoginService.save(browserService.createLogLogin(FAIL, request));
 	}
 }
