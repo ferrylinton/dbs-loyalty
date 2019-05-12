@@ -18,6 +18,8 @@ public interface CustomerRepository extends JpaRepository<Customer, String>, Jpa
 	
 	Optional<Customer> findByEmailIgnoreCase(String email);
 	
+	Optional<Customer> findByNameIgnoreCaseOrEmailIgnoreCase(String name, String email);
+	
 	@Transactional(propagation=Propagation.REQUIRED)
 	@Modifying
 	@Query("update Customer c set c.passwordHash = :passwordHash where c.email = :email")

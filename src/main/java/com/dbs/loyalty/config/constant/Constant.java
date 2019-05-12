@@ -58,6 +58,8 @@ public final class Constant {
 	
 	public static final String FORBIDDEN 			= "Forbidden";
 	
+	public static final String SYSTEM	 			= "system";
+	
 	private Constant() {
 		// hide constructor
 	}
