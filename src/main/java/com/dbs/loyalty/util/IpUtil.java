@@ -4,6 +4,10 @@ import javax.servlet.http.HttpServletRequest;
 
 public class IpUtil {
 	
+	private static final String LOCALHOST_REMOTE = "0:0:0:0:0:0:0:1";
+	
+	private static final String LOCALHOST = "localhost";
+	
 	private static final String PREFIX_URL = "%s://%s:%d";
 
 	private static final String UNKNOWN = "unknown";
@@ -27,7 +31,8 @@ public class IpUtil {
 	}
 	
 	public static String getPrefixUrl(HttpServletRequest request) {
-		return String.format(PREFIX_URL, request.getScheme(), getIp(request), request.getServerPort());
+		String ip = getIp(request).equals(LOCALHOST_REMOTE) ? LOCALHOST : getIp(request);
+		return String.format(PREFIX_URL, request.getScheme(), ip, request.getServerPort());
 	}
 	
 	private IpUtil() {

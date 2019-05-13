@@ -24,6 +24,11 @@ import com.dbs.loyalty.web.response.SuccessResponse;
 
 public abstract class AbstractController {
 
+	protected String taskIsSavedMessage(String taskDataType, String val) {
+		taskDataType = MessageUtil.getMessage(taskDataType);
+		return MessageUtil.getMessage(TASK_IS_SAVED, taskDataType, val);
+	}
+	
 	protected ResponseEntity<Response> taskIsSavedResponse(String taskDataType, String val, String resultUrl) {
 		taskDataType = MessageUtil.getMessage(taskDataType);
 		String message = MessageUtil.getMessage(TASK_IS_SAVED, taskDataType, val);

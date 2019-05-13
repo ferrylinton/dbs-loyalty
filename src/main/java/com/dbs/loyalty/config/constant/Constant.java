@@ -6,7 +6,7 @@ public final class Constant {
 	
 	public static final String USERNAME_REGEX 		= "^[A-Za-z][A-Za-z0-9_]{4,49}$";
 	
-	public static final String NAME_REGEX 			= "^[a-zA-Z0-9\\d\\-_\\s]*$";
+	public static final String NAME_REGEX 			= "^[^\\W_]+(?: [^\\W_]+)*$";
 	
 	public static final String EMPTY 				= "";
 	
@@ -59,6 +59,8 @@ public final class Constant {
 	public static final String FORBIDDEN 			= "Forbidden";
 	
 	public static final String SYSTEM	 			= "system";
+	
+	public static final String TOAST	 			= "toast";
 	
 	private Constant() {
 		// hide constructor

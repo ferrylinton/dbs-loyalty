@@ -9,6 +9,7 @@ application:
     max-pool-size: 10
     queue-capacity: 1000
   scheduler: 
+    # every 01:00 am
     customer-cron: 0 0 1 * * ?
     file-path: /home/ferry/loyalty/customers.csv
 spring:
@@ -69,4 +70,5 @@ spring:
     initialize-schema: never
     schema: classpath:dummy-schema-mariadb.sql
     job:
-      enabled: true
+      # Execute all Spring Batch jobs in the context on startup
+      enabled: false

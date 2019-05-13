@@ -20,27 +20,30 @@
             <div class="border alert alert-light text-center" role="alert" th:if="${error}">
                 <span class="icon-attention"></span> <span th:text="${error}">Data ['xxxx'] is not found</span>
             </div>
+            
             <!-- FORM -->
             <th:block th:if="${role}">
-                <form action="/role/role-view.html" th:action="@{/role}" th:object="${role}" method="post" autocomplete="off" onsubmit="return AjaxUtil.submit(this)">
+                <form action="/role/role-view.html" th:action="@{/role}" th:object="${role}" method="post" autocomplete="off">
                     <div class="row">
-                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                        <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
                             <div class="form-group">
                                 <label for="name" th:text="|#{name} *|">Name *</label>
-                                <input class="form-control" type="text" th:placeholder="#{name}" th:field="*{name}" maxlength="40" />
+                                <input class="form-control" th:classappend="${#fields.hasErrors('name') ? 'is-invalid' : ''}" type="text" th:placeholder="#{name}" th:field="*{name}" maxlength="40" />
+                            	<div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:uerrors="*{name}">Error</div>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-group">
                                 <label for="authorities" th:text="|#{authorities} *|">Authorities *</label>
-                                <div class="form-check">
+                                <div class="py-2 pl-5 border" th:classappend="${#fields.hasErrors('authorities') ? 'is-invalid' : ''}">
                                     <div class="row">
                                         <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4" th:each="authority : ${authorities}">
-                                            <input class="form-check-input" type="checkbox" th:field="*{authorities}" th:value="${authority}" />
-                                            <label th:text="#{${authority.name}}">Description</label>
+                                            <input class="form-check-input" type="checkbox" th:field="*{authorities}" th:value="|${authority.id}${authority.name}|" />
+                                            <label th:text="${authority.name}">Description</label>
                                         </div>
                                     </div>
                                 </div>
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('authorities')}" th:uerrors="*{authorities}">Error</div>
                             </div>
                         </div>
                     </div>

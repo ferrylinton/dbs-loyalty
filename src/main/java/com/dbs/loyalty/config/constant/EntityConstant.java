@@ -6,6 +6,8 @@ public final class EntityConstant {
 	
 	public static final String AUTHORITY 			= "authority";
 	
+	public static final String AUTHORITIES 			= "authorities";
+	
 	public static final String ROLE 				= "role";
 	
 	public static final String AIRPORT_ASSISTANCE	= "airportassistance";

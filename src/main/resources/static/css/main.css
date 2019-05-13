@@ -17,7 +17,7 @@ a:hover{
 }
 
 /* OVERRIDE BOOTSTRAP */
-
+  
 .btn{
 	border-radius: 0;
 }
@@ -41,10 +41,58 @@ a:hover{
 	padding: .45rem 1rem;
 }
 
+.form-control{
+	border-radius: 0;
+}
+
 .form-control[readonly] {
     background-color: #ffffff;
     opacity: 1;
 }
+
+.form-control::placeholder {
+    color: #ddd;
+    opacity: 1;
+}
+
+.border.is-invalid{
+	border-color: #dc3545!important;
+}
+
+.border.is-invalid~.invalid-feedback{
+    display: block;
+}
+
+.toast{
+	color: #fff;
+	width: calc(100% - 10px);
+	max-width: none;
+	z-index: 1500; 
+	position: absolute; 
+	top: 5px;
+    background-color: #555753;
+    border: 2px solid #555753;
+    border-radius: 0;
+}
+
+@media ( min-width : 576px) {
+
+	.toast{
+		width: calc(100% - 10px);
+		max-width: none;
+	}
+
+}
+
+@media (min-width: 768px){
+
+	.toast{
+		width: 500px;
+		max-width: none;
+	}
+
+}
+
 
 .custom-select option {
     padding: 8px 4px;
@@ -57,6 +105,21 @@ a:hover{
 
 .custom-file-input:lang(id)~.custom-file-label::after {
     content: "Pilih Berkas";
+}
+
+.modal .btn{
+	min-width: 100px;
+}
+
+.modal-content{
+	border-radius: 0;	
+}
+
+.modal-footer {
+	display: block;
+    padding: 8px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
 }
 
 /* OVERRIDE JQUERY CONFIRM */
@@ -190,6 +253,7 @@ a:hover{
 	overflow-x: hidden;
 	transition: 0.8s;
 	background-color: #242527;
+	right: -250px;
 }
 
 @media (min-width: 768px){
@@ -198,6 +262,9 @@ a:hover{
 		padding-right: 250px;
 	}
 
+	#sidenav-box{
+		right: 0;
+	}
 }
 
 #main-content{

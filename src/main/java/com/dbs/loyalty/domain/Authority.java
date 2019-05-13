@@ -14,6 +14,7 @@ import org.hibernate.annotations.GenericGenerator;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Class of Authority
@@ -23,6 +24,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @EqualsAndHashCode(of = { "id", "name" })
+@ToString(of = { "id", "name" })
 @Entity
 @Table(	
 	name = "u_authority", 
@@ -42,10 +44,5 @@ public class Authority implements Serializable {
 
 	@Column(name = "name", length = 50, nullable = false)
 	private String name;
-	
-	@Override
-	public String toString() {
-		return id + "," + name;
-	}
-	
+
 }

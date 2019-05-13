@@ -1,0 +1,27 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <title>DBS Loyalty</title>
+</head>
+
+<body>
+	<div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-hidden="true">
+  	<div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	   		<div class="modal-body text-center">
+				<span>Delete data?</span>
+	    	</div>
+	 		<div class="modal-footer text-center">
+	      		<form id="delete-modal-form" action="#" method="post" autocomplete="off">
+	      			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+	      			<button type="button" class="btn btn-sm btn-light" data-dismiss="modal">Close</button>
+	        		<button type="submit" class="btn btn-sm btn-danger">Delete</button>
+	      		</form>
+	      </div>
+	    </div>
+  	</div>
+	</div>
+</body>
+
+</html>

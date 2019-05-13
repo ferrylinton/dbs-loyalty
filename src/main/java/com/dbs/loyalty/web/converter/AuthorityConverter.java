@@ -11,12 +11,10 @@ public class AuthorityConverter implements Converter<String, Authority> {
 	
 	@Override
 	public Authority convert(String content) {
-		String[] str = content.split(Constant.COMMA);
-
-		if(str.length == 2) {
+		if(content  != null && content.length() > 22) {
 			Authority authority = new Authority();
-			authority.setId(str[0]);
-			authority.setName(str[1]);
+			authority.setId(content.substring(0,22));
+			authority.setName(content.replace(authority.getId(), Constant.EMPTY));
 			return authority;
 		}else {
 			return null;

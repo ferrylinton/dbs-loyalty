@@ -28,7 +28,7 @@ public class ErrorData {
 	
 	public ErrorData(HttpServletRequest request) {
 		this.exception = getException(request);
-		this.requestURI = IpUtil.getPrefixUrl(request) + (String) request.getAttribute(RequestDispatcher.ERROR_REQUEST_URI);
+		this.requestURI = IpUtil.getPrefixUrl(request) + request.getAttribute(RequestDispatcher.ERROR_REQUEST_URI);
 		this.status = getStatusCode(request);
 		this.message = getErrorMessage();
 		
@@ -38,15 +38,19 @@ public class ErrorData {
 	}
 
 	private int getStatusCode(HttpServletRequest request) {
-		status =  (Integer) request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
-		
-		if(status == 500 && exception != null) {
-			Exception ex = (Exception) ErrorUtil.getThrowable(exception);
+		if(request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE) != null) {
+			status =  (Integer) request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
 			
-			if(ex instanceof AbstractException) {
-				AbstractException abstractException = (AbstractException) ex;
-				status = abstractException.getStatus();
+			if(status == 500 && exception != null) {
+				Exception ex = (Exception) ErrorUtil.getThrowable(exception);
+				
+				if(ex instanceof AbstractException) {
+					AbstractException abstractException = (AbstractException) ex;
+					status = abstractException.getStatus();
+				}
 			}
+		}else {
+			status = 405;
 		}
 		
 		return status;

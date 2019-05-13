@@ -62,8 +62,6 @@ var Sidenav = (function(){
 
     function setActive(){
         $('.vertical-menu a').each(function(){
-            $(this).removeClass('active');
-
             if(window.location.pathname.endsWith($(this).attr('rel'))){
                 $(this).addClass('active');
             }

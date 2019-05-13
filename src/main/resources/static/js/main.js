@@ -8,6 +8,10 @@ $(document).ready(function () {
 	
 	initFormatDate();
 	
+	initToast();
+	
+	initDeleteModal();
+	
 	initEditor($('#content'));
 	
 	initEditor($('#termAndCondition'));
@@ -31,6 +35,23 @@ $(document).ready(function () {
 	JsonUtil.toTable();
 	
 });
+
+function initToast(){
+	$('#toast .toast').toast('show');
+}
+
+function initDeleteModal(){
+	$('button[data-target="#delete-modal"]').click(function(e){
+		console.log('... click data-target="#delete-modal"')
+		console.log($(this).attr('title'));
+		$('#delete-modal-form').attr('action', $(this).attr('title'));
+	});
+	
+	$('#delete-modal').on('shown.bs.modal', function (e) {
+		console.log('... shown.bs.modal');
+		
+	});
+}
 
 function initInputMaterial(){
 	$('body').materializeInputs();
