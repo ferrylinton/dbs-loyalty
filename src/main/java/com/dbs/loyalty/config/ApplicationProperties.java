@@ -13,10 +13,10 @@ import lombok.Setter;
 public class ApplicationProperties {
  
 	private Security security;
-	
-	private Format format;
-	
+
 	private Async async;
+	
+	private Scheduler scheduler;
 
 	@Getter
 	@Setter
@@ -34,18 +34,6 @@ public class ApplicationProperties {
 	
 	@Getter
 	@Setter
-	public static class Format{
-		
-		private String date = "dd-MM-yyyy";
-	    
-	    private String dateTime = "dd-MM-yyyy HH:mm";
-	    
-	    private String dateTimeFull = "dd-MM-yyyy HH:mm:ss.SSS";
-
-	}
-
-	@Getter
-	@Setter
 	public static class Async{
 		
 		private int corePoolSize = 5;
@@ -53,6 +41,16 @@ public class ApplicationProperties {
 	    private int maxPoolSize = 10;
 	    
 	    private int queueCapacity = 1000;
+	    
+	}
+	
+	@Getter
+	@Setter
+	public static class Scheduler{
+		
+		private String customerCron = "0 0 1 * * ?";
+		
+	    private String filePath = "/home/ferry/loyalty/customers.csv";
 	    
 	}
 	

@@ -11,7 +11,7 @@ import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;
 import org.springframework.batch.item.file.mapping.BeanWrapperFieldSetMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
 
 import com.dbs.loyalty.batch.CustomerItem;
 import com.dbs.loyalty.batch.CustomerItemProcessor;
@@ -30,12 +30,14 @@ public class BatchConfiguration {
     private final JobBuilderFactory jobBuilderFactory;
 
     private final StepBuilderFactory stepBuilderFactory;
+    
+    private final ApplicationProperties applicationProperties;
   
     @Bean
     public FlatFileItemReader<CustomerItem> reader() {
         return new FlatFileItemReaderBuilder<CustomerItem>()
             .name("customerItemReader")
-            .resource(new ClassPathResource("customers.csv"))
+            .resource(new FileSystemResource(applicationProperties.getScheduler().getFilePath()))
             .delimited()
             .names(new String[]{"email","name","phone","customer_type","dob","password_hash"})
             .fieldSetMapper(new BeanWrapperFieldSetMapper<CustomerItem>() {{

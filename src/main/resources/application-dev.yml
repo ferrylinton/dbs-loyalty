@@ -72,6 +72,6 @@ spring:
         password: password
   batch:
     initialize-schema: never
-    schema: classpath:schema-mariadb.sql
+    schema: classpath:dummy-schema-mariadb.sql
     job:
       enabled: true

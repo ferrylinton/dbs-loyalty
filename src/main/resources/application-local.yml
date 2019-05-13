@@ -8,10 +8,9 @@ application:
     core-pool-size: 5
     max-pool-size: 10
     queue-capacity: 1000
-  format: 
-    date: dd-MM-yyyy
-    date-time: dd-MM-yyyy HH:mm
-    date-time-full: dd-MM-yyyy HH:mm:ss.SSS
+  scheduler: 
+    customer-cron: 0 0 1 * * ?
+    file-path: /home/ferry/loyalty/customers.csv
 spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
@@ -67,5 +66,7 @@ spring:
         username: uid=admin
         password: password
   batch:
+    initialize-schema: never
+    schema: classpath:dummy-schema-mariadb.sql
     job:
       enabled: true

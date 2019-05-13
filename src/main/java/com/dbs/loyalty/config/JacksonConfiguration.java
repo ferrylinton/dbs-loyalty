@@ -1,6 +1,5 @@
 package com.dbs.loyalty.config;
 
-import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
 import org.springframework.context.annotation.Bean;
@@ -22,15 +21,11 @@ import lombok.RequiredArgsConstructor;
 @Configuration
 public class JacksonConfiguration {
 
-	private final ApplicationProperties applicationProperties;
-	
 	@Bean
 	public Jackson2ObjectMapperBuilder jackson2ObjectMapperBuilder() {
-		SimpleDateFormat dateFormat = new SimpleDateFormat(applicationProperties.getFormat().getDate());
 		Jackson2ObjectMapperBuilder jackson2ObjectMapperBuilder = new Jackson2ObjectMapperBuilder();
 		jackson2ObjectMapperBuilder.timeZone(TimeZone.getDefault());
 		jackson2ObjectMapperBuilder.indentOutput(false);
-		jackson2ObjectMapperBuilder.dateFormat(dateFormat);
 		jackson2ObjectMapperBuilder.serializationInclusion(JsonInclude.Include.NON_EMPTY);
 		jackson2ObjectMapperBuilder.featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
