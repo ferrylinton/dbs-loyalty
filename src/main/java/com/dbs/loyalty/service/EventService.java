@@ -75,6 +75,10 @@ public class EventService{
 		return eventRepository.save(event);
 	}
 	
+	public void save(boolean pending, String id) {
+		eventRepository.save(pending, id);
+	}
+	
 	public String execute(Task task) throws IOException {
 		Event event = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), Event.class);
 		
@@ -98,8 +102,7 @@ public class EventService{
 				pdfService.delete(event.getId());
 			}
 		}else if(task.getTaskOperation() != TaskOperation.ADD) {
-			event.setPending(false);
-			eventRepository.save(event);
+			eventRepository.save(false, event.getId());
 		}
 
 		return event.getTitle();

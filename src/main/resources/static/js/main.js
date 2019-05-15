@@ -12,6 +12,8 @@ $(document).ready(function () {
 	
 	initDeleteModal();
 	
+	initTaskModal();
+	
 	initEditor($('#content'));
 	
 	initEditor($('#termAndCondition'));
@@ -42,15 +44,22 @@ function initToast(){
 
 function initDeleteModal(){
 	$('button[data-target="#delete-modal"]').click(function(e){
-		console.log('... click data-target="#delete-modal"')
-		console.log($(this).attr('title'));
 		$('#delete-modal-form').attr('action', $(this).attr('title'));
 	});
+}
+
+function initTaskModal(){
 	
-	$('#delete-modal').on('shown.bs.modal', function (e) {
-		console.log('... shown.bs.modal');
-		
+	$('#verify-modal-submit').click(function(e){
+		document.getElementById('verified').value = true;
+		$('#task-form').submit() ;
 	});
+	
+	$('#reject-modal-submit').click(function(e){
+		document.getElementById('verified').value = false;
+		$('#task-form').submit() ;
+	});
+	
 }
 
 function initInputMaterial(){

@@ -42,10 +42,8 @@ public class ErrorData {
 			status =  (Integer) request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
 			
 			if(status == 500 && exception != null) {
-				Exception ex = (Exception) ErrorUtil.getThrowable(exception);
-				
-				if(ex instanceof AbstractException) {
-					AbstractException abstractException = (AbstractException) ex;
+				if(ErrorUtil.getThrowable(exception) instanceof AbstractException) {
+					AbstractException abstractException = (AbstractException) ErrorUtil.getThrowable(exception);
 					status = abstractException.getStatus();
 				}
 			}
@@ -62,10 +60,8 @@ public class ErrorData {
 		}else if(status == 501 && exception != null) {
 			message = exception.getMessage();
 		}else if(status == 500 && exception != null) {
-			Exception ex = (Exception) ErrorUtil.getThrowable(exception);
-			
-			if(ex instanceof AbstractException) {
-				AbstractException abstractException = (AbstractException) ex;
+			if(ErrorUtil.getThrowable(exception) instanceof AbstractException) {
+				AbstractException abstractException = (AbstractException) ErrorUtil.getThrowable(exception);
 				message = MessageUtil.getMessage(abstractException.getMessage());
 			}else {
 				message = exception.getMessage();

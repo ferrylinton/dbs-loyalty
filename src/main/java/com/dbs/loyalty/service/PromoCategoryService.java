@@ -46,11 +46,11 @@ public class PromoCategoryService{
 		return promoCategoryRepository.findByNameIgnoreCase(name);
 	}
 
-	public boolean isNameExist(PromoCategory promoCategoryDto) {
-		Optional<PromoCategory> promoCategory = promoCategoryRepository.findByNameIgnoreCase(promoCategoryDto.getName());
+	public boolean isNameExist(String id, String name) {
+		Optional<PromoCategory> promoCategory = promoCategoryRepository.findByNameIgnoreCase(name);
 
 		if (promoCategory.isPresent()) {
-			return (promoCategoryDto.getId() == null) || (!promoCategoryDto.getId().equals(promoCategory.get().getId()));
+			return (id == null) || (!id.equals(promoCategory.get().getId()));
 		}else {
 			return false;
 		}
@@ -58,6 +58,10 @@ public class PromoCategoryService{
 
 	public PromoCategory save(PromoCategory promoCategory) {
 		return promoCategoryRepository.save(promoCategory);
+	}
+	
+	public void save(boolean pending, String id) {
+		promoCategoryRepository.save(pending, id);
 	}
 	
 	public String execute(Task task) throws IOException {
@@ -78,8 +82,7 @@ public class PromoCategoryService{
 				promoCategoryRepository.delete(promoCategory);
 			}
 		}else if(task.getTaskOperation() != TaskOperation.ADD) {
-			promoCategory.setPending(false);
-			promoCategoryRepository.save(promoCategory);
+			promoCategoryRepository.save(false, promoCategory.getId());
 		}
 
 		return promoCategory.getName();

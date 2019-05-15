@@ -89,6 +89,10 @@ public class CustomerService{
 		customerRepository.changePassword(passwordHash, SecurityUtil.getLogged());
 	}
 	
+	public void save(boolean pending, String id) {
+		customerRepository.save(pending, id);
+	}
+	
 	public String execute(Task task) throws IOException {
 		Customer customer = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), Customer.class);
 		customer.setPasswordPlain(DUMMY_PASSWORD);
@@ -108,8 +112,7 @@ public class CustomerService{
 				customerRepository.delete(customer);
 			}
 		}else if(task.getTaskOperation() != TaskOperation.ADD) {
-			customer.setPending(false);
-			customerRepository.save(customer);
+			customerRepository.save(false, customer.getId());
 		}
 
 		return customer.getEmail();

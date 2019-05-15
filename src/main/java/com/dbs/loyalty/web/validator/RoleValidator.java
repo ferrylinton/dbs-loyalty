@@ -1,5 +1,8 @@
 package com.dbs.loyalty.web.validator;
 
+import static com.dbs.loyalty.config.constant.FieldConstant.NAME;
+import static com.dbs.loyalty.config.constant.ValidationConstant.VALIDATION_EXIST;
+
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
@@ -11,10 +14,6 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class RoleValidator implements Validator {
-
-	private String validationExistName = "validation.exist.name";
-
-	private String name = "name";
 
 	private final RoleService roleService;
 
@@ -29,8 +28,8 @@ public class RoleValidator implements Validator {
 
 		if (roleService.isNameExist(role.getId(), role.getName())) {
 			Object[] errorArgs = new String[] { role.getName() };
-			String defaultMessage = MessageUtil.getMessage(validationExistName, errorArgs);
-			errors.rejectValue(name, validationExistName, errorArgs, defaultMessage);
+			String defaultMessage = MessageUtil.getMessage(VALIDATION_EXIST, errorArgs);
+			errors.rejectValue(NAME, VALIDATION_EXIST, errorArgs, defaultMessage);
 		}
 
 	}

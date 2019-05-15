@@ -2,6 +2,7 @@ package com.dbs.loyalty.web.controller;
 
 import static com.dbs.loyalty.config.constant.Constant.ERROR;
 import static com.dbs.loyalty.config.constant.Constant.PAGE;
+import static com.dbs.loyalty.config.constant.Constant.TOAST;
 import static com.dbs.loyalty.config.constant.Constant.ZERO;
 import static com.dbs.loyalty.config.constant.EntityConstant.PROMO;
 
@@ -19,14 +20,12 @@ import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -34,23 +33,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dbs.loyalty.domain.FileImageTask;
 import com.dbs.loyalty.domain.Promo;
 import com.dbs.loyalty.domain.PromoCategory;
 import com.dbs.loyalty.domain.PromoCustomer;
-import com.dbs.loyalty.exception.BadRequestException;
-import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.ImageService;
 import com.dbs.loyalty.service.PromoCategoryService;
 import com.dbs.loyalty.service.PromoCustomerService;
 import com.dbs.loyalty.service.PromoService;
 import com.dbs.loyalty.service.TaskService;
-import com.dbs.loyalty.util.UrlUtil;
-import com.dbs.loyalty.web.response.Response;
 import com.dbs.loyalty.web.validator.PromoValidator;
-import com.fasterxml.jackson.core.JsonProcessingException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -59,6 +53,16 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/promo")
 public class PromoController extends AbstractPageController {
 
+	private static final String REDIRECT = "redirect:/promo";
+	
+	private static final String VIEW = "promo/promo-view";
+	
+	private static final String DETAIL = "promo/promo-detail";
+	
+	private static final String FORM = "promo/promo-form";
+	
+	private static final String SORT_BY = "title";
+	
 	private final PromoService promoService;
 	
 	private final ImageService imageService;
@@ -71,17 +75,18 @@ public class PromoController extends AbstractPageController {
 
 	@PreAuthorize("hasAnyRole('PROMO_MK', 'PROMO_CK')")
 	@GetMapping
-	public String viewPromos(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
-		Order order = getOrder(sort, "title");
+	public String viewPromos(@ModelAttribute(TOAST) String toast, @RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
+		Order order = getOrder(sort, SORT_BY);
 		Page<Promo> page = promoService.findAll(getPageable(params, order), request);
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
-			return "redirect:/promo";
+			return REDIRECT;
 		}else {
+			request.setAttribute(TOAST, toast);
 			request.setAttribute(PAGE, page);
 			setParamsQueryString(params, request);
 			setPagerQueryString(order, page.getNumber(), request);
-			return "promo/promo-view";
+			return VIEW;
 		}
 	}
 	
@@ -105,7 +110,7 @@ public class PromoController extends AbstractPageController {
 	@GetMapping("/{id}/detail")
 	public String viewPromoDetail(ModelMap model, @PathVariable String id){
 		getById(model, id);
-		return "promo/promo-detail";
+		return DETAIL;
 	}
 
 	@PreAuthorize("hasRole('PROMO_MK')")
@@ -117,63 +122,56 @@ public class PromoController extends AbstractPageController {
 			getById(model, id);
 		}
 		
-		return "promo/promo-form";
+		return FORM;
 	}
 
 	@Transactional
 	@PreAuthorize("hasRole('PROMO_MK')")
 	@PostMapping
-	@ResponseBody
-	public ResponseEntity<Response> savePromo(@ModelAttribute @Valid Promo promo, BindingResult result) throws BadRequestException, IOException, NotFoundException {
+	public String savePromo(@Valid @ModelAttribute(PROMO) Promo promo, BindingResult result, RedirectAttributes attributes) throws IOException {
 		if (result.hasErrors()) {
-			throwBadRequestResponse(result);
-		}
-		
-		if(promo.getId() == null) {
-			FileImageTask fileImageTask = imageService.add(promo.getMultipartFileImage());
-			promo.setImage(fileImageTask.getId());
-
-			taskService.saveTaskAdd(PROMO, promo);
+			return FORM;
 		}else {
-			Optional<Promo> current = promoService.findById(promo.getId());
-			
-			if(current.isPresent()) {
-				if(promo.getMultipartFileImage().isEmpty()) {
-					promo.setImage(promo.getId());
-				}else {
-					FileImageTask fileImageTask = imageService.add(promo.getMultipartFileImage());
-					promo.setImage(fileImageTask.getId());
-				}
-				
-				current.get().setImage(promo.getId());
-				taskService.saveTaskModify(PROMO, current.get(), promo);
-				
-				current.get().setPending(true);
-				promoService.save(current.get());
-			}else {
-				throw new NotFoundException();
-			}
-		}
+			if(promo.getId() == null) {
+				FileImageTask fileImageTask = imageService.add(promo.getMultipartFileImage());
+				promo.setImage(fileImageTask.getId());
 
-		return taskIsSavedResponse(PROMO, promo.getTitle(), UrlUtil.getUrl(PROMO));
+				taskService.saveTaskAdd(PROMO, promo);
+			}else {
+				Optional<Promo> current = promoService.findById(promo.getId());
+				
+				if(current.isPresent()) {
+					if(promo.getMultipartFileImage().isEmpty()) {
+						promo.setImage(promo.getId());
+					}else {
+						FileImageTask fileImageTask = imageService.add(promo.getMultipartFileImage());
+						promo.setImage(fileImageTask.getId());
+					}
+					
+					current.get().setImage(promo.getId());
+					taskService.saveTaskModify(PROMO, current.get(), promo);
+					promoService.save(true, promo.getId());;
+				}
+			}
+
+			attributes.addFlashAttribute(TOAST, taskIsSavedMessage(PROMO, promo.getTitle()));
+			return REDIRECT;
+		}
 	}
 
 	@Transactional
 	@PreAuthorize("hasRole('PROMO_MK')")
-	@DeleteMapping("/{id}")
-	@ResponseBody
-	public ResponseEntity<Response> deletePromo(@PathVariable String id) throws JsonProcessingException, NotFoundException{
+	@PostMapping("/delete/{id}")
+	public String deletePromo(@PathVariable String id, RedirectAttributes attributes) throws IOException {
 		Optional<Promo> current = promoService.findById(id);
 		
 		if(current.isPresent()) {
 			taskService.saveTaskDelete(PROMO, current.get());
-			
-			current.get().setPending(true);
-			promoService.save(current.get());
-			return taskIsSavedResponse(PROMO, current.get().getTitle(), UrlUtil.getUrl(PROMO));
-		}else {
-			throw new NotFoundException();
+			promoService.save(true, id);
+			attributes.addFlashAttribute(TOAST, taskIsSavedMessage(PROMO, current.get().getTitle()));
 		}
+		
+		return REDIRECT;
 	}
 
 	@ModelAttribute("promoCategories")
@@ -181,7 +179,7 @@ public class PromoController extends AbstractPageController {
 		return promoCategoryService.findAll();
 	}
 	
-	@InitBinder("promo")
+	@InitBinder(PROMO)
 	protected void initBinder(WebDataBinder binder) {
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("dd-MM-yyyy"), true, 10)); 
 		binder.addValidators(new PromoValidator(promoService));

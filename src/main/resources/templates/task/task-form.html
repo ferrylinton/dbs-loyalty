@@ -5,6 +5,8 @@
 
 
 <body>
+	<!-- DELETE MODAL -->
+	<div th:replace="fragment/task-modal.html :: #task-modal"></div>
     <!-- NAVBAR -->
     <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
     <div id="content-box">
@@ -123,10 +125,10 @@
                         <a class="btn btn-light" href="/task/task-view.html" th:href="@{|/task${type}|}">
                             <span class="icon-left"></span> <span th:text="#{back}">Back</span>
                         </a>
-                        <button class="btn btn-light text-success" type="button" onclick="TaskUtil.verify()">
+                        <button class="btn btn-light text-success" type="button" data-toggle="modal" data-target="#verify-modal">
                             <span class="icon-ok"></span> <span th:text="#{verify}">Verify</span>
                         </button>
-                        <button class="btn btn-light text-danger" type="button" onclick="TaskUtil.reject()">
+                        <button class="btn btn-light text-danger" type="button" data-toggle="modal" data-target="#reject-modal">
                             <span class="icon-block"></span> <span th:text="#{reject}">Reject</span>
                         </button>
                     </div>

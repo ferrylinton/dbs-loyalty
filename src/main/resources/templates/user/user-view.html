@@ -4,6 +4,12 @@
 <head th:replace="fragment/head.html :: content(title=|#{application.name} : #{user}|)"></head>
 
 <body>
+	<!-- TOAST -->
+	<th:block th:if="${not #strings.isEmpty(toast)}">
+		<div th:replace="fragment/toast.html :: #toast"></div>
+	</th:block>
+	<!-- DELETE MODAL -->
+	<div th:replace="fragment/delete-modal.html :: #delete-modal"></div>
     <!-- NAVBAR -->
     <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
     <div id="content-box" th:with="isMaker=${#authorization.expression('hasAuthority(''USER_MK'')')}">
@@ -71,16 +77,16 @@
                                                     <span class="icon-edit"></span> <span th:text="#{edit}">Edit</span>
                                                 </a>
                                                 <div class="dropdown-divider my-0"></div>
-                                                <a class="dropdown-item pl-1 text-danger" href="/user/user-view.html/1" th:href="@{|/user/${user.id}|}" onclick="return AjaxUtil.confirm(this)">
+                                                <button class="dropdown-item pl-1 text-danger" title="/user/user-view.html/1" th:title="@{|/user/delete/${user.id}|}" data-toggle="modal" data-target="#delete-modal">
                                                     <span class="icon-trash"></span> <span th:text="#{delete}">Delete</span>
-                                                </a>
+                                                </button>
                                             </th:block>
                                         </div>
                                     </div>
                                 </td>
                                 <td th:text="${row.count + (page.number * page.size)}">1</td>
                                 <td th:text="${user.username}">ferrylinton</td>
-                                <td th:text="${user.userType}">INTERNAL</td>
+                                <td th:text="${user.userType}">Internal</td>
                                 <td><span class="text-success icon-ok" th:class="${user.activated} ? 'text-success icon-ok' : 'text-danger icon-cancel'"></span></td>
                                 <td><span class="text-danger icon-cancel" th:class="${user.locked} ? 'text-success icon-ok' : 'text-danger icon-cancel'"></span></td>
                                 <td th:text="${user.role == null ? '-' : user.role.name}">Checker</td>

@@ -17,9 +17,9 @@ a:hover{
 }
 
 /* OVERRIDE BOOTSTRAP */
-  
-.btn{
-	border-radius: 0;
+
+.btn, .modal-content, .dropdown-menu, .custom-select, .custom-file-label{
+	border-radius: 0;	
 }
 
 .btn-danger {
@@ -64,15 +64,14 @@ a:hover{
 }
 
 .toast{
-	color: #fff;
 	width: calc(100% - 10px);
 	max-width: none;
 	z-index: 1500; 
 	position: absolute; 
 	top: 5px;
-    background-color: #555753;
-    border: 2px solid #555753;
+    border: 1px solid #dee2e6;
     border-radius: 0;
+    background-color: #fff;
 }
 
 @media ( min-width : 576px) {
@@ -111,15 +110,22 @@ a:hover{
 	min-width: 100px;
 }
 
-.modal-content{
-	border-radius: 0;	
-}
-
 .modal-footer {
 	display: block;
-    padding: 8px;
+    padding: 12px;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
+}
+
+/* TRUMBOWYG */
+
+.trumbowyg-box, .trumbowyg-editor {
+    border: 1px solid #DDD;
+    margin: 0 auto;
+}
+
+.is-invalid .trumbowyg-editor{
+    border-color: #dc3545;
 }
 
 /* OVERRIDE JQUERY CONFIRM */

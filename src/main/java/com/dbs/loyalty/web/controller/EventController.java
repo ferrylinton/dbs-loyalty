@@ -2,8 +2,10 @@ package com.dbs.loyalty.web.controller;
 
 import static com.dbs.loyalty.config.constant.Constant.ERROR;
 import static com.dbs.loyalty.config.constant.Constant.PAGE;
+import static com.dbs.loyalty.config.constant.Constant.TOAST;
 import static com.dbs.loyalty.config.constant.Constant.ZERO;
 import static com.dbs.loyalty.config.constant.EntityConstant.EVENT;
+import static com.dbs.loyalty.config.constant.EntityConstant.ROLE;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -20,14 +22,12 @@ import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -35,19 +35,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dbs.loyalty.domain.Event;
 import com.dbs.loyalty.domain.FileImageTask;
 import com.dbs.loyalty.domain.FilePdfTask;
-import com.dbs.loyalty.exception.BadRequestException;
-import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.EventService;
 import com.dbs.loyalty.service.ImageService;
 import com.dbs.loyalty.service.PdfService;
 import com.dbs.loyalty.service.TaskService;
-import com.dbs.loyalty.util.UrlUtil;
-import com.dbs.loyalty.web.response.Response;
 import com.dbs.loyalty.web.validator.EventValidator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -57,6 +53,16 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequestMapping("/event")
 public class EventController extends AbstractPageController {
+	
+	private static final String REDIRECT = "redirect:/event";
+	
+	private static final String VIEW = "event/event-view";
+	
+	private static final String DETAIL = "event/event-detail";
+	
+	private static final String FORM = "event/event-form";
+	
+	private static final String SORT_BY = "title";
 
 	private static final DateFormat DATETIME_FORMAT = new SimpleDateFormat("dd-MM-yyyy,HH:ss");
 	
@@ -74,17 +80,17 @@ public class EventController extends AbstractPageController {
 
 	@PreAuthorize("hasAnyRole('EVENT_MK', 'EVENT_CK')")
 	@GetMapping
-	public String viewEvents(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
-		Order order = getOrder(sort, "title");
+	public String viewEvents(@ModelAttribute(TOAST) String toast, @RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
+		Order order = getOrder(sort, SORT_BY);
 		Page<Event> page = eventService.findAll(getPageable(params, order), request);
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
-			return "redirect:/event";
+			return REDIRECT;
 		}else {
 			request.setAttribute(PAGE, page);
 			setParamsQueryString(params, request);
 			setPagerQueryString(order, page.getNumber(), request);
-			return "event/event-view";
+			return VIEW;
 		}
 	}
 	
@@ -92,7 +98,7 @@ public class EventController extends AbstractPageController {
 	@GetMapping("/{id}/detail")
 	public String viewEventDetail(ModelMap model, @PathVariable String id){
 		getById(model, id);
-		return "event/event-detail";
+		return DETAIL;
 	}
 
 	@PreAuthorize("hasRole('EVENT_MK')")
@@ -104,80 +110,73 @@ public class EventController extends AbstractPageController {
 			getById(model, id);
 		}
 		
-		return "event/event-form";
+		return FORM;
 	}
 
 	@Transactional
 	@PreAuthorize("hasRole('EVENT_MK')")
 	@PostMapping
-	@ResponseBody
-	public ResponseEntity<Response> saveEvent(@ModelAttribute @Valid Event event, BindingResult result) throws BadRequestException, IOException, NotFoundException, ParseException {
+	public String saveEvent(@ModelAttribute(EVENT) @Valid Event event, BindingResult result, RedirectAttributes attributes) throws IOException, ParseException {
 		if (result.hasErrors()) {
-			throwBadRequestResponse(result);
-		}
-		
-		event.setStartPeriod(setTime(event.getStartPeriod(), event.getTimePeriod()));
-		event.setEndPeriod(setTime(event.getEndPeriod(), event.getTimePeriod()));
-		
-		if(event.getId() == null) {
-			FileImageTask fileImageTask = imageService.add(event.getMultipartFileImage());
-			event.setImage(fileImageTask.getId());
-			
-			FilePdfTask filePdfTask = pdfService.add(event.getMultipartFileMaterial());
-			event.setMaterial(filePdfTask.getId());
-			
-			taskService.saveTaskAdd(EVENT, event);
+			return FORM;
 		}else {
-			Optional<Event> current = eventService.findById(event.getId());
+			event.setStartPeriod(setTime(event.getStartPeriod(), event.getTimePeriod()));
+			event.setEndPeriod(setTime(event.getEndPeriod(), event.getTimePeriod()));
 			
-			if(current.isPresent()) {
-				if(event.getMultipartFileImage().isEmpty()) {
-					event.setImage(event.getId());
-				}else {
-					FileImageTask fileImageTask = imageService.add(event.getMultipartFileImage());
-					event.setImage(fileImageTask.getId());
-				}
+			if(event.getId() == null) {
+				FileImageTask fileImageTask = imageService.add(event.getMultipartFileImage());
+				event.setImage(fileImageTask.getId());
 				
-				if(event.getMultipartFileMaterial().isEmpty()) {
-					event.setMaterial(event.getId());
-				}else {
-					FilePdfTask filePdfTask = pdfService.add(event.getMultipartFileMaterial());
-					event.setImage(filePdfTask.getId());
-				}
+				FilePdfTask filePdfTask = pdfService.add(event.getMultipartFileMaterial());
+				event.setMaterial(filePdfTask.getId());
 				
-				current.get().setImage(event.getId());
-				current.get().setMaterial(event.getId());
-				taskService.saveTaskModify(EVENT, current.get(), event);
-				
-				current.get().setPending(true);
-				eventService.save(current.get());
+				taskService.saveTaskAdd(EVENT, event);
 			}else {
-				throw new NotFoundException();
+				Optional<Event> current = eventService.findById(event.getId());
+				
+				if(current.isPresent()) {
+					if(event.getMultipartFileImage().isEmpty()) {
+						event.setImage(event.getId());
+					}else {
+						FileImageTask fileImageTask = imageService.add(event.getMultipartFileImage());
+						event.setImage(fileImageTask.getId());
+					}
+					
+					if(event.getMultipartFileMaterial().isEmpty()) {
+						event.setMaterial(event.getId());
+					}else {
+						FilePdfTask filePdfTask = pdfService.add(event.getMultipartFileMaterial());
+						event.setImage(filePdfTask.getId());
+					}
+					
+					current.get().setImage(event.getId());
+					current.get().setMaterial(event.getId());
+					taskService.saveTaskModify(EVENT, current.get(), event);
+					eventService.save(true, event.getId());
+				}
 			}
-		}
 
-		return taskIsSavedResponse(EVENT, event.getTitle(), UrlUtil.getUrl(EVENT));
+			attributes.addFlashAttribute(TOAST, taskIsSavedMessage(ROLE, event.getTitle()));
+			return REDIRECT;
+		}
 	}
 
 	@Transactional
 	@PreAuthorize("hasRole('EVENT_MK')")
-	@DeleteMapping("/{id}")
-	@ResponseBody
-	public ResponseEntity<Response> deleteEvent(@PathVariable String id) throws JsonProcessingException, NotFoundException{
+	@PostMapping("/delete/{id}")
+	public String deleteEvent(@PathVariable String id, RedirectAttributes attributes) throws JsonProcessingException {
 		Optional<Event> current = eventService.findById(id);
 		
 		if(current.isPresent()) {
 			taskService.saveTaskDelete(EVENT, current.get());
-			
-			current.get().setPending(true);
-			eventService.save(current.get());
-			return taskIsSavedResponse(EVENT, current.get().getTitle(), UrlUtil.getUrl(EVENT));
-		}else {
-			throw new NotFoundException();
+			eventService.save(true, id);
+			attributes.addFlashAttribute(TOAST, taskIsSavedMessage(ROLE, current.get().getTitle()));
 		}
+		
+		return REDIRECT;
 	}
 
-	@InitBinder("event")
+	@InitBinder(EVENT)
 	protected void initBinder(WebDataBinder binder) {
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("dd-MM-yyyy"), true, 10)); 
 		binder.addValidators(new EventValidator(eventService));

@@ -2,6 +2,7 @@ package com.dbs.loyalty.web.controller;
 
 import static com.dbs.loyalty.config.constant.Constant.ERROR;
 import static com.dbs.loyalty.config.constant.Constant.PAGE;
+import static com.dbs.loyalty.config.constant.Constant.TOAST;
 import static com.dbs.loyalty.config.constant.Constant.ZERO;
 import static com.dbs.loyalty.config.constant.EntityConstant.PROMO_CATEGORY;
 
@@ -14,14 +15,12 @@ import javax.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -29,15 +28,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dbs.loyalty.domain.PromoCategory;
-import com.dbs.loyalty.exception.BadRequestException;
-import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.PromoCategoryService;
 import com.dbs.loyalty.service.TaskService;
-import com.dbs.loyalty.util.UrlUtil;
-import com.dbs.loyalty.web.response.Response;
 import com.dbs.loyalty.web.validator.PromoCategoryValidator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -47,24 +42,34 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequestMapping("/promocategory")
 public class PromoCategoryController extends AbstractPageController {
-
+	
+	private static final String REDIRECT = "redirect:/promocategory";
+	
+	private static final String VIEW = "promocategory/promocategory-view";
+	
+	private static final String DETAIL = "promocategory/promocategory-detail";
+	
+	private static final String FORM = "promocategory/promocategory-form";
+	
+	private static final String SORT_BY = "name";
+	
 	private final PromoCategoryService promoCategoryService;
 
 	private final TaskService taskService;
 
 	@PreAuthorize("hasAnyRole('PROMO_CATEGORY_MK', 'PROMO_CATEGORY_CK')")
 	@GetMapping
-	public String viewPromoCategories(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
-		Order order = getOrder(sort, "name");
+	public String viewPromoCategories(@ModelAttribute(TOAST) String toast, @RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
+		Order order = getOrder(sort, SORT_BY);
 		Page<PromoCategory> page = promoCategoryService.findAll(getPageable(params, order), request);
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
-			return "redirect:/promocategory";
+			return REDIRECT;
 		}else {
 			request.setAttribute(PAGE, page);
 			setParamsQueryString(params, request);
 			setPagerQueryString(order, page.getNumber(), request);
-			return "promocategory/promocategory-view";
+			return VIEW;
 		}
 	}
 	
@@ -72,7 +77,7 @@ public class PromoCategoryController extends AbstractPageController {
 	@GetMapping("/{id}/detail")
 	public String viewPromoCategoryDetail(ModelMap model, @PathVariable String id){
 		getById(model, id);		
-		return "promocategory/promocategory-detail";
+		return DETAIL;
 	}
 
 	@PreAuthorize("hasAnyRole('PROMO_CATEGORY_MK')")
@@ -84,55 +89,48 @@ public class PromoCategoryController extends AbstractPageController {
 			getById(model, id);
 		}
 		
-		return "promocategory/promocategory-form";
+		return FORM;
 	}
 
 	@Transactional
 	@PreAuthorize("hasRole('PROMO_CATEGORY_MK')")
 	@PostMapping
-	@ResponseBody
-	public ResponseEntity<Response> save(@ModelAttribute @Valid PromoCategory promoCategory, BindingResult result) throws BadRequestException, JsonProcessingException, NotFoundException {
+	public String save(@Valid @ModelAttribute(PROMO_CATEGORY)  PromoCategory promoCategory, BindingResult result, RedirectAttributes attributes) throws JsonProcessingException {
 		if (result.hasErrors()) {
-			throwBadRequestResponse(result);
-		}
-		
-		if(promoCategory.getId() == null) {
-			taskService.saveTaskAdd(PROMO_CATEGORY, promoCategory);
-		} else {
-			Optional<PromoCategory> current = promoCategoryService.findById(promoCategory.getId());
-			
-			if(current.isPresent()) {
-				taskService.saveTaskModify(PROMO_CATEGORY, current.get(), promoCategory);
+			return FORM;
+		}else {
+			if(promoCategory.getId() == null) {
+				taskService.saveTaskAdd(PROMO_CATEGORY, promoCategory);
+			} else {
+				Optional<PromoCategory> current = promoCategoryService.findById(promoCategory.getId());
 				
-				current.get().setPending(true);
-				promoCategoryService.save(current.get());
-			}else {
-				throw new NotFoundException();
+				if(current.isPresent()) {
+					taskService.saveTaskModify(PROMO_CATEGORY, current.get(), promoCategory);
+					promoCategoryService.save(true, promoCategory.getId());
+				}
 			}
+			
+			attributes.addFlashAttribute(TOAST, taskIsSavedMessage(PROMO_CATEGORY, promoCategory.getName()));
+			return REDIRECT;
 		}
-		
-		return taskIsSavedResponse(PROMO_CATEGORY, promoCategory.getName(), UrlUtil.getUrl(PROMO_CATEGORY));
 	}
 
 	@Transactional
 	@PreAuthorize("hasRole('PROMO_CATEGORY_MK')")
-	@DeleteMapping("/{id}")
-	@ResponseBody
-	public ResponseEntity<Response> delete(@PathVariable String id) throws JsonProcessingException, NotFoundException{
+	@PostMapping("/delete/{id}")
+	public String deletePromoCategory(@PathVariable String id, RedirectAttributes attributes) throws JsonProcessingException {
 		Optional<PromoCategory> current = promoCategoryService.findById(id);
 		
 		if(current.isPresent()) {
 			taskService.saveTaskDelete(PROMO_CATEGORY, current.get());
-			
-			current.get().setPending(true);
-			promoCategoryService.save(current.get());
-			return taskIsSavedResponse(PROMO_CATEGORY, current.get().getName(), UrlUtil.getUrl(PROMO_CATEGORY));
-		}else {
-			throw new NotFoundException();
+			promoCategoryService.save(true, id);
+			attributes.addFlashAttribute(TOAST, taskIsSavedMessage(PROMO_CATEGORY, current.get().getName()));
 		}
+		
+		return REDIRECT;
 	}
 
-	@InitBinder("promoCategory")
+	@InitBinder(PROMO_CATEGORY)
 	protected void initBinder(WebDataBinder binder) {
 		binder.addValidators(new PromoCategoryValidator(promoCategoryService));
 	}

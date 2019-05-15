@@ -5,6 +5,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
     
+    <!-- AUTHORITY -->
     <changeSet author="FLH" id="004-1">
         <createTable tableName="u_authority">
             <column name="id" type="VARCHAR(22)">
@@ -23,6 +24,8 @@
     <changeSet author="FLH" id="004-3">
         <addUniqueConstraint columnNames="name" constraintName="u_authority_name_uq" tableName="u_authority"/>
     </changeSet>
+    
+    <!-- ROLE -->
     
     <changeSet author="FLH" id="004-4">
     
@@ -54,6 +57,8 @@
         <addUniqueConstraint columnNames="name" constraintName="u_role_name_uq" tableName="u_role"/>
     </changeSet>
     
+    <!-- ROLE - AUTHORITY -->
+    
     <changeSet author="FLH" id="004-7">
     
         <createTable tableName="u_role_authority">
@@ -79,6 +84,8 @@
         <addForeignKeyConstraint baseColumnNames="authority_id" baseTableName="u_role_authority" constraintName="u_role_authority_fk2" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="u_authority"/>
     </changeSet>
     
+    <!-- USER -->
+    
     <changeSet author="FLH" id="004-11">
     
         <createTable tableName="u_user">
@@ -91,10 +98,10 @@
             <column name="locked" type="BIT(1)" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
-            <column name="user_type" type="TINYINT">
+            <column name="user_type" type="VARCHAR(10)">
                 <constraints nullable="false"/>
             </column>
-            <column name="login_attempt_count" type="TINYINT">
+            <column name="login_attempt_count" type="INT">
                 <constraints nullable="false"/>
             </column>
             <column name="username" type="VARCHAR(50)">

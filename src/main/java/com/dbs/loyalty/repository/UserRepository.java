@@ -40,4 +40,8 @@ public interface UserRepository extends JpaRepository<User, String>, JpaSpecific
 	@Query("update User u set u.loginAttemptCount = :loginAttemptCount, u.locked = :locked where u.username = :username")
 	void lockUser(@Param("loginAttemptCount") Integer loginAttemptCount, @Param("locked") boolean locked, @Param("username") String username);
 
+	@Modifying
+	@Query("update User u set u.pending = ?1 where u.id = ?2")
+	void save(boolean pending, String id);
+	
 }

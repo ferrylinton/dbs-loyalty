@@ -1,5 +1,8 @@
 package com.dbs.loyalty.web.validator;
 
+import static com.dbs.loyalty.config.constant.FieldConstant.NAME;
+import static com.dbs.loyalty.config.constant.ValidationConstant.VALIDATION_EXIST;
+
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
@@ -12,10 +15,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PromoCategoryValidator implements Validator {
 
-	private String validationExistName = "validation.exist.name";
-
-	private String name = "name";
-
 	private final PromoCategoryService promoCategoryService;
 
 	@Override
@@ -25,12 +24,12 @@ public class PromoCategoryValidator implements Validator {
 
 	@Override
 	public void validate(Object target, Errors errors) {
-		PromoCategory promoCategoryDto = (PromoCategory) target;
+		PromoCategory promoCategory = (PromoCategory) target;
 
-		if (promoCategoryService.isNameExist(promoCategoryDto)) {
-			Object[] errorArgs = new String[] { promoCategoryDto.getName() };
-			String defaultMessage = MessageUtil.getMessage(validationExistName, errorArgs);
-			errors.rejectValue(name, validationExistName, errorArgs, defaultMessage);
+		if (promoCategoryService.isNameExist(promoCategory.getId(), promoCategory.getName())) {
+			Object[] errorArgs = new String[] { promoCategory.getName() };
+			String defaultMessage = MessageUtil.getMessage(VALIDATION_EXIST, errorArgs);
+			errors.rejectValue(NAME, VALIDATION_EXIST, errorArgs, defaultMessage);
 		}
 
 	}

@@ -102,7 +102,7 @@ public class RoleController extends AbstractPageController {
 	@Transactional
 	@PreAuthorize("hasRole('ROLE_MK')")
 	@PostMapping
-	public String save(@ModelAttribute(ROLE) @Valid Role role, BindingResult result, RedirectAttributes attributes) throws JsonProcessingException{
+	public String save(@Valid @ModelAttribute(ROLE) Role role, BindingResult result, RedirectAttributes attributes) throws JsonProcessingException{
 		if (result.hasErrors()) {
 			return FORM;
 		}else {
@@ -113,8 +113,7 @@ public class RoleController extends AbstractPageController {
 				
 				if(current.isPresent()) {
 					taskService.saveTaskModify(ROLE, current.get(), role);
-					current.get().setPending(true);
-					roleService.save(current.get());
+					roleService.save(true, role.getId());
 				}
 			}
 
@@ -126,14 +125,12 @@ public class RoleController extends AbstractPageController {
 	@Transactional
 	@PreAuthorize("hasRole('ROLE_MK')")
 	@PostMapping("/delete/{id}")
-	public String delete(@PathVariable String id, RedirectAttributes attributes) throws JsonProcessingException {
+	public String deleteRole(@PathVariable String id, RedirectAttributes attributes) throws JsonProcessingException {
 		Optional<Role> current = roleService.findWithAuthoritiesById(id);
 		
 		if(current.isPresent()) {
 			taskService.saveTaskDelete(ROLE, current.get());
-			
-			current.get().setPending(true);
-			roleService.save(current.get());
+			roleService.save(true, id);
 			attributes.addFlashAttribute(TOAST, taskIsSavedMessage(ROLE, current.get().getName()));
 		}
 		

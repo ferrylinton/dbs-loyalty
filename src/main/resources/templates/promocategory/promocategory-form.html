@@ -22,12 +22,13 @@
             </div>
             <!-- FORM -->
             <th:block th:if="${promocategory}">
-                <form action="/promocategory/promocategory-view.html" th:object="${promocategory}" th:action="@{/promocategory}" method="post" autocomplete="off" onsubmit="return AjaxUtil.submit(this)">
+                <form action="/promocategory/promocategory-view.html" th:object="${promocategory}" th:action="@{/promocategory}" method="post" autocomplete="off">
                     <div class="row" th:object="${promocategory}">
-                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                        <div class="col-12 col-sm-12 col-md-9 col-lg-6 col-xl-6">
                             <div class="form-group">
                                 <label for="name" th:text="|#{name} *|">Name *</label>
-                                <input class="form-control" type="text" th:placeholder="#{name}" th:field="*{name}" maxlength="40" />
+                                <input class="form-control" th:classappend="${#fields.hasErrors('name') ? 'is-invalid' : ''}" type="text" th:placeholder="#{name}" th:field="*{name}" maxlength="40" />
+                            	<div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:uerrors="*{name}">Error</div>
                             </div>
                         </div>
                     </div>

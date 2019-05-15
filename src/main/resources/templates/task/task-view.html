@@ -4,6 +4,10 @@
 <head th:replace="fragment/head.html :: content(title=|#{application.name} : #{task} - #{${type}}|)"></head>
 
 <body>
+	<!-- TOAST -->
+	<th:block th:if="${not #strings.isEmpty(toast)}">
+		<div th:replace="fragment/toast.html :: #toast"></div>
+	</th:block>
     <!-- NAVBAR -->
     <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
     <div id="content-box">

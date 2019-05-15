@@ -12,12 +12,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import com.dbs.loyalty.config.constant.Constant;
+import com.dbs.loyalty.config.constant.DomainConstant;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -44,13 +42,11 @@ public class Country extends AbstractTask implements Serializable {
 	
 	@Id
 	@Column(name = "id", length=22)
-	@GenericGenerator(name = "IdGenerator", strategy = "com.dbs.loyalty.domain.IdGenerator")
-	@GeneratedValue(generator = "IdGenerator")
+	@GenericGenerator(name = DomainConstant.ID_GENERATOR, strategy = DomainConstant.ID_GENERATOR_STRATEGY)
+	@GeneratedValue(generator = DomainConstant.ID_GENERATOR)
 	private String id;
 	
-	@Pattern(regexp = Constant.NAME_REGEX, message = "{validation.pattern.name}")
-	@Size(min = 2, max = 40, message = "{validation.size.name}")
-    @Column(name = "name", length = 40, nullable = false)
+	@Column(name = "name", length = 40, nullable = false)
     private String name;
 	
 	@OrderBy(value = "name ASC")

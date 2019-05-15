@@ -8,7 +8,6 @@ import org.springframework.batch.item.ItemProcessor;
 
 import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.domain.Customer;
-import com.dbs.loyalty.domain.enumeration.CustomerType;
 import com.dbs.loyalty.repository.CustomerRepository;
 import com.devskiller.friendly_id.FriendlyId;
 
@@ -32,7 +31,7 @@ public class CustomerItemProcessor implements ItemProcessor<CustomerItem, Custom
 			customer.setName(current.get().getName());
 			customer.setPhone(current.get().getPhone());
 			customer.setPasswordHash(current.get().getPasswordHash());
-			customer.setCustomerType(CustomerType.fromValue(customerItem.getCustomerType()));
+			customer.setCustomerType(customerItem.getCustomerType());
 			customer.setDob(sdf.parse(customerItem.getDob()));
 			customer.setLastModifiedBy(Constant.SYSTEM);
 			customer.setLastModifiedDate(Instant.now());
@@ -42,7 +41,7 @@ public class CustomerItemProcessor implements ItemProcessor<CustomerItem, Custom
 			customer.setName(customerItem.getName());
 			customer.setPhone(customerItem.getPhone());
 			customer.setPasswordHash(customerItem.getPasswordHash());
-			customer.setCustomerType(CustomerType.fromValue(customerItem.getCustomerType()));
+			customer.setCustomerType(customerItem.getCustomerType());
 			customer.setDob(sdf.parse(customerItem.getDob()));
 			customer.setLocked(false);
 			customer.setActivated(true);

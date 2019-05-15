@@ -16,7 +16,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -24,8 +23,8 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Proxy;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.dbs.loyalty.config.constant.Constant;
-import com.dbs.loyalty.domain.enumeration.CustomerType;
+import com.dbs.loyalty.config.constant.DomainConstant;
+import com.dbs.loyalty.config.constant.RegexConstant;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.EqualsAndHashCode;
@@ -56,29 +55,26 @@ public class Customer extends AbstractTask implements Serializable {
 	
 	@Id
 	@Column(name = "id", length=22)
-	@GenericGenerator(name = "IdGenerator", strategy = "com.dbs.loyalty.domain.IdGenerator")
-	@GeneratedValue(generator = "IdGenerator")
+	@GenericGenerator(name = DomainConstant.ID_GENERATOR, strategy = DomainConstant.ID_GENERATOR_STRATEGY)
+	@GeneratedValue(generator = DomainConstant.ID_GENERATOR)
 	private String id;
 	
-	@NotNull(message = "{validation.notnull.email}")
-	@Pattern(regexp = Constant.EMAIL_REGEX, message = "{validation.pattern.email}")
-    @Size(min = 5, max = 50, message = "{validation.size.email}")
+	@Pattern(regexp = RegexConstant.EMAIL, message = RegexConstant.EMAIL_MESSAGE)
+    @Size(min = 5, max = 50)
 	@Column(name = "email", length = 50, nullable = false)
 	private String email;
 	
-	@NotNull(message = "{validation.notnull.name}")
-	@Pattern(regexp = Constant.NAME_REGEX, message = "{validation.pattern.name}")
-	@Size(min = 2, max = 50, message = "{validation.size.name}")
+	@Pattern(regexp = RegexConstant.NAME, message = RegexConstant.NAME_MESSAGE)
+	@Size(min = 2, max = 50)
 	@Column(name = "name", length = 50, nullable = false)
 	private String name;
 	
-	@NotNull(message = "{validation.notnull.phone}")
-	@Size(min = 6, max = 20, message = "{validation.size.phone}")
+	@Size(min = 6, max = 20)
 	@Column(name = "phone", length = 20, nullable = false)
 	private String phone;
 	
 	@Column(name = "customer_type", length = 4, nullable = false)
-	private CustomerType customerType;
+	private String customerType;
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name = "dob", nullable = false)
@@ -97,6 +93,7 @@ public class Customer extends AbstractTask implements Serializable {
 	@Column(name = "locked", nullable = false)
 	private boolean locked = false;
 
+	@JsonIgnore
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     private Set<LovedOne> lovedOnes = new HashSet<>();
 

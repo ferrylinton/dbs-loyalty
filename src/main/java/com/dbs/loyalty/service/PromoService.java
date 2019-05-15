@@ -80,6 +80,10 @@ public class PromoService{
 		return promoRepository.save(promo);
 	}
 	
+	public void save(boolean pending, String id) {
+		promoRepository.save(pending, id);
+	}
+	
 	public String execute(Task task) throws IOException {
 		Promo promo = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), Promo.class);
 		
@@ -100,8 +104,7 @@ public class PromoService{
 				imageService.delete(promo.getId());
 			}
 		}else if(task.getTaskOperation() != TaskOperation.ADD) {
-			promo.setPending(false);
-			promoRepository.save(promo);
+			promoRepository.save(false, promo.getId());
 		}
 
 		return promo.getTitle();

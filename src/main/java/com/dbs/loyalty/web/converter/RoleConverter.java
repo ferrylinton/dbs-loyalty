@@ -11,12 +11,10 @@ public class RoleConverter implements Converter<String, Role> {
 
 	@Override
 	public Role convert(String content) {
-		String[] str = content.split(Constant.COMMA);
-		
-		if(str.length == 2) {
+		if(content  != null && content.length() > 22) {
 			Role role = new Role();
-			role.setId(str[0]);
-			role.setName(str[1]);
+			role.setId(content.substring(0,22));
+			role.setName(content.replace(role.getId(), Constant.EMPTY));
 			return role;
 		}else {
 			return null;

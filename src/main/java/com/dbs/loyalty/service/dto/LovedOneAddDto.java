@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import com.dbs.loyalty.config.constant.Constant;
+import com.dbs.loyalty.config.constant.RegexConstant;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import io.swagger.annotations.ApiModel;
@@ -21,7 +21,7 @@ public class LovedOneAddDto {
 
 	@ApiModelProperty(value = "Customer Loved One's name", example = "John Smith", position = 1)
 	@NotNull(message = "{validation.notnull.name}")
-	@Pattern(regexp = Constant.NAME_REGEX, message = "{validation.pattern.name}")
+	@Pattern(regexp = RegexConstant.NAME, message = RegexConstant.NAME_MESSAGE)
 	@Size(min = 2, max = 50, message = "{validation.size.name}")
 	private String name;
 	

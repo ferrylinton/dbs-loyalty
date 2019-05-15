@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -30,5 +31,9 @@ public interface PromoRepository extends JpaRepository<Promo, String>, JpaSpecif
 			+ "where p.startPeriod <= current_date() and p.endPeriod >= current_date() "
 			+ "and p.activated = true and p.showInCarousel = true ")
 	List<Promo> findPromoInCarousel();
+	
+	@Modifying
+	@Query("update Promo p set p.pending = ?1 where p.id = ?2")
+	void save(boolean pending, String id);
 	
 }

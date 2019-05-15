@@ -25,4 +25,8 @@ public interface CustomerRepository extends JpaRepository<Customer, String>, Jpa
 	@Query("update Customer c set c.passwordHash = :passwordHash where c.email = :email")
 	void changePassword(@Param("passwordHash") String passwordHash, @Param("email") String email);
 
+	@Modifying
+	@Query("update Customer c set c.pending = ?1 where c.id = ?2")
+	void save(boolean pending, String id);
+	
 }

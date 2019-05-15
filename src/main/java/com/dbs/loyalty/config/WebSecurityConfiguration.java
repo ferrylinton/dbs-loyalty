@@ -68,9 +68,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 		 
 	    http
 	    	.sessionManagement()
-	    		.invalidSessionUrl("/login?invalid")
+	    		.invalidSessionUrl("/login?logout")
 	        	.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-	        	.maximumSessions(1)
+	        	.maximumSessions(3)
 	        	.expiredUrl("/login?expired")
 	        	.sessionRegistry(sessionRegistry())
 	        	.maxSessionsPreventsLogin(true);
@@ -91,7 +91,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	    http
 	    	.logout()
 	    		.deleteCookies()
-	    		//.invalidateHttpSession(true)
+	    		.invalidateHttpSession(true)
 	    		.clearAuthentication(true)
 	    		.logoutUrl("/logout");
 	    

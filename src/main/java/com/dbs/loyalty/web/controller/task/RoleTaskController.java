@@ -1,6 +1,7 @@
 package com.dbs.loyalty.web.controller.task;
 
 import static com.dbs.loyalty.config.constant.Constant.PAGE;
+import static com.dbs.loyalty.config.constant.Constant.TOAST;
 import static com.dbs.loyalty.config.constant.EntityConstant.ROLE;
 import static com.dbs.loyalty.config.constant.EntityConstant.TYPE;
 
@@ -11,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -21,12 +21,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.util.SecurityUtil;
-import com.dbs.loyalty.web.response.Response;
 
 
 @Controller
@@ -43,7 +42,7 @@ public class RoleTaskController extends AbstractTaskController {
 
 	@PreAuthorize("hasAnyRole('ROLE_MK', 'ROLE_CK')")
 	@GetMapping
-	public String viewTaskRoles(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
+	public String viewTaskRoles(@ModelAttribute(TOAST) String toast, @RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
 		Order order = getOrder(sort, MADE_DATE);
 		Page<Task> page = taskService.findAll(ROLE, params, getPageable(params, order), request);
 		
@@ -51,6 +50,7 @@ public class RoleTaskController extends AbstractTaskController {
 			return REDIRECT;
 		}
 		
+		request.setAttribute(TOAST, toast);
 		request.setAttribute(PAGE, page);
 		request.setAttribute(TYPE, ROLE);
 		request.setAttribute(IS_CHECKER, SecurityUtil.hasAuthority(ROLE_CK));
@@ -75,8 +75,9 @@ public class RoleTaskController extends AbstractTaskController {
 
 	@PreAuthorize("hasRole('ROLE_CK')")
 	@PostMapping
-	public @ResponseBody ResponseEntity<Response> saveTaskRole(@ModelAttribute Task task){
-		return save(task);
+	public String saveTaskRole(@ModelAttribute Task task, RedirectAttributes attributes){
+		attributes.addFlashAttribute(TOAST, save(task));
+		return REDIRECT;
 	}
 
 }

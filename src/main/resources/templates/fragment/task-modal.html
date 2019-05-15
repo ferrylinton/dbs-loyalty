@@ -1,0 +1,47 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <title>DBS Loyalty</title>
+</head>
+
+<body>
+	<div id="task-modal" th:remove="tag">
+		<div id="verify-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+		  	<div class="modal-dialog modal-dialog-centered" role="document">
+			    <div class="modal-content">
+			   		<div class="modal-body text-center p-4">
+						<span th:text="#{message.verifyConfirm}">Verify data?</span>
+			    	</div>
+			 		<div class="modal-footer text-center">
+			      		<button type="button" class="btn btn-sm btn-light" data-dismiss="modal">
+			      			<span class="icon-cancel"></span> <span th:text="#{close}">Close</span>
+			      		</button>
+			        	<button type="submit" class="btn btn-sm btn-light text-success" id="verify-modal-submit">
+			        		<span class="icon-ok"></span> <span th:text="#{verify}">Verify</span>
+			        	</button>
+			      </div>
+			    </div>
+		  	</div>
+		</div>
+		<div id="reject-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+		  	<div class="modal-dialog modal-dialog-centered" role="document">
+			    <div class="modal-content">
+			   		<div class="modal-body text-center p-4">
+						<span th:text="#{message.rejectConfirm}">Verify data?</span>
+			    	</div>
+			 		<div class="modal-footer text-center">
+			      		<button type="button" class="btn btn-sm btn-light" data-dismiss="modal">
+							<span class="icon-cancel"></span> <span th:text="#{close}">Close</span>
+						</button>
+			        	<button type="submit" class="btn btn-sm btn-light text-danger" id="reject-modal-submit">
+			        		<span class="icon-block"></span> <span th:text="#{reject}">Reject</span>
+			        	</button>
+			      </div>
+			    </div>
+		  	</div>
+		</div>
+	</div>
+</body>
+
+</html>

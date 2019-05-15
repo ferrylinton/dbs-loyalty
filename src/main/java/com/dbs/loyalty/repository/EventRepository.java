@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import com.dbs.loyalty.domain.Event;
@@ -26,5 +27,9 @@ public interface EventRepository extends JpaRepository<Event, String>, JpaSpecif
 	@Query(value = "select e from Event e "
 			+ "where e.endPeriod < current_date()")
 	List<Event> findPreviousEvent();
+	
+	@Modifying
+	@Query("update Event e set e.pending = ?1 where e.id = ?2")
+	void save(boolean pending, String id);
 	
 }

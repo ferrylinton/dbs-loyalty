@@ -4,8 +4,6 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
@@ -15,14 +13,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import com.dbs.loyalty.config.constant.Constant;
-import com.dbs.loyalty.domain.enumeration.UserType;
+import com.dbs.loyalty.config.constant.DomainConstant;
+import com.dbs.loyalty.config.constant.RegexConstant;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -38,8 +35,8 @@ import lombok.ToString;
  */
 @Setter
 @Getter
-@ToString(of = {"id"})
-@EqualsAndHashCode(of = {"id"}, callSuper = false)
+@EqualsAndHashCode(of = {"id", "username"}, callSuper = false)
+@ToString(of = {"id", "username"})
 @Entity
 @Table(	
 	name = "u_user",
@@ -53,13 +50,12 @@ public class User extends AbstractTask implements Serializable {
 	
 	@Id
 	@Column(name = "id", length=22)
-	@GenericGenerator(name = "IdGenerator", strategy = "com.dbs.loyalty.domain.IdGenerator")
-	@GeneratedValue(generator = "IdGenerator")
+	@GenericGenerator(name = DomainConstant.ID_GENERATOR, strategy = DomainConstant.ID_GENERATOR_STRATEGY)
+	@GeneratedValue(generator = DomainConstant.ID_GENERATOR)
 	private String id;
 	
-	@NotNull(message = "{validation.notnull.username}")
-	@Size(min = 5, max = 50, message = "{validation.size.username}")
-	@Pattern(regexp = Constant.USERNAME_REGEX, message = "{validation.pattern.username}")
+	@Size(min = 5, max = 50)
+	@Pattern(regexp = RegexConstant.USERNAME, message = RegexConstant.USERNAME_MESSAGE)
 	@Column(name = "username", length = 50, nullable = false)
 	private String username;
 	
@@ -75,13 +71,12 @@ public class User extends AbstractTask implements Serializable {
 	
 	@Column(name = "locked", nullable = false)
 	private Boolean locked = false;
-	
-	@Enumerated(EnumType.ORDINAL)
-	@Column(name = "user_type", nullable = false, columnDefinition="TINYINT")
-	private UserType userType;
+
+	@Column(name = "user_type", nullable = false, length = 10)
+	private String userType;
 	
 	@JsonIgnore
-	@Column(name = "login_attempt_count", nullable = false, columnDefinition="TINYINT")
+	@Column(name = "login_attempt_count", nullable = false)
 	private int loginAttemptCount;
 	
 	@JsonIgnoreProperties("authorities")

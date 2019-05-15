@@ -3,6 +3,8 @@ package com.dbs.loyalty.web.validator;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import com.dbs.loyalty.config.constant.DomainConstant;
+import com.dbs.loyalty.config.constant.ValidationConstant;
 import com.dbs.loyalty.domain.Promo;
 import com.dbs.loyalty.service.PromoService;
 import com.dbs.loyalty.util.MessageUtil;
@@ -11,18 +13,6 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class PromoValidator implements Validator {
-
-	private String validationEmptyMultipartFileImage = "validation.empty.multipartFileImage";
-
-	private String multipartFileImage = "multipartFileImage";
-	
-	private String validationExistCode = "validation.exist.code";
-
-	private String code = "code";
-	
-	private String validationExistTitle = "validation.exist.title";
-
-	private String title = "title";
 
 	private final PromoService promoService;
 
@@ -37,19 +27,19 @@ public class PromoValidator implements Validator {
 
 		if (promoService.isCodeExist(promo.getId(), promo.getCode())) {
 			Object[] errorArgs = new String[] { promo.getCode() };
-			String defaultMessage = MessageUtil.getMessage(validationExistCode, errorArgs);
-			errors.rejectValue(code, validationExistCode, errorArgs, defaultMessage);
+			String defaultMessage = MessageUtil.getMessage(ValidationConstant.VALIDATION_EXIST, errorArgs);
+			errors.rejectValue(DomainConstant.CODE, ValidationConstant.VALIDATION_EXIST, errorArgs, defaultMessage);
 		}
 		
 		if (promoService.isTitleExist(promo.getId(), promo.getTitle())) {
 			Object[] errorArgs = new String[] { promo.getCode() };
-			String defaultMessage = MessageUtil.getMessage(validationExistTitle, errorArgs);
-			errors.rejectValue(title, validationExistTitle, errorArgs, defaultMessage);
+			String defaultMessage = MessageUtil.getMessage(ValidationConstant.VALIDATION_EXIST, errorArgs);
+			errors.rejectValue(DomainConstant.TITLE, ValidationConstant.VALIDATION_EXIST, errorArgs, defaultMessage);
 		}
 
 		if (promo.getId() == null && promo.getMultipartFileImage().isEmpty()){
-			String defaultMessage = MessageUtil.getMessage(validationEmptyMultipartFileImage);
-			errors.rejectValue(multipartFileImage, validationEmptyMultipartFileImage, defaultMessage);
+			String defaultMessage = MessageUtil.getMessage(ValidationConstant.VALIDATION_EMPTY_FILE);
+			errors.rejectValue(DomainConstant.MULTIPART_FILE_IMAGE, ValidationConstant.VALIDATION_EMPTY_FILE, defaultMessage);
         }
 		
 	}

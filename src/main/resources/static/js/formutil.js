@@ -44,7 +44,8 @@ var FormUtil = (function () {
     }
 
     function onChangeUserType(obj){
-        if(obj.value == 'EXTERNAL'){
+    	console.log(obj.value);
+        if(obj.value == 'External'){
             $('input[type=password]').removeAttr('disabled');
         }else{
             $('input[type=password]').attr('disabled','disabled');

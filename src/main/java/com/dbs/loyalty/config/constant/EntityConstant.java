@@ -10,6 +10,8 @@ public final class EntityConstant {
 	
 	public static final String ROLE 				= "role";
 	
+	public static final String ROLES 				= "roles";
+	
 	public static final String AIRPORT_ASSISTANCE	= "airportassistance";
 	
 	public static final String TASK 				= "task";

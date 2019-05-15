@@ -40,7 +40,7 @@
 			<column name="username" value="system" />
 			<column name="activated" valueBoolean="false" />
 			<column name="locked" valueBoolean="false" />
-			<column name="user_type" valueNumeric="0"/>
+			<column name="user_type" value="Internal"/>
 			<column name="login_attempt_count" valueNumeric="0"/>
 			<column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
@@ -263,7 +263,7 @@
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
             <column name="locked" valueBoolean="false"/>
-            <column name="user_type" valueNumeric="1"/>
+            <column name="user_type" value="External"/>
             <column name="login_attempt_count" valueNumeric="0"/>
             <column name="username" value="admindb01"/>
             <column name="password_hash" value="${password}"/>
@@ -276,7 +276,7 @@
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
             <column name="locked" valueBoolean="false"/>
-            <column name="user_type" valueNumeric="1"/>
+            <column name="user_type" value="External"/>
             <column name="login_attempt_count" valueNumeric="0"/>
             <column name="username" value="makerdb01"/>
             <column name="password_hash" value="${password}"/>
@@ -289,7 +289,7 @@
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
             <column name="locked" valueBoolean="false"/>
-            <column name="user_type" valueNumeric="1"/>
+            <column name="user_type" value="External"/>
             <column name="login_attempt_count" valueNumeric="0"/>
             <column name="username" value="checkerdb01"/>
             <column name="password_hash" value="${password}"/>
@@ -302,7 +302,7 @@
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
             <column name="locked" valueBoolean="false"/>
-            <column name="user_type" valueNumeric="0"/>
+            <column name="user_type" value="Internal"/>
             <column name="login_attempt_count" valueNumeric="0"/>
             <column name="username" value="admin01"/>
             <column name="role_id" value="${Admin}"/>
@@ -314,7 +314,7 @@
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
             <column name="locked" valueBoolean="false"/>
-            <column name="user_type" valueNumeric="0"/>
+            <column name="user_type" value="Internal"/>
             <column name="login_attempt_count" valueNumeric="0"/>
             <column name="username" value="checker01"/>
             <column name="role_id" value="${Checker}"/>
@@ -326,7 +326,7 @@
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
             <column name="locked" valueBoolean="false"/>
-            <column name="user_type" valueNumeric="0"/>
+            <column name="user_type" value="Internal"/>
             <column name="login_attempt_count" valueNumeric="0"/>
             <column name="username" value="checker02"/>
             <column name="role_id" value="${Checker}"/>
@@ -338,7 +338,7 @@
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
             <column name="locked" valueBoolean="false"/>
-            <column name="user_type" valueNumeric="0"/>
+            <column name="user_type" value="Internal"/>
             <column name="login_attempt_count" valueNumeric="0"/>
             <column name="username" value="checker03"/>
             <column name="role_id" value="${Checker}"/>
@@ -350,7 +350,7 @@
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
             <column name="locked" valueBoolean="false"/>
-            <column name="user_type" valueNumeric="0"/>
+            <column name="user_type" value="Internal"/>
             <column name="login_attempt_count" valueNumeric="0"/>
             <column name="username" value="checker04"/>
             <column name="role_id" value="${Checker}"/>
@@ -362,7 +362,7 @@
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
             <column name="locked" valueBoolean="false"/>
-            <column name="user_type" valueNumeric="0"/>
+            <column name="user_type" value="Internal"/>
             <column name="login_attempt_count" valueNumeric="0"/>
             <column name="username" value="checker05"/>
             <column name="role_id" value="${Checker}"/>
@@ -374,7 +374,7 @@
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
             <column name="locked" valueBoolean="false"/>
-            <column name="user_type" valueNumeric="0"/>
+            <column name="user_type" value="Internal"/>
             <column name="login_attempt_count" valueNumeric="0"/>
             <column name="username" value="maker01"/>
             <column name="role_id" value="${Maker}"/>
@@ -386,7 +386,7 @@
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
             <column name="locked" valueBoolean="false"/>
-            <column name="user_type" valueNumeric="0"/>
+            <column name="user_type" value="Internal"/>
             <column name="login_attempt_count" valueNumeric="0"/>
             <column name="username" value="maker02"/>
             <column name="role_id" value="${Maker}"/>
@@ -398,7 +398,7 @@
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
             <column name="locked" valueBoolean="false"/>
-            <column name="user_type" valueNumeric="0"/>
+            <column name="user_type" value="Internal"/>
             <column name="login_attempt_count" valueNumeric="0"/>
             <column name="username" value="maker03"/>
             <column name="role_id" value="${Maker}"/>
@@ -410,7 +410,7 @@
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
             <column name="locked" valueBoolean="false"/>
-            <column name="user_type" valueNumeric="0"/>
+            <column name="user_type" value="Internal"/>
             <column name="login_attempt_count" valueNumeric="0"/>
             <column name="username" value="maker04"/>
             <column name="role_id" value="${Maker}"/>
@@ -422,7 +422,7 @@
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
             <column name="locked" valueBoolean="false"/>
-            <column name="user_type" valueNumeric="0"/>
+            <column name="user_type" value="Internal"/>
             <column name="login_attempt_count" valueNumeric="0"/>
             <column name="username" value="maker05"/>
             <column name="role_id" value="${Maker}"/>
@@ -434,7 +434,7 @@
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
             <column name="locked" valueBoolean="false"/>
-            <column name="user_type" valueNumeric="1"/>
+            <column name="user_type" value="External"/>
             <column name="login_attempt_count" valueNumeric="0"/>
             <column name="username" value="travel01"/>
             <column name="password_hash" value="${password}"/>
@@ -447,7 +447,7 @@
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
             <column name="locked" valueBoolean="false"/>
-            <column name="user_type" valueNumeric="1"/>
+            <column name="user_type" value="External"/>
             <column name="login_attempt_count" valueNumeric="0"/>
             <column name="username" value="travel02"/>
             <column name="password_hash" value="${password}"/>

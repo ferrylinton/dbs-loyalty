@@ -65,6 +65,10 @@ public class RoleService{
 		return roleRepository.save(role);
 	}
 	
+	public void save(boolean pending, String id) {
+		roleRepository.save(pending, id);
+	}
+	
 	public String execute(Task task) throws IOException {
 		Role role = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), Role.class);
 		
@@ -82,8 +86,7 @@ public class RoleService{
 				roleRepository.delete(role);
 			}
 		}else if(task.getTaskOperation() != TaskOperation.ADD) {
-			role.setPending(false);
-			roleRepository.save(role);
+			roleRepository.save(false, role.getId());
 		}
 
 		return role.getName();

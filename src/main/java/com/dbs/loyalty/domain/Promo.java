@@ -18,7 +18,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -59,29 +58,24 @@ public class Promo extends AbstractTask implements Serializable {
 	@GeneratedValue(generator = "IdGenerator")
 	private String id;
     
-    @NotNull(message = "{validation.notnull.code}")
-    @Size(min=2, max = 50, message = "{validation.size.code}")
+    @Size(min=2, max = 50)
     @Column(name = "code", length = 50, nullable = false)
     private String code;
 
-    @NotNull(message = "{validation.notnull.title}")
-    @Size(min=2, max = 150, message = "{validation.size.title}")
+    @Size(min=2, max = 150)
     @Column(name = "title", length = 150, nullable = false)
     private String title;
 
-    @NotNull(message = "{validation.notnull.description}")
-    @Size(min=2, max = 255, message = "{validation.size.description}")
+    @Size(min=2, max = 255)
     @Column(name = "description", nullable = false)
     private String description;
     
-    @NotNull(message = "{validation.notnull.content}")
-    @Size(min=2, max = 50000, message = "{validation.size.content}")
+    @Size(min=2, max = 50000)
     @Lob
     @Column(name = "content", nullable = false, columnDefinition="TEXT")
     private String content;
     
-    @NotNull(message = "{validation.notnull.termAndCondition}")
-    @Size(min=2, max = 50000, message = "{validation.size.termAndCondition}")
+    @Size(min=2, max = 50000)
     @Lob
     @Column(name = "term_and_condition", nullable = false, columnDefinition="TEXT")
     private String termAndCondition;

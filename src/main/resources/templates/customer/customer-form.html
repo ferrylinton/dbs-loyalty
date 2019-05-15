@@ -3,7 +3,7 @@
 
 <head th:replace="fragment/head.html :: content(title=|#{application.name} : #{customer}|)"></head>
 
-<body onload="onLoadCustomerForm()">
+<body>
     <!-- NAVBAR -->
     <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
     <div id="content-box" th:with="isMaker=${#authorization.expression('hasAuthority(''CUSTOMER_MK'')')}">
@@ -22,45 +22,49 @@
             </div>
             <!-- FORM -->
             <th:block th:if="${customer}">
-                <form action="/customer/customer-view.html" th:action="@{/customer}" th:object="${customer}" method="post" autocomplete="off" onsubmit="return AjaxUtil.submit(this)">
+                <form action="/customer/customer-view.html" th:action="@{/customer}" th:object="${customer}" method="post" autocomplete="off" enctype="multipart/form-data">
                     <div class="row" th:object="${customer}">
                         <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
                             <div class="form-group">
                                 <label for="customerType" th:text="#{customerType}">Customer Type</label>
                                 <select class="custom-select" th:field="*{customerType}">
-                                    <option value="TPC">TPC</option>
-                                    <option value="TREASURE">TREASURE</option>
+                                    <option value="0025">TPC</option>
+                                    <option value="0012">TREASURE</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
                             <div class="form-group">
                                 <label for="name" th:text="#{name}">Name *</label>
-                                <input class="form-control" type="text" th:field="*{name}" maxlength="50" />
+                                <input class="form-control" th:classappend="${#fields.hasErrors('name') ? 'is-invalid' : ''}" type="text" th:field="*{name}" maxlength="50" />
+                            	<div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:uerrors="*{name}">Error</div>
                             </div>
                         </div>
                         <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
                             <div class="form-group">
                                 <label for="email" th:text="#{email}">Email *</label>
-                                <input class="form-control" type="text" th:field="*{email}" maxlength="50" />
+                                <input class="form-control" th:classappend="${#fields.hasErrors('email') ? 'is-invalid' : ''}" type="text" th:field="*{email}" maxlength="50" />
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:uerrors="*{email}">Error</div>
                             </div>
                         </div>
                         <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4" th:if="${customer.id == null}">
                             <div class="form-group">
                                 <label for="passwordPlain" th:text="#{password}">Password</label>
-                                <input class="form-control" type="password" th:field="*{passwordPlain}" maxlength="30" />
+                                <input class="form-control" th:classappend="${#fields.hasErrors('passwordPlain') ? 'is-invalid' : ''}" type="password" th:field="*{passwordPlain}" maxlength="30" />
+                            	<div class="invalid-feedback" th:if="${#fields.hasErrors('passwordPlain')}" th:uerrors="*{passwordPlain}">Error</div>
                             </div>
                         </div>
                         <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
                             <div class="form-group">
                                 <label for="phone" th:text="#{phone}">Phone *</label>
-                                <input class="form-control" type="text" th:field="*{phone}" maxlength="20" />
+                                <input class="form-control" th:classappend="${#fields.hasErrors('phone') ? 'is-invalid' : ''}" type="text" th:field="*{phone}" maxlength="20" />
+                            	<div class="invalid-feedback" th:if="${#fields.hasErrors('phone')}" th:uerrors="*{phone}">Error</div>
                             </div>
                         </div>
                         <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
-                            <div class="form-group" th:with="format=${@environment.getProperty('application.format.date')}">
+                            <div class="form-group">
                                 <label for="dob" th:text="|#{dob} *|">DOB *</label>
-                                <input class="form-control" type="text" th:placeholder="#{dob}" id="dob" name="dob" th:value="${#dates.format(customer.dob, format)}" readonly="readonly" />
+                                <input class="form-control" type="text" th:placeholder="#{dob}" id="dob" name="dob" th:value="${#dates.format(customer.dob, 'dd-MM-yyyy')}" readonly="readonly" />
                             </div>
                         </div>
                         <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-4">
@@ -88,8 +92,9 @@
 						<div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
 							<div class="form-group">
 								<div class="custom-file">
-									<input type="file" accept="image/png,image/jpg,image/jpeg" class="custom-file-input" id="multipartFileImage" name="multipartFileImage" onchange="ImageUtil.show(this)">
+									<input type="file" accept="image/png,image/jpg,image/jpeg" class="custom-file-input" th:classappend="${#fields.hasErrors('multipartFileImage') ? 'is-invalid' : ''}" id="multipartFileImage" name="multipartFileImage" onchange="ImageUtil.show(this)">
 									<label class="custom-file-label" th:text="#{chooseImageFile}"></label>
+									<div class="invalid-feedback" th:if="${#fields.hasErrors('multipartFileImage')}" th:uerrors="*{multipartFileImage}">Error</div>
 								</div>
 							</div>
 						</div>

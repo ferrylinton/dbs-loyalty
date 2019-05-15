@@ -13,39 +13,37 @@ import com.dbs.loyalty.exception.LdapConnectException;
 @Controller("loginController")
 public class LoginController extends AbstractController{
 	
-	private String expired = "expired";
+	private static final String FORM		= "login/login-form";
 	
-	private String invalid = "invalid";
+	private String expired 					= "expired";
 
-	private String forbidden = "forbidden";
+	private String forbidden 				= "forbidden";
 	
-	private String logout = "logout";
+	private String logout 					= "logout";
 	
-	private String error = "error";
+	private String error 					= "error";
 	
-	private String badCredentials					= "message.invalidUsernameOrPassword";
+	private String badCredentials			= "message.invalidUsernameOrPassword";
 	
-	private String userIsAlreadyLogged				= "message.userIsAlreadyLogged";
+	private String userIsAlreadyLogged		= "message.userIsAlreadyLogged";
 	
-	private String userIsLocked						= "message.userIsLocked";
+	private String userIsLocked				= "message.userIsLocked";
 	
-	private String userLogoutSuccess				= "message.userLogoutSuccess";
+	private String userLogoutSuccess		= "message.userLogoutSuccess";
 	
-	private String sessionIsExpired					= "message.sessionIsExpired";
-	
-	private String sessionIsInvalid					= "message.sessionIsInvalid";
-	
-	private String forbiddenMessage					= "message.forbidden";
-	
-	private String ldapConnectException				= "message.ldapConnectException";
+	private String sessionIsExpired			= "message.sessionIsExpired";
 
-	private String springSecurityLastException		= "textDanger";
+	private String forbiddenMessage			= "message.forbidden";
 	
-	private String cssClass							= "class";
+	private String ldapConnectException		= "message.ldapConnectException";
+
+	private String lastException			= "SPRING_SECURITY_LAST_EXCEPTION";
 	
-	private String textDanger 						= "text-danger";
+	private String cssClass					= "class";
 	
-	private String textSuccess						= "text-success";
+	private String textDanger 				= "text-danger";
+	
+	private String textSuccess				= "text-success";
 
 	@GetMapping("/login")
 	public String login(HttpServletRequest request) {
@@ -53,10 +51,6 @@ public class LoginController extends AbstractController{
 		if(request.getParameter(expired) != null) {
 			request.setAttribute(cssClass, textDanger);
 			request.setAttribute(Constant.MESSAGE, sessionIsExpired);
-			
-		}else if(request.getParameter(invalid) != null) {
-			request.setAttribute(cssClass, textDanger);
-			request.setAttribute(Constant.MESSAGE, sessionIsInvalid);
 			
 		}else if(request.getParameter(forbidden) != null) {
 			request.setAttribute(cssClass, textDanger);
@@ -67,7 +61,7 @@ public class LoginController extends AbstractController{
 			request.setAttribute(Constant.MESSAGE, userLogoutSuccess);
 			
 		}else if (request.getParameter(error) != null) {
-			Exception exception = (Exception) request.getSession().getAttribute(springSecurityLastException);
+			Exception exception = (Exception) request.getSession().getAttribute(lastException);
 			
 			request.setAttribute(cssClass, textDanger);
 			if(exception instanceof LockedException) {
@@ -81,7 +75,7 @@ public class LoginController extends AbstractController{
 			}
 		}
 		
-		return "login/login-form";
+		return FORM;
 	}
 
 }

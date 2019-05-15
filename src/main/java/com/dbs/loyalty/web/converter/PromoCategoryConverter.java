@@ -11,13 +11,10 @@ public class PromoCategoryConverter implements Converter<String, PromoCategory> 
 	
 	@Override
 	public PromoCategory convert(String content) {
-		String[] str = content.split(Constant.COMMA);
-		
-		if(str.length == 2) {
+		if(content  != null && content.length() > 22) {
 			PromoCategory promoCategory = new PromoCategory();
-			promoCategory.setId(str[0]);
-			promoCategory.setName(str[1]);
-			
+			promoCategory.setId(content.substring(0,22));
+			promoCategory.setName(content.replace(promoCategory.getId(), Constant.EMPTY));
 			return promoCategory;
 		}else {
 			return null;

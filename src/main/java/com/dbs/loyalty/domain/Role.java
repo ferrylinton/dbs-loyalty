@@ -21,11 +21,13 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import com.dbs.loyalty.config.constant.Constant;
+import com.dbs.loyalty.config.constant.DomainConstant;
+import com.dbs.loyalty.config.constant.RegexConstant;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Class of Role
@@ -35,6 +37,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @EqualsAndHashCode(of = { "id", "name" }, callSuper = false)
+@ToString(of = { "id", "name" })
 @Entity
 @Table(	
 	name = "u_role", 
@@ -48,16 +51,16 @@ public class Role extends AbstractTask implements Serializable {
 	
 	@Id
 	@Column(name = "id", length=22)
-	@GenericGenerator(name = "IdGenerator", strategy = "com.dbs.loyalty.domain.IdGenerator")
-	@GeneratedValue(generator = "IdGenerator")
+	@GenericGenerator(name = DomainConstant.ID_GENERATOR, strategy = DomainConstant.ID_GENERATOR_STRATEGY)
+	@GeneratedValue(generator = DomainConstant.ID_GENERATOR)
 	private String id;
 	
-	@Pattern(regexp = Constant.NAME_REGEX, message = "{validation.pattern.name}")
-	@Size(min = 2, max = 40, message = "{validation.size.name}")
+	@Pattern(regexp = RegexConstant.ALPHABET, message = RegexConstant.ALPHABET_MESSAGE)
+	@Size(min = 2, max = 40)
     @Column(name = "name", length = 40, nullable = false)
     private String name;
 	
-	@NotEmpty(message = "{validation.notempty.authorities}")
+	@NotEmpty
 	@ManyToMany(fetch=FetchType.LAZY)
     @JoinTable(	
     	name = "u_role_authority",
@@ -66,9 +69,4 @@ public class Role extends AbstractTask implements Serializable {
     )
     private Set<Authority> authorities = new HashSet<>();
 
-	@Override
-	public String toString() {
-		return id + "," + name;
-	}
-	
 }

@@ -4,7 +4,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import com.dbs.loyalty.config.constant.Constant;
+import com.dbs.loyalty.config.constant.RegexConstant;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -21,13 +21,13 @@ public class CustomerUpdateDto {
 	
 	@ApiModelProperty(value = "Customer's email", example = "johnsmith@dbs.com", required = true, position = 1)
 	@NotNull(message = "{validation.notnull.email}")
-	@Pattern(regexp = Constant.EMAIL_REGEX, message = "{validation.pattern.email}")
+	@Pattern(regexp = RegexConstant.EMAIL, message = RegexConstant.EMAIL_MESSAGE)
     @Size(min = 5, max = 50, message = "{validation.size.email}")
 	private String email;
 	
 	@ApiModelProperty(value = "Customer's name", example = "John Smith", required = true, position = 2)
 	@NotNull(message = "{validation.notnull.name}")
-	@Pattern(regexp = Constant.NAME_REGEX, message = "{validation.pattern.name}")
+	@Pattern(regexp = RegexConstant.NAME, message = RegexConstant.NAME_MESSAGE)
 	@Size(min = 2, max = 50, message = "{validation.size.name}")
 	private String name;
 	

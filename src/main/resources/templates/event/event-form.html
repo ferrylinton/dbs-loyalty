@@ -22,23 +22,25 @@
                 </div>
                 <!-- FORM -->
                 <th:block th:if="${event}">
-                    <form action="/event/event-view.html" th:action="@{/event}" th:object="${event}" method="post" autocomplete="off" onsubmit="return AjaxUtil.submit(this)">
+                    <form action="/event/event-view.html" th:action="@{/event}" th:object="${event}" method="post" autocomplete="off" enctype="multipart/form-data">
                         <div class="row">
                             <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                 <div class="form-group">
                                     <label for="title" th:text="|#{title} *|">Title *</label>
-                                    <textarea class="form-control" th:field="*{title}" rows="3" maxlength="255"></textarea>
+                                    <textarea class="form-control" th:classappend="${#fields.hasErrors('title') ? 'is-invalid' : ''}" th:field="*{title}" rows="3" maxlength="255"></textarea>
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('title')}" th:uerrors="*{description}">Error</div>
                                 </div>
                             </div>
                             <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                 <div class="form-group">
-                                    <label for="description" th:text="|#{description} *|">Description *</label>
-                                    <textarea class="form-control" th:field="*{description}" rows="3" maxlength="255"></textarea>
-                                </div>
+									<label for="description" th:text="#{description} + ' *'">Description *</label>
+									<textarea class="form-control" th:classappend="${#fields.hasErrors('description') ? 'is-invalid' : ''}" th:field="*{description}" rows="3" maxlength="255"></textarea>
+									<div class="invalid-feedback" th:if="${#fields.hasErrors('description')}" th:uerrors="*{description}">Error</div>
+								</div>
                             </div>
                             
                             <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
-                                <div class="row no-gutters" th:with="format=${@environment.getProperty('application.format.date')}">
+                                <div class="row no-gutters" th:with="format='dd-MM-yyyy'">
 	                            	<div class="col">     
 	                                    <div class="form-group">
 	                                        <label for="startPeriod" th:text="#{startPeriod}">Start Period</label>
@@ -54,7 +56,7 @@
 	                            	<div class="col">
 	                                    <div class="form-group">
 	                                        <label for="timePeriod" th:text="#{timePeriod}">Time Period *</label>
-	                                        <input class="form-control" type="text" th:field="*{timePeriod}" readonly="readonly" />
+	                                        <input class="form-control" type="text" th:field="*{timePeriod}" id="timePeriod" name="timePeriod" readonly="readonly" />
 	                                    </div>
 	                               	</div>
                                 </div>
@@ -62,14 +64,15 @@
                             <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
                                 <div class="form-group">
                                     <label for="place" th:text="|#{place} *|">Place *</label>
-                                    <input class="form-control" type="text" th:field="*{place}" />
+                                    <input class="form-control" th:classappend="${#fields.hasErrors('place') ? 'is-invalid' : ''}" type="text" th:field="*{place}" />
+                                    <div class="invalid-feedback" th:if="${#fields.hasErrors('place')}" th:uerrors="*{place}">Error</div>
                                 </div>
                             </div>
                             <div class="col-12">
-                                <div class="form-group">
-                                    <label for="content" th:text="|#{content} *|">Content *</label>
-                                    <textarea class="form-control" th:field="*{content}" id="content" rows="5" maxlength="255"></textarea>
-                                </div>
+                                <div class="form-group" th:classappend="${#fields.hasErrors('content') ? 'is-invalid' : ''}">
+									<label for="content" th:text="#{content} + ' *'">Content *</label>
+									<textarea class="form-control" id="content" th:field="*{content}" rows="6"></textarea>
+								</div>
                             </div>
                         </div>
                         <div class="row">
@@ -84,8 +87,9 @@
 							<div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
 								<div class="form-group">
 									<div class="custom-file">
-										<input type="file" accept="image/png,image/jpg,image/jpeg" class="custom-file-input" id="multipartFileImage" name="multipartFileImage" onchange="ImageUtil.show(this)">
+										<input type="file" accept="image/png,image/jpg,image/jpeg" class="custom-file-input" th:classappend="${#fields.hasErrors('multipartFileImage') ? 'is-invalid' : ''}" id="multipartFileImage" name="multipartFileImage" onchange="ImageUtil.show(this)">
 										<label class="custom-file-label" th:text="#{chooseImageFile}"></label>
+										<div class="invalid-feedback" th:if="${#fields.hasErrors('multipartFileImage')}" th:uerrors="*{multipartFileImage}">Error</div>
 									</div>
 								</div>
 							</div>
@@ -101,8 +105,9 @@
                         	<div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
                                 <div class="form-group">
                                     <div class="custom-file">
-                                        <input type="file" accept="application/pdf" class="custom-file-input" id="multipartFileMaterial" name="multipartFileMaterial">
+                                        <input type="file" accept="application/pdf" class="custom-file-input" th:classappend="${#fields.hasErrors('multipartFileMaterial') ? 'is-invalid' : ''}" id="multipartFileMaterial" name="multipartFileMaterial">
                                         <label class="custom-file-label" th:text="#{chooseMaterialFile}"></label>
+                                        <div class="invalid-feedback" th:if="${#fields.hasErrors('multipartFileMaterial')}" th:uerrors="*{multipartFileMaterial}">Error</div>
                                     </div>
                                 </div>
                             </div>

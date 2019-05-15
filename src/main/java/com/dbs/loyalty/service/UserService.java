@@ -54,6 +54,10 @@ public class UserService{
 		return userRepository.save(user);
 	}
 	
+	public void save(boolean pending, String id) {
+		userRepository.save(pending, id);
+	}
+	
 	public Optional<User> save(String username, String passwordHash) {
 		User result = null;
 		Optional<User> user = userRepository.findByUsernameIgnoreCase(username);
@@ -89,8 +93,7 @@ public class UserService{
 				userRepository.delete(user);
 			}
 		}else if(task.getTaskOperation() != TaskOperation.ADD) {
-			user.setPending(false);
-			userRepository.save(user);
+			userRepository.save(false, user.getId());
 		}
 
 		return user.getUsername();

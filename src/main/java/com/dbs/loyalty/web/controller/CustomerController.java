@@ -2,6 +2,7 @@ package com.dbs.loyalty.web.controller;
 
 import static com.dbs.loyalty.config.constant.Constant.ERROR;
 import static com.dbs.loyalty.config.constant.Constant.PAGE;
+import static com.dbs.loyalty.config.constant.Constant.TOAST;
 import static com.dbs.loyalty.config.constant.Constant.ZERO;
 import static com.dbs.loyalty.config.constant.EntityConstant.CUSTOMER;
 
@@ -18,14 +19,12 @@ import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -33,18 +32,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.dbs.loyalty.config.constant.CustomerTypeConstant;
 import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.domain.FileImageTask;
-import com.dbs.loyalty.exception.BadRequestException;
-import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.CustomerService;
 import com.dbs.loyalty.service.ImageService;
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.util.PasswordUtil;
-import com.dbs.loyalty.util.UrlUtil;
-import com.dbs.loyalty.web.response.Response;
 import com.dbs.loyalty.web.validator.CustomerValidator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -54,7 +50,17 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequestMapping("/customer")
 public class CustomerController extends AbstractPageController{
-
+	
+	private static final String REDIRECT = "redirect:/customer";
+	
+	private static final String VIEW = "customer/customer-view";
+	
+	private static final String DETAIL = "customer/customer-detail";
+	
+	private static final String FORM = "customer/customer-form";
+	
+	private static final String SORT_BY = "name";
+	
 	private final ImageService imageService;
 	
 	private final CustomerService customerService;
@@ -63,17 +69,18 @@ public class CustomerController extends AbstractPageController{
 	
 	@PreAuthorize("hasAnyRole('CUSTOMER_MK', 'CUSTOMER_CK')")
 	@GetMapping
-	public String viewCustomers(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
-		Order order = getOrder(sort, "name");
+	public String viewCustomers(@ModelAttribute(TOAST) String toast, @RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
+		Order order = getOrder(sort, SORT_BY);
 		Page<Customer> page = customerService.findAll(getPageable(params, order), request);
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
-			return "redirect:/customer";
+			return REDIRECT;
 		}else {
+			request.setAttribute(TOAST, toast);
 			request.setAttribute(PAGE, page);
 			setParamsQueryString(params, request);
 			setPagerQueryString(order, page.getNumber(), request);
-			return "customer/customer-view";
+			return VIEW;
 		}
 	}
 	
@@ -81,79 +88,75 @@ public class CustomerController extends AbstractPageController{
 	@GetMapping("/{id}/detail")
 	public String viewCustomerDetail(ModelMap model, @PathVariable String id){
 		getById(model, id);
-		return "customer/customer-detail";
+		return DETAIL;
 	}
 	
 	@PreAuthorize("hasRole('CUSTOMER_MK')")
 	@GetMapping("/{id}")
 	public String viewCustomerForm(ModelMap model, @PathVariable String id) {
 		if (id.equals(ZERO)) {
-			model.addAttribute(CUSTOMER, new Customer());
+			Customer customer = new Customer();
+			customer.setCustomerType(CustomerTypeConstant.TPC);
+			model.addAttribute(CUSTOMER, customer);
 		} else {
 			getById(model, id);
 		}
 		
-		return "customer/customer-form";
+		return FORM;
 	}
 	
 	@Transactional
 	@PreAuthorize("hasRole('CUSTOMER_MK')")
 	@PostMapping
-	@ResponseBody
-	public ResponseEntity<Response> saveCustomer(@Valid @ModelAttribute Customer customer, BindingResult result) throws BadRequestException, IOException, NotFoundException {
+	public String saveCustomer(@Valid @ModelAttribute(CUSTOMER) Customer customer, BindingResult result, RedirectAttributes attributes) throws IOException{
 		if (result.hasErrors()) {
-			throwBadRequestResponse(result);
-		}
-
-		if(customer.getId() == null) {
-			FileImageTask fileImageTask = imageService.add(customer.getMultipartFileImage());
-			customer.setImage(fileImageTask.getId());
-			customer.setPasswordHash(PasswordUtil.encode(customer.getPasswordPlain()));
-			taskService.saveTaskAdd(CUSTOMER, customer);
+			return FORM;
 		}else {
-			Optional<Customer> current = customerService.findById(customer.getId());
-			
-			if(current.isPresent()) { 
-				if(customer.getMultipartFileImage().isEmpty()) {
-					customer.setImage(customer.getId());
-				}else {
-					FileImageTask fileImageTask = imageService.add(customer.getMultipartFileImage());
-					customer.setImage(fileImageTask.getId());
-				}
-				
-				customer.setPasswordHash(current.get().getPasswordHash());
-				current.get().setImage(customer.getId());
-				taskService.saveTaskModify(CUSTOMER, current.get(), customer);
-				
-				current.get().setPending(true);
-				customerService.save(current.get());
+			if(customer.getId() == null) {
+				FileImageTask fileImageTask = imageService.add(customer.getMultipartFileImage());
+				customer.setImage(fileImageTask.getId());
+				customer.setPasswordHash(PasswordUtil.encode(customer.getPasswordPlain()));
+				taskService.saveTaskAdd(CUSTOMER, customer);
 			}else {
-				throw new NotFoundException();
+				Optional<Customer> current = customerService.findById(customer.getId());
+				
+				if(current.isPresent()) { 
+					if(customer.getMultipartFileImage().isEmpty()) {
+						customer.setImage(customer.getId());
+					}else {
+						FileImageTask fileImageTask = imageService.add(customer.getMultipartFileImage());
+						customer.setImage(fileImageTask.getId());
+					}
+					
+					customer.setPasswordHash(current.get().getPasswordHash());
+					current.get().setImage(customer.getId());
+					taskService.saveTaskModify(CUSTOMER, current.get(), customer);
+					customerService.save(true, customer.getId());
+				}
 			}
-		}
 
-		return taskIsSavedResponse(CUSTOMER,  customer.getName(), UrlUtil.getUrl(CUSTOMER));
+			attributes.addFlashAttribute(TOAST, taskIsSavedMessage(CUSTOMER, customer.getName()));
+			System.out.println("------ redirect : " + REDIRECT);
+			return REDIRECT;
+		}
 	}
 	
 	@Transactional
 	@PreAuthorize("hasRole('CUSTOMER_MK')")
-	@DeleteMapping("/{id}")
-	@ResponseBody
-	public ResponseEntity<Response> deleteCustomer(@PathVariable String id) throws JsonProcessingException, NotFoundException {
+	@PostMapping("/delete/{id}")
+	public String deleteCustomer(@PathVariable String id, RedirectAttributes attributes) throws JsonProcessingException {
 		Optional<Customer> current = customerService.findById(id);
 		
 		if(current.isPresent()) {
 			taskService.saveTaskDelete(CUSTOMER, current.get());
-			
-			current.get().setPending(true);
-			customerService.save(current.get());
-			return taskIsSavedResponse(CUSTOMER, current.get().getName(), UrlUtil.getUrl(CUSTOMER));
-		}else {
-			throw new NotFoundException();
+			customerService.save(true, id);
+			attributes.addFlashAttribute(TOAST, taskIsSavedMessage(CUSTOMER, current.get().getName()));
 		}
+		
+		return REDIRECT;
 	}
 
-	@InitBinder("customer")
+	@InitBinder(CUSTOMER)
 	protected void initBinder(WebDataBinder binder) {
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("dd-MM-yyyy"), true, 10)); 
 		binder.addValidators(new CustomerValidator(customerService));

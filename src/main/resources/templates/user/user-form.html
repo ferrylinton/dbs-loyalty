@@ -22,34 +22,36 @@
             </div>
             <!-- FORM -->
             <th:block th:if="${user}">
-                <form action="/user/user-view.html" th:action="@{/user}" th:object="${user}" method="post" autocomplete="off" onsubmit="return AjaxUtil.submit(this)">
+                <form action="/user/user-view.html" th:action="@{/user}" th:object="${user}" method="post" autocomplete="off">
                     <div class="row">
                     	<div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
                             <div class="form-group">
                                 <label for="userType" th:text="#{userType}">User Type</label>
                                 <select class="custom-select" th:field="*{userType}" onchange="FormUtil.onChangeUserType(this)">
-                                    <option value="INTERNAL">INTERNAL</option>
-                                    <option value="EXTERNAL">EXTERNAL</option>
+                                    <option value="Internal">Internal</option>
+                                    <option value="External">External</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
                             <div class="form-group">
                                 <label for="username" th:text="#{username}">Username *</label>
-                                <input class="form-control" type="text" th:field="*{username}" maxlength="50" />
+                                <input class="form-control" th:classappend="${#fields.hasErrors('username') ? 'is-invalid' : ''}" type="text" th:field="*{username}" maxlength="50" />
+                           		<div class="invalid-feedback" th:if="${#fields.hasErrors('username')}" th:uerrors="*{username}">Error</div>
                             </div>
                         </div>
                         <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4" th:if="*{id == null}">
                             <div class="form-group">
                                 <label for="passwordPlain" th:text="#{password}">Password</label>
-                                <input class="form-control" type="password" id="passwordPlain" th:field="*{passwordPlain}" maxlength="30" disabled/>
+                                <input class="form-control"  th:classappend="${#fields.hasErrors('passwordPlain') ? 'is-invalid' : ''}" type="password" id="passwordPlain" th:field="*{passwordPlain}" maxlength="30" th:disabled="${user.userType == 'Internal'}"/>
+                            	<div class="invalid-feedback" th:if="${#fields.hasErrors('passwordPlain')}" th:uerrors="*{passwordPlain}">Error</div>
                             </div>
                         </div>
                         <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
                             <div class="form-group">
                                 <label for="role" th:text="#{role}">Role</label>
                                 <select class="custom-select" th:field="*{role}">
-                                    <option th:each="_role: ${roles}" th:value="${_role}" th:text="${_role.name}">Role</option>
+                                    <option th:each="_role: ${roles}" th:value="|${_role.id}${_role.name}|" th:text="${_role.name}">Role</option>
                                 </select>
                             </div>
                         </div>
