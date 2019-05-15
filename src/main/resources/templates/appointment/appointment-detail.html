@@ -51,7 +51,7 @@
                             </tr>
                             <tr>
                                 <th th:text="#{createdDate}">Created Dt</th>
-                                <td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.datetime()}" th:text="${appointment.createdDate}">2019-05-01T21:24:44Z</span></td>
+                                <td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.jsDatetime()}" th:text="${appointment.createdDate}">2019-05-01T21:24:44Z</span></td>
                             </tr>
                             <tr th:if="${appointment.lastModifiedBy}">
                                 <th th:text="#{lastModifiedBy}">Last Modified By</th>
@@ -59,7 +59,7 @@
                             </tr>
                             <tr th:if="${appointment.lastModifiedDate}">
                                 <th th:text="#{lastModifiedDate}">Last Modified Dt</th>
-                                <td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.datetime()}" th:text="${appointment.lastModifiedDate}">2019-05-01T21:24:44Z</span></td>
+                                <td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.jsDatetime()}" th:text="${appointment.lastModifiedDate}">2019-05-01T21:24:44Z</span></td>
                             </tr>
                         </tbody>
                     </table>

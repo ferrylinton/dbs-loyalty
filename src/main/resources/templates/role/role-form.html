@@ -3,7 +3,7 @@
 
 <head th:replace="fragment/head.html :: content(title=|#{application.name} : #{role}|)"></head>
 
-<body>
+<body data-menu="role">
     <!-- NAVBAR -->
     <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
     <div id="content-box" th:with="isMaker=${#authorization.expression('hasAuthority(''ROLE_MK'')')}">

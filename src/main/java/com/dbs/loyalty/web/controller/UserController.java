@@ -113,14 +113,20 @@ public class UserController extends AbstractPageController{
 			return FORM;
 		}else {
 			if(user.getId() == null) {
-				user.setPasswordHash(PasswordUtil.encode(user.getPasswordPlain()));
-				user.setPasswordPlain(null);
+				if(user.getUserType().equals(UserTypeConstant.EXTERNAL)) {
+					user.setPasswordHash(PasswordUtil.encode(user.getPasswordPlain()));
+					user.setPasswordPlain(null);
+				}
+				
 				taskService.saveTaskAdd(USER, user);
 			}else {
 				Optional<User> current = userService.findWithRoleById(user.getId());
 				
 				if(current.isPresent()) {
-					user.setPasswordHash(current.get().getPasswordHash());
+					if(user.getUserType().equals(UserTypeConstant.EXTERNAL)) {
+						user.setPasswordHash(current.get().getPasswordHash());
+					}
+					
 					taskService.saveTaskModify(USER, current.get(), user);
 					userService.save(true, user.getId());
 				}

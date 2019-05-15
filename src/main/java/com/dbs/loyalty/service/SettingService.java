@@ -57,7 +57,7 @@ public class SettingService {
 		return map;
 	}
 	
-	public String datetime() {
+	public String jsDatetime() {
 		if(settings().containsKey(DATETIME)) {
 			return settings().get(DATETIME);
 		}else {
@@ -65,7 +65,7 @@ public class SettingService {
 		}
 	}
 	
-	public String date() {
+	public String jsDate() {
 		if(settings().containsKey(DATE)) {
 			return settings().get(DATE);
 		}else {
@@ -73,7 +73,7 @@ public class SettingService {
 		}
 	}
 	
-	public String time(Instant date) {
+	public String jsTime(Instant date) {
 		if(settings().containsKey(TIME)) {
 			return settings().get(TIME);
 		}else {
@@ -81,7 +81,7 @@ public class SettingService {
 		}
 	}
 	
-	public String javadatetime() {
+	public String javaDatetime() {
 		if(settings().containsKey(JAVA_DATETIME)) {
 			return settings().get(JAVA_DATETIME);
 		}else {
@@ -89,7 +89,7 @@ public class SettingService {
 		}
 	}
 	
-	public String javadate() {
+	public String javaDate() {
 		if(settings().containsKey(JAVA_DATE)) {
 			return settings().get(JAVA_DATE);
 		}else {
@@ -97,7 +97,7 @@ public class SettingService {
 		}
 	}
 	
-	public String javatime(Instant date) {
+	public String javaTime() {
 		if(settings().containsKey(JAVA_TIME)) {
 			return settings().get(JAVA_TIME);
 		}else {

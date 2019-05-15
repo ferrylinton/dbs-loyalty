@@ -3,7 +3,7 @@
 
 <head th:replace="fragment/head.html :: content(title=|#{application.name} : #{task} - #{${type}}|)"></head>
 
-<body>
+<body th:data-menu="|task${type}|">
     <!-- NAVBAR -->
     <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
     <div id="content-box">
@@ -47,15 +47,15 @@
                             </tr>
                             <tr>
                                 <th th:text="#{madeDate}">Made Date</th>
-                            	<td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.datetime()}" th:text="${task.madeDate}">2019-05-01T21:24:44Z</span></td>
+                            	<td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.jsDatetime()}" th:text="${task.madeDate}">2019-05-01T21:24:44Z</span></td>
                             </tr>
                             <tr th:if="${task.checker}">
                                 <th th:text="#{checker}">Checker</th>
                                 <td th:text="${task.checker}">Checker 01</td>
                             </tr>
                             <tr th:if="${task.checkedDate}">
-                                <th th:text="${task.checkedDate}">Checked Date</th>
-                                <td th:text="${#dates.format(task.checkedDate, format)}">09-04-2019 19:06:53.279</td>
+                                <th th:text="#{checkedDate}">Checked Date</th>
+                                <td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.jsDatetime()}" th:text="${task.checkedDate}">2019-05-01T21:24:44Z</span></td>
                             </tr>
                             <tr th:if="${task.taskDataOld}">
                                 <th th:text="#{taskDataOld}">Task Data Old</th>

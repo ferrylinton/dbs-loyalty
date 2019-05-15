@@ -3,7 +3,7 @@
 
 <head th:replace="fragment/head.html :: content(title=|#{application.name} : #{promo}|)"></head>
 
-<body>
+<body data-menu="promo">
 	<!-- TOAST -->
 	<th:block th:if="${not #strings.isEmpty(toast)}">
 		<div th:replace="fragment/toast.html :: #toast"></div>

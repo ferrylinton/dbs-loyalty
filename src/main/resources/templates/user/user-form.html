@@ -3,7 +3,7 @@
 
 <head th:replace="fragment/head.html :: content(title=|#{application.name} : #{user}|)"></head>
 
-<body>
+<body data-menu="user">
     <!-- NAVBAR -->
     <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
     <div id="content-box" th:with="isMaker=${#authorization.expression('hasAuthority(''USER_MK'')')}">
@@ -27,7 +27,7 @@
                     	<div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
                             <div class="form-group">
                                 <label for="userType" th:text="#{userType}">User Type</label>
-                                <select class="custom-select" th:field="*{userType}" onchange="FormUtil.onChangeUserType(this)">
+                                <select class="custom-select" th:field="*{userType}" onchange="FormUtil.onChangeUserType(this)" th:disabled="${user.id != null}">
                                     <option value="Internal">Internal</option>
                                     <option value="External">External</option>
                                 </select>
@@ -70,7 +70,8 @@
                     </div>
 					
                     <!-- HIDDEN -->
-                    <input type="hidden" id="id" th:field="*{id}" th:if="*{id != null}"/>
+                    <input type="hidden" th:field="*{id}" th:if="*{id != null}"/>
+                    <input type="hidden" th:field="*{userType}" th:if="*{id != null}"/>
                     <input type="hidden" th:field="*{createdBy}"/>
                     <input type="hidden" th:field="*{createdDate}"/>
                     <input type="hidden" th:field="*{lastModifiedBy}"/>

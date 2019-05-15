@@ -3,7 +3,7 @@
 
 <head th:replace="fragment/head.html :: content(title=|#{application.name} : #{event}|)"></head>
 
-<body>
+<body data-menu="event">
     <!-- NAVBAR -->
     <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
     <div id="content-box">
@@ -43,11 +43,11 @@
                             </tr>
                             <tr th:if="${event.startPeriod}">
                                 <th th:text="#{startPeriod}">Start Period</th>
-                                <td th:text="${#dates.format(event.startPeriod, @settingService.javadate())}">2019-08-01</td>
+                                <td th:text="${#dates.format(event.startPeriod, @settingService.javaDate())}">2019-08-01</td>
                             </tr>
                             <tr th:if="${event.endPeriod}">
                                 <th th:text="#{endPeriod}">End Period</th>
-                                <td th:text="${#dates.format(event.endPeriod, @settingService.javadate())}">2019-18-02</td>
+                                <td th:text="${#dates.format(event.endPeriod, @settingService.javaDate())}">2019-18-02</td>
                             </tr>
                             <tr>
                                 <th th:text="#{timePeriod}">Time Period</th>
@@ -82,7 +82,7 @@
                             </tr>
                             <tr>
                                 <th th:text="#{createdDate}">Created Dt</th>
-                                <td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.datetime()}" th:text="${event.createdDate}">2019-05-01T21:24:44Z</span></td>
+                                <td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.jsDatetime()}" th:text="${event.createdDate}">2019-05-01T21:24:44Z</span></td>
                             </tr>
                             <tr th:if="${event.lastModifiedBy}">
                                 <th th:text="#{lastModifiedBy}">Last Modified By</th>
@@ -90,7 +90,7 @@
                             </tr>
                             <tr th:if="${event.lastModifiedDate}">
                                 <th th:text="#{lastModifiedDate}">Last Modified Dt</th>
-                                <td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.datetime()}" th:text="${event.createdDate}">2019-05-01T21:24:44Z</span></td>
+                                <td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.jsDatetime()}" th:text="${event.createdDate}">2019-05-01T21:24:44Z</span></td>
                             </tr>
                         </tbody>
                     </table>

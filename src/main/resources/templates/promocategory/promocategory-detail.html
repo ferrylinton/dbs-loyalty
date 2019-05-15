@@ -3,7 +3,7 @@
 
 <head th:replace="fragment/head.html :: content(title=|#{application.name} : #{promoCategory}|)"></head>
 
-<body>
+<body data-menu="promocategory">
     <!-- NAVBAR -->
     <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
     <div id="content-box">
@@ -39,7 +39,7 @@
                             </tr>
                             <tr>
                                 <th th:text="#{createdDate}">Created Dt</th>
-                                <td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.datetime()}" th:text="${promocategory.createdDate}">2019-05-01T21:24:44Z</span></td>
+                                <td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.jsDatetime()}" th:text="${promocategory.createdDate}">2019-05-01T21:24:44Z</span></td>
                             </tr>
                             <tr th:if="${promocategory.lastModifiedBy}">
                                 <th th:text="#{lastModifiedBy}">Last Modified By</th>
@@ -47,7 +47,7 @@
                             </tr>
                             <tr th:if="${promocategory.lastModifiedDate}">
                                 <th th:text="#{lastModifiedDate}">Last Modified Dt</th>
-                                <td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.datetime()}" th:text="${promocategory.lastModifiedDate}">2019-05-01T21:24:44Z</span></td>
+                                <td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.jsDatetime()}" th:text="${promocategory.lastModifiedDate}">2019-05-01T21:24:44Z</span></td>
                             </tr>
                         </tbody>
                     </table>

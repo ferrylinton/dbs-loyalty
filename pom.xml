@@ -392,11 +392,7 @@
 							<jsSourceFiles>
 								<jsSourceFile>lang.js</jsSourceFile>
 								<jsSourceFile>materialize-inputs.jquery.js</jsSourceFile>
-								<jsSourceFile>jquery-confirm-defaults.js</jsSourceFile>
 								<jsSourceFile>sidenav.js</jsSourceFile>
-								<jsSourceFile>alertutil.js</jsSourceFile>
-								<jsSourceFile>ajaxutil.js</jsSourceFile>
-								<jsSourceFile>taskutil.js</jsSourceFile>
 								<jsSourceFile>jsonutil.js</jsSourceFile>
 								<jsSourceFile>dateutil.js</jsSourceFile>
 								<jsSourceFile>imageutil.js</jsSourceFile>

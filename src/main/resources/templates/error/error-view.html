@@ -19,15 +19,16 @@
 	       		<span class="icon-attention"></span> <span>Error</span> : <span th:text="${errorData.status}"></span>
 	   		</div>
 	      	<div class="py-2">
-	        	<span th:text="${errorData.requestURI}"></span>
-	         	<p nl2br:text="${errorData.message}"></p>
-	        	<a class="btn btn-sm btn-danger" data-toggle="collapse" href="#error-detail" role="button"
-	          		aria-expanded="false" aria-controls="error-detail" th:if="${not #strings.isEmpty(errorData.detail)}">
-	          		<span class="icon-down"></span> <span th:text="#{detail}"></span>
-	         	</a>
-	      		<div class="collapse border-top mt-3 pt-2 font-08" id="error-detail">
-	     			<p class="no-break" nl2br:text="${errorData.detail}"></p>
-	         	</div>
+	        	<p class="no-break text-primary" th:text="${errorData.requestURI}"></p>
+	         	<p class="no-break" nl2br:text="${errorData.message}"></p>
+	        	<th:block th:if="${not #strings.isEmpty(errorData.detail)}">
+		        	<a class="btn btn-sm btn-danger collapsed" data-toggle="collapse" href="#error-detail" aria-expanded="false" aria-controls="error-detail">
+		          		<span class="icon-detail"></span> <span th:text="#{detail}"></span>
+		         	</a>
+		      		<div class="collapse border-top mt-3 pt-2 font-08" id="error-detail">
+		     			<p class="no-break" nl2br:text="${errorData.detail}"></p>
+		         	</div>
+	         	</th:block>
 	    	</div>
 	    </div>
 	    <!-- FOOTER -->

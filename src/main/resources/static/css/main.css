@@ -63,13 +63,18 @@ a:hover{
     display: block;
 }
 
+.modal-content{
+	border: solid 4px #555753;
+	border-width: 4px 0 0 0;
+}
+
 .toast{
 	width: calc(100% - 10px);
 	max-width: none;
 	z-index: 1500; 
 	position: absolute; 
 	top: 5px;
-    border: 1px solid #dee2e6;
+    border-width: 4px 0 0 0;
     border-radius: 0;
     background-color: #fff;
 }
@@ -91,7 +96,6 @@ a:hover{
 	}
 
 }
-
 
 .custom-select option {
     padding: 8px 4px;
@@ -117,6 +121,14 @@ a:hover{
     border-bottom-left-radius: 0;
 }
 
+.btn .icon-detail:before {   
+  content: "\e821";
+}
+
+.btn.collapsed .icon-detail:before {
+  content: "\e822";
+}
+
 /* TRUMBOWYG */
 
 .trumbowyg-box, .trumbowyg-editor {
@@ -126,17 +138,6 @@ a:hover{
 
 .is-invalid .trumbowyg-editor{
     border-color: #dc3545;
-}
-
-/* OVERRIDE JQUERY CONFIRM */
-
-.jconfirm .jconfirm-box .jconfirm-buttons button{
-	border: solid 1px #dee2e6;
-}
-
-.jconfirm.jconfirm-bootstrap .jconfirm-box {
-    border: 0;
-    border-top: solid 7px #e74c3c;
 }
 
 /* LOGIN */
@@ -366,6 +367,10 @@ a:hover{
 .toolbar .btn{
 	min-width: 110px;
 	border: solid 1px #ced4da;
+}
+
+.font-08{
+	font-size: 0.8em !important;
 }
 
 .font-12{

@@ -62,8 +62,9 @@ var Sidenav = (function(){
 
     function setActive(){
         $('.vertical-menu a').each(function(){
-            if(window.location.pathname.endsWith($(this).attr('rel'))){
+            if((typeof $(this).attr('data-menu') !== 'undefined') && $(this).attr('data-menu') == $('body').attr('data-menu')){
                 $(this).addClass('active');
+                return true;
             }
         });
     }

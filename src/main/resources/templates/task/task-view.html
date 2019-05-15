@@ -3,7 +3,7 @@
 
 <head th:replace="fragment/head.html :: content(title=|#{application.name} : #{task} - #{${type}}|)"></head>
 
-<body>
+<body th:data-menu="|task${type}|">
 	<!-- TOAST -->
 	<th:block th:if="${not #strings.isEmpty(toast)}">
 		<div th:replace="fragment/toast.html :: #toast"></div>
@@ -92,7 +92,7 @@
                                     </div>
                                 </td>
                                 <td th:text="${row.count + (page.number * page.size)}">1</td>
-                                <td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.datetime()}" th:text="${task.madeDate}">2019-05-01T21:24:44Z</span></td>
+                                <td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.jsDatetime()}" th:text="${task.madeDate}">2019-05-01T21:24:44Z</span></td>
                                 <td th:text="${task.maker}">Maker</td>
                                 <td th:text="#{${task.taskDataType}}">Data Type</td>
                                 <td th:text="#{${task.taskOperation}}">Operation</td>

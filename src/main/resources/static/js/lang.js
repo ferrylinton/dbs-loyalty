@@ -4,15 +4,6 @@ var Lang = (function () {
 
 	var i18n = {
 		"en": {
-			"button": {
-				"cancel": "Cancel",
-				"close": "Close",
-				"delete": "Delete",
-				"upload": "Upload",
-				"browse": "Browse",
-				"reject": "Reject",
-				"verify": "Verify"
-			},
 			"field": {
 				"activated": "Activated",
 				"authorities": "Authorities",
@@ -57,37 +48,9 @@ var Lang = (function () {
 				"notShowInCarousel": "Not Show In Carousel",
 				"viewImage" : "View Image",
 				"viewPdf" : "View Pdf"
-			},
-			"message": {
-				"DeleteConfirm": "Delete data ?",
-				"VerifyConfirm": "Verify data ?",
-				"RejectConfirm": "Reject data ?",
-				"ProcessSuccess": "The process was successful"
-			},
-			"error": {
-				401: "Unauthorized",
-				403: "Forbidden",
-				404: "Not Found",
-				405: "Method not allowed",
-				406: "Not Acceptable",
-				"ElementNotFound": "Element is not found",
-				"ConstraintViolationException": "Data is referenced by other data",
-				"ERR_CONNECTION_REFUSED": "Can not connect to server",
-				"PickImage": "Pick image",
-				"ImageName": "Name length min 3 chars and max 30 chars",
-				"DuplicateEntry": "Duplicate data"
 			}
 		},
 		"id": {
-			"button": {
-				"cancel": "Batal",
-				"close": "Tutup",
-				"delete": "Hapus",
-				"upload": "Unggah",
-				"browse": "Browse",
-				"reject": "Tolak",
-				"verify": "Verifikasi"
-			},
 			"field": {
 				"activated": "Aktif",
 				"authorities": "Hak Akses",
@@ -132,25 +95,6 @@ var Lang = (function () {
 				"notShowInCarousel": "Tidak Tampil Di Carousel",
 				"viewImage" : "Lihat Gambar",
 				"viewPdf" : "Lihat Pdf"
-			},
-			"message": {
-				"DeleteConfirm": "Hapus data ?",
-				"VerifyConfirm": "Verifikasi data ?",
-				"RejectConfirm": "Tolak data ?",
-				"ProcessSuccess": "Proses berhasil"
-			},
-			"error": {
-				401: "Unauthorized",
-				403: "Forbidden",
-				404: "Not Found",
-				405: "Method not allowed",
-				406: "Not Acceptable",
-				"ElementNotFound": "tidak ditemukan",
-				"ConstraintViolationException": "Data masih digunakan",
-				"ERR_CONNECTION_REFUSED": "Tidak bisa melakukan koneksi",
-				"PickImage": "Pilih gambar",
-				"ImageName": "Nama min 3 karakter dan maks 30 karakter",
-				"DuplicateEntry": "Data rangkap"
 			}
 		}
 	}

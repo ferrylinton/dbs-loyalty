@@ -3,7 +3,7 @@
 
 <head th:replace="fragment/head.html :: content(title=|#{application.name} : #{user}|)"></head>
 
-<body>
+<body data-menu="user">
 	<!-- TOAST -->
 	<th:block th:if="${not #strings.isEmpty(toast)}">
 		<div th:replace="fragment/toast.html :: #toast"></div>
@@ -57,7 +57,7 @@
                                 <th th:text="#{userType}">Type</th>
                                 <th th:text="#{activated}">Activated</th>
                                 <th th:text="#{locked}">Locked</th>
-                                <th th:text="#{user}">Role</th>
+                                <th th:text="#{role}">Role</th>
                             </tr>
                         </thead>
                         <tbody>

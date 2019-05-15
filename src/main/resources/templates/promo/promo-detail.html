@@ -3,7 +3,7 @@
 
 <head th:replace="fragment/head.html :: content(title=|#{application.name} : #{promo}|)"></head>
 
-<body>
+<body data-menu="promo">
     <!-- NAVBAR -->
     <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
     <div id="content-box">
@@ -78,11 +78,11 @@ Duis ac nibh condimentum, laoreet nibh quis, viverra purus. Cras et ligula congu
                             </tr>
                             <tr>
                                 <th th:text="#{startPeriod}">Start Period</th>
-                                <td th:text="${#dates.format(promo.startPeriod, @settingService.javadate())}">09-04-2019</td>
+                                <td th:text="${#dates.format(promo.startPeriod, @settingService.javaDate())}">09-04-2019</td>
                             </tr>
                             <tr>
                                 <th th:text="#{endPeriod}">End Period</th>
-                                <td th:text="${#dates.format(promo.endPeriod, @settingService.javadate())}">09-04-2019</td>
+                                <td th:text="${#dates.format(promo.endPeriod, @settingService.javaDate())}">09-04-2019</td>
                             </tr>
                             <tr>
                                 <th th:text="#{activated}">Activated</th>
@@ -106,7 +106,7 @@ Duis ac nibh condimentum, laoreet nibh quis, viverra purus. Cras et ligula congu
                             </tr>
                             <tr>
                                 <th th:text="#{createdDate}">Created Dt</th>
-                                <td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.datetime()}" th:text="${promo.createdDate}">2019-05-01T21:24:44Z</span></td>
+                                <td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.jsDatetime()}" th:text="${promo.createdDate}">2019-05-01T21:24:44Z</span></td>
                             </tr>
                             <tr th:if="${promo.lastModifiedBy}">
                                 <th th:text="#{lastModifiedBy}">Last Modified By</th>
@@ -114,7 +114,7 @@ Duis ac nibh condimentum, laoreet nibh quis, viverra purus. Cras et ligula congu
                             </tr>
                             <tr th:if="${promo.lastModifiedDate}">
                                 <th th:text="#{lastModifiedDate}">Last Modified Dt</th>
-                                <td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.datetime()}" th:text="${promo.lastModifiedDate}">2019-05-01T21:24:44Z</span></td>
+                                <td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.jsDatetime()}" th:text="${promo.lastModifiedDate}">2019-05-01T21:24:44Z</span></td>
                             </tr>
                         </tbody>
                     </table>     
