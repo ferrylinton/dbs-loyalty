@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -84,7 +85,7 @@ public class Event extends AbstractTask implements Serializable {
     @Column(name = "place", nullable = false)
     private String place;
     
-    @JsonIgnore
+    @JsonIgnoreProperties({"questions", "events"})
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "feedback_id", nullable = false, foreignKey = @ForeignKey(name = "e_event_fk"))
     private Feedback feedback;

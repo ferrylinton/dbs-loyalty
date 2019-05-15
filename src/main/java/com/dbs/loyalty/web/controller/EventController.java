@@ -38,9 +38,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dbs.loyalty.domain.Event;
+import com.dbs.loyalty.domain.Feedback;
 import com.dbs.loyalty.domain.FileImageTask;
 import com.dbs.loyalty.domain.FilePdfTask;
 import com.dbs.loyalty.service.EventService;
+import com.dbs.loyalty.service.FeedbackService;
 import com.dbs.loyalty.service.ImageService;
 import com.dbs.loyalty.service.PdfService;
 import com.dbs.loyalty.service.TaskService;
@@ -77,6 +79,8 @@ public class EventController extends AbstractPageController {
 	private final EventService eventService;
 
 	private final TaskService taskService;
+	
+	private final FeedbackService feedbackService;
 
 	@PreAuthorize("hasAnyRole('EVENT_MK', 'EVENT_CK')")
 	@GetMapping
@@ -120,6 +124,12 @@ public class EventController extends AbstractPageController {
 		if (result.hasErrors()) {
 			return FORM;
 		}else {
+			Optional<Feedback> feedback = feedbackService.getDefault();
+			
+			if(feedback.isPresent()) {
+				event.setFeedback(feedback.get());
+			}
+			
 			event.setStartPeriod(setTime(event.getStartPeriod(), event.getTimePeriod()));
 			event.setEndPeriod(setTime(event.getEndPeriod(), event.getTimePeriod()));
 			
@@ -146,7 +156,7 @@ public class EventController extends AbstractPageController {
 						event.setMaterial(event.getId());
 					}else {
 						FilePdfTask filePdfTask = pdfService.add(event.getMultipartFileMaterial());
-						event.setImage(filePdfTask.getId());
+						event.setMaterial(filePdfTask.getId());
 					}
 					
 					current.get().setImage(event.getId());

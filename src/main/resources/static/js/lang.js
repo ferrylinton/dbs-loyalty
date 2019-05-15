@@ -37,7 +37,8 @@ var Lang = (function () {
 				"image": "Image",
 				"material": "Material",
 				"place": "Place",
-				"timePeriod": "Time"
+				"timePeriod": "Time",
+				"feedback": "Feedback"
 			},
 			"label":{
 				"activated" : "Activated",
@@ -84,7 +85,8 @@ var Lang = (function () {
 				"image": "Gambar",
 				"material": "Materi",
 				"place": "Tempat",
-				"timePeriod": "Jam"
+				"timePeriod": "Jam",
+				"feedback": "Feedback"
 			},
 			"label":{
 				"activated" : "Aktif",

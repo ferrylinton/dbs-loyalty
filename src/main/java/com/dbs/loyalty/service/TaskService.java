@@ -91,7 +91,6 @@ public class TaskService {
 	
 	@Transactional
 	public String save(Task task) throws IOException {
-		System.out.println("------------- verified : " + task.getVerified());
 		task.setTaskStatus(task.getVerified() ? TaskStatus.VERIFIED : TaskStatus.REJECTED);
 		task.setChecker(SecurityUtil.getLogged());
 		task.setCheckedDate(Instant.now());
