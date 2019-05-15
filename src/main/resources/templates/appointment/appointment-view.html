@@ -3,7 +3,7 @@
 
 <head th:replace="fragment/head.html :: content(title=|#{application.name} : #{appointment}|)"></head>
 
-<body>
+<body data-menu="appointment">
     <!-- NAVBAR -->
     <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
     <div id="content-box">
@@ -22,7 +22,7 @@
                         <tr th:with="ascending=${order.getDirection().name() == 'ASC'}">
                             <th style="width:40px"></th>
                             <th style="width:40px">#</th>
-                            <th th:with="sort=|&sort=arrivalDate,${ascending ? 'DESC' : 'ASC'}|">
+                            <th style="width:120px" th:with="sort=|&sort=arrivalDate,${ascending ? 'DESC' : 'ASC'}|">
                                 <a th:href="@{|?page=${page.getNumber()}${params}${sort}|}" class="text-decoration-none">
                                     <span th:text="#{arrivalDate}">Arrival Date</span> <span th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></span>
                                 </a>

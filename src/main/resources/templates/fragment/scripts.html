@@ -32,15 +32,15 @@
         	<script src="/static/js-dist/all.min.js" th:src="@{/static/js-dist/all.min.js}"></script>
         </th:block>
         <!-- JS -->
-        <th:block th:if="${not #arrays.contains(@environment.getActiveProfiles(),'min')}">
-        	<script src="/static/js/lang.js" th:src="@{/static/js/lang.js}"></script>
-        	<script src="/static/js/materialize-inputs.jquery.js" th:src="@{/static/js/materialize-inputs.jquery.js}"></script>
-        	<script src="/static/js/sidenav.js" th:src="@{/static/js/sidenav.js}"></script>
-        	<script src="/static/js/jsonutil.js" th:src="@{/static/js/jsonutil.js}"></script>
-        	<script src="/static/js/dateutil.js" th:src="@{/static/js/dateutil.js}"></script>
-        	<script src="/static/js/imageutil.js" th:src="@{/static/js/imageutil.js}"></script>
-        	<script src="/static/js/formutil.js" th:src="@{/static/js/formutil.js}"></script>
-        	<script src="/static/js/main.js" th:src="@{/static/js/main.js}"></script>
+        <th:block th:if="${not #arrays.contains(@environment.getActiveProfiles(),'min')}" th:with="id=${#strings.randomAlphanumeric(10)}">
+        	<script src="/static/js/lang.js" th:src="@{|/static/js/lang.js?${id}|}"></script>
+        	<script src="/static/js/materialize-inputs.jquery.js" th:src="@{|/static/js/materialize-inputs.jquery.js?${id}|}"></script>
+        	<script src="/static/js/sidenav.js" th:src="@{|/static/js/sidenav.js?${id}|}"></script>
+        	<script src="/static/js/jsonutil.js" th:src="@{|/static/js/jsonutil.js?${id}|}"></script>
+        	<script src="/static/js/dateutil.js" th:src="@{|/static/js/dateutil.js?${id}|}"></script>
+        	<script src="/static/js/imageutil.js" th:src="@{|/static/js/imageutil.js?${id}|}"></script>
+        	<script src="/static/js/formutil.js" th:src="@{|/static/js/formutil.js?${id}|}"></script>
+        	<script src="/static/js/main.js" th:src="@{|/static/js/main.js?${id}|}"></script>
         </th:block>
     </div>
 </body>

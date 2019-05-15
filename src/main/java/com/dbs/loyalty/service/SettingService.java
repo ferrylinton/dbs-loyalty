@@ -1,6 +1,5 @@
 package com.dbs.loyalty.service;
 
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,17 +17,17 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class SettingService {
 	
-	public static final String DATETIME = "datetime";
+	public static final String JS_DATETIME = "js-datetime";
 	
-	public static final String DATETIME_PATTERN = "DD/MM/YYYY HH:mm:ss";
+	public static final String JS_DATETIME_PATTERN = "DD/MM/YYYY HH:mm:ss";
 	
-	public static final String DATE = "date";
+	public static final String JS_DATE = "js-date";
 	
-	public static final String DATE_PATTERN = "DD/MM/YYYY";
+	public static final String JS_DATE_PATTERN = "DD/MM/YYYY";
 	
-	public static final String TIME = "time";
+	public static final String JS_TIME = "js-time";
 	
-	public static final String TIME_PATTERN = "HH:mm";
+	public static final String JS_TIME_PATTERN = "HH:mm";
 	
 	public static final String JAVA_DATETIME = "java-datetime";
 	
@@ -58,26 +57,26 @@ public class SettingService {
 	}
 	
 	public String jsDatetime() {
-		if(settings().containsKey(DATETIME)) {
-			return settings().get(DATETIME);
+		if(settings().containsKey(JS_DATETIME)) {
+			return settings().get(JS_DATETIME);
 		}else {
-			return DATETIME_PATTERN;
+			return JS_DATETIME_PATTERN;
 		}
 	}
 	
 	public String jsDate() {
-		if(settings().containsKey(DATE)) {
-			return settings().get(DATE);
+		if(settings().containsKey(JS_DATE)) {
+			return settings().get(JS_DATE);
 		}else {
-			return DATE_PATTERN;
+			return JS_DATE_PATTERN;
 		}
 	}
 	
-	public String jsTime(Instant date) {
-		if(settings().containsKey(TIME)) {
-			return settings().get(TIME);
+	public String jsTime() {
+		if(settings().containsKey(JS_TIME)) {
+			return settings().get(JS_TIME);
 		}else {
-			return TIME_PATTERN;
+			return JS_TIME_PATTERN;
 		}
 	}
 	

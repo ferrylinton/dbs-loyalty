@@ -26,6 +26,9 @@
                     <li th:if="${#authorization.expression('hasAnyAuthority(''WELLNESS'')')}">
                         <a data-menu="appointment" href="/appointment/appointment-view.html" th:href="@{/appointment}" th:text="#{wellness}">Wellness</a>
                     </li>
+                    <li th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+            			<a data-menu="setting" href="/setting/setting-view.html" th:href="@{/setting}" th:text="#{setting}">Setting</a>
+          			</li>
                 </ul>
             </li>
             <li>

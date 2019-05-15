@@ -10,13 +10,13 @@
             <!-- CONTENT -->
             <div id="main-content">
                 <div class="welcome-box">
-                    <span th:text="#{welcome}">Welcome</span> <span class="font-weight-bold" th:text="${#authorization.authentication.name}">ferrylinton</span> <span>!!!</span>
+                    <h3><span th:text="#{welcome}">Welcome</span> <span class="font-weight-bold" th:text="${#authorization.authentication.name}">ferrylinton</span> <span>!!!</span></h3>
                     <!-- LOG LOGIN INFO -->
                     <table class="table table-bordered table-sm" th:if="${logLogin}">
                         <tbody>
                             <tr>
                                 <th th:text="#{lastLoginDate}">Last login date</th>
-                                <td th:text="${#dates.format(logLogin.createdDate, 'dd-MM-yyyy HH:mm')}">11-04-2018 18:47</td>
+                                <td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.jsDatetime()}" th:text="${logLogin.createdDate}">2019-05-01T21:24:44Z</span></td>
                             </tr>
                             <tr>
                                 <th th:text="#{browser}">Browser</th>
