@@ -2,7 +2,7 @@ package com.dbs.loyalty.web.controller;
 
 import static com.dbs.loyalty.config.constant.Constant.ERROR;
 import static com.dbs.loyalty.config.constant.Constant.PAGE;
-import static com.dbs.loyalty.config.constant.EntityConstant.ARRIVAL;
+import static com.dbs.loyalty.config.constant.EntityConstant.DEPARTURE;
 
 import java.util.Map;
 import java.util.Optional;
@@ -52,7 +52,7 @@ public class DepartureController extends AbstractPageController {
 		Optional<Departure> current = departureService.findById(id);
 
 		if (current.isPresent()) {
-			model.addAttribute(ARRIVAL, current.get());
+			model.addAttribute(DEPARTURE, current.get());
 		} else {
 			model.addAttribute(ERROR, getNotFoundMessage(id));
 		}

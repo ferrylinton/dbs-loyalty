@@ -3,7 +3,7 @@
 
 <head th:replace="fragment/head.html :: content(title=|#{application.name} : #{logToken}|)"></head>
 
-<body>
+<body data-menu="logtoken">
     <!-- NAVBAR -->
     <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
     <div id="content-box">
@@ -58,7 +58,7 @@
 	                    <tbody th:remove="all-but-first">
 	                        <tr th:each="logtoken,row : ${page}">
 	                            <td class="text-center" th:text="${row.count + (page.number * page.size)}">1</td>
-	                            <td th:text="${#dates.format(logtoken.createdDate, @environment.getProperty('application.format.date-time'))}">18-04-2019 19:09.001</td>
+								<td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.jsDatetime()}" th:text="${logtoken.createdDate}">2019-05-01T21:24:44Z</span></td>
 								<td>
 									<span class="badge badge-success" th:class="${logtoken.status == 'Succeed'} ? 'badge badge-success' : 'badge badge-danger'" th:text="#{${logtoken.status}}">Success</span>
 								</td>

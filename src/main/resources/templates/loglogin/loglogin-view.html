@@ -3,7 +3,7 @@
 
 <head th:replace="fragment/head.html :: content(title=|#{application.name} : #{logLogin}|)"></head>
 
-<body>
+<body data-menu="loglogin">
     <!-- NAVBAR -->
     <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
     <div id="content-box">
@@ -53,13 +53,14 @@
                                 </th>
                                 <th th:text="#{status}">Status</th>
                                 <th th:text="#{username}">Username</th>
+                                <th th:text="#{ip}">IP</th>
                                 <th th:text="#{browser}">Browser</th>
                             </tr>
                         </thead>
 	                    <tbody th:remove="all-but-first">
 	                        <tr th:each="loglogin,row : ${page}">
 	                            <td class="text-center" th:text="${row.count + (page.number * page.size)}">1</td>
-	                            <td th:text="${#dates.format(loglogin.createdDate, @environment.getProperty('application.format.date-time'))}">18-04-2019 19:09.001</td>
+	                            <td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.jsDatetime()}" th:text="${loglogin.createdDate}">2019-05-01T21:24:44Z</span></td>
 								<td>
 									<span class="badge badge-success" th:class="${loglogin.status == 'Succeed'} ? 'badge badge-success' : 'badge badge-danger'" th:text="#{${loglogin.status}}">Succeed</span>
 								</td>

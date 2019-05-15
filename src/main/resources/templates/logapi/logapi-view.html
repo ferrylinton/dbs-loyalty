@@ -3,7 +3,7 @@
 
 <head th:replace="fragment/head.html :: content(title=|#{application.name} : #{logApi}|)"></head>
 
-<body>
+<body data-menu="logapi">
     <!-- NAVBAR -->
     <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
     <div id="content-box">
@@ -60,7 +60,7 @@
 	                    <tbody th:remove="all-but-first">
 	                        <tr th:each="logapi,row : ${page}">
 	                            <td class="text-center" th:text="${row.count + (page.number * page.size)}">1</td>
-	                            <td th:text="${#dates.format(logapi.createdDate, @environment.getProperty('application.format.date-time'))}">18-04-2019 19:09.001</td>
+	                            <td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.jsDatetime()}" th:text="${logapi.createdDate}">2019-05-01T21:24:44Z</span></td>
 								<td th:text="${logapi.status}">200</td>
 								<td th:text="${logapi.id}">id</td>
 								<td th:text="${logapi.requestURI}">Request URI</td>
