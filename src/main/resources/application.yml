@@ -2,8 +2,11 @@ spring:
   application:
     name: DBS Loyalty
   profiles:
-    active: local
+    active: local, min
 #    active: vps, cdnjs, min
+deploy:
+  # suffix link for CSS and JS
+  id: 20190101
 server:
   port: 8181
   servlet:

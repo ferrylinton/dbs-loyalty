@@ -8,10 +8,12 @@ application:
     core-pool-size: 5
     max-pool-size: 10
     queue-capacity: 1000
-  format: 
-    date: dd-MM-yyyy
-    date-time: dd-MM-yyyy HH:mm
-    date-time-full: dd-MM-yyyy HH:mm:ss.SSS
+  scheduler: 
+    # every 01:00 am
+    customer-cron: 0 0 1 * * ?
+    file-path: /home/ferry/loyalty/customers.csv
+  mail: 
+    from: testdevku007@gmail.com
 spring:
   datasource:
     platform: h2
@@ -75,3 +77,17 @@ spring:
     schema: classpath:dummy-schema-mariadb.sql
     job:
       enabled: true
+  #Make sure less secure App is enabled at link https://myaccount.google.com/lesssecureapps
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: testdevku007@gmail.com
+    password: testdevku007@007
+    properties:
+      mail: 
+        smtp:
+          auth: true
+          socketFactory:
+            port: 465
+            class: javax.net.ssl.SSLSocketFactory
+            fallback: false

@@ -20,6 +20,7 @@
     <include file="release-001/011_reward_schema.xml" relativeToChangelogFile="true"/>
     <include file="release-001/012_cart_schema.xml" relativeToChangelogFile="true"/>
     <include file="release-001/013_batch_schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/014_verification_token_schema.xml" relativeToChangelogFile="true"/>
     
     <!-- Data -->
     

@@ -17,6 +17,8 @@ public class ApplicationProperties {
 	private Async async;
 	
 	private Scheduler scheduler;
+	
+	private Mail mail;
 
 	@Getter
 	@Setter
@@ -52,6 +54,14 @@ public class ApplicationProperties {
 		
 	    private String filePath = "/home/ferry/loyalty/customers.csv";
 	    
+	}
+	
+	@Getter
+	@Setter
+	public static class Mail{
+		
+		private String from = "test@dbs.com";
+		
 	}
 	
 }

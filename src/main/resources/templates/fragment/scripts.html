@@ -29,7 +29,7 @@
         </th:block>
         <!-- ALL MIN JS -->
         <th:block th:if="${#arrays.contains(@environment.getActiveProfiles(),'min')}">
-        	<script src="/static/js-dist/all.min.js" th:src="@{/static/js-dist/all.min.js}"></script>
+        	<script src="/static/js-dist/all.min.js" th:src="@{|/static/js-dist/all.min.js?${@environment.getProperty('deploy.id')}|}"></script>
         </th:block>
         <!-- JS -->
         <th:block th:if="${not #arrays.contains(@environment.getActiveProfiles(),'min')}" th:with="id=${#strings.randomAlphanumeric(10)}">

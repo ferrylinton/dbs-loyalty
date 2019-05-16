@@ -26,7 +26,7 @@
     </th:block>
     <!-- ALL MIN CSS -->
 	<th:block th:if="${#arrays.contains(@environment.getActiveProfiles(),'min')}">
-		<link rel="stylesheet" href="/static/css-dist/all.min.css" th:href="@{/static/css-dist/all.min.css}" />
+		<link rel="stylesheet" href="/static/css-dist/all.min.css" th:href="@{|/static/css-dist/all.min.css?${@environment.getProperty('deploy.id')}|}" />
 	</th:block>
 	<!-- CSS -->
 	<th:block th:if="${not #arrays.contains(@environment.getActiveProfiles(),'min')}" th:with="id=${#strings.randomAlphanumeric(10)}">
