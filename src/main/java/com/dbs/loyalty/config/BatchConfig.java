@@ -25,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Configuration
 @EnableBatchProcessing
-public class BatchConfiguration {
+public class BatchConfig {
 
     private final JobBuilderFactory jobBuilderFactory;
 
@@ -39,7 +39,7 @@ public class BatchConfiguration {
             .name("customerItemReader")
             .resource(new FileSystemResource(applicationProperties.getScheduler().getFilePath()))
             .delimited()
-            .names(new String[]{"email","name","phone","customer_type","dob","password_hash"})
+            .names(new String[]{"email","name","phone","customer_type","dob"})
             .fieldSetMapper(new BeanWrapperFieldSetMapper<CustomerItem>() {{
                 setTargetType(CustomerItem.class);
             }})

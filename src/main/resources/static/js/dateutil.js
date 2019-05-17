@@ -64,6 +64,7 @@ var DateUtil = (function () {
     
     function initDob(){
         var dobInput = $('input[name="dob"]');
+        var dobValue = moment(dobInput.val(), $('#js-date-format').text());
     
         initDatePickerLang(null, new Date());
         dobInput
@@ -76,7 +77,7 @@ var DateUtil = (function () {
             autoHide: true,
             startDate: startDate,
             endDate: endDate,
-            format: 'dd-mm-yyyy',
+            format: $('#js-date-format').text(),
             days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
             daysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
             daysMin: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
@@ -92,7 +93,7 @@ var DateUtil = (function () {
             autoHide: true,
             startDate: startDate,
             endDate: endDate,
-            format: 'dd-mm-yyyy',
+            format: $('#js-date-format').text(),
             days: ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'],
             daysShort: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
             daysMin: ['Mi', 'Se', 'Se', 'Ra', 'Ka', 'Ju', 'Sa'],

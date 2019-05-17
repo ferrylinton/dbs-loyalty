@@ -1,12 +1,9 @@
 package com.dbs.loyalty.web.validator;
 
-import java.util.regex.Pattern;
-
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import com.dbs.loyalty.config.constant.DomainConstant;
-import com.dbs.loyalty.config.constant.RegexConstant;
 import com.dbs.loyalty.config.constant.ValidationConstant;
 import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.service.CustomerService;
@@ -27,21 +24,6 @@ public class CustomerValidator implements Validator {
 	@Override
 	public void validate(Object target, Errors errors) {
 		Customer customer = (Customer) target;
-
-		if(customer.getId() == null) {
-			if((customer.getPasswordPlain() == null || customer.getPasswordPlain().trim().length() < 6 || customer.getPasswordPlain().trim().length() > 30)) {
-				Object[] errorArgs = new Object[] {customer.getPasswordPlain(), 6, 30 };
-				String defaultMessage = MessageUtil.getMessage(ValidationConstant.VALIDATION_SIZE_PASSWORD, errorArgs);
-				errors.rejectValue(DomainConstant.PASSWORD_PLAIN, ValidationConstant.VALIDATION_SIZE_PASSWORD, errorArgs, defaultMessage);
-			}else {
-				Pattern pattern = Pattern.compile(RegexConstant.PASSWORD);
-				
-				if(!pattern.matcher(customer.getPasswordPlain()).matches()) {
-					String defaultMessage = MessageUtil.getMessage(RegexConstant.PASSWORD_MESSAGE);
-					errors.rejectValue(DomainConstant.PASSWORD_PLAIN, RegexConstant.PASSWORD_MESSAGE, defaultMessage);
-				}
-			}
-		}
 		
 		if (customerService.isEmailExist(customer.getId(), customer.getEmail())) {
 			Object[] errorArgs = new String[] { customer.getEmail() };

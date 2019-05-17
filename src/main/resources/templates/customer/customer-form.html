@@ -4,6 +4,7 @@
 <head th:replace="fragment/head.html :: content(title=|#{application.name} : #{customer}|)"></head>
 
 <body data-menu="customer">
+	<div id="js-date-format" th:text="${@settingService.jsDate()}" class="hidden"></div>
     <!-- NAVBAR -->
     <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
     <div id="content-box" th:with="isMaker=${#authorization.expression('hasAuthority(''CUSTOMER_MK'')')}">
@@ -47,13 +48,6 @@
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:uerrors="*{email}">Error</div>
                             </div>
                         </div>
-                        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4" th:if="${customer.id == null}">
-                            <div class="form-group">
-                                <label for="passwordPlain" th:text="#{password}">Password</label>
-                                <input class="form-control" th:classappend="${#fields.hasErrors('passwordPlain') ? 'is-invalid' : ''}" type="password" th:field="*{passwordPlain}" maxlength="30" />
-                            	<div class="invalid-feedback" th:if="${#fields.hasErrors('passwordPlain')}" th:uerrors="*{passwordPlain}">Error</div>
-                            </div>
-                        </div>
                         <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
                             <div class="form-group">
                                 <label for="phone" th:text="#{phone}">Phone *</label>
@@ -64,15 +58,11 @@
                         <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
                             <div class="form-group">
                                 <label for="dob" th:text="|#{dob} *|">DOB *</label>
-                                <input class="form-control" type="text" th:placeholder="#{dob}" id="dob" name="dob" th:value="${#dates.format(customer.dob, 'dd-MM-yyyy')}" readonly="readonly" />
+                                <input class="form-control" type="text" th:placeholder="#{dob}" id="dob" name="dob" th:value="${#temporals.format(customer.dob, @settingService.javaDate())}" readonly="readonly" />
                             </div>
                         </div>
-                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-4">
-                        	<div class="mb-3 mt-lg-4" style="padding-top: 15px;">
-		                   		<div class="custom-control custom-switch d-inline-block mr-2">
-		                        	<input type="checkbox" id="activated" th:field="*{activated}" class="custom-control-input">
-		                          	<label class="custom-control-label" for="activated" th:text="#{activated}">Activated</label>
-		                    	</div>
+                        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4" th:if="*{id != null}">
+                        	<div class="pt-sm-3 mb-3 mt-sm-4">
 		                    	<div class="custom-control custom-switch d-inline-block">
 		                     		<input type="checkbox" id="locked" th:field="*{locked}" class="custom-control-input">
 		                        	<label class="custom-control-label" for="locked" th:text="#{locked}">Locked</label>
@@ -89,7 +79,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+						<div class="col-12 col-sm-12 col-md-12 col-lg-8 col-xl-8">
 							<div class="form-group">
 								<div class="custom-file">
 									<input type="file" accept="image/png,image/jpg,image/jpeg" class="custom-file-input" th:classappend="${#fields.hasErrors('multipartFileImage') ? 'is-invalid' : ''}" id="multipartFileImage" name="multipartFileImage" onchange="ImageUtil.show(this)">
@@ -107,7 +97,10 @@
 						</div>
 					</div>
 					<!-- HIDDEN -->
-                    <input type="hidden" id="id" th:field="*{id}" th:if="*{id != null}"/>
+                    <input type="hidden" th:field="*{id}" th:if="*{id != null}"/>
+                    <input type="hidden" th:field="*{locked}" th:if="*{id == null}"/>
+                    <input type="hidden" th:field="*{activated}"/>
+                    <input type="hidden" th:field="*{passwordHash}"/>
                     <input type="hidden" th:field="*{createdBy}"/>
                     <input type="hidden" th:field="*{createdDate}"/>
                     <input type="hidden" th:field="*{lastModifiedBy}"/>

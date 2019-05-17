@@ -5,19 +5,15 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.dbs.loyalty.config.constant.DomainConstant;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -25,7 +21,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * Class of Product
+ * Class of Product Priviledge
  * 
  * @author Ferry L. H. <ferrylinton@gmail.com>
  */
@@ -35,19 +31,19 @@ import lombok.ToString;
 @EqualsAndHashCode(of = {"id"}, callSuper = false)
 @Entity
 @Table(
-	name = "p_product",
+	name = "p_priviledge_product",
 	uniqueConstraints = {
-		@UniqueConstraint(name = "p_product_name_uq", columnNames = { "name" })
+		@UniqueConstraint(name = "p_priviledge_product_name_uq", columnNames = { "name" })
 	}
 )
-public class Product extends AbstractTask implements Serializable {
+public class PriviledgeProduct extends AbstractTask implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
 	@Column(name = "id", length=22)
-	@GenericGenerator(name = "IdGenerator", strategy = "com.dbs.loyalty.domain.IdGenerator")
-	@GeneratedValue(generator = "IdGenerator")
+    @GenericGenerator(name = DomainConstant.ID_GENERATOR, strategy = DomainConstant.ID_GENERATOR_STRATEGY)
+	@GeneratedValue(generator = DomainConstant.ID_GENERATOR)
 	private String id;
 
     @Column(name = "name", length = 150)
@@ -66,10 +62,5 @@ public class Product extends AbstractTask implements Serializable {
     @Lob
     @Column(name = "term_and_condition", columnDefinition="TEXT")
     private String termAndCondition;
-
-    @JsonIgnoreProperties("products")
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_category_id", nullable = false, foreignKey = @ForeignKey(name = "p_product_fk"))
-    private ProductCategory productCategory;
     
 }

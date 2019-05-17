@@ -1,7 +1,9 @@
 package com.dbs.loyalty.domain;
 
+import static com.dbs.loyalty.service.SettingService.JAVA_DATE;
+
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,8 +14,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Pattern;
@@ -21,10 +21,12 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Proxy;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.config.constant.RegexConstant;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.EqualsAndHashCode;
@@ -75,20 +77,18 @@ public class Customer extends AbstractTask implements Serializable {
 	
 	@Column(name = "customer_type", length = 4, nullable = false)
 	private String customerType;
-	
-	@Temporal(TemporalType.DATE)
+
+	@DateTimeFormat(pattern = JAVA_DATE)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = JAVA_DATE)
 	@Column(name = "dob", nullable = false)
-	private Date dob;
+	private LocalDate dob;
 
-	@Column(name = "password_hash", length = 100, nullable = false)
-	private String passwordHash;
-
-	@Transient
 	@JsonIgnore
-	private String passwordPlain;
+	@Column(name = "password_hash", length = 100, nullable = true)
+	private String passwordHash;
 	
 	@Column(name = "activated", nullable = false)
-	private boolean activated = true;
+	private boolean activated = false;
 	
 	@Column(name = "locked", nullable = false)
 	private boolean locked = false;

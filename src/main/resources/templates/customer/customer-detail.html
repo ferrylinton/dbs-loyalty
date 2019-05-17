@@ -47,7 +47,7 @@
                             </tr>
                             <tr>
                                 <th th:text="#{dob}">DOB</th>
-                                <td th:text="${#dates.format(customer.dob, 'dd/MM/yyyy')}">01-02-1999</td>
+                                <td th:text="${#temporals.format(customer.dob, @settingService.javaDate())}">01-02-1999</td>
                             </tr>
                             <tr>
                                 <th th:text="#{activated}">Activated</th>

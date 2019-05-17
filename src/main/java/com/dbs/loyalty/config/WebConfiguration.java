@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import javax.servlet.ServletContext;
-
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -25,19 +23,16 @@ import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
 import com.dbs.loyalty.filter.LogRequestFilter;
 import com.dbs.loyalty.service.LogApiService;
-import com.dbs.loyalty.util.UrlUtil;
 import com.github.bufferings.thymeleaf.extras.nl2br.dialect.Nl2brDialect;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Configuration
 @AutoConfigureAfter(DispatcherServletAutoConfiguration.class)
 public class WebConfiguration implements WebMvcConfigurer{
 
 	private final LogApiService logAuditService;
-	
-	public WebConfiguration(ServletContext context, LogApiService logAuditService) {
-		UrlUtil.setContextPath(context.getContextPath());
-		this.logAuditService = logAuditService;
-	}
 	
 	@Bean("localeResolver")
 	public LocaleResolver localeResolver() {

@@ -26,9 +26,9 @@ import lombok.Setter;
 @EqualsAndHashCode(of = { "id", "name" }, callSuper = false)
 @Entity
 @Table(	
-	name = "a_airport_service_type", 
+	name = "a_service_type", 
 	uniqueConstraints = {
-		@UniqueConstraint(name = "a_airport_service_type_name_uq", columnNames = {"name"})
+		@UniqueConstraint(name = "a_service_type_name_uq", columnNames = {"name"})
 	}
 )
 public class AirportServiceType extends AbstractTask implements Serializable {

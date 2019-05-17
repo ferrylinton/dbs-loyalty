@@ -1,7 +1,10 @@
 package com.dbs.loyalty.batch;
 
-import java.text.SimpleDateFormat;
+import static com.dbs.loyalty.service.SettingService.JAVA_DATE;
+
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import org.springframework.batch.item.ItemProcessor;
@@ -15,42 +18,38 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class CustomerItemProcessor implements ItemProcessor<CustomerItem, Customer> {
-	
-	private final static SimpleDateFormat sdf =  new SimpleDateFormat("yyyy-MM-dd");
-	
+
 	private final CustomerRepository customerRepository;
 	
 	@Override
 	public Customer process(CustomerItem customerItem) throws Exception {
 		Optional<Customer> current = customerRepository.findByNameIgnoreCaseOrEmailIgnoreCase(customerItem.getName(), customerItem.getEmail());
-		Customer customer = new Customer();
-
+		
 		if(current.isPresent()) {
-			customer.setId(current.get().getId());
-			customer.setEmail(current.get().getEmail());
-			customer.setName(current.get().getName());
-			customer.setPhone(current.get().getPhone());
-			customer.setPasswordHash(current.get().getPasswordHash());
-			customer.setCustomerType(customerItem.getCustomerType());
-			customer.setDob(sdf.parse(customerItem.getDob()));
-			customer.setLastModifiedBy(Constant.SYSTEM);
-			customer.setLastModifiedDate(Instant.now());
+			current.get().setEmail(customerItem.getEmail());
+			current.get().setName(customerItem.getName());
+			current.get().setPhone(customerItem.getPhone());
+			current.get().setCustomerType(customerItem.getCustomerType());
+			current.get().setDob(LocalDate.parse(customerItem.getDob(), DateTimeFormatter.ofPattern(JAVA_DATE)));
+			current.get().setLastModifiedBy(Constant.SYSTEM);
+			current.get().setLastModifiedDate(Instant.now());
+			
+			return current.get();
 		}else {
+			Customer customer = new Customer();
 			customer.setId(FriendlyId.createFriendlyId());
 			customer.setEmail(customerItem.getEmail());
 			customer.setName(customerItem.getName());
 			customer.setPhone(customerItem.getPhone());
-			customer.setPasswordHash(customerItem.getPasswordHash());
 			customer.setCustomerType(customerItem.getCustomerType());
-			customer.setDob(sdf.parse(customerItem.getDob()));
+			customer.setDob(LocalDate.parse(customerItem.getDob(), DateTimeFormatter.ofPattern(JAVA_DATE)));
 			customer.setLocked(false);
-			customer.setActivated(true);
+			customer.setActivated(false);
 			customer.setCreatedBy(Constant.SYSTEM);
 			customer.setCreatedDate(Instant.now());
+			
+			return customer;
 		}
-		
-		
-		return customer;
 	}
 
 }

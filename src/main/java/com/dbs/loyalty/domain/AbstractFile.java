@@ -34,7 +34,7 @@ public abstract class AbstractFile implements Serializable{
 	private String id;
 	
     @Lob
-    @Column(name = "bytes", nullable = false, columnDefinition="BLOB")
+    @Column(name = "bytes", nullable = false, columnDefinition="MEDIUMBLOB")
     private byte[] bytes;
     
     @JsonIgnore

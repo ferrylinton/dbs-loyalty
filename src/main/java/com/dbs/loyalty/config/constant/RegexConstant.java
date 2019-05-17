@@ -22,6 +22,10 @@ public final class RegexConstant {
 	
 	public static final String NAME_MESSAGE			= "{validation.pattern.name}";
 	
+	public static final String ALPHANUMERIC			= "^[a-zA-Z0-9]*$";
+	
+	public static final String ALPHANUMERIC_MESSAGE	= "{validation.pattern.alphanumeric}";
+	
 	private RegexConstant() {
 		// hide constructor
 	}

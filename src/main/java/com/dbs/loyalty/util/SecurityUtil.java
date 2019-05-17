@@ -1,8 +1,5 @@
 package com.dbs.loyalty.util;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,22 +18,12 @@ public final class SecurityUtil {
 		if(SecurityContextHolder.getContext().getAuthentication() instanceof RestAuthentication) {
 			RestAuthentication authentication = (RestAuthentication) SecurityContextHolder.getContext().getAuthentication();
 			return authentication.getId();
+		}else if(SecurityContextHolder.getContext().getAuthentication() instanceof RestAuthentication) {
+			WebAuthentication authentication = (WebAuthentication) SecurityContextHolder.getContext().getAuthentication();
+			return authentication.getUser().getId();
 		}
 		
 		return null;
-    }
-	
-	public static List<String> getAuthorities() {
-		List<String> result = new ArrayList<>();
-		
-		for(GrantedAuthority obj : SecurityContextHolder.getContext().getAuthentication().getAuthorities()) {
-			if(obj instanceof SimpleGrantedAuthority) {
-				SimpleGrantedAuthority authority = (SimpleGrantedAuthority) obj;
-				result.add(authority.getAuthority());
-			}
-        }
-		
-		return result;
     }
 	
 	public static boolean hasAuthority(String authorityName) {

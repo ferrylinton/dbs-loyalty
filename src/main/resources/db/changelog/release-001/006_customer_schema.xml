@@ -26,10 +26,8 @@
             <column name="dob" type="date">
                 <constraints nullable="false"/>
             </column>
-            <column name="password_hash" type="VARCHAR(100)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="activated" type="BIT(1)" defaultValueBoolean="true">
+            <column name="password_hash" type="VARCHAR(100)"/>
+            <column name="activated" type="BIT(1)" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
             <column name="locked" type="BIT(1)" defaultValueBoolean="false">

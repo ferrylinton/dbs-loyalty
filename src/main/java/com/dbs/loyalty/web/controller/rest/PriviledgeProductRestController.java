@@ -1,6 +1,6 @@
 package com.dbs.loyalty.web.controller.rest;
 
-import static com.dbs.loyalty.config.constant.SwaggerConstant.CART;
+import static com.dbs.loyalty.config.constant.SwaggerConstant.PRIVILEDGE_ORDER;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.JWT;
 
 import java.util.List;
@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dbs.loyalty.domain.FileImage;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.ImageService;
-import com.dbs.loyalty.service.ProductService;
-import com.dbs.loyalty.service.dto.ProductDto;
-import com.dbs.loyalty.service.mapper.ProductMapper;
+import com.dbs.loyalty.service.PriviledgeProductService;
+import com.dbs.loyalty.service.dto.ProductPriviledgeDto;
+import com.dbs.loyalty.service.mapper.ProductPriviledgeMapper;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,59 +33,55 @@ import io.swagger.annotations.Authorization;
 import lombok.RequiredArgsConstructor;
 
 /**
- * REST controller for Product
+ * REST controller for ProductPriviledge
  * 
  * @author Ferry L. H. <ferrylinton@gmail.com>
  * 
  */
-@Api(tags = { CART })
+@Api(tags = { PRIVILEDGE_ORDER })
 @RequiredArgsConstructor
+@PreAuthorize("hasRole('CUSTOMER')")
 @RestController
 @RequestMapping("/api")
-public class ProductRestController {
+public class PriviledgeProductRestController {
 
-	private static final String NOT_FOUND_FORMAT = "Product [id=%s] is not found";
+	private static final String NOT_FOUND_FORMAT = "ProductPriviledge [id=%s] is not found";
 	
 	private final ImageService imageService;
 	
-	private final ProductService productService;
+	private final PriviledgeProductService productService;
 	
-	private final ProductMapper productMapper;
+	private final ProductPriviledgeMapper productMapper;
 
 	@ApiOperation(
-			nickname="GetAllByProductCategoryId", 
-			value="GetAllByProductCategoryId", 
-			notes="Get Products by Product Category's Id",
+			nickname="GetAllProductPriviledges", 
+			value="GetAllProductPriviledges", 
+			notes="Get All Product Priviledges",
     		produces=MediaType.APPLICATION_JSON_VALUE, 
     		authorizations = { @Authorization(value=JWT) })
-    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = ProductDto.class)})
-	@PreAuthorize("hasRole('CUSTOMER')")
-    @GetMapping("/products/product-categories/{productCategoryId}")
-    public List<ProductDto> getAllByProductCategoryId(
-    		@ApiParam(name = "productCategoryId", value = "Product Category Id", example = "7fCVdod3dfO8qFp55jaWww")
-    		@PathVariable String productCategoryId){
-    	
+    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = ProductPriviledgeDto.class)})
+    @GetMapping("/priviledge-products")
+    public List<ProductPriviledgeDto> getAllProductPriviledges(){
 		return productService
-				.findByProductCategoryId(productCategoryId)
+				.findAll()
 				.stream()
 				.map(product -> productMapper.toDto(product))
 				.collect(Collectors.toList());
     }
 	
 	@ApiOperation(
-			nickname="GetProductById", 
-			value="GetProductById", 
-			notes="Get Product by Id",
+			nickname="GetProductPriviledgeById", 
+			value="GetProductPriviledgeById", 
+			notes="Get Product Priviledge by Id",
     		produces=MediaType.APPLICATION_JSON_VALUE, 
     		authorizations = { @Authorization(value=JWT) })
-    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = ProductDto.class)})
-	@PreAuthorize("hasRole('CUSTOMER')")
-    @GetMapping("/products/{id}")
-    public ProductDto getById(
+    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = ProductPriviledgeDto.class)})
+    @GetMapping("/priviledge-products/{id}")
+    public ProductPriviledgeDto getById(
     		@ApiParam(name = "id", value = "Product Id", example = "zO0dDp9K")
     		@PathVariable String id) throws NotFoundException{
     	
-		Optional<ProductDto> current = productService
+		Optional<ProductPriviledgeDto> current = productService
 				.findById(id)
 				.map(product -> productMapper.toDto(product));
     	
@@ -97,16 +93,15 @@ public class ProductRestController {
     }
     
 	@ApiOperation(
-			nickname="GetProductImageById", 
-			value="GetProductImageById", 
-			notes="Get Product Image by Id",
+			nickname="GetProductPriviledgeImageById", 
+			value="GetProductPriviledgeImageById", 
+			notes="Get Product Priviledge Image by Id",
 			produces= "image/png, image/jpeg", 
     		authorizations = { @Authorization(value=JWT) })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Byte.class)})
-	@PreAuthorize("hasRole('CUSTOMER')")
-    @GetMapping("/products/{id}/image")
-    public ResponseEntity<byte[]> getImageById(
-    		@ApiParam(name = "id", value = "Product Id", example = "zO0dDp9K")
+    @GetMapping("/priviledge-products/{id}/image")
+    public ResponseEntity<byte[]> getProductPriviledgeImageById(
+    		@ApiParam(name = "id", value = "ProductPriviledge Id", example = "zO0dDp9K")
     		@PathVariable String id) throws NotFoundException{
     	
     	Optional<FileImage> fileImage = imageService.findById(id);
@@ -126,14 +121,13 @@ public class ProductRestController {
     }
 	
 	@ApiOperation(
-			nickname="GetProductTermById", 
-			value="GetProductTermById", 
-			notes="Get Product Term And Condition by Id",
+			nickname="GetProductPriviledgeTermById", 
+			value="GetProductPriviledgeTermById", 
+			notes="Get Product Priviledge Term And Condition by Id",
     		produces=MediaType.TEXT_PLAIN_VALUE, 
     		authorizations = { @Authorization(value=JWT) })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = String.class)})
-	@PreAuthorize("hasRole('CUSTOMER')")
-    @GetMapping("/products/{id}/term")
+    @GetMapping("/priviledge-products/{id}/term")
     public ResponseEntity<String> getTermAndConditionById(
     		@ApiParam(name = "id", value = "Product Id", example = "zO0dDp9K")
     		@PathVariable String id) throws NotFoundException{

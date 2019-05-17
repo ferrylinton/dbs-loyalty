@@ -5,17 +5,18 @@ import static com.dbs.loyalty.config.constant.Constant.PAGE;
 import static com.dbs.loyalty.config.constant.Constant.TOAST;
 import static com.dbs.loyalty.config.constant.Constant.ZERO;
 import static com.dbs.loyalty.config.constant.EntityConstant.CUSTOMER;
+import static com.dbs.loyalty.service.SettingService.JAVA_DATE;
 
+import java.beans.PropertyEditorSupport;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
@@ -40,7 +41,6 @@ import com.dbs.loyalty.domain.FileImageTask;
 import com.dbs.loyalty.service.CustomerService;
 import com.dbs.loyalty.service.ImageService;
 import com.dbs.loyalty.service.TaskService;
-import com.dbs.loyalty.util.PasswordUtil;
 import com.dbs.loyalty.web.validator.CustomerValidator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -66,7 +66,7 @@ public class CustomerController extends AbstractPageController{
 	private final CustomerService customerService;
 	
 	private final TaskService taskService;
-	
+
 	@PreAuthorize("hasAnyRole('CUSTOMER_MK', 'CUSTOMER_CK')")
 	@GetMapping
 	public String viewCustomers(@ModelAttribute(TOAST) String toast, @RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
@@ -96,7 +96,7 @@ public class CustomerController extends AbstractPageController{
 	public String viewCustomerForm(ModelMap model, @PathVariable String id) {
 		if (id.equals(ZERO)) {
 			Customer customer = new Customer();
-			customer.setCustomerType(CustomerTypeConstant.TPC);
+			customer.setCustomerType(CustomerTypeConstant.TPC_VALUE);
 			model.addAttribute(CUSTOMER, customer);
 		} else {
 			getById(model, id);
@@ -115,7 +115,6 @@ public class CustomerController extends AbstractPageController{
 			if(customer.getId() == null) {
 				FileImageTask fileImageTask = imageService.add(customer.getMultipartFileImage());
 				customer.setImage(fileImageTask.getId());
-				customer.setPasswordHash(PasswordUtil.encode(customer.getPasswordPlain()));
 				taskService.saveTaskAdd(CUSTOMER, customer);
 			}else {
 				Optional<Customer> current = customerService.findById(customer.getId());
@@ -136,7 +135,6 @@ public class CustomerController extends AbstractPageController{
 			}
 
 			attributes.addFlashAttribute(TOAST, taskIsSavedMessage(CUSTOMER, customer.getName()));
-			System.out.println("------ redirect : " + REDIRECT);
 			return REDIRECT;
 		}
 	}
@@ -158,8 +156,20 @@ public class CustomerController extends AbstractPageController{
 
 	@InitBinder(CUSTOMER)
 	protected void initBinder(WebDataBinder binder) {
-		binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("dd-MM-yyyy"), true, 10)); 
 		binder.addValidators(new CustomerValidator(customerService));
+		binder.registerCustomEditor(LocalDate.class, new PropertyEditorSupport() {
+			
+		    @Override
+		    public void setAsText(String text) throws IllegalArgumentException{
+		      setValue(LocalDate.parse(text, DateTimeFormatter.ofPattern(JAVA_DATE)));
+		    }
+
+		    @Override
+		    public String getAsText() throws IllegalArgumentException {
+		      return DateTimeFormatter.ofPattern(JAVA_DATE).format((LocalDate) getValue());
+		    }
+		    
+		});
 	}
 
 	private void getById(ModelMap model, String id){

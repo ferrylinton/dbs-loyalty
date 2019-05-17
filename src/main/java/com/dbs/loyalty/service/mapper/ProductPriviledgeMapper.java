@@ -7,16 +7,16 @@ import org.mapstruct.MappingTarget;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.dbs.loyalty.config.constant.PathConstant;
-import com.dbs.loyalty.domain.Product;
-import com.dbs.loyalty.service.dto.ProductDto;
+import com.dbs.loyalty.domain.PriviledgeProduct;
+import com.dbs.loyalty.service.dto.ProductPriviledgeDto;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
-public abstract class ProductMapper{
+public abstract class ProductPriviledgeMapper{
 
-	public abstract ProductDto toDto(Product troduct);
+	public abstract ProductPriviledgeDto toDto(PriviledgeProduct troduct);
 
 	@AfterMapping
-    public void doAfterMapping(@MappingTarget ProductDto troductDto){
+    public void doAfterMapping(@MappingTarget ProductPriviledgeDto troductDto){
 		String imageUrl = ServletUriComponentsBuilder.fromCurrentContextPath()
 				.path(PathConstant.API)
                 .path(PathConstant.PRODUCTS)

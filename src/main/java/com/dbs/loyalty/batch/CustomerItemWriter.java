@@ -16,7 +16,6 @@ public class CustomerItemWriter implements ItemWriter<Customer>{
 	
 	@Override
 	public void write(List<? extends Customer> customers) throws Exception {
-		System.out.println("----------------------- size : " + customers.size());
 		customerRepository.saveAll(customers);
 	}
 

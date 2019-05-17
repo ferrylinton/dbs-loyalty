@@ -90,11 +90,11 @@ var Lang = (function () {
 			},
 			"label":{
 				"activated" : "Aktif",
-				"deactivated" : "Tidak Aktif",
+				"deactivated" : "Tdk Aktif",
 				"locked" : "Terkunci",
-				"unlocked" : "Tidak Terkunci",
+				"unlocked" : "Tdk Terkunci",
 				"showInCarousel": "Tampil Di Carousel",
-				"notShowInCarousel": "Tidak Tampil Di Carousel",
+				"notShowInCarousel": "Tdk Tampil Di Carousel",
 				"viewImage" : "Lihat Gambar",
 				"viewPdf" : "Lihat Pdf"
 			}
