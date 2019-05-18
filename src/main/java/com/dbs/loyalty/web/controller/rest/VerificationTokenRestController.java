@@ -1,28 +1,37 @@
 package com.dbs.loyalty.web.controller.rest;
 
 import static com.dbs.loyalty.config.constant.LogConstant.GENERATE_VERIFICATION_TOKEN;
+import static com.dbs.loyalty.config.constant.LogConstant.LOGIN_WITH_TOKEN;
 import static com.dbs.loyalty.config.constant.LogConstant.VERIFY_VERIFICATION_TOKEN;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.JSON;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.JWT;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.OK;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.VERIFICATION_TOKEN;
 
+import java.io.IOException;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Map;
 
 import javax.validation.Valid;
 
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dbs.loyalty.config.ApplicationProperties;
+import com.dbs.loyalty.config.constant.SecurityConstant;
 import com.dbs.loyalty.domain.VerificationToken;
+import com.dbs.loyalty.model.TokenData;
+import com.dbs.loyalty.security.rest.RestTokenProvider;
 import com.dbs.loyalty.service.MailService;
 import com.dbs.loyalty.service.VerificationTokenService;
+import com.dbs.loyalty.service.dto.CustomerDto;
+import com.dbs.loyalty.service.dto.GenerateTokenDto;
+import com.dbs.loyalty.service.dto.JWTTokenDto;
 import com.dbs.loyalty.service.dto.VerificationTokenDto;
+import com.dbs.loyalty.service.mapper.CustomerMapper;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -47,20 +56,25 @@ public class VerificationTokenRestController {
     private final VerificationTokenService verificationTokenService;
     
     private final MailService mailService;
+    
+    private final RestTokenProvider restTokenProvider;
+    
+    private final CustomerMapper customerMapper;
 
+    private final ApplicationProperties applicationProperties;
+    
     /**
-     * GET  /api/verification-tokens/generate : generate token
+     * POST  /api/verification-tokens/generate : generate token
      *
      * @return token
      */
-    @ApiOperation(nickname=GENERATE_VERIFICATION_TOKEN, value=GENERATE_VERIFICATION_TOKEN, produces=JSON, authorizations={@Authorization(value=JWT)})
+    @ApiOperation(nickname=GENERATE_VERIFICATION_TOKEN, value=GENERATE_VERIFICATION_TOKEN, consumes=JSON, produces=JSON)
     @ApiResponses(value = { @ApiResponse(code=200, message=OK, response=VerificationTokenDto.class)})
-    @PreAuthorize("hasRole('CUSTOMER')")
-    @GetMapping("/verification-tokens/generate")
-    public VerificationTokenDto generate() {
-    	VerificationToken verificationToken = verificationTokenService.generate();
+    @PostMapping("/verification-tokens/generate")
+    public VerificationTokenDto generate(@Valid @RequestBody GenerateTokenDto generateToken) {
+    	VerificationToken verificationToken = verificationTokenService.generate(generateToken.getEmail());
     	mailService.sendToken(verificationToken.getEmail(), verificationToken.getToken());
-    	return new VerificationTokenDto(verificationToken.getToken());
+    	return new VerificationTokenDto(generateToken.getEmail(), verificationToken.getToken());
     }
     
     /**
@@ -68,13 +82,41 @@ public class VerificationTokenRestController {
      *
      * @return boolean
      */
-    @ApiOperation(nickname=VERIFY_VERIFICATION_TOKEN, value=VERIFY_VERIFICATION_TOKEN, produces=JSON, authorizations={@Authorization(value=JWT)})
+    @ApiOperation(nickname=VERIFY_VERIFICATION_TOKEN, value=VERIFY_VERIFICATION_TOKEN, consumes=JSON, produces=JSON)
     @ApiResponses(value = { @ApiResponse(code=200, message=OK, response=VerificationTokenDto.class)})
-    @PreAuthorize("hasRole('CUSTOMER')")
     @PostMapping("/verification-tokens/verify")
-    public Map<String, Boolean> verify(@Valid @RequestBody VerificationTokenDto verificationToken) {
-    	boolean verified = verificationTokenService.verify(verificationToken.getToken());
-    	return Collections.singletonMap(VERIFIED, verified);
+    public Map<String, Boolean> verify(@Valid @RequestBody VerificationTokenDto verificationTokenDto) {
+    	VerificationToken verificationToken = verificationTokenService.verify(verificationTokenDto.getEmail(), verificationTokenDto.getToken());
+    	return Collections.singletonMap(VERIFIED, verificationToken != null);
+    }
+    
+    /**
+     * POST  /api/verification-tokens/authenticate : authenticate
+     *
+     * @return JWTTokenDto
+     * @throws IOException 
+     */
+    @ApiOperation(nickname=LOGIN_WITH_TOKEN, value=LOGIN_WITH_TOKEN, produces=JSON, authorizations={@Authorization(value=JWT)})
+    @ApiResponses(value = { @ApiResponse(code=200, message=OK, response=JWTTokenDto.class)})
+    @PostMapping("/verification-tokens/authenticate")
+    public JWTTokenDto authenticate(@Valid @RequestBody VerificationTokenDto verificationTokenDto) throws IOException {
+    	VerificationToken verificationToken = verificationTokenService.verify(verificationTokenDto.getEmail(), verificationTokenDto.getToken());
+    	String token = restTokenProvider.createToken(getTokenData(verificationToken), getValidity());
+    	CustomerDto customerDto = customerMapper.toDto(verificationToken.getCustomer());
+        return new JWTTokenDto(token, customerDto);
     }
 
+    private TokenData getTokenData(VerificationToken verificationToken) {
+    	TokenData tokenData = new TokenData();
+    	tokenData.setId(verificationToken.getCustomer().getId());
+    	tokenData.setEmail(verificationToken.getCustomer().getEmail());
+    	tokenData.setRole(SecurityConstant.ROLE_TOKEN);
+    	return tokenData;
+    }
+    
+    private Date getValidity() {
+    	long now = (new Date()).getTime();
+    	return new Date(now + (applicationProperties.getSecurity().getVerificationTokenValidity() * 60 * 1000));
+    }
+    
 }

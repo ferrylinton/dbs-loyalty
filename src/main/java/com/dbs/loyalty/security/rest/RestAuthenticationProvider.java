@@ -1,5 +1,7 @@
 package com.dbs.loyalty.security.rest;
 
+import static com.dbs.loyalty.config.constant.MessageConstant.CUSTOMER_LOCKED;
+import static com.dbs.loyalty.config.constant.MessageConstant.CUSTOMER_NOT_ACTIVATED;
 import static com.dbs.loyalty.config.constant.MessageConstant.LOGIN_FAILED;
 import static com.dbs.loyalty.config.constant.StatusConstant.FAIL;
 import static com.dbs.loyalty.config.constant.StatusConstant.SUCCEED;
@@ -11,8 +13,10 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 
+import com.dbs.loyalty.config.constant.SecurityConstant;
 import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.domain.LogToken;
+import com.dbs.loyalty.model.TokenData;
 import com.dbs.loyalty.repository.CustomerRepository;
 import com.dbs.loyalty.service.LogTokenService;
 import com.dbs.loyalty.util.PasswordUtil;
@@ -33,13 +37,25 @@ public class RestAuthenticationProvider implements AuthenticationProvider {
         
 		Optional<Customer> customer = customerRepository.findByEmail(email);
 		
-		if(customer.isPresent() && PasswordUtil.matches(password, customer.get().getPasswordHash())) {
-			save(email, SUCCEED);
-			return new RestAuthentication(email, password, customer.get());
-        }else{
-        	save(email, FAIL);
-        	throw new BadCredentialsException(LOGIN_FAILED);
+		if(customer.isPresent()) {
+			if(!customer.get().isActivated()) {
+				save(email, FAIL);
+				throw new BadCredentialsException(CUSTOMER_NOT_ACTIVATED);
+			}else if(customer.get().isLocked()) {
+				save(email, FAIL);
+				throw new BadCredentialsException(CUSTOMER_LOCKED);
+			}else if(PasswordUtil.matches(password, customer.get().getPasswordHash())) {
+				save(email, SUCCEED);
+				TokenData tokenData = new TokenData();
+				tokenData.setId(customer.get().getId());
+				tokenData.setEmail(email);
+				tokenData.setRole(SecurityConstant.ROLE_CUSTOMER);
+				return new RestAuthentication(tokenData, customer.get());
+			}
         }
+		
+        save(email, FAIL);
+        throw new BadCredentialsException(LOGIN_FAILED);
 	}
 
 	@Override

@@ -43,7 +43,7 @@ import lombok.RequiredArgsConstructor;
 @PreAuthorize("hasRole('CUSTOMER')")
 @RestController
 @RequestMapping("/api")
-public class ImagePromoRestController {
+public class PromoImageRestController {
 
 	private final ImageService imageService;
 	

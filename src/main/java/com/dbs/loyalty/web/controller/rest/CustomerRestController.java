@@ -2,7 +2,6 @@ package com.dbs.loyalty.web.controller.rest;
 
 import static com.dbs.loyalty.config.constant.Constant.MESSAGE;
 import static com.dbs.loyalty.config.constant.MessageConstant.DATA_WITH_VALUE_NOT_FOUND;
-import static com.dbs.loyalty.config.constant.MessageConstant.FILE_IS_EMPTY;
 import static com.dbs.loyalty.config.constant.MessageConstant.SUCCESS;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.CUSTOMER;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.JWT;
@@ -16,8 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.http.CacheControl;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,17 +25,14 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.dbs.loyalty.domain.FileImage;
-import com.dbs.loyalty.exception.BadRequestException;
+import com.dbs.loyalty.config.constant.SecurityConstant;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.model.Pair;
+import com.dbs.loyalty.model.TokenData;
 import com.dbs.loyalty.security.rest.RestTokenProvider;
 import com.dbs.loyalty.service.CustomerService;
-import com.dbs.loyalty.service.ImageService;
 import com.dbs.loyalty.service.dto.CustomerDto;
 import com.dbs.loyalty.service.dto.CustomerPasswordDto;
 import com.dbs.loyalty.service.dto.CustomerUpdateDto;
@@ -48,7 +42,6 @@ import com.dbs.loyalty.util.HeaderTokenUtil;
 import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.util.SecurityUtil;
 import com.dbs.loyalty.web.controller.AbstractController;
-import com.dbs.loyalty.web.response.BadRequestResponse;
 import com.dbs.loyalty.web.validator.CustomerPasswordValidator;
 import com.dbs.loyalty.web.validator.CustomerUpdateValidator;
 
@@ -65,9 +58,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api")
 public class CustomerRestController extends AbstractController{
-	
-	private final ImageService imageService;
-	
+
     private final CustomerService customerService;
 
     private final RestTokenProvider restTokenProvider;
@@ -97,62 +88,6 @@ public class CustomerRestController extends AbstractController{
 	}
     
     @ApiOperation(
-    		nickname="GetCustomerImage", 
-    		value="GetCustomerImage", 
-    		notes="Get Customer Image", 
-    		produces= "image/png, image/jpeg", 
-    		authorizations = { @Authorization(value=JWT) })
-    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Byte.class)})
-    @PreAuthorize("hasRole('CUSTOMER')")
-    @GetMapping("/customers/image")
-	public ResponseEntity<byte[]> getCustomerImage() throws NotFoundException {
-    	Optional<FileImage> fileImage = imageService.findById(SecurityUtil.getId());
-    	
-		if(fileImage.isPresent()) {
-			HttpHeaders headers = new HttpHeaders();
-			headers.setCacheControl(CacheControl.noCache().getHeaderValue());
-			headers.setContentType(MediaType.valueOf(fileImage.get().getContentType()));
-			
-			return ResponseEntity
-					.ok()
-					.headers(headers)
-					.body(fileImage.get().getBytes());
-		}else {
-			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, SecurityUtil.getId());
-			throw new NotFoundException(message);
-		}
-	}
-	
-	@ApiOperation(
-    		nickname="UpdateCustomerImage", 
-    		value="UpdateCustomerImage", 
-    		notes="Update customer image",
-    		consumes="multipart/form-data",
-    		produces= "image/png, image/jpeg", 
-    		authorizations = { @Authorization(value=JWT) })
-    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Byte.class)})
-    @PreAuthorize("hasRole('CUSTOMER')")
-    @PutMapping("/customers/image")
-    public ResponseEntity<byte[]> updateCustomerImage(
-    		@ApiParam(name = "file", value = "Customer's new image") 
-    		@RequestParam("file") MultipartFile file) throws NotFoundException, IOException, BadRequestException  {
-    	
-    	if(file.isEmpty()) {
-    		throw new BadRequestException(new BadRequestResponse(MessageUtil.getMessage(FILE_IS_EMPTY)));
-    	}else {
-    		FileImage fileImage = customerService.updateCustomerImage(file);
-        	HttpHeaders headers = new HttpHeaders();
-    		headers.setCacheControl(CacheControl.noCache().getHeaderValue());
-    		headers.setContentType(MediaType.valueOf(fileImage.getContentType()));
-    		
-    		return ResponseEntity
-    				.ok()
-    				.headers(headers)
-    				.body(fileImage.getBytes());
-    	}
-    }
-    
-    @ApiOperation(
     		nickname="UpdateCustomer", 
     		value="UpdateCustomer", 
     		notes="Update customer information, and after update customer must use new token or relogin",
@@ -165,14 +100,18 @@ public class CustomerRestController extends AbstractController{
     public ResponseEntity<JWTTokenDto> updateCustomer(
     		@ApiParam(name = "CustomerNewData", value = "Customer's new data") 
     		@Valid @RequestBody CustomerUpdateDto customerUpdateDto,
-    		HttpServletRequest request)  {
+    		HttpServletRequest request) throws IOException  {
     	
     	String token = null;
     	CustomerDto customerDto = customerMapper.toDto(customerService.update(customerUpdateDto));
 		String jwt = HeaderTokenUtil.resolveToken(request);
         
         if (StringUtils.hasText(jwt) && restTokenProvider.validateToken(jwt)) {
-            token = restTokenProvider.createToken(customerUpdateDto.getId(), customerUpdateDto.getEmail(), jwt);
+        	TokenData tokenData = new TokenData();
+        	tokenData.setId(customerDto.getId());
+        	tokenData.setEmail(customerDto.getEmail());
+        	tokenData.setRole(SecurityConstant.ROLE_CUSTOMER);
+            token = restTokenProvider.createToken(tokenData, restTokenProvider.getExpiration(jwt));
         }
         
 		return ResponseEntity.ok().body(new JWTTokenDto(token, customerDto));

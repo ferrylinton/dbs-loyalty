@@ -28,9 +28,11 @@ public class ApplicationProperties {
 
 		private String secret;
 		
-		private long tokenValidityInSeconds;
+		private long tokenValidity = 1440;
 		
-		private long tokenValidityInSecondsForRememberMe;
+		private long tokenValidityForRememberMe = 43200;
+		
+		private long verificationTokenValidity = 15;
 		
 	}
 	

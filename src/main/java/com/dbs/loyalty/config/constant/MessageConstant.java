@@ -20,7 +20,17 @@ public final class MessageConstant {
 	
 	public static final String DATA_IS_NOT_FOUND = "%s [%s] is not found";
 	
-	public static final String LOGIN_FAILED = "Login Failed";
+	public static final String LOGIN_FAILED = "Login failed";
+	
+	public static final String CUSTOMER_NOT_ACTIVATED = "Customer is not activated yet";
+	
+	public static final String INVALID_TOKEN = "Token is invalid";
+	
+	public static final String EXPIRED_TOKEN = "Token is expired";
+	
+	public static final String NOT_FOUND_TOKEN = "Token is not found";
+	
+	public static final String CUSTOMER_LOCKED = "Customer is locked";
 	
 	public static final String DATA_IS_SAVED = "Data is saved";
 	

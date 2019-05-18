@@ -2,8 +2,12 @@ application:
   security:
     max-attempt: 3
     secret: OTE1ZWVlYTZjZWIyODY5ODQ1ZDFkYmI3ZmM1YjNmNDdkOWU3NjUyMGYwOTcwMzEzMWY5MzU1YmU0Mzk5MzUzODY2NDVkYTA1OGI5NmRiYjNkNDQ3NzBmZGVmYTFmODcyNzliNmE2MmZmN2JlZThkMmU2Y2E3M2U4YjgyNTFhNjk=
-    token-validity-in-seconds: 86400
-    token-validity-in-seconds-for-remember-me: 2592000
+    # 24 jam (24 jam * 60 minutes)
+    token-validity: 1440
+    # 30 hari (30 hari * 24 jam * 60 minutes)
+    token-validity-for-remember-me: 43200
+    # 15 minutes
+    verification-token-validity: 15
   async: 
     core-pool-size: 5
     max-pool-size: 10

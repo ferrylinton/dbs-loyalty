@@ -20,6 +20,8 @@ public class LogConstant {
 	
 	public static final String VERIFY_VERIFICATION_TOKEN = "VerificationToken";
 	
+	public static final String LOGIN_WITH_TOKEN = "LoginWithToken";
+	
 	public static final String GET_TOTAL_REWARDS = "GetTotalRewards";
 	
 	public static final String GET_ALL_REWARDS = "GetAllRewards";

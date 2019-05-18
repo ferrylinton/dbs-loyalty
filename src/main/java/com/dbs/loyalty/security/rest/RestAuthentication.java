@@ -9,19 +9,15 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import com.dbs.loyalty.domain.Customer;
-import com.dbs.loyalty.service.dto.JWTLoginDto;
+import com.dbs.loyalty.model.TokenData;
 
 
 public class RestAuthentication implements Authentication {
 
 	private static final long serialVersionUID = 1L;
 	
-	private static final String ROLE_CUSTOMER = "CUSTOMER";
-	
 	private String principal;
-	
-	private String credentials;
-	
+
 	private String details;
 	
 	private boolean authenticated; 
@@ -29,23 +25,20 @@ public class RestAuthentication implements Authentication {
 	private Customer customer;
 	
 	private String id;
+	
+	private String role;
 
-	public RestAuthentication(String[] subject) {
-		this.id = subject[0];
-		this.principal = subject[1];
-		this.credentials = null;
+	public RestAuthentication(TokenData tokenData) {
+		this.id = tokenData.getId();
+		this.principal = tokenData.getEmail();
+		this.role = tokenData.getRole();
 		this.authenticated = true;
 	}
-	
-	public RestAuthentication(JWTLoginDto jwtLoginDto) {
-		this.principal = jwtLoginDto.getEmail();
-		this.credentials = jwtLoginDto.getPassword();
-		this.authenticated = false;
-	}
-	
-	public RestAuthentication(String principal, String credentials, Customer customer) {
-		this.principal = principal;
-		this.credentials = credentials;
+
+	public RestAuthentication(TokenData tokenData, Customer customer) {
+		this.id = tokenData.getId();
+		this.principal = tokenData.getEmail();
+		this.role = tokenData.getRole();
 		this.customer = customer;
 		this.authenticated = true; 
 	}
@@ -53,17 +46,13 @@ public class RestAuthentication implements Authentication {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		Set<GrantedAuthority> authorities = new HashSet<>();
-		authorities.add(new SimpleGrantedAuthority(ROLE_CUSTOMER));
+		authorities.add(new SimpleGrantedAuthority(role));
         return authorities;
     }
 
 	@Override
 	public Object getCredentials() {
-		return credentials;
-	}
-
-	public void setCredentials(String credentials) {
-		this.credentials = credentials;
+		return null;
 	}
 
 	@Override
@@ -86,8 +75,8 @@ public class RestAuthentication implements Authentication {
 	}
 
 	@Override
-	public void setAuthenticated(boolean b){
-		this.authenticated = b;
+	public void setAuthenticated(boolean authenticated){
+		this.authenticated = authenticated;
 	}
 
 	@Override
@@ -101,6 +90,10 @@ public class RestAuthentication implements Authentication {
 
 	public String getId() {
 		return id;
+	}
+
+	public String getRole() {
+		return role;
 	}
 
 }

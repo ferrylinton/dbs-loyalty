@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
 
 import com.dbs.loyalty.config.constant.Constant;
+import com.dbs.loyalty.config.constant.MessageConstant;
 import com.dbs.loyalty.util.HeaderTokenUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -20,26 +21,22 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RestAccessFilter extends GenericFilterBean {
 
-	private final String JWT_TOKEN_NOT_FOUND = "JWT Token not found";
-	
-	private final String EXPIRED_JWT_TOKEN = "Expired JWT token";
-	
     private final RestTokenProvider restTokenProvider;
 
     @Override
-    public void doFilter(ServletRequest req, ServletResponse resp, FilterChain filterChain) throws IOException, ServletException {
-        String jwt = HeaderTokenUtil.resolveToken((HttpServletRequest) req);
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
+        String token = HeaderTokenUtil.resolveToken((HttpServletRequest) request);
         
-        if(jwt == null){
-        	req.setAttribute(Constant.MESSAGE, JWT_TOKEN_NOT_FOUND);
-        }else if(restTokenProvider.validateToken(jwt)) {
-            Authentication authentication = restTokenProvider.getAuthentication(jwt);
+        if(token == null){
+        	request.setAttribute(Constant.MESSAGE, MessageConstant.NOT_FOUND_TOKEN);
+        }else if(restTokenProvider.validateToken(token)) {
+            Authentication authentication = restTokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }else {
-        	req.setAttribute(Constant.MESSAGE, EXPIRED_JWT_TOKEN);
+        	request.setAttribute(Constant.MESSAGE, MessageConstant.LOGIN_FAILED);
         }
         
-        filterChain.doFilter(req, resp);
+        filterChain.doFilter(request, response);
     }
 
 }

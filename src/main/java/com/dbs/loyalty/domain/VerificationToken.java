@@ -8,10 +8,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
 import com.dbs.loyalty.config.constant.DomainConstant;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -48,5 +50,9 @@ public class VerificationToken implements Serializable{
 	
 	@Column(name = "created_date", nullable = false, updatable = false)
     private Instant createdDate;
+	
+	@Transient
+	@JsonIgnore
+	private Customer customer;
 	
 }

@@ -9,10 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.dbs.loyalty.domain.Customer;
-import com.dbs.loyalty.domain.FileImage;
 import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.CustomerRepository;
@@ -56,11 +54,7 @@ public class CustomerService{
 			return false;
 		}
 	}
-	
-	public FileImage updateCustomerImage(MultipartFile file) throws IOException {
-		return imageService.updateCustomerImage(file);
-	}
-	
+
 	public Customer save(Customer customer) {
 		return customerRepository.save(customer);
 	}

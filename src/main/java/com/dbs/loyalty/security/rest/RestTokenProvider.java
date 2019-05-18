@@ -1,5 +1,6 @@
 package com.dbs.loyalty.security.rest;
 
+import java.io.IOException;
 import java.security.Key;
 import java.util.Date;
 
@@ -9,6 +10,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import com.dbs.loyalty.config.ApplicationProperties;
+import com.dbs.loyalty.model.TokenData;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -28,57 +31,32 @@ import lombok.extern.slf4j.Slf4j;
 public class RestTokenProvider {
 
 	private Key key;
-	
-	private long tokenValidityInMilliseconds;
 
-    private long tokenValidityInMillisecondsForRememberMe;
-    
     private final ApplicationProperties applicationProperties;
+    
+    private final ObjectMapper objectMapper;
 
     @PostConstruct
     public void init() {
-        this.key = Keys.hmacShaKeyFor(Decoders.BASE64.decode( applicationProperties.getSecurity().getSecret()));
-        this.tokenValidityInMilliseconds = 1000 *  applicationProperties.getSecurity().getTokenValidityInSeconds();
-        this.tokenValidityInMillisecondsForRememberMe = 1000 *  applicationProperties.getSecurity().getTokenValidityInSecondsForRememberMe();
+        this.key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(applicationProperties.getSecurity().getSecret()));
+    }
+ 
+    public String createToken(TokenData tokenData, Date validity) throws IOException {
+    	return Jwts.builder()
+                .setSubject(objectMapper.writeValueAsString(tokenData))
+                .signWith(key, SignatureAlgorithm.HS512)
+                .setExpiration(validity)
+                .compact();
     }
     
-    public String createToken(RestAuthentication authentication, boolean rememberMe) {
-    	long now = (new Date()).getTime();
-        Date validity;
-        if (rememberMe) {
-            validity = new Date(now + this.tokenValidityInMillisecondsForRememberMe);
-        } else {
-            validity = new Date(now + this.tokenValidityInMilliseconds);
-        }
-
-        return Jwts.builder()
-            .setSubject(authentication.getCustomer().getId() + "," + authentication.getName())
-            .signWith(key, SignatureAlgorithm.HS512)
-            .setExpiration(validity)
-            .compact();
-    }
-
-    public String createToken(String id, String email, String token) {
-    	Jws<Claims> jws = parseClaimsJws(token);
-    	
-    	if(jws != null) {
-    		return Jwts.builder()
-                    .setSubject(id + "," + email)
-                    .signWith(key, SignatureAlgorithm.HS512)
-                    .setExpiration(jws.getBody().getExpiration())
-                    .compact();
-    	}else {
-    		return null;
-    	}
-    }
-
-    public Authentication getAuthentication(String token) {
+    public Authentication getAuthentication(String token) throws IOException {
         Claims claims = Jwts.parser()
             .setSigningKey(key)
             .parseClaimsJws(token)
             .getBody();
 
-        return new RestAuthentication(claims.getSubject().split(","));
+        TokenData tokenData = objectMapper.readValue(claims.getSubject(), TokenData.class);
+        return new RestAuthentication(tokenData);
     }
 
     public boolean validateToken(String token) {
@@ -86,21 +64,22 @@ public class RestTokenProvider {
     	return jws != null;
     }
     
+    public Date getExpiration(String token) {
+    	Jws<Claims> jws = parseClaimsJws(token);
+    	return jws.getBody().getExpiration();
+    }
+    
     private Jws<Claims> parseClaimsJws(String token) {
         try {
         	return Jwts.parser().setSigningKey(key).parseClaimsJws(token);	
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-            log.info("Invalid JWT signature.");
-            log.trace("Invalid JWT signature trace: {}", e);
+            log.error(e.getLocalizedMessage());
         } catch (ExpiredJwtException e) {
-            log.info("Expired JWT token.");
-            log.trace("Expired JWT token trace: {}", e);
+        	log.error(e.getLocalizedMessage());
         } catch (UnsupportedJwtException e) {
-            log.info("Unsupported JWT token.");
-            log.trace("Unsupported JWT token trace: {}", e);
+        	log.error(e.getLocalizedMessage());
         } catch (IllegalArgumentException e) {
-            log.info("JWT token compact of handler are invalid.");
-            log.trace("JWT token compact of handler are invalid trace: {}", e);
+        	log.error(e.getLocalizedMessage());
         }
 
         return null;
