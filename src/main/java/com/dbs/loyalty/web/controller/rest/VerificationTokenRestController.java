@@ -74,7 +74,10 @@ public class VerificationTokenRestController {
     public VerificationTokenDto generate(@Valid @RequestBody GenerateTokenDto generateToken) {
     	VerificationToken verificationToken = verificationTokenService.generate(generateToken.getEmail());
     	mailService.sendToken(verificationToken.getEmail(), verificationToken.getToken());
-    	return new VerificationTokenDto(generateToken.getEmail(), verificationToken.getToken());
+    	
+    	VerificationTokenDto verificationDto = new VerificationTokenDto();
+    	verificationDto.setEmail(generateToken.getEmail());
+    	return verificationDto;
     }
     
     /**

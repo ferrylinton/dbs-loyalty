@@ -36,6 +36,8 @@ public class LogConstant {
 	
 	public static final String GET_TERM_BY_PROMO_ID = "GetTermByPromoId";
 	
-	public static final String ADD_TO_INTERESTED_IN_PROMO =  "addToInterestedInPromo";
+	public static final String ADD_TO_INTERESTED_IN_PROMO =  "AddToInterestedInPromo";
+	
+	public static final String ACTIVATE_CUSTOMER =  "ActivateCustomer";
 	
 }

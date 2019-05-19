@@ -14,6 +14,7 @@ import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.CustomerRepository;
+import com.dbs.loyalty.service.dto.CustomerActivateDto;
 import com.dbs.loyalty.service.dto.CustomerPasswordDto;
 import com.dbs.loyalty.service.dto.CustomerUpdateDto;
 import com.dbs.loyalty.service.specification.CustomerSpecification;
@@ -55,6 +56,10 @@ public class CustomerService{
 		}
 	}
 
+	public void save(boolean pending, String id) {
+		customerRepository.save(pending, id);
+	}
+	
 	public Customer save(Customer customer) {
 		return customerRepository.save(customer);
 	}
@@ -81,8 +86,17 @@ public class CustomerService{
 		customerRepository.changePassword(passwordHash, SecurityUtil.getLogged());
 	}
 	
-	public void save(boolean pending, String id) {
-		customerRepository.save(pending, id);
+	public void activate(CustomerActivateDto customerActivateDto) {
+		Optional<Customer> customer = customerRepository.findByEmailIgnoreCase(SecurityUtil.getLogged());
+		
+		if(customer.isPresent()) {
+			customer.get().setActivated(true);
+			customer.get().setLocked(false);
+			customer.get().setPasswordHash(PasswordUtil.encode(customerActivateDto.getPassword()));
+			customer.get().setLastModifiedBy(SecurityUtil.getLogged());
+			customer.get().setLastModifiedDate(Instant.now());
+			customerRepository.save(customer.get());
+		}
 	}
 	
 	public String execute(Task task) throws IOException {

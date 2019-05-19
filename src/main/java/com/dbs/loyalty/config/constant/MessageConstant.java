@@ -40,6 +40,10 @@ public final class MessageConstant {
 	
 	public static final String NO_LIMIT_iS_AVAILABLE = "No limit is available";
 	
+	public static final String PASSWORD_IS_NOT_CONFIRMED = "Password is not confirmed";
+	
+	public static final String CUSTOMER_IS_ACTIVATED = "Customer is activated";
+	
 	private MessageConstant() {
 		// hide constructor
 	}
