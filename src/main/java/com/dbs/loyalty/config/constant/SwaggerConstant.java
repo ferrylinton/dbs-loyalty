@@ -35,6 +35,8 @@ public final class SwaggerConstant {
 	public static final String IMAGE 				= "image/png, image/jpeg";
 	
 	public static final String TEXT					= "text/plain";
+	
+	public static final String FORM					= "multipart/form-data";
 
 	private SwaggerConstant() {
 		// hide constructor

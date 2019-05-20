@@ -1,10 +1,14 @@
 package com.dbs.loyalty.web.controller.rest;
 
-import static com.dbs.loyalty.config.constant.Constant.MESSAGE;
-import static com.dbs.loyalty.config.constant.MessageConstant.DATA_WITH_VALUE_NOT_FOUND;
-import static com.dbs.loyalty.config.constant.MessageConstant.SUCCESS;
+import static com.dbs.loyalty.config.constant.MessageConstant.DATA_IS_NOT_FOUND;
+import static com.dbs.loyalty.config.constant.RestConstant.CHANGE_PASSWORD;
+import static com.dbs.loyalty.config.constant.RestConstant.GET_CUSTOMER_INFO;
+import static com.dbs.loyalty.config.constant.RestConstant.UPDATE_CUSTOMER;
+import static com.dbs.loyalty.config.constant.RestConstant.UPDATE_CUSTOMER_NOTES;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.CUSTOMER;
+import static com.dbs.loyalty.config.constant.SwaggerConstant.JSON;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.JWT;
+import static com.dbs.loyalty.config.constant.SwaggerConstant.OK;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -15,8 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.WebDataBinder;
@@ -24,10 +26,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dbs.loyalty.config.constant.MessageConstant;
 import com.dbs.loyalty.config.constant.SecurityConstant;
+import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.model.Pair;
 import com.dbs.loyalty.model.TokenData;
@@ -39,9 +42,9 @@ import com.dbs.loyalty.service.dto.CustomerUpdateDto;
 import com.dbs.loyalty.service.dto.JWTTokenDto;
 import com.dbs.loyalty.service.mapper.CustomerMapper;
 import com.dbs.loyalty.util.HeaderTokenUtil;
-import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.util.SecurityUtil;
 import com.dbs.loyalty.web.controller.AbstractController;
+import com.dbs.loyalty.web.response.Response;
 import com.dbs.loyalty.web.validator.CustomerPasswordValidator;
 import com.dbs.loyalty.web.validator.CustomerUpdateValidator;
 
@@ -55,8 +58,8 @@ import lombok.RequiredArgsConstructor;
 
 @Api(tags = { CUSTOMER })
 @RequiredArgsConstructor
+@PreAuthorize("hasRole('CUSTOMER')")
 @RestController
-@RequestMapping("/api")
 public class CustomerRestController extends AbstractController{
 
     private final CustomerService customerService;
@@ -65,39 +68,23 @@ public class CustomerRestController extends AbstractController{
     
     private final CustomerMapper customerMapper;
     
-    @ApiOperation(
-    		nickname="GetCustomerInfo", 
-    		value="GetCustomerInfo", 
-    		notes="Get Customer Information",
-    		produces=MediaType.APPLICATION_JSON_VALUE, 
-    		authorizations = { @Authorization(value=JWT) })
-    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = CustomerDto.class)})
-    @PreAuthorize("hasRole('CUSTOMER')")
-    @GetMapping("/customers/info")
-	public ResponseEntity<CustomerDto> getCustomerInfo() throws NotFoundException{
-    	Optional<CustomerDto> current = customerService
-    			.findByEmail(SecurityUtil.getLogged())
-    			.map(customer -> customerMapper.toDto(customer));
+    @ApiOperation(value=GET_CUSTOMER_INFO, produces=JSON, authorizations={@Authorization(value=JWT)})
+    @ApiResponses(value={@ApiResponse(code=200, message=OK, response = CustomerDto.class)})
+    @GetMapping("/api/customers/info")
+	public CustomerDto getCustomerInfo() throws NotFoundException{
+    	Optional<Customer> current = customerService.findByEmail(SecurityUtil.getLogged());
 		
 		if(current.isPresent()) {
-			return ResponseEntity.ok().body(current.get());
+			return customerMapper.toDto(current.get());
 		}else {
-			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, SecurityUtil.getLogged());
-			throw new NotFoundException(message);
+			throw new NotFoundException(String.format(DATA_IS_NOT_FOUND, CUSTOMER, SecurityUtil.getLogged()));
 		}
 	}
     
-    @ApiOperation(
-    		nickname="UpdateCustomer", 
-    		value="UpdateCustomer", 
-    		notes="Update customer information, and after update customer must use new token or relogin",
-    		consumes=MediaType.APPLICATION_JSON_VALUE,
-    		produces=MediaType.APPLICATION_JSON_VALUE, 
-    		authorizations = { @Authorization(value=JWT) })
-    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = JWTTokenDto.class)})
-    @PreAuthorize("hasRole('CUSTOMER')")
-    @PutMapping("/customers")
-    public ResponseEntity<JWTTokenDto> updateCustomer(
+    @ApiOperation(value=UPDATE_CUSTOMER, notes=UPDATE_CUSTOMER_NOTES, consumes=JSON, produces=JSON, authorizations={@Authorization(value=JWT)})
+    @ApiResponses(value={@ApiResponse(code=200, message=OK, response = JWTTokenDto.class)})
+    @PutMapping("/api/customers")
+    public JWTTokenDto updateCustomer(
     		@ApiParam(name = "CustomerNewData", value = "Customer's new data") 
     		@Valid @RequestBody CustomerUpdateDto customerUpdateDto,
     		HttpServletRequest request) throws IOException  {
@@ -114,26 +101,18 @@ public class CustomerRestController extends AbstractController{
             token = restTokenProvider.createToken(tokenData, restTokenProvider.getExpiration(jwt));
         }
         
-		return ResponseEntity.ok().body(new JWTTokenDto(token, customerDto));
+		return new JWTTokenDto(token, customerDto);
     }
     
-    @ApiOperation(
-    		nickname="ChangePassword", 
-    		value="ChangePassword", 
-    		notes="Change Customer's Password",
-    		consumes=MediaType.APPLICATION_JSON_VALUE,
-    		produces=MediaType.APPLICATION_JSON_VALUE, 
-    		authorizations = { @Authorization(value=JWT) })
-    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Pair.class)})
-    @PreAuthorize("hasRole('CUSTOMER')")
-    @PutMapping("/customers/change-password")
-    public ResponseEntity<Pair<String, String>> changePassword(
+    @ApiOperation(value=CHANGE_PASSWORD, consumes=JSON, produces=JSON, authorizations={@Authorization(value=JWT)})
+    @ApiResponses(value={@ApiResponse(code=200, message=OK, response = Pair.class)})
+    @PutMapping("/api/customers/change-password")
+    public Response changePassword(
     		@ApiParam(name = "ChangePasswordData", value = "Customer's password data") 
     		@Valid @RequestBody CustomerPasswordDto customerPasswordDto)  {
     	
     	customerService.changePassword(customerPasswordDto);
-		String message = MessageUtil.getMessage(SUCCESS);
-		return ResponseEntity.ok().body(new Pair<String, String>(MESSAGE, message));
+		return new Response(MessageConstant.DATA_IS_SAVED);
     }
     
     @InitBinder("customerUpdateDto")

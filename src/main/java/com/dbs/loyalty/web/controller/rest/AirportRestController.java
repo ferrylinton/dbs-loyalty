@@ -1,6 +1,6 @@
 package com.dbs.loyalty.web.controller.rest;
 
-import static com.dbs.loyalty.config.constant.LogConstant.GET_AIRPORTS;
+import static com.dbs.loyalty.config.constant.RestConstant.GET_AIRPORTS;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.JSON;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.JWT;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.OK;
@@ -8,11 +8,9 @@ import static com.dbs.loyalty.config.constant.SwaggerConstant.TRAVEL_ASSISTANCE;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.service.CountryService;
@@ -33,8 +31,8 @@ import lombok.RequiredArgsConstructor;
  */
 @Api(tags = { TRAVEL_ASSISTANCE })
 @RequiredArgsConstructor
+@PreAuthorize("hasRole('CUSTOMER')")
 @RestController
-@RequestMapping("/api")
 public class AirportRestController {
 
     private final CountryService countryService;
@@ -42,20 +40,15 @@ public class AirportRestController {
     private final CountryMapper countryMapper;
 
     /**
-     * GET  /api/airports : get all airports
+     * GET  /api/airports : Get all airports
      *
      * @return list of airports
      */
     @ApiOperation(nickname=GET_AIRPORTS, value=GET_AIRPORTS, produces=JSON, authorizations={@Authorization(value=JWT)})
     @ApiResponses(value = { @ApiResponse(code=200, message=OK, response=CountryDto.class, responseContainer="List")})
-    @PreAuthorize("hasRole('CUSTOMER')")
-    @GetMapping("/airports")
+    @GetMapping("/api/airports")
     public List<CountryDto> getAirports() {
-    	List<CountryDto> countries = countryService
-    			.findAll()
-    			.stream()
-				.map(country -> countryMapper.toDto(country))
-				.collect(Collectors.toList());
+    	List<CountryDto> countries = countryMapper.toDto(countryService.findAll());
     	
     	for(CountryDto country : countries) {
     		Collections.sort(country.getAirports());

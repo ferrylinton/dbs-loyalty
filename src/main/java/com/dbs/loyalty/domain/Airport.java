@@ -16,9 +16,12 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.dbs.loyalty.config.constant.DomainConstant;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Class of Airport
@@ -28,6 +31,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @EqualsAndHashCode(of = { "id", "name" }, callSuper = false)
+@ToString(of = { "id", "name" })
 @Entity
 @Table(	
 	name = "a_airport", 
@@ -41,8 +45,8 @@ public class Airport extends AbstractTask implements Serializable {
 	
 	@Id
 	@Column(name = "id", length=22)
-	@GenericGenerator(name = "IdGenerator", strategy = "com.dbs.loyalty.domain.IdGenerator")
-	@GeneratedValue(generator = "IdGenerator")
+	@GenericGenerator(name = DomainConstant.ID_GENERATOR, strategy = DomainConstant.ID_GENERATOR_STRATEGY)
+	@GeneratedValue(generator = DomainConstant.ID_GENERATOR)
 	private String id;
 
 	@Size(min = 2, max = 100, message = "{validation.size.name}")
@@ -52,10 +56,5 @@ public class Airport extends AbstractTask implements Serializable {
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "country_id", nullable = true, foreignKey = @ForeignKey(name = "a_airport_fk"))
     private Country country;
-	
-    @Override
-	public String toString() {
-		return id + "," + name;
-	}
-    
+
 }

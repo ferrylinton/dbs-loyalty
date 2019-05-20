@@ -1,6 +1,6 @@
 package com.dbs.loyalty.web.controller.rest;
 
-import static com.dbs.loyalty.config.constant.LogConstant.GET_IMAGE_BY_PROMO_ID;
+import static com.dbs.loyalty.config.constant.RestConstant.GET_IMAGE_BY_PROMO_ID;
 import static com.dbs.loyalty.config.constant.MessageConstant.DATA_IS_NOT_FOUND;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.IMAGE;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.JWT;

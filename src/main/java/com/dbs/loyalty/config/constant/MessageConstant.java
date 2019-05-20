@@ -2,15 +2,13 @@ package com.dbs.loyalty.config.constant;
 
 public final class MessageConstant {
 
-	public static final String DATA_WITH_VALUE_NOT_FOUND = "message.dataWithValueNotFound";
+	
 	
 	public static final String ENTITY_WITH_VALUE_NOT_FOUND = "message.entityWithValueNotFound";
 
 	public static final String SUCCESS = "message.success";
 	
-	public static final String DELETE_CONSTRAINT_VIOLATION = "message.deleteConstraintViolation";
 	
-	public static final String TASK_IS_SAVED = "message.taskIsSaved";
 	
 	public static final String TASK_IS_VERIFIED = "message.taskIsVerified";
 	

@@ -1,7 +1,5 @@
 package com.dbs.loyalty.web.controller.rest;
 
-import static com.dbs.loyalty.config.constant.MessageConstant.DATA_WITH_VALUE_NOT_FOUND;
-
 import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Date;

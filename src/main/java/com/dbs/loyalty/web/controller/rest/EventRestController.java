@@ -1,6 +1,6 @@
 package com.dbs.loyalty.web.controller.rest;
 
-import static com.dbs.loyalty.config.constant.MessageConstant.DATA_WITH_VALUE_NOT_FOUND;
+import static com.dbs.loyalty.config.constant.MessageConstant.DATA_IS_NOT_FOUND;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.EVENT;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.JWT;
 
@@ -19,9 +19,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dbs.loyalty.config.constant.EntityConstant;
 import com.dbs.loyalty.domain.FileImage;
 import com.dbs.loyalty.domain.FilePdf;
 import com.dbs.loyalty.exception.BadRequestException;
@@ -32,8 +32,7 @@ import com.dbs.loyalty.service.ImageService;
 import com.dbs.loyalty.service.PdfService;
 import com.dbs.loyalty.service.dto.EventDto;
 import com.dbs.loyalty.service.mapper.EventMapper;
-import com.dbs.loyalty.util.MessageUtil;
-import com.dbs.loyalty.web.response.SuccessResponse;
+import com.dbs.loyalty.web.response.Response;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -51,8 +50,8 @@ import lombok.RequiredArgsConstructor;
  */
 @Api(tags = { EVENT })
 @RequiredArgsConstructor
+@PreAuthorize("hasRole('CUSTOMER')")
 @RestController
-@RequestMapping("/api")
 public class EventRestController {
 	
 	private static final String CONTENT_DISPOSITION = "content-disposition";
@@ -80,8 +79,7 @@ public class EventRestController {
     		produces=MediaType.APPLICATION_JSON_VALUE, 
     		authorizations = { @Authorization(value=JWT) })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = EventDto.class)})
-	@PreAuthorize("hasRole('CUSTOMER')")
-    @GetMapping("/events/upcoming")
+    @GetMapping("/api/events/upcoming")
     public ResponseEntity<List<EventDto>> getUpcomingEvent(){
 		List<EventDto> events = eventService
 				.findUpcomingEvent()
@@ -101,8 +99,7 @@ public class EventRestController {
     		produces=MediaType.APPLICATION_JSON_VALUE, 
     		authorizations = { @Authorization(value=JWT) })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = EventDto.class)})
-	@PreAuthorize("hasRole('CUSTOMER')")
-    @GetMapping("/events/previous")
+    @GetMapping("/api/events/previous")
     public ResponseEntity<List<EventDto>> getPreviousEvent(){
 		List<EventDto> events = eventService
 				.findPreviousEvent()
@@ -129,8 +126,7 @@ public class EventRestController {
     		produces=MediaType.APPLICATION_JSON_VALUE, 
     		authorizations = { @Authorization(value=JWT) })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = EventDto.class)})
-    @PreAuthorize("hasRole('CUSTOMER')")
-    @GetMapping("/events/{id}")
+    @GetMapping("/api/events/{id}")
     public ResponseEntity<EventDto> getEventById(
     		@ApiParam(name = "id", value = "Event Id", example = "77UTTDWJX3zNWABg9ixZX9")
     		@PathVariable String id) throws NotFoundException, IOException{
@@ -142,8 +138,7 @@ public class EventRestController {
 		if(current.isPresent()) {
 			return ResponseEntity.ok().body(current.get());
 		}else {
-			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, id);
-			throw new NotFoundException(message);
+			throw new NotFoundException(String.format(DATA_IS_NOT_FOUND, EntityConstant.PROMO, id));
 		}
     }
     
@@ -154,8 +149,7 @@ public class EventRestController {
     		produces= "image/png, image/jpeg", 
     		authorizations = { @Authorization(value=JWT) })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Byte.class)})
-    @PreAuthorize("hasRole('CUSTOMER')")
-    @GetMapping("/events/{id}/image")
+    @GetMapping("/api/events/{id}/image")
 	public ResponseEntity<byte[]> getEventImage(
     		@ApiParam(name = "id", value = "Event Id", example = "77UTTDWJX3zNWABg9ixZX9")
     		@PathVariable String id) throws NotFoundException, IOException{
@@ -172,8 +166,7 @@ public class EventRestController {
 					.headers(headers)
 					.body(fileImage.get().getBytes());
 		}else {
-			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, id);
-			throw new NotFoundException(message);
+			throw new NotFoundException(String.format(DATA_IS_NOT_FOUND, EntityConstant.PROMO, id));
 		}
 	}
 	
@@ -184,8 +177,7 @@ public class EventRestController {
     		produces= "application/pdf", 
     		authorizations = { @Authorization(value=JWT) })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Byte.class)})
-    @PreAuthorize("hasRole('CUSTOMER')")
-    @GetMapping("/events/{id}/material")
+    @GetMapping("/api/events/{id}/material")
 	public ResponseEntity<InputStreamResource> getEventMaterial(
     		@ApiParam(name = "id", value = "Event Id", example = "77UTTDWJX3zNWABg9ixZX9")
     		@PathVariable String id) throws NotFoundException, IOException{
@@ -204,8 +196,7 @@ public class EventRestController {
 					.headers(headers)
 					.body(new InputStreamResource(resource.getInputStream()));
 		}else {
-			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, id);
-			throw new NotFoundException(message);
+			throw new NotFoundException(String.format(DATA_IS_NOT_FOUND, EntityConstant.PROMO, id));
 		}
 	}
 
@@ -215,17 +206,15 @@ public class EventRestController {
     		notes="Add Customer's event answer",
     		produces=MediaType.APPLICATION_JSON_VALUE, 
     		authorizations = { @Authorization(value=JWT) })
-    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = SuccessResponse.class)})
-    @PreAuthorize("hasRole('CUSTOMER')")
-    @PostMapping("/events/{id}/{answer}")
-    public ResponseEntity<SuccessResponse> addCustomerEvent(
+    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Response.class)})
+    @PostMapping("/api/events/{id}/{answer}")
+    public Response addCustomerEvent(
     		@ApiParam(name = "id", value = "Event Id", example = "10noLnNvqC4SwAUMcJ9GXm")
     		@PathVariable String id,
     		@ApiParam(name = "answer", value = "Customer's answer", example = "NO, YES, MAYBE")
     		@PathVariable String answer) throws NotFoundException, BadRequestException{
     	
-    	SuccessResponse response = customerEventService.save(id, answer);
-    	return ResponseEntity.ok().body(response);
+    	return customerEventService.save(id, answer);
     }
     
 }

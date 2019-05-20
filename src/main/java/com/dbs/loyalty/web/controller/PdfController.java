@@ -1,7 +1,5 @@
 package com.dbs.loyalty.web.controller;
 
-import static com.dbs.loyalty.config.constant.MessageConstant.DATA_WITH_VALUE_NOT_FOUND;
-
 import java.io.IOException;
 import java.util.Optional;
 
@@ -14,24 +12,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.dbs.loyalty.domain.FilePdf;
 import com.dbs.loyalty.domain.FilePdfTask;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.PdfService;
-import com.dbs.loyalty.util.MessageUtil;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Controller
-@RequestMapping("/pdf")
-public class PdfController {
+public class PdfController extends AbstractController{
 
 	private final PdfService filePdfService;
 	
-	@GetMapping("/{id}")
+	@GetMapping("/pdf/{id}")
 	public ResponseEntity<byte[]> getFilePdf(@PathVariable String id) throws NotFoundException {
 		Optional<FilePdf> current = filePdfService.findById(id);
     	
@@ -45,12 +40,11 @@ public class PdfController {
 					.headers(headers)
 					.body(current.get().getBytes());
 		}else {
-			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, id);
-			throw new NotFoundException(message);
+			throw new NotFoundException(getNotFoundMessage(id));
 		}
 	}
 	
-	@GetMapping("/task/{id}")
+	@GetMapping("/pdf/task/{id}")
 	public ResponseEntity<byte[]> getFilePdfTask(@PathVariable String id) throws NotFoundException {
 		Optional<FilePdfTask> current = filePdfService.findPdfTaskById(id);
     	
@@ -64,12 +58,11 @@ public class PdfController {
 					.headers(headers)
 					.body(current.get().getBytes());
 		}else {
-			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, id);
-			throw new NotFoundException(message);
+			throw new NotFoundException(getNotFoundMessage(id));
 		}
 	}
 	
-	@GetMapping("/download/{id}")
+	@GetMapping("/pdf/download/{id}")
 	public ResponseEntity<InputStreamResource> downloadFilePdf(@PathVariable String id) throws NotFoundException, IOException {
 		Optional<FilePdf> current = filePdfService.findById(id);
     	
@@ -85,8 +78,7 @@ public class PdfController {
 					.headers(headers)
 					.body(new InputStreamResource(resource.getInputStream()));
 		}else {
-			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, id);
-			throw new NotFoundException(message);
+			throw new NotFoundException(getNotFoundMessage(id));
 		}
 	}
 	

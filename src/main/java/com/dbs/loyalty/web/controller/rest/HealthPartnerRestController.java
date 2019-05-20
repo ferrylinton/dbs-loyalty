@@ -1,6 +1,6 @@
 package com.dbs.loyalty.web.controller.rest;
 
-import static com.dbs.loyalty.config.constant.MessageConstant.DATA_WITH_VALUE_NOT_FOUND;
+import static com.dbs.loyalty.config.constant.MessageConstant.DATA_IS_NOT_FOUND;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.JWT;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.WELLNESS;
 
@@ -19,13 +19,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dbs.loyalty.config.constant.EntityConstant;
 import com.dbs.loyalty.domain.FileImage;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.HealthPartnerService;
 import com.dbs.loyalty.service.ImageService;
 import com.dbs.loyalty.service.dto.HealthPartnerDto;
 import com.dbs.loyalty.service.mapper.HealthPartnerMapper;
-import com.dbs.loyalty.util.MessageUtil;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -99,8 +99,7 @@ public class HealthPartnerRestController {
 					.headers(headers)
 					.body(fileImage.get().getBytes());
 		}else {
-			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, id);
-			throw new NotFoundException(message);
+			throw new NotFoundException(String.format(DATA_IS_NOT_FOUND, EntityConstant.PROMO, id));
 		}
 	}
 }

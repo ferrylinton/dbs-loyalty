@@ -1,6 +1,6 @@
 package com.dbs.loyalty.web.controller.rest;
 
-import static com.dbs.loyalty.config.constant.LogConstant.AUTHENTICATE;
+import static com.dbs.loyalty.config.constant.RestConstant.AUTHENTICATE;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.AUTHENTICATION;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.JSON;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.OK;
@@ -23,6 +23,7 @@ import com.dbs.loyalty.web.swagger.ApiNotes;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +46,10 @@ public class JWTRestController {
     @ApiNotes("authenticate.md")
     @ApiResponses(value={@ApiResponse(code=200, message=OK, response=JWTTokenDto.class)})
     @PostMapping("/authenticate")
-    public JWTTokenDto authenticate(@Valid @RequestBody JWTLoginDto jwtLoginDto) throws IOException {
+    public JWTTokenDto authenticate(
+    		@ApiParam(name = "JWTLoginData", value = "Customer's login data to get JWT token")
+    		@Valid @RequestBody JWTLoginDto jwtLoginDto) throws IOException {
+    	
     	Authentication authentication = new UsernamePasswordAuthenticationToken(jwtLoginDto.getEmail(), jwtLoginDto.getPassword());
     	return jwtAuthenticationService.authenticate(authentication, jwtLoginDto.isRememberMe());
     }

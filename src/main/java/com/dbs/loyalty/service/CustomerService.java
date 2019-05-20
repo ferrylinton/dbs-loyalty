@@ -14,7 +14,7 @@ import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.CustomerRepository;
-import com.dbs.loyalty.service.dto.CustomerActivateDto;
+import com.dbs.loyalty.service.dto.CustomerNewPasswordDto;
 import com.dbs.loyalty.service.dto.CustomerPasswordDto;
 import com.dbs.loyalty.service.dto.CustomerUpdateDto;
 import com.dbs.loyalty.service.specification.CustomerSpecification;
@@ -86,7 +86,7 @@ public class CustomerService{
 		customerRepository.changePassword(passwordHash, SecurityUtil.getLogged());
 	}
 	
-	public void activate(CustomerActivateDto customerActivateDto) {
+	public void activate(CustomerNewPasswordDto customerActivateDto) {
 		Optional<Customer> customer = customerRepository.findByEmailIgnoreCase(SecurityUtil.getLogged());
 		
 		if(customer.isPresent()) {

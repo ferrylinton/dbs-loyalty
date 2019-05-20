@@ -10,15 +10,15 @@ import lombok.Setter;
 
 @Setter
 @Getter
-@ApiModel(value="CustomerActivateData", description = "Customer's activate data")
-public class CustomerActivateDto {
+@ApiModel(value="CustomerNewPassword", description = "Customer's new password")
+public class CustomerNewPasswordDto {
 	
-	@ApiModelProperty(value = "Customer's password", example = "pas100", required = true, position = 0)
+	@ApiModelProperty(value = "Password", example = "pas100", required = true, position = 0)
 	@NotNull
 	@Size(min=6, max = 20)
 	private String password;
 
-	@ApiModelProperty(value = "Confirmation of Customer's password", example = "new100", required = true, position = 1)
+	@ApiModelProperty(value = "Confirm password", example = "new100", required = true, position = 1)
 	@NotNull
 	@Size(min=6, max = 20)
 	private String confirmPassword;

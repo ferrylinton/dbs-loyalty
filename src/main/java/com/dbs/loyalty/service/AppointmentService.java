@@ -1,5 +1,10 @@
 package com.dbs.loyalty.service;
 
+import static com.dbs.loyalty.config.constant.EntityConstant.CUSTOMER;
+import static com.dbs.loyalty.config.constant.MessageConstant.DATA_IS_ALREADY_EXIST;
+import static com.dbs.loyalty.config.constant.MessageConstant.DATA_IS_NOT_FOUND;
+import static com.dbs.loyalty.config.constant.MessageConstant.NO_LIMIT_iS_AVAILABLE;
+
 import java.time.Instant;
 import java.util.Optional;
 
@@ -8,10 +13,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dbs.loyalty.config.constant.MessageConstant;
 import com.dbs.loyalty.domain.Appointment;
 import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.domain.Wellness;
 import com.dbs.loyalty.exception.BadRequestException;
+import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.repository.AppointmentRepository;
 import com.dbs.loyalty.repository.CustomerRepository;
 import com.dbs.loyalty.repository.WellnessRepository;
@@ -39,7 +46,7 @@ public class AppointmentService {
 	}
 
 	@Transactional
-	public Response save(Appointment appointment) throws BadRequestException{
+	public Response save(Appointment appointment) throws BadRequestException, NotFoundException{
 		Optional<Customer> customer = customerRespository.findById(SecurityUtil.getId());
 		
 		if(customer.isPresent()) {
@@ -49,7 +56,7 @@ public class AppointmentService {
 					appointment.getArrivalDate());
 			
 			if(current.isPresent()) {
-				return new Response("Data is already exist");
+				return new Response(DATA_IS_ALREADY_EXIST);
 			}else {
 				Optional<Wellness> wellness = wellnessRepository.findById(SecurityUtil.getId());
 				
@@ -61,14 +68,14 @@ public class AppointmentService {
 					appointment.setCreatedBy(SecurityUtil.getLogged());
 					appointment.setCreatedDate(Instant.now());
 					appointment = appointmentRepository.save(appointment);
-					return new Response("Data is saved");
+					return new Response(MessageConstant.DATA_IS_SAVED);
 				}else {
-					throw new BadRequestException("No limit is available");
+					throw new BadRequestException(NO_LIMIT_iS_AVAILABLE);
 				}
 			}
+		}else {
+			throw new NotFoundException(String.format(DATA_IS_NOT_FOUND, CUSTOMER, SecurityUtil.getId()));
 		}
-
-		throw new BadRequestException("Failed to save data");
 	}
 	
 }

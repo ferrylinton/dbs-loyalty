@@ -24,9 +24,9 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class MailService {
 	
-	private static final String TOKEN_FORMAT = "Verification Token : %d";
+	private static final String TOKEN_FORMAT = "Token : %d";
 	
-	private static final String SUBJECT_TOKEN = "DBS";
+	private static final String SUBJECT_TOKEN = "DBS - Token";
 
     private final ApplicationProperties applicationProperties;
 

@@ -20,6 +20,7 @@ import com.dbs.loyalty.config.constant.DomainConstant;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Class of Country
@@ -29,6 +30,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @EqualsAndHashCode(of = { "id", "name" }, callSuper = false)
+@ToString(of = { "id", "name" })
 @Entity
 @Table(	
 	name = "a_country", 
@@ -52,10 +54,5 @@ public class Country extends AbstractTask implements Serializable {
 	@OrderBy(value = "name ASC")
 	@OneToMany(mappedBy = "country", fetch = FetchType.LAZY)
     private Set<Airport> airports;
-	
-	@Override
-	public String toString() {
-		return id + "," + name;
-	}
-	
+
 }

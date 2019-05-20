@@ -1,6 +1,6 @@
 package com.dbs.loyalty.config.constant;
 
-public class LogConstant {
+public class RestConstant {
 	
 	public static final String AUTHENTICATE = "Authenticate";
 	
@@ -15,6 +15,8 @@ public class LogConstant {
 	public static final String GET_PROMO_CATEGORIES = "GetPromoCategories";
 
 	public static final String GET_AIRPORTS = "GetAirports";
+	
+	public static final String ADD_APPOINTMENT = "AddAppointment";
 	
 	public static final String GENERATE_VERIFICATION_TOKEN = "GenerateVerificationToken";
 	
@@ -37,7 +39,21 @@ public class LogConstant {
 	public static final String GET_TERM_BY_PROMO_ID = "GetTermByPromoId";
 	
 	public static final String ADD_TO_INTERESTED_IN_PROMO =  "AddToInterestedInPromo";
+
+	public static final String FORGOT_PASSWORD =  "ForgotPassword";
 	
 	public static final String ACTIVATE_CUSTOMER =  "ActivateCustomer";
+	
+	public static final String GET_CUSTOMER_INFO = "GetCustomerInfo";
+	
+	public static final String GET_CUSTOMER_IMAGE = "GetCustomerImage";
+	
+	public static final String UPDATE_CUSTOMER = "UpdateCustomer";
+	
+	public static final String UPDATE_CUSTOMER_NOTES = "Update customer information, and after update customer must use new token or relogin";
+	
+	public static final String UPDATE_CUSTOMER_IMAGE = "UpdateCustomerImage";
+	
+	public static final String CHANGE_PASSWORD = "ChangePassword";
 	
 }

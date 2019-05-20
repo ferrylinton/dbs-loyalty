@@ -1,9 +1,9 @@
 package com.dbs.loyalty.web.controller.rest;
 
-import static com.dbs.loyalty.config.constant.LogConstant.GET_ALL_BY_PROMO_CATEGORY_ID;
-import static com.dbs.loyalty.config.constant.LogConstant.GET_ALL_PROMO_IN_CAROUSEL;
-import static com.dbs.loyalty.config.constant.LogConstant.GET_PROMO_BY_ID;
-import static com.dbs.loyalty.config.constant.LogConstant.GET_TERM_BY_PROMO_ID;
+import static com.dbs.loyalty.config.constant.RestConstant.GET_ALL_BY_PROMO_CATEGORY_ID;
+import static com.dbs.loyalty.config.constant.RestConstant.GET_ALL_PROMO_IN_CAROUSEL;
+import static com.dbs.loyalty.config.constant.RestConstant.GET_PROMO_BY_ID;
+import static com.dbs.loyalty.config.constant.RestConstant.GET_TERM_BY_PROMO_ID;
 import static com.dbs.loyalty.config.constant.MessageConstant.DATA_IS_NOT_FOUND;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.JSON;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.JWT;

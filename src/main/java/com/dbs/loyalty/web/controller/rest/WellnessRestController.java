@@ -1,6 +1,6 @@
 package com.dbs.loyalty.web.controller.rest;
 
-import static com.dbs.loyalty.config.constant.LogConstant.GET_WELLNESS_LIMIT;
+import static com.dbs.loyalty.config.constant.RestConstant.GET_WELLNESS_LIMIT;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.JSON;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.JWT;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.OK;
