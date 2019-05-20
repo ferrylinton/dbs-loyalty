@@ -1,7 +1,6 @@
 package com.dbs.loyalty.web.controller.rest;
 
 import static com.dbs.loyalty.config.constant.MessageConstant.DATA_IS_NOT_FOUND;
-import static com.dbs.loyalty.config.constant.MessageConstant.FILE_IS_EMPTY;
 import static com.dbs.loyalty.config.constant.RestConstant.GET_CUSTOMER_IMAGE;
 import static com.dbs.loyalty.config.constant.RestConstant.UPDATE_CUSTOMER_IMAGE;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.CUSTOMER;
@@ -24,14 +23,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.dbs.loyalty.config.constant.MessageConstant;
 import com.dbs.loyalty.domain.FileImage;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.ImageService;
-import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.util.SecurityUtil;
 import com.dbs.loyalty.web.controller.AbstractController;
-import com.dbs.loyalty.web.response.BadRequestResponse;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -77,7 +75,7 @@ public class CustomerImageRestController extends AbstractController{
     		@RequestParam("file") MultipartFile file) throws NotFoundException, IOException, BadRequestException  {
     	
     	if(file.isEmpty()) {
-    		throw new BadRequestException(new BadRequestResponse(MessageUtil.getMessage(FILE_IS_EMPTY)));
+    		throw new BadRequestException(MessageConstant.FILE_IS_EMPTY);
     	}else {
     		FileImage fileImage = imageService.updateCustomerImage(file);
         	HttpHeaders headers = new HttpHeaders();

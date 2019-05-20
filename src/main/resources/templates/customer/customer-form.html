@@ -82,7 +82,7 @@
 						<div class="col-12 col-sm-12 col-md-12 col-lg-8 col-xl-8">
 							<div class="form-group">
 								<div class="custom-file">
-									<input type="file" accept="image/png,image/jpg,image/jpeg" class="custom-file-input" th:classappend="${#fields.hasErrors('multipartFileImage') ? 'is-invalid' : ''}" id="multipartFileImage" name="multipartFileImage" onchange="ImageUtil.show(this)">
+									<input type="file" th:accept="${#strings.listJoin(@applicationProperties.getFile().getImageContentTypes(),',')}" class="custom-file-input" th:classappend="${#fields.hasErrors('multipartFileImage') ? 'is-invalid' : ''}" id="multipartFileImage" name="multipartFileImage" onchange="ImageUtil.show(this)">
 									<label class="custom-file-label" th:text="#{chooseImageFile}"></label>
 									<div class="invalid-feedback" th:if="${#fields.hasErrors('multipartFileImage')}" th:uerrors="*{multipartFileImage}">Error</div>
 								</div>

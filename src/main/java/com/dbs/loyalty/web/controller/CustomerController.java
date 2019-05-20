@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.dbs.loyalty.config.ApplicationProperties;
 import com.dbs.loyalty.config.constant.CustomerTypeConstant;
 import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.domain.FileImageTask;
@@ -66,6 +67,8 @@ public class CustomerController extends AbstractPageController{
 	private final CustomerService customerService;
 	
 	private final TaskService taskService;
+	
+	private final ApplicationProperties applicationProperties;
 
 	@PreAuthorize("hasAnyRole('CUSTOMER_MK', 'CUSTOMER_CK')")
 	@GetMapping
@@ -156,7 +159,7 @@ public class CustomerController extends AbstractPageController{
 
 	@InitBinder(CUSTOMER)
 	protected void initBinder(WebDataBinder binder) {
-		binder.addValidators(new CustomerValidator(customerService));
+		binder.addValidators(new CustomerValidator(customerService, applicationProperties));
 		binder.registerCustomEditor(LocalDate.class, new PropertyEditorSupport() {
 			
 		    @Override

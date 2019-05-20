@@ -13,7 +13,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.service.JWTAuthenticationService;
@@ -37,7 +36,6 @@ import lombok.RequiredArgsConstructor;
 @Api(tags = { AUTHENTICATION })
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api")
 public class JWTRestController {
 
     private final JWTAuthenticationService jwtAuthenticationService;
@@ -45,7 +43,7 @@ public class JWTRestController {
     @ApiOperation(value=AUTHENTICATE, consumes=JSON, produces=JSON)
     @ApiNotes("authenticate.md")
     @ApiResponses(value={@ApiResponse(code=200, message=OK, response=JWTTokenDto.class)})
-    @PostMapping("/authenticate")
+    @PostMapping("/api/authenticate")
     public JWTTokenDto authenticate(
     		@ApiParam(name = "JWTLoginData", value = "Customer's login data to get JWT token")
     		@Valid @RequestBody JWTLoginDto jwtLoginDto) throws IOException {

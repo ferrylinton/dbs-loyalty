@@ -24,9 +24,8 @@ import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.model.ErrorData;
 import com.dbs.loyalty.util.ErrorUtil;
-import com.dbs.loyalty.util.MessageUtil;
-import com.dbs.loyalty.web.response.BadRequestResponse;
 import com.dbs.loyalty.web.response.ErrorResponse;
+import com.dbs.loyalty.web.response.Response;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -35,10 +34,6 @@ import lombok.extern.slf4j.Slf4j;
 public class GlobalExceptionHandler {
 
 	private static final String ERROR_DATA = "errorData";
-	
-	private String fileSizeIsNotValid = "message.fileSizeIsNotValid";
-
-	private String file = "file";
 	
 	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public String handleError405(HttpServletRequest request, HttpRequestMethodNotSupportedException e) {
@@ -80,32 +75,31 @@ public class GlobalExceptionHandler {
     }
 	
 	@ExceptionHandler(value = BadRequestException.class)
-    public ResponseEntity<BadRequestResponse> badRequestException(BadRequestException ex){
+    public ResponseEntity<Response> badRequestException(BadRequestException ex){
        return ResponseEntity
 	            .status(HttpStatus.BAD_REQUEST)
-	            .body(ex.getResponse());
+	            .body(new Response(ex.getMessage()));
     }
 	
 	@ExceptionHandler(value = MissingServletRequestPartException.class)
-    public ResponseEntity<BadRequestResponse> missingServletRequestPartException(MissingServletRequestPartException ex){
+    public ResponseEntity<Response> missingServletRequestPartException(MissingServletRequestPartException ex){
        return ResponseEntity
 	            .status(HttpStatus.BAD_REQUEST)
-	            .body(new BadRequestResponse(ex.getLocalizedMessage()));
+	            .body(new Response(ex.getMessage()));
     }
 	
 	@ExceptionHandler(value = MultipartException.class)
-    public ResponseEntity<BadRequestResponse> multipartException(MultipartException ex){
+    public ResponseEntity<Response> multipartException(MultipartException ex){
        return ResponseEntity
 	            .status(HttpStatus.BAD_REQUEST)
-	            .body(new BadRequestResponse(ex.getLocalizedMessage()));
+	            .body(new Response(ex.getMessage()));
     }
 	
 	@ExceptionHandler(MaxUploadSizeExceededException.class)
-	public ResponseEntity<BadRequestResponse> handleException(MaxUploadSizeExceededException ex){
-		String message = MessageUtil.getMessage(fileSizeIsNotValid);
+	public ResponseEntity<Response> handleException(MaxUploadSizeExceededException ex){
 		return ResponseEntity
 	            .status(HttpStatus.BAD_REQUEST)
-	            .body(new BadRequestResponse(message, file));
+	            .body(new Response(ex.getMessage()));
 	}
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)

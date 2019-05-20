@@ -18,6 +18,18 @@ application:
     file-path: /home/ferry/loyalty/customers.csv
   mail: 
     from: testdevku007@gmail.com
+  file:
+    # 3x1024x102 5MB
+    image-max-size: 3145728
+    # 3x1024x102 5MB
+    pdf-max-size: 3145728
+    # 20x1024x102 20MB
+    csv-max-size: 20910080
+    pdf-content-type: application/pdf
+    image-content-types:
+      - image/png
+      - image/jpg
+      - image/jpeg
 spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
@@ -53,8 +65,8 @@ spring:
     static-path-pattern: /static/**
   servlet:
     multipart:
-      max-file-size: 5MB
-      max-request-size: 5MB
+      max-file-size: 50MB
+      max-request-size: 50MB
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html

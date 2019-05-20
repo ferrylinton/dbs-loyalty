@@ -1,5 +1,8 @@
 package com.dbs.loyalty.config;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +22,8 @@ public class ApplicationProperties {
 	private Scheduler scheduler;
 	
 	private Mail mail;
+	
+	private File file;
 
 	@Getter
 	@Setter
@@ -63,6 +68,22 @@ public class ApplicationProperties {
 	public static class Mail{
 		
 		private String from = "test@dbs.com";
+		
+	}
+	
+	@Getter
+	@Setter
+	public static class File{
+		
+		private long imageMaxSize = 5;
+		
+		private long pdfMaxSize = 5;
+		
+		private long csvMaxSize = 20;
+		
+		private String pdfContentType = "application/pdf";
+		
+		private List<String> imageContentTypes = Arrays.asList("image/png", "image/jpg", "image/jpeg");
 		
 	}
 	
