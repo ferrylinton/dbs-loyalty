@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.config.constant.SwaggerConstant;
@@ -37,7 +36,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('CUSTOMER')")
 @RestController
-@RequestMapping("/api")
 public class RewardRestController {
 	
 	private final RewardService rewardService;
@@ -46,14 +44,14 @@ public class RewardRestController {
 	
 	@ApiOperation(value=GET_TOTAL_REWARDS, produces=JSON, authorizations={@Authorization(value=JWT)})
 	@ApiResponses(value={@ApiResponse(code=200, message=OK, response=TotalDto.class)})
-	@GetMapping("/rewards/total")
+	@GetMapping("/api/rewards/total")
 	public TotalDto getTotalRewards(){
 		return rewardService.getTotal();
 	}
 	
 	@ApiOperation(value=GET_ALL_REWARDS, produces=JSON, authorizations={@Authorization(value=JWT)})
 	@ApiResponses(value={@ApiResponse(code=200, message=OK, response=RewardDto.class)})
-	@GetMapping("/rewards")
+	@GetMapping("/api/rewards")
 	public List<RewardDto> getAllRewards(){
 		return rewardService
 				.findAllValid()

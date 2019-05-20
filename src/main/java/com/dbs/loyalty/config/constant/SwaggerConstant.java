@@ -6,7 +6,7 @@ public final class SwaggerConstant {
 	
 	public static final String PROMO_CATEGORY 		= "PromoCategory";
 	
-	public static final String TRAVEL_ASSISTANCE 	= "TravelAssistance";
+	public static final String AIRPORT_ASSISTANCE 	= "AirportAssistance";
 	
 	public static final String VERIFICATION_TOKEN 	= "VerificationToken";
 	

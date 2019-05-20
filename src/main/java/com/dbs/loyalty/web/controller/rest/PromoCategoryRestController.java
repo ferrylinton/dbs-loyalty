@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.service.PromoCategoryService;
@@ -35,7 +34,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('CUSTOMER')")
 @RestController
-@RequestMapping("/api")
 public class PromoCategoryRestController {
 
     private final PromoCategoryService promoCategoryService;
@@ -49,7 +47,7 @@ public class PromoCategoryRestController {
      */
     @ApiOperation(value=GET_PROMO_CATEGORIES, produces=JSON, authorizations={@Authorization(value=JWT)})
     @ApiResponses(value={@ApiResponse(code=200, message=OK, response=PromoCategoryDto.class)})
-    @GetMapping("/promo-categories")
+    @GetMapping("/api/promo-categories")
     public List<PromoCategoryDto> getPromoCategories() {
     	return promoCategoryService
     			.findAll()

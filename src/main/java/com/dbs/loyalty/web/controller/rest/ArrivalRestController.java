@@ -4,14 +4,13 @@ import static com.dbs.loyalty.config.constant.RestConstant.ADD_ARRIVAL;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.JSON;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.JWT;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.OK;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.TRAVEL_ASSISTANCE;
+import static com.dbs.loyalty.config.constant.SwaggerConstant.AIRPORT_ASSISTANCE;
 
 import javax.validation.Valid;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.exception.BadRequestException;
@@ -33,11 +32,10 @@ import lombok.RequiredArgsConstructor;
  * @author Ferry L. H. <ferrylinton@gmail.com>
  * 
  */
-@Api(tags = { TRAVEL_ASSISTANCE })
+@Api(tags = { AIRPORT_ASSISTANCE })
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('CUSTOMER')")
 @RestController
-@RequestMapping("/api")
 public class ArrivalRestController {
 
 	private final ArrivalService arrivalService;
@@ -46,7 +44,7 @@ public class ArrivalRestController {
 
     @ApiOperation(value=ADD_ARRIVAL, produces=JSON, authorizations={@Authorization(value=JWT)})
     @ApiResponses(value={@ApiResponse(code=200, message=OK, response=Response.class)})
-    @PostMapping("/arrivals")
+    @PostMapping("/api/arrivals")
     public Response addArrival(@Valid @RequestBody ArrivalDto arrival) throws BadRequestException{
     	return arrivalService.save(arrivalMapper.toEntity(arrival));
     }

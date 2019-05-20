@@ -12,7 +12,6 @@ import javax.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.config.constant.MessageConstant;
@@ -34,14 +33,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('TOKEN')")
 @RestController
-@RequestMapping("/api")
 public class CustomerActivateRestController extends AbstractController{
 
     private final CustomerService customerService;
 
     @ApiOperation(value=ACTIVATE_CUSTOMER, produces=JSON, authorizations={@Authorization(value=JWT)})
     @ApiResponses(value={@ApiResponse(code=200, message=OK, response=Response.class)})
-    @PutMapping("/customers/activate")
+    @PutMapping("/api/customers/activate")
     public Response activate(
     		@ApiParam(name = "CustomerNewPassword", value = "Customer's new password") 
     		@Valid @RequestBody CustomerNewPasswordDto customerNewPasswordDto) throws BadRequestException  {
@@ -50,7 +48,7 @@ public class CustomerActivateRestController extends AbstractController{
     
     @ApiOperation(value=FORGOT_PASSWORD, produces=JSON, authorizations={@Authorization(value=JWT)})
     @ApiResponses(value={@ApiResponse(code=200, message=OK, response=Response.class)})
-    @PutMapping("/customers/forgot")
+    @PutMapping("/api/customers/forgot")
     public Response forgot(
     		@ApiParam(name = "CustomerNewPassword", value = "Customer's new password") 
     		@Valid @RequestBody CustomerNewPasswordDto customerNewPasswordDto) throws BadRequestException  {

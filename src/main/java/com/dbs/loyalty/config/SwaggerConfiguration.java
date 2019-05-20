@@ -107,7 +107,7 @@ public class SwaggerConfiguration {
 	            	new Tag(SwaggerConstant.FEEDBACK, Constant.EMPTY, 5),
 	            	new Tag(SwaggerConstant.LOVED_ONE, Constant.EMPTY, 6),
 	            	new Tag(SwaggerConstant.REWARD, Constant.EMPTY, 7),
-	            	new Tag(SwaggerConstant.TRAVEL_ASSISTANCE, Constant.EMPTY, 8),
+	            	new Tag(SwaggerConstant.AIRPORT_ASSISTANCE, Constant.EMPTY, 8),
 	            	new Tag(SwaggerConstant.WELLNESS, Constant.EMPTY, 9),
 	            	new Tag(SwaggerConstant.VERIFICATION_TOKEN, Constant.EMPTY, 10)
 	            )

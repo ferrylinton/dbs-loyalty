@@ -4,7 +4,7 @@ import static com.dbs.loyalty.config.constant.RestConstant.GET_AIRPORTS;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.JSON;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.JWT;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.OK;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.TRAVEL_ASSISTANCE;
+import static com.dbs.loyalty.config.constant.SwaggerConstant.AIRPORT_ASSISTANCE;
 
 import java.util.Collections;
 import java.util.List;
@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
  * 
  * @author Ferry L. H. <ferrylinton@gmail.com>
  */
-@Api(tags = { TRAVEL_ASSISTANCE })
+@Api(tags = { AIRPORT_ASSISTANCE })
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('CUSTOMER')")
 @RestController

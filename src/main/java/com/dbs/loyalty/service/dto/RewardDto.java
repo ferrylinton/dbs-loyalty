@@ -20,7 +20,7 @@ public class RewardDto{
 	@ApiModelProperty(value = "Reward's point", example = "500", position = 0)
 	private Integer point;
 	
-	@ApiModelProperty(value = "Reward's expiry date", example = "2019-0801", position = 1)
+	@ApiModelProperty(value = "Reward's expiry date", example = "2019-08-01", position = 1)
 	private LocalDate expiryDate;
 	
 }
