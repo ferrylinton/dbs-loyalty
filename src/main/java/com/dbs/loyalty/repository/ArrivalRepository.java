@@ -1,7 +1,6 @@
 package com.dbs.loyalty.repository;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.Instant;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -20,8 +19,8 @@ public interface ArrivalRepository extends JpaRepository<Arrival, String>{
 	@Query(value = "select a from Arrival a "
 			+ "join fetch a.customer c "
 			+ "join fetch a.airport r "
-			+ "where c.id = ?1 and r.id = ?2 and a.flightDate = ?3 and a.flightTime = ?4")
-	Optional<Arrival> findByCustomerAndAirportAndDate(String customerId, String airportId, LocalDate flightDate, LocalTime flightTime);
+			+ "where c.id = ?1 and r.id = ?2 and a.flightDate = ?3")
+	Optional<Arrival> findByCustomerAndAirportAndDate(String customerId, String airportId, Instant flightDate);
 	
 	@EntityGraph(attributePaths = { "airport", "customer" })
 	Page<Arrival> findAll(Pageable pageable);

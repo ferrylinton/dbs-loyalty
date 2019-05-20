@@ -1,6 +1,8 @@
 package com.dbs.loyalty.config.constant;
 
 public final class DomainConstant {
+	
+	public static final String ID						= "id";
 
 	public static final String ID_GENERATOR				= "IdGenerator";
 	

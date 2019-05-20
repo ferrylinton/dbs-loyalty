@@ -1,7 +1,10 @@
 package com.dbs.loyalty.domain;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import static com.dbs.loyalty.config.constant.DomainConstant.ID;
+import static com.dbs.loyalty.config.constant.DomainConstant.ID_GENERATOR;
+import static com.dbs.loyalty.config.constant.DomainConstant.ID_GENERATOR_STRATEGY;
+
+import java.time.Instant;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,19 +37,16 @@ public class Departure extends AbstractAuditing {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@Column(name = "id", length=22)
-	@GenericGenerator(name = "IdGenerator", strategy = "com.dbs.loyalty.domain.IdGenerator")
-	@GeneratedValue(generator = "IdGenerator")
+	@Column(name = ID, length=22)
+	@GenericGenerator(name = ID_GENERATOR, strategy = ID_GENERATOR_STRATEGY)
+	@GeneratedValue(generator = ID_GENERATOR)
 	private String id;
 	
 	@Column(name = "service_type", length=150)
 	private String serviceType;
 
 	@Column(name = "flight_date", nullable = false)
-	private LocalDate flightDate;
-	
-	@Column(name = "flight_time", nullable = false)
-	private LocalTime flightTime;
+	private Instant flightDate;
 
 	@Column(name = "flight_code", nullable = false, length=50)
 	private String flightCode;
@@ -60,8 +60,8 @@ public class Departure extends AbstractAuditing {
 	@Column(name = "guest_phone", length=20)
 	private String guestPhone;
 	
-	@Column(name = "pickup_from_home", nullable = false)
-	private boolean pickupFromHome;
+	@Column(name = "airport_transfer", nullable = false)
+	private boolean airportTransfer;
 	
 	@Column(name = "number_of_passengers", nullable = false)
 	private int numberOfPassengers;
@@ -73,7 +73,7 @@ public class Departure extends AbstractAuditing {
 	private String pickupAddress;
 	
 	@Column(name = "pickup_time")
-	private LocalTime pickupTime;
+	private Instant pickupTime;
 
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "airport_id", nullable = false, foreignKey = @ForeignKey(name = "a_departure_fk1"))

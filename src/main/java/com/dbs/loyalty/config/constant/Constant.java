@@ -1,13 +1,7 @@
 package com.dbs.loyalty.config.constant;
 
 public final class Constant {
-//
-//	public static final String EMAIL_REGEX 			= "^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$";
-//	
-//	public static final String USERNAME_REGEX 		= "^[A-Za-z][A-Za-z0-9_]{4,49}$";
-//	
-//	public static final String NAME_REGEX 			= "^[^\\W_]+(?: [^\\W_]+)*$";
-	
+
 	public static final String EMPTY 				= "";
 	
 	public static final String COMMA 				= ",";

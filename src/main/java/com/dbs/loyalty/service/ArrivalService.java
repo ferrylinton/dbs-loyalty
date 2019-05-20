@@ -47,8 +47,7 @@ public class ArrivalService {
 			Optional<Arrival> current = arrivalRepository.findByCustomerAndAirportAndDate(
 					SecurityUtil.getId(), 
 					arrival.getAirport().getId(), 
-					arrival.getFlightDate(),
-					arrival.getFlightTime());
+					arrival.getFlightDate());
 			
 			if(current.isPresent()) {
 				return new Response(MessageConstant.DATA_IS_ALREADY_EXIST);

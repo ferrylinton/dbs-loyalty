@@ -46,8 +46,7 @@ public class DepartureService {
 			Optional<Departure> current = departureRepository.findByCustomerAndAirportAndDate(
 					SecurityUtil.getId(), 
 					departure.getAirport().getId(), 
-					departure.getFlightDate(),
-					departure.getFlightTime());
+					departure.getFlightDate());
 			
 			if(current.isPresent()) {
 				return new Response("Data is already exist");

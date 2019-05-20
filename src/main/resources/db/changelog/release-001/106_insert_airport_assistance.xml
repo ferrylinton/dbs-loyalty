@@ -9,8 +9,8 @@
 	<property name="Singapore" value="1En9V5o9tP6Ku0UQvVgivu" />
 	<property name="Taiwan" value="4Qum1KEpGP0aekUrrUFEjM" />
 	
-	<property name="MeetAndAssistOnly" value="4Ua6OWiS0M8SeURCgXHZrS" />
-	<property name="AirportAssistantWithPremierLounge" value="7NYypuHIsqyZHsPhb3gGGg" />
+	<property name="AirportAssistance" value="4Ua6OWiS0M8SeURCgXHZrS" />
+	<property name="AirportAssistanceWithLounge" value="7NYypuHIsqyZHsPhb3gGGg" />
 	
 	<!-- COUNTRY -->
 	
@@ -44,15 +44,15 @@
     <changeSet author="FLH" id="106-2">
 
         <insert tableName="a_service_type">
-            <column name="id" value="${MeetAndAssistOnly}"/>
-            <column name="name" value="Meet &amp; Assist Only"/>
+            <column name="id" value="${AirportAssistance}"/>
+            <column name="name" value="Airport Assistance"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
         </insert>
        
 		<insert tableName="a_service_type">
-            <column name="id" value="${AirportAssistantWithPremierLounge}"/>
-            <column name="name" value="Airport Assistant with Premier Lounge"/>
+            <column name="id" value="${AirportAssistanceWithLounge}"/>
+            <column name="name" value="Airport Assistance With Lounge"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
         </insert>
@@ -113,18 +113,17 @@
             <column name="id" value="57iZ7hEtMLx2IpKg0x6MmH"/>
             <column name="airport_id" value="53EHfQ52dsQ8h9R7ezwUbZ"/>
             <column name="customer_id" value="1IUe73HCc9Qfjl1sxhasNI"/>
-            <column name="service_type" value="Airport Assistant with Premier Lounge"/>
+            <column name="service_type" value="Airport Assistance With Lounge"/>
             <column name="customer_phone" value="1234567890"/>
             <column name="guest_phone" value="1234567890"/>
-            <column name="flight_date" valueDate="2018-01-01T00:00:00"/>
-            <column name="flight_time" valueDate="2018-01-01T11:15:00"/>
+            <column name="flight_date" valueDate="2019-06-01T11:00:00"/>
             <column name="flight_code" value="AAA"/>
             <column name="flight_number" value="111"/>
             <column name="number_of_luggages" valueNumeric="2"/>
             <column name="number_of_passengers" valueNumeric="2"/>
             <column name="pickup_address" value="Jl Cendrawish Palmerah Jakarta Barat"/>
-            <column name="pickup_from_home" valueBoolean="true"/>
-            <column name="pickup_time" valueDate="2018-01-01T09:15:00"/>
+            <column name="airport_transfer" valueBoolean="true"/>
+            <column name="pickup_time" valueDate="2019-06-01T08:00:00"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
         </insert>
@@ -137,17 +136,16 @@
             <column name="id" value="3K1aI9PFpfTbmlGGfEBaxV"/>
             <column name="airport_id" value="53EHfQ52dsQ8h9R7ezwUbZ"/>
             <column name="customer_id" value="1IUe73HCc9Qfjl1sxhasNI"/>
-            <column name="service_type" value="Airport Assistant with Premier Lounge"/>
+            <column name="service_type" value="Airport Assistance With Lounge"/>
             <column name="customer_phone" value="1234567890"/>
-            <column name="flight_date" valueDate="2018-01-01T00:00:00"/>
-            <column name="flight_time" valueDate="2018-01-01T11:15:00"/>
+            <column name="flight_date" valueDate="2019-06-01T11:00:00"/>
             <column name="flight_code" value="AAA"/>
             <column name="flight_number" value="111"/>
             <column name="number_of_luggages" valueNumeric="2"/>
             <column name="number_of_passengers" valueNumeric="2"/>
-            <column name="pickup_address" value="Jl Cendrawish Palmerah Jakarta Barat"/>
-            <column name="pickup_from_home" valueBoolean="true"/>
-            <column name="pickup_time" valueDate="2018-01-01T09:15:00"/>
+            <column name="drop_off_address" value="Jl Cendrawish Palmerah Jakarta Barat"/>
+            <column name="airport_transfer" valueBoolean="true"/>
+            <column name="pickup_time" valueDate="2019-06-01T14:00:00"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
         </insert>

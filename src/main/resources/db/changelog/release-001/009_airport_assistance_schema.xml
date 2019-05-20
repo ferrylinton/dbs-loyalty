@@ -115,10 +115,7 @@
             <column name="customer_phone" type="VARCHAR(20)">
                 <constraints nullable="false"/>
             </column>
-            <column name="flight_date" type="DATE">
-                <constraints nullable="false"/>
-            </column>
-            <column name="flight_time" type="TIME WITHOUT TIME ZONE">
+            <column name="flight_date" type="timestamp">
                 <constraints nullable="false"/>
             </column>
             <column name="flight_code" type="VARCHAR(50)">
@@ -135,10 +132,10 @@
                 <constraints nullable="false"/>
             </column>
             <column name="pickup_address" type="VARCHAR(255)"/>
-            <column name="pickup_from_home" type="BIT(1)">
+            <column name="airport_transfer" type="BIT(1)">
                 <constraints nullable="false"/>
             </column>
-            <column name="pickup_time" type="TIME WITHOUT TIME ZONE"/>
+            <column name="pickup_time" type="timestamp"/>
             <column name="airport_id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
             </column>
@@ -181,10 +178,7 @@
             <column name="customer_phone" type="VARCHAR(20)">
                 <constraints nullable="false"/>
             </column>
-            <column name="flight_date" type="DATE">
-                <constraints nullable="false"/>
-            </column>
-            <column name="flight_time" type="TIME WITHOUT TIME ZONE">
+            <column name="flight_date" type="timestamp">
                 <constraints nullable="false"/>
             </column>
             <column name="flight_code" type="VARCHAR(50)">
@@ -200,11 +194,11 @@
             <column name="number_of_passengers" type="INT">
                 <constraints nullable="false"/>
             </column>
-            <column name="pickup_address" type="VARCHAR(255)"/>
-            <column name="pickup_from_home" type="BIT(1)">
+            <column name="drop_off_address" type="VARCHAR(255)"/>
+            <column name="airport_transfer" type="BIT(1)">
                 <constraints nullable="false"/>
             </column>
-            <column name="pickup_time" type="TIME WITHOUT TIME ZONE"/>
+            <column name="pickup_time" type="timestamp"/>
             <column name="airport_id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
             </column>
