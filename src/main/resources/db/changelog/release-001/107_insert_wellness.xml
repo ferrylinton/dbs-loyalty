@@ -33,52 +33,9 @@
 
     </changeSet>
     
-    <!-- APPOINTMENT -->
-    
-    <changeSet author="FLH" id="107-2">
-    
-    	<insert tableName="a_appointment">
-            <column name="id" value="5Yq5GhLhw4i9J7VUgJ4S4"/>
-            <column name="health_partner_id" value="${BIOTEST_INDONESIA}"/>
-            <column name="customer_id" value="1IUe73HCc9Qfjl1sxhasNI"/>
-            <column name="arrival_date" valueDate="2018-01-01T00:00:00"/>
-            <column name="message" value="Test 123"/>
-            <column name="created_by" value="system"/>
-            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
-        </insert>
-        
-    </changeSet>
-    
-    <!-- WELLNESS -->
-    
-    <changeSet author="FLH" id="107-3">
-    	
-    	<insert tableName="a_wellness">
-            <column name="id" value="1IUe73HCc9Qfjl1sxhasNI"/>
-            <column name="total" value="2"/>
-            <column name="created_by" value="system"/>
-            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
-        </insert>
-        
-        <insert tableName="a_wellness">
-            <column name="id" value="1WUqbiXZnscJsVJD3DVjXy"/>
-            <column name="total" value="2"/>
-            <column name="created_by" value="system"/>
-            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
-        </insert>
-        
-        <insert tableName="a_wellness">
-            <column name="id" value="4dIMucfQGdLNyJPPb3hfv4"/>
-            <column name="total" value="2"/>
-            <column name="created_by" value="system"/>
-            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
-        </insert>
-        
-    </changeSet>
-    
     <!-- MEDICAL PROVIDER CITY -->
 	
-    <changeSet author="FLH" id="107-4">
+    <changeSet author="FLH" id="107-2">
 
         <insert tableName="a_medical_provider_city">
             <column name="id" value="${Jakarta}"/>
@@ -108,7 +65,7 @@
     
     <!-- MEDICAL PROVIDER BRANCH -->
 	
-    <changeSet author="FLH" id="107-5">
+    <changeSet author="FLH" id="107-3">
     
     	<insert tableName="a_medical_provider_branch">
             <column name="id" value="DckRIXf9Lkuufb4sgDxwO"/>
@@ -144,7 +101,7 @@
     
     </changeSet>
     
-    <changeSet author="FLH" id="107-6">
+    <changeSet author="FLH" id="107-4">
     
     	<insert tableName="a_medical_provider_branch">
             <column name="id" value="O4nacxmNRQc4aBVWNSeLW"/>
@@ -172,7 +129,7 @@
 
     </changeSet>
     
-    <changeSet author="FLH" id="107-7">
+    <changeSet author="FLH" id="107-5">
     
     	<insert tableName="a_medical_provider_branch">
             <column name="id" value="7aAGrVTziIr50KZFFFS2rJ"/>
@@ -198,6 +155,50 @@
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
         </insert>
 
+    </changeSet>
+    
+    <!-- WELLNESS -->
+    
+    <changeSet author="FLH" id="107-6">
+    	
+    	<insert tableName="a_wellness">
+            <column name="id" value="1IUe73HCc9Qfjl1sxhasNI"/>
+            <column name="total" value="2"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+        
+        <insert tableName="a_wellness">
+            <column name="id" value="1WUqbiXZnscJsVJD3DVjXy"/>
+            <column name="total" value="2"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+        
+        <insert tableName="a_wellness">
+            <column name="id" value="4dIMucfQGdLNyJPPb3hfv4"/>
+            <column name="total" value="2"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+        
+    </changeSet>
+
+    <!-- APPOINTMENT -->
+    
+    <changeSet author="FLH" id="107-7">
+    
+    	<insert tableName="a_appointment">
+            <column name="id" value="5Yq5GhLhw4i9J7VUgJ4S4"/>
+            <column name="medical_provider_id" value="${BIOTEST_INDONESIA}"/>
+            <column name="medical_provider_city_id" value="${Jakarta}"/>
+            <column name="medical_provider_branch_id" value="DckRIXf9Lkuufb4sgDxwO"/>
+            <column name="customer_id" value="1IUe73HCc9Qfjl1sxhasNI"/>
+            <column name="arrival_date" valueDate="2019-08-01T10:00:00"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+        
     </changeSet>
     
 </databaseChangeLog>

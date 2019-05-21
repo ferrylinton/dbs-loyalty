@@ -14,6 +14,7 @@ import static com.dbs.loyalty.config.constant.SwaggerConstant.AIRPORT_ASSISTANCE
 import javax.validation.Valid;
 
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,7 +53,7 @@ public class ArrivalRestController {
     @ApiOperation(value=ADD_ARRIVAL, produces=JSON, authorizations={@Authorization(value=JWT)})
     @ApiResponses(value={@ApiResponse(code=200, message=OK, response=Response.class)})
     @PostMapping("/api/arrivals")
-    public Response addArrival(@Valid @RequestBody ArrivalDto arrivalDto) throws BadRequestException{
+    public Response addArrival(@Valid @RequestBody ArrivalDto arrivalDto, BindingResult result) throws BadRequestException{
     	return arrivalService.save(arrivalMapper.toEntity(arrivalDto));
     }
     

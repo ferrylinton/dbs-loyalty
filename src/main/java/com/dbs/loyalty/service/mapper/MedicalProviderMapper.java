@@ -10,7 +10,9 @@ import com.dbs.loyalty.service.dto.MedicalProviderDto;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public abstract class MedicalProviderMapper{
-
+	
+	public abstract MedicalProvider toEntity(MedicalProviderDto medicalProviderDto);
+	
 	public abstract MedicalProviderDto toDto(MedicalProvider medicalProvider);
 	
 	public abstract List<MedicalProviderDto> toDto(List<MedicalProvider> medicalProviders);

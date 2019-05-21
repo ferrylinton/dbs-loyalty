@@ -1,6 +1,6 @@
 package com.dbs.loyalty.repository;
 
-import java.time.LocalDate;
+import java.time.Instant;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -13,16 +13,16 @@ import com.dbs.loyalty.domain.Appointment;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, String>{
 	
-	@EntityGraph(attributePaths = { "healthPartner", "customer" })
+	@EntityGraph(attributePaths = { "medicalProvider", "medicalProviderCity", "medicalProviderBranch", "customer" })
 	Optional<Appointment> findById(String id);
 	
 	@Query(value = "select a from Appointment a "
 			+ "join fetch a.customer c "
-			+ "join fetch a.healthPartner r "
-			+ "where c.id = ?1 and r.id = ?2 and a.arrivalDate = ?3")
-	Optional<Appointment> findByCustomerAndHealthPartnerAndDate(String customerId, String airportId, LocalDate arrivalDate);
+			+ "join fetch a.medicalProvider p "
+			+ "where c.id = ?1 and p.id = ?2 and a.date = ?3")
+	Optional<Appointment> findByCustomerAndMedicalProviderAndDate(String customerId, String medicalProviderId, Instant date);
 	
-	@EntityGraph(attributePaths = { "healthPartner", "customer" })
+	@EntityGraph(attributePaths = { "medicalProvider", "medicalProviderCity", "medicalProviderBranch", "customer" })
 	Page<Appointment> findAll(Pageable pageable);
 	
 }

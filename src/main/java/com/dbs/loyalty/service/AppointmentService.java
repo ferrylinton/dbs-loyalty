@@ -50,10 +50,10 @@ public class AppointmentService {
 		Optional<Customer> customer = customerRespository.findById(SecurityUtil.getId());
 		
 		if(customer.isPresent()) {
-			Optional<Appointment> current = appointmentRepository.findByCustomerAndHealthPartnerAndDate(
+			Optional<Appointment> current = appointmentRepository.findByCustomerAndMedicalProviderAndDate(
 					SecurityUtil.getId(), 
-					appointment.getHealthPartner().getId(), 
-					appointment.getArrivalDate());
+					appointment.getMedicalProvider().getId(), 
+					appointment.getDate());
 			
 			if(current.isPresent()) {
 				return new Response(DATA_IS_ALREADY_EXIST);

@@ -1,6 +1,6 @@
 package com.dbs.loyalty.domain;
 
-import java.time.LocalDate;
+import java.time.Instant;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -38,18 +38,23 @@ public class Appointment extends AbstractAuditing {
 	@GeneratedValue(generator = "IdGenerator")
 	private String id;
 
-	@Column(name = "message")
-	private String message;
-	
 	@Column(name = "arrival_date", nullable = false)
-	private LocalDate arrivalDate;
+	private Instant date;
 	
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "health_partner_id", nullable = false, foreignKey = @ForeignKey(name = "a_appointment_fk1"))
-    private MedicalProvider healthPartner;
+    @JoinColumn(name = "medical_provider_id", foreignKey = @ForeignKey(name = "a_appointment_fk1"))
+    private MedicalProvider medicalProvider;
+	
+	@ManyToOne(optional = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "medical_provider_city_id", foreignKey = @ForeignKey(name = "a_appointment_fk2"))
+    private MedicalProviderCity medicalProviderCity;
+	
+	@ManyToOne(optional = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "medical_provider_branch_id", foreignKey = @ForeignKey(name = "a_appointment_fk3"))
+    private MedicalProviderBranch medicalProviderBranch;
 
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id", nullable = true, foreignKey = @ForeignKey(name = "a_appointment_fk2"))
+    @JoinColumn(name = "customer_id", foreignKey = @ForeignKey(name = "a_appointment_fk4"))
 	private Customer customer;
 	
 }
