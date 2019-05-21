@@ -27,22 +27,30 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Controller
 public class AppointmentController extends AbstractPageController {
+	
+	private static final String REDIRECT = "redirect:/appointment";
+	
+	private static final String VIEW = "appointment/appointment-view";
+	
+	private static final String DETAIL = "appointment/appointment-detail";
+
+	private final static String SORT_BY = "date";
 
 	private final AppointmentService appointmentService;
 
 	@PreAuthorize("hasAnyRole('WELLNESS')")
 	@GetMapping("/appointment")
 	public String appointment(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
-		Order order = getOrder(sort, "arrivalDate");
+		Order order = getOrder(sort, SORT_BY);
 		Page<Appointment> page = appointmentService.findAll(getPageable(params, order));
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
-			return "redirect:/appointment";
+			return REDIRECT;
 		}else {
 			request.setAttribute(PAGE, page);
 			setParamsQueryString(params, request);
 			setPagerQueryString(order, page.getNumber(), request);
-			return "appointment/appointment-view";
+			return VIEW;
 		}
 	}
 	
@@ -56,7 +64,7 @@ public class AppointmentController extends AbstractPageController {
 		} else {
 			model.addAttribute(ERROR, getNotFoundMessage(id));
 		}
-		return "appointment/appointment-detail";
+		return DETAIL;
 	}
 
 }

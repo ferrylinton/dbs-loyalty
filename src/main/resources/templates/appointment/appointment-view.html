@@ -22,12 +22,13 @@
                         <tr th:with="ascending=${order.getDirection().name() == 'ASC'}">
                             <th style="width:40px"></th>
                             <th style="width:40px">#</th>
-                            <th style="width:120px" th:with="sort=|&sort=arrivalDate,${ascending ? 'DESC' : 'ASC'}|">
+                            <th style="width:180px" th:with="sort=|&sort=arrivalDate,${ascending ? 'DESC' : 'ASC'}|">
                                 <a th:href="@{|?page=${page.getNumber()}${params}${sort}|}" class="text-decoration-none">
                                     <span th:text="#{arrivalDate}">Arrival Date</span> <span th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></span>
                                 </a>
                             </th>
                             <th th:text="#{name}">Name</th>
+                            <th th:text="#{medicalProvider}">Medical Provider</th>
                         </tr>
                     </thead>
 	                <tbody th:remove="all-but-first">
@@ -45,8 +46,9 @@
 								</div>
 							</td>
 	                        <td th:text="${row.count + (page.number * page.size)}">1</td>
-	                        <td th:text="${appointment.arrivalDate}">Date</td>
+	                        <td><span th:data-date="${@settingService.jsDatetime()}" th:text="${appointment.date}">Date</span></td>
 	                        <td th:text="${appointment.customer.name}">Name</td>
+	                        <td th:text="${appointment.medicalProvider.name}">BIOTEST INDONESIA</td>
 	                    </tr>
 	                </tbody>
 	            </table>

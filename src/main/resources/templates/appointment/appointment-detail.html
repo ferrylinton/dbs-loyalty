@@ -31,20 +31,25 @@
                             </tr>
                             <tr>
                                 <th th:text="#{name}">Name</th>
-                                <td th:text="${appointment.healthPartner.name}">Name</td>
-                            </tr>
-                            <tr>
-                                <th th:text="#{arrivalDate}">Arrival Date</th>
-                                <td th:text="${appointment.arrivalDate}">Arrival Date</td>
-                            </tr>
-                            <tr>
-                                <th th:text="#{name}">Name</th>
                                 <td th:text="${appointment.customer.name}">Name</td>
                             </tr>
                             <tr>
-                                <th th:text="#{message}">Message</th>
-                                <td th:text="${appointment.message}">Message</td>
+                                <th th:text="#{medicalProvider}">Medical Provider</th>
+                                <td th:text="${appointment.medicalProvider.name}">BIOTEST INDONESIA</td>
                             </tr>
+                            <tr>
+                                <th th:text="#{city}" th:if="${appointment.medicalProviderCity}">City</th>
+                                <td th:text="${appointment.medicalProviderCity.name}">Jakarta</td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{branch}" th:if="${appointment.medicalProviderBranch}">Branch</th>
+                                <td th:text="${appointment.medicalProviderBranch.address}">Jl. Sumatra No. 48</td>
+                            </tr>
+                            <tr>
+                                <th th:text="#{date}">Date</th>
+                                <td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.jsDatetime()}" th:text="${appointment.date}">2019-05-01T21:24:44Z</span></td>
+                            </tr>
+                            
                             <tr>
                                 <th th:text="#{createdBy}">Created By</th>
                                 <td th:text="${appointment.createdBy}">System</td>

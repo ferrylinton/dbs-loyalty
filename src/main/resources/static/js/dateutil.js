@@ -47,6 +47,9 @@ var DateUtil = (function () {
                 }else if((endDateInput.val()) == ''){
                     endDateInput.val(endDate.datepicker('getDate', true));
                 }
+                
+                console.log(startDate.datepicker('getDate').toUTCString());
+                console.log(endDate.datepicker('getDate').toUTCString());
             });
         
         endDate = endDateInput
@@ -58,6 +61,9 @@ var DateUtil = (function () {
                 }else if((startDateInput.val()) == ''){
                     startDateInput.val(startDate.datepicker('getDate', true));
                 }
+                
+                console.log(startDate.datepicker('getDate').toUTCString());
+                console.log(endDate.datepicker('getDate').toUTCString());
             });
         
     }
@@ -73,11 +79,13 @@ var DateUtil = (function () {
     }
     
     function initDatePickerLang(startDate, endDate){
+    	var dateFormat = $('#js-date-format').length ? $('#js-date-format').text() : 'DD/MM/YYYY';
+    	
         $.fn.datepicker.languages['en'] = {
             autoHide: true,
             startDate: startDate,
             endDate: endDate,
-            format: $('#js-date-format').text(),
+            format: dateFormat,
             days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
             daysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
             daysMin: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
@@ -93,7 +101,7 @@ var DateUtil = (function () {
             autoHide: true,
             startDate: startDate,
             endDate: endDate,
-            format: $('#js-date-format').text(),
+            format: dateFormat,
             days: ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'],
             daysShort: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
             daysMin: ['Mi', 'Se', 'Se', 'Ra', 'Ka', 'Ju', 'Sa'],

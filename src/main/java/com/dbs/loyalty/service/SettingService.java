@@ -8,15 +8,15 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class SettingService {
 
-	public static final String JS_DATETIME = "DD/MM/YYYY HH:mm:ss";
+	public static final String JS_DATETIME = "DD-MM-YYYY HH:mm";
 	
-	public static final String JS_DATE = "DD/MM/YYYY";
+	public static final String JS_DATE = "DD-MM-YYYY";
 
 	public static final String JS_TIME = "HH:mm";
 	
-	public static final String JAVA_DATETIME = "dd/MM/yyyy HH:mm:ss";
+	public static final String JAVA_DATETIME = "dd-MM-yyyy HH:mm";
 
-	public static final String JAVA_DATE = "dd/MM/yyyy";
+	public static final String JAVA_DATE = "dd-MM-yyyy";
 
 	public static final String JAVA_TIME = "HH:mm";
 
