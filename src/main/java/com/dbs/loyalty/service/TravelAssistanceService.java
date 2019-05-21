@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.dbs.loyalty.domain.TravelAssistance;
+import com.dbs.loyalty.domain.AirportAssistance;
 import com.dbs.loyalty.repository.TravelAssistanceRepository;
 import com.dbs.loyalty.util.SecurityUtil;
 
@@ -16,7 +16,7 @@ public class TravelAssistanceService {
 
 	private final TravelAssistanceRepository travelAssistanceRepository;
 	
-	public Optional<TravelAssistance> findById() {
+	public Optional<AirportAssistance> findById() {
 		return travelAssistanceRepository.findById(SecurityUtil.getId());
 	}
 	

@@ -156,21 +156,21 @@
     
     <changeSet author="FLH" id="106-6">
     	
-    	<insert tableName="a_travel_assistance">
+    	<insert tableName="a_airport_assistance">
             <column name="id" value="1IUe73HCc9Qfjl1sxhasNI"/>
             <column name="total" value="2"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
         </insert>
         
-        <insert tableName="a_travel_assistance">
+        <insert tableName="a_airport_assistance">
             <column name="id" value="1WUqbiXZnscJsVJD3DVjXy"/>
             <column name="total" value="2"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
         </insert>
         
-        <insert tableName="a_travel_assistance">
+        <insert tableName="a_airport_assistance">
             <column name="id" value="4dIMucfQGdLNyJPPb3hfv4"/>
             <column name="total" value="2"/>
             <column name="created_by" value="system"/>

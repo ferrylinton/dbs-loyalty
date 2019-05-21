@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.domain.Departure;
-import com.dbs.loyalty.domain.TravelAssistance;
+import com.dbs.loyalty.domain.AirportAssistance;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.repository.CustomerRepository;
 import com.dbs.loyalty.repository.DepartureRepository;
@@ -51,7 +51,7 @@ public class DepartureService {
 			if(current.isPresent()) {
 				return new Response("Data is already exist");
 			}else {
-				Optional<TravelAssistance> travelAssistance = travelAssistanceRepository.findById(SecurityUtil.getId());
+				Optional<AirportAssistance> travelAssistance = travelAssistanceRepository.findById(SecurityUtil.getId());
 				
 				if(travelAssistance.isPresent() && travelAssistance.get().getTotal() > 0) {
 					travelAssistance.get().setTotal(travelAssistance.get().getTotal() - 1);

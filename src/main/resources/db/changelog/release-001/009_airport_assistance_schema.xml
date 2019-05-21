@@ -231,7 +231,7 @@
     <!-- TRAVEL ASSISTANCE -->
 
     <changeSet author="FLH" id="009-19">
-        <createTable tableName="a_travel_assistance">
+        <createTable tableName="a_airport_assistance">
             <column name="id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
             </column>
@@ -250,11 +250,11 @@
     </changeSet>
     
     <changeSet author="FLH" id="009-20">
-        <addPrimaryKey columnNames="id" constraintName="a_travel_assistance_pk" tableName="a_travel_assistance"/>
+        <addPrimaryKey columnNames="id" constraintName="a_airport_assistance_pk" tableName="a_airport_assistance"/>
     </changeSet>
  
     <changeSet author="FLH" id="009-21">
-        <addForeignKeyConstraint baseColumnNames="id" baseTableName="a_travel_assistance" constraintName="a_travel_assistance_fk" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="c_customer"/>
+        <addForeignKeyConstraint baseColumnNames="id" baseTableName="a_airport_assistance" constraintName="a_airport_assistance_fk" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="c_customer"/>
     </changeSet>
     
 </databaseChangeLog>

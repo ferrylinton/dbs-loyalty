@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Class of TravelAssistancePoint
+ * Class of Aiport Assistance
  * 
  * @author Ferry L. H. <ferrylinton@gmail.com>
  */
@@ -18,8 +18,8 @@ import lombok.Setter;
 @Getter
 @EqualsAndHashCode(of = { "id" }, callSuper = false)
 @Entity
-@Table(name = "a_travel_assistance")
-public class TravelAssistance extends AbstractAuditing {
+@Table(name = "a_airport_assistance")
+public class AirportAssistance extends AbstractAuditing {
 
 	private static final long serialVersionUID = 1L;
 	

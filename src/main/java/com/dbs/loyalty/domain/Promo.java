@@ -1,6 +1,10 @@
 package com.dbs.loyalty.domain;
 
 
+import static com.dbs.loyalty.config.constant.DomainConstant.ID;
+import static com.dbs.loyalty.config.constant.DomainConstant.ID_GENERATOR;
+import static com.dbs.loyalty.config.constant.DomainConstant.ID_GENERATOR_STRATEGY;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -53,9 +57,9 @@ public class Promo extends AbstractTask implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-	@Column(name = "id", length=22)
-	@GenericGenerator(name = "IdGenerator", strategy = "com.dbs.loyalty.domain.IdGenerator")
-	@GeneratedValue(generator = "IdGenerator")
+	@Column(name = ID, length=22)
+    @GenericGenerator(name = ID_GENERATOR, strategy = ID_GENERATOR_STRATEGY)
+	@GeneratedValue(generator = ID_GENERATOR)
 	private String id;
     
     @Size(min=2, max = 50)

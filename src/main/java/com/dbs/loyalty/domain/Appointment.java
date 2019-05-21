@@ -46,7 +46,7 @@ public class Appointment extends AbstractAuditing {
 	
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "health_partner_id", nullable = false, foreignKey = @ForeignKey(name = "a_appointment_fk1"))
-    private HealthPartner healthPartner;
+    private MedicalProvider healthPartner;
 
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", nullable = true, foreignKey = @ForeignKey(name = "a_appointment_fk2"))
