@@ -24,6 +24,6 @@ public class AppointmentDto {
 	private LocalDate arrivalDate;
 	
 	@ApiModelProperty(position = 2)
-	private HealthPartnerDto healthPartner;
+	private MedicalProviderDto healthPartner;
 
 }

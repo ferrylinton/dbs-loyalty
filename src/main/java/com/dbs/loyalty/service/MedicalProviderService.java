@@ -6,20 +6,20 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.dbs.loyalty.domain.MedicalProvider;
-import com.dbs.loyalty.repository.HealthPartnerRepository;
+import com.dbs.loyalty.repository.MedicalProviderRepository;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class HealthPartnerService {
+public class MedicalProviderService {
 
 	private Sort sortByName = Sort.by("name");
 	
-	private final HealthPartnerRepository healthPartnerRepository;
+	private final MedicalProviderRepository medicalProviderRepository;
 	
 	public List<MedicalProvider> findAll(){
-		return healthPartnerRepository.findAll(sortByName);
+		return medicalProviderRepository.findAll(sortByName);
 	}
 	
 }

@@ -14,7 +14,7 @@ import com.dbs.loyalty.domain.AirportAssistance;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.repository.CustomerRepository;
 import com.dbs.loyalty.repository.DepartureRepository;
-import com.dbs.loyalty.repository.TravelAssistanceRepository;
+import com.dbs.loyalty.repository.AirportAssistanceRepository;
 import com.dbs.loyalty.util.SecurityUtil;
 import com.dbs.loyalty.web.response.Response;
 
@@ -28,7 +28,7 @@ public class DepartureService {
 	
 	private final CustomerRepository customerRespository;
 	
-	private final TravelAssistanceRepository travelAssistanceRepository;
+	private final AirportAssistanceRepository travelAssistanceRepository;
 	
 	public Optional<Departure> findById(String id){
 		return departureRepository.findById(id);

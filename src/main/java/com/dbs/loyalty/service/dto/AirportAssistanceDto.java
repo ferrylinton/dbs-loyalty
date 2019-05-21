@@ -9,18 +9,18 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 /**
- * Class of TravelAssistance DTO
+ * Class of AirportAssistance DTO
  * 
  * @author Ferry L. H. <ferrylinton@gmail.com>
  */
-@ApiModel(value="TravelAssistance", description = "TravelAssistance's limit")
+@ApiModel(value="AirportAssistance", description = "Airport Assistance's eligibility")
 @NoArgsConstructor
 @RequiredArgsConstructor
 @Setter
 @Getter
-public class TravelAssistanceDto {
+public class AirportAssistanceDto {
 
-	@ApiModelProperty(value = "Travel Assistance's limit", example = "5", position = 0)
+	@ApiModelProperty(value = "Airport Assistance's eligibility", example = "5", position = 0)
 	@NonNull
 	private Integer total;
 	

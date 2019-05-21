@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.dbs.loyalty.domain.AirportAssistance;
 
-public interface TravelAssistanceRepository extends JpaRepository<AirportAssistance, String>{
+public interface AirportAssistanceRepository extends JpaRepository<AirportAssistance, String>{
 	
 }

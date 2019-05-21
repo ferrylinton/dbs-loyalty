@@ -5,19 +5,19 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.dbs.loyalty.domain.AirportAssistance;
-import com.dbs.loyalty.repository.TravelAssistanceRepository;
+import com.dbs.loyalty.repository.AirportAssistanceRepository;
 import com.dbs.loyalty.util.SecurityUtil;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
-public class TravelAssistanceService {
+public class AirportAssistanceService {
 
-	private final TravelAssistanceRepository travelAssistanceRepository;
+	private final AirportAssistanceRepository airportAssistanceRepository;
 	
 	public Optional<AirportAssistance> findById() {
-		return travelAssistanceRepository.findById(SecurityUtil.getId());
+		return airportAssistanceRepository.findById(SecurityUtil.getId());
 	}
 	
 }

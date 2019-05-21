@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.domain.AirportAssistance;
-import com.dbs.loyalty.service.TravelAssistanceService;
-import com.dbs.loyalty.service.dto.TravelAssistanceDto;
-import com.dbs.loyalty.service.mapper.TravelAssistanceMapper;
+import com.dbs.loyalty.service.AirportAssistanceService;
+import com.dbs.loyalty.service.dto.AirportAssistanceDto;
+import com.dbs.loyalty.service.mapper.AirportAssistanceMapper;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -36,22 +36,22 @@ import lombok.RequiredArgsConstructor;
 @PreAuthorize("hasRole('CUSTOMER')")
 @RestController
 @RequestMapping("/api")
-public class TravelAssistanceRestController {
+public class AirportAssistanceRestController {
 
-	private final TravelAssistanceService travelAssistanceService;
+	private final AirportAssistanceService travelAssistanceService;
 	
-	private final TravelAssistanceMapper travelAssistanceMapper;
+	private final AirportAssistanceMapper travelAssistanceMapper;
 	
 	@ApiOperation(value=GET_TRAVEL_ASSISTANCE_LIMIT, produces=JSON, authorizations={@Authorization(value=JWT)})
-    @ApiResponses(value={@ApiResponse(code=200, message=OK, response=TravelAssistanceDto.class)})
+    @ApiResponses(value={@ApiResponse(code=200, message=OK, response=AirportAssistanceDto.class)})
     @GetMapping("/travel-assistances")
-    public TravelAssistanceDto getLimit(){
+    public AirportAssistanceDto getLimit(){
 		Optional<AirportAssistance> travelAssistance = travelAssistanceService.findById();
 		
 		if(travelAssistance.isPresent()) {
     		return travelAssistanceMapper.toDto(travelAssistance.get());
     	}else {
-    		return new TravelAssistanceDto(0);
+    		return new AirportAssistanceDto(0);
     	}
     }
     

@@ -16,6 +16,12 @@ public class RestConstant {
 
 	public static final String GET_AIRPORTS = "GetAirports";
 	
+	public static final String GET_MEDICAL_PROVIDERS = "GetMedicalProviders";
+	
+	public static final String GET_MEDICAL_PROVIDER_CITIES = "GetMedicalProviderCities";
+	
+	public static final String GET_MEDICAL_PROVIDER_BRANCHES = "GetMedicalProviderBranches";
+	
 	public static final String ADD_APPOINTMENT = "AddAppointment";
 	
 	public static final String GENERATE_VERIFICATION_TOKEN = "GenerateVerificationToken";
