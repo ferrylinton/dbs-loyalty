@@ -8,17 +8,14 @@ import static com.dbs.loyalty.config.constant.EntityConstant.EVENT;
 import static com.dbs.loyalty.config.constant.EntityConstant.ROLE;
 
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.Instant;
 import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
@@ -65,12 +62,6 @@ public class EventController extends AbstractPageController {
 	private static final String FORM = "event/event-form";
 	
 	private static final String SORT_BY = "title";
-
-	private static final DateFormat DATETIME_FORMAT = new SimpleDateFormat("dd-MM-yyyy,HH:ss");
-	
-	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("dd-MM-yyyy");
-	
-	private static final DateFormat TIME_FORMAT = new SimpleDateFormat("HH:ss");
 	
 	private final ImageService imageService;
 	
@@ -109,6 +100,10 @@ public class EventController extends AbstractPageController {
 	@GetMapping("/{id}")
 	public String viewEventForm(ModelMap model, @PathVariable String id){
 		if (id.equals(ZERO)) {
+			Event event = new Event();
+			event.setStartPeriod(Instant.now());
+			event.setEndPeriod(Instant.now());
+			
 			model.addAttribute(EVENT, new Event());
 		} else {
 			getById(model, id);
@@ -121,7 +116,7 @@ public class EventController extends AbstractPageController {
 	@PreAuthorize("hasRole('EVENT_MK')")
 	@PostMapping
 	public String saveEvent(@ModelAttribute(EVENT) @Valid Event event, BindingResult result, RedirectAttributes attributes) throws IOException, ParseException {
-		if (result.hasErrors()) {
+		if(result.hasErrors()) {
 			return FORM;
 		}else {
 			Optional<Feedback> feedback = feedbackService.getDefault();
@@ -129,10 +124,7 @@ public class EventController extends AbstractPageController {
 			if(feedback.isPresent()) {
 				event.setFeedback(feedback.get());
 			}
-			
-			event.setStartPeriod(setTime(event.getStartPeriod(), event.getTimePeriod()));
-			event.setEndPeriod(setTime(event.getEndPeriod(), event.getTimePeriod()));
-			
+
 			if(event.getId() == null) {
 				FileImageTask fileImageTask = imageService.add(event.getMultipartFileImage());
 				event.setImage(fileImageTask.getId());
@@ -188,7 +180,6 @@ public class EventController extends AbstractPageController {
 
 	@InitBinder(EVENT)
 	protected void initBinder(WebDataBinder binder) {
-		binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("dd-MM-yyyy"), true, 10)); 
 		binder.addValidators(new EventValidator(eventService));
 	}
 
@@ -197,20 +188,10 @@ public class EventController extends AbstractPageController {
 		
 		if (current.isPresent()) {
 			Event event = current.get();
-			event.setTimePeriod(getTime(event.getStartPeriod()));
 			model.addAttribute(EVENT, event);
 		} else {
 			model.addAttribute(ERROR, getNotFoundMessage(id));
 		}
 	}
-	
-	private Date setTime(Date date, String timePeriod) throws ParseException {
-		String dateString = DATE_FORMAT.format(date);
-		return DATETIME_FORMAT.parse(dateString + "," + timePeriod);
-	}
 
-	private String getTime(Date date) {
-		return TIME_FORMAT.format(date);
-	}
-	
 }

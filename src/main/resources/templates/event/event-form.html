@@ -4,7 +4,8 @@
 <head th:replace="fragment/head.html :: content(title=|#{application.name} : #{event}|)"></head>
 
 <body data-menu="event">
-	<div id="js-date-format" th:text="${@settingService.jsDate()}" class="hidden"></div>
+	<div id="jsDate" th:text="${@settingService.jsDate()}" class="hidden"></div>
+	<div id="jsDatetime" th:text="${@settingService.jsDatetime()}" class="hidden"></div>
     <!-- NAVBAR -->
     <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
     <div id="content-box">
@@ -39,19 +40,36 @@
 									<div class="invalid-feedback" th:if="${#fields.hasErrors('description')}" th:uerrors="*{description}">Error</div>
 								</div>
                             </div>
+                            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-10">
+                            	<div class="row">
+	                            	<div class="col-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
+	                            		<div class="form-group">
+	                            			<label for="startPeriodDate" th:text="|#{startPeriod} *|">Start Period *</label>
+	                            			<div id="startPeriodDate"></div>
+	                            		</div>
+	                            	</div>
+                            		<div class="col-12 col-sm-12 col-md-12 col-lg-8 col-xl-8">
+                            			<div class="form-group">
+	                            			<label for="endPeriodDate" th:text="|#{endPeriod} *|">End Period *</label>
+	                            			<div id="endPeriodDate"></div>
+	                            		</div>
+                            		</div>
+                            	</div>
+                            </div>
                             
+                            <!--  
                             <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
                                 <div class="row no-gutters" th:with="format='dd-MM-yyyy'">
 	                            	<div class="col">     
 	                                    <div class="form-group">
 	                                        <label for="startPeriod" th:text="#{startPeriod}">Start Period</label>
-	                                        <input class="form-control" type="text" th:placeholder="#{startPeriod}" id="startPeriod" name="startPeriod" th:value="${#dates.format(event.startPeriod, format)}" readonly="readonly" />
+	                                        <input class="form-control datetimepicker-input" data-toggle="datetimepicker" data-target="#startPeriod" type="text" th:placeholder="#{startPeriod}" id="startPeriod" name="startPeriod" th:value="${#dates.format(event.startPeriod, format)}" />
 	                                    </div>
 	                              	</div>   
 	                              	<div class="col">
 	                                    <div class="form-group">
 	                                        <label for="endPeriod" th:text="#{endPeriod}">End Period</label>
-	                                        <input class="form-control" type="text" th:placeholder="#{endPeriod}" id="endPeriod" name="endPeriod" th:value="${#dates.format(event.endPeriod, format)}" readonly="readonly"/>
+	                                        <input class="form-control datetimepicker-input" data-toggle="datetimepicker" data-target="#endPeriod" type="text" th:placeholder="#{endPeriod}" id="endPeriod" name="endPeriod" th:value="${#dates.format(event.endPeriod, format)}"/>
 	                                    </div>
 	                            	</div>
 	                            	<div class="col">
@@ -62,6 +80,7 @@
 	                               	</div>
                                 </div>
                             </div>
+                            -->
                             <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
                                 <div class="form-group">
                                     <label for="place" th:text="|#{place} *|">Place *</label>
@@ -115,6 +134,8 @@
                         </div>
                         <!-- HIDDEN -->
                     	<input type="hidden" id="id" th:field="*{id}" th:if="*{id != null}"/>
+                    	<input type="hidden" th:field="*{startPeriod}"/>
+                    	<input type="hidden" th:field="*{endPeriod}"/>
                     	<input type="hidden" th:field="*{createdBy}"/>
                     	<input type="hidden" th:field="*{createdDate}"/>
                     	<input type="hidden" th:field="*{lastModifiedBy}"/>

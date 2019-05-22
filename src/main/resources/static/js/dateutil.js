@@ -34,6 +34,73 @@ var DateUtil = (function () {
     }
     
     function startEndPeriod(startDateInput, endDateInput){
+    	var startPeriodDate = $('#startPeriodDate');
+        var endPeriodDate = $('#endPeriodDate');
+        
+        if(startPeriodDate.length && endPeriodDate.length){
+	    	var startElement = $('#startPeriod');
+	    	var startMinDate = moment().startOf('day');
+	    	var startDefaultDate = (startElement.val() == '') ? startMinDate : moment(new Date(startElement.val())).local();
+	    	
+	    	var endElement = $('#endPeriod');
+	    	var endMinDate = moment().set({ hour:8, minute:0, second:0, millisecond:0 });
+	    	var endDefaultDate = (endElement.val() == '') ? endMinDate : moment(new Date(endElement.val())).local();
+	
+	        $.fn.datetimepicker.Constructor.Default = $.extend({}, $.fn.datetimepicker.Constructor.Default, {
+	        	icons: {
+	                time		: 'icon-clock',
+	                date		: 'icon-calendar',
+	                up			: 'icon-up-open',
+	                down		: 'icon-down-open',
+	                previous	: 'icon-left-open',
+	                next		: 'icon-right-open',
+	                today		: 'icon-calendar',
+	                clear		: 'icon-trash',
+	                close		: 'icon-canel'
+	            } 
+	        });
+	
+	        // start date
+	        startPeriodDate.datetimepicker({
+	        	format		: $('#jsDate').length ? $('#jsDate').text() : 'DD-MM-YYYY',
+	        	minDate		: startMinDate,
+	        	defaultDate	: startDefaultDate,
+	        	inline		: true
+	        });
+	        startPeriodDate.on('change.datetimepicker', function (e) {
+	        	endPeriodDate.datetimepicker('minDate', e.date);
+	        	setStartEndDateValue(startPeriodDate.datetimepicker('date'), endPeriodDate.datetimepicker('date'));
+	        });
+	        
+	        // end date
+	        endPeriodDate.datetimepicker({
+	        	format		: $('#jsDatetime').length ? $('#jsDatetime').text() : 'DD-MM-YYYY HH:mm',
+	        	minDate		: endMinDate,
+	        	defaultDate	: endDefaultDate,
+	        	inline		: true,
+	            sideBySide	: true,
+	            stepping	: 5
+	        });
+	        endPeriodDate.on('change.datetimepicker', function (e) {
+	        	startPeriodDate.datetimepicker('maxDate', e.date);
+	        	setStartEndDateValue(startPeriodDate.datetimepicker('date'), endPeriodDate.datetimepicker('date'));
+	        });
+	        
+	        setStartEndDateValue(startPeriodDate.datetimepicker('date'), endPeriodDate.datetimepicker('date'));
+        }
+    }
+    
+    function setStartEndDateValue(startDate, endDate){
+    	var startPeriod = $('#startPeriod');
+        var endPeriod = $('#endPeriod');
+        
+        if(startPeriod.length && endPeriod.length){
+    		startPeriod.val(startDate.toDate().toISOString());
+    		endPeriod.val(endDate.toDate().toISOString());
+    	}
+    }
+    
+    function startEndPeriodxxxxx(startDateInput, endDateInput){
         var startDate;
         var endDate;
     
