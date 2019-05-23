@@ -127,11 +127,10 @@ a:hover{
 /* TRUMBOWYG */
 
 .trumbowyg-box, .trumbowyg-editor {
-    border: 1px solid #DDD;
     margin: 0 auto;
 }
 
-.is-invalid .trumbowyg-editor{
+.is-invalid .trumbowyg-box{
     border-color: #dc3545;
 }
 
@@ -147,6 +146,20 @@ a:hover{
 
 .datepicker .table{
 	border: solid 1px #dee2e6;
+	font-size: 0.9em;
+}
+
+.datepicker .table th{
+	font-weight: normal;
+	border-bottom: 1px solid #dee2e6;
+}
+
+.datepicker .table th, .bootstrap-datetimepicker-widget table th.disabled{
+	background-color: #f4f4f4;
+}
+
+.bootstrap-datetimepicker-widget table td, .bootstrap-datetimepicker-widget table th {
+    border-radius: 0;
 }
 
 /* LOGIN */

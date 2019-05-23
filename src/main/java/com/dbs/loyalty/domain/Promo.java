@@ -4,9 +4,10 @@ package com.dbs.loyalty.domain;
 import static com.dbs.loyalty.config.constant.DomainConstant.ID;
 import static com.dbs.loyalty.config.constant.DomainConstant.ID_GENERATOR;
 import static com.dbs.loyalty.config.constant.DomainConstant.ID_GENERATOR_STRATEGY;
+import static com.dbs.loyalty.service.SettingService.JAVA_DATE;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,13 +19,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -84,13 +84,13 @@ public class Promo extends AbstractTask implements Serializable {
     @Column(name = "term_and_condition", nullable = false, columnDefinition="TEXT")
     private String termAndCondition;
 
-    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = JAVA_DATE)
     @Column(name = "start_period", nullable = false)
-    private Date startPeriod;
+    private LocalDate startPeriod;
 
-    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = JAVA_DATE)
     @Column(name = "end_period", nullable = false)
-    private Date endPeriod;
+    private LocalDate endPeriod;
     
     @Column(name = "show_in_carousel", nullable = false)
 	private boolean showInCarousel;

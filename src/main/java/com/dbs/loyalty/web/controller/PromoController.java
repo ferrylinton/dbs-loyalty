@@ -5,10 +5,12 @@ import static com.dbs.loyalty.config.constant.Constant.PAGE;
 import static com.dbs.loyalty.config.constant.Constant.TOAST;
 import static com.dbs.loyalty.config.constant.Constant.ZERO;
 import static com.dbs.loyalty.config.constant.EntityConstant.PROMO;
+import static com.dbs.loyalty.service.SettingService.JAVA_DATE;
 
+import java.beans.PropertyEditorSupport;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -16,7 +18,6 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
@@ -25,6 +26,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -72,6 +74,8 @@ public class PromoController extends AbstractPageController {
 	private final PromoCustomerService promoCustomerService;
 	
 	private final TaskService taskService;
+	
+	private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(JAVA_DATE);
 
 	@PreAuthorize("hasAnyRole('PROMO_MK', 'PROMO_CK')")
 	@GetMapping
@@ -129,6 +133,11 @@ public class PromoController extends AbstractPageController {
 	@PreAuthorize("hasRole('PROMO_MK')")
 	@PostMapping
 	public String savePromo(@Valid @ModelAttribute(PROMO) Promo promo, BindingResult result, RedirectAttributes attributes) throws IOException {
+		for(FieldError fieldError : result.getFieldErrors()) {
+			System.out.println(fieldError.getField());
+			System.out.println(fieldError.getDefaultMessage());
+		}
+		
 		if (result.hasErrors()) {
 			return FORM;
 		}else {
@@ -181,7 +190,15 @@ public class PromoController extends AbstractPageController {
 	
 	@InitBinder(PROMO)
 	protected void initBinder(WebDataBinder binder) {
-		binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("dd-MM-yyyy"), true, 10)); 
+		binder.registerCustomEditor(LocalDate.class, new PropertyEditorSupport() {
+			
+		    @Override
+		    public void setAsText(String text) throws IllegalArgumentException{
+		      setValue(LocalDate.parse(text, formatter));
+		    }
+		    
+		});
+		
 		binder.addValidators(new PromoValidator(promoService));
 	}
 

@@ -78,11 +78,11 @@ Duis ac nibh condimentum, laoreet nibh quis, viverra purus. Cras et ligula congu
                             </tr>
                             <tr>
                                 <th th:text="#{startPeriod}">Start Period</th>
-                                <td th:text="${#dates.format(promo.startPeriod, @settingService.javaDate())}">09-04-2019</td>
+                                <td th:text="${#temporals.format(promo.startPeriod, @settingService.javaDate())}">09-04-2019</td>
                             </tr>
                             <tr>
                                 <th th:text="#{endPeriod}">End Period</th>
-                                <td th:text="${#dates.format(promo.endPeriod, @settingService.javaDate())}">09-04-2019</td>
+                                <td th:text="${#temporals.format(promo.endPeriod, @settingService.javaDate())}">09-04-2019</td>
                             </tr>
                             <tr>
                                 <th th:text="#{activated}">Activated</th>

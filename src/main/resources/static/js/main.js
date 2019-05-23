@@ -28,7 +28,9 @@ $(document).ready(function () {
 	
 	DateUtil.initDob();
 	
-	DateUtil.startEndPeriod($('input[name="startPeriod"]'), $('input[name="endPeriod"]'));
+	DateUtil.startEndPeriod();
+	
+	DateUtil.startEndPeriodWithTime();
 	
 	DateUtil.initTimePicker($('input[name="timePeriod"]'));
 	
