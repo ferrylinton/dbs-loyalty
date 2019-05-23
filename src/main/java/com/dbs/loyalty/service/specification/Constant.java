@@ -1,13 +1,7 @@
 package com.dbs.loyalty.service.specification;
 
-import java.time.format.DateTimeFormatter;
-
-import com.dbs.loyalty.service.SettingService;
-
 public final class Constant {
 	
-	public static final DateTimeFormatter FORMATTER =  DateTimeFormatter.ofPattern(SettingService.JAVA_DATE);
-
 	public static final String EMPTY = "";
 
 	public static final String LIKE_FORMAT = "%%%s%%";

@@ -5,7 +5,6 @@ import static com.dbs.loyalty.service.specification.Constant.CREATED_DATE;
 import static com.dbs.loyalty.service.specification.Constant.DEVICE_TYPE;
 import static com.dbs.loyalty.service.specification.Constant.EMPTY;
 import static com.dbs.loyalty.service.specification.Constant.END_DATE_PARAM;
-import static com.dbs.loyalty.service.specification.Constant.FORMATTER;
 import static com.dbs.loyalty.service.specification.Constant.ID;
 import static com.dbs.loyalty.service.specification.Constant.IP;
 import static com.dbs.loyalty.service.specification.Constant.KY_PARAM;
@@ -13,20 +12,13 @@ import static com.dbs.loyalty.service.specification.Constant.LIKE_FORMAT;
 import static com.dbs.loyalty.service.specification.Constant.START_DATE_PARAM;
 import static com.dbs.loyalty.service.specification.Constant.USERNAME;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneOffset;
-import java.time.temporal.ChronoUnit;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.data.jpa.domain.Specification;
 
 import com.dbs.loyalty.domain.LogLogin;
 
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 public class LogLoginSpecification {
 
 	public static Specification<LogLogin> getSpec(HttpServletRequest request) {
@@ -56,43 +48,14 @@ public class LogLoginSpecification {
 			!request.getParameter(START_DATE_PARAM).equals(EMPTY) &&
 			!request.getParameter(END_DATE_PARAM).equals(EMPTY)
 			) {
-			
-			Instant startDate = getStartDate(request);
-			Instant endDate = getEndDate(request);
-			
+
 			return (logLogin, cq, cb) -> cb.and(
-				cb.greaterThanOrEqualTo(logLogin.get(CREATED_DATE), startDate),
-				cb.lessThanOrEqualTo(logLogin.get(CREATED_DATE), endDate)
+				cb.greaterThanOrEqualTo(logLogin.get(CREATED_DATE), DateSpecification.getStartDate(request)),
+				cb.lessThanOrEqualTo(logLogin.get(CREATED_DATE), DateSpecification.getEndDate(request))
 			);
 		}else {
 			return all();
 		}		
-	}
-
-	private static Instant getStartDate(HttpServletRequest request) {
-		if(request.getParameter(START_DATE_PARAM) != null) {
-			try {
-				LocalDate localDate = LocalDate.parse(request.getParameter(START_DATE_PARAM), FORMATTER);
-				return localDate.atStartOfDay().toInstant(ZoneOffset.UTC);
-			}catch (Exception e) {
-				log.error(e.getLocalizedMessage());
-			}
-		}
-		
-		return Instant.now().truncatedTo(ChronoUnit.DAYS);
-	}
-	
-	private static Instant getEndDate(HttpServletRequest request) {
-		if(request.getParameter(END_DATE_PARAM) != null) {
-			try {
-				LocalDate localDate = LocalDate.parse(request.getParameter(END_DATE_PARAM), FORMATTER);
-				return localDate.atStartOfDay().toInstant(ZoneOffset.UTC);
-			}catch (Exception e) {
-				log.error(e.getLocalizedMessage());
-			}
-		}
-		
-		return Instant.now();
 	}
 	
 	private LogLoginSpecification() {

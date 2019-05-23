@@ -26,6 +26,7 @@ var DateUtil = (function () {
             endPeriodDate.datetimepicker({
             	format : format,
             	defaultDate	: endDefaultDate,
+            	minDate : startDefaultDate,
                 useCurrent: false
             });
             endPeriodDate.on('change.datetimepicker', function (e) {
