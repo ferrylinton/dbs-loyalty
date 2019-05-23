@@ -20,20 +20,18 @@ $(document).ready(function () {
 	
 	initCustomFile();
 	
+	initDobMask();
+	
 	FormUtil.initActivated();
 	
 	FormUtil.initLocked();
 	
 	FormUtil.initShowInCarousel();
-	
-	DateUtil.initDob();
-	
+
 	DateUtil.startEndPeriod();
 	
 	DateUtil.startEndPeriodWithTime();
-	
-	DateUtil.initTimePicker($('input[name="timePeriod"]'));
-	
+
 	DateUtil.initSearch();
 	
 	JsonUtil.toTable();
@@ -42,6 +40,10 @@ $(document).ready(function () {
 
 function initToast(){
 	$('#toast .toast').toast('show');
+}
+
+function initDobMask(){
+	$('#dob').inputmask('99-99-9999',{ 'clearIncomplete': true });
 }
 
 function initDeleteModal(){

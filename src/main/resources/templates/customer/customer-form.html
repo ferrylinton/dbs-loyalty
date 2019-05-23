@@ -58,7 +58,7 @@
                         <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
                             <div class="form-group">
                                 <label for="dob" th:text="|#{dob} *|">DOB *</label>
-                                <input class="form-control" type="text" th:placeholder="#{dob}" id="dob" name="dob" th:value="${#temporals.format(customer.dob, @settingService.javaDate())}" readonly="readonly" />
+                                <input class="form-control" type="text" th:placeholder="#{dob}" id="dob" name="dob" th:value="${#temporals.format(customer.dob, @settingService.javaDate())}" />
                             </div>
                         </div>
                         <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4" th:if="*{id != null}">
