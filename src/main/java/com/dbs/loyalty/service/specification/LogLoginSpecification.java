@@ -3,20 +3,18 @@ package com.dbs.loyalty.service.specification;
 import static com.dbs.loyalty.service.specification.Constant.BROWSER;
 import static com.dbs.loyalty.service.specification.Constant.CREATED_DATE;
 import static com.dbs.loyalty.service.specification.Constant.DEVICE_TYPE;
-import static com.dbs.loyalty.service.specification.Constant.USERNAME;
 import static com.dbs.loyalty.service.specification.Constant.EMPTY;
-import static com.dbs.loyalty.service.specification.Constant.END_DATE_FORMAT;
 import static com.dbs.loyalty.service.specification.Constant.END_DATE_PARAM;
 import static com.dbs.loyalty.service.specification.Constant.FORMATTER;
 import static com.dbs.loyalty.service.specification.Constant.ID;
 import static com.dbs.loyalty.service.specification.Constant.IP;
 import static com.dbs.loyalty.service.specification.Constant.KY_PARAM;
 import static com.dbs.loyalty.service.specification.Constant.LIKE_FORMAT;
-import static com.dbs.loyalty.service.specification.Constant.START_DATE_FORMAT;
 import static com.dbs.loyalty.service.specification.Constant.START_DATE_PARAM;
+import static com.dbs.loyalty.service.specification.Constant.USERNAME;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 
@@ -74,9 +72,8 @@ public class LogLoginSpecification {
 	private static Instant getStartDate(HttpServletRequest request) {
 		if(request.getParameter(START_DATE_PARAM) != null) {
 			try {
-				String startDate = String.format(START_DATE_FORMAT, request.getParameter(START_DATE_PARAM));
-				LocalDateTime localDateTime = LocalDateTime.parse(startDate, FORMATTER);
-				return localDateTime.toInstant(ZoneOffset.UTC);
+				LocalDate localDate = LocalDate.parse(request.getParameter(START_DATE_PARAM), FORMATTER);
+				return localDate.atStartOfDay().toInstant(ZoneOffset.UTC);
 			}catch (Exception e) {
 				log.error(e.getLocalizedMessage());
 			}
@@ -88,9 +85,8 @@ public class LogLoginSpecification {
 	private static Instant getEndDate(HttpServletRequest request) {
 		if(request.getParameter(END_DATE_PARAM) != null) {
 			try {
-				String endDate = String.format(END_DATE_FORMAT, request.getParameter(END_DATE_PARAM));
-				LocalDateTime localDateTime = LocalDateTime.parse(endDate, FORMATTER);
-				return localDateTime.toInstant(ZoneOffset.UTC);
+				LocalDate localDate = LocalDate.parse(request.getParameter(END_DATE_PARAM), FORMATTER);
+				return localDate.atStartOfDay().toInstant(ZoneOffset.UTC);
 			}catch (Exception e) {
 				log.error(e.getLocalizedMessage());
 			}

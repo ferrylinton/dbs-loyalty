@@ -18,7 +18,7 @@ a:hover{
 
 /* OVERRIDE BOOTSTRAP */
 
-.btn, .modal-content, .dropdown-menu, .custom-select, .custom-file-label{
+.btn, .modal-content, .dropdown-menu, .custom-select, .custom-file-label, .input-group-text, .form-control{
 	border-radius: 0;	
 }
 
@@ -39,10 +39,6 @@ a:hover{
 
 .breadcrumb{
 	padding: .45rem 1rem;
-}
-
-.form-control{
-	border-radius: 0;
 }
 
 .form-control[readonly] {

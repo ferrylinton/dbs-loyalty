@@ -4,6 +4,7 @@
 <head th:replace="fragment/head.html :: content(title=|#{application.name} : #{logLogin}|)"></head>
 
 <body data-menu="loglogin">
+	<div id="jsDate" th:text="${@settingService.jsDate()}" class="hidden"></div>
     <!-- NAVBAR -->
     <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
     <div id="content-box">
@@ -20,8 +21,8 @@
                     <div class="col-12 col-sm-12 col-md-10 col-lg-7 col-xl-6">
                         <form th:action="@{/loglogin}" method="get" autocomplete="off" >
 							<div class="input-group mb-2">
-								<input type="text" class="form-control" name="sd" th:value="${param.sd}" placeholder="Start Date" th:placeholder="#{startDate}" readonly="readonly">
-		                     	<input type="text" class="form-control" name="ed" th:value="${param.ed}" placeholder="End Date" th:placeholder="#{endDate}" readonly="readonly">
+								<input type="text" class="form-control datetimepicker-input" id="sd" name="sd" th:title="${param.sd}" placeholder="Start Date" th:placeholder="#{startDate}" data-toggle="datetimepicker" data-target="#sd">
+		                     	<input type="text" class="form-control datetimepicker-input" id="ed" name="ed" th:title="${param.ed}" placeholder="End Date" th:placeholder="#{endDate}" data-toggle="datetimepicker" data-target="#ed">
 								<div class="input-group-append">
 		                     		<div class="input-group-text bg-light"><span class="icon-calendar"></span></div>
 		                      	</div>

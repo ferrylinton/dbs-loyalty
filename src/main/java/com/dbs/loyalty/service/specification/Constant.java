@@ -2,14 +2,12 @@ package com.dbs.loyalty.service.specification;
 
 import java.time.format.DateTimeFormatter;
 
+import com.dbs.loyalty.service.SettingService;
+
 public final class Constant {
 	
-	public static final DateTimeFormatter FORMATTER =  DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
-	
-	public static final String START_DATE_FORMAT = "%s 00:00";
-	
-	public static final String END_DATE_FORMAT = "%s 11:59";
-	
+	public static final DateTimeFormatter FORMATTER =  DateTimeFormatter.ofPattern(SettingService.JAVA_DATE);
+
 	public static final String EMPTY = "";
 
 	public static final String LIKE_FORMAT = "%%%s%%";

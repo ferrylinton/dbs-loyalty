@@ -3,34 +3,35 @@ var DateUtil = (function () {
     'use strict';
 
     function initSearch(){
-        var startDateInput = $('input[name="sd"]');
-        var endDateInput = $('input[name="ed"]');
-        var startDate;
-        var endDate;
-    
-        initDatePickerLang(null, new Date());
-        startDate = startDateInput
-            .datepicker({language: Lang.getLocale()})
-            .datepicker('setDate', (getQueryParam('sd') == null || getQueryParam('sd') == '') ? null : getQueryParam('sd'))
-            .on('pick.datepicker', function (e) {
-                if(endDate.datepicker('getDate') < e.date){
-                    endDate.datepicker('setDate', e.date);
-                }else if((endDateInput.val()) == ''){
-                    endDateInput.val(endDate.datepicker('getDate', true));
-                }
+    	var format = $('#jsDate').length ? $('#jsDate').text() : 'DD-MM-YYYY';
+    	var startPeriodDate = $('#sd');
+        var endPeriodDate = $('#ed');
+
+        if(startPeriodDate.length && endPeriodDate.length){
+        	var startDefaultDate = (startPeriodDate.attr('title') == undefined) ? false : moment(startPeriodDate.attr('title'), format);
+            var endDefaultDate = (endPeriodDate.attr('title') == undefined) ? false : moment(endPeriodDate.attr('title'), format);
+            
+        	datetimepickerIcon();
+        	
+        	// start date
+            startPeriodDate.datetimepicker({
+            	format : format,
+            	defaultDate	: startDefaultDate
             });
-        
-        endDate = endDateInput
-            .datepicker({language: Lang.getLocale()})
-            .datepicker('setDate', (getQueryParam('ed') == null || getQueryParam('ed') == '') ? null : getQueryParam('ed'))
-            .on('pick.datepicker', function (e) {
-                if(startDate.datepicker('getDate') > e.date){
-                    startDate.datepicker('setDate', e.date);
-                }else if((startDateInput.val()) == ''){
-                    startDateInput.val(startDate.datepicker('getDate', true));
-                }
+            startPeriodDate.on('change.datetimepicker', function (e) {
+            	endPeriodDate.datetimepicker('minDate', e.date);
             });
-        
+            
+            // end date
+            endPeriodDate.datetimepicker({
+            	format : format,
+            	defaultDate	: endDefaultDate,
+                useCurrent: false
+            });
+            endPeriodDate.on('change.datetimepicker', function (e) {
+            	startPeriodDate.datetimepicker('maxDate', e.date);
+            });
+        }
     }
     
     function datetimepickerIcon(){
@@ -156,41 +157,6 @@ var DateUtil = (function () {
     		startPeriod.val(startDate.format(format));
     		endPeriod.val(endDate.format(format));
     	}
-    }
-    
-    function startEndPeriodxxxxx(startDateInput, endDateInput){
-        var startDate;
-        var endDate;
-    
-        initDatePickerLang(new Date(), null);
-        startDate = startDateInput
-            .datepicker({language: Lang.getLocale()})
-            .datepicker('setDate', (startDateInput.val() == null) ? new Date() : startDateInput.val())
-            .on('pick.datepicker', function (e) {
-                if(endDate.datepicker('getDate') < e.date){
-                    endDate.datepicker('setDate', e.date);
-                }else if((endDateInput.val()) == ''){
-                    endDateInput.val(endDate.datepicker('getDate', true));
-                }
-                
-                console.log(startDate.datepicker('getDate').toUTCString());
-                console.log(endDate.datepicker('getDate').toUTCString());
-            });
-        
-        endDate = endDateInput
-            .datepicker({language: Lang.getLocale()})
-            .datepicker('setDate', (endDateInput.val() == null) ? new Date() : endDateInput.val())
-            .on('pick.datepicker', function (e) {
-                if(startDate.datepicker('getDate') > e.date){
-                    startDate.datepicker('setDate', e.date);
-                }else if((startDateInput.val()) == ''){
-                    startDateInput.val(startDate.datepicker('getDate', true));
-                }
-                
-                console.log(startDate.datepicker('getDate').toUTCString());
-                console.log(endDate.datepicker('getDate').toUTCString());
-            });
-        
     }
     
     function initDob(){
