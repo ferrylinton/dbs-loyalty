@@ -6,7 +6,6 @@ html {
 body{
 	padding: 60px 0 0 0;
 	margin: 0;
-	background-color: #d3d7cf;
 }
 
 a{
@@ -228,7 +227,7 @@ a:hover{
 	margin-top: 15px;
 	padding: 15px 0;
 	font-size: .9em;
-	background-color: #d3d7cf;
+	border-top: solid 1px #dee2e6;
 }
 
 #footer a{

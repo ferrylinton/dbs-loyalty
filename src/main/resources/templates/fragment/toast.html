@@ -1,12 +1,13 @@
 <!doctype html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>DBS Loyalty</title>
+    <title>Title</title>
 </head>
 
 <body>
-	<div id="toast" aria-live="polite" aria-atomic="true" class="d-flex justify-content-center align-items-center">
+<div th:fragment="content" th:remove="tag">
+	<div aria-live="polite" aria-atomic="true" class="d-flex justify-content-center align-items-center" th:if="${not #strings.isEmpty(toast)}">
 		<div class="toast shadow" role="alert" aria-live="assertive" aria-atomic="true" data-delay="10000">
 		  	<div class="toast-header">
 		    	<span class="mr-auto icon-info-circled" th:text="#{information}">Information</span>
@@ -17,6 +18,7 @@
 		  	<div class="toast-body" th:utext="${toast}"></div>
 		</div>
 	</div>
+</div>
 </body>
 
 </html>

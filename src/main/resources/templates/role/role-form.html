@@ -1,77 +1,63 @@
 <!doctype html>
-<html lang="en" th:lang="${#locale.toString() == 'in' ? 'id' : #locale}" xmlns:th="http://www.thymeleaf.org">
+<html 
+	th:with="isMaker=${#authorization.expression('hasAuthority(''ROLE_MK'')')}"
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	layout:decorate="~{layout/layout}">
 
-<head th:replace="fragment/head.html :: content(title=|#{application.name} : #{role}|)"></head>
+<head>
+    <title th:text="#{role}">Role</title>
+</head>
 
 <body data-menu="role">
-    <!-- NAVBAR -->
-    <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
-    <div id="content-box" th:with="isMaker=${#authorization.expression('hasAuthority(''ROLE_MK'')')}">
-        <!-- BREADCRUMB -->
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/home/home-view.html" th:href="@{/}" th:text="#{home}">Home</a></li>
-                <li class="breadcrumb-item"><a href="/role/role-view.html" th:href="@{/role}" th:text="#{role}">Role</a></li>
-                <li class="breadcrumb-item active" aria-current="page" th:text="#{form}">Form</li>
-            </ol>
-        </nav>
-        <div id="main-content">
-            <!-- MESSAGE -->
-            <div class="border alert alert-light text-center" role="alert" th:if="${error}">
-                <span class="icon-attention"></span> <span th:text="${error}">Data ['xxxx'] is not found</span>
-            </div>
-            
-            <!-- FORM -->
-            <th:block th:if="${role}">
-                <form action="/role/role-view.html" th:action="@{/role}" th:object="${role}" method="post" autocomplete="off">
-                    <div class="row">
-                        <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
-                            <div class="form-group">
-                                <label for="name" th:text="|#{name} *|">Name *</label>
-                                <input class="form-control" th:classappend="${#fields.hasErrors('name') ? 'is-invalid' : ''}" type="text" th:placeholder="#{name}" th:field="*{name}" maxlength="40" />
-                            	<div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:uerrors="*{name}">Error</div>
-                            </div>
-                        </div>
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label for="authorities" th:text="|#{authorities} *|">Authorities *</label>
-                                <div class="py-2 pl-5 border" th:classappend="${#fields.hasErrors('authorities') ? 'is-invalid' : ''}">
-                                    <div class="row">
-                                        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4" th:each="authority : ${authorities}">
-                                            <input class="form-check-input" type="checkbox" th:field="*{authorities}" th:value="|${authority.id}${authority.name}|" />
-                                            <label th:text="${authority.name}">Description</label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="invalid-feedback" th:if="${#fields.hasErrors('authorities')}" th:uerrors="*{authorities}">Error</div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- HIDDEN -->
-                    <input type="hidden" id="id" th:field="*{id}" th:if="*{id != null}"/>
-                    <input type="hidden" th:field="*{createdBy}"/>
-                    <input type="hidden" th:field="*{createdDate}"/>
-                    <input type="hidden" th:field="*{lastModifiedBy}"/>
-                    <input type="hidden" th:field="*{lastModifiedDate}"/>
-                    <!-- TOOLBAR -->
-                    <div class="toolbar">
-                        <a class="btn btn-light" href="/role/role-view.html" th:href="@{/role}">
-                            <span class="icon-left"></span> <span th:text="#{back}">Back</span>
-                        </a>
-                        <button class="btn btn-light text-primary" type="submit" th:if="${isMaker && !role.pending}">
-                            <span class="icon-floppy"></span> <span th:text="#{save}">Save</span>
-                        </button>
-                    </div>
-                </form>
-            </th:block>
-        </div>
-        <!-- FOOTER -->
-        <div id="footer" th:replace="fragment/footer.html :: #footer"></div>
-    </div>
-    <!-- SIDENAV -->
-    <div id="sidenav-box" th:replace="fragment/sidenav.html :: #sidenav-box"></div>
-    <!-- SCRIPTS -->
-    <div th:replace="fragment/scripts.html :: content"></div>
+	<nav aria-label="breadcrumb" layout:fragment="breadcrumb">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{home}">Home</a></li>
+ 			<li class="breadcrumb-item"><a th:href="@{/role}" th:text="#{role}">Role</a></li>
+			<li class="breadcrumb-item active" aria-current="page" th:text="#{form}">Form</li>
+		</ol>
+	</nav>
+	<div layout:fragment="content">
+		<div th:replace="fragment/value-not-found.html :: content"></div>
+		<form th:action="@{/role}" th:object="${role}" method="post" autocomplete="off">
+			<th:block th:if="${role}">
+				<div class="row">
+	        		<div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+	            		<div class="form-group">
+	                    	<label for="name" th:text="|#{name} *|">Name *</label>
+	                  		<input class="form-control" th:classappend="${#fields.hasErrors('name') ? 'is-invalid' : ''}" type="text" th:placeholder="#{name}" th:field="*{name}" maxlength="40" />
+	              			<div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:uerrors="*{name}">Error</div>
+	         			</div>
+	          		</div>
+	        		<div class="col-12">
+	               		<div class="form-group">
+	                   		<label for="authorities" th:text="|#{authorities} *|">Authorities *</label>
+	                  		<div class="py-2 pl-5 border" th:classappend="${#fields.hasErrors('authorities') ? 'is-invalid' : ''}">
+	                    		<div class="row">
+	                        		<div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4" th:each="authority : ${authorities}">
+	                             		<input class="form-check-input" type="checkbox" th:field="*{authorities}" th:value="|${authority.id}${authority.name}|" />
+	                          			<label th:text="${authority.name}">Description</label>
+	                         		</div>
+	                       		</div>
+	                      	</div>
+	                     	<div class="invalid-feedback" th:if="${#fields.hasErrors('authorities')}" th:uerrors="*{authorities}">Error</div>
+	               		</div>
+	          		</div>
+				</div>
+	       		<div th:replace="fragment/audit-form.html :: content"></div>
+       		</th:block>
+      		<div class="toolbar">
+          		<a class="btn btn-light" th:href="@{/role}">
+               		<span class="icon-left"></span> <span th:text="#{back}">Back</span>
+               	</a>
+               	<th:block th:if="${role}">
+	            	<button class="btn btn-light text-primary" type="submit" th:if="${isMaker && !role.pending}">
+	             		<span class="icon-floppy"></span> <span th:text="#{save}">Save</span>
+	             	</button>
+             	</th:block>
+          	</div>
+		</form>
+	</div>
 </body>
 
 </html>

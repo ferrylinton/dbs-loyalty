@@ -1,0 +1,16 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Ferry L. H</title>
+</head>
+
+<body>
+	<div th:fragment="content" th:remove="tag">
+		<div class="border alert alert-light text-center" role="alert" th:if="${page.getTotalElements() == 0}">
+			<span class="icon-attention"></span> <span th:text="#{message.dataNotFound}">Data not found</span>
+		</div>
+	</div>
+</body>
+
+</html>

@@ -1,0 +1,29 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Ferry L. H</title>
+</head>
+
+<body>
+	<table th:fragment="content(data)" th:remove="tag">
+		<tr>
+      		<th th:text="#{createdBy}">Created By</th>
+          	<td th:text="${data.createdBy}">System</td>
+    	</tr>
+      	<tr>
+       		<th th:text="#{createdDate}">Created Dt</th>
+        	<td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@dateService.jsDatetime()}" th:text="${data.createdDate}">2019-05-01T21:24:44Z</span></td>
+     	</tr>
+      	<tr th:if="${data.lastModifiedBy}">
+       		<th th:text="#{lastModifiedBy}" style="width: 180px;">Last Modified By</th>
+           	<td th:text="${data.lastModifiedBy}">System</td>
+    	</tr>
+      	<tr th:if="${data.lastModifiedDate}">
+         	<th th:text="#{lastModifiedDate}">Last Modified Dt</th>
+           	<td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@dateService.jsDatetime()}" th:text="${data.lastModifiedDate}">2019-05-01T21:24:44Z</span></td>
+      	</tr>
+	</table>
+</body>
+
+</html>

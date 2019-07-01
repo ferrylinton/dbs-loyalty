@@ -159,95 +159,11 @@ var DateUtil = (function () {
     		endPeriod.val(endDate.format(format));
     	}
     }
-    
-    function initDob(){
-        var dobInput = $('input[name="dob"]');
-        var dobValue = moment(dobInput.val(), $('#js-date-format').text());
-    
-        initDatePickerLang(null, new Date());
-        dobInput
-            .datepicker({language: Lang.getLocale()})
-            .datepicker('setDate', (dobInput.val() == null) ? new Date() : dobInput.val());
-    }
-    
-    function initDatePickerLang(startDate, endDate){
-    	var dateFormat = $('#js-date-format').length ? $('#js-date-format').text() : 'DD/MM/YYYY';
-    	
-        $.fn.datepicker.languages['en'] = {
-            autoHide: true,
-            startDate: startDate,
-            endDate: endDate,
-            format: dateFormat,
-            days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
-            daysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-            daysMin: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
-            months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-            monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            weekStart: 0,
-            startView: 0,
-            yearFirst: false,
-            yearSuffix: ''
-        };
-        
-        $.fn.datepicker.languages['id'] = {
-            autoHide: true,
-            startDate: startDate,
-            endDate: endDate,
-            format: dateFormat,
-            days: ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'],
-            daysShort: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
-            daysMin: ['Mi', 'Se', 'Se', 'Ra', 'Ka', 'Ju', 'Sa'],
-            months: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
-            monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'Mai', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'],
-            weekStart: 0,
-            startView: 0,
-            yearFirst: false,
-            yearSuffix: ''
-        };
-    }
-
-    function getQueryParam(param) {
-        var url = window.location.href;
-        
-        if(url.indexOf('?') !== -1 && url.indexOf('&') !== -1){
-            var hashes = url.split('?')[1];
-            var hash = hashes.split('&');
-        
-            for (var i = 0; i < hash.length; i++) {
-                var temp = hash[i].split("=");
-                
-                if(temp[0] == param){
-                    return temp[1];
-                }
-            }
-        }
-        
-        return null;
-    }
-
-    function initTimePicker(timeInput){
-        var defaultTime = timeInput.val() == '' ? '08:00' : timeInput.val();
-
-        timeInput.timepicker({
-            timeFormat: 'HH:mm',
-            interval: 60,
-            minTime: '01',
-            maxTime: '23:00',
-            defaultTime: defaultTime,
-            startTime: '01:00',
-            dynamic: false,
-            dropdown: true,
-            scrollbar: true,
-            zindex: 20
-        });
-    }
 
     return {
         initSearch: initSearch,
         startEndPeriod: startEndPeriod,
-        startEndPeriodWithTime: startEndPeriodWithTime,
-        initDob: initDob,
-        initTimePicker: initTimePicker
+        startEndPeriodWithTime: startEndPeriodWithTime
     }
 
 }());

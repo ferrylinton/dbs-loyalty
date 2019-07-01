@@ -2,10 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
-    <title>DBS Loyalty</title>
+    <title>Title</title>
 </head>
 
 <body>
+<div th:fragment="content" th:remove="tag">
     <div id="sidenav-box">
         <ul class="vertical-menu">
             <li>
@@ -100,6 +101,7 @@
             </li>
         </ul>
     </div>
+</div>
 </body>
 
 </html>

@@ -1,0 +1,18 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Ferry L. H</title>
+</head>
+
+<body>
+	<div th:fragment="content" th:remove="tag">
+		<input type="hidden" id="id" th:field="*{id}" th:if="*{id != null}"/>
+   		<input type="hidden" th:field="*{createdBy}"/>
+     	<input type="hidden" th:field="*{createdDate}"/>
+     	<input type="hidden" th:field="*{lastModifiedBy}"/>
+      	<input type="hidden" th:field="*{lastModifiedDate}"/>
+	</div>
+</body>
+
+</html>

@@ -20,12 +20,14 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+import org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect;
 
 import com.dbs.loyalty.filter.LogRequestFilter;
 import com.dbs.loyalty.service.LogApiService;
 import com.github.bufferings.thymeleaf.extras.nl2br.dialect.Nl2brDialect;
 
 import lombok.RequiredArgsConstructor;
+import nz.net.ultraq.thymeleaf.LayoutDialect;
 
 @RequiredArgsConstructor
 @Configuration
@@ -33,6 +35,21 @@ import lombok.RequiredArgsConstructor;
 public class WebConfiguration implements WebMvcConfigurer{
 
 	private final LogApiService logAuditService;
+	
+	@Bean
+	public Nl2brDialect dialect() {
+	  return new Nl2brDialect();
+	}
+	
+	@Bean
+	public LayoutDialect layoutDialect() {
+	    return new LayoutDialect();
+	}
+	
+	@Bean
+	public SpringSecurityDialect securityDialect() {
+	    return new SpringSecurityDialect();
+	}
 	
 	@Bean("localeResolver")
 	public LocaleResolver localeResolver() {
@@ -48,11 +65,6 @@ public class WebConfiguration implements WebMvcConfigurer{
 	    return bean;
 	}
 
-	@Bean
-	public Nl2brDialect dialect() {
-	  return new Nl2brDialect();
-	}
-	
 	@Bean
 	public ByteArrayHttpMessageConverter byteArrayHttpMessageConverter() {
 	    ByteArrayHttpMessageConverter arrayHttpMessageConverter = new ByteArrayHttpMessageConverter();

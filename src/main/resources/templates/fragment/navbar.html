@@ -2,10 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>DBS Loyalty</title>
+    <title>Title</title>
 </head>
 
 <body>
+<div th:fragment="content" th:remove="tag">
     <nav id="navbar" class="navbar navbar-dark fixed-top">
             <a class="navbar-brand clearfix" href="index.html" th:href="@{/}">
                 <img class="float-left" alt="dbs.png" src="/static/image/dbs.png" th:src="@{/static/image/dbs.png}"></img>
@@ -29,6 +30,7 @@
                 <button class="btn btn-menu" type="button" onclick="Sidenav.toggle()">&#9776;</button>
             </div>
 	</nav>
+</div>
 </body>
 
 </html>
