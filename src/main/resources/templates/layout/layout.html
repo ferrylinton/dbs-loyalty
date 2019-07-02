@@ -37,8 +37,6 @@
     	<div th:replace="fragment/footer.html :: content"></div>
     </div>
     <div th:replace="fragment/sidenav.html :: content"></div>
-    <div th:replace="fragment/toast.html :: content"></div>
-    <div th:replace="fragment/delete-modal.html :: content"></div>
     <!-- ###### LIBS - JAVASCRIPT ###### -->
 	<th:block th:with="libs=${hasCdnjsProfile} ? 'https://cdnjs.cloudflare.com/ajax/libs' : @{/static/libs}">
 		<script th:src="|${libs}/moment.js/2.24.0/moment.min.js|"></script>

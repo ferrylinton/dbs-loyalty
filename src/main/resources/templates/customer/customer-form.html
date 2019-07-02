@@ -1,30 +1,27 @@
 <!doctype html>
-<html lang="en" th:lang="${#locale.toString() == 'in' ? 'id' : #locale}" xmlns:th="http://www.thymeleaf.org">
+<html 
+	th:with="isMaker=${#authorization.expression('hasAuthority(''CUSTOMER_MK'')')}"
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	layout:decorate="~{layout/layout}">
 
-<head th:replace="fragment/head.html :: content(title=|#{application.name} : #{customer}|)"></head>
+<head>
+    <title th:text="#{customer}">Customer</title>
+</head>
 
 <body data-menu="customer">
-	<div id="js-date-format" th:text="${@settingService.jsDate()}" class="hidden"></div>
-    <!-- NAVBAR -->
-    <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
-    <div id="content-box" th:with="isMaker=${#authorization.expression('hasAuthority(''CUSTOMER_MK'')')}">
-        <!-- BREADCRUMB -->
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/home/home-view.html" th:href="@{/}" th:text="#{home}">Home</a></li>
-                <li class="breadcrumb-item"><a href="/customer/customer-view.html" th:href="@{/customer}" th:text="#{customer}">Customer</a></li>
-                <li class="breadcrumb-item active" aria-current="page" th:text="#{form}">Form</li>
-            </ol>
-        </nav>
-        <div id="main-content">
-            <!-- MESSAGE -->
-            <div class="border alert alert-light text-center" role="alert" th:if="${error}">
-                <span class="icon-attention"></span> <span th:text="${error}">Data ['xxxx'] is not found</span>
-            </div>
-            <!-- FORM -->
-            <th:block th:if="${customer}">
-                <form action="/customer/customer-view.html" th:action="@{/customer}" th:object="${customer}" method="post" autocomplete="off" enctype="multipart/form-data">
-                    <div class="row" th:object="${customer}">
+	<nav aria-label="breadcrumb" layout:fragment="breadcrumb">
+		<ol class="breadcrumb">
+  			<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{home}">Home</a></li>
+        	<li class="breadcrumb-item"><a th:href="@{/customer}" th:text="#{customer}">Customer</a></li>
+         	<li class="breadcrumb-item active" aria-current="page" th:text="#{form}">Form</li>
+		</ol>
+	</nav>
+ 	<div layout:fragment="content">
+		<div th:replace="fragment/value-not-found.html :: content"></div>
+ 		<form th:action="@{/customer}" th:object="${customer}" method="post" autocomplete="off" enctype="multipart/form-data">
+			<th:block th:if="${customer}">
+          		<div class="row" th:object="${customer}">
                         <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
                             <div class="form-group">
                                 <label for="customerType" th:text="#{customerType}">Customer Type</label>
@@ -69,8 +66,8 @@
 		                    	</div>
 		                    </div>
 	             		</div>
-                    </div>
-                    <div class="row">
+              	</div>
+             	<div class="row">
 						<div class="col-12" th:if="*{id != null}">
 							<div class="form-group">
 								<label for="image" th:text="#{image}">Image</label>
@@ -95,35 +92,24 @@
 								</div>
 							</div>
 						</div>
-					</div>
-					<!-- HIDDEN -->
-                    <input type="hidden" th:field="*{id}" th:if="*{id != null}"/>
-                    <input type="hidden" th:field="*{locked}" th:if="*{id == null}"/>
-                    <input type="hidden" th:field="*{activated}"/>
-                    <input type="hidden" th:field="*{passwordHash}"/>
-                    <input type="hidden" th:field="*{createdBy}"/>
-                    <input type="hidden" th:field="*{createdDate}"/>
-                    <input type="hidden" th:field="*{lastModifiedBy}"/>
-                    <input type="hidden" th:field="*{lastModifiedDate}"/>
-                    <!-- TOOLBAR -->
-                    <div class="toolbar">
-                        <a class="btn btn-light" href="/customer/customer-view.html" th:href="@{/customer}">
-                            <span class="icon-left" th:text="#{back}">Back</span>
-                        </a>
-                        <button class="btn btn-light text-primary" type="submit" th:if="${isMaker && !customer.pending}">
-                            <span class="icon-floppy" th:text="#{save}">Save</span>
-                        </button>
-                    </div>
-                </form>
-            </th:block>
-        </div>
-        <!-- FOOTER -->
-        <div id="footer" th:replace="fragment/footer.html :: #footer"></div>
-    </div>
-    <!-- SIDENAV -->
-    <div id="sidenav-box" th:replace="fragment/sidenav.html :: #sidenav-box"></div>
-    <!-- SCRIPTS -->
-    <div th:replace="fragment/scripts.html :: content"></div>
+				</div>
+          		<input type="hidden" th:field="*{locked}" th:if="*{id == null}"/>
+           		<input type="hidden" th:field="*{activated}"/>
+             	<input type="hidden" th:field="*{passwordHash}"/>
+				<div th:replace="fragment/audit-form.html :: content"></div>
+			</th:block>
+          	<div class="toolbar">
+           		<a class="btn btn-light" th:href="@{/customer}">
+               		<span class="icon-left" th:text="#{back}">Back</span>
+               	</a>
+               	<th:block th:if="${customer}">
+               		<button class="btn btn-light text-primary" type="submit" th:if="${isMaker && !customer.pending}">
+                  		<span class="icon-floppy" th:text="#{save}">Save</span>
+               		</button>
+       			</th:block>
+          	</div>
+		</form>
+	</div>
 </body>
 
 </html>

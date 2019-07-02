@@ -1,100 +1,86 @@
 <!doctype html>
-<html lang="en" th:lang="${#locale.toString() == 'in' ? 'id' : #locale}" xmlns:th="http://www.thymeleaf.org">
+<html 
+	th:with="isMaker=${#authorization.expression('hasAuthority(''USER_MK'')')}"
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	layout:decorate="~{layout/layout}">
 
-<head th:replace="fragment/head.html :: content(title=|#{application.name} : #{user}|)"></head>
+<head>
+    <title th:text="#{user}">User</title>
+</head>
 
 <body data-menu="user">
-    <!-- NAVBAR -->
-    <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
-    <div id="content-box" th:with="isMaker=${#authorization.expression('hasAuthority(''USER_MK'')')}">
-        <!-- BREADCRUMB -->
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/home/home-view.html" th:href="@{/}" th:text="#{home}">Home</a></li>
-                <li class="breadcrumb-item"><a href="/user/user-view.html" th:href="@{/user}" th:text="#{user}">Customer</a></li>
-                <li class="breadcrumb-item active" aria-current="page" th:text="#{form}">Form</li>
-            </ol>
-        </nav>
-        <div id="main-content">
-            <!-- MESSAGE -->
-            <div class="border alert alert-light text-center" role="alert" th:if="${error}">
-                <span class="icon-attention"></span> <span th:text="${error}">Data ['xxxx'] is not found</span>
-            </div>
-            <!-- FORM -->
-            <th:block th:if="${user}">
-                <form action="/user/user-view.html" th:action="@{/user}" th:object="${user}" method="post" autocomplete="off">
-                    <div class="row">
-                    	<div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
-                            <div class="form-group">
-                                <label for="userType" th:text="#{userType}">User Type</label>
-                                <select class="custom-select" th:field="*{userType}" onchange="FormUtil.onChangeUserType(this)" th:disabled="${user.id != null}">
-                                    <option value="Internal">Internal</option>
-                                    <option value="External">External</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
-                            <div class="form-group">
-                                <label for="username" th:text="#{username}">Username *</label>
-                                <input class="form-control" th:classappend="${#fields.hasErrors('username') ? 'is-invalid' : ''}" type="text" th:field="*{username}" maxlength="50" />
-                           		<div class="invalid-feedback" th:if="${#fields.hasErrors('username')}" th:uerrors="*{username}">Error</div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4" th:if="*{id == null}">
-                            <div class="form-group">
-                                <label for="passwordPlain" th:text="#{password}">Password</label>
-                                <input class="form-control"  th:classappend="${#fields.hasErrors('passwordPlain') ? 'is-invalid' : ''}" type="password" id="passwordPlain" th:field="*{passwordPlain}" maxlength="30" th:disabled="${user.userType == 'Internal'}"/>
-                            	<div class="invalid-feedback" th:if="${#fields.hasErrors('passwordPlain')}" th:uerrors="*{passwordPlain}">Error</div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
-                            <div class="form-group">
-                                <label for="role" th:text="#{role}">Role</label>
-                                <select class="custom-select" th:field="*{role}">
+	<nav aria-label="breadcrumb">
+		<ol class="breadcrumb">
+  			<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{home}">Home</a></li>
+  			<li class="breadcrumb-item"><a th:href="@{/user}" th:text="#{user}">User</a></li>
+   			<li class="breadcrumb-item active" aria-current="page" th:text="#{form}">Form</li>
+ 		</ol>
+	</nav>
+	<div layout:fragment="content">
+		<div th:replace="fragment/value-not-found.html :: content"></div>
+		<form th:action="@{/user}" th:object="${user}" method="post" autocomplete="off">
+			<th:block th:if="${user}">
+            	<div class="row">
+                 	<div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
+                   		<div class="form-group">
+                       		<label for="userType" th:text="#{userType}">User Type</label>
+                         	<select class="custom-select" th:field="*{userType}" onchange="FormUtil.onChangeUserType(this)" th:disabled="${user.id != null}">
+                             	<option value="Internal">Internal</option>
+                               	<option value="External">External</option>
+                        	</select>
+                 		</div>
+            		</div>
+                  	<div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
+                    	<div class="form-group">
+                      		<label for="username" th:text="#{username}">Username *</label>
+                         	<input class="form-control" th:classappend="${#fields.hasErrors('username') ? 'is-invalid' : ''}" type="text" th:field="*{username}" maxlength="50" />
+                         	<div class="invalid-feedback" th:if="${#fields.hasErrors('username')}" th:uerrors="*{username}">Error</div>
+                    	</div>
+                  	</div>
+                  	<div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4" th:if="*{id == null}">
+                    	<div class="form-group">
+                        	<label for="passwordPlain" th:text="#{password}">Password</label>
+                        	<input class="form-control"  th:classappend="${#fields.hasErrors('passwordPlain') ? 'is-invalid' : ''}" type="password" id="passwordPlain" th:field="*{passwordPlain}" maxlength="30" th:disabled="${user.userType == 'Internal'}"/>
+                        	<div class="invalid-feedback" th:if="${#fields.hasErrors('passwordPlain')}" th:uerrors="*{passwordPlain}">Error</div>
+                    	</div>
+                	</div>
+                	<div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
+                     	<div class="form-group">
+                         	<label for="role" th:text="#{role}">Role</label>
+                        	<select class="custom-select" th:field="*{role}">
                                     <option th:each="_role: ${roles}" th:value="|${_role.id}${_role.name}|" th:text="${_role.name}">Role</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-4">
-                        	<div class="mb-3 mt-lg-4" style="padding-top: 15px;">
-		                   		<div class="custom-control custom-switch d-inline-block mr-2">
-		                        	<input type="checkbox" id="activated" th:field="*{activated}" class="custom-control-input">
-		                          	<label class="custom-control-label" for="activated" th:text="#{activated}">Activated</label>
-		                    	</div>
-		                    	<div class="custom-control custom-switch d-inline-block">
-		                     		<input type="checkbox" id="locked" th:field="*{locked}" class="custom-control-input">
-		                        	<label class="custom-control-label" for="locked" th:text="#{locked}">Locked</label>
-		                    	</div>
-		                    </div>
-	             		</div>
-                    </div>
-					
-                    <!-- HIDDEN -->
-                    <input type="hidden" th:field="*{id}" th:if="*{id != null}"/>
-                    <input type="hidden" th:field="*{userType}" th:if="*{id != null}"/>
-                    <input type="hidden" th:field="*{createdBy}"/>
-                    <input type="hidden" th:field="*{createdDate}"/>
-                    <input type="hidden" th:field="*{lastModifiedBy}"/>
-                    <input type="hidden" th:field="*{lastModifiedDate}"/>
-                    <!-- TOOLBAR -->
-                    <div class="toolbar">
-                        <a class="btn btn-light" href="/user/user-view.html" th:href="@{/user}">
-                            <span class="icon-left"></span> <span th:text="#{back}">Back</span>
-                        </a>
-                        <button class="btn btn-light text-primary" type="submit" th:if="${isMaker && !user.pending}">
-                            <span class="icon-floppy"></span> <span th:text="#{save}">Save</span>
-                        </button>
-                    </div>
-                </form>
-            </th:block>
-        </div>
-        <!-- FOOTER -->
-        <div id="footer" th:replace="fragment/footer.html :: #footer"></div>
-    </div>
-    <!-- SIDENAV -->
-    <div id="sidenav-box" th:replace="fragment/sidenav.html :: #sidenav-box"></div>
-    <!-- SCRIPTS -->
-    <div th:replace="fragment/scripts.html :: content"></div>
+                          	</select>
+                      	</div>
+               		</div>
+                	<div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-4">
+                    	<div class="mb-3 mt-lg-4" style="padding-top: 15px;">
+		               		<div class="custom-control custom-switch d-inline-block mr-2">
+		                     	<input type="checkbox" id="activated" th:field="*{activated}" class="custom-control-input">
+		                      	<label class="custom-control-label" for="activated" th:text="#{activated}">Activated</label>
+		               		</div>
+		                 	<div class="custom-control custom-switch d-inline-block">
+		                 		<input type="checkbox" id="locked" th:field="*{locked}" class="custom-control-input">
+		                    	<label class="custom-control-label" for="locked" th:text="#{locked}">Locked</label>
+		                   	</div>
+		             	</div>
+	             	</div>
+             	</div>
+				<div th:replace="fragment/audit-form.html :: content"></div>	
+				<input type="hidden" th:field="*{userType}" th:if="*{id != null}"/>
+			</th:block>
+          	<div class="toolbar">
+            	<a class="btn btn-light" th:href="@{/user}">
+               		<span class="icon-left"></span> <span th:text="#{back}">Back</span>
+             	</a>
+             	<th:block th:if="${user}">
+              		<button class="btn btn-light text-primary" type="submit" th:if="${isMaker && !user.pending}">
+                  		<span class="icon-floppy"></span> <span th:text="#{save}">Save</span>
+               		</button>
+				</th:block>
+           	</div>
+		</form>
+	</div>
 </body>
 
 </html>

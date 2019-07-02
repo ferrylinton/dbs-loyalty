@@ -1,67 +1,42 @@
 <!doctype html>
-<html lang="en" th:lang="${#locale.toString() == 'in' ? 'id' : #locale}" xmlns:th="http://www.thymeleaf.org">
+<html 
+	th:with="isMaker=${#authorization.expression('hasAuthority(''USER_MK'')')}"
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	layout:decorate="~{layout/layout}">
 
-<head th:replace="fragment/head.html :: content(title=|#{application.name} : #{user}|)"></head>
+<head>
+    <title th:text="#{user}">User</title>
+</head>
 
 <body data-menu="user">
-	<!-- TOAST -->
-	<th:block th:if="${not #strings.isEmpty(toast)}">
-		<div th:replace="fragment/toast.html :: #toast"></div>
-	</th:block>
-	<!-- DELETE MODAL -->
-	<div th:replace="fragment/delete-modal.html :: #delete-modal"></div>
-    <!-- NAVBAR -->
-    <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
-    <div id="content-box" th:with="isMaker=${#authorization.expression('hasAuthority(''USER_MK'')')}">
-        <!-- BREADCRUMB -->
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/home/home-view.html" th:href="@{/}" th:text="#{home}">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page" th:text="#{user}">User</li>
-            </ol>
-        </nav>
-        <div id="main-content">
-                <!-- SEARCH FORM -->
-                <div class="row no-gutters mb-3">
-                    <div class="col-12 col-sm-12 col-md-10 col-lg-7 col-xl-6">
-                        <form action="/#" th:action="@{/user}" method="get" autocomplete="off" >
-                            <div class="input-group">
-                                <input class="form-control" name="ky" maxlength="40" th:value="${param.ky}" placeholder="keyword" th:placeholder="#{keyword}" />
-                                <div class="input-group-append">
-                                    <button class="btn btn-light" type="submit">
-                                        <span class="icon-search"></span>
-                                    </button>
-                                    <a class="btn btn-light" href="/user/user-view.html" th:href="@{/user}">
-                                        <span class="icon-arrows-cw"></span>
-                                    </a>
-                                    <a class="btn btn-light" href="/user/user-form.html" th:href="@{/user/0}" th:if="${isMaker}">
-                                        <span class="icon-plus"></span>
-                                    </a>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <!-- TABLE DATA -->
-                <div class="table-responsive border border-top-0" th:if="${page.getTotalElements() > 0}">
-                    <table class="table table-sm table-striped table-hover border-bottom" style="min-width: 600px">
-                        <thead>
-                            <tr th:with="ascending=${order.getDirection().name() == 'ASC'}">
-                                <th style="width:40px"></th>
-                                <th style="width:50px">#</th>
-                                <th th:with="sort=|&sort=username,${ascending ? 'DESC' : 'ASC'}|">
-                                    <a th:href="@{|?page=${page.getNumber()}${params}${sort}|}" class="text-decoration-none">
-                                        <span th:text="#{username}">Username</span> <span th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></span>
-                                    </a>
-                                </th>
-                                <th th:text="#{userType}">Type</th>
-                                <th th:text="#{activated}">Activated</th>
-                                <th th:text="#{locked}">Locked</th>
-                                <th th:text="#{role}">Role</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:each="user,row : ${page}">
+	<nav aria-label="breadcrumb" layout:fragment="breadcrumb">
+ 		<ol class="breadcrumb">
+      		<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{home}">Home</a></li>
+      		<li class="breadcrumb-item active" aria-current="page" th:text="#{user}">User</li>
+      	</ol>
+	</nav>
+	<div layout:fragment="content">
+		<div th:replace="fragment/search.html :: content('/user', ${isMaker})"></div>
+		<div class="table-responsive border border-top-0" th:if="${page.getTotalElements() > 0}">
+     		<table class="table table-sm table-striped table-hover border-bottom" style="min-width: 600px">
+          		<thead>
+              		<tr th:with="ascending=${order.getDirection().name() == 'ASC'}">
+                    	<th style="width:40px"></th>
+                   		<th style="width:50px">#</th>
+                  		<th th:with="sort=|&sort=username,${ascending ? 'DESC' : 'ASC'}|">
+                     		<a th:href="@{|?page=${page.getNumber()}${params}${sort}|}" class="text-decoration-none">
+                           		<span th:text="#{username}">Username</span> <span th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></span>
+                       		</a>
+                     	</th>
+                      	<th th:text="#{userType}">Type</th>
+                     	<th th:text="#{activated}">Activated</th>
+                       	<th th:text="#{locked}">Locked</th>
+                      	<th th:text="#{role}">Role</th>
+            		</tr>
+             	</thead>
+              	<tbody>
+              		<tr th:each="user,row : ${page}">
                                 <td class="py-0 px-1">
                                     <div class="dropdown">
                                         <button type="button" class="btn btn-default dropdown-toggle px-1 py-0 font-12" id="dropdownMenuButton"
@@ -90,31 +65,15 @@
                                 <td><span class="text-success icon-ok" th:class="${user.activated} ? 'text-success icon-ok' : 'text-danger icon-cancel'"></span></td>
                                 <td><span class="text-danger icon-cancel" th:class="${user.locked} ? 'text-success icon-ok' : 'text-danger icon-cancel'"></span></td>
                                 <td th:text="${user.role == null ? '-' : user.role.name}">Checker</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <!-- NOT FOUND MESSAGE -->
-                <div class="border alert alert-light text-center" role="alert" th:if="${page.getTotalElements() == 0}">
-	                <span class="icon-attention"></span> <span th:text="#{message.dataNotFound}">Data not found</span>
-	            </div>
-                <!-- TOOLBAR -->
-                <div class="toolbar" th:if="${page != null && page.getTotalPages() > 1}">
-                    <a class="btn btn-light" th:href="@{|?${previous}${params}|}" th:classappend="${not page.hasPrevious()} ? 'disabled'">
-                        <span class="icon-left-open"></span> <span th:text="#{previous}">Previous</span>
-                    </a>
-                    <a class="btn btn-light" th:href="@{|?${next}${params}|}" th:classappend="${not page.hasNext()} ? 'disabled'">
-                        <span th:text="#{next}">Next</span> <span class="icon-right-open"></span>
-                    </a>
-                </div>
-        </div>
-        <!-- FOOTER -->
-        <div id="footer" th:replace="fragment/footer.html :: #footer"></div>
-    </div>
-    <!-- SIDENAV -->
-    <div id="sidenav-box" th:replace="fragment/sidenav.html :: #sidenav-box"></div>
-    <!-- SCRIPTS -->
-    <div th:replace="fragment/scripts.html :: content"></div>
+             		</tr>
+           		</tbody>
+       		</table>
+    	</div>
+		<div th:replace="fragment/not-found.html :: content"></div>
+		<div th:replace="fragment/pager.html :: content"></div>
+		<div th:replace="fragment/toast.html :: content"></div>
+		<div th:replace="fragment/delete-modal.html :: content"></div>
+	</div>
 </body>
 
 </html>

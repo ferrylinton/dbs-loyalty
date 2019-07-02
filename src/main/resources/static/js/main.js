@@ -39,7 +39,7 @@ $(document).ready(function () {
 });
 
 function initToast(){
-	$('#toast .toast').toast('show');
+	$('.toast').toast('show');
 }
 
 function initDobMask(){

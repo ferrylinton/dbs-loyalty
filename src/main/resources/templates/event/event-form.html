@@ -1,31 +1,27 @@
 <!doctype html>
-<html lang="en" th:lang="${#locale.toString() == 'in' ? 'id' : #locale}" xmlns:th="http://www.thymeleaf.org">
+<html 
+	th:with="isMaker=${#authorization.expression('hasAuthority(''EVENT_MK'')')}"
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	layout:decorate="~{layout/layout}">
 
-<head th:replace="fragment/head.html :: content(title=|#{application.name} : #{event}|)"></head>
+<head>
+    <title th:text="#{event}">Event</title>
+</head>
 
 <body data-menu="event">
-	<div id="jsDate" th:text="${@settingService.jsDate()}" class="hidden"></div>
-	<div id="jsDatetime" th:text="${@settingService.jsDatetime()}" class="hidden"></div>
-    <!-- NAVBAR -->
-    <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
-    <div id="content-box">
-        <!-- BREADCRUMB -->
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/home/home-view.html" th:href="@{/}" th:text="#{home}">Home</a></li>
-                <li class="breadcrumb-item"><a href="/event/event-view.html" th:href="@{/event}" th:text="#{event}">Event</a></li>
-                <li class="breadcrumb-item active" aria-current="page" th:text="#{form}">Form</li>
-            </ol>
-        </nav>
-        <div id="main-content">
-                <!-- MESSAGE -->
-                <div class="border alert alert-light text-center" role="alert" th:if="${error}">
-                    <span class="icon-attention"></span> <span th:text="${error}">Data ['xxxx'] is not found</span>
-                </div>
-                <!-- FORM -->
-                <th:block th:if="${event}">
-                    <form action="/event/event-view.html" th:action="@{/event}" th:object="${event}" method="post" autocomplete="off" enctype="multipart/form-data">
-                        <div class="row">
+	<nav aria-label="breadcrumb" layout:fragment="breadcrumb">
+		<ol class="breadcrumb">
+        	<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{home}">Home</a></li>
+         	<li class="breadcrumb-item"><a th:href="@{/event}" th:text="#{event}">Event</a></li>
+        	<li class="breadcrumb-item active" aria-current="page" th:text="#{form}">Form</li>
+     	</ol>
+	</nav>
+	<div layout:fragment="content">
+		<div th:replace="fragment/value-not-found.html :: content"></div>
+     	<form th:action="@{/event}" th:object="${event}" method="post" autocomplete="off" enctype="multipart/form-data">
+        	<th:block th:if="${event}">
+               		<div class="row">
                             <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
                                 <div class="form-group">
                                     <label for="title" th:text="|#{title} *|">Title *</label>
@@ -96,7 +92,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
+           		<div class="row">
                         	<div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
                                 <div class="form-group">
                                     <div class="custom-file">
@@ -106,34 +102,25 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- HIDDEN -->
-                    	<input type="hidden" id="id" th:field="*{id}" th:if="*{id != null}"/>
-                    	<input type="hidden" th:field="*{startPeriod}"/>
-                    	<input type="hidden" th:field="*{endPeriod}"/>
-                    	<input type="hidden" th:field="*{createdBy}"/>
-                    	<input type="hidden" th:field="*{createdDate}"/>
-                    	<input type="hidden" th:field="*{lastModifiedBy}"/>
-                    	<input type="hidden" th:field="*{lastModifiedDate}"/>
-                    	<!-- TOOLBAR -->
-                        <div class="toolbar">
-                            <a class="btn btn-light" href="/event/event-view.html" th:href="@{/event}">
-                                <span class="icon-left" th:text="#{back}">Back</span>
-                            </a>
-                            <button class="btn btn-light text-primary" type="submit">
-                                <span class="icon-floppy" th:text="#{save}">Save</span>
-                            </button>
-                        </div>
-                    </form>
-                </th:block>
-        </div>
-        <!-- FOOTER -->
-        <div id="footer" th:replace="fragment/footer.html :: #footer"></div>
-    </div>
-    <!-- SIDENAV -->
-    <div id="sidenav-box" th:replace="fragment/sidenav.html :: #sidenav-box"></div>
-    <!-- SCRIPTS -->
-    <div th:replace="fragment/scripts.html :: content"></div>
+               	</div>
+             	<input type="hidden" th:field="*{startPeriod}"/>
+                <input type="hidden" th:field="*{endPeriod}"/>
+           		<div th:replace="fragment/audit-form.html :: content"></div>
+			</th:block>
+        	<div class="toolbar">
+           		<a class="btn btn-light" th:href="@{/event}">
+                 	<span class="icon-left" th:text="#{back}">Back</span>
+             	</a>
+             	<th:block th:if="${event}">
+	               	<button class="btn btn-light text-primary" type="submit" th:if="${isMaker && !event.pending}">
+	               		<span class="icon-floppy" th:text="#{save}">Save</span>
+	              	</button>
+              	</th:block>
+         	</div>
+  		</form>
+  		<div id="jsDate" th:text="${@settingService.jsDate()}" class="hidden"></div>
+		<div id="jsDatetime" th:text="${@settingService.jsDatetime()}" class="hidden"></div>
+	</div>
 </body>
 
 </html>

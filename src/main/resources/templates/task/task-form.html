@@ -1,29 +1,24 @@
 <!doctype html>
-<html lang="en" th:lang="${#locale.toString() == 'in' ? 'id' : #locale}" xmlns:th="http://www.thymeleaf.org">
+<html
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	layout:decorate="~{layout/layout}">
 
-<head th:replace="fragment/head.html :: content(title=|#{application.name} : #{task} - #{${type}}|)"></head>
+<head>
+    <title th:text="|#{task} - #{${type}}|">Title</title>
+</head>
 
 <body th:data-menu="|task${type}|">
-	<!-- TASK MODAL -->
-	<div th:replace="fragment/task-modal.html :: #task-modal"></div>
-    <!-- NAVBAR -->
-    <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
-    <div id="content-box">
-        <!-- BREADCRUMB -->
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/home/home-view.html" th:href="@{/}" th:text="#{home}">Home</a></li>
-                <li class="breadcrumb-item"><a href="/task/task-view.html" th:href="@{|/task${type}|}" th:text="|#{task} - #{${type}}|">Task Type</a></li>
-                <li class="breadcrumb-item active" aria-current="page" th:text="#{confirm}">Confirm</li>
-            </ol>
-        </nav>
-        <div id="main-content">
-            <!-- MESSAGE -->
-            <div class="border alert alert-light text-center" role="alert" th:if="${error}">
-                <span class="icon-attention"></span> <span th:text="${error}">Data ['xxxx'] is not found</span>
-            </div>
-            <!-- FORM -->
-            <th:block th:if="${task}">
+	<nav aria-label="breadcrumb" layout:fragment="breadcrumb">
+  		<ol class="breadcrumb">
+       		<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{home}">Home</a></li>
+          	<li class="breadcrumb-item"><a th:href="@{|/task${type}|}" th:text="|#{task} - #{${type}}|">Task Type</a></li>
+        	<li class="breadcrumb-item active" aria-current="page" th:text="#{confirm}">Confirm</li>
+     	</ol>
+	</nav>
+	<div layout:fragment="content">
+		<div th:replace="fragment/value-not-found.html :: content"></div>
+    	<th:block th:if="${task}">
                 <form id="task-form" action="/task/task-view.html" th:action="@{|/task${type}|}" method="post" autocomplete="off">
                     <div class="row">
                         <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
@@ -132,15 +127,9 @@
                         </button>
                     </div>
                 </form>
-            </th:block>
-        </div>
-        <!-- FOOTER -->
-        <div id="footer" th:replace="fragment/footer.html :: #footer"></div>
-    </div>
-    <!-- SIDENAV -->
-    <div id="sidenav-box" th:replace="fragment/sidenav.html :: #sidenav-box"></div>
-    <!-- SCRIPTS -->
-    <div th:replace="fragment/scripts.html :: content"></div>
+ 		</th:block>
+ 		<div th:replace="fragment/task-modal.html :: content"></div>
+	</div>
 </body>
 
 </html>

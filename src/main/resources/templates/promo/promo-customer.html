@@ -1,22 +1,22 @@
 <!doctype html>
-<html lang="en" th:lang="${#locale.toString() == 'in' ? 'id' : #locale}" xmlns:th="http://www.thymeleaf.org">
+<html
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	layout:decorate="~{layout/layout}">
 
-<head th:replace="fragment/head.html :: content(title=|#{application.name} : #{promo}|)"></head>
+<head>
+    <title th:text="#{promo}">Promo</title>
+</head>
 
 <body data-menu="promo">
-    <!-- NAVBAR -->
-    <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
-    <div id="content-box" th:with="isMaker=${#authorization.expression('hasAuthority(''PROMO_MK'')')}">
-        <!-- BREADCRUMB -->
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/home/home-view.html" th:href="@{/}" th:text="#{home}">Home</a></li>
-                <li class="breadcrumb-item"><a href="/promo/promo-view.html" th:href="@{/promo}" th:text="#{promo}">Promo</a></li>
-                <li class="breadcrumb-item active" aria-current="page" th:text="#{customer}">Customer</li>
-            </ol>
-        </nav>
-        <div id="main-content">
-            <!-- TABLE DATA -->
+	<nav aria-label="breadcrumb" layout:fragment="breadcrumb">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{home}">Home</a></li>
+         	<li class="breadcrumb-item"><a th:href="@{/promo}" th:text="#{promo}">Promo</a></li>
+        	<li class="breadcrumb-item active" aria-current="page" th:text="#{customer}">Customer</li>
+  		</ol>
+	</nav>
+    <div layout:fragment="content">
             <div class="table-responsive border border-top-0" th:if="${page.getTotalElements() > 0}">
                 <table class="table table-sm table-striped table-hover border-bottom" style="min-width: 800px;">
                     <thead>
@@ -63,14 +63,7 @@
 	                </a>
                 </th:block>
             </div>
-        </div>
-        <!-- FOOTER -->
-        <div id="footer" th:replace="fragment/footer.html :: #footer"></div>
-    </div>
-    <!-- SIDENAV -->
-    <div id="sidenav-box" th:replace="fragment/sidenav.html :: #sidenav-box"></div>
-    <!-- SCRIPTS -->
-    <div th:replace="fragment/scripts.html :: content"></div>
+	</div>
 </body>
 
 </html>

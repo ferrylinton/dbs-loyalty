@@ -1,30 +1,27 @@
 <!doctype html>
-<html lang="en" th:lang="${#locale.toString() == 'in' ? 'id' : #locale}" xmlns:th="http://www.thymeleaf.org">
+<html 
+	th:with="isMaker=${#authorization.expression('hasAuthority(''APPOINTMENT_MK'')')}"
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	layout:decorate="~{layout/layout}">
 
-<head th:replace="fragment/head.html :: content(title=|#{application.name} : #{appointment}|)"></head>
+<head>
+    <title th:text="#{appointment}">Appointment</title>
+</head>
 
 <body data-menu="appointment">
-    <!-- NAVBAR -->
-    <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
-    <div id="content-box">
-        <!-- BREADCRUMB -->
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/home/home-view.html" th:href="@{/}" th:text="#{home}">Home</a></li>
-                <li class="breadcrumb-item"><a href="/appointment/appointment-view.html" th:href="@{/appointment}" th:text="#{appointment}">Departure</a></li>
-                <li class="breadcrumb-item active" aria-current="page" th:text="#{detail}">Detail</li>
-            </ol>
-        </nav>
-        <div id="main-content">
-            <!-- MESSAGE -->
-            <div class="border alert alert-light text-center" role="alert" th:if="${error}">
-                <span class="icon-attention"></span> <span th:text="${error}">Data ['xxxx'] is not found</span>
-            </div>
-            <!-- TABLE DETAIL -->
-            <th:block th:if="${appointment}">
-                <div class="table-responsive border border-top-0">
-                    <table class="table table-sm table-detail" style="min-width: 400px;">
-                        <tbody>
+	<nav aria-label="breadcrumb" layout:fragment="breadcrumb">
+    	<ol class="breadcrumb">
+        	<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{home}">Home</a></li>
+          	<li class="breadcrumb-item"><a th:href="@{/appointment}" th:text="#{appointment}">Appointment</a></li>
+         	<li class="breadcrumb-item active" aria-current="page" th:text="#{detail}">Detail</li>
+      	</ol>
+	</nav>
+	<div layout:fragment="content">
+		<div th:replace="fragment/value-not-found.html :: content"></div>
+     	<div class="table-responsive border border-top-0" th:if="${appointment}">
+        	<table class="table table-sm table-detail" style="min-width: 400px;">
+           		<tbody>
                             <tr>
                                 <th style="width:200px;" th:text="#{id}">Id</th>
                                 <td th:text="${appointment.id}">ZwOkjFmG</td>
@@ -49,41 +46,16 @@
                                 <th th:text="#{date}">Date</th>
                                 <td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.jsDatetime()}" th:text="${appointment.date}">2019-05-01T21:24:44Z</span></td>
                             </tr>
-                            
-                            <tr>
-                                <th th:text="#{createdBy}">Created By</th>
-                                <td th:text="${appointment.createdBy}">System</td>
-                            </tr>
-                            <tr>
-                                <th th:text="#{createdDate}">Created Dt</th>
-                                <td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.jsDatetime()}" th:text="${appointment.createdDate}">2019-05-01T21:24:44Z</span></td>
-                            </tr>
-                            <tr th:if="${appointment.lastModifiedBy}">
-                                <th th:text="#{lastModifiedBy}">Last Modified By</th>
-                                <td th:text="${appointment.lastModifiedBy}">System</td>
-                            </tr>
-                            <tr th:if="${appointment.lastModifiedDate}">
-                                <th th:text="#{lastModifiedDate}">Last Modified Dt</th>
-                                <td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.jsDatetime()}" th:text="${appointment.lastModifiedDate}">2019-05-01T21:24:44Z</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <!-- TOOLBAR -->
-                <div class="toolbar">
-                    <a class="btn btn-light" href="/appointment/appointment-view.html" th:href="@{/appointment}">
-                        <span class="icon-left"></span> <span th:text="#{back}">Back</span>
-                    </a>
-                </div>
-            </th:block>
-        </div>
-        <!-- FOOTER -->
-        <div id="footer" th:replace="fragment/footer.html :: #footer"></div>
-    </div>
-    <!-- SIDENAV -->
-    <div id="sidenav-box" th:replace="fragment/sidenav.html :: #sidenav-box"></div>
-    <!-- SCRIPTS -->
-    <div th:replace="fragment/scripts.html :: content"></div>
+           			<tr th:replace="fragment/audit-detail.html :: content(data=${appointment})"></tr>
+           		</tbody>
+        	</table>
+      	</div>
+   		<div class="toolbar">
+         	<a class="btn btn-light" th:href="@{/appointment}">
+           		<span class="icon-left"></span> <span th:text="#{back}">Back</span>
+          	</a>
+      	</div>
+	</div>
 </body>
 
 </html>

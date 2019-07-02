@@ -1,51 +1,45 @@
 <!doctype html>
-<html lang="en" th:lang="${#locale.toString() == 'in' ? 'id' : #locale}" xmlns:th="http://www.thymeleaf.org">
+<html 
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	layout:decorate="~{layout/layout}">
 
-<head th:replace="fragment/head.html :: content(title=home)"></head>
+<head>
+    <title th:text="#{home}">Home</title>
+</head>
 
 <body>
-    <!-- NAVBAR -->
-    <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
-    <div id="content-box">
-            <!-- CONTENT -->
-            <div id="main-content">
-                <div class="welcome-box">
-                    <h3><span th:text="#{welcome}">Welcome</span> <span class="font-weight-bold" th:text="${#authorization.authentication.name}">ferrylinton</span> <span>!!!</span></h3>
-                    <!-- LOG LOGIN INFO -->
-                    <table class="table table-bordered table-sm" th:if="${logLogin}">
-                        <tbody>
-                            <tr>
-                                <th th:text="#{lastLoginDate}">Last login date</th>
-                                <td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.jsDatetime()}" th:text="${logLogin.createdDate}">2019-05-01T21:24:44Z</span></td>
-                            </tr>
-                            <tr>
-                                <th th:text="#{browser}">Browser</th>
-                                <td th:text="${logLogin.browser}">Chrome</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <!-- USER INFO -->
-                    <table class="table table-bordered table-sm" th:if="${user}">
-                        <tbody>
-                            <tr>
-                                <th th:text="#{userType}">User Type</th>
-                                    <td th:text="${user.userType}">INTERNAL</td>
-                                </tr>
-                            <tr>
-                                <th th:text="#{role}">Role</th>
-                                <td th:text="${user.role.name}">Maker</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        <!-- FOOTER -->
-        <div id="footer" th:replace="fragment/footer.html :: #footer"></div>
-    </div>
-    <!-- SIDENAV -->
-    <div id="sidenav-box" th:replace="fragment/sidenav.html :: #sidenav-box"></div>
-    <!-- SCRIPTS -->
-    <div th:replace="fragment/scripts.html :: content"></div>
+	<div layout:fragment="content">
+		<div class="welcome-box">
+      		<h3>
+      			<span th:text="#{welcome}"></span> <span class="font-weight-bold" th:text="${#authorization.authentication.name}"></span> <span>!!!</span>
+      		</h3>
+    		<table class="table table-bordered table-sm" th:if="${logLogin}">
+           		<tbody>
+               		<tr>
+                  		<th th:text="#{lastLoginDate}">Last login date</th>
+                  		<td><span th:data-date="${@settingService.jsDatetime()}" th:text="${logLogin.createdDate}">2019-05-01T21:24:44Z</span></td>
+             		</tr>
+               		<tr>
+                  		<th th:text="#{browser}">Browser</th>
+                     	<td th:text="${logLogin.browser}">Chrome</td>
+                   	</tr>
+             	</tbody>
+    		</table>
+      		<table class="table table-bordered table-sm" th:if="${user}">
+         		<tbody>
+                 	<tr>
+                  		<th th:text="#{userType}">User Type</th>
+                  		<td th:text="${user.userType}">INTERNAL</td>
+                   	</tr>
+              		<tr>
+                   		<th th:text="#{role}">Role</th>
+                    	<td th:text="${user.role.name}">Maker</td>
+                 	</tr>
+             	</tbody>
+       		</table>
+		</div>
+	</div>
 </body>
 
 </html>

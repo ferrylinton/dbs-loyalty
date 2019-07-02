@@ -1,50 +1,24 @@
 <!doctype html>
-<html lang="en" th:lang="${#locale.toString() == 'in' ? 'id' : #locale}" xmlns:th="http://www.thymeleaf.org">
+<html 
+	th:with="isMaker=${#authorization.expression('hasAuthority(''PROMO_CATEGORY_MK'')')}"
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	layout:decorate="~{layout/layout}">
 
-<head th:replace="fragment/head.html :: content(title=|#{application.name} : #{promoCategory}|)"></head>
+<head>
+    <title th:text="#{promocategory}">Promo Category</title>
+</head>
 
 <body data-menu="promocategory">
-	<!-- TOAST -->
-	<th:block th:if="${not #strings.isEmpty(toast)}">
-		<div th:replace="fragment/toast.html :: #toast"></div>
-	</th:block>
-	<!-- DELETE MODAL -->
-	<div th:replace="fragment/delete-modal.html :: #delete-modal"></div>
-    <!-- NAVBAR -->
-    <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
-    <div id="content-box" th:with="isMaker=${#authorization.expression('hasAuthority(''PROMO_CATEGORY_MK'')')}">
-        <!-- BREADCRUMB -->
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/home/home-view.html" th:href="@{/}" th:text="#{home}">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page" th:text="#{promoCategory}">Promo Category</li>
-            </ol>
-        </nav>
-        <div id="main-content">
-            <!-- SEARCH FORM -->
-            <div class="row no-gutters mb-3">
-                <div class="col-12 col-sm-12 col-md-10 col-lg-7 col-xl-6">
-                    <form action="#" th:action="@{/promocategory}" method="get" autocomplete="off">
-                        <div class="input-group">
-                            <input class="form-control" name="ky" maxlength="40" th:value="${param.ky}" placeholder="keyword"
-                                th:placeholder="#{keyword}" />
-                            <div class="input-group-append">
-                                <button class="btn btn-light" type="submit">
-                                    <span class="icon-search"></span>
-                                </button>
-                                <a class="btn btn-light" href="/promocategory/promocategory-view.html" th:href="@{/promocategory}">
-                                    <span class="icon-arrows-cw"></span>
-                                </a>
-                                <a class="btn btn-light" href="/promocategory/promocategory-form.html" th:href="@{/promocategory/0}" th:if="${isMaker}">
-                                    <span class="icon-plus"></span>
-                                </a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            <!-- TABLE DATA -->
-            <div class="table-responsive border border-top-0" th:if="${page.getTotalElements() > 0}">
+	<nav aria-label="breadcrumb" layout:fragment="breadcrumb">
+		<ol class="breadcrumb">
+      		<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{home}">Home</a></li>
+         	<li class="breadcrumb-item active" aria-current="page" th:text="#{promocategory}">Promo Category</li>
+		</ol>
+	</nav>
+	<div layout:fragment="content">
+		<div th:replace="fragment/search.html :: content('/promocategory', ${isMaker})"></div>
+		<div class="table-responsive border border-top-0" th:if="${page.getTotalElements() > 0}">
 	            <table class="table table-sm table-striped table-hover border-bottom">
 	                <thead>
 	                    <tr th:with="ascending=${order.getDirection().name() == 'ASC'}">
@@ -85,28 +59,12 @@
 	                    </tr>
 	                </tbody>
 	            </table>
-            </div>
-            <!-- NOT FOUND MESSAGE -->
-            <div class="border alert alert-light text-center" role="alert" th:if="${page.getTotalElements() == 0}">
-	            <span class="icon-attention"></span> <span th:text="#{message.dataNotFound}">Data not found</span>
-	        </div>
-            <!-- TOOLBAR -->
-            <div class="toolbar" th:if="${page != null && page.getTotalPages() > 1}">
-                <a class="btn btn-light" th:href="@{|?${previous}${params}|}" th:classappend="${not page.hasPrevious()} ? 'disabled'">
-                    <span class="icon-left-open"></span> <span th:text="#{previous}">Previous</span>
-                </a>
-                <a class="btn btn-light" th:href="@{|?${next}${params}|}" th:classappend="${not page.hasNext()} ? 'disabled'">
-                    <span th:text="#{next}">Next</span> <span class="icon-right-open"></span>
-                </a>
-            </div>
-        </div>
-        <!-- FOOTER -->
-        <div id="footer" th:replace="fragment/footer.html :: #footer"></div>
-    </div>
-    <!-- SIDENAV -->
-    <div id="sidenav-box" th:replace="fragment/sidenav.html :: #sidenav-box"></div>
-    <!-- SCRIPTS -->
-    <div th:replace="fragment/scripts.html :: content"></div>
+		</div>
+		<div th:replace="fragment/not-found.html :: content"></div>
+		<div th:replace="fragment/pager.html :: content"></div>
+		<div th:replace="fragment/toast.html :: content"></div>
+		<div th:replace="fragment/delete-modal.html :: content"></div>
+	</div>
 </body>
 
 </html>
