@@ -1,22 +1,22 @@
 <!doctype html>
-<html lang="en" th:lang="${#locale.toString() == 'in' ? 'id' : #locale}" xmlns:th="http://www.thymeleaf.org">
+<html 
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	layout:decorate="~{layout/layout}">
 
-<head th:replace="fragment/head.html :: content(title=|#{application.name} : #{arrival}|)"></head>
+<head>
+    <title th:text="#{arrival}">Arrival</title>
+</head>
 
 <body data-menu="arrival">
-    <!-- NAVBAR -->
-    <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
-    <div id="content-box">
-        <!-- BREADCRUMB -->
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/home/home-view.html" th:href="@{/}" th:text="#{home}">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page" th:text="#{arrival}">Departure</li>
-            </ol>
-        </nav>
-        <div id="main-content">
-            <!-- TABLE DATA -->
-            <div class="table-responsive border border-top-0" th:if="${page.getTotalElements() > 0}">
+	<nav aria-label="breadcrumb" layout:fragment="breadcrumb">
+		<ol class="breadcrumb">
+      		<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{home}">Home</a></li>
+          	<li class="breadcrumb-item active" aria-current="page" th:text="#{arrival}">Departure</li>
+   		</ol>
+	</nav>
+	<div layout:fragment="content">
+		<div class="table-responsive border border-top-0" th:if="${page.getTotalElements() > 0}">
 	            <table class="table table-sm table-striped table-hover border-bottom" style="min-width: 400px;">
                     <thead>
                         <tr th:with="ascending=${order.getDirection().name() == 'ASC'}">
@@ -52,28 +52,10 @@
 	                    </tr>
 	                </tbody>
 	            </table>
-            </div>
-            <!-- NOT FOUND MESSAGE -->
-            <div class="border alert alert-light text-center" role="alert" th:if="${page.getTotalElements() == 0}">
-	            <span class="icon-attention"></span> <span th:text="#{message.dataNotFound}">Data not found</span>
-	        </div>
-            <!-- TOOLBAR -->
-            <div class="toolbar" th:if="${page != null && page.getTotalPages() > 1}">
-                <a class="btn btn-light" th:href="@{|?${previous}${params}|}" th:classappend="${not page.hasPrevious()} ? 'disabled'">
-                    <span class="icon-left-open"></span> <span th:text="#{previous}">Previous</span>
-                </a>
-                <a class="btn btn-light" th:href="@{|?${next}${params}|}" th:classappend="${not page.hasNext()} ? 'disabled'">
-                    <span th:text="#{next}">Next</span> <span class="icon-right-open"></span>
-                </a>
-            </div>
-        </div>
-        <!-- FOOTER -->
-        <div id="footer" th:replace="fragment/footer.html :: #footer"></div>
-    </div>
-    <!-- SIDENAV -->
-    <div id="sidenav-box" th:replace="fragment/sidenav.html :: #sidenav-box"></div>
-    <!-- SCRIPTS -->
-    <div th:replace="fragment/scripts.html :: content"></div>
+       	</div>
+		<div th:replace="fragment/not-found.html :: content"></div>
+		<div th:replace="fragment/pager.html :: content"></div>
+	</div>
 </body>
 
 </html>

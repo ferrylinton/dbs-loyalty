@@ -1,30 +1,26 @@
 <!doctype html>
-<html lang="en" th:lang="${#locale.toString() == 'in' ? 'id' : #locale}" xmlns:th="http://www.thymeleaf.org">
+<html 
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	layout:decorate="~{layout/layout}">
 
-<head th:replace="fragment/head.html :: content(title=|#{application.name} : #{departure}|)"></head>
+<head>
+    <title th:text="#{departure}">Departure</title>
+</head>
 
 <body data-menu="departure">
-    <!-- NAVBAR -->
-    <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
-    <div id="content-box">
-        <!-- BREADCRUMB -->
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/home/home-view.html" th:href="@{/}" th:text="#{home}">Home</a></li>
-                <li class="breadcrumb-item"><a href="/departure/departure-view.html" th:href="@{/departure}" th:text="#{departure}">Departure</a></li>
-                <li class="breadcrumb-item active" aria-current="page" th:text="#{detail}">Detail</li>
-            </ol>
-        </nav>
-        <div id="main-content">
-            <!-- MESSAGE -->
-            <div class="border alert alert-light text-center" role="alert" th:if="${error}">
-                <span class="icon-attention"></span> <span th:text="${error}">Data ['xxxx'] is not found</span>
-            </div>
-            <!-- TABLE DETAIL -->
-            <th:block th:if="${departure}">
-                <div class="table-responsive border border-top-0">
-                    <table class="table table-sm table-detail" style="min-width: 400px;">
-                        <tbody>
+	<nav aria-label="breadcrumb" layout:fragment="breadcrumb">
+		<ol class="breadcrumb">
+   			<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{home}">Home</a></li>
+        	<li class="breadcrumb-item"><a th:href="@{/departure}" th:text="#{departure}">Departure</a></li>
+       		<li class="breadcrumb-item active" aria-current="page" th:text="#{detail}">Detail</li>
+   		</ol>
+	</nav>
+	<div layout:fragment="content">
+		<div th:replace="fragment/value-not-found.html :: content"></div>
+		<div class="table-responsive border border-top-0" th:if="${departure}">
+       		<table class="table table-sm table-detail" style="min-width: 400px;">
+           		<tbody>
                             <tr>
                                 <th style="width:200px;" th:text="#{id}">Id</th>
                                 <td th:text="${departure.id}">ZwOkjFmG</td>
@@ -43,7 +39,7 @@
                             </tr>
                             <tr>
                                 <th th:text="#{flightTime}">Flight Time</th>
-                                <td th:text="${departure.flightTime}">Flight Time</td>
+                                <td th:text="${departure.flightDate}">Flight Time</td>
                             </tr>
                             <tr>
                                 <th th:text="#{flightCode}">Flight Code</th>
@@ -65,10 +61,12 @@
                                 <th th:text="#{guestPhone}">Guest Phone</th>
                                 <td th:text="${departure.guestPhone}">Guest Phone</td>
                             </tr>
+                            <!--  
                             <tr>
                                 <th th:text="#{pickupFromHome}">Pickup From Home</th>
                                 <td><span class="text-success icon-ok" th:class="${departure.pickupFromHome} ? 'text-success icon-ok' : 'text-danger icon-cancel'"></span></td>
                             </tr>
+                            -->
                             <tr>
                                 <th th:text="#{pickupAddress}">Pickup Address</th>
                                 <td th:text="${departure.pickupAddress}">Pickup Address</td>
@@ -85,40 +83,16 @@
                                 <th th:text="#{numberOfLuggages}">Number Of Luggages</th>
                                 <td th:text="${departure.numberOfLuggages}">1</td>
                             </tr>
-                            <tr>
-                                <th th:text="#{createdBy}">Created By</th>
-                                <td th:text="${departure.createdBy}">System</td>
-                            </tr>
-                            <tr>
-                                <th th:text="#{createdDate}">Created Dt</th>
-                                <td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.jsDatetime()}" th:text="${departure.createdDate}">2019-05-01T21:24:44Z</span></td>
-                            </tr>
-                            <tr th:if="${departure.lastModifiedBy}">
-                                <th th:text="#{lastModifiedBy}">Last Modified By</th>
-                                <td th:text="${departure.lastModifiedBy}">System</td>
-                            </tr>
-                            <tr th:if="${departure.lastModifiedDate}">
-                                <th th:text="#{lastModifiedDate}">Last Modified Dt</th>
-                                <td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.jsDatetime()}" th:text="${departure.lastModifiedDate}">2019-05-01T21:24:44Z</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <!-- TOOLBAR -->
-                <div class="toolbar">
-                    <a class="btn btn-light" href="/departure/departure-view.html" th:href="@{/departure}">
-                        <span class="icon-left"></span> <span th:text="#{back}">Back</span>
-                    </a>
-                </div>
-            </th:block>
-        </div>
-        <!-- FOOTER -->
-        <div id="footer" th:replace="fragment/footer.html :: #footer"></div>
-    </div>
-    <!-- SIDENAV -->
-    <div id="sidenav-box" th:replace="fragment/sidenav.html :: #sidenav-box"></div>
-    <!-- SCRIPTS -->
-    <div th:replace="fragment/scripts.html :: content"></div>
+                     <tr th:replace="fragment/audit-detail.html :: content(data=${departure})"></tr>
+            	</tbody>
+       		</table>
+    	</div>
+   		<div class="toolbar">
+   			<a class="btn btn-light" th:href="@{/departure}">
+        		<span class="icon-left"></span> <span th:text="#{back}">Back</span>
+          	</a>
+     	</div>   
+	</div>
 </body>
 
 </html>
