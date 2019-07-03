@@ -42,8 +42,8 @@ public class Arrival extends AbstractAuditing {
 	@GeneratedValue(generator = ID_GENERATOR)
 	private String id;
 	
-	@Column(name = "service_type", length=150)
-	private String serviceType;
+	@Column(name = "type_of_service", length=150)
+	private String typeOfService;
 
 	@Column(name = "flight_date", nullable = false)
 	private Instant flightDate;

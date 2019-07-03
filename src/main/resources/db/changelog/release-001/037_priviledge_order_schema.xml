@@ -5,39 +5,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
     
-    <!-- PRIVILEDGE PRODUCT -->
-    
-    <changeSet author="FLH" id="012-1">
-    
-        <createTable tableName="p_priviledge_product">
-            <column name="id" type="VARCHAR(22)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="name" type="VARCHAR(150)"/>
-            <column name="point" type="INT"/>
-            <column name="description" type="VARCHAR(255)"/>
-            <column name="content" type="TEXT"/>
-            <column name="term_and_condition" type="TEXT"/>
-            <column name="pending" type="BIT(1)" defaultValueBoolean="false"/>
-            <column name="created_by" type="VARCHAR(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_date" type="timestamp">
-                <constraints nullable="false"/>
-            </column>
-            <column name="last_modified_by" type="VARCHAR(50)"/>
-            <column name="last_modified_date" type="timestamp"/>
-        </createTable>
-        
-    </changeSet>
-    
-	<changeSet author="FLH" id="012-2">
-        <addPrimaryKey columnNames="id" constraintName="p_priviledge_product_pk" tableName="p_priviledge_product"/>
-    </changeSet>
-    
-    <!-- PRIVILEDGE ORDER -->
-    
-    <changeSet author="FLH" id="012-3">
+    <changeSet author="FLH" id="037-1">
     
         <createTable tableName="p_priviledge_order">
         	<column name="id" type="VARCHAR(22)">
@@ -65,11 +33,11 @@
         
     </changeSet>
     
-	<changeSet author="FLH" id="012-4">
+	<changeSet author="FLH" id="037-2">
         <addPrimaryKey columnNames="id" constraintName="p_priviledge_order_pk" tableName="p_priviledge_order"/>
     </changeSet>
     
-    <changeSet author="FLH" id="012-5">
+    <changeSet author="FLH" id="037-3">
         <addForeignKeyConstraint baseColumnNames="customer_id" baseTableName="p_priviledge_order" constraintName="p_priviledge_order_fk" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="c_customer"/>
     </changeSet>
     

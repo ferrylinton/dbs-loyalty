@@ -5,56 +5,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
      
-    <changeSet author="FLH" id="006-1">
-    
-        <createTable tableName="c_customer">
-            <column name="id" type="VARCHAR(22)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="email" type="VARCHAR(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="name" type="VARCHAR(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="phone" type="VARCHAR(20)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="customer_type" type="VARCHAR(4)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="dob" type="date">
-                <constraints nullable="false"/>
-            </column>
-            <column name="password_hash" type="VARCHAR(100)"/>
-            <column name="activated" type="BIT(1)" defaultValueBoolean="false">
-                <constraints nullable="false"/>
-            </column>
-            <column name="locked" type="BIT(1)" defaultValueBoolean="false">
-                <constraints nullable="false"/>
-            </column>
-            <column name="pending" type="BIT(1)" defaultValueBoolean="false"/>
-            <column name="created_by" type="VARCHAR(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="created_date" type="timestamp">
-                <constraints nullable="false"/>
-            </column>
-            <column name="last_modified_by" type="VARCHAR(50)"/>
-            <column name="last_modified_date" type="timestamp"/>
-        </createTable>
-        
-    </changeSet>
-    
-    <changeSet author="FLH" id="006-2">
-        <addPrimaryKey columnNames="id" constraintName="c_customer_pk" tableName="c_customer"/>
-    </changeSet>
-
-    <changeSet author="FLH" id="006-3">
-        <addUniqueConstraint columnNames="email" constraintName="c_customer_email_uq" tableName="c_customer"/>
-    </changeSet>
-    
-    <changeSet author="FLH" id="006-4">
+    <changeSet author="FLH" id="017-1">
     
         <createTable tableName="c_loved_one">
             <column name="id" type="VARCHAR(22)">
@@ -83,27 +34,27 @@
         </createTable>
     </changeSet>
     
-	<changeSet author="FLH" id="006-5">
+	<changeSet author="FLH" id="017-2">
         <addPrimaryKey columnNames="id" constraintName="c_loved_one_pk" tableName="c_loved_one"/>
     </changeSet>
     
-  	<changeSet author="FLH" id="006-6">
+  	<changeSet author="FLH" id="017-3">
         <addForeignKeyConstraint baseColumnNames="customer_id" baseTableName="c_loved_one" constraintName="m_customer_fk" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="c_customer"/>
     </changeSet>
     
-    <changeSet author="FLH" id="006-7">
+    <changeSet author="FLH" id="017-4">
         <createIndex indexName="c_loved_one_name_idx" tableName="c_loved_one">
             <column name="name"/>
         </createIndex>
     </changeSet>
     
-    <changeSet author="FLH" id="006-8">
+    <changeSet author="FLH" id="017-5">
         <createIndex indexName="c_loved_one_phone_idx" tableName="c_loved_one">
             <column name="phone"/>
         </createIndex>
     </changeSet>
     
-    <changeSet author="FLH" id="006-9">
+    <changeSet author="FLH" id="017-6">
         <createIndex indexName="c_loved_one_dob_idx" tableName="c_loved_one">
             <column name="dob"/>
         </createIndex>

@@ -67,8 +67,8 @@ public class Customer extends AbstractTask implements Serializable {
 	private String email;
 	
 	@Pattern(regexp = RegexConstant.NAME, message = RegexConstant.NAME_MESSAGE)
-	@Size(min = 2, max = 50)
-	@Column(name = "name", length = 50, nullable = false)
+	@Size(min = 2, max = 100)
+	@Column(name = "name", length = 100, nullable = false)
 	private String name;
 	
 	@Size(min = 6, max = 20)

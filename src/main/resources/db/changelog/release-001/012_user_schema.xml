@@ -5,23 +5,30 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
     
-    <changeSet author="FLH" id="011-1">
-        <createTable tableName="c_reward">
+    <changeSet author="FLH" id="012-1">
+    
+        <createTable tableName="u_user">
             <column name="id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
             </column>
-            <column name="expiry_date" type="date">
+            <column name="activated" type="BIT(1)" defaultValueBoolean="true">
                 <constraints nullable="false"/>
             </column>
-            <column name="point" type="INT">
+            <column name="locked" type="BIT(1)" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
-            <column name="description" type="VARCHAR(255)">
+            <column name="user_type" type="VARCHAR(10)">
                 <constraints nullable="false"/>
             </column>
-            <column name="customer_id" type="VARCHAR(22)">
+            <column name="login_attempt_count" type="INT">
                 <constraints nullable="false"/>
             </column>
+            <column name="username" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password_hash" type="VARCHAR(100)"/>
+            <column name="role_id" type="VARCHAR(22)"/>
+            <column name="pending" type="BIT(1)" defaultValueBoolean="false"/>
             <column name="created_by" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
@@ -31,26 +38,19 @@
             <column name="last_modified_by" type="VARCHAR(50)"/>
             <column name="last_modified_date" type="timestamp"/>
         </createTable>
+        
     </changeSet>
     
-    <changeSet author="FLH" id="011-2">
-        <addPrimaryKey columnNames="id" constraintName="c_reward_pk" tableName="c_reward"/>
+    <changeSet author="FLH" id="012-2">
+        <addPrimaryKey columnNames="id" constraintName="u_user_pk" tableName="u_user"/>
     </changeSet>
 
-    <changeSet author="FLH" id="011-4">
-        <addForeignKeyConstraint baseColumnNames="customer_id" baseTableName="c_reward" constraintName="c_reward_fk2" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="c_customer"/>
+    <changeSet author="FLH" id="012-3">
+        <addUniqueConstraint columnNames="username" constraintName="u_user_username_uq" tableName="u_user"/>
     </changeSet>
-    
-    <changeSet author="FLH" id="011-8">
-        <createIndex indexName="c_reward_customer_id_idx" tableName="c_reward">
-            <column name="customer_id"/>
-        </createIndex>
+
+	<changeSet author="FLH" id="012-4">
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="u_user" constraintName="u_user_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="u_role"/>
     </changeSet>
-    
-    <changeSet author="FLH" id="011-9">
-        <createIndex indexName="c_reward_expiry_date_idx" tableName="c_reward">
-            <column name="expiry_date"/>
-        </createIndex>
-    </changeSet>
-    
+
 </databaseChangeLog>

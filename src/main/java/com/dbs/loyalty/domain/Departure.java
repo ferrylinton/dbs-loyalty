@@ -42,8 +42,8 @@ public class Departure extends AbstractAuditing {
 	@GeneratedValue(generator = ID_GENERATOR)
 	private String id;
 	
-	@Column(name = "service_type", length=150)
-	private String serviceType;
+	@Column(name = "type_of_service", length=150)
+	private String typeOfService;
 
 	@Column(name = "flight_date", nullable = false)
 	private Instant flightDate;
@@ -56,6 +56,9 @@ public class Departure extends AbstractAuditing {
 	
 	@Column(name = "customer_phone", length=20)
 	private String customerPhone;
+	
+	@Column(name = "guest_name", length=100)
+	private String guestName;
 	
 	@Column(name = "guest_phone", length=20)
 	private String guestPhone;

@@ -7,20 +7,46 @@
   
 	<!-- Schema -->
 	
-    <include file="release-001/001_variables.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/000_variables.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/001_setting_schema.xml" relativeToChangelogFile="true"/>
     <include file="release-001/002_task.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/003_file_schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/004_user_schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/005_log_schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/006_customer_schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/007_promo_schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/008_event_schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/009_airport_assistance_schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/010_wellness_schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/011_reward_schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/012_priviledge_schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/013_batch_schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-001/014_verification_token_schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/003_country_schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/004_airport_schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-001/005_image_schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-001/006_image_task_schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-001/007_pdf_schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-001/008_pdf_task_schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-001/009_authority_schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-001/010_role_schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-001/011_role_authority_schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-001/012_user_schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-001/013_log_login_schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-001/014_log_token_schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-001/015_log_api_schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-001/016_customer_schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-001/017_loved_one_schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/018_promo_category_schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-001/019_promo_schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-001/020_promo_customer_schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-001/021_event_schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-001/022_feedback_question_schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-001/023_feedback_customer_schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-001/024_feedback_answer_schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-001/025_event_schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-001/026_event_customer_schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-001/027_departure_schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-001/028_arrival_schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/029_airport_assistance_schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/030_medical_provider_schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/031_medical_provider_city_schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/032_medical_provider_branch_schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/033_wellness_schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/034_appointment_schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/035_reward_schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/036_priviledge_product_schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/037_priviledge_order_schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/038_batch_schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-001/039_verification_token_schema.xml" relativeToChangelogFile="true"/>
     
     <!-- Data -->
     

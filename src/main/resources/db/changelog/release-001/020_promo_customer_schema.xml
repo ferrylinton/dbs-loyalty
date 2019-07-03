@@ -1,0 +1,37 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog 
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    
+    <changeSet author="FLH" id="020-1">
+    
+        <createTable tableName="p_promo_customer">
+            <column name="customer_id" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="promo_id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pending" type="BIT(1)" defaultValueBoolean="false"/>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+    </changeSet>
+    
+	<changeSet author="FLH" id="020-2">
+        <addPrimaryKey columnNames="customer_id,promo_id" constraintName="p_promo_customer_pk" tableName="p_promo_customer"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="020-3">
+        <addForeignKeyConstraint baseColumnNames="customer_id" baseTableName="p_promo_customer" constraintName="p_promo_customer_fk1" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="c_customer"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="020-4">
+        <addForeignKeyConstraint baseColumnNames="promo_id" baseTableName="p_promo_customer" constraintName="p_promo_customer_fk2" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="p_promo"/>
+    </changeSet>
+    
+</databaseChangeLog>

@@ -1,0 +1,28 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog 
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    
+    <changeSet author="FLH" id="023-1">
+    
+        <createTable tableName="e_feedback_customer">
+            <column name="customer_id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="event_id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        
+    </changeSet>
+    
+    <changeSet author="FLH" id="023-2">
+        <addPrimaryKey columnNames="customer_id, event_id" constraintName="e_feedback_customer_pk" tableName="e_feedback_customer"/>
+    </changeSet>
+    
+</databaseChangeLog>
