@@ -2,9 +2,8 @@ package com.dbs.loyalty.service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class RoleService{
 
-	private Sort sortByName = Sort.by("name");
+	public static final Sort SORT_BY = Sort.by("name");
 	
 	private final ObjectMapper objectMapper;
 	
@@ -43,12 +42,11 @@ public class RoleService{
 	}
 
 	public List<Role> findAll(){
-		return roleRepository.findAll(sortByName);
+		return roleRepository.findAll(SORT_BY);
 	}
 	
-	public Page<Role> findAll(Pageable pageable, HttpServletRequest request) {
-		return roleRepository
-				.findAll(RoleSpecification.getSpec(request), pageable);
+	public Page<Role> findAll(Pageable pageable, Map<String, String> params) {
+		return roleRepository.findAll(RoleSpecification.getSpec(params), pageable);
 	}
 
 	public boolean isNameExist(String id, String name) {

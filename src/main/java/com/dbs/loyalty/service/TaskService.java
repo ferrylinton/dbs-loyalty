@@ -1,12 +1,5 @@
 package com.dbs.loyalty.service;
 
-import static com.dbs.loyalty.config.constant.EntityConstant.CUSTOMER;
-import static com.dbs.loyalty.config.constant.EntityConstant.EVENT;
-import static com.dbs.loyalty.config.constant.EntityConstant.PROMO;
-import static com.dbs.loyalty.config.constant.EntityConstant.PROMO_CATEGORY;
-import static com.dbs.loyalty.config.constant.EntityConstant.ROLE;
-import static com.dbs.loyalty.config.constant.EntityConstant.USER;
-
 import java.io.IOException;
 import java.time.Instant;
 import java.util.Map;
@@ -21,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.domain.enumeration.TaskStatus;
@@ -111,17 +105,17 @@ public class TaskService {
 	}
 	
 	private String execute(Task task) throws IOException {
-		if(task.getTaskDataType().equals(ROLE)) {
+		if(task.getTaskDataType().equals(DomainConstant.ROLE)) {
 			return context.getBean(RoleService.class).execute(task);
-		}else if(task.getTaskDataType().equals(USER)) {
+		}else if(task.getTaskDataType().equals(DomainConstant.USER)) {
 			return context.getBean(UserService.class).execute(task);
-		}else if(task.getTaskDataType().equals(PROMO_CATEGORY)) {
+		}else if(task.getTaskDataType().equals(DomainConstant.PROMO_CATEGORY)) {
 			return context.getBean(PromoCategoryService.class).execute(task);
-		}else if(task.getTaskDataType().equals(PROMO)) {
+		}else if(task.getTaskDataType().equals(DomainConstant.PROMO)) {
 			return context.getBean(PromoService.class).execute(task);
-		}else if(task.getTaskDataType().equals(CUSTOMER)) {
+		}else if(task.getTaskDataType().equals(DomainConstant.CUSTOMER)) {
 			return context.getBean(CustomerService.class).execute(task);
-		}else if(task.getTaskDataType().equals(EVENT)) {
+		}else if(task.getTaskDataType().equals(DomainConstant.EVENT)) {
 			return context.getBean(EventService.class).execute(task);
 		}
 		

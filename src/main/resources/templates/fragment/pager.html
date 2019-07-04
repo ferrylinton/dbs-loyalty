@@ -8,10 +8,10 @@
 <body>
 	<div th:fragment="content" th:remove="tag">
 		<div class="toolbar" th:if="${page != null && page.getTotalPages() > 1}">
-			<a class="btn btn-light" th:href="@{|?${previous}&${params}|}" th:classappend="${not page.hasPrevious()} ? 'disabled'">
+			<a class="btn btn-light" th:href="@{|?${previous}${params}|}" th:classappend="${not page.hasPrevious()} ? 'disabled'">
 	       		<span class="icon-left-open"></span> <span th:text="#{previous}">Previous</span>
 	    	</a>
-	      	<a class="btn btn-light" th:href="@{|?${next}&${params}|}" th:classappend="${not page.hasNext()} ? 'disabled'">
+	      	<a class="btn btn-light" th:href="@{|?${next}${params}|}" th:classappend="${not page.hasNext()} ? 'disabled'">
 	    		<span th:text="#{next}">Next</span> <span class="icon-right-open"></span>
 	       	</a>
 		</div>

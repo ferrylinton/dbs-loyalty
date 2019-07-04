@@ -113,21 +113,23 @@ function initMainContentHeight(){
 function setMainContentHeight(){
 	if($(window).height() >= 400){
 		var mainContent = $('#main-content');
+		var breadcrumb = $('.breadcrumb');
+		var windowWidth = $(window).width();
+		var windowHeight =  $(window).height();
 		
-		if(window.location.pathname.indexOf('home') !== -1){
-			if ($(window).width() >= 576) {
-				mainContent.css('min-height', $(window).height() - 150);
+		if(breadcrumb.length){
+			if (windowWidth >= 576) {
+				mainContent.css('min-height', windowHeight - 175);
 			}else{
-				mainContent.css('min-height', $(window).height() - 165);
+				mainContent.css('min-height', windowHeight - 195);
 			}
 		}else{
-			if ($(window).width() >= 576) {
-				mainContent.css('min-height', $(window).height() - 190);
+			if (windowWidth >= 576) {
+				mainContent.css('min-height', windowHeight - 150);
 			}else{
-				mainContent.css('min-height', $(window).height() - 205);
+				mainContent.css('min-height', windowHeight - 165);
 			}
 		}
-		
 	}
 }
 

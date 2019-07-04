@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbs.loyalty.config.constant.EntityConstant;
+import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.FileImage;
 import com.dbs.loyalty.domain.FilePdf;
 import com.dbs.loyalty.exception.BadRequestException;
@@ -138,7 +138,7 @@ public class EventRestController {
 		if(current.isPresent()) {
 			return ResponseEntity.ok().body(current.get());
 		}else {
-			throw new NotFoundException(String.format(DATA_IS_NOT_FOUND, EntityConstant.PROMO, id));
+			throw new NotFoundException(String.format(DATA_IS_NOT_FOUND, DomainConstant.PROMO, id));
 		}
     }
     
@@ -166,7 +166,7 @@ public class EventRestController {
 					.headers(headers)
 					.body(fileImage.get().getBytes());
 		}else {
-			throw new NotFoundException(String.format(DATA_IS_NOT_FOUND, EntityConstant.PROMO, id));
+			throw new NotFoundException(String.format(DATA_IS_NOT_FOUND, DomainConstant.PROMO, id));
 		}
 	}
 	
@@ -196,7 +196,7 @@ public class EventRestController {
 					.headers(headers)
 					.body(new InputStreamResource(resource.getInputStream()));
 		}else {
-			throw new NotFoundException(String.format(DATA_IS_NOT_FOUND, EntityConstant.PROMO, id));
+			throw new NotFoundException(String.format(DATA_IS_NOT_FOUND, DomainConstant.PROMO, id));
 		}
 	}
 

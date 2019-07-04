@@ -13,13 +13,13 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Service
 public class AuthorityService{
-	
-	private Sort sortByName = Sort.by("name");
+
+	public static final Sort SORT_BY = Sort.by("name");
 	
 	private final AuthorityRepository authorityRepository;
 
 	public List<Authority> findAll(){
-		return authorityRepository.findAll(sortByName);
+		return authorityRepository.findAll(SORT_BY);
 	}
 
 }

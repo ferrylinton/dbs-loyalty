@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbs.loyalty.config.constant.EntityConstant;
+import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.PromoService;
 import com.dbs.loyalty.service.dto.CarouselDto;
@@ -90,7 +90,7 @@ public class PromoRestController {
     	if(current.isPresent()) {
     		return current.get();
     	}else {
-    		throw new NotFoundException(String.format(DATA_IS_NOT_FOUND, EntityConstant.PROMO, id));
+    		throw new NotFoundException(String.format(DATA_IS_NOT_FOUND, DomainConstant.PROMO, id));
     	}
     }
     
@@ -106,7 +106,7 @@ public class PromoRestController {
     	if(current.isPresent()) {
     		return current.get();
     	}else {
-    		throw new NotFoundException(String.format(DATA_IS_NOT_FOUND, EntityConstant.PROMO, id));
+    		throw new NotFoundException(String.format(DATA_IS_NOT_FOUND, DomainConstant.PROMO, id));
     	}
     }
 	

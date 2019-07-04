@@ -2,8 +2,6 @@ package com.dbs.loyalty.web.controller.task;
 
 import static com.dbs.loyalty.config.constant.Constant.PAGE;
 import static com.dbs.loyalty.config.constant.Constant.TOAST;
-import static com.dbs.loyalty.config.constant.EntityConstant.TYPE;
-import static com.dbs.loyalty.config.constant.EntityConstant.USER;
 
 import java.util.Map;
 
@@ -23,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.util.SecurityUtil;
@@ -44,7 +43,7 @@ public class UserTaskController extends AbstractTaskController {
 	@GetMapping
 	public String viewTaskUsers(@ModelAttribute(TOAST) String toast, @RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
 		Order order = getOrder(sort, MADE_DATE);
-		Page<Task> page = taskService.findAll(USER, params, getPageable(params, order), request);
+		Page<Task> page = taskService.findAll(DomainConstant.USER, params, getPageable(params, order), request);
 		
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
 			return REDIRECT;
@@ -52,7 +51,7 @@ public class UserTaskController extends AbstractTaskController {
 		
 		request.setAttribute(TOAST, toast);
 		request.setAttribute(PAGE, page);
-		request.setAttribute(TYPE, USER);
+		request.setAttribute(DomainConstant.TYPE, DomainConstant.USER);
 		request.setAttribute(IS_CHECKER, SecurityUtil.hasAuthority(USER_CK));
 		setParamsQueryString(params, request);
 		setPagerQueryString(order, page.getNumber(), request);
@@ -62,14 +61,14 @@ public class UserTaskController extends AbstractTaskController {
 	@PreAuthorize("hasAnyRole('USER_MK', 'USER_CK')")
 	@GetMapping("/{id}/detail")
 	public String viewTaskUserDetail(ModelMap model, @PathVariable String id) {
-		view(USER, model, id);
+		view(DomainConstant.USER, model, id);
 		return TASK_DETAIL_TEMPLATE;
 	}
 
 	@PreAuthorize("hasRole('USER_CK')")
 	@GetMapping("/{id}")
 	public String viewTaskUser(ModelMap model, @PathVariable String id) {
-		view(USER, model, id);
+		view(DomainConstant.USER, model, id);
 		return TASK_FORM_TEMPLATE;
 	}
 

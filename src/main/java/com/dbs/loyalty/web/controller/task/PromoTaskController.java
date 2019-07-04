@@ -2,8 +2,6 @@ package com.dbs.loyalty.web.controller.task;
 
 import static com.dbs.loyalty.config.constant.Constant.PAGE;
 import static com.dbs.loyalty.config.constant.Constant.TOAST;
-import static com.dbs.loyalty.config.constant.EntityConstant.PROMO;
-import static com.dbs.loyalty.config.constant.EntityConstant.TYPE;
 
 import java.util.Map;
 
@@ -23,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.util.SecurityUtil;
@@ -44,7 +43,7 @@ public class PromoTaskController extends AbstractTaskController {
 	@GetMapping
 	public String viewTaskPromos(@ModelAttribute(TOAST) String toast, @RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
 		Order order = getOrder(sort, MADE_DATE);
-		Page<Task> page = taskService.findAll(PROMO, params, getPageable(params, order), request);
+		Page<Task> page = taskService.findAll(DomainConstant.PROMO, params, getPageable(params, order), request);
 		
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
 			return REDIRECT;
@@ -52,7 +51,7 @@ public class PromoTaskController extends AbstractTaskController {
 		
 		request.setAttribute(TOAST, toast);
 		request.setAttribute(PAGE, page);
-		request.setAttribute(TYPE, PROMO);
+		request.setAttribute(DomainConstant.TYPE, DomainConstant.PROMO);
 		request.setAttribute(IS_CHECKER, SecurityUtil.hasAuthority(PROMO_CK));
 		setParamsQueryString(params, request);
 		setPagerQueryString(order, page.getNumber(), request);
@@ -62,14 +61,14 @@ public class PromoTaskController extends AbstractTaskController {
 	@PreAuthorize("hasAnyRole('PROMO_MK', 'PROMO_CK')")
 	@GetMapping("/{id}/detail")
 	public String viewTaskPromoDetail(ModelMap model, @PathVariable String id) {
-		view(PROMO, model, id);
+		view(DomainConstant.PROMO, model, id);
 		return TASK_DETAIL_TEMPLATE;
 	}
 
 	@PreAuthorize("hasRole('PROMO_CK')")
 	@GetMapping("/{id}")
 	public String viewTaskPromo(ModelMap model, @PathVariable String id) {
-		view(PROMO, model, id);
+		view(DomainConstant.PROMO, model, id);
 		return TASK_FORM_TEMPLATE;
 	}
 

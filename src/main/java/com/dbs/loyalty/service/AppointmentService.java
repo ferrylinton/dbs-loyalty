@@ -1,10 +1,5 @@
 package com.dbs.loyalty.service;
 
-import static com.dbs.loyalty.config.constant.EntityConstant.CUSTOMER;
-import static com.dbs.loyalty.config.constant.MessageConstant.DATA_IS_ALREADY_EXIST;
-import static com.dbs.loyalty.config.constant.MessageConstant.DATA_IS_NOT_FOUND;
-import static com.dbs.loyalty.config.constant.MessageConstant.NO_LIMIT_iS_AVAILABLE;
-
 import java.time.Instant;
 import java.util.Optional;
 
@@ -13,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.config.constant.MessageConstant;
 import com.dbs.loyalty.domain.Appointment;
 import com.dbs.loyalty.domain.Customer;
@@ -56,7 +52,7 @@ public class AppointmentService {
 					appointment.getDate());
 			
 			if(current.isPresent()) {
-				return new Response(DATA_IS_ALREADY_EXIST);
+				return new Response(MessageConstant.DATA_IS_ALREADY_EXIST);
 			}else {
 				Optional<Wellness> wellness = wellnessRepository.findById(SecurityUtil.getId());
 				
@@ -70,11 +66,11 @@ public class AppointmentService {
 					appointment = appointmentRepository.save(appointment);
 					return new Response(MessageConstant.DATA_IS_SAVED);
 				}else {
-					throw new BadRequestException(NO_LIMIT_iS_AVAILABLE);
+					throw new BadRequestException(MessageConstant.NO_LIMIT_iS_AVAILABLE);
 				}
 			}
 		}else {
-			throw new NotFoundException(String.format(DATA_IS_NOT_FOUND, CUSTOMER, SecurityUtil.getId()));
+			throw new NotFoundException(String.format(MessageConstant.DATA_IS_NOT_FOUND, DomainConstant.CUSTOMER, SecurityUtil.getId()));
 		}
 	}
 	

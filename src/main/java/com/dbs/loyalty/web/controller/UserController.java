@@ -4,8 +4,6 @@ import static com.dbs.loyalty.config.constant.Constant.ERROR;
 import static com.dbs.loyalty.config.constant.Constant.PAGE;
 import static com.dbs.loyalty.config.constant.Constant.TOAST;
 import static com.dbs.loyalty.config.constant.Constant.ZERO;
-import static com.dbs.loyalty.config.constant.EntityConstant.ROLES;
-import static com.dbs.loyalty.config.constant.EntityConstant.USER;
 
 import java.util.List;
 import java.util.Map;
@@ -32,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.config.constant.UserTypeConstant;
 import com.dbs.loyalty.domain.Role;
 import com.dbs.loyalty.domain.User;
@@ -97,7 +96,7 @@ public class UserController extends AbstractPageController{
 		if (id.equals(ZERO)) {
 			User user = new User();
 			user.setUserType(UserTypeConstant.INTERNAL);
-			model.addAttribute(USER, user);
+			model.addAttribute(DomainConstant.USER, user);
 		} else {
 			getById(model, id);
 		}
@@ -108,7 +107,7 @@ public class UserController extends AbstractPageController{
 	@Transactional
 	@PreAuthorize("hasRole('USER_MK')")
 	@PostMapping
-	public String save(@Valid @ModelAttribute(USER) User user, BindingResult result, RedirectAttributes attributes) throws JsonProcessingException {
+	public String save(@Valid @ModelAttribute(DomainConstant.USER) User user, BindingResult result, RedirectAttributes attributes) throws JsonProcessingException {
 		if (result.hasErrors()) {
 			return FORM;
 		}else {
@@ -118,7 +117,7 @@ public class UserController extends AbstractPageController{
 					user.setPasswordPlain(null);
 				}
 				
-				taskService.saveTaskAdd(USER, user);
+				taskService.saveTaskAdd(DomainConstant.USER, user);
 			}else {
 				Optional<User> current = userService.findWithRoleById(user.getId());
 				
@@ -127,12 +126,12 @@ public class UserController extends AbstractPageController{
 						user.setPasswordHash(current.get().getPasswordHash());
 					}
 					
-					taskService.saveTaskModify(USER, current.get(), user);
+					taskService.saveTaskModify(DomainConstant.USER, current.get(), user);
 					userService.save(true, user.getId());
 				}
 			}
 
-			attributes.addFlashAttribute(TOAST, taskIsSavedMessage(USER, user.getUsername()));
+			attributes.addFlashAttribute(TOAST, taskIsSavedMessage(DomainConstant.USER, user.getUsername()));
 			return REDIRECT;
 		}
 	}
@@ -144,32 +143,32 @@ public class UserController extends AbstractPageController{
 		Optional<User> current = userService.findWithRoleById(id);
 		
 		if(current.isPresent()) {
-			taskService.saveTaskDelete(USER, current.get());
+			taskService.saveTaskDelete(DomainConstant.USER, current.get());
 			userService.save(true, id);
-			attributes.addFlashAttribute(TOAST, taskIsSavedMessage(USER, current.get().getUsername()));
+			attributes.addFlashAttribute(TOAST, taskIsSavedMessage(DomainConstant.USER, current.get().getUsername()));
 		}
 		
 		return REDIRECT;
 	}
 	
-	@ModelAttribute(ROLES)
+	@ModelAttribute(DomainConstant.ROLES)
 	public List<Role> getRoles() {
 	    return roleService.findAll();
 	}
 
-	@InitBinder(USER)
+	@InitBinder(DomainConstant.USER)
 	protected void initBinder(WebDataBinder binder) {
 		binder.addValidators(new UserValidator(userService, userLdapService));
 	}
 
 	public void getById(ModelMap model, String id) {
 		if (id.equals(ZERO)) {
-			model.addAttribute(USER, new User());
+			model.addAttribute(DomainConstant.USER, new User());
 		} else {
 			Optional<User> current = userService.findById(id);
 			
 			if (current.isPresent()) {
-				model.addAttribute(USER, current.get());
+				model.addAttribute(DomainConstant.USER, current.get());
 			} else {
 				model.addAttribute(ERROR, getNotFoundMessage(id));
 			}

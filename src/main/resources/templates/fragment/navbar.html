@@ -7,28 +7,28 @@
 
 <body>
 <div th:fragment="content" th:remove="tag">
-    <nav id="navbar" class="navbar navbar-dark fixed-top">
-            <a class="navbar-brand clearfix" href="index.html" th:href="@{/}">
-                <img class="float-left" alt="dbs.png" src="/static/image/dbs.png" th:src="@{/static/image/dbs.png}"></img>
-            </a>
-            <div class="ml-auto">
-                <div class="btn-group btn-nav dropdown">
-                    <a class="btn dropdown-toggle text-light" href="#" role="button" id="user-account" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span th:text="${#authorization.authentication.name}">ferrylinton</span><span class="icon-user-circle"></span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="user-account">
-                        <form action="/login/login-form.html" th:action="@{/logout}" method="post">
-	                        <button class="dropdown-item" type="submit">
-	                            <span class="icon-logout" th:text="#{logout}">Logout</span>
-	                        </button>
-                        </form>
-                    </div>
-                </div>
-                <a class="btn btn-nav" href="/home/home-view.html" th:href="@{/}">
-                    <span class="icon-home-outline"></span>
-                </a>
-                <button class="btn btn-menu" type="button" onclick="Sidenav.toggle()">&#9776;</button>
-            </div>
+	<nav class="navbar navbar-dark fixed-top">
+    	<a class="navbar-brand clearfix" href="index.html" th:href="@{/}">
+        	<img class="float-left" alt="dbs.png" th:src="@{/static/image/dbs.png}"></img>
+     	</a>
+     	<div class="ml-auto">
+     		<div class="btn-group btn-nav dropdown">
+           		<a class="btn dropdown-toggle text-light" href="#" role="button" id="user-account" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+               		<span class="label" th:text="${#authorization.authentication.name}">ferrylinton</span><span class="icon-user-circle"></span>
+            	</a>
+            	<div class="dropdown-menu dropdown-menu-right" aria-labelledby="user-account">
+              		<form th:action="@{/logout}" method="post">
+	              		<button class="dropdown-item" type="submit">
+	                   		<span class="icon-logout" th:text="#{logout}">Logout</span>
+	                 	</button>
+             		</form>
+            	</div>
+         	</div>
+      		<a class="btn btn-nav" th:href="@{/}">
+           		<span class="icon-home-outline"></span>
+         	</a>
+          	<button class="btn btn-menu" type="button" onclick="Sidenav.toggle()">&#9776;</button>
+    	</div>
 	</nav>
 </div>
 </body>

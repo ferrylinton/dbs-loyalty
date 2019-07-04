@@ -1,6 +1,7 @@
 package com.dbs.loyalty.service;
 
 import java.time.Instant;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -15,6 +16,7 @@ import com.dbs.loyalty.domain.AirportAssistance;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.repository.ArrivalRepository;
 import com.dbs.loyalty.repository.CustomerRepository;
+import com.dbs.loyalty.service.specification.ArrivalSpec;
 import com.dbs.loyalty.repository.AirportAssistanceRepository;
 import com.dbs.loyalty.util.SecurityUtil;
 import com.dbs.loyalty.web.response.Response;
@@ -35,8 +37,8 @@ public class ArrivalService {
 		return arrivalRepository.findById(id);
 	}
 	
-	public Page<Arrival> findAll(Pageable pageable){
-		return arrivalRepository.findAll(pageable);
+	public Page<Arrival> findAll(Map<String, String> params, Pageable pageable){
+		return arrivalRepository.findAll(new ArrivalSpec(params), pageable);
 	}
 
 	@Transactional

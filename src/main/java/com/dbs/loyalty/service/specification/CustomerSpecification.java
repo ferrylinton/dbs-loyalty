@@ -1,11 +1,12 @@
 package com.dbs.loyalty.service.specification;
 
-import static com.dbs.loyalty.service.specification.Constant.*;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.data.jpa.domain.Specification;
 
+import com.dbs.loyalty.config.constant.Constant;
+import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.Customer;
 
 public class CustomerSpecification {
@@ -15,14 +16,14 @@ public class CustomerSpecification {
 	}
 
 	public static Specification<Customer> keyword(HttpServletRequest request) {
-		if(request.getParameter(KY_PARAM) != null && !Constant.EMPTY.equals(request.getParameter(KY_PARAM))) {
-			String keyword = String.format(LIKE_FORMAT, request.getParameter(KY_PARAM).trim().toLowerCase());
+		if(request.getParameter(Constant.KY_PARAM) != null && !Constant.EMPTY.equals(request.getParameter(Constant.KY_PARAM))) {
+			String keyword = String.format(Constant.LIKE_FORMAT, request.getParameter(Constant.KY_PARAM).trim().toLowerCase());
 			return (user, cq, cb) -> cb.or(
-					cb.like(cb.lower(user.get(EMAIL)), keyword),
-					cb.like(cb.lower(user.get(NAME)), keyword)
+					cb.like(cb.lower(user.get(DomainConstant.EMAIL)), keyword),
+					cb.like(cb.lower(user.get(DomainConstant.NAME)), keyword)
 			);
 		}else {
-			return (user, cq, cb) -> cb.notEqual(user.get(ID), EMPTY);
+			return (user, cq, cb) -> cb.notEqual(user.get(DomainConstant.ID), Constant.EMPTY);
 		}
 	}
 	

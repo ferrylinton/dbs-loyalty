@@ -16,6 +16,30 @@
      	</ol>
 	</nav>
 	<div layout:fragment="content">
+		<div class="row no-gutters mb-3">
+     		<div class="col-12 col-sm-12 col-md-10 col-lg-7 col-xl-6">
+           		<form th:action="@{/departure}" method="get" autocomplete="off" >
+					<div class="input-group mb-2">
+						<input type="text" class="form-control datetimepicker-input" id="sd" name="sd" th:title="${param.sd}" placeholder="Start Date" th:placeholder="#{startDate}" data-toggle="datetimepicker" data-target="#sd">
+		          		<input type="text" class="form-control datetimepicker-input" id="ed" name="ed" th:title="${param.ed}" placeholder="End Date" th:placeholder="#{endDate}" data-toggle="datetimepicker" data-target="#ed">
+						<div class="input-group-append">
+		             		<div class="input-group-text bg-light"><span class="icon-calendar"></span></div>
+		             	</div>
+					</div>
+                  	<div class="input-group">
+                  		<input class="form-control" name="ky" maxlength="40" th:value="${param.ky}" th:placeholder="#{name}" />
+                      	<div class="input-group-append">
+                      		<button class="btn btn-light border text-secondary" type="submit">
+                          		<span class="icon-search"></span>
+                         	</button>
+                          	<a class="btn btn-light border text-secondary" th:href="@{/departure}">
+                             	<span class="icon-arrows-cw"></span>
+                           	</a>
+                   		</div>
+                  	</div>
+				</form>
+     		</div>
+    	</div>
    		<div class="table-responsive border border-top-0" th:if="${page.getTotalElements() > 0}">
 	            <table class="table table-sm table-striped table-hover border-bottom" style="min-width: 400px;">
                     <thead>
@@ -28,7 +52,8 @@
                                 </a>
                             </th>
                             <th th:text="#{name}">Name</th>
-                            <th th:text="#{serviceType}">Service Type</th>
+                            <th th:text="#{typeOfService}">Type Of Service</th>
+                            <th th:text="#{airportTransfer}">Airport Transfer</th>
                         </tr>
                     </thead>
 	                <tbody th:remove="all-but-first">
@@ -39,16 +64,17 @@
 										<span class="icon-cog"></span>
 									</button>
 									<div class="dropdown-menu py-0 shadow" aria-labelledby="dropdownMenuButton">
-										<a class="dropdown-item pl-1" href="/departure/departure-detail.html" th:href="@{|/departure/${departure.id}|}">
+										<a class="dropdown-item pl-1" th:href="@{|/departure/${departure.id}|}">
 										    <span class="icon-eye"></span> <span th:text="#{detail}">Detail</span>
                                         </a>
 									</div>
 								</div>
 							</td>
 	                        <td th:text="${row.count + (page.number * page.size)}">1</td>
-	                        <td th:text="${departure.flightDate}">Date</td>
+	                        <td><span th:data-date="${@dateService.jsDatetime()}" th:text="${departure.flightDate}">2019-05-01T21:24:44Z</span></td>
 	                        <td th:text="${departure.customer.name}">Name</td>
-	                        <td th:text="${departure.serviceType}">Service Type</td>
+	                        <td th:text="${departure.typeOfService}">Type Of Service</td>
+	                        <td><span th:class="${departure.airportTransfer} ? 'text-success icon-ok' : 'text-danger icon-cancel'"></span></td>
 	                    </tr>
 	                </tbody>
 	            </table>

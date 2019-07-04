@@ -18,7 +18,13 @@ a:hover{
 
 /* OVERRIDE BOOTSTRAP */
 
-.btn, .modal-content, .dropdown-menu, .custom-select, .custom-file-label, .input-group-text, .form-control{
+.btn, 
+.modal-content, 
+.dropdown-menu, 
+.custom-select, 
+.custom-file-label, 
+.input-group-text, 
+.form-control{
 	border-radius: 0;	
 }
 
@@ -38,7 +44,9 @@ a:hover{
 }
 
 .breadcrumb{
-	padding: .45rem 1rem;
+	padding: .2rem 1rem;
+	text-transform: uppercase;
+	font-size: .85em;
 }
 
 .form-control[readonly] {
@@ -49,6 +57,7 @@ a:hover{
 .form-control::placeholder {
     color: #ddd;
     opacity: 1;
+    text-transform: lowercase;
 }
 
 .border.is-invalid{
@@ -195,7 +204,7 @@ a:hover{
 
 .navbar{
 	height: 60px;
-	min-width: 400px;
+	min-width: 350px;
 	background-color: #000;
 	border-bottom: solid 3px #c00;
 }
@@ -219,6 +228,18 @@ a:hover{
 .navbar .btn-menu:hover, .btn-nav:hover{
 	color: #007bff;
 	background-color: #181818;
+}
+
+.label{
+	display: none;	
+}
+
+@media ( min-width : 576px) {
+	
+	.label{
+		display: inline;
+	}
+	
 }
 
 /* FOOTER */
@@ -264,7 +285,7 @@ a:hover{
 	padding-right: 0;
 	transition: 0.8s;
 	background-color: #fff;
-	min-width: 400px;
+	min-width: 350px;
 }
 
 #sidenav-box{
@@ -428,4 +449,19 @@ a:hover{
 
 .table-responsive .table{
 	margin-bottom: 0;
+}
+
+.table-responsive .table td.p-0{
+	background-color: #dee2e6;
+	border: solid #d3d7cf;
+	border-width: 0 1px 1px 0;
+}
+
+.table-responsive .table .dropdown-toggle{
+	margin-left: 2px;
+	padding: 0 4px 0 0;
+	font-size: 1.2em;
+}
+.table-responsive .table .dropdown-toggle::after{
+	margin: 0;
 }

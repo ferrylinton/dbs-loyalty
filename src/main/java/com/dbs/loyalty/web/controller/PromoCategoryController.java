@@ -4,7 +4,6 @@ import static com.dbs.loyalty.config.constant.Constant.ERROR;
 import static com.dbs.loyalty.config.constant.Constant.PAGE;
 import static com.dbs.loyalty.config.constant.Constant.TOAST;
 import static com.dbs.loyalty.config.constant.Constant.ZERO;
-import static com.dbs.loyalty.config.constant.EntityConstant.PROMO_CATEGORY;
 
 import java.util.Map;
 import java.util.Optional;
@@ -30,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.PromoCategory;
 import com.dbs.loyalty.service.PromoCategoryService;
 import com.dbs.loyalty.service.TaskService;
@@ -84,7 +84,7 @@ public class PromoCategoryController extends AbstractPageController {
 	@GetMapping("/{id}")
 	public String viewPromoCategoryForm(ModelMap model, @PathVariable String id){
 		if (id.equals(ZERO)) {
-			model.addAttribute(PROMO_CATEGORY, new PromoCategory());
+			model.addAttribute(DomainConstant.PROMO_CATEGORY, new PromoCategory());
 		} else {
 			getById(model, id);
 		}
@@ -95,22 +95,22 @@ public class PromoCategoryController extends AbstractPageController {
 	@Transactional
 	@PreAuthorize("hasRole('PROMO_CATEGORY_MK')")
 	@PostMapping
-	public String save(@Valid @ModelAttribute(PROMO_CATEGORY)  PromoCategory promoCategory, BindingResult result, RedirectAttributes attributes) throws JsonProcessingException {
+	public String save(@Valid @ModelAttribute(DomainConstant.PROMO_CATEGORY)  PromoCategory promoCategory, BindingResult result, RedirectAttributes attributes) throws JsonProcessingException {
 		if (result.hasErrors()) {
 			return FORM;
 		}else {
 			if(promoCategory.getId() == null) {
-				taskService.saveTaskAdd(PROMO_CATEGORY, promoCategory);
+				taskService.saveTaskAdd(DomainConstant.PROMO_CATEGORY, promoCategory);
 			} else {
 				Optional<PromoCategory> current = promoCategoryService.findById(promoCategory.getId());
 				
 				if(current.isPresent()) {
-					taskService.saveTaskModify(PROMO_CATEGORY, current.get(), promoCategory);
+					taskService.saveTaskModify(DomainConstant.PROMO_CATEGORY, current.get(), promoCategory);
 					promoCategoryService.save(true, promoCategory.getId());
 				}
 			}
 			
-			attributes.addFlashAttribute(TOAST, taskIsSavedMessage(PROMO_CATEGORY, promoCategory.getName()));
+			attributes.addFlashAttribute(TOAST, taskIsSavedMessage(DomainConstant.PROMO_CATEGORY, promoCategory.getName()));
 			return REDIRECT;
 		}
 	}
@@ -122,15 +122,15 @@ public class PromoCategoryController extends AbstractPageController {
 		Optional<PromoCategory> current = promoCategoryService.findById(id);
 		
 		if(current.isPresent()) {
-			taskService.saveTaskDelete(PROMO_CATEGORY, current.get());
+			taskService.saveTaskDelete(DomainConstant.PROMO_CATEGORY, current.get());
 			promoCategoryService.save(true, id);
-			attributes.addFlashAttribute(TOAST, taskIsSavedMessage(PROMO_CATEGORY, current.get().getName()));
+			attributes.addFlashAttribute(TOAST, taskIsSavedMessage(DomainConstant.PROMO_CATEGORY, current.get().getName()));
 		}
 		
 		return REDIRECT;
 	}
 
-	@InitBinder(PROMO_CATEGORY)
+	@InitBinder(DomainConstant.PROMO_CATEGORY)
 	protected void initBinder(WebDataBinder binder) {
 		binder.addValidators(new PromoCategoryValidator(promoCategoryService));
 	}
@@ -139,7 +139,7 @@ public class PromoCategoryController extends AbstractPageController {
 		Optional<PromoCategory> current = promoCategoryService.findById(id);
 		
 		if (current.isPresent()) {
-			model.addAttribute(PROMO_CATEGORY, current.get());
+			model.addAttribute(DomainConstant.PROMO_CATEGORY, current.get());
 		} else {
 			model.addAttribute(ERROR, getNotFoundMessage(id));
 		}

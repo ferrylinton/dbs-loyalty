@@ -4,7 +4,6 @@ import static com.dbs.loyalty.config.constant.Constant.ERROR;
 import static com.dbs.loyalty.config.constant.Constant.PAGE;
 import static com.dbs.loyalty.config.constant.Constant.TOAST;
 import static com.dbs.loyalty.config.constant.Constant.ZERO;
-import static com.dbs.loyalty.config.constant.EntityConstant.CUSTOMER;
 import static com.dbs.loyalty.service.SettingService.JAVA_DATE;
 
 import java.beans.PropertyEditorSupport;
@@ -37,6 +36,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dbs.loyalty.config.ApplicationProperties;
 import com.dbs.loyalty.config.constant.CustomerTypeConstant;
+import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.domain.FileImageTask;
 import com.dbs.loyalty.service.CustomerService;
@@ -100,7 +100,7 @@ public class CustomerController extends AbstractPageController{
 		if (id.equals(ZERO)) {
 			Customer customer = new Customer();
 			customer.setCustomerType(CustomerTypeConstant.TPC_VALUE);
-			model.addAttribute(CUSTOMER, customer);
+			model.addAttribute(DomainConstant.CUSTOMER, customer);
 		} else {
 			getById(model, id);
 		}
@@ -111,14 +111,14 @@ public class CustomerController extends AbstractPageController{
 	@Transactional
 	@PreAuthorize("hasRole('CUSTOMER_MK')")
 	@PostMapping
-	public String saveCustomer(@Valid @ModelAttribute(CUSTOMER) Customer customer, BindingResult result, RedirectAttributes attributes) throws IOException{
+	public String saveCustomer(@Valid @ModelAttribute(DomainConstant.CUSTOMER) Customer customer, BindingResult result, RedirectAttributes attributes) throws IOException{
 		if (result.hasErrors()) {
 			return FORM;
 		}else {
 			if(customer.getId() == null) {
 				FileImageTask fileImageTask = imageService.add(customer.getMultipartFileImage());
 				customer.setImage(fileImageTask.getId());
-				taskService.saveTaskAdd(CUSTOMER, customer);
+				taskService.saveTaskAdd(DomainConstant.CUSTOMER, customer);
 			}else {
 				Optional<Customer> current = customerService.findById(customer.getId());
 				
@@ -132,12 +132,12 @@ public class CustomerController extends AbstractPageController{
 					
 					customer.setPasswordHash(current.get().getPasswordHash());
 					current.get().setImage(customer.getId());
-					taskService.saveTaskModify(CUSTOMER, current.get(), customer);
+					taskService.saveTaskModify(DomainConstant.CUSTOMER, current.get(), customer);
 					customerService.save(true, customer.getId());
 				}
 			}
 
-			attributes.addFlashAttribute(TOAST, taskIsSavedMessage(CUSTOMER, customer.getName()));
+			attributes.addFlashAttribute(TOAST, taskIsSavedMessage(DomainConstant.CUSTOMER, customer.getName()));
 			return REDIRECT;
 		}
 	}
@@ -149,15 +149,15 @@ public class CustomerController extends AbstractPageController{
 		Optional<Customer> current = customerService.findById(id);
 		
 		if(current.isPresent()) {
-			taskService.saveTaskDelete(CUSTOMER, current.get());
+			taskService.saveTaskDelete(DomainConstant.CUSTOMER, current.get());
 			customerService.save(true, id);
-			attributes.addFlashAttribute(TOAST, taskIsSavedMessage(CUSTOMER, current.get().getName()));
+			attributes.addFlashAttribute(TOAST, taskIsSavedMessage(DomainConstant.CUSTOMER, current.get().getName()));
 		}
 		
 		return REDIRECT;
 	}
 
-	@InitBinder(CUSTOMER)
+	@InitBinder(DomainConstant.CUSTOMER)
 	protected void initBinder(WebDataBinder binder) {
 		binder.addValidators(new CustomerValidator(customerService, applicationProperties));
 		binder.registerCustomEditor(LocalDate.class, new PropertyEditorSupport() {
@@ -179,7 +179,7 @@ public class CustomerController extends AbstractPageController{
 		Optional<Customer> customer = customerService.findById(id);
 		
 		if (customer.isPresent()) {
-			model.addAttribute(CUSTOMER, customer.get());
+			model.addAttribute(DomainConstant.CUSTOMER, customer.get());
 		} else {
 			model.addAttribute(ERROR, getNotFoundMessage(id));
 		}

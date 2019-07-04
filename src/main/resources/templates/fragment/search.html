@@ -6,11 +6,11 @@
 </head>
 
 <body>
-	<div th:fragment="content(url,canChangeData)" class="row no-gutters mb-3">
+	<div th:fragment="content(url, fields, canChangeData)" class="row no-gutters mb-3">
 		<div class="col-12 col-sm-12 col-md-10 col-lg-7 col-xl-6">
 			<form action="#" th:action="@{${url}}" method="get" autocomplete="off">
            		<div class="input-group">
-              		<input class="form-control" name="ky" maxlength="40" th:value="${param.ky}" placeholder="keyword" th:placeholder="#{keyword}" />
+              		<input class="form-control" name="ky" maxlength="40" th:value="${param.ky}" th:placeholder="${fields}" />
                   	<div class="input-group-append">
                    		<button class="btn btn-light" type="submit">
                     		<span class="icon-search"></span>

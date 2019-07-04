@@ -1,43 +1,39 @@
 <!doctype html>
-<html lang="en" th:lang="${#locale.toString() == 'in' ? 'id' : #locale}" xmlns:th="http://www.thymeleaf.org" xmlns:nl2br="https://github.com/bufferings/thymeleaf-extras-nl2br">
+<html 
+	th:with="isMaker=${#authorization.expression('hasAuthority(''ROLE_MK'')')}"
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	xmlns:nl2br="https://github.com/bufferings/thymeleaf-extras-nl2br"
+	layout:decorate="~{layout/layout}">
 
-<head th:replace="fragment/head.html :: content(title=|#{application.name} : Error|)"></head>
+<head>
+    <title th:text="#{error}">Error</title>
+</head>
 
 <body>
-    <!-- NAVBAR -->
-    <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
-    <div id="content-box">
-	    <!-- BREADCRUMB -->
-	    <nav aria-label="breadcrumb">
-			<ol class="breadcrumb">
-				<li class="breadcrumb-item"><a href="/home/home-view.html" th:href="@{/}" th:text="#{home}"></a></li>
-		 		<li class="breadcrumb-item active" aria-current="page" th:text="#{error}"></li>
-			</ol>
-		</nav>
-	    <div id="main-content">
-	        <div class="border-bottom pb-2 text-danger">
-	       		<span class="icon-attention"></span> <span>Error</span> : <span th:text="${errorData.status}"></span>
-	   		</div>
-	      	<div class="py-2">
-	        	<p class="no-break text-primary" th:text="${errorData.requestURI}"></p>
-	         	<p class="no-break" nl2br:text="${errorData.message}"></p>
-	        	<th:block th:if="${not #strings.isEmpty(errorData.detail)}">
-		        	<a class="btn btn-sm btn-danger collapsed" data-toggle="collapse" href="#error-detail" aria-expanded="false" aria-controls="error-detail">
-		          		<span class="icon-detail"></span> <span th:text="#{detail}"></span>
-		         	</a>
-		      		<div class="collapse border-top mt-3 pt-2 font-08" id="error-detail">
-		     			<p class="no-break" nl2br:text="${errorData.detail}"></p>
-		         	</div>
-	         	</th:block>
-	    	</div>
-	    </div>
-	    <!-- FOOTER -->
-        <div id="footer" th:replace="fragment/footer.html :: #footer"></div>
+	<nav aria-label="breadcrumb" layout:fragment="breadcrumb">
+		<ol class="breadcrumb">
+			<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{home}"></a></li>
+			<li class="breadcrumb-item active" aria-current="page" th:text="#{error}"></li>
+		</ol>
+	</nav>
+	<div layout:fragment="content">
+		<div class="border-bottom pb-2 text-danger">
+	 		<span class="icon-attention"></span> <span>Error</span> : <span th:text="${errorData.status}"></span>
+		</div>
+	  	<div class="py-2">
+	     	<p class="no-break text-primary" th:text="${errorData.requestURI}"></p>
+	    	<p class="no-break" nl2br:text="${errorData.message}"></p>
+	     	<th:block th:if="${not #strings.isEmpty(errorData.detail)}">
+		   		<a class="btn btn-sm btn-danger collapsed" data-toggle="collapse" href="#error-detail" aria-expanded="false" aria-controls="error-detail">
+		       		<span class="icon-detail"></span> <span th:text="#{detail}"></span>
+		      	</a>
+		      	<div class="collapse border-top mt-3 pt-2 font-08" id="error-detail">
+		     		<p class="no-break" nl2br:text="${errorData.detail}"></p>
+		      	</div>
+	      	</th:block>
+		</div>
 	</div>
-    <!-- SIDENAV -->
-    <div id="sidenav-box" th:replace="fragment/sidenav.html :: #sidenav-box"></div>
-    <!-- SCRIPTS -->
-    <div th:replace="fragment/scripts.html :: content"></div>
 </body>
 
 </html>

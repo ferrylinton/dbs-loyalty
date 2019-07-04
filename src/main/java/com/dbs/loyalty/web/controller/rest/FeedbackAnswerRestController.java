@@ -1,6 +1,5 @@
 package com.dbs.loyalty.web.controller.rest;
 
-import static com.dbs.loyalty.config.constant.EntityConstant.EVENT;
 import static com.dbs.loyalty.config.constant.MessageConstant.ENTITY_WITH_VALUE_NOT_FOUND;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.FEEDBACK;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.JWT;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.Event;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.EventService;
@@ -83,7 +83,7 @@ public class FeedbackAnswerRestController {
         	Collections.sort(answers);
         	return ResponseEntity.ok().body(answers);
     	}else {
-    		String message = MessageUtil.getMessage(ENTITY_WITH_VALUE_NOT_FOUND, EVENT, eventId);
+    		String message = MessageUtil.getMessage(ENTITY_WITH_VALUE_NOT_FOUND, DomainConstant.EVENT, eventId);
 			throw new NotFoundException(message);
     	}
     	

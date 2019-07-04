@@ -1,8 +1,6 @@
 package com.dbs.loyalty.web.controller.task;
 
 import static com.dbs.loyalty.config.constant.Constant.ERROR;
-import static com.dbs.loyalty.config.constant.EntityConstant.TASK;
-import static com.dbs.loyalty.config.constant.EntityConstant.TYPE;
 import static com.dbs.loyalty.config.constant.MessageConstant.TASK_IS_REJECTED;
 import static com.dbs.loyalty.config.constant.MessageConstant.TASK_IS_VERIFIED;
 
@@ -10,6 +8,7 @@ import java.util.Optional;
 
 import org.springframework.ui.ModelMap;
 
+import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.util.MessageUtil;
@@ -38,12 +37,12 @@ public class AbstractTaskController extends AbstractPageController {
 		Optional<Task> task = taskService.findById(id);
 		
 		if (task.isPresent()) {
-			model.addAttribute(TASK, task.get());
+			model.addAttribute(DomainConstant.TASK, task.get());
 		} else {
 			model.addAttribute(ERROR, getNotFoundMessage(id));
 		}
 		
-		model.addAttribute(TYPE, type);
+		model.addAttribute(DomainConstant.TYPE, type);
 	}
 	
 	protected String save(Task task){

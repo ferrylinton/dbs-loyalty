@@ -1,7 +1,7 @@
 package com.dbs.loyalty.web.controller.rest;
 
-import static com.dbs.loyalty.config.constant.RestConstant.GET_IMAGE_BY_PROMO_ID;
 import static com.dbs.loyalty.config.constant.MessageConstant.DATA_IS_NOT_FOUND;
+import static com.dbs.loyalty.config.constant.RestConstant.GET_IMAGE_BY_PROMO_ID;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.IMAGE;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.JWT;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.OK;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbs.loyalty.config.constant.EntityConstant;
+import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.FileImage;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.ImageService;
@@ -66,7 +66,7 @@ public class PromoImageRestController {
 					.headers(headers)
 					.body(fileImage.get().getBytes());
     	}else {
-    		throw new NotFoundException(String.format(DATA_IS_NOT_FOUND, EntityConstant.PROMO, id));
+    		throw new NotFoundException(String.format(DATA_IS_NOT_FOUND, DomainConstant.PROMO, id));
     	}
     }
 	

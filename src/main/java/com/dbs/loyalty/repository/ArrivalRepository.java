@@ -7,11 +7,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
 import com.dbs.loyalty.domain.Arrival;
 
-public interface ArrivalRepository extends JpaRepository<Arrival, String>{
+public interface ArrivalRepository extends JpaRepository<Arrival, String>, JpaSpecificationExecutor<Arrival>{
 	
 	@EntityGraph(attributePaths = { "airport", "customer" })
 	Optional<Arrival> findById(String id);

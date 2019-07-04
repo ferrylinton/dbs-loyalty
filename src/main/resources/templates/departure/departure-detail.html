@@ -21,69 +21,67 @@
 		<div class="table-responsive border border-top-0" th:if="${departure}">
        		<table class="table table-sm table-detail" style="min-width: 400px;">
            		<tbody>
-                            <tr>
-                                <th style="width:200px;" th:text="#{id}">Id</th>
-                                <td th:text="${departure.id}">ZwOkjFmG</td>
-                            </tr>
-                            <tr>
-                                <th th:text="#{serviceType}">Service Type</th>
-                                <td th:text="${departure.serviceType}">Service Type</td>
-                            </tr>
-                            <tr>
-                                <th th:text="#{airport}">Airport</th>
-                                <td th:text="${departure.airport.name}">Airport</td>
-                            </tr>
-                            <tr>
-                                <th th:text="#{flightDate}">Flight Date</th>
-                                <td th:text="${departure.flightDate}">Flight Date</td>
-                            </tr>
-                            <tr>
-                                <th th:text="#{flightTime}">Flight Time</th>
-                                <td th:text="${departure.flightDate}">Flight Time</td>
-                            </tr>
-                            <tr>
-                                <th th:text="#{flightCode}">Flight Code</th>
-                                <td th:text="${departure.flightCode}">Flight Code</td>
-                            </tr>
-                            <tr>
-                                <th th:text="#{flightNumber}">Flight Number</th>
-                                <td th:text="${departure.flightNumber}">Flight Number</td>
-                            </tr>
-                            <tr>
-                                <th th:text="#{name}">Name</th>
-                                <td th:text="${departure.customer.name}">Name</td>
-                            </tr>
-                            <tr>
-                                <th th:text="#{customerPhone}">Customer Phone</th>
-                                <td th:text="${departure.customerPhone}">Customer Phone</td>
-                            </tr>
-                            <tr>
-                                <th th:text="#{guestPhone}">Guest Phone</th>
-                                <td th:text="${departure.guestPhone}">Guest Phone</td>
-                            </tr>
-                            <!--  
-                            <tr>
-                                <th th:text="#{pickupFromHome}">Pickup From Home</th>
-                                <td><span class="text-success icon-ok" th:class="${departure.pickupFromHome} ? 'text-success icon-ok' : 'text-danger icon-cancel'"></span></td>
-                            </tr>
-                            -->
-                            <tr>
-                                <th th:text="#{pickupAddress}">Pickup Address</th>
-                                <td th:text="${departure.pickupAddress}">Pickup Address</td>
-                            </tr>
-                            <tr>
-                                <th th:text="#{pickupTime}">Pickup Time</th>
-                                <td th:text="${departure.pickupTime}">08:00</td>
-                            </tr>
-                            <tr>
-                                <th th:text="#{numberOfPassengers}">Number Of Passengers</th>
-                                <td th:text="${departure.numberOfPassengers}">1</td>
-                            </tr>
-                            <tr>
-                                <th th:text="#{numberOfLuggages}">Number Of Luggages</th>
-                                <td th:text="${departure.numberOfLuggages}">1</td>
-                            </tr>
-                     <tr th:replace="fragment/audit-detail.html :: content(data=${departure})"></tr>
+                	<tr>
+                  		<th style="width:200px;" th:text="#{id}">Id</th>
+                   		<td th:text="${departure.id}">ZwOkjFmG</td>
+                 	</tr>
+                	<tr>
+                    	<th th:text="#{typeOfService}">Type Of Service</th>
+                    	<td th:text="${departure.typeOfService}">Type Of Service</td>
+                  	</tr>
+                  	<tr>
+                     	<th th:text="#{airport}">Airport</th>
+                      	<td th:text="${departure.airport.name}">Airport</td>
+                 	</tr>
+                   	<tr>
+                    	<th th:text="#{flightDate}">Flight Date</th>
+                      	<td><span th:data-date="${@dateService.jsDate()}" th:text="${departure.flightDate}">2019-05-01T21:24:44Z</span></td>
+                  	</tr>
+                  	<tr>
+                      	<th th:text="#{flightTime}">Flight Time</th>
+                     	<td><span th:data-date="${@dateService.jsTime()}" th:text="${departure.flightDate}">2019-05-01T21:24:44Z</span></td>
+              		</tr>
+                	<tr>
+                   		<th th:text="#{flightCode}">Flight Code</th>
+                     	<td th:text="${departure.flightCode}">Flight Code</td>
+                  	</tr>
+                 	<tr>
+                     	<th th:text="#{flightNumber}">Flight Number</th>
+                      	<td th:text="${departure.flightNumber}">Flight Number</td>
+              		</tr>
+                   	<tr>
+                     	<th th:text="#{name}">Name</th>
+                       	<td th:text="${departure.customer.name}">Name</td>
+                  	</tr>
+                  	<tr>
+                      	<th th:text="#{customerPhone}">Customer Phone</th>
+                       	<td th:text="${departure.customerPhone}">Customer Phone</td>
+                   	</tr>
+                   	<tr>
+                     	<th th:text="#{guestPhone}">Guest Phone</th>
+                     	<td th:text="${departure.guestPhone}">Guest Phone</td>
+                 	</tr>
+                 	<tr>
+                     	<th th:text="#{airportTransfer}">Airport Transfer</th>
+                     	<td><span th:class="${departure.airportTransfer} ? 'text-success icon-ok' : 'text-danger icon-cancel'"></span></td>
+               		</tr>
+					<tr>
+                     	<th th:text="#{pickupAddress}">Pickup Address</th>
+                     	<td th:text="${departure.pickupAddress}">Pickup Address</td>
+                	</tr>
+                 	<tr>
+                    	<th th:text="#{pickupTime}">Pickup Time</th>
+                    	<td><span th:data-date="${@dateService.jsTime()}" th:text="${departure.pickupTime}">2019-05-01T21:24:44Z</span></td>
+               		</tr>
+                 	<tr>
+                     	<th th:text="#{numberOfPassengers}">Number Of Passengers</th>
+                       	<td th:text="${departure.numberOfPassengers}">1</td>
+                  	</tr>
+                 	<tr>
+                   		<th th:text="#{numberOfLuggages}">Number Of Luggages</th>
+                      	<td th:text="${departure.numberOfLuggages}">1</td>
+                   	</tr>
+                  	<tr th:replace="fragment/audit-detail.html :: content(data=${departure})"></tr>
             	</tbody>
        		</table>
     	</div>

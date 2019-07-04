@@ -1,48 +1,57 @@
 package com.dbs.loyalty.web.controller;
 
-import static com.dbs.loyalty.config.constant.Constant.ERROR;
-import static com.dbs.loyalty.config.constant.Constant.PAGE;
-import static com.dbs.loyalty.config.constant.EntityConstant.ARRIVAL;
-
 import java.util.Map;
 import java.util.Optional;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.dbs.loyalty.config.constant.Constant;
+import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.Arrival;
 import com.dbs.loyalty.service.ArrivalService;
+import com.dbs.loyalty.util.QueryStringUtil;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Controller
 public class ArrivalController extends AbstractPageController {
-
+	
+	private static final String REDIRECT 	= "redirect:/arrival";
+	
+	private static final String VIEW 		= "arrival/arrival-view";
+	
+	private static final String DETAIL 		= "arrival/arrival-detail";
+	
+	private static final String SORT_BY 	= "flightDate";
+	
 	private final ArrivalService arrivalService;
 
 	@PreAuthorize("hasAnyRole('TRAVEL_ASSISTANCE')")
 	@GetMapping("/arrival")
-	public String arrival(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
-		Order order = getOrder(sort, "flightDate");
-		Page<Arrival> page = arrivalService.findAll(getPageable(params, order));
+	public String arrival(@ModelAttribute(Constant.TOAST) String toast, @RequestParam Map<String, String> params, Sort sort, Model model) {
+		Order order = getOrder(sort, SORT_BY);
+		Page<Arrival> page = arrivalService.findAll(params, getPageable(params, order));
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
-			return "redirect:/arrival";
+			return REDIRECT;
 		}else {
-			request.setAttribute(PAGE, page);
-			setParamsQueryString(params, request);
-			setPagerQueryString(order, page.getNumber(), request);
-			return "arrival/arrival-view";
+			model.addAttribute(Constant.PAGE, page);
+			model.addAttribute(Constant.ORDER, order);
+			model.addAttribute(Constant.PREVIOUS, QueryStringUtil.page(order, page.getNumber() - 1));
+			model.addAttribute(Constant.NEXT, QueryStringUtil.page(order, page.getNumber() + 1));
+			model.addAttribute(Constant.PARAMS, QueryStringUtil.params(params));
+			return VIEW;
 		}
 	}
 	
@@ -52,11 +61,12 @@ public class ArrivalController extends AbstractPageController {
 		Optional<Arrival> current = arrivalService.findById(id);
 
 		if (current.isPresent()) {
-			model.addAttribute(ARRIVAL, current.get());
+			model.addAttribute(DomainConstant.ARRIVAL, current.get());
 		} else {
-			model.addAttribute(ERROR, getNotFoundMessage(id));
+			model.addAttribute(Constant.ERROR, getNotFoundMessage(id));
 		}
-		return "arrival/arrival-detail";
+		
+		return DETAIL;
 	}
 
 }

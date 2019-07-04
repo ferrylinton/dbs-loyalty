@@ -1,11 +1,11 @@
 package com.dbs.loyalty.web.validator;
 
-import static com.dbs.loyalty.config.constant.FieldConstant.NAME;
 import static com.dbs.loyalty.config.constant.ValidationConstant.VALIDATION_EXIST;
 
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.PromoCategory;
 import com.dbs.loyalty.service.PromoCategoryService;
 import com.dbs.loyalty.util.MessageUtil;
@@ -29,7 +29,7 @@ public class PromoCategoryValidator implements Validator {
 		if (promoCategoryService.isNameExist(promoCategory.getId(), promoCategory.getName())) {
 			Object[] errorArgs = new String[] { promoCategory.getName() };
 			String defaultMessage = MessageUtil.getMessage(VALIDATION_EXIST, errorArgs);
-			errors.rejectValue(NAME, VALIDATION_EXIST, errorArgs, defaultMessage);
+			errors.rejectValue(DomainConstant.NAME, VALIDATION_EXIST, errorArgs, defaultMessage);
 		}
 
 	}

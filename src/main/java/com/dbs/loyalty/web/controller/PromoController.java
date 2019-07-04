@@ -4,7 +4,6 @@ import static com.dbs.loyalty.config.constant.Constant.ERROR;
 import static com.dbs.loyalty.config.constant.Constant.PAGE;
 import static com.dbs.loyalty.config.constant.Constant.TOAST;
 import static com.dbs.loyalty.config.constant.Constant.ZERO;
-import static com.dbs.loyalty.config.constant.EntityConstant.PROMO;
 import static com.dbs.loyalty.service.SettingService.JAVA_DATE;
 
 import java.beans.PropertyEditorSupport;
@@ -37,6 +36,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.FileImageTask;
 import com.dbs.loyalty.domain.Promo;
 import com.dbs.loyalty.domain.PromoCategory;
@@ -121,7 +121,7 @@ public class PromoController extends AbstractPageController {
 	@GetMapping("/{id}")
 	public String viewPromoForm(ModelMap model, @PathVariable String id){
 		if (id.equals(ZERO)) {
-			model.addAttribute(PROMO, new Promo());
+			model.addAttribute(DomainConstant.PROMO, new Promo());
 		} else {
 			getById(model, id);
 		}
@@ -132,7 +132,7 @@ public class PromoController extends AbstractPageController {
 	@Transactional
 	@PreAuthorize("hasRole('PROMO_MK')")
 	@PostMapping
-	public String savePromo(@Valid @ModelAttribute(PROMO) Promo promo, BindingResult result, RedirectAttributes attributes) throws IOException {
+	public String savePromo(@Valid @ModelAttribute(DomainConstant.PROMO) Promo promo, BindingResult result, RedirectAttributes attributes) throws IOException {
 		for(FieldError fieldError : result.getFieldErrors()) {
 			System.out.println(fieldError.getField());
 			System.out.println(fieldError.getDefaultMessage());
@@ -145,7 +145,7 @@ public class PromoController extends AbstractPageController {
 				FileImageTask fileImageTask = imageService.add(promo.getMultipartFileImage());
 				promo.setImage(fileImageTask.getId());
 
-				taskService.saveTaskAdd(PROMO, promo);
+				taskService.saveTaskAdd(DomainConstant.PROMO, promo);
 			}else {
 				Optional<Promo> current = promoService.findById(promo.getId());
 				
@@ -158,12 +158,12 @@ public class PromoController extends AbstractPageController {
 					}
 					
 					current.get().setImage(promo.getId());
-					taskService.saveTaskModify(PROMO, current.get(), promo);
+					taskService.saveTaskModify(DomainConstant.PROMO, current.get(), promo);
 					promoService.save(true, promo.getId());;
 				}
 			}
 
-			attributes.addFlashAttribute(TOAST, taskIsSavedMessage(PROMO, promo.getTitle()));
+			attributes.addFlashAttribute(TOAST, taskIsSavedMessage(DomainConstant.PROMO, promo.getTitle()));
 			return REDIRECT;
 		}
 	}
@@ -175,9 +175,9 @@ public class PromoController extends AbstractPageController {
 		Optional<Promo> current = promoService.findById(id);
 		
 		if(current.isPresent()) {
-			taskService.saveTaskDelete(PROMO, current.get());
+			taskService.saveTaskDelete(DomainConstant.PROMO, current.get());
 			promoService.save(true, id);
-			attributes.addFlashAttribute(TOAST, taskIsSavedMessage(PROMO, current.get().getTitle()));
+			attributes.addFlashAttribute(TOAST, taskIsSavedMessage(DomainConstant.PROMO, current.get().getTitle()));
 		}
 		
 		return REDIRECT;
@@ -188,7 +188,7 @@ public class PromoController extends AbstractPageController {
 		return promoCategoryService.findAll();
 	}
 	
-	@InitBinder(PROMO)
+	@InitBinder(DomainConstant.PROMO)
 	protected void initBinder(WebDataBinder binder) {
 		binder.registerCustomEditor(LocalDate.class, new PropertyEditorSupport() {
 			
@@ -206,7 +206,7 @@ public class PromoController extends AbstractPageController {
 		Optional<Promo> current = promoService.findById(id);
 		
 		if (current.isPresent()) {
-			model.addAttribute(PROMO, current.get());
+			model.addAttribute(DomainConstant.PROMO, current.get());
 		} else {
 			model.addAttribute(ERROR, getNotFoundMessage(id));
 		}

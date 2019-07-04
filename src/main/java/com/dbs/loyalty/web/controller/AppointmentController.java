@@ -2,7 +2,6 @@ package com.dbs.loyalty.web.controller;
 
 import static com.dbs.loyalty.config.constant.Constant.ERROR;
 import static com.dbs.loyalty.config.constant.Constant.PAGE;
-import static com.dbs.loyalty.config.constant.EntityConstant.APPOINTMENT;
 
 import java.util.Map;
 import java.util.Optional;
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.Appointment;
 import com.dbs.loyalty.service.AppointmentService;
 
@@ -60,7 +60,7 @@ public class AppointmentController extends AbstractPageController {
 		Optional<Appointment> current = appointmentService.findById(id);
 
 		if (current.isPresent()) {
-			model.addAttribute(APPOINTMENT, current.get());
+			model.addAttribute(DomainConstant.APPOINTMENT, current.get());
 		} else {
 			model.addAttribute(ERROR, getNotFoundMessage(id));
 		}

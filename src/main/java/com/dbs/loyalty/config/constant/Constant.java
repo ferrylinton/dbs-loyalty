@@ -55,6 +55,14 @@ public final class Constant {
 	public static final String SYSTEM	 			= "system";
 	
 	public static final String TOAST	 			= "toast";
+
+	public static final String LIKE_FORMAT = "%%%s%%";
+
+	public static final String KY_PARAM = "ky";
+	
+	public static final String START_DATE_PARAM = "sd";
+	
+	public static final String END_DATE_PARAM = "ed";
 	
 	private Constant() {
 		// hide constructor

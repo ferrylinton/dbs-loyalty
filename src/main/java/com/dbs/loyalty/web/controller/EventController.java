@@ -4,8 +4,6 @@ import static com.dbs.loyalty.config.constant.Constant.ERROR;
 import static com.dbs.loyalty.config.constant.Constant.PAGE;
 import static com.dbs.loyalty.config.constant.Constant.TOAST;
 import static com.dbs.loyalty.config.constant.Constant.ZERO;
-import static com.dbs.loyalty.config.constant.EntityConstant.EVENT;
-import static com.dbs.loyalty.config.constant.EntityConstant.ROLE;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -34,6 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.Event;
 import com.dbs.loyalty.domain.Feedback;
 import com.dbs.loyalty.domain.FileImageTask;
@@ -104,7 +103,7 @@ public class EventController extends AbstractPageController {
 			event.setStartPeriod(Instant.now());
 			event.setEndPeriod(Instant.now());
 			
-			model.addAttribute(EVENT, new Event());
+			model.addAttribute(DomainConstant.EVENT, new Event());
 		} else {
 			getById(model, id);
 		}
@@ -115,7 +114,7 @@ public class EventController extends AbstractPageController {
 	@Transactional
 	@PreAuthorize("hasRole('EVENT_MK')")
 	@PostMapping
-	public String saveEvent(@ModelAttribute(EVENT) @Valid Event event, BindingResult result, RedirectAttributes attributes) throws IOException, ParseException {
+	public String saveEvent(@ModelAttribute(DomainConstant.EVENT) @Valid Event event, BindingResult result, RedirectAttributes attributes) throws IOException, ParseException {
 		if(result.hasErrors()) {
 			return FORM;
 		}else {
@@ -132,7 +131,7 @@ public class EventController extends AbstractPageController {
 				FilePdfTask filePdfTask = pdfService.add(event.getMultipartFileMaterial());
 				event.setMaterial(filePdfTask.getId());
 				
-				taskService.saveTaskAdd(EVENT, event);
+				taskService.saveTaskAdd(DomainConstant.EVENT, event);
 			}else {
 				Optional<Event> current = eventService.findById(event.getId());
 				
@@ -153,12 +152,12 @@ public class EventController extends AbstractPageController {
 					
 					current.get().setImage(event.getId());
 					current.get().setMaterial(event.getId());
-					taskService.saveTaskModify(EVENT, current.get(), event);
+					taskService.saveTaskModify(DomainConstant.EVENT, current.get(), event);
 					eventService.save(true, event.getId());
 				}
 			}
 
-			attributes.addFlashAttribute(TOAST, taskIsSavedMessage(ROLE, event.getTitle()));
+			attributes.addFlashAttribute(TOAST, taskIsSavedMessage(DomainConstant.EVENT, event.getTitle()));
 			return REDIRECT;
 		}
 	}
@@ -170,15 +169,15 @@ public class EventController extends AbstractPageController {
 		Optional<Event> current = eventService.findById(id);
 		
 		if(current.isPresent()) {
-			taskService.saveTaskDelete(EVENT, current.get());
+			taskService.saveTaskDelete(DomainConstant.EVENT, current.get());
 			eventService.save(true, id);
-			attributes.addFlashAttribute(TOAST, taskIsSavedMessage(ROLE, current.get().getTitle()));
+			attributes.addFlashAttribute(TOAST, taskIsSavedMessage(DomainConstant.EVENT, current.get().getTitle()));
 		}
 		
 		return REDIRECT;
 	}
 
-	@InitBinder(EVENT)
+	@InitBinder(DomainConstant.EVENT)
 	protected void initBinder(WebDataBinder binder) {
 		binder.addValidators(new EventValidator(eventService));
 	}
@@ -188,7 +187,7 @@ public class EventController extends AbstractPageController {
 		
 		if (current.isPresent()) {
 			Event event = current.get();
-			model.addAttribute(EVENT, event);
+			model.addAttribute(DomainConstant.EVENT, event);
 		} else {
 			model.addAttribute(ERROR, getNotFoundMessage(id));
 		}
