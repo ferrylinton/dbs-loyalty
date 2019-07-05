@@ -1,7 +1,6 @@
 package com.dbs.loyalty.web.controller;
 
 import static com.dbs.loyalty.config.constant.Constant.ERROR;
-import static com.dbs.loyalty.config.constant.Constant.PAGE;
 import static com.dbs.loyalty.config.constant.Constant.TOAST;
 import static com.dbs.loyalty.config.constant.Constant.ZERO;
 import static com.dbs.loyalty.service.SettingService.JAVA_DATE;
@@ -14,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
@@ -23,9 +21,9 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -36,6 +34,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.FileImageTask;
 import com.dbs.loyalty.domain.Promo;
@@ -46,6 +45,9 @@ import com.dbs.loyalty.service.PromoCategoryService;
 import com.dbs.loyalty.service.PromoCustomerService;
 import com.dbs.loyalty.service.PromoService;
 import com.dbs.loyalty.service.TaskService;
+import com.dbs.loyalty.util.MessageUtil;
+import com.dbs.loyalty.util.PageUtil;
+import com.dbs.loyalty.util.QueryStringUtil;
 import com.dbs.loyalty.web.validator.PromoValidator;
 
 import lombok.RequiredArgsConstructor;
@@ -53,17 +55,17 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/promo")
-public class PromoController extends AbstractPageController {
+public class PromoController {
 
-	private static final String REDIRECT = "redirect:/promo";
+	private static final String REDIRECT 	= "redirect:/promo";
 	
-	private static final String VIEW = "promo/promo-view";
+	private static final String VIEW 		= "promo/promo-view";
 	
-	private static final String DETAIL = "promo/promo-detail";
+	private static final String DETAIL 		= "promo/promo-detail";
 	
-	private static final String FORM = "promo/promo-form";
+	private static final String FORM 		= "promo/promo-form";
 	
-	private static final String SORT_BY = "title";
+	private static final String SORT_BY 	= "title";
 	
 	private final PromoService promoService;
 	
@@ -79,33 +81,40 @@ public class PromoController extends AbstractPageController {
 
 	@PreAuthorize("hasAnyRole('PROMO_MK', 'PROMO_CK')")
 	@GetMapping
-	public String viewPromos(@ModelAttribute(TOAST) String toast, @RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
-		Order order = getOrder(sort, SORT_BY);
-		Page<Promo> page = promoService.findAll(getPageable(params, order), request);
+	public String viewPromos(
+			@ModelAttribute(Constant.TOAST) String toast, 
+			@RequestParam Map<String, String> params, 
+			Sort sort, Model model) {
+		
+		Order order = PageUtil.getOrder(sort, SORT_BY);
+		Page<Promo> page = promoService.findAll(params, PageUtil.getPageable(params, order));
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
 			return REDIRECT;
 		}else {
-			request.setAttribute(TOAST, toast);
-			request.setAttribute(PAGE, page);
-			setParamsQueryString(params, request);
-			setPagerQueryString(order, page.getNumber(), request);
+			model.addAttribute(Constant.PAGE, page);
+			model.addAttribute(Constant.ORDER, order);
+			model.addAttribute(Constant.PREVIOUS, QueryStringUtil.page(order, page.getNumber() - 1));
+			model.addAttribute(Constant.NEXT, QueryStringUtil.page(order, page.getNumber() + 1));
+			model.addAttribute(Constant.PARAMS, QueryStringUtil.params(params));
 			return VIEW;
 		}
 	}
 	
 	@PreAuthorize("hasAnyRole('PROMO_MK', 'PROMO_CK')")
 	@GetMapping("/{id}/customer")
-	public String viewPromoCustomers(@RequestParam Map<String, String> params, @PathVariable String id, Sort sort, HttpServletRequest request) {
-		Order order = getOrder(sort, "customer.name");
-		Page<PromoCustomer> page = promoCustomerService.findWithCustomerByPromoId(id, getPageable(params, order));
+	public String viewPromoCustomers(@RequestParam Map<String, String> params, @PathVariable String id, Sort sort, Model model) {
+		Order order = PageUtil.getOrder(sort, "customer.name");
+		Page<PromoCustomer> page = promoCustomerService.findWithCustomerByPromoId(id, PageUtil.getPageable(params, order));
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
 			return "redirect:/promo" + id + "/customer";
 		}else {
-			request.setAttribute(PAGE, page);
-			setParamsQueryString(params, request);
-			setPagerQueryString(order, page.getNumber(), request);
+			model.addAttribute(Constant.PAGE, page);
+			model.addAttribute(Constant.ORDER, order);
+			model.addAttribute(Constant.PREVIOUS, QueryStringUtil.page(order, page.getNumber() - 1));
+			model.addAttribute(Constant.NEXT, QueryStringUtil.page(order, page.getNumber() + 1));
+			model.addAttribute(Constant.PARAMS, QueryStringUtil.params(params));
 			return "promo/promo-customer";
 		}
 	}
@@ -133,11 +142,6 @@ public class PromoController extends AbstractPageController {
 	@PreAuthorize("hasRole('PROMO_MK')")
 	@PostMapping
 	public String savePromo(@Valid @ModelAttribute(DomainConstant.PROMO) Promo promo, BindingResult result, RedirectAttributes attributes) throws IOException {
-		for(FieldError fieldError : result.getFieldErrors()) {
-			System.out.println(fieldError.getField());
-			System.out.println(fieldError.getDefaultMessage());
-		}
-		
 		if (result.hasErrors()) {
 			return FORM;
 		}else {
@@ -163,7 +167,7 @@ public class PromoController extends AbstractPageController {
 				}
 			}
 
-			attributes.addFlashAttribute(TOAST, taskIsSavedMessage(DomainConstant.PROMO, promo.getTitle()));
+			attributes.addFlashAttribute(TOAST, MessageUtil.taskIsSavedMessage(DomainConstant.PROMO, promo.getTitle()));
 			return REDIRECT;
 		}
 	}
@@ -177,13 +181,13 @@ public class PromoController extends AbstractPageController {
 		if(current.isPresent()) {
 			taskService.saveTaskDelete(DomainConstant.PROMO, current.get());
 			promoService.save(true, id);
-			attributes.addFlashAttribute(TOAST, taskIsSavedMessage(DomainConstant.PROMO, current.get().getTitle()));
+			attributes.addFlashAttribute(TOAST, MessageUtil.taskIsSavedMessage(DomainConstant.PROMO, current.get().getTitle()));
 		}
 		
 		return REDIRECT;
 	}
 
-	@ModelAttribute("promoCategories")
+	@ModelAttribute(DomainConstant.PROMO_CATEGORIES)
 	public List<PromoCategory> getPromoCategories() {
 		return promoCategoryService.findAll();
 	}
@@ -208,7 +212,7 @@ public class PromoController extends AbstractPageController {
 		if (current.isPresent()) {
 			model.addAttribute(DomainConstant.PROMO, current.get());
 		} else {
-			model.addAttribute(ERROR, getNotFoundMessage(id));
+			model.addAttribute(ERROR, MessageUtil.getNotFoundMessage(id));
 		}
 	}
 

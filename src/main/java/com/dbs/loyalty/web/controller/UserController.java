@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -44,6 +45,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Controller
+@RequestMapping("/user")
 public class UserController{
 	
 	private static final String REDIRECT 	= "redirect:/user";
@@ -65,8 +67,12 @@ public class UserController{
 	private final TaskService taskService;
 	
 	@PreAuthorize("hasAnyRole('USER_MK', 'USER_CK')")
-	@GetMapping("/user")
-	public String viewUsers(@ModelAttribute(Constant.TOAST) String toast, @RequestParam Map<String, String> params, Sort sort, Model model) {
+	@GetMapping
+	public String viewUsers(
+			@ModelAttribute(Constant.TOAST) String toast, 
+			@RequestParam Map<String, String> params, 
+			Sort sort, Model model) {
+		
 		Order order = PageUtil.getOrder(sort, SORT_BY);
 		Page<User> page = userService.findAll(params, PageUtil.getPageable(params, order));
 
@@ -83,14 +89,14 @@ public class UserController{
 	}
 	
 	@PreAuthorize("hasAnyRole('USER_MK', 'USER_CK')")
-	@GetMapping("/user/{id}/detail")
+	@GetMapping("/{id}/detail")
 	public String viewUserDetail(ModelMap model, @PathVariable String id){
 		getById(model, id);		
 		return DETAIL;
 	}
 	
 	@PreAuthorize("hasRole('USER_MK')")
-	@GetMapping("/user/{id}")
+	@GetMapping("/{id}")
 	public String viewUserForm(ModelMap model, @PathVariable String id) {
 		if (id.equals(Constant.ZERO)) {
 			User user = new User();
@@ -105,7 +111,7 @@ public class UserController{
 	
 	@Transactional
 	@PreAuthorize("hasRole('USER_MK')")
-	@PostMapping("/user")
+	@PostMapping
 	public String save(@Valid @ModelAttribute(DomainConstant.USER) User user, BindingResult result, RedirectAttributes attributes) throws JsonProcessingException {
 		if (result.hasErrors()) {
 			return FORM;
@@ -137,7 +143,7 @@ public class UserController{
 	
 	@Transactional
 	@PreAuthorize("hasRole('USER_MK')")
-	@PostMapping("/user/delete/{id}")
+	@PostMapping("/delete/{id}")
 	public String deleteUser(@PathVariable String id, RedirectAttributes attributes) throws JsonProcessingException {
 		Optional<User> current = userService.findWithRoleById(id);
 		

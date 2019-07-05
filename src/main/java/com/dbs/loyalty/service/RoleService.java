@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.Role;
 import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
@@ -23,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class RoleService{
 
-	public static final Sort SORT_BY = Sort.by("name");
+	public static final Sort SORT_BY = Sort.by(DomainConstant.NAME);
 	
 	private final ObjectMapper objectMapper;
 	

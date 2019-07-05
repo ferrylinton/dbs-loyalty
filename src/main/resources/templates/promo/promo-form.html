@@ -33,7 +33,7 @@
 							<div class="form-group">
 								<label for="promoCategory" th:text="#{promoCategory}">Promo Category</label>
 								<select class="custom-select" th:field="*{promoCategory}">
-									<option th:each="cat: ${promoCategories}" th:value="|${cat.id}${cat.name}|" th:text="${cat.name}">Promo Category</option>
+									<option th:each="cat: ${promocategories}" th:value="|${cat.id}${cat.name}|" th:text="${cat.name}">Promo Category</option>
 								</select>
 							</div>
 						</div>

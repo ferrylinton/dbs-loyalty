@@ -2,9 +2,8 @@ package com.dbs.loyalty.service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +13,7 @@ import com.dbs.loyalty.domain.Promo;
 import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.PromoRepository;
-import com.dbs.loyalty.service.specification.PromoSpecification;
+import com.dbs.loyalty.service.specification.PromoSpec;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -38,8 +37,8 @@ public class PromoService{
 	}
 
 
-	public Page<Promo> findAll(Pageable pageable, HttpServletRequest request) {
-		return promoRepository.findAll(PromoSpecification.getSpec(request), pageable);
+	public Page<Promo> findAll(Map<String, String> params, Pageable pageable) {
+		return promoRepository.findAll(new PromoSpec(params), pageable);
 	}
 
 	public List<Promo> findPromoInCarousel(){

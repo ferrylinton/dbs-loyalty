@@ -1,17 +1,11 @@
 package com.dbs.loyalty.web.controller;
 
-import static com.dbs.loyalty.config.constant.Constant.ERROR;
-import static com.dbs.loyalty.config.constant.Constant.PAGE;
-import static com.dbs.loyalty.config.constant.Constant.TOAST;
-import static com.dbs.loyalty.config.constant.Constant.ZERO;
-
 import java.io.IOException;
 import java.text.ParseException;
 import java.time.Instant;
 import java.util.Map;
 import java.util.Optional;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
@@ -20,6 +14,7 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -32,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.Event;
 import com.dbs.loyalty.domain.Feedback;
@@ -42,6 +38,9 @@ import com.dbs.loyalty.service.FeedbackService;
 import com.dbs.loyalty.service.ImageService;
 import com.dbs.loyalty.service.PdfService;
 import com.dbs.loyalty.service.TaskService;
+import com.dbs.loyalty.util.MessageUtil;
+import com.dbs.loyalty.util.PageUtil;
+import com.dbs.loyalty.util.QueryStringUtil;
 import com.dbs.loyalty.web.validator.EventValidator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -50,17 +49,17 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/event")
-public class EventController extends AbstractPageController {
+public class EventController {
 	
-	private static final String REDIRECT = "redirect:/event";
+	private static final String REDIRECT 	= "redirect:/event";
 	
-	private static final String VIEW = "event/event-view";
+	private static final String VIEW 		= "event/event-view";
 	
-	private static final String DETAIL = "event/event-detail";
+	private static final String DETAIL 		= "event/event-detail";
 	
-	private static final String FORM = "event/event-form";
+	private static final String FORM		= "event/event-form";
 	
-	private static final String SORT_BY = "title";
+	private static final String SORT_BY 	= "title";
 	
 	private final ImageService imageService;
 	
@@ -74,16 +73,22 @@ public class EventController extends AbstractPageController {
 
 	@PreAuthorize("hasAnyRole('EVENT_MK', 'EVENT_CK')")
 	@GetMapping
-	public String viewEvents(@ModelAttribute(TOAST) String toast, @RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
-		Order order = getOrder(sort, SORT_BY);
-		Page<Event> page = eventService.findAll(getPageable(params, order), request);
+	public String viewEvents(
+			@ModelAttribute(Constant.TOAST) String toast, 
+			@RequestParam Map<String, String> params, 
+			Sort sort, Model model) {
+		
+		Order order = PageUtil.getOrder(sort, SORT_BY);
+		Page<Event> page = eventService.findAll(params, PageUtil.getPageable(params, order));
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
 			return REDIRECT;
 		}else {
-			request.setAttribute(PAGE, page);
-			setParamsQueryString(params, request);
-			setPagerQueryString(order, page.getNumber(), request);
+			model.addAttribute(Constant.PAGE, page);
+			model.addAttribute(Constant.ORDER, order);
+			model.addAttribute(Constant.PREVIOUS, QueryStringUtil.page(order, page.getNumber() - 1));
+			model.addAttribute(Constant.NEXT, QueryStringUtil.page(order, page.getNumber() + 1));
+			model.addAttribute(Constant.PARAMS, QueryStringUtil.params(params));
 			return VIEW;
 		}
 	}
@@ -98,7 +103,7 @@ public class EventController extends AbstractPageController {
 	@PreAuthorize("hasRole('EVENT_MK')")
 	@GetMapping("/{id}")
 	public String viewEventForm(ModelMap model, @PathVariable String id){
-		if (id.equals(ZERO)) {
+		if (id.equals(Constant.ZERO)) {
 			Event event = new Event();
 			event.setStartPeriod(Instant.now());
 			event.setEndPeriod(Instant.now());
@@ -157,7 +162,7 @@ public class EventController extends AbstractPageController {
 				}
 			}
 
-			attributes.addFlashAttribute(TOAST, taskIsSavedMessage(DomainConstant.EVENT, event.getTitle()));
+			attributes.addFlashAttribute(Constant.TOAST, MessageUtil.taskIsSavedMessage(DomainConstant.EVENT, event.getTitle()));
 			return REDIRECT;
 		}
 	}
@@ -171,7 +176,7 @@ public class EventController extends AbstractPageController {
 		if(current.isPresent()) {
 			taskService.saveTaskDelete(DomainConstant.EVENT, current.get());
 			eventService.save(true, id);
-			attributes.addFlashAttribute(TOAST, taskIsSavedMessage(DomainConstant.EVENT, current.get().getTitle()));
+			attributes.addFlashAttribute(Constant.TOAST, MessageUtil.taskIsSavedMessage(DomainConstant.EVENT, current.get().getTitle()));
 		}
 		
 		return REDIRECT;
@@ -189,7 +194,7 @@ public class EventController extends AbstractPageController {
 			Event event = current.get();
 			model.addAttribute(DomainConstant.EVENT, event);
 		} else {
-			model.addAttribute(ERROR, getNotFoundMessage(id));
+			model.addAttribute(Constant.ERROR, MessageUtil.getNotFoundMessage(id));
 		}
 	}
 

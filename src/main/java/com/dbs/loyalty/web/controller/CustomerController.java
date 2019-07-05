@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -47,6 +48,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Controller
+@RequestMapping("/customer")
 public class CustomerController {
 	
 	private static final String REDIRECT 	= "redirect:/customer";
@@ -68,8 +70,12 @@ public class CustomerController {
 	private final ApplicationProperties applicationProperties;
 
 	@PreAuthorize("hasAnyRole('CUSTOMER_MK', 'CUSTOMER_CK')")
-	@GetMapping("/customer")
-	public String viewCustomers(@ModelAttribute(Constant.TOAST) String toast, @RequestParam Map<String, String> params, Sort sort, Model model) {
+	@GetMapping
+	public String viewCustomers(
+			@ModelAttribute(Constant.TOAST) String toast, 
+			@RequestParam Map<String, String> params, 
+			Sort sort, Model model) {
+		
 		Order order = PageUtil.getOrder(sort, SORT_BY);
 		Page<Customer> page = customerService.findAll(params, PageUtil.getPageable(params, order));
 
@@ -86,14 +92,14 @@ public class CustomerController {
 	}
 	
 	@PreAuthorize("hasAnyRole('CUSTOMER_MK', 'CUSTOMER_CK')")
-	@GetMapping("/customer/{id}/detail")
+	@GetMapping("/{id}/detail")
 	public String viewCustomerDetail(ModelMap model, @PathVariable String id){
 		getById(model, id);
 		return DETAIL;
 	}
 	
 	@PreAuthorize("hasRole('CUSTOMER_MK')")
-	@GetMapping("/customer/{id}")
+	@GetMapping("/{id}")
 	public String viewCustomerForm(ModelMap model, @PathVariable String id) {
 		if (id.equals(Constant.ZERO)) {
 			Customer customer = new Customer();
@@ -142,7 +148,7 @@ public class CustomerController {
 	
 	@Transactional
 	@PreAuthorize("hasRole('CUSTOMER_MK')")
-	@PostMapping("/customer/delete/{id}")
+	@PostMapping("/delete/{id}")
 	public String deleteCustomer(@PathVariable String id, RedirectAttributes attributes) throws JsonProcessingException {
 		Optional<Customer> current = customerService.findById(id);
 		

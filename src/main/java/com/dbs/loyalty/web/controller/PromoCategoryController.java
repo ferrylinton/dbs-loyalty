@@ -1,14 +1,8 @@
 package com.dbs.loyalty.web.controller;
 
-import static com.dbs.loyalty.config.constant.Constant.ERROR;
-import static com.dbs.loyalty.config.constant.Constant.PAGE;
-import static com.dbs.loyalty.config.constant.Constant.TOAST;
-import static com.dbs.loyalty.config.constant.Constant.ZERO;
-
 import java.util.Map;
 import java.util.Optional;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
@@ -17,6 +11,7 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -29,10 +24,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.PromoCategory;
 import com.dbs.loyalty.service.PromoCategoryService;
 import com.dbs.loyalty.service.TaskService;
+import com.dbs.loyalty.util.MessageUtil;
+import com.dbs.loyalty.util.PageUtil;
+import com.dbs.loyalty.util.QueryStringUtil;
 import com.dbs.loyalty.web.validator.PromoCategoryValidator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -41,17 +40,17 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/promocategory")
-public class PromoCategoryController extends AbstractPageController {
+public class PromoCategoryController {
 	
-	private static final String REDIRECT = "redirect:/promocategory";
+	private static final String REDIRECT 	= "redirect:/promocategory";
 	
-	private static final String VIEW = "promocategory/promocategory-view";
+	private static final String VIEW 		= "promocategory/promocategory-view";
 	
-	private static final String DETAIL = "promocategory/promocategory-detail";
+	private static final String DETAIL 		= "promocategory/promocategory-detail";
 	
-	private static final String FORM = "promocategory/promocategory-form";
+	private static final String FORM 		= "promocategory/promocategory-form";
 	
-	private static final String SORT_BY = "name";
+	private static final String SORT_BY 	= "name";
 	
 	private final PromoCategoryService promoCategoryService;
 
@@ -59,16 +58,22 @@ public class PromoCategoryController extends AbstractPageController {
 
 	@PreAuthorize("hasAnyRole('PROMO_CATEGORY_MK', 'PROMO_CATEGORY_CK')")
 	@GetMapping
-	public String viewPromoCategories(@ModelAttribute(TOAST) String toast, @RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
-		Order order = getOrder(sort, SORT_BY);
-		Page<PromoCategory> page = promoCategoryService.findAll(getPageable(params, order), request);
+	public String viewPromoCategories(
+			@ModelAttribute(Constant.TOAST) String toast, 
+			@RequestParam Map<String, String> params, 
+			Sort sort, Model model) {
+		
+		Order order = PageUtil.getOrder(sort, SORT_BY);
+		Page<PromoCategory> page = promoCategoryService.findAll(params, PageUtil.getPageable(params, order));
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
 			return REDIRECT;
 		}else {
-			request.setAttribute(PAGE, page);
-			setParamsQueryString(params, request);
-			setPagerQueryString(order, page.getNumber(), request);
+			model.addAttribute(Constant.PAGE, page);
+			model.addAttribute(Constant.ORDER, order);
+			model.addAttribute(Constant.PREVIOUS, QueryStringUtil.page(order, page.getNumber() - 1));
+			model.addAttribute(Constant.NEXT, QueryStringUtil.page(order, page.getNumber() + 1));
+			model.addAttribute(Constant.PARAMS, QueryStringUtil.params(params));
 			return VIEW;
 		}
 	}
@@ -83,7 +88,7 @@ public class PromoCategoryController extends AbstractPageController {
 	@PreAuthorize("hasAnyRole('PROMO_CATEGORY_MK')")
 	@GetMapping("/{id}")
 	public String viewPromoCategoryForm(ModelMap model, @PathVariable String id){
-		if (id.equals(ZERO)) {
+		if (id.equals(Constant.ZERO)) {
 			model.addAttribute(DomainConstant.PROMO_CATEGORY, new PromoCategory());
 		} else {
 			getById(model, id);
@@ -110,7 +115,7 @@ public class PromoCategoryController extends AbstractPageController {
 				}
 			}
 			
-			attributes.addFlashAttribute(TOAST, taskIsSavedMessage(DomainConstant.PROMO_CATEGORY, promoCategory.getName()));
+			attributes.addFlashAttribute(Constant.TOAST, MessageUtil.taskIsSavedMessage(DomainConstant.PROMO_CATEGORY, promoCategory.getName()));
 			return REDIRECT;
 		}
 	}
@@ -124,7 +129,7 @@ public class PromoCategoryController extends AbstractPageController {
 		if(current.isPresent()) {
 			taskService.saveTaskDelete(DomainConstant.PROMO_CATEGORY, current.get());
 			promoCategoryService.save(true, id);
-			attributes.addFlashAttribute(TOAST, taskIsSavedMessage(DomainConstant.PROMO_CATEGORY, current.get().getName()));
+			attributes.addFlashAttribute(Constant.TOAST, MessageUtil.taskIsSavedMessage(DomainConstant.PROMO_CATEGORY, current.get().getName()));
 		}
 		
 		return REDIRECT;
@@ -141,7 +146,7 @@ public class PromoCategoryController extends AbstractPageController {
 		if (current.isPresent()) {
 			model.addAttribute(DomainConstant.PROMO_CATEGORY, current.get());
 		} else {
-			model.addAttribute(ERROR, getNotFoundMessage(id));
+			model.addAttribute(Constant.ERROR, MessageUtil.getNotFoundMessage(id));
 		}
 	}
 

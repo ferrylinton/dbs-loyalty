@@ -2,9 +2,8 @@ package com.dbs.loyalty.service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +16,7 @@ import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.model.Pair;
 import com.dbs.loyalty.repository.EventRepository;
-import com.dbs.loyalty.service.specification.EventSpecification;
+import com.dbs.loyalty.service.specification.EventSpec;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -49,8 +48,8 @@ public class EventService{
 		return event;
 	}
 
-	public Page<Event> findAll(Pageable pageable, HttpServletRequest request) {
-		return eventRepository.findAll(EventSpecification.getSpec(request), pageable);
+	public Page<Event> findAll(Map<String, String> params, Pageable pageable) {
+		return eventRepository.findAll(new EventSpec(params), pageable);
 	}
 
 	public List<Event> findUpcomingEvent(){

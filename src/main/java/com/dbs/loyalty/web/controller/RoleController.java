@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -41,6 +42,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Controller
+@RequestMapping("/role")
 public class RoleController {
 
 	private static final String REDIRECT 	= "redirect:/role";
@@ -60,8 +62,12 @@ public class RoleController {
 	private final TaskService taskService;
 
 	@PreAuthorize("hasAnyRole('ROLE_MK', 'ROLE_CK')")
-	@GetMapping("/role")
-	public String viewRoles(@ModelAttribute(Constant.TOAST) String toast, @RequestParam Map<String, String> params, Sort sort, Model model) {
+	@GetMapping
+	public String viewRoles(
+			@ModelAttribute(Constant.TOAST) String toast, 
+			@RequestParam Map<String, String> params, 
+			Sort sort, Model model) {
+		
 		Order order = PageUtil.getOrder(sort, SORT_BY);
 		Page<Role> page = roleService.findAll(params, PageUtil.getPageable(params, order));
 
@@ -78,14 +84,14 @@ public class RoleController {
 	}
 	
 	@PreAuthorize("hasAnyRole('ROLE_MK', 'ROLE_CK')")
-	@GetMapping("/role/{id}/detail")
+	@GetMapping("/{id}/detail")
 	public String viewRoleDetail(ModelMap model, @PathVariable String id){
 		getById(model, id);		
 		return DETAIL;
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_MK')")
-	@GetMapping("/role/{id}")
+	@GetMapping("/{id}")
 	public String viewRoleForm(ModelMap model, @PathVariable String id){
 		if (id.equals(Constant.ZERO)) {
 			model.addAttribute(DomainConstant.ROLE, new Role());
@@ -98,7 +104,7 @@ public class RoleController {
 
 	@Transactional
 	@PreAuthorize("hasRole('ROLE_MK')")
-	@PostMapping("/role")
+	@PostMapping
 	public String save(@Valid @ModelAttribute(DomainConstant.ROLE) Role role, BindingResult result, RedirectAttributes attributes) throws JsonProcessingException{
 		if (result.hasErrors()) {
 			return FORM;
@@ -121,7 +127,7 @@ public class RoleController {
 
 	@Transactional
 	@PreAuthorize("hasRole('ROLE_MK')")
-	@PostMapping("/role/delete/{id}")
+	@PostMapping("/delete/{id}")
 	public String deleteRole(@PathVariable String id, RedirectAttributes attributes) throws JsonProcessingException {
 		Optional<Role> current = roleService.findWithAuthoritiesById(id);
 		
