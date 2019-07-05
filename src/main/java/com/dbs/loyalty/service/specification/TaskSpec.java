@@ -36,14 +36,10 @@ public class TaskSpec implements Specification<Task>{
 		
 		if(TaskUtil.getTaskStatus(params) != TaskStatus.ALL) {
 			predicates.add(cb.equal(root.get(Constant.TASK_STATUS), TaskUtil.getTaskStatus(params)));
-		}else {
-			predicates.add(cb.notEqual(root.get(Constant.TASK_DATA_TYPE), TaskStatus.ALL));
 		}
 		
 		if(TaskUtil.getTaskOperation(params) != TaskOperation.ALL) {
 			predicates.add(cb.equal(root.get(Constant.TASK_OPERATION), TaskUtil.getTaskOperation(params)));
-		}else {
-			predicates.add(cb.notEqual(root.get(Constant.TASK_OPERATION), TaskOperation.ALL));
 		}
 		
 		if(params.containsKey(Constant.KY_PARAM) && !Constant.EMPTY.equals(params.get(Constant.KY_PARAM))) {

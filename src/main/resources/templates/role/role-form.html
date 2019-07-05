@@ -47,11 +47,11 @@
 	       		<div th:replace="fragment/audit-form.html :: content"></div>
        		</th:block>
       		<div class="toolbar">
-          		<a class="btn btn-light" th:href="@{/role}">
+          		<a class="btn btn-sm btn-secondary" th:href="@{/role}">
                		<span class="icon-left"></span> <span th:text="#{back}">Back</span>
                	</a>
                	<th:block th:if="${role}">
-	            	<button class="btn btn-light text-primary" type="submit" th:if="${isMaker && !role.pending}">
+	            	<button class="btn btn-sm btn-primary" type="submit" th:if="${isMaker && !role.pending}">
 	             		<span class="icon-floppy"></span> <span th:text="#{save}">Save</span>
 	             	</button>
              	</th:block>

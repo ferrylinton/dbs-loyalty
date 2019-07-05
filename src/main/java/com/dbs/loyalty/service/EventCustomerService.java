@@ -18,7 +18,6 @@ import com.dbs.loyalty.repository.EventCustomerRepository;
 import com.dbs.loyalty.repository.EventRepository;
 import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.util.SecurityUtil;
-import com.dbs.loyalty.web.controller.AbstractController;
 import com.dbs.loyalty.web.response.Response;
 
 import lombok.RequiredArgsConstructor;
@@ -35,7 +34,7 @@ public class EventCustomerService {
 		Optional<Event> event = eventRepository.findById(eventId);
 		
 		if(!event.isPresent()) {
-			String message = MessageUtil.getMessage(AbstractController.DATA_WITH_VALUE_NOT_FOUND, SecurityUtil.getLogged());
+			String message = MessageUtil.getNotFoundMessage(SecurityUtil.getLogged());
 			throw new NotFoundException(message);
 		}else {
 			EventCustomerId id = new EventCustomerId();

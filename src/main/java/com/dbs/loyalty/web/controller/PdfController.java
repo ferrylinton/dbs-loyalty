@@ -12,21 +12,24 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.dbs.loyalty.domain.FilePdf;
 import com.dbs.loyalty.domain.FilePdfTask;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.PdfService;
+import com.dbs.loyalty.util.MessageUtil;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Controller
-public class PdfController extends AbstractController{
+@RequestMapping("/pdf")
+public class PdfController {
 
 	private final PdfService filePdfService;
 	
-	@GetMapping("/pdf/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<byte[]> getFilePdf(@PathVariable String id) throws NotFoundException {
 		Optional<FilePdf> current = filePdfService.findById(id);
     	
@@ -40,11 +43,11 @@ public class PdfController extends AbstractController{
 					.headers(headers)
 					.body(current.get().getBytes());
 		}else {
-			throw new NotFoundException(getNotFoundMessage(id));
+			throw new NotFoundException(MessageUtil.getNotFoundMessage(id));
 		}
 	}
 	
-	@GetMapping("/pdf/task/{id}")
+	@GetMapping("/task/{id}")
 	public ResponseEntity<byte[]> getFilePdfTask(@PathVariable String id) throws NotFoundException {
 		Optional<FilePdfTask> current = filePdfService.findPdfTaskById(id);
     	
@@ -58,11 +61,11 @@ public class PdfController extends AbstractController{
 					.headers(headers)
 					.body(current.get().getBytes());
 		}else {
-			throw new NotFoundException(getNotFoundMessage(id));
+			throw new NotFoundException(MessageUtil.getNotFoundMessage(id));
 		}
 	}
 	
-	@GetMapping("/pdf/download/{id}")
+	@GetMapping("/download/{id}")
 	public ResponseEntity<InputStreamResource> downloadFilePdf(@PathVariable String id) throws NotFoundException, IOException {
 		Optional<FilePdf> current = filePdfService.findById(id);
     	
@@ -78,7 +81,7 @@ public class PdfController extends AbstractController{
 					.headers(headers)
 					.body(new InputStreamResource(resource.getInputStream()));
 		}else {
-			throw new NotFoundException(getNotFoundMessage(id));
+			throw new NotFoundException(MessageUtil.getNotFoundMessage(id));
 		}
 	}
 	

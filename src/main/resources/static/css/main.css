@@ -407,9 +407,11 @@ a:hover{
 	hyphens: auto;
 }
 
-
 .toolbar .btn{
 	min-width: 110px;
+}
+
+.toolbar .btn-light{
 	border: solid 1px #ced4da;
 }
 
@@ -419,6 +421,10 @@ a:hover{
 
 .font-12{
 	font-size: 1.225em !important;
+}
+
+.border-2 {
+    border-width: 2px !important;
 }
 
 .text-red{

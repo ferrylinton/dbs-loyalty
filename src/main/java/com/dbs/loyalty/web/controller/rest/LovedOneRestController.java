@@ -32,7 +32,6 @@ import com.dbs.loyalty.service.dto.LovedOneDto;
 import com.dbs.loyalty.service.dto.LovedOneUpdateDto;
 import com.dbs.loyalty.service.mapper.LovedOneMapper;
 import com.dbs.loyalty.util.MessageUtil;
-import com.dbs.loyalty.web.controller.AbstractController;
 import com.dbs.loyalty.web.validator.LovedOneAddValidator;
 import com.dbs.loyalty.web.validator.LovedOneUpdateValidator;
 
@@ -48,7 +47,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api")
-public class LovedOneRestController extends AbstractController{
+public class LovedOneRestController {
 
     private final LovedOneService lovedOneService;
     
@@ -112,7 +111,7 @@ public class LovedOneRestController extends AbstractController{
 			LovedOneDto loveOneDto = lovedOneMapper.toDto(lovedOneService.update(lovedOneUpdateDto));
     		return ResponseEntity.ok().body(loveOneDto);
 		}else {
-			String message = MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, lovedOneUpdateDto.getId());
+			String message = MessageUtil.getNotFoundMessage(lovedOneUpdateDto.getId()) ;
 			throw new NotFoundException(message);
 		}
     }

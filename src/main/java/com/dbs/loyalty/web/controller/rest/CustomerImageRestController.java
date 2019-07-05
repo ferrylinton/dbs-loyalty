@@ -29,7 +29,6 @@ import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.ImageService;
 import com.dbs.loyalty.util.SecurityUtil;
-import com.dbs.loyalty.web.controller.AbstractController;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -43,7 +42,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('CUSTOMER')")
 @RestController
-public class CustomerImageRestController extends AbstractController{
+public class CustomerImageRestController {
 	
 	private final ImageService imageService;
     

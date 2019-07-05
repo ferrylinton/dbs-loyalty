@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/logapi")
-public class LogApiController extends AbstractPageController {
+public class LogApiController {
 
 	private static final String REDIRECT 	= "redirect:/logapi";
 	

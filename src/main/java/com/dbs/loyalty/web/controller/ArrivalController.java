@@ -13,19 +13,23 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.Arrival;
 import com.dbs.loyalty.service.ArrivalService;
+import com.dbs.loyalty.util.MessageUtil;
+import com.dbs.loyalty.util.PageUtil;
 import com.dbs.loyalty.util.QueryStringUtil;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Controller
-public class ArrivalController extends AbstractPageController {
+@RequestMapping("/arrival")
+public class ArrivalController {
 	
 	private static final String REDIRECT 	= "redirect:/arrival";
 	
@@ -38,10 +42,14 @@ public class ArrivalController extends AbstractPageController {
 	private final ArrivalService arrivalService;
 
 	@PreAuthorize("hasAnyRole('TRAVEL_ASSISTANCE')")
-	@GetMapping("/arrival")
-	public String arrival(@ModelAttribute(Constant.TOAST) String toast, @RequestParam Map<String, String> params, Sort sort, Model model) {
-		Order order = getOrder(sort, SORT_BY);
-		Page<Arrival> page = arrivalService.findAll(params, getPageable(params, order));
+	@GetMapping
+	public String viewArrivals(
+			@ModelAttribute(Constant.TOAST) String toast, 
+			@RequestParam Map<String, String> params, 
+			Sort sort, Model model) {
+		
+		Order order = PageUtil.getOrder(sort, SORT_BY);
+		Page<Arrival> page = arrivalService.findAll(params, PageUtil.getPageable(params, order));
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
 			return REDIRECT;
@@ -63,7 +71,7 @@ public class ArrivalController extends AbstractPageController {
 		if (current.isPresent()) {
 			model.addAttribute(DomainConstant.ARRIVAL, current.get());
 		} else {
-			model.addAttribute(Constant.ERROR, getNotFoundMessage(id));
+			model.addAttribute(Constant.ERROR, MessageUtil.getNotFoundMessage(id));
 		}
 		
 		return DETAIL;

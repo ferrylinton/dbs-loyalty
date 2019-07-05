@@ -11,7 +11,7 @@ import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.exception.LdapConnectException;
 
 @Controller("loginController")
-public class LoginController extends AbstractController{
+public class LoginController {
 	
 	private static final String FORM		= "login/login-form";
 	

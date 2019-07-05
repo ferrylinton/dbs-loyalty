@@ -24,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/loglogin")
-public class LogLoginController extends AbstractPageController {
+public class LogLoginController {
 	
 	private static final String REDIRECT 	= "redirect:/loglogin";
 	

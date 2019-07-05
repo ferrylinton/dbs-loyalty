@@ -9,15 +9,15 @@
 	<div th:fragment="content" th:remove="tag">
 		<div id="verify-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
 		  	<div class="modal-dialog modal-dialog-centered" role="document">
-			    <div class="modal-content shadow-sm">
+			    <div class="modal-content border-dark border-2 shadow-sm">
 			   		<div class="modal-body text-center p-4">
 						<span th:text="#{message.verifyConfirm}">Verify data?</span>
 			    	</div>
 			 		<div class="modal-footer text-center">
-			      		<button type="button" class="btn btn-sm btn-light" data-dismiss="modal">
+			      		<button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">
 			      			<span class="icon-cancel"></span> <span th:text="#{close}">Close</span>
 			      		</button>
-			        	<button type="submit" class="btn btn-sm btn-light text-success" id="verify-modal-submit">
+			        	<button type="submit" class="btn btn-sm btn-success" id="verify-modal-submit">
 			        		<span class="icon-ok"></span> <span th:text="#{verify}">Verify</span>
 			        	</button>
 			      </div>
@@ -26,15 +26,15 @@
 		</div>
 		<div id="reject-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
 		  	<div class="modal-dialog modal-dialog-centered" role="document">
-			    <div class="modal-content shadow-sm">
+			    <div class="modal-content border-dark border-2 shadow-sm">
 			   		<div class="modal-body text-center p-4">
 						<span th:text="#{message.rejectConfirm}">Verify data?</span>
 			    	</div>
 			 		<div class="modal-footer text-center">
-			      		<button type="button" class="btn btn-sm btn-light" data-dismiss="modal">
+			      		<button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">
 							<span class="icon-cancel"></span> <span th:text="#{close}">Close</span>
 						</button>
-			        	<button type="submit" class="btn btn-sm btn-light text-danger" id="reject-modal-submit">
+			        	<button type="submit" class="btn btn-sm btn-danger" id="reject-modal-submit">
 			        		<span class="icon-block"></span> <span th:text="#{reject}">Reject</span>
 			        	</button>
 			      </div>

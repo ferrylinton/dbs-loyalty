@@ -43,7 +43,6 @@ import com.dbs.loyalty.service.dto.JWTTokenDto;
 import com.dbs.loyalty.service.mapper.CustomerMapper;
 import com.dbs.loyalty.util.HeaderTokenUtil;
 import com.dbs.loyalty.util.SecurityUtil;
-import com.dbs.loyalty.web.controller.AbstractController;
 import com.dbs.loyalty.web.response.Response;
 import com.dbs.loyalty.web.validator.CustomerPasswordValidator;
 import com.dbs.loyalty.web.validator.CustomerUpdateValidator;
@@ -60,7 +59,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('CUSTOMER')")
 @RestController
-public class CustomerRestController extends AbstractController{
+public class CustomerRestController {
 
     private final CustomerService customerService;
 

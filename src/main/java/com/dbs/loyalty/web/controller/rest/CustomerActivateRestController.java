@@ -18,7 +18,6 @@ import com.dbs.loyalty.config.constant.MessageConstant;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.service.CustomerService;
 import com.dbs.loyalty.service.dto.CustomerNewPasswordDto;
-import com.dbs.loyalty.web.controller.AbstractController;
 import com.dbs.loyalty.web.response.Response;
 
 import io.swagger.annotations.Api;
@@ -33,7 +32,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('TOKEN')")
 @RestController
-public class CustomerActivateRestController extends AbstractController{
+public class CustomerActivateRestController {
 
     private final CustomerService customerService;
 
