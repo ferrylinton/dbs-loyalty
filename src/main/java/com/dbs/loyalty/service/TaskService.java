@@ -5,8 +5,6 @@ import java.time.Instant;
 import java.util.Map;
 import java.util.Optional;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +17,7 @@ import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.domain.enumeration.TaskStatus;
 import com.dbs.loyalty.repository.TaskRepository;
-import com.dbs.loyalty.service.specification.TaskSpecification;
+import com.dbs.loyalty.service.specification.TaskSpec;
 import com.dbs.loyalty.util.ErrorUtil;
 import com.dbs.loyalty.util.SecurityUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -33,7 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class TaskService {
 	
-	private String noServiceFormat = "No service for %s";
+	private static String NO_SERVICE_FORMAT = "No service for %s";
 
 	private final ApplicationContext context;
 	
@@ -45,8 +43,8 @@ public class TaskService {
 		return taskRepository.findById(id);
 	}
 	
-	public Page<Task> findAll(String taskDataType, Map<String, String> params, Pageable pageable, HttpServletRequest request){
-		return taskRepository.findAll(TaskSpecification.getSpec(taskDataType, params, request), pageable);
+	public Page<Task> findAll(String taskDataType, Map<String, String> params, Pageable pageable){
+		return taskRepository.findAll(new TaskSpec(taskDataType, params), pageable);
 	}
 	
 	public Task saveTaskAdd(String type, Object taskDataNew) throws JsonProcessingException {
@@ -119,7 +117,7 @@ public class TaskService {
 			return context.getBean(EventService.class).execute(task);
 		}
 		
-		return String.format(noServiceFormat, task.getTaskDataType());
+		return String.format(NO_SERVICE_FORMAT, task.getTaskDataType());
 	}
 
 }

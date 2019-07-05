@@ -64,6 +64,20 @@ public final class Constant {
 	
 	public static final String END_DATE_PARAM = "ed";
 	
+	public static final String TASK_STATUS = "taskStatus";
+	
+	public static final String TASK_OPERATION = "taskOperation";
+	
+	public static final String TASK_DATA_TYPE = "taskDataType";
+
+	public static final String MAKER = "maker";
+	
+	public static final String CHECKER = "checker";
+	
+	public static final String OP_PARAM = "op";
+	
+	public static final String ST_PARAM = "st";
+	
 	private Constant() {
 		// hide constructor
 	}

@@ -1,6 +1,6 @@
 package com.dbs.loyalty.service;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.dbs.loyalty.domain.LogApi;
 import com.dbs.loyalty.repository.LogApiRepository;
-import com.dbs.loyalty.service.specification.LogApiSpecification;
+import com.dbs.loyalty.service.specification.LogApiSpec;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,8 +21,8 @@ public class LogApiService {
 
 	private final LogApiRepository logApiRepository;
 	
-	public Page<LogApi> findAll(Pageable pageable, HttpServletRequest request) {
-		return logApiRepository.findAll(LogApiSpecification.getSpec(request), pageable);
+	public Page<LogApi> findAll(Map<String, String> params, Pageable pageable) {
+		return logApiRepository.findAll(new LogApiSpec(params), pageable);
 	}
 	
 	@Async

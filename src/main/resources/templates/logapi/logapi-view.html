@@ -1,95 +1,76 @@
 <!doctype html>
-<html lang="en" th:lang="${#locale.toString() == 'in' ? 'id' : #locale}" xmlns:th="http://www.thymeleaf.org">
+<html 
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	layout:decorate="~{layout/layout}">
 
-<head th:replace="fragment/head.html :: content(title=|#{application.name} : #{logApi}|)"></head>
+<head>
+    <title th:text="#{logapi}">Log API</title>
+</head>
 
 <body data-menu="logapi">
-    <!-- NAVBAR -->
-    <div id="navbar" th:replace="fragment/navbar.html :: #navbar"></div>
-    <div id="content-box">
-        <!-- BREADCRUMB -->
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/home/home-view.html" th:href="@{/}" th:text="#{home}">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page" th:text="#{logApi}">Log Api</li>
-            </ol>
-        </nav>
-        <div id="main-content">
-                <!-- SEARCH FORM -->
-                <div class="row no-gutters mb-3">
-                    <div class="col-12 col-sm-12 col-md-10 col-lg-7 col-xl-6">
-                        <form th:action="@{/logapi}" method="get" autocomplete="off" >
-							<div class="input-group mb-2">
-								<input type="text" class="form-control datetimepicker-input" id="sd" name="sd" th:title="${param.sd}" placeholder="Start Date" th:placeholder="#{startDate}" data-toggle="datetimepicker" data-target="#sd">
-		                     	<input type="text" class="form-control datetimepicker-input" id="ed" name="ed" th:title="${param.ed}" placeholder="End Date" th:placeholder="#{endDate}" data-toggle="datetimepicker" data-target="#ed">
-								<div class="input-group-append">
-		                     		<div class="input-group-text bg-light"><span class="icon-calendar"></span></div>
-		                      	</div>
-							</div>
-                            <div class="input-group">
-                                <input class="form-control" name="ky" maxlength="40" th:value="${param.ky}" placeholder="keyword" th:placeholder="#{keyword}" />
-                                <div class="input-group-append">
-                                    <button class="btn btn-light border text-secondary" type="submit">
-                                        <span class="icon-search"></span>
-                                    </button>
-                                    <a class="btn btn-light border text-secondary" th:href="@{/logapi}">
-                                        <span class="icon-arrows-cw"></span>
-                                    </a>
-                                </div>
-                            </div>
-						</form>
-                    </div>
-                </div>
-                <!-- TABLE DATA -->
-                <div class="table-responsive" th:if="${page.getTotalElements() > 0}">
-	                <table class="table table-sm table-striped table-hover border" style="min-width: 700px;">
-	                    <thead>
-                            <tr th:with="ascending=${order.getDirection().name() == 'ASC'}">
-								<th class="text-center" style="width:60px">#</th>
-                                <th th:with="sort=|&sort=createdDate,${ascending ? 'DESC' : 'ASC'}|">
-                                	<a th:href="@{|?page=${page.getNumber()}${params}${sort}|}" class="text-decoration-none">
-                                		<span th:text="#{date}">Date</span> <span th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></span>
-                                	</a>
-                                </th>
-                                <th th:text="#{status}">Status</th>
-                                <th th:text="#{id}">Id</th>
-                                <th th:text="#{requestURI}">Request URI</th>
-                                <th th:text="#{method}">Method</th>
-                            </tr>
-                        </thead>
-	                    <tbody th:remove="all-but-first">
-	                        <tr th:each="logapi,row : ${page}">
-	                            <td class="text-center" th:text="${row.count + (page.number * page.size)}">1</td>
-	                            <td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.jsDatetime()}" th:text="${logapi.createdDate}">2019-05-01T21:24:44Z</span></td>
-								<td th:text="${logapi.status}">200</td>
-								<td th:text="${logapi.id}">id</td>
-								<td th:text="${logapi.requestURI}">Request URI</td>
-								<td th:text="${logapi.method}">Method</td>
-	                        </tr>
-	                    </tbody>
-	                </table>
-                </div>
-                <!-- NOT FOUND MESSAGE -->
-                <div class="border alert alert-light text-center" role="alert" th:if="${page.getTotalElements() == 0}">
-	                <span class="icon-attention"></span> <span th:text="#{message.dataNotFound}">Data not found</span>
-	            </div>
-                <!-- TOOLBAR -->
-                <div class="toolbar" th:if="${page != null && page.getTotalPages() > 1}">
-                    <a class="btn btn-light" th:href="@{|?${previous}${params}|}" th:classappend="${not page.hasPrevious()} ? 'disabled'">
-                        <span class="icon-left-open"></span> <span th:text="#{previous}">Previous</span>
-                    </a>
-                    <a class="btn btn-light" th:href="@{|?${next}${params}|}" th:classappend="${not page.hasNext()} ? 'disabled'">
-                        <span th:text="#{next}">Next</span> <span class="icon-right-open"></span>
-                    </a>
-                </div>
-        </div>
-        <!-- FOOTER -->
-        <div id="footer" th:replace="fragment/footer.html :: #footer"></div>
-    </div>
-    <!-- SIDENAV -->
-    <div id="sidenav-box" th:replace="fragment/sidenav.html :: #sidenav-box"></div>
-    <!-- SCRIPTS -->
-    <div th:replace="fragment/scripts.html :: content"></div>
+	<nav aria-label="breadcrumb" layout:fragment="breadcrumb">
+     	<ol class="breadcrumb">
+       		<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{home}">Home</a></li>
+         	<li class="breadcrumb-item active" aria-current="page" th:text="#{logapi}">Log API</li>
+      	</ol>
+	</nav>
+	<div layout:fragment="content">
+    	<div class="row no-gutters mb-3">
+        	<div class="col-12 col-sm-12 col-md-10 col-lg-7 col-xl-6">
+             	<form th:action="@{/logapi}" method="get" autocomplete="off" >
+					<div class="input-group mb-2">
+						<input type="text" class="form-control datetimepicker-input" id="sd" name="sd" th:title="${param.sd}" placeholder="Start Date" th:placeholder="#{startDate}" data-toggle="datetimepicker" data-target="#sd">
+		              	<input type="text" class="form-control datetimepicker-input" id="ed" name="ed" th:title="${param.ed}" placeholder="End Date" th:placeholder="#{endDate}" data-toggle="datetimepicker" data-target="#ed">
+						<div class="input-group-append">
+		               		<div class="input-group-text bg-light"><span class="icon-calendar"></span></div>
+		              	</div>
+					</div>
+                  	<div class="input-group">
+                    	<input class="form-control" name="ky" maxlength="40" th:value="${param.ky}" th:placeholder="|#{username}, #{ip}, #{browser}|" />
+                      	<div class="input-group-append">
+                       		<button class="btn btn-light border text-secondary" type="submit">
+                             	<span class="icon-search"></span>
+                           	</button>
+                          	<a class="btn btn-light border text-secondary" th:href="@{/logapi}">
+                            	<span class="icon-arrows-cw"></span>
+                          	</a>
+                       	</div>
+                   	</div>
+				</form>
+        	</div>
+   		</div>
+     	<div class="table-responsive" th:if="${page.getTotalElements() > 0}">
+	 		<table class="table table-sm table-striped table-hover border" style="min-width: 700px;">
+	        	<thead>
+               		<tr th:with="ascending=${order.getDirection().name() == 'ASC'}">
+						<th class="text-center" style="width:60px">#</th>
+                     	<th th:with="sort=|&sort=createdDate,${ascending ? 'DESC' : 'ASC'}|">
+                        	<a th:href="@{|?page=${page.getNumber()}${params}${sort}|}" class="text-decoration-none">
+                            	<span th:text="#{date}">Date</span> <span th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></span>
+                       		</a>
+                       	</th>
+                      	<th th:text="#{status}">Status</th>
+                     	<th th:text="#{id}">Id</th>
+                     	<th th:text="#{requestURI}">Request URI</th>
+                     	<th th:text="#{method}">Method</th>
+                	</tr>
+             	</thead>
+	         	<tbody th:remove="all-but-first">
+	           		<tr th:each="logapi,row : ${page}">
+	                 	<td class="text-center" th:text="${row.count + (page.number * page.size)}">1</td>
+	                  	<td><span th:data-date="${@settingService.jsDatetime()}" th:text="${logapi.createdDate}">2019-05-01T21:24:44Z</span></td>
+						<td th:text="${logapi.status}">200</td>
+						<td th:text="${logapi.id}">id</td>
+						<td th:text="${logapi.requestURI}">Request URI</td>
+						<td th:text="${logapi.method}">Method</td>
+	              	</tr>
+	          	</tbody>
+	   		</table>
+      	</div>
+        <div th:replace="fragment/not-found.html :: content"></div>
+		<div th:replace="fragment/pager.html :: content"></div>
+	</div>
 </body>
 
 </html>

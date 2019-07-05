@@ -1,35 +1,33 @@
 package com.dbs.loyalty.web.controller.task;
 
-import static com.dbs.loyalty.config.constant.Constant.ERROR;
-import static com.dbs.loyalty.config.constant.MessageConstant.TASK_IS_REJECTED;
-import static com.dbs.loyalty.config.constant.MessageConstant.TASK_IS_VERIFIED;
 
 import java.util.Optional;
 
 import org.springframework.ui.ModelMap;
 
+import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.DomainConstant;
+import com.dbs.loyalty.config.constant.MessageConstant;
 import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.util.MessageUtil;
-import com.dbs.loyalty.web.controller.AbstractPageController;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RequiredArgsConstructor
-public class AbstractTaskController extends AbstractPageController {
+public class AbstractTaskController {
 
-	protected static final String IS_CHECKER = "isChecker";
+	protected static final String IS_CHECKER 			= "isChecker";
 	
-	protected static final String MADE_DATE = "madeDate";
+	protected static final String MADE_DATE 			= "madeDate";
 	
-	protected static final String TASK_VIEW_TEMPLATE = "task/task-view";
+	protected static final String TASK_VIEW_TEMPLATE	= "task/task-view";
 	
-	protected static final String TASK_DETAIL_TEMPLATE = "task/task-detail";
+	protected static final String TASK_DETAIL_TEMPLATE 	= "task/task-detail";
 	
-	protected static final String TASK_FORM_TEMPLATE = "task/task-form";
+	protected static final String TASK_FORM_TEMPLATE 	= "task/task-form";
 	
 	protected final TaskService taskService;
 	
@@ -39,7 +37,7 @@ public class AbstractTaskController extends AbstractPageController {
 		if (task.isPresent()) {
 			model.addAttribute(DomainConstant.TASK, task.get());
 		} else {
-			model.addAttribute(ERROR, getNotFoundMessage(id));
+			model.addAttribute(Constant.ERROR, MessageUtil.getNotFoundMessage(id));
 		}
 		
 		model.addAttribute(DomainConstant.TYPE, type);
@@ -58,7 +56,7 @@ public class AbstractTaskController extends AbstractPageController {
 	
 	protected String getMessage(Task task, String val) {
 		Object[] args = new Object[] { MessageUtil.getMessage(task.getTaskOperation().toString()), MessageUtil.getMessage(task.getTaskDataType()), val };
-		return MessageUtil.getMessage(task.getVerified() ? TASK_IS_VERIFIED  : TASK_IS_REJECTED, args);
+		return MessageUtil.getMessage(task.getVerified() ? MessageConstant.TASK_IS_VERIFIED  : MessageConstant.TASK_IS_REJECTED, args);
 	}
 
 }
