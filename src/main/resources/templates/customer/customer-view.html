@@ -17,7 +17,7 @@
 		</ol>
 	</nav>
 	<div layout:fragment="content">
-		<div th:replace="fragment/search.html :: content('/customer', ${isMaker})"></div>
+		<div th:replace="fragment/search.html :: content('/customer', |#{name}, #{email}, #{phone}|, ${isMaker})"></div>
 		<div class="table-responsive border border-top-0" th:if="${page.getTotalElements() > 0}">
 	                <table class="table table-sm table-striped table-hover border-bottom" style="min-width: 800px;">
 	                    <thead>

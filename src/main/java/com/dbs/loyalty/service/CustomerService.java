@@ -2,9 +2,8 @@ package com.dbs.loyalty.service;
 
 import java.io.IOException;
 import java.time.Instant;
+import java.util.Map;
 import java.util.Optional;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +16,7 @@ import com.dbs.loyalty.repository.CustomerRepository;
 import com.dbs.loyalty.service.dto.CustomerNewPasswordDto;
 import com.dbs.loyalty.service.dto.CustomerPasswordDto;
 import com.dbs.loyalty.service.dto.CustomerUpdateDto;
-import com.dbs.loyalty.service.specification.CustomerSpecification;
+import com.dbs.loyalty.service.specification.CustomerSpec;
 import com.dbs.loyalty.util.PasswordUtil;
 import com.dbs.loyalty.util.SecurityUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -42,8 +41,8 @@ public class CustomerService{
 		return customerRepository.findByEmail(email);
 	}
 	
-	public Page<Customer> findAll(Pageable pageable, HttpServletRequest request) {
-		return customerRepository.findAll(CustomerSpecification.getSpec(request), pageable);
+	public Page<Customer> findAll(Map<String, String> params, Pageable pageable) {
+		return customerRepository.findAll(new CustomerSpec(params), pageable);
 	}
 	
 	public boolean isEmailExist(String id, String email) {

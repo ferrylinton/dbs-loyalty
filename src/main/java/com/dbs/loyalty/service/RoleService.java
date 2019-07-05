@@ -14,7 +14,7 @@ import com.dbs.loyalty.domain.Role;
 import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.RoleRepository;
-import com.dbs.loyalty.service.specification.RoleSpecification;
+import com.dbs.loyalty.service.specification.RoleSpec;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -45,8 +45,8 @@ public class RoleService{
 		return roleRepository.findAll(SORT_BY);
 	}
 	
-	public Page<Role> findAll(Pageable pageable, Map<String, String> params) {
-		return roleRepository.findAll(RoleSpecification.getSpec(params), pageable);
+	public Page<Role> findAll(Map<String, String> params, Pageable pageable) {
+		return roleRepository.findAll(new RoleSpec(params), pageable);
 	}
 
 	public boolean isNameExist(String id, String name) {

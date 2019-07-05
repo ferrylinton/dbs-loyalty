@@ -1,11 +1,5 @@
 package com.dbs.loyalty.web.controller;
 
-import static com.dbs.loyalty.config.constant.Constant.ERROR;
-import static com.dbs.loyalty.config.constant.Constant.PAGE;
-import static com.dbs.loyalty.config.constant.Constant.TOAST;
-import static com.dbs.loyalty.config.constant.Constant.ZERO;
-import static com.dbs.loyalty.service.SettingService.JAVA_DATE;
-
 import java.beans.PropertyEditorSupport;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -13,7 +7,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.Optional;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
@@ -22,6 +15,7 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -30,18 +24,22 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dbs.loyalty.config.ApplicationProperties;
+import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.CustomerTypeConstant;
 import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.domain.FileImageTask;
 import com.dbs.loyalty.service.CustomerService;
+import com.dbs.loyalty.service.DateService;
 import com.dbs.loyalty.service.ImageService;
 import com.dbs.loyalty.service.TaskService;
+import com.dbs.loyalty.util.MessageUtil;
+import com.dbs.loyalty.util.PageUtil;
+import com.dbs.loyalty.util.QueryStringUtil;
 import com.dbs.loyalty.web.validator.CustomerValidator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -49,18 +47,17 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Controller
-@RequestMapping("/customer")
-public class CustomerController extends AbstractPageController{
+public class CustomerController {
 	
-	private static final String REDIRECT = "redirect:/customer";
+	private static final String REDIRECT 	= "redirect:/customer";
 	
-	private static final String VIEW = "customer/customer-view";
+	private static final String VIEW 		= "customer/customer-view";
 	
-	private static final String DETAIL = "customer/customer-detail";
+	private static final String DETAIL 		= "customer/customer-detail";
 	
-	private static final String FORM = "customer/customer-form";
+	private static final String FORM 		= "customer/customer-form";
 	
-	private static final String SORT_BY = "name";
+	private static final String SORT_BY 	= "name";
 	
 	private final ImageService imageService;
 	
@@ -71,33 +68,34 @@ public class CustomerController extends AbstractPageController{
 	private final ApplicationProperties applicationProperties;
 
 	@PreAuthorize("hasAnyRole('CUSTOMER_MK', 'CUSTOMER_CK')")
-	@GetMapping
-	public String viewCustomers(@ModelAttribute(TOAST) String toast, @RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
-		Order order = getOrder(sort, SORT_BY);
-		Page<Customer> page = customerService.findAll(getPageable(params, order), request);
+	@GetMapping("/customer")
+	public String viewCustomers(@ModelAttribute(Constant.TOAST) String toast, @RequestParam Map<String, String> params, Sort sort, Model model) {
+		Order order = PageUtil.getOrder(sort, SORT_BY);
+		Page<Customer> page = customerService.findAll(params, PageUtil.getPageable(params, order));
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
 			return REDIRECT;
 		}else {
-			request.setAttribute(TOAST, toast);
-			request.setAttribute(PAGE, page);
-			setParamsQueryString(params, request);
-			setPagerQueryString(order, page.getNumber(), request);
+			model.addAttribute(Constant.PAGE, page);
+			model.addAttribute(Constant.ORDER, order);
+			model.addAttribute(Constant.PREVIOUS, QueryStringUtil.page(order, page.getNumber() - 1));
+			model.addAttribute(Constant.NEXT, QueryStringUtil.page(order, page.getNumber() + 1));
+			model.addAttribute(Constant.PARAMS, QueryStringUtil.params(params));
 			return VIEW;
 		}
 	}
 	
 	@PreAuthorize("hasAnyRole('CUSTOMER_MK', 'CUSTOMER_CK')")
-	@GetMapping("/{id}/detail")
+	@GetMapping("/customer/{id}/detail")
 	public String viewCustomerDetail(ModelMap model, @PathVariable String id){
 		getById(model, id);
 		return DETAIL;
 	}
 	
 	@PreAuthorize("hasRole('CUSTOMER_MK')")
-	@GetMapping("/{id}")
+	@GetMapping("/customer/{id}")
 	public String viewCustomerForm(ModelMap model, @PathVariable String id) {
-		if (id.equals(ZERO)) {
+		if (id.equals(Constant.ZERO)) {
 			Customer customer = new Customer();
 			customer.setCustomerType(CustomerTypeConstant.TPC_VALUE);
 			model.addAttribute(DomainConstant.CUSTOMER, customer);
@@ -110,7 +108,7 @@ public class CustomerController extends AbstractPageController{
 	
 	@Transactional
 	@PreAuthorize("hasRole('CUSTOMER_MK')")
-	@PostMapping
+	@PostMapping("/customer")
 	public String saveCustomer(@Valid @ModelAttribute(DomainConstant.CUSTOMER) Customer customer, BindingResult result, RedirectAttributes attributes) throws IOException{
 		if (result.hasErrors()) {
 			return FORM;
@@ -137,21 +135,21 @@ public class CustomerController extends AbstractPageController{
 				}
 			}
 
-			attributes.addFlashAttribute(TOAST, taskIsSavedMessage(DomainConstant.CUSTOMER, customer.getName()));
+			attributes.addFlashAttribute(Constant.TOAST, MessageUtil.taskIsSavedMessage(DomainConstant.CUSTOMER, customer.getName()));
 			return REDIRECT;
 		}
 	}
 	
 	@Transactional
 	@PreAuthorize("hasRole('CUSTOMER_MK')")
-	@PostMapping("/delete/{id}")
+	@PostMapping("/customer/delete/{id}")
 	public String deleteCustomer(@PathVariable String id, RedirectAttributes attributes) throws JsonProcessingException {
 		Optional<Customer> current = customerService.findById(id);
 		
 		if(current.isPresent()) {
 			taskService.saveTaskDelete(DomainConstant.CUSTOMER, current.get());
 			customerService.save(true, id);
-			attributes.addFlashAttribute(TOAST, taskIsSavedMessage(DomainConstant.CUSTOMER, current.get().getName()));
+			attributes.addFlashAttribute(Constant.TOAST, MessageUtil.taskIsSavedMessage(DomainConstant.CUSTOMER, current.get().getName()));
 		}
 		
 		return REDIRECT;
@@ -164,12 +162,12 @@ public class CustomerController extends AbstractPageController{
 			
 		    @Override
 		    public void setAsText(String text) throws IllegalArgumentException{
-		      setValue(LocalDate.parse(text, DateTimeFormatter.ofPattern(JAVA_DATE)));
+		      setValue(LocalDate.parse(text, DateTimeFormatter.ofPattern(DateService.JAVA_DATE)));
 		    }
 
 		    @Override
 		    public String getAsText() throws IllegalArgumentException {
-		      return DateTimeFormatter.ofPattern(JAVA_DATE).format((LocalDate) getValue());
+		      return DateTimeFormatter.ofPattern(DateService.JAVA_DATE).format((LocalDate) getValue());
 		    }
 		    
 		});
@@ -181,7 +179,7 @@ public class CustomerController extends AbstractPageController{
 		if (customer.isPresent()) {
 			model.addAttribute(DomainConstant.CUSTOMER, customer.get());
 		} else {
-			model.addAttribute(ERROR, getNotFoundMessage(id));
+			model.addAttribute(Constant.ERROR, MessageUtil.getNotFoundMessage(id));
 		}
 	}
 	

@@ -1,15 +1,9 @@
 package com.dbs.loyalty.web.controller;
 
-import static com.dbs.loyalty.config.constant.Constant.ERROR;
-import static com.dbs.loyalty.config.constant.Constant.PAGE;
-import static com.dbs.loyalty.config.constant.Constant.TOAST;
-import static com.dbs.loyalty.config.constant.Constant.ZERO;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.data.domain.Page;
@@ -18,6 +12,7 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
@@ -26,10 +21,10 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.config.constant.UserTypeConstant;
 import com.dbs.loyalty.domain.Role;
@@ -38,7 +33,10 @@ import com.dbs.loyalty.service.RoleService;
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.service.UserLdapService;
 import com.dbs.loyalty.service.UserService;
+import com.dbs.loyalty.util.MessageUtil;
+import com.dbs.loyalty.util.PageUtil;
 import com.dbs.loyalty.util.PasswordUtil;
+import com.dbs.loyalty.util.QueryStringUtil;
 import com.dbs.loyalty.web.validator.UserValidator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -46,18 +44,17 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Controller
-@RequestMapping("/user")
-public class UserController extends AbstractPageController{
+public class UserController{
 	
-	private static final String REDIRECT = "redirect:/user";
+	private static final String REDIRECT 	= "redirect:/user";
 	
-	private static final String VIEW = "user/user-view";
+	private static final String VIEW 		= "user/user-view";
 	
-	private static final String DETAIL = "user/user-detail";
+	private static final String DETAIL 		= "user/user-detail";
 	
-	private static final String FORM = "user/user-form";
+	private static final String FORM 		= "user/user-form";
 	
-	private static final String SORT_BY = "username";
+	private static final String SORT_BY 	= "username";
 
 	private final UserService userService;
 	
@@ -68,32 +65,34 @@ public class UserController extends AbstractPageController{
 	private final TaskService taskService;
 	
 	@PreAuthorize("hasAnyRole('USER_MK', 'USER_CK')")
-	@GetMapping
-	public String viewUsers(@RequestParam Map<String, String> params, Sort sort, HttpServletRequest request) {
-		Order order = getOrder(sort, SORT_BY);
-		Page<User> page = userService.findAll(getPageable(params, order), request);
+	@GetMapping("/user")
+	public String viewUsers(@ModelAttribute(Constant.TOAST) String toast, @RequestParam Map<String, String> params, Sort sort, Model model) {
+		Order order = PageUtil.getOrder(sort, SORT_BY);
+		Page<User> page = userService.findAll(params, PageUtil.getPageable(params, order));
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
 			return REDIRECT;
 		}else {
-			request.setAttribute(PAGE, page);
-			setParamsQueryString(params, request);
-			setPagerQueryString(order, page.getNumber(), request);
+			model.addAttribute(Constant.PAGE, page);
+			model.addAttribute(Constant.ORDER, order);
+			model.addAttribute(Constant.PREVIOUS, QueryStringUtil.page(order, page.getNumber() - 1));
+			model.addAttribute(Constant.NEXT, QueryStringUtil.page(order, page.getNumber() + 1));
+			model.addAttribute(Constant.PARAMS, QueryStringUtil.params(params));
 			return VIEW;
 		}
 	}
 	
 	@PreAuthorize("hasAnyRole('USER_MK', 'USER_CK')")
-	@GetMapping("/{id}/detail")
+	@GetMapping("/user/{id}/detail")
 	public String viewUserDetail(ModelMap model, @PathVariable String id){
 		getById(model, id);		
 		return DETAIL;
 	}
 	
 	@PreAuthorize("hasRole('USER_MK')")
-	@GetMapping("/{id}")
+	@GetMapping("/user/{id}")
 	public String viewUserForm(ModelMap model, @PathVariable String id) {
-		if (id.equals(ZERO)) {
+		if (id.equals(Constant.ZERO)) {
 			User user = new User();
 			user.setUserType(UserTypeConstant.INTERNAL);
 			model.addAttribute(DomainConstant.USER, user);
@@ -106,7 +105,7 @@ public class UserController extends AbstractPageController{
 	
 	@Transactional
 	@PreAuthorize("hasRole('USER_MK')")
-	@PostMapping
+	@PostMapping("/user")
 	public String save(@Valid @ModelAttribute(DomainConstant.USER) User user, BindingResult result, RedirectAttributes attributes) throws JsonProcessingException {
 		if (result.hasErrors()) {
 			return FORM;
@@ -131,21 +130,21 @@ public class UserController extends AbstractPageController{
 				}
 			}
 
-			attributes.addFlashAttribute(TOAST, taskIsSavedMessage(DomainConstant.USER, user.getUsername()));
+			attributes.addFlashAttribute(Constant.TOAST, MessageUtil.taskIsSavedMessage(DomainConstant.USER, user.getUsername()));
 			return REDIRECT;
 		}
 	}
 	
 	@Transactional
 	@PreAuthorize("hasRole('USER_MK')")
-	@PostMapping("/delete/{id}")
+	@PostMapping("/user/delete/{id}")
 	public String deleteUser(@PathVariable String id, RedirectAttributes attributes) throws JsonProcessingException {
 		Optional<User> current = userService.findWithRoleById(id);
 		
 		if(current.isPresent()) {
 			taskService.saveTaskDelete(DomainConstant.USER, current.get());
 			userService.save(true, id);
-			attributes.addFlashAttribute(TOAST, taskIsSavedMessage(DomainConstant.USER, current.get().getUsername()));
+			attributes.addFlashAttribute(Constant.TOAST, MessageUtil.taskIsSavedMessage(DomainConstant.USER, current.get().getUsername()));
 		}
 		
 		return REDIRECT;
@@ -162,7 +161,7 @@ public class UserController extends AbstractPageController{
 	}
 
 	public void getById(ModelMap model, String id) {
-		if (id.equals(ZERO)) {
+		if (id.equals(Constant.ZERO)) {
 			model.addAttribute(DomainConstant.USER, new User());
 		} else {
 			Optional<User> current = userService.findById(id);
@@ -170,7 +169,7 @@ public class UserController extends AbstractPageController{
 			if (current.isPresent()) {
 				model.addAttribute(DomainConstant.USER, current.get());
 			} else {
-				model.addAttribute(ERROR, getNotFoundMessage(id));
+				model.addAttribute(Constant.ERROR, MessageUtil.getNotFoundMessage(id));
 			}
 		}
 	}

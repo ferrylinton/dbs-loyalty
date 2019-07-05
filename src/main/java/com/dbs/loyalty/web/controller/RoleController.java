@@ -63,7 +63,7 @@ public class RoleController {
 	@GetMapping("/role")
 	public String viewRoles(@ModelAttribute(Constant.TOAST) String toast, @RequestParam Map<String, String> params, Sort sort, Model model) {
 		Order order = PageUtil.getOrder(sort, SORT_BY);
-		Page<Role> page = roleService.findAll(PageUtil.getPageable(params, order), params);
+		Page<Role> page = roleService.findAll(params, PageUtil.getPageable(params, order));
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
 			return REDIRECT;

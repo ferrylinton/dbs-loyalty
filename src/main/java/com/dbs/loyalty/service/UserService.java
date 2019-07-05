@@ -2,9 +2,8 @@ package com.dbs.loyalty.service;
 
 import java.io.IOException;
 import java.time.Instant;
+import java.util.Map;
 import java.util.Optional;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +13,7 @@ import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.domain.User;
 import com.dbs.loyalty.domain.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.UserRepository;
-import com.dbs.loyalty.service.specification.UserSpecification;
+import com.dbs.loyalty.service.specification.UserSpec;
 import com.dbs.loyalty.util.SecurityUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -72,8 +71,8 @@ public class UserService{
 		return Optional.of(result);
 	}
 	
-	public Page<User> findAll(Pageable pageable, HttpServletRequest request) {
-		return userRepository.findAll(UserSpecification.getSpec(request), pageable);
+	public Page<User> findAll(Map<String, String> params, Pageable pageable) {
+		return userRepository.findAll(new UserSpec(params), pageable);
 	}
 	
 	public String execute(Task task) throws IOException {
