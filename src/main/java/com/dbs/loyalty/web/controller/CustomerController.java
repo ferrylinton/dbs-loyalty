@@ -114,7 +114,7 @@ public class CustomerController {
 	
 	@Transactional
 	@PreAuthorize("hasRole('CUSTOMER_MK')")
-	@PostMapping("/customer")
+	@PostMapping
 	public String saveCustomer(@Valid @ModelAttribute(DomainConstant.CUSTOMER) Customer customer, BindingResult result, RedirectAttributes attributes) throws IOException{
 		if (result.hasErrors()) {
 			return FORM;

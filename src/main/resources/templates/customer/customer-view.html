@@ -19,26 +19,26 @@
 	<div layout:fragment="content">
 		<div th:replace="fragment/search.html :: content('/customer', |#{name}, #{email}, #{phone}|, ${isMaker})"></div>
 		<div class="table-responsive border border-top-0" th:if="${page.getTotalElements() > 0}">
-	                <table class="table table-sm table-striped table-hover border-bottom" style="min-width: 800px;">
-	                    <thead>
-	                        <tr th:with="ascending=${order.getDirection().name() == 'ASC'}">
-	                            <th style="width:40px"></th>
-								<th style="width:40px">#</th>
-	                            <th th:with="sort=|&sort=name,${ascending ? 'DESC' : 'ASC'}|">
-                                	<a th:href="@{|?page=${page.getNumber()}${params}${sort}|}" class="text-decoration-none">
-                                		<span th:text="#{name}">Name</span> <span th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></span>
-                                	</a>
-                                </th>
-                                <th th:text="#{customerType}">Type</th>
-                                <th th:text="#{email}">Email</th>
-                                <th th:text="#{phone}">Phone</th>
-								<th th:text="#{activated}">Activated</th>
-								<th th:text="#{locked}">Locked</th>
-	                        </tr>
-	                    </thead>
-	                    <tbody th:remove="all-but-first">
-	                        <tr th:each="customer,row : ${page}">
-	                        	<td class="py-0 px-1">
+	   		<table class="table table-sm table-striped table-hover border-bottom" style="min-width: 800px;">
+	     		<thead>
+	        		<tr th:with="ascending=${order.getDirection().name() == 'ASC'}">
+	                 	<th style="width:40px"></th>
+						<th style="width:40px">#</th>
+	               		<th th:with="sort=|&sort=name,${ascending ? 'DESC' : 'ASC'}|">
+                      		<a th:href="@{|?page=${page.getNumber()}${params}${sort}|}" class="text-decoration-none">
+                            	<span th:text="#{name}">Name</span> <span th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></span>
+                          	</a>
+                    	</th>
+                   		<th th:text="#{customerType}">Type</th>
+                      	<th th:text="#{email}">Email</th>
+                     	<th th:text="#{phone}">Phone</th>
+						<th th:text="#{activated}">Activated</th>
+						<th th:text="#{locked}">Locked</th>
+	             	</tr>
+	          	</thead>
+	           	<tbody th:remove="all-but-first">
+	           		<tr th:each="customer,row : ${page}">
+	                	<td class="p-0">
 									<div class="dropdown">
 										<button type="button" class="btn btn-default dropdown-toggle px-1 py-0 font-12" id="dropdownMenuButton" data-boundary="window" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 										 	<span class="icon-cog"></span>
@@ -58,17 +58,17 @@
 											</th:block>
 										</div>
 									</div>
-								</td>
-	                            <td th:text="${row.count + (page.number * page.size)}">1</td>
-	                            <td th:text="${customer.name}">Ferry Linton Hutapea</td>
-								<td th:text="${customer.customerType == '0025' ? 'TPC' : 'TREASURE'}">TREASURE</td>
-								<td th:text="${customer.email}">ferrylinton@gmail.com</td>
-								<td th:text="${customer.phone}">1234567890</td>
-								<td><span class="text-success icon-ok" th:class="${customer.activated} ? 'text-success icon-ok' : 'text-danger icon-cancel'"></span></td>
-	                        	<td><span class="text-danger icon-cancel" th:class="${customer.locked} ? 'text-success icon-ok' : 'text-danger icon-cancel'"></span></td>
-	                        </tr>
-	                    </tbody>
-	                </table>
+						</td>
+	               		<td th:text="${row.count + (page.number * page.size)}">1</td>
+	                 	<td th:text="${customer.name}">Ferry Linton Hutapea</td>
+						<td th:text="${customer.customerType == '0025' ? 'TPC' : 'TREASURE'}">TREASURE</td>
+						<td th:text="${customer.email}">ferrylinton@gmail.com</td>
+						<td th:text="${customer.phone}">1234567890</td>
+						<td><span th:class="${customer.activated} ? 'text-success icon-ok' : 'text-danger icon-cancel'"></span></td>
+	                 	<td><span th:class="${customer.locked} ? 'text-success icon-ok' : 'text-danger icon-cancel'"></span></td>
+	            	</tr>
+	       		</tbody>
+	   		</table>
 		</div>
 		<div th:replace="fragment/not-found.html :: content"></div>
 		<div th:replace="fragment/pager.html :: content"></div>

@@ -90,7 +90,7 @@
                                 <td th:text="${row.count + (page.number * page.size)}">1</td>
                                 <td><span th:data-date="${@settingService.jsDatetime()}" th:text="${task.madeDate}">2019-05-01T21:24:44Z</span></td>
                                 <td th:text="${task.maker}">Maker</td>
-                                <td th:text="${task.checker}">Checker</td>
+                                <td th:text="${task.checker == null ? '-' : task.checker}">Checker</td>
                                 <td th:text="#{${task.taskOperation}}">Operation</td>
                                 <td th:text="#{${task.taskStatus}}">Status</td>
                             </tr>

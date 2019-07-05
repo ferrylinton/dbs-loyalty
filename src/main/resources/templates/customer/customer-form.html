@@ -99,11 +99,11 @@
 				<div th:replace="fragment/audit-form.html :: content"></div>
 			</th:block>
           	<div class="toolbar">
-           		<a class="btn btn-light" th:href="@{/customer}">
+           		<a class="btn btn-sm btn-secondary" th:href="@{/customer}">
                		<span class="icon-left" th:text="#{back}">Back</span>
                	</a>
                	<th:block th:if="${customer}">
-               		<button class="btn btn-light text-primary" type="submit" th:if="${isMaker && !customer.pending}">
+               		<button class="btn btn-sm btn-primary" type="submit" th:if="${isMaker && !customer.pending}">
                   		<span class="icon-floppy" th:text="#{save}">Save</span>
                		</button>
        			</th:block>

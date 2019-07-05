@@ -70,11 +70,11 @@
 				<input type="hidden" th:field="*{userType}" th:if="*{id != null}"/>
 			</th:block>
           	<div class="toolbar">
-            	<a class="btn btn-light" th:href="@{/user}">
+            	<a class="btn btn-sm btn-secondary text-uppercase" th:href="@{/user}">
                		<span class="icon-left"></span> <span th:text="#{back}">Back</span>
              	</a>
              	<th:block th:if="${user}">
-              		<button class="btn btn-light text-primary" type="submit" th:if="${isMaker && !user.pending}">
+              		<button class="btn btn-sm btn-primary text-uppercase" type="submit" th:if="${isMaker && !user.pending}">
                   		<span class="icon-floppy"></span> <span th:text="#{save}">Save</span>
                		</button>
 				</th:block>

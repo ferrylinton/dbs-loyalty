@@ -37,7 +37,7 @@
              	</thead>
               	<tbody>
               		<tr th:each="user,row : ${page}">
-                                <td class="py-0 px-1">
+                    	<td class="p-0">
                                     <div class="dropdown">
                                         <button type="button" class="btn btn-default dropdown-toggle px-1 py-0 font-12" id="dropdownMenuButton"
                                             data-boundary="window" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -58,13 +58,13 @@
                                             </th:block>
                                         </div>
                                     </div>
-                                </td>
-                                <td th:text="${row.count + (page.number * page.size)}">1</td>
-                                <td th:text="${user.username}">ferrylinton</td>
-                                <td th:text="${user.userType}">Internal</td>
-                                <td><span class="text-success icon-ok" th:class="${user.activated} ? 'text-success icon-ok' : 'text-danger icon-cancel'"></span></td>
-                                <td><span class="text-danger icon-cancel" th:class="${user.locked} ? 'text-success icon-ok' : 'text-danger icon-cancel'"></span></td>
-                                <td th:text="${user.role == null ? '-' : user.role.name}">Checker</td>
+                       	</td>
+                     	<td th:text="${row.count + (page.number * page.size)}">1</td>
+                      	<td th:text="${user.username}">ferrylinton</td>
+                       	<td th:text="${user.userType}">Internal</td>
+                      	<td><span class="text-success icon-ok" th:class="${user.activated} ? 'text-success icon-ok' : 'text-danger icon-cancel'"></span></td>
+                       	<td><span class="text-danger icon-cancel" th:class="${user.locked} ? 'text-success icon-ok' : 'text-danger icon-cancel'"></span></td>
+                      	<td th:text="${user.role == null ? '-' : user.role.name}">Checker</td>
              		</tr>
            		</tbody>
        		</table>
