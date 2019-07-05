@@ -1,6 +1,7 @@
 package com.dbs.loyalty.service;
 
 import java.time.Instant;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -18,6 +19,7 @@ import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.repository.AppointmentRepository;
 import com.dbs.loyalty.repository.CustomerRepository;
 import com.dbs.loyalty.repository.WellnessRepository;
+import com.dbs.loyalty.service.specification.AppointmentSpec;
 import com.dbs.loyalty.util.SecurityUtil;
 import com.dbs.loyalty.web.response.Response;
 
@@ -39,6 +41,10 @@ public class AppointmentService {
 	
 	public Page<Appointment> findAll(Pageable pageable){
 		return appointmentRepository.findAll(pageable);
+	}
+	
+	public Page<Appointment> findAll(Map<String, String> params, Pageable pageable){
+		return appointmentRepository.findAll(new AppointmentSpec(params), pageable);
 	}
 
 	@Transactional

@@ -24,8 +24,13 @@
                     <li th:if="${#authorization.expression('hasAnyAuthority(''EVENT_MK'', ''EVENT_CK'')')}">
                         <a data-menu="event" th:href="@{/event}" th:text="#{event}">Event</a>
                     </li>
+                </ul>
+            </li>
+            <li>
+                <span th:text="#{wellness}">WELLNESS</span>
+                <ul>
                     <li th:if="${#authorization.expression('hasAnyAuthority(''WELLNESS'')')}">
-                        <a data-menu="appointment" th:href="@{/appointment}" th:text="#{wellness}">Wellness</a>
+                        <a data-menu="appointment" th:href="@{/appointment}" th:text="#{appointment}">Appointment</a>
                     </li>
                 </ul>
             </li>

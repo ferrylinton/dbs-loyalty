@@ -5,13 +5,15 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
 import com.dbs.loyalty.domain.Appointment;
 
-public interface AppointmentRepository extends JpaRepository<Appointment, String>{
+public interface AppointmentRepository extends JpaRepository<Appointment, String>, JpaSpecificationExecutor<Appointment>{
 	
 	@EntityGraph(attributePaths = { "medicalProvider", "medicalProviderCity", "medicalProviderBranch", "customer" })
 	Optional<Appointment> findById(String id);
@@ -23,6 +25,6 @@ public interface AppointmentRepository extends JpaRepository<Appointment, String
 	Optional<Appointment> findByCustomerAndMedicalProviderAndDate(String customerId, String medicalProviderId, Instant date);
 	
 	@EntityGraph(attributePaths = { "medicalProvider", "medicalProviderCity", "medicalProviderBranch", "customer" })
-	Page<Appointment> findAll(Pageable pageable);
+	Page<Appointment> findAll(Specification<Appointment> spec, Pageable pageable);
 	
 }
