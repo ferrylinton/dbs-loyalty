@@ -125,11 +125,11 @@
 				<div th:replace="fragment/audit-form.html :: content"></div>
 			</th:block>
 			<div class="toolbar">
-				<a class="btn btn-light" th:href="@{/promo}">
+				<a class="btn btn-sm btn-secondary" th:href="@{/promo}">
 					<span class="icon-left" th:text="#{back}">Back</span>
 				</a>
 				<th:block th:if="${promo}">
-					<button class="btn btn-light text-primary" type="submit" th:if="${isMaker && (promo.pending == null || !promo.pending)}">
+					<button class="btn btn-sm btn-primary" type="submit" th:if="${isMaker && (promo.pending == null || !promo.pending)}">
 						<span class="icon-floppy" th:text="#{save}">Save</span>
 					</button>
 				</th:block>

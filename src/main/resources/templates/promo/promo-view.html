@@ -17,7 +17,7 @@
 		</ol>
 	</nav>
 	<div layout:fragment="content">
-		<div th:replace="fragment/search.html :: content('/promo', |#{code}, #{title}, #{description}|, ${isMaker})"></div>
+		<div th:replace="fragment/search.html :: content('/promo', |#{title}, #{code}, #{description}|, ${isMaker})"></div>
 		<div class="table-responsive border border-top-0" th:if="${page.getTotalElements() > 0}">
 	            <table class="table table-sm table-striped table-hover border-bottom" style="min-width: 700px;">
 	                <thead>
@@ -35,7 +35,7 @@
 	                </thead>
 	                <tbody th:remove="all-but-first">
 	                    <tr th:each="promo,row : ${page}">
-	                        <td class="py-0 px-1">
+	                        <td class="p-0">
 								<div class="dropdown">
 									<button type="button" class="btn btn-default dropdown-toggle px-1 py-0 font-12" id="dropdownMenuButton" data-boundary="window" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 										<span class="icon-cog"></span>

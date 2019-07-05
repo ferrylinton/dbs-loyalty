@@ -34,29 +34,29 @@
 	                </thead>
 	                <tbody th:remove="all-but-first">
 	                    <tr th:each="event,row : ${page}">
-	                        <td class="py-0 px-1">
+	                        <td class="p-0">
 								<div class="dropdown">
 									<button type="button" class="btn btn-default dropdown-toggle px-1 py-0 font-12" id="dropdownMenuButton" data-boundary="window" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 										<span class="icon-cog"></span>
 									</button>
 									<div class="dropdown-menu py-0 shadow" aria-labelledby="dropdownMenuButton">
-										<a class="dropdown-item pl-1" href="/event/event-detail.html" th:href="@{|/event/${event.id}/detail|}">
+										<a class="dropdown-item pl-1" th:href="@{|/event/${event.id}/detail|}">
 										    <span class="icon-eye"></span> <span th:text="#{detail}">Detail</span>
                                         </a>
-                                        <a class="dropdown-item pl-1" href="/event/event-customer.html" th:href="@{|/event/${event.id}/customer|}">
+                                        <a class="dropdown-item pl-1" th:href="@{|/event/${event.id}/customer|}">
 										    <span class="icon-user-circle"></span> <span th:text="#{customer}">Customer</span>
                                         </a>
                                         <th:block th:if="${isMaker && (event.pending == null || !event.pending)}">
-                                            <a class="dropdown-item pl-1" href="/event/event-feedback.html" th:href="@{|/event/${event.id}/feedback|}">
+                                            <a class="dropdown-item pl-1" th:href="@{|/event/${event.id}/feedback|}">
                                                 <span class="icon-thumbs-up"></span> <span th:text="#{feedback}">Feedback</span>
                                             </a>    
-                                            <a class="dropdown-item pl-1" href="/event/event-form.html" th:href="@{|/event/${event.id}|}">
+                                            <a class="dropdown-item pl-1" th:href="@{|/event/${event.id}|}">
                                                 <span class="icon-edit"></span> <span th:text="#{edit}">Edit</span>
                                             </a>
 											<div class="dropdown-divider my-0"></div>
-											<a class="dropdown-item pl-1 text-danger" href="/event/event-view.html/1" th:href="@{|/event/${event.id}|}" onclick="return AjaxUtil.confirm(this)">
+											<button class="dropdown-item pl-1 text-danger" th:title="@{|/event/delete/${event.id}|}" data-toggle="modal" data-target="#delete-modal">
 												<span class="icon-trash"></span> <span th:text="#{delete}">Delete</span>
-											</a>
+											</button>
 										</th:block>
 									</div>
 								</div>

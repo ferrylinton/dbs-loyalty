@@ -43,7 +43,6 @@ function initToast(){
 }
 
 function initDobMask(){
-	//$('#dob').inputmask('99-99-9999',{ 'clearIncomplete': true , alias: "datetime", inputFormat: "dd/mm/yyyy"});
 	$('#dob').inputmask("99-99-9999",{ alias: "datetime", 'clearIncomplete': true, "placeholder": "dd-mm-yyyy" });
 }
 

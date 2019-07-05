@@ -33,11 +33,11 @@
             	<div th:replace="fragment/audit-form.html :: content"></div>
        		</th:block>
          	<div class="toolbar">
-            	<a class="btn btn-light" th:href="@{/promocategory}">
+            	<a class="btn btn-sm btn-secondary" th:href="@{/promocategory}">
                		<span class="icon-left" th:text="#{back}">Back</span>
               	</a>
               	<th:block th:if="${promocategory}">
-	             	<button class="btn btn-light text-primary" type="submit" th:if="${isMaker && !promocategory.pending}">
+	             	<button class="btn btn-sm btn-primary" type="submit" th:if="${isMaker && !promocategory.pending}">
 	                	<span class="icon-floppy" th:text="#{save}">Save</span>
 	            	</button>
             	</th:block>
