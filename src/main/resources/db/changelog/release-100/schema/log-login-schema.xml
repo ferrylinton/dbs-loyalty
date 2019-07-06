@@ -1,0 +1,62 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog 
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="FLH" id="log-login-schema-1">
+
+        <createTable tableName="log_login">
+            <column name="id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="browser" type="VARCHAR(50)"/>
+            <column name="browser_major_version" type="VARCHAR(50)"/>
+            <column name="browser_ype" type="VARCHAR(50)"/>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="device_type" type="VARCHAR(50)"/>
+            <column name="username" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ip" type="VARCHAR(20)"/>
+            <column name="status" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="platform" type="VARCHAR(50)"/>
+            <column name="platform_version" type="VARCHAR(50)"/>
+        </createTable>
+        
+    </changeSet>
+    
+	<changeSet author="FLH" id="log-login-schema-2">
+        <addPrimaryKey columnNames="id" constraintName="log_login_pk" tableName="log_login"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="log-login-schema-3">
+    
+        <createIndex indexName="log_login_username_idx" tableName="log_login">
+            <column name="username"/>
+        </createIndex>
+        
+    </changeSet>
+    
+    <changeSet author="FLH" id="log-login-schema-4">
+
+        <createIndex indexName="log_login_ip_idx" tableName="log_login">
+            <column name="ip"/>
+        </createIndex>
+
+    </changeSet>
+    
+    <changeSet author="FLH" id="log-login-schema-5">
+
+        <createIndex indexName="log_login_created_date_idx" tableName="log_login">
+            <column name="created_date"/>
+        </createIndex>
+        
+    </changeSet>
+    
+</databaseChangeLog>

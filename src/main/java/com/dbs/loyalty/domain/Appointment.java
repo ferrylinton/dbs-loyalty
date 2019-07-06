@@ -38,7 +38,7 @@ public class Appointment extends AbstractAuditing {
 	@GeneratedValue(generator = "IdGenerator")
 	private String id;
 
-	@Column(name = "arrival_date", nullable = false)
+	@Column(name = "date", nullable = false)
 	private Instant date;
 	
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)
@@ -56,5 +56,9 @@ public class Appointment extends AbstractAuditing {
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", foreignKey = @ForeignKey(name = "a_appointment_fk4"))
 	private Customer customer;
+    
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "health_package_id", nullable = true, foreignKey = @ForeignKey(name = "a_appointment_fk5"))
+    private HealthPackage healthPackage;
 	
 }

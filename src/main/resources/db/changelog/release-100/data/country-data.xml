@@ -1,0 +1,46 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+	<property name="Indonesia" value="4AB2Y7K9hpFalPLsvkzjRp" />
+	<property name="Singapore" value="1En9V5o9tP6Ku0UQvVgivu" />
+	<property name="Taiwan" value="4Qum1KEpGP0aekUrrUFEjM" />
+	
+	
+    <changeSet author="FLH" id="country-data-1">
+
+        <insert tableName="a_country">
+            <column name="id" value="${Indonesia}"/>
+            <column name="name" value="Indonesia"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+
+    </changeSet>
+    
+    <changeSet author="FLH" id="country-data-2">
+
+		<insert tableName="a_country">
+            <column name="id" value="${Singapore}"/>
+            <column name="name" value="Singapore"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+
+    </changeSet>
+    
+    <changeSet author="FLH" id="country-data-3">
+        
+        <insert tableName="a_country">
+            <column name="id" value="${Taiwan}"/>
+            <column name="name" value="Taiwan"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+
+    </changeSet>
+    
+</databaseChangeLog>

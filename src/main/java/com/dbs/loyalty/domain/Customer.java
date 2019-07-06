@@ -1,6 +1,5 @@
 package com.dbs.loyalty.domain;
 
-import static com.dbs.loyalty.service.SettingService.JAVA_DATE;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -10,8 +9,11 @@ import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -26,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.config.constant.RegexConstant;
+import com.dbs.loyalty.service.SettingService;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -48,6 +51,7 @@ import lombok.ToString;
 @Table(	
 	name = "c_customer",
 	uniqueConstraints = {
+		@UniqueConstraint(name = "c_customer_cif_uq", columnNames = { "cif" }),
 		@UniqueConstraint(name = "c_customer_email_uq", columnNames = { "email" })
 	}
 )
@@ -60,6 +64,10 @@ public class Customer extends AbstractTask implements Serializable {
 	@GenericGenerator(name = DomainConstant.ID_GENERATOR, strategy = DomainConstant.ID_GENERATOR_STRATEGY)
 	@GeneratedValue(generator = DomainConstant.ID_GENERATOR)
 	private String id;
+	
+	@Size(min = 2, max = 30)
+	@Column(name = "cif", length = 30, nullable = false)
+	private String cif;
 	
 	@Pattern(regexp = RegexConstant.EMAIL, message = RegexConstant.EMAIL_MESSAGE)
     @Size(min = 5, max = 50)
@@ -75,11 +83,11 @@ public class Customer extends AbstractTask implements Serializable {
 	@Column(name = "phone", length = 20, nullable = false)
 	private String phone;
 	
-	@Column(name = "customer_type", length = 4, nullable = false)
+	@Column(name = "customer_type", length = 10, nullable = false)
 	private String customerType;
 
-	@DateTimeFormat(pattern = JAVA_DATE)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = JAVA_DATE)
+	@DateTimeFormat(pattern = SettingService.JAVA_DATE)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = SettingService.JAVA_DATE)
 	@Column(name = "dob", nullable = false)
 	private LocalDate dob;
 
@@ -92,6 +100,10 @@ public class Customer extends AbstractTask implements Serializable {
 	
 	@Column(name = "locked", nullable = false)
 	private boolean locked = false;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "country_id", nullable = true, foreignKey = @ForeignKey(name = "c_customer_fk"))
+    private Country country;
 
 	@JsonIgnore
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)

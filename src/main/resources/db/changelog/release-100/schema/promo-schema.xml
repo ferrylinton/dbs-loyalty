@@ -1,0 +1,72 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog 
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="FLH" id="promo-schema-1">
+    
+        <createTable tableName="p_promo">
+            <column name="id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            
+            <column name="activated" type="BIT(1)" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_period" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="show_in_carousel" type="BIT(1)" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="start_period" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="content" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="term_and_condition" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="title" type="VARCHAR(150)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="promo_category_id" type="VARCHAR(22)"/>
+            <column name="pending" type="BIT(1)" defaultValueBoolean="false"/>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+        
+    </changeSet>
+    
+	<changeSet author="FLH" id="promo-schema-2">
+        <addPrimaryKey columnNames="id" constraintName="p_promo_pk" tableName="p_promo"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="promo-schema-3">
+        <addUniqueConstraint columnNames="code" constraintName="p_promo_code_uq" tableName="p_promo"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="promo-schema-4">
+        <addUniqueConstraint columnNames="title" constraintName="p_promo_title_uq" tableName="p_promo"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="promo-schema-5">
+        <addForeignKeyConstraint baseColumnNames="promo_category_id" baseTableName="p_promo" constraintName="p_promo_fk" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="p_promo_category"/>
+    </changeSet>
+    
+</databaseChangeLog>

@@ -1,0 +1,36 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+	<property name="Package1" value="6YugFxp0JiIaUzEI78R9Pw" />
+	<property name="Package2" value="2h1PLkO5AuIbiCSBOBLv6H" />
+	
+    <changeSet author="FLH" id="health-package-data-1">
+    	
+    	<insert tableName="a_health_package">
+            <column name="id" value="${Package1}"/>
+            <column name="name" value="Package 1"/>
+            <column name="content" valueBlobFile="txt/health-package.txt"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+
+    </changeSet>
+    
+    <changeSet author="FLH" id="health-package-data-2">
+    	
+    	<insert tableName="a_health_package">
+            <column name="id" value="${Package2}"/>
+            <column name="name" value="Package 2"/>
+            <column name="content" valueBlobFile="txt/health-package.txt"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+
+    </changeSet>
+    
+    
+</databaseChangeLog>
