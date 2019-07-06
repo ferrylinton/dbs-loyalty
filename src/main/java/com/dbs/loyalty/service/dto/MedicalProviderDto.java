@@ -15,8 +15,5 @@ public class MedicalProviderDto {
 	
 	@ApiModelProperty(value = "MedicalProvider's name", example = "BIOTEST", position = 1)
 	private String name;
-	
-	@ApiModelProperty(value = "MedicalProvider's content", example = "MedicalProvider's description", position = 2)
-	 private String content;
-	
+
 }

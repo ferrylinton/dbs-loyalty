@@ -16,6 +16,10 @@ public class RestConstant {
 
 	public static final String GET_AIRPORTS = "GetAirports";
 	
+	public static final String GET_HEALTH_PACKAGES = "GetHealthPackages";
+	
+	public static final String GET_CONTENT_BY_ID = "GetContentById";
+	
 	public static final String GET_MEDICAL_PROVIDERS = "GetMedicalProviders";
 	
 	public static final String GET_MEDICAL_PROVIDER_CITIES = "GetMedicalProviderCities";

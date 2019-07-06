@@ -19,7 +19,6 @@
         <insert tableName="a_medical_provider">
             <column name="id" value="${BIOTEST_INDONESIA}"/>
             <column name="name" value="BIOTEST INDONESIA"/>
-            <column name="content" valueBlobFile="txt/In1IverC.txt"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
         </insert>
@@ -27,7 +26,6 @@
 		<insert tableName="a_medical_provider">
             <column name="id" value="${SINGAPORE_Hospital}"/>
             <column name="name" value="SINGAPORE Hospital"/>
-            <column name="content" valueBlobFile="txt/In1IverC.txt"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
         </insert>

@@ -12,7 +12,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -53,11 +52,6 @@ public class MedicalProvider extends AbstractTask implements Serializable {
     @Column(name = "name", length = 100, nullable = false)
     private String name;
 
-	@Size(min=2, max = 50000)
-    @Lob
-    @Column(name = "content", nullable = false, columnDefinition="TEXT")
-    private String content;
-	
 	@OneToMany(mappedBy = "medicalProvider")
     private Set<MedicalProviderCity> medicalProviderCities = new HashSet<>();
 	

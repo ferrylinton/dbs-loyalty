@@ -48,6 +48,8 @@ public final class DomainConstant {
 	
 	public static final String PROMO 				= "promo";
 	
+	public static final String HEALTH_PACKAGE 		= "healthpackage";
+	
 	public static final String EVENT 				= "event";
 	
 	public static final String DEPARTURE 			= "departure";
