@@ -31,6 +31,7 @@ import com.dbs.loyalty.config.constant.RegexConstant;
 import com.dbs.loyalty.service.SettingService;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -101,6 +102,7 @@ public class Customer extends AbstractTask implements Serializable {
 	@Column(name = "locked", nullable = false)
 	private boolean locked = false;
 	
+	@JsonIgnoreProperties("airports")
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "country_id", nullable = true, foreignKey = @ForeignKey(name = "c_customer_fk"))
     private Country country;

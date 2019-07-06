@@ -73,6 +73,8 @@ public final class DomainConstant {
 	public static final String BROWSER = "browser";
 	
 	public static final String DEVICE_TYPE = "deviceType";
+	
+	public static final String COUNTRIES = "countries";
 
 	private DomainConstant() {
 		// hide constructor

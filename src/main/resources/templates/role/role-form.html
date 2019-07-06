@@ -35,7 +35,7 @@
 	                  		<div class="py-2 pl-5 border" th:classappend="${#fields.hasErrors('authorities') ? 'is-invalid' : ''}">
 	                    		<div class="row">
 	                        		<div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4" th:each="authority : ${authorities}">
-	                             		<input class="form-check-input" type="checkbox" th:field="*{authorities}" th:value="|${authority.id}${authority.name}|" />
+	                             		<input class="form-check-input" type="checkbox" th:field="*{authorities}" th:value="${authority.id}" />
 	                          			<label th:text="${authority.name}">Description</label>
 	                         		</div>
 	                       		</div>

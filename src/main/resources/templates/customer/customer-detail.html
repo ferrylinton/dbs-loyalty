@@ -23,7 +23,15 @@
           		<tbody>
              		<tr>
                			<th th:text="#{id}">Id</th>
-                    	<td th:text="${customer.id}">ZwOkjFmG</td>
+                    	<td th:text="${customer.id}">Id</td>
+               		</tr>
+               		<tr>
+               			<th th:text="#{cif}">CIF</th>
+                    	<td th:text="${customer.cif}">0000001</td>
+               		</tr>
+               		<tr>
+               			<th th:text="#{country}">Country</th>
+                    	<td th:text="${customer.country.name}">Country</td>
                		</tr>
          			<tr>
                     	<th th:text="#{name}">Name</th>

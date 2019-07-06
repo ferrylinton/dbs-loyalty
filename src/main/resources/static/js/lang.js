@@ -38,7 +38,9 @@ var Lang = (function () {
 				"material": "Material",
 				"place": "Place",
 				"timePeriod": "Time",
-				"feedback": "Feedback"
+				"feedback": "Feedback",
+				"cif": "CIF",
+				"country": "Country"
 			},
 			"label":{
 				"activated" : "Activated",
@@ -86,7 +88,9 @@ var Lang = (function () {
 				"material": "Materi",
 				"place": "Tempat",
 				"timePeriod": "Jam",
-				"feedback": "Feedback"
+				"feedback": "Feedback",
+				"cif": "CIF",
+				"country": "Negara"
 			},
 			"label":{
 				"activated" : "Aktif",

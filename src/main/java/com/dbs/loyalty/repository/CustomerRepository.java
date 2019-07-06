@@ -2,6 +2,7 @@ package com.dbs.loyalty.repository;
 
 import java.util.Optional;
 
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
@@ -14,6 +15,9 @@ import com.dbs.loyalty.domain.Customer;
 
 public interface CustomerRepository extends JpaRepository<Customer, String>, JpaSpecificationExecutor<Customer>{
 
+	@EntityGraph(attributePaths = { "country" })
+	Optional<Customer> findById(String id);
+	
 	Optional<Customer> findByEmail(String email);
 	
 	Optional<Customer> findByEmailIgnoreCase(String email);

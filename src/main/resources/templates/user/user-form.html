@@ -49,7 +49,7 @@
                      	<div class="form-group">
                          	<label for="role" th:text="#{role}">Role</label>
                         	<select class="custom-select" th:field="*{role}">
-                                    <option th:each="_role: ${roles}" th:value="|${_role.id}${_role.name}|" th:text="${_role.name}">Role</option>
+                                    <option th:each="rl: ${roles}" th:value="${rl.id}" th:text="${rl.name}">Role</option>
                           	</select>
                       	</div>
                		</div>

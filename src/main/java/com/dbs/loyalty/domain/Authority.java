@@ -23,7 +23,7 @@ import lombok.ToString;
  */
 @Setter
 @Getter
-@EqualsAndHashCode(of = { "id", "name" })
+@EqualsAndHashCode(of = { "id" })
 @ToString(of = { "id", "name" })
 @Entity
 @Table(	
