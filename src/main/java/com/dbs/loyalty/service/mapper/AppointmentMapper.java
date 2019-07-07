@@ -14,7 +14,8 @@ import com.dbs.loyalty.service.dto.AppointmentDto;
 		injectionStrategy=InjectionStrategy.CONSTRUCTOR)
 public abstract class AppointmentMapper{
 
-	@Mapping(source="date", target="date", dateFormat=DateService.JAVA_DATETIME)
+	@Mapping(source="date", target="date", dateFormat=DateService.JAVA_DATE)
+	@Mapping(source="time", target="time", dateFormat=DateService.JAVA_TIME)
 	public abstract Appointment toEntity(AppointmentDto appointmentDto);
 	
 }

@@ -1,6 +1,7 @@
 package com.dbs.loyalty.domain;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -44,10 +45,15 @@ public class Appointment extends AbstractAuditing {
 	@GeneratedValue(generator = "IdGenerator")
 	private String id;
 
-	@DateTimeFormat(pattern = SettingService.JAVA_DATETIME)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = SettingService.JAVA_DATETIME)
+	@DateTimeFormat(pattern = SettingService.JAVA_DATE)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = SettingService.JAVA_DATE)
 	@Column(name = "date", nullable = false)
-	private LocalDateTime date;
+	private LocalDate date;
+	
+	@DateTimeFormat(pattern = SettingService.JAVA_TIME)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = SettingService.JAVA_TIME)
+	@Column(name = "time", nullable = false)
+	private LocalTime time;
 	
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "medical_provider_id", foreignKey = @ForeignKey(name = "a_appointment_fk1"))

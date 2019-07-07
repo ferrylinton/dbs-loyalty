@@ -10,7 +10,10 @@
             <column name="id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
             </column>
-            <column name="date" type="timestamp">
+            <column name="date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="time" type="time">
                 <constraints nullable="false"/>
             </column>
             <column name="medical_provider_id" type="VARCHAR(22)">

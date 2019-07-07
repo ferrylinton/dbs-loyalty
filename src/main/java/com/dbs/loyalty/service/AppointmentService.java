@@ -1,8 +1,7 @@
 package com.dbs.loyalty.service;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -74,8 +73,8 @@ public class AppointmentService {
 		}
 	}
 	
-	public boolean isExist(String medicalProviderId, LocalDateTime date) {
-		List<Appointment> current = appointmentRepository.findByCustomerAndMedicalProviderAndDate(SecurityUtil.getId(), medicalProviderId, date.with(LocalTime.MIN));
+	public boolean isExist(String medicalProviderId, LocalDate date) {
+		List<Appointment> current = appointmentRepository.findByCustomerAndMedicalProviderAndDate(SecurityUtil.getId(), medicalProviderId, date);
 		return current.size() > 0;
 	}
 	

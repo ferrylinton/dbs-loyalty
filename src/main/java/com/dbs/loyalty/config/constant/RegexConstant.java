@@ -34,9 +34,13 @@ public final class RegexConstant {
 	
 	public static final String DATETIME_MESSAGE		= "{validation.pattern.datetime}";
 	
-	public static final String DATE					= "^([0][1-9]|[1][0-9]|[2][0-9]|[3][0-1])-([0][1-9]|[1][0-2])-([1][9][0-9]{2}|[2][0-9]{3})( ([0-1][0-9]|[2][0-3]):[0-5][0-9])$";
+	public static final String DATE					= "^([0][1-9]|[1][0-9]|[2][0-9]|[3][0-1])-([0][1-9]|[1][0-2])-([1][9][0-9]{2}|[2][0-9]{3})$";
 	
 	public static final String DATE_MESSAGE			= "{validation.pattern.date}";
+	
+	public static final String TIME					= "^([0-1][0-9]|[2][0-3]):[0-5][0-9]$";
+	
+	public static final String TIME_MESSAGE			= "{validation.pattern.date}";
 	
 	private RegexConstant() {
 		// hide constructor

@@ -1,6 +1,6 @@
 package com.dbs.loyalty.repository;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,8 +22,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment, String
 	@Query(value = "select a from Appointment a "
 			+ "join fetch a.customer c "
 			+ "join fetch a.medicalProvider p "
-			+ "where c.id = ?1 and p.id = ?2 and a.date >= ?3")
-	List<Appointment> findByCustomerAndMedicalProviderAndDate(String customerId, String medicalProviderId, LocalDateTime date);
+			+ "where c.id = ?1 and p.id = ?2 and a.date = ?3")
+	List<Appointment> findByCustomerAndMedicalProviderAndDate(String customerId, String medicalProviderId, LocalDate date);
 	
 	@EntityGraph(attributePaths = { "medicalProvider", "medicalProviderCity", "medicalProviderBranch", "customer" })
 	Page<Appointment> findAll(Specification<Appointment> spec, Pageable pageable);

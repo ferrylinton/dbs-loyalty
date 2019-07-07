@@ -18,21 +18,25 @@ import lombok.Setter;
 public class AppointmentDto {
 	
 	@Nonnull
-	@ApiModelProperty(value = "Date", example = "01-07-2019 10:00", position = 1)
+	@ApiModelProperty(value = "Date", example = "01-07-2019", position = 1)
 	private String date;
 	
 	@Nonnull
-	@ApiModelProperty(position = 2)
+	@ApiModelProperty(value = "Time", example = "10:00", position = 2)
+	private String time;
+	
+	@Nonnull
+	@ApiModelProperty(position = 3)
 	private MedicalProviderDto medicalProvider;
 	
-	@ApiModelProperty(position = 3)
+	@ApiModelProperty(position = 4)
 	private MedicalProviderCityDto medicalProviderCity;
 
-	@ApiModelProperty(position = 4)
+	@ApiModelProperty(position = 5)
 	private MedicalProviderBranchDto medicalProviderBranch;
 	
 	@Nonnull
-	@ApiModelProperty(position = 5)
+	@ApiModelProperty(position = 6)
 	private HealthPackageDto healthPackage;
 	
 	private String message;
