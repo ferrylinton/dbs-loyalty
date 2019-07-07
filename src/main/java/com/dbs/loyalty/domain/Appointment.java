@@ -1,6 +1,6 @@
 package com.dbs.loyalty.domain;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,10 +13,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.dbs.loyalty.service.SettingService;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Class of Appointment
@@ -26,6 +31,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @EqualsAndHashCode(of = { "id" }, callSuper = false)
+@ToString(of = { "id" }, callSuper = false)
 @Entity
 @Table(name = "a_appointment")
 public class Appointment extends AbstractAuditing {
@@ -38,8 +44,10 @@ public class Appointment extends AbstractAuditing {
 	@GeneratedValue(generator = "IdGenerator")
 	private String id;
 
+	@DateTimeFormat(pattern = SettingService.JAVA_DATETIME)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = SettingService.JAVA_DATETIME)
 	@Column(name = "date", nullable = false)
-	private Instant date;
+	private LocalDateTime date;
 	
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "medical_provider_id", foreignKey = @ForeignKey(name = "a_appointment_fk1"))

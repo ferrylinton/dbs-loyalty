@@ -1,6 +1,9 @@
 package com.dbs.loyalty.service;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -50,16 +53,8 @@ public class AppointmentService {
 	@Transactional
 	public Response save(Appointment appointment) throws BadRequestException, NotFoundException{
 		Optional<Customer> customer = customerRespository.findById(SecurityUtil.getId());
-		
+
 		if(customer.isPresent()) {
-			Optional<Appointment> current = appointmentRepository.findByCustomerAndMedicalProviderAndDate(
-					SecurityUtil.getId(), 
-					appointment.getMedicalProvider().getId(), 
-					appointment.getDate());
-			
-			if(current.isPresent()) {
-				return new Response(MessageConstant.DATA_IS_ALREADY_EXIST);
-			}else {
 				Optional<Wellness> wellness = wellnessRepository.findById(SecurityUtil.getId());
 				
 				if(wellness.isPresent() && wellness.get().getTotal() > 0) {
@@ -74,10 +69,14 @@ public class AppointmentService {
 				}else {
 					throw new BadRequestException(MessageConstant.NO_LIMIT_iS_AVAILABLE);
 				}
-			}
 		}else {
 			throw new NotFoundException(String.format(MessageConstant.DATA_IS_NOT_FOUND, DomainConstant.CUSTOMER, SecurityUtil.getId()));
 		}
+	}
+	
+	public boolean isExist(String medicalProviderId, LocalDateTime date) {
+		List<Appointment> current = appointmentRepository.findByCustomerAndMedicalProviderAndDate(SecurityUtil.getId(), medicalProviderId, date.with(LocalTime.MIN));
+		return current.size() > 0;
 	}
 	
 }

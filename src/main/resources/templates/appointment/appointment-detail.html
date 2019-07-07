@@ -22,36 +22,40 @@
      	<div class="table-responsive border border-top-0" th:if="${appointment}">
         	<table class="table table-sm table-detail" style="min-width: 400px;">
            		<tbody>
-                            <tr>
-                                <th style="width:200px;" th:text="#{id}">Id</th>
-                                <td th:text="${appointment.id}">ZwOkjFmG</td>
-                            </tr>
-                            <tr>
-                                <th th:text="#{name}">Name</th>
-                                <td th:text="${appointment.customer.name}">Name</td>
-                            </tr>
-                            <tr>
-                                <th th:text="#{medicalProvider}">Medical Provider</th>
-                                <td th:text="${appointment.medicalProvider.name}">BIOTEST INDONESIA</td>
-                            </tr>
-                            <tr>
-                                <th th:text="#{city}" th:if="${appointment.medicalProviderCity}">City</th>
-                                <td th:text="${appointment.medicalProviderCity.name}">Jakarta</td>
-                            </tr>
-                            <tr>
-                                <th th:text="#{branch}" th:if="${appointment.medicalProviderBranch}">Branch</th>
-                                <td th:text="${appointment.medicalProviderBranch.address}">Jl. Sumatra No. 48</td>
-                            </tr>
-                            <tr>
-                                <th th:text="#{date}">Date</th>
-                                <td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.jsDatetime()}" th:text="${appointment.date}">2019-05-01T21:24:44Z</span></td>
-                            </tr>
+               		<tr>
+                 		<th style="width:200px;" th:text="#{id}">Id</th>
+                     	<td th:text="${appointment.id}">Id</td>
+               		</tr>
+                	<tr>
+                     	<th th:text="#{name}">Name</th>
+                    	<td th:text="${appointment.customer.name}">Name</td>
+                   	</tr>
+                  	<tr>
+                      	<th th:text="#{medicalProvider}">Medical Provider</th>
+                      	<td th:text="${appointment.medicalProvider.name}">BIOTEST INDONESIA</td>
+                   	</tr>
+                  	<tr th:if="${appointment.medicalProviderCity}">
+                     	<th th:text="#{city}">City</th>
+                      	<td th:text="${appointment.medicalProviderCity.name}">Jakarta</td>
+                   	</tr>
+                  	<tr th:if="${appointment.medicalProviderBranch}">
+                      	<th th:text="#{branch}">Branch</th>
+                      	<td th:text="${appointment.medicalProviderBranch.address}">Jl. Sumatra No. 48</td>
+                  	</tr>
+                  	<tr>
+                      	<th th:text="#{healthPackage}">Health Package</th>
+                      	<td th:text="${appointment.healthPackage.name}">Package 1</td>
+                  	</tr>
+                  	<tr>
+                     	<th th:text="#{date}">Date</th>
+                     	<td><span th:data-date="${@settingService.jsDatetime()}" th:text="${appointment.date}">2019-05-01T21:24:44Z</span></td>
+                  	</tr>
            			<tr th:replace="fragment/audit-detail.html :: content(data=${appointment})"></tr>
            		</tbody>
         	</table>
       	</div>
    		<div class="toolbar">
-         	<a class="btn btn-light" th:href="@{/appointment}">
+         	<a class="btn btn-sm btn-secondary" th:href="@{/appointment}">
            		<span class="icon-left"></span> <span th:text="#{back}">Back</span>
           	</a>
       	</div>

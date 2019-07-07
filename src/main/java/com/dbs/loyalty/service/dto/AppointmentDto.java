@@ -1,6 +1,6 @@
 package com.dbs.loyalty.service.dto;
 
-import java.time.Instant;
+import javax.annotation.Nonnull;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -17,9 +17,11 @@ import lombok.Setter;
 @Getter
 public class AppointmentDto {
 	
-	@ApiModelProperty(value = "Date", example = "2019-07-01T10:00:00.000Z", position = 1)
-	private Instant date;
+	@Nonnull
+	@ApiModelProperty(value = "Date", example = "01-07-2019 10:00", position = 1)
+	private String date;
 	
+	@Nonnull
 	@ApiModelProperty(position = 2)
 	private MedicalProviderDto medicalProvider;
 	
@@ -28,5 +30,11 @@ public class AppointmentDto {
 
 	@ApiModelProperty(position = 4)
 	private MedicalProviderBranchDto medicalProviderBranch;
+	
+	@Nonnull
+	@ApiModelProperty(position = 5)
+	private HealthPackageDto healthPackage;
+	
+	private String message;
 	
 }
