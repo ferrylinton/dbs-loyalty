@@ -32,13 +32,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.dbs.loyalty.config.ApplicationProperties;
 import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.CustomerTypeConstant;
+import com.dbs.loyalty.config.constant.DateConstant;
 import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.Country;
 import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.domain.FileImageTask;
 import com.dbs.loyalty.service.CountryService;
 import com.dbs.loyalty.service.CustomerService;
-import com.dbs.loyalty.service.DateService;
 import com.dbs.loyalty.service.ImageService;
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.util.MessageUtil;
@@ -178,12 +178,12 @@ public class CustomerController {
 			
 		    @Override
 		    public void setAsText(String text) throws IllegalArgumentException{
-		      setValue(LocalDate.parse(text, DateTimeFormatter.ofPattern(DateService.JAVA_DATE)));
+		      setValue(LocalDate.parse(text, DateTimeFormatter.ofPattern(DateConstant.JAVA_DATE)));
 		    }
 
 		    @Override
 		    public String getAsText() throws IllegalArgumentException {
-		      return DateTimeFormatter.ofPattern(DateService.JAVA_DATE).format((LocalDate) getValue());
+		      return DateTimeFormatter.ofPattern(DateConstant.JAVA_DATE).format((LocalDate) getValue());
 		    }
 		    
 		});

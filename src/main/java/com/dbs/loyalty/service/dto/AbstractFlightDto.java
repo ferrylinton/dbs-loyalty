@@ -1,8 +1,8 @@
 package com.dbs.loyalty.service.dto;
 
-import java.time.Instant;
-
 import javax.validation.constraints.NotNull;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -29,7 +29,7 @@ public abstract class AbstractFlightDto{
 	
 	@ApiModelProperty(value = "Flight Date", position = 2, example = "2019-07-01T10:00:00.000Z")
 	@NotNull
-	private Instant flightDate;
+	private String flightDate;
 	
 	@ApiModelProperty(value = "Flight Code", position = 3, example = "AAA")
 	@NotNull
@@ -59,6 +59,8 @@ public abstract class AbstractFlightDto{
 	private int numberOfLuggages;
 	
 	@ApiModelProperty(value = "Pickup Time", position = 12, example = "2019-07-01T10:00:00.000Z")
-	private Instant pickupTime;
+	private String pickupTime;
 	
+	@JsonIgnore
+	private String message;
 }

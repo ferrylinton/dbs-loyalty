@@ -7,6 +7,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.config.constant.RestConstant;
@@ -17,7 +18,7 @@ import com.dbs.loyalty.service.AppointmentService;
 import com.dbs.loyalty.service.dto.AppointmentDto;
 import com.dbs.loyalty.service.mapper.AppointmentMapper;
 import com.dbs.loyalty.web.response.Response;
-import com.dbs.loyalty.web.validator.AppointmentDtoValidator;
+import com.dbs.loyalty.web.validator.rest.AppointmentDtoValidator;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,7 +28,7 @@ import io.swagger.annotations.Authorization;
 import lombok.RequiredArgsConstructor;
 
 /**
- * REST controller for Appointment
+ * REST controller for Appointment API
  * 
  * @author Ferry L. H. <ferrylinton@gmail.com>
  * 
@@ -36,6 +37,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('CUSTOMER')")
 @RestController
+@RequestMapping("/api/appointments")
 public class AppointmentRestController {
 
 	private final AppointmentService appointmentService;
@@ -48,7 +50,7 @@ public class AppointmentRestController {
 			produces=SwaggerConstant.JSON, 
 			authorizations={@Authorization(value=SwaggerConstant.JWT)})
 	@ApiResponses(value={@ApiResponse(code=200, message=SwaggerConstant.OK, response=Response.class)})
-    @PostMapping("/api/appointments")
+    @PostMapping
     public Response addAppointment(@Valid @RequestBody AppointmentDto appointmentDto) throws BadRequestException, NotFoundException{
     	return appointmentService.save(appointmentMapper.toEntity(appointmentDto));
     }

@@ -16,12 +16,13 @@ public interface DepartureRepository extends JpaRepository<Departure, String>, J
 	
 	@EntityGraph(attributePaths = { "airport", "customer" })
 	Optional<Departure> findById(String id);
-	
+
 	@Query(value = "select d from Departure d "
 			+ "join fetch d.customer c "
 			+ "join fetch d.airport r "
-			+ "where c.id = ?1 and r.id = ?2 and d.flightDate = ?3")
-	Optional<Departure> findByCustomerAndAirportAndDate(String customerId, String airportId, Instant flightDate);
+			+ "where c.id = ?1 and r.id = ?2 and d.flightDate >= ?3 and d.flightDate < ?4")
+	Optional<Departure> isExist(String customerId, String airportId, Instant start, Instant end);
+	
 	
 	@EntityGraph(attributePaths = { "airport", "customer" })
 	Page<Departure> findAll(Pageable pageable);

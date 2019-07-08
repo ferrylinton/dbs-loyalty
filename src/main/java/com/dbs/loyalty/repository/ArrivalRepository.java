@@ -16,12 +16,13 @@ public interface ArrivalRepository extends JpaRepository<Arrival, String>, JpaSp
 	
 	@EntityGraph(attributePaths = { "airport", "customer" })
 	Optional<Arrival> findById(String id);
-	
+
 	@Query(value = "select a from Arrival a "
 			+ "join fetch a.customer c "
 			+ "join fetch a.airport r "
-			+ "where c.id = ?1 and r.id = ?2 and a.flightDate = ?3")
-	Optional<Arrival> findByCustomerAndAirportAndDate(String customerId, String airportId, Instant flightDate);
+			+ "where c.id = ?1 and r.id = ?2 and a.flightDate >= ?3 and a.flightDate < ?4")
+	Optional<Arrival> isExist(String customerId, String airportId, Instant start, Instant end);
+	
 	
 	@EntityGraph(attributePaths = { "airport", "customer" })
 	Page<Arrival> findAll(Pageable pageable);

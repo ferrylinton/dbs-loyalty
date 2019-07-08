@@ -1,6 +1,7 @@
 package com.dbs.loyalty.service;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Map;
 import java.util.Optional;
 
@@ -46,32 +47,31 @@ public class ArrivalService {
 		Optional<Customer> customer = customerRespository.findById(SecurityUtil.getId());
 		
 		if(customer.isPresent()) {
-			Optional<Arrival> current = arrivalRepository.findByCustomerAndAirportAndDate(
-					SecurityUtil.getId(), 
-					arrival.getAirport().getId(), 
-					arrival.getFlightDate());
+			Optional<AirportAssistance> travelAssistance = travelAssistanceRepository.findById(SecurityUtil.getId());
 			
-			if(current.isPresent()) {
-				return new Response(MessageConstant.DATA_IS_ALREADY_EXIST);
-			}else {
-				Optional<AirportAssistance> travelAssistance = travelAssistanceRepository.findById(SecurityUtil.getId());
+			if(travelAssistance.isPresent() && travelAssistance.get().getTotal() > 0) {
+				travelAssistance.get().setTotal(travelAssistance.get().getTotal() - 1);
+				travelAssistanceRepository.save(travelAssistance.get());
 				
-				if(travelAssistance.isPresent() && travelAssistance.get().getTotal() > 0) {
-					travelAssistance.get().setTotal(travelAssistance.get().getTotal() - 1);
-					travelAssistanceRepository.save(travelAssistance.get());
-					
-					arrival.setCustomer(customer.get());
-					arrival.setCreatedBy(SecurityUtil.getLogged());
-					arrival.setCreatedDate(Instant.now());
-					arrival = arrivalRepository.save(arrival);
-					return new Response(MessageConstant.DATA_IS_SAVED);
-				}else {
-					throw new BadRequestException(MessageConstant.NO_LIMIT_iS_AVAILABLE);
-				}
+				arrival.setCustomer(customer.get());
+				arrival.setCreatedBy(SecurityUtil.getLogged());
+				arrival.setCreatedDate(Instant.now());
+				arrival = arrivalRepository.save(arrival);
+				return new Response(MessageConstant.DATA_IS_SAVED);
+			}else {
+				throw new BadRequestException(MessageConstant.NO_LIMIT_iS_AVAILABLE);
 			}
 		}
 
 		throw new BadRequestException(MessageConstant.FAILED_TO_SAVE_DATA);
+	}
+	
+	public boolean isExist(String airportId, Instant flightDate) {
+		Instant start = flightDate.truncatedTo(ChronoUnit.DAYS);
+		Instant end = start.plus(1, ChronoUnit.DAYS); 
+		
+		Optional<Arrival> arrival = arrivalRepository.isExist(SecurityUtil.getId(), airportId, start, end);
+		return arrival.isPresent();
 	}
 	
 }
