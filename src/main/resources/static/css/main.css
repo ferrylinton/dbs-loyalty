@@ -209,16 +209,16 @@ a:hover{
 	border-bottom: solid 3px #c00;
 }
 
-.navbar .btn-menu{
-	padding: 0 10px;
-	font-size: 1.5rem;
-	color: #fff;
-	border: solid 1px #2e2e2e;
+.navbar .dropdown-toggle::after{
+	margin-left: 0;
 }
-	
-.navbar .btn-nav{
+
+.navbar .btn-menu, .navbar .btn-nav{
+	font-size: 1.3rem;
+	padding: .15rem .5rem;
 	color: #fff;
 	border: solid 1px #2e2e2e;
+	cursor: pointer;
 }
 	
 .navbar .btn-group.btn-nav .btn{
@@ -232,12 +232,13 @@ a:hover{
 
 .label{
 	display: none;	
+	font-size: 1rem;
 }
 
 @media ( min-width : 576px) {
 	
 	.label{
-		display: inline;
+		display: inline-block;
 	}
 	
 }
@@ -248,7 +249,7 @@ a:hover{
 	margin-top: 15px;
 	padding: 15px 0;
 	font-size: .9em;
-	border-top: solid 1px #dee2e6;
+	border-top: solid 2px #dee2e6;
 }
 
 #footer a{

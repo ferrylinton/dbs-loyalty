@@ -8,8 +8,6 @@ $(document).ready(function () {
 	
 	initFormatDate();
 	
-	initToast();
-	
 	initDeleteModal();
 	
 	initTaskModal();
@@ -37,10 +35,6 @@ $(document).ready(function () {
 	JsonUtil.toTable();
 	
 });
-
-function initToast(){
-	$('.toast').toast('show');
-}
 
 function initDobMask(){
 	$('#dob').inputmask("99-99-9999",{ alias: "datetime", 'clearIncomplete': true, "placeholder": "dd-mm-yyyy" });

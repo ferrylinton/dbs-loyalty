@@ -12,8 +12,8 @@
         	<img class="float-left" alt="dbs.png" th:src="@{/static/image/dbs.png}"></img>
      	</a>
      	<div class="ml-auto">
-     		<div class="btn-group btn-nav dropdown">
-           		<a class="btn dropdown-toggle text-light" href="#" role="button" id="user-account" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+     		<div class="btn-group dropdown">
+           		<a class="btn btn-nav dropdown-toggle" href="#" role="button" id="user-account" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                		<span class="label" th:text="${#authorization.authentication.name}">ferrylinton</span><span class="icon-user-circle"></span>
             	</a>
             	<div class="dropdown-menu dropdown-menu-right" aria-labelledby="user-account">
@@ -25,9 +25,11 @@
             	</div>
          	</div>
       		<a class="btn btn-nav" th:href="@{/}">
-           		<span class="icon-home-outline"></span>
+           		<span class="icon-home"></span>
          	</a>
-          	<button class="btn btn-menu" type="button" onclick="Sidenav.toggle()">&#9776;</button>
+          	<button class="btn btn-menu" type="button" onclick="Sidenav.toggle()">
+				<span class="icon-menu"></span>
+			</button>
     	</div>
 	</nav>
 </div>
