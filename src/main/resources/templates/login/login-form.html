@@ -1,8 +1,33 @@
 <!doctype html>
-<html lang="en" th:lang="${#locale.toString() == 'in' ? 'id' : #locale}" xmlns:th="http://www.thymeleaf.org" class="h-100" style="min-height: 430px;">
-
-<head th:replace="fragment/head.html :: content(title=login)"></head>
-
+<html 
+	lang="en" th:lang="${#locale.toString() == 'in' ? 'id' : #locale}" 
+	th:with="hasCdnjsProfile=${#arrays.contains(@environment.getActiveProfiles(),'cdnjs')}, hasMinProfile=${#arrays.contains(@environment.getActiveProfiles(),'min')}"
+	xmlns:th="http://www.thymeleaf.org"
+	class="h-100" style="min-height: 430px;">
+	
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="contextPath" th:content="@{/}" />
+	<title th:text="|#{application.name} : #{login}|">TITLE</title>
+    <link th:href="@{/static/image/favicon.png}" rel="shorcut icon" />
+    <th:block th:with="libs=${hasCdnjsProfile} ? 'https://cdnjs.cloudflare.com/ajax/libs' : @{/static/libs}">
+    	<link rel="stylesheet" th:href="|${libs}/twitter-bootstrap/4.3.1/css/bootstrap.min.css|" />
+    	<link rel="stylesheet" th:href="|${libs}/jquery.inputmask/3.3.4/css/inputmask.min.css|" />
+    	<link rel="stylesheet" th:href="|${libs}/tempusdominus-bootstrap-4/5.1.2/css/tempusdominus-bootstrap-4.min.css|" />
+    	<link rel="stylesheet" th:href="|${libs}/Trumbowyg/2.17.0/ui/trumbowyg.min.css|" />
+    </th:block>
+	<th:block th:if="${hasMinProfile}" th:with="id=${@environment.getProperty('deploy.id')}">
+		<link rel="stylesheet" th:href="@{|/static/css-dist/all.min.css?${id}|}" />
+	</th:block>
+	<th:block th:if="${!hasMinProfile}" th:with="id=${#strings.randomAlphanumeric(10)}">
+		<link rel="stylesheet" th:href="@{|/static/css/fontello.css?${id}|}" />
+		<link rel="stylesheet" th:href="@{|/static/css/input-material.css?${id}|}" />
+		<link rel="stylesheet" th:href="@{|/static/css/sidenav.css?${id}|}" />
+		<link rel="stylesheet" th:href="@{|/static/css/main.css?${id}|}" />
+	</th:block>
+</head>
 <body class="bg-login pt-3">
     <div class="container-fluid login-box">
         <div class="row justify-content-center align-items-center h-100">
@@ -43,8 +68,32 @@
             </div>
         </div>
     </div>
-    <!-- SCRIPTS -->
-    <div th:replace="fragment/scripts.html :: content"></div>
+    <!-- ###### LIBS - JAVASCRIPT ###### -->
+	<th:block th:with="libs=${hasCdnjsProfile} ? 'https://cdnjs.cloudflare.com/ajax/libs' : @{/static/libs}">
+		<script th:src="|${libs}/moment.js/2.24.0/moment.min.js|"></script>
+		<script th:src="|${libs}/moment.js/2.24.0/locale/id.js|"></script>
+	 	<script th:src="|${libs}/jquery/3.4.1/jquery.min.js|"></script>
+		<script th:src="|${libs}/popper.js/1.15.0/umd/popper.min.js|"></script>
+	  	<script th:src="|${libs}/twitter-bootstrap/4.3.1/js/bootstrap.min.js|"></script>
+	   	<script th:src="|${libs}/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js|"></script>
+	  	<script th:src="|${libs}/jquery.inputmask/3.3.4/bindings/inputmask.binding.min.js|"></script>
+		<script th:src="|${libs}/tempusdominus-bootstrap-4/5.1.2/js/tempusdominus-bootstrap-4.min.js|"></script>
+    	<script th:src="|${libs}/Trumbowyg/2.17.0/trumbowyg.min.js|"></script>
+    	<script th:src="|${libs}/Trumbowyg/2.17.0/langs/id.min.js|"></script>
+	</th:block>
+    <th:block th:if="${hasMinProfile}" th:with="id=${@environment.getProperty('deploy.id')}">
+    	<script th:src="@{|/static/js-dist/all.min.js?${id}|}"></script>
+  	</th:block>
+    <th:block th:if="${!hasMinProfile}" th:with="id=${#strings.randomAlphanumeric(10)}">
+   		<script th:src="@{|/static/js/lang.js?${id}|}"></script>
+   		<script th:src="@{|/static/js/materialize-inputs.jquery.js?${id}|}"></script>
+   		<script th:src="@{|/static/js/sidenav.js?${id}|}"></script>
+   		<script th:src="@{|/static/js/jsonutil.js?${id}|}"></script>
+    	<script th:src="@{|/static/js/dateutil.js?${id}|}"></script>
+    	<script th:src="@{|/static/js/imageutil.js?${id}|}"></script>
+    	<script th:src="@{|/static/js/formutil.js?${id}|}"></script>
+     	<script th:src="@{|/static/js/main.js?${id}|}"></script>
+	</th:block>
 </body>
 
 </html>

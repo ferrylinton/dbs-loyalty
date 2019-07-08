@@ -186,9 +186,9 @@
             <column name="locked" valueBoolean="false"/>
             <column name="user_type" value="External"/>
             <column name="login_attempt_count" valueNumeric="0"/>
-            <column name="username" value="travel01"/>
+            <column name="username" value="airport01"/>
             <column name="password_hash" value="${password}"/>
-            <column name="role_id" value="${TravelAssistance}"/>
+            <column name="role_id" value="${AirportAssistance}"/>
         </insert>
         
         <insert tableName="u_user">
@@ -199,9 +199,9 @@
             <column name="locked" valueBoolean="false"/>
             <column name="user_type" value="External"/>
             <column name="login_attempt_count" valueNumeric="0"/>
-            <column name="username" value="travel02"/>
+            <column name="username" value="airport02"/>
             <column name="password_hash" value="${password}"/>
-            <column name="role_id" value="${TravelAssistance}"/>
+            <column name="role_id" value="${AirportAssistance}"/>
         </insert>
         
     </changeSet>

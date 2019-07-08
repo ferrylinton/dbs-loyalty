@@ -34,7 +34,7 @@ public class LogLoginController {
 	
 	private final LogLoginService logLoginService;
 
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('LOG')")
 	@GetMapping
 	public String viewLogLogins(
 			@ModelAttribute(Constant.TOAST) String toast, 

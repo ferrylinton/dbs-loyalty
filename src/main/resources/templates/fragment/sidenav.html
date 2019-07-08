@@ -35,12 +35,12 @@
                 </ul>
             </li>
             <li>
-                <span th:text="#{travelAssistance}">Travel Assistance</span>
+                <span th:text="#{airportAssistance}">Airport Assistance</span>
                 <ul>
-                    <li th:if="${#authorization.expression('hasAnyAuthority(''TRAVEL_ASSISTANCE'')')}">
+                    <li th:if="${#authorization.expression('hasAnyAuthority(''AIRPORT_ASSISTANCE'')')}">
                         <a class="icon-airport" data-menu="departure" th:href="@{/departure}" th:text="#{departure}">Departure</a>
                     </li>
-                    <li th:if="${#authorization.expression('hasAnyAuthority(''TRAVEL_ASSISTANCE'')')}">
+                    <li th:if="${#authorization.expression('hasAnyAuthority(''AIRPORT_ASSISTANCE'')')}">
                         <a class="icon-airport" data-menu="arrival" th:href="@{/arrival}" th:text="#{arrival}">Arrival</a>
                     </li>
                 </ul>
@@ -60,13 +60,13 @@
             <li>
                 <span th:text="#{log}">Log</span>
                 <ul>
-                    <li th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                    <li th:if="${#authorization.expression('hasAuthority(''LOG'')')}">
                         <a class="icon-history" data-menu="loglogin" th:href="@{/loglogin}" th:text="#{loglogin}">Log Login</a>
                     </li>
-                    <li th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                    <li th:if="${#authorization.expression('hasAuthority(''LOG'')')}">
                         <a class="icon-history" data-menu="logtoken" th:href="@{/logtoken}" th:text="#{logtoken}">Log Token</a>
                     </li>
-                    <li th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                    <li th:if="${#authorization.expression('hasAuthority(''LOG'')')}">
                         <a class="icon-history" data-menu="logapi" th:href="@{/logapi}" th:text="#{logapi}">Log Api</a>
                     </li>
                 </ul>

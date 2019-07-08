@@ -34,7 +34,7 @@ public class LogTokenController {
 	
 	private final LogTokenService logTokenService;
 
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('LOG')")
 	@GetMapping
 	public String viewLogTokens(
 			@ModelAttribute(Constant.TOAST) String toast, 

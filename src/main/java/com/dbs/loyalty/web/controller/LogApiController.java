@@ -34,7 +34,7 @@ public class LogApiController {
 	
 	private final LogApiService logApiService;
 
-	@PreAuthorize("hasRole('ADMIN')")
+	@PreAuthorize("hasRole('LOG')")
 	@GetMapping
 	public String viewLogApis(
 			@ModelAttribute(Constant.TOAST) String toast, 

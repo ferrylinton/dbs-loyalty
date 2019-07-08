@@ -5,7 +5,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 	
- 	<property name="ADMIN" value="7EHSGZqDYiRIzl86BNy3Pz" />
+ 	<property name="LOG" value="7EHSGZqDYiRIzl86BNy3Pz" />
 	<property name="ROLE_MK" value="4oQQCn6EH3Nt1STb5QDPLs" />
 	<property name="ROLE_CK" value="75ZVzieeKjOL6pXwaojhnj" />
 	<property name="USER_MK" value="4FyC3ZjlsMK5pk4C1xyx3S" />
@@ -18,7 +18,7 @@
 	<property name="PROMO_CK" value="1TTQ3Krpv67mXgXSVQMxta" />
 	<property name="EVENT_MK" value="5pCE5or9qYpE8MjCmEoE1T" />
 	<property name="EVENT_CK" value="20z68J3645AKPfPZikxWjr" />
-	<property name="TRAVEL_ASSISTANCE" value="7EkUrNoXxryCvNu5QVjHDT" />
+	<property name="AIRPORT_ASSISTANCE" value="7EkUrNoXxryCvNu5QVjHDT" />
 	<property name="WELLNESS" value="7SOgeukvTpvHkBFpspq3z6" />
 	<property name="LOVED_ONE" value="Z1oH73CbzVYyRSbDuE4s0" />
 	<property name="REWARD" value="58RmYQyduqZ0SBK3VvHElI" />
@@ -26,8 +26,8 @@
 	<changeSet author="FLH" id="authority-data-1">
 	
 		<insert tableName="u_authority">
-            <column name="id" value="${ADMIN}"/>
-            <column name="name" value="ADMIN"/>
+            <column name="id" value="${LOG}"/>
+            <column name="name" value="LOG"/>
         </insert>
         
         <insert tableName="u_authority">
@@ -91,8 +91,8 @@
         </insert>
 
         <insert tableName="u_authority">
-            <column name="id" value="${TRAVEL_ASSISTANCE}"/>
-            <column name="name" value="TRAVEL_ASSISTANCE"/>
+            <column name="id" value="${AIRPORT_ASSISTANCE}"/>
+            <column name="name" value="AIRPORT_ASSISTANCE"/>
         </insert>
 
         <insert tableName="u_authority">

@@ -8,7 +8,7 @@
 	<property name="Admin" value="3RHlPxnhbxGfks4vgGFo9k" />
 	<property name="Maker" value="5EIWrrJFrijNCv2tISSW6O" />
 	<property name="Checker" value="3CYZnXHhxtJ3xvHzUJe6bh" />
-	<property name="TravelAssistance" value="7cyB8fi6xDBHfDTppCagyC" />
+	<property name="AirportAssistance" value="7cyB8fi6xDBHfDTppCagyC" />
 	
     <changeSet author="FLH" id="role-data-1">
     
@@ -34,10 +34,10 @@
         </insert>
         
         <insert tableName="u_role">
-            <column name="id" value="${TravelAssistance}"/>
+            <column name="id" value="${AirportAssistance}"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
-            <column name="name" value="TravelAssistance"/>
+            <column name="name" value="AirportAssistance"/>
         </insert>
         
     </changeSet>
@@ -46,9 +46,79 @@
 		
 		<!-- ROLE ADMINISTRATOR -->
 		
+		        <insert tableName="u_role_authority">
+            <column name="role_id" value="${Admin}"/>
+            <column name="authority_id" value="${ROLE_MK}"/>
+        </insert>
+        
         <insert tableName="u_role_authority">
             <column name="role_id" value="${Admin}"/>
-            <column name="authority_id" value="${ADMIN}"/>
+            <column name="authority_id" value="${USER_MK}"/>
+        </insert>
+        
+        <insert tableName="u_role_authority">
+            <column name="role_id" value="${Admin}"/>
+            <column name="authority_id" value="${CUSTOMER_MK}"/>
+        </insert>
+        
+        <insert tableName="u_role_authority">
+            <column name="role_id" value="${Admin}"/>
+            <column name="authority_id" value="${PROMO_CATEGORY_MK}"/>
+        </insert>
+        
+        <insert tableName="u_role_authority">
+            <column name="role_id" value="${Admin}"/>
+            <column name="authority_id" value="${PROMO_MK}"/>
+        </insert>
+        
+        <insert tableName="u_role_authority">
+            <column name="role_id" value="${Admin}"/>
+            <column name="authority_id" value="${EVENT_MK}"/>
+        </insert>
+        
+        <insert tableName="u_role_authority">
+            <column name="role_id" value="${Admin}"/>
+            <column name="authority_id" value="${WELLNESS}"/>
+        </insert>
+
+        <insert tableName="u_role_authority">
+            <column name="role_id" value="${Admin}"/>
+            <column name="authority_id" value="${ROLE_CK}"/>
+        </insert>
+        
+        <insert tableName="u_role_authority">
+            <column name="role_id" value="${Admin}"/>
+            <column name="authority_id" value="${USER_CK}"/>
+        </insert>
+        
+        <insert tableName="u_role_authority">
+            <column name="role_id" value="${Admin}"/>
+            <column name="authority_id" value="${CUSTOMER_CK}"/>
+        </insert>
+        
+        <insert tableName="u_role_authority">
+            <column name="role_id" value="${Admin}"/>
+            <column name="authority_id" value="${PROMO_CATEGORY_CK}"/>
+        </insert>
+        
+        <insert tableName="u_role_authority">
+            <column name="role_id" value="${Admin}"/>
+            <column name="authority_id" value="${PROMO_CK}"/>
+        </insert>
+        
+        <insert tableName="u_role_authority">
+            <column name="role_id" value="${Admin}"/>
+            <column name="authority_id" value="${EVENT_CK}"/>
+        </insert>
+
+        <insert tableName="u_role_authority">
+            <column name="role_id" value="${Admin}"/>
+            <column name="authority_id" value="${AIRPORT_ASSISTANCE}"/>
+        </insert>
+        
+        <insert tableName="u_role_authority">
+            <column name="role_id" value="${Admin}"/>
+            <column name="authority_id" value="${LOG}"/>
         </insert>
         
         <!-- ROLE MAKER -->
@@ -120,11 +190,11 @@
             <column name="authority_id" value="${EVENT_CK}"/>
         </insert>
         
-        <!-- ROLE TRAVEL ASSISTANCE -->
+        <!-- ROLE AIRPORT ASSISTANCE -->
 		
         <insert tableName="u_role_authority">
-            <column name="role_id" value="${TravelAssistance}"/>
-            <column name="authority_id" value="${TRAVEL_ASSISTANCE}"/>
+            <column name="role_id" value="${AirportAssistance}"/>
+            <column name="authority_id" value="${AIRPORT_ASSISTANCE}"/>
         </insert>
 
     </changeSet>
