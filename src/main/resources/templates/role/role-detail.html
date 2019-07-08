@@ -33,7 +33,7 @@
                   		<th th:text="#{authorities}">Authorities</th>
                       	<td>
                    			<ol th:remove="all-but-first">
-                         		<li th:each="authority : ${role.authorities}" th:text="#{${authority.name}}">Name</li>
+                         		<li th:each="authority : ${role.authorities}" th:text="${authority.name}">Name</li>
                            		<li>Name</li>
                          	</ol>
                   		</td>

@@ -6,6 +6,7 @@ html {
 body{
 	padding: 60px 0 0 0;
 	margin: 0;
+	background-color: #d3d7cf;
 }
 
 a{
@@ -47,6 +48,7 @@ a:hover{
 	padding: .2rem 1rem;
 	text-transform: uppercase;
 	font-size: .85em;
+	border-bottom: solid 1px #ced4da;
 }
 
 .form-control[readonly] {
@@ -207,18 +209,25 @@ a:hover{
 	min-width: 350px;
 	background-color: #000;
 	border-bottom: solid 3px #c00;
+	padding: 0;
 }
 
 .navbar .dropdown-toggle::after{
 	margin-left: 0;
 }
 
-.navbar .btn-menu, .navbar .btn-nav{
-	font-size: 1.3rem;
+.navbar .btn-nav{
+	font-size: 1.2rem;
 	padding: .15rem .5rem;
 	color: #fff;
-	border: solid 1px #2e2e2e;
-	cursor: pointer;
+}
+
+.navbar .btn-menu{
+	height: 56px;
+	background-color: #1d2023;
+	font-size: 1.4rem;
+	padding: .15rem .85rem;
+	color: #fff;
 }
 	
 .navbar .btn-group.btn-nav .btn{
@@ -227,7 +236,6 @@ a:hover{
 	
 .navbar .btn-menu:hover, .btn-nav:hover{
 	color: #007bff;
-	background-color: #181818;
 }
 
 .label{
@@ -249,7 +257,8 @@ a:hover{
 	margin-top: 15px;
 	padding: 15px 0;
 	font-size: .9em;
-	border-top: solid 2px #dee2e6;
+	border-top: solid 4px #babdb6;
+	background-color: #d3d7cf;
 }
 
 #footer a{
@@ -285,7 +294,7 @@ a:hover{
 #content-box{
 	padding-right: 0;
 	transition: 0.8s;
-	background-color: #fff;
+	background-color: #f8f8f8;
 	min-width: 350px;
 }
 
@@ -319,6 +328,7 @@ a:hover{
 	padding: 15px;
 	margin: 15px;
 	min-height: 400px;
+	background-color: #fff;
 }
 
 /* WELCOME BOX */
