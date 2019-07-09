@@ -38,7 +38,7 @@
                  	<tr th:each="promo,row : ${page}">
                       	<td th:text="${row.count + (page.number * page.size)}">1</td>
                      	<td th:text="${promo.customer.name}">Ferry Linton Hutapea</td>
-                     	<td th:text="${promo.customer.customerType == '0025' ? 'TPC' : 'TREASURE'}">TREASURE</td>
+                     	<td th:text="${promo.customer.customerType == T(com.dbs.loyalty.config.constant.CustomerTypeConstant).TPC_VALUE ? 'TPC' : 'TREASURE'}">TREASURE</td>
                    		<td th:text="${promo.customer.email}">ferrylinton@gmail.com</td>
                      	<td th:text="${promo.customer.phone}">1234567890</td>
                      	<td><span th:data-date="${@dateService.jsDatetime()}" th:text="${promo.customer.createdDate}">2019-05-01T21:24:44Z</span></td>

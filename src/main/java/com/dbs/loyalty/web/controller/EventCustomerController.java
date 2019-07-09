@@ -26,25 +26,28 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/event")
 public class EventCustomerController {
 
-	private static final String VIEW 		= "event/event-customer";
+	private static final String REDIRECT 	= "redirect:/event/%s/customer";
+	
+	private static final String VIEW 		= "eventcustomer/eventcustomer-view.html";
 	
 	private static final String SORT_BY 	= "customer.name";
 	
 	private final EventCustomerService eventCustomerService;
 	
 	@PreAuthorize("hasAnyRole('EVENT_MK', 'EVENT_CK')")
-	@GetMapping("/{id}/customer")
+	@GetMapping("/{eventId}/customer")
 	public String viewEventCustomers(
 			@RequestParam Map<String, String> params, 
-			@PathVariable String id, 
+			@PathVariable String eventId, 
 			Sort sort, Model model) {
 		
 		Order order = PageUtil.getOrder(sort, SORT_BY);
-		Page<EventCustomer> page = eventCustomerService.findWithCustomerByEventId(id, PageUtil.getPageable(params, order));
+		Page<EventCustomer> page = eventCustomerService.findEventCustomers(eventId, params, PageUtil.getPageable(params, order));
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
-			return "redirect:/event" + id + "/customer";
+			return String.format(REDIRECT, eventId);
 		}else {
+			model.addAttribute("eventId", eventId);
 			model.addAttribute(Constant.PAGE, page);
 			model.addAttribute(Constant.ORDER, order);
 			model.addAttribute(Constant.PREVIOUS, QueryStringUtil.page(order, page.getNumber() - 1));

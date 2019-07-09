@@ -1,0 +1,68 @@
+<!doctype html>
+<html 
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	layout:decorate="~{layout/layout}">
+
+<head>
+    <title th:text="#{event}">Event</title>
+</head>
+
+<body data-menu="event">
+	<nav aria-label="breadcrumb" layout:fragment="breadcrumb">
+   		<ol class="breadcrumb">
+      		<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{home}">Home</a></li>
+        	<li class="breadcrumb-item"><a th:href="@{/event}" th:text="#{event}">Event</a></li>
+        	<li class="breadcrumb-item active" aria-current="page" th:text="#{customer}">Customer</li>
+     	</ol>
+	</nav>
+	<div layout:fragment="content">
+		<div th:replace="fragment/search.html :: content(|/event/${eventId}/customer|, |#{name}, #{email}, #{phone}|, false)"></div>
+     	<div class="table-responsive border border-top-0" th:if="${page.getTotalElements() > 0}">
+        	<table class="table table-sm table-striped table-hover border-bottom" style="min-width: 800px;">
+            	<thead>
+                	<tr th:with="ascending=${order.getDirection().name() == 'ASC'}">
+                      	<th style="width:40px">#</th>
+                     	<th th:with="sort=|&sort=name,${ascending ? 'DESC' : 'ASC'}|">
+                         	<a th:href="@{|?page=${page.getNumber()}${params}${sort}|}" class="text-decoration-none">
+                                    <span th:text="#{name}">Name</span> <span th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></span>
+                          	</a>
+                      	</th>
+                       	<th th:text="#{customerType}">Type</th>
+                      	<th th:text="#{email}">Email</th>
+                    	<th th:text="#{phone}">Phone</th>
+                      	<th th:text="#{answer}">Answer</th>
+                      	<th th:text="#{date}">Date</th>
+                 	</tr>
+             	</thead>
+             	<tbody th:remove="all-but-first">
+               		<tr th:each="event,row : ${page}">
+                     	<td th:text="${row.count + (page.number * page.size)}">1</td>
+                    	<td th:text="${event.customer.name}">Ferry Linton Hutapea</td>
+                     	<td th:text="${event.customer.customerType == T(com.dbs.loyalty.config.constant.CustomerTypeConstant).TPC_VALUE ? 'TPC' : 'TREASURE'}">TREASURE</td>
+                      	<td th:text="${event.customer.email}">ferrylinton@gmail.com</td>
+                     	<td th:text="${event.customer.phone}">1234567890</td>
+                      	<td th:text="#{${event.eventAnswer}}">YES</td>
+                      	<td><span th:data-date="${@dateService.jsDatetime()}" th:text="${event.customer.createdDate}">2019-05-01T21:24:44Z</span></td>
+                	</tr>
+              	</tbody>
+         	</table>
+       	</div>
+        <div th:replace="fragment/not-found.html :: content"></div>
+		<div class="toolbar">
+        	<a class="btn btn-sm btn-secondary" th:href="@{/event}">
+     			<span class="icon-left"></span> <span th:text="#{back}">Back</span>
+         	</a>
+         	<th:block th:if="${page != null && page.getTotalPages() > 1}">
+				<a class="btn btn-sm btn-secondary text-uppercase" th:href="@{|?${previous}${params}|}" th:classappend="${not page.hasPrevious()} ? 'disabled'">
+		       		<span class="icon-left-open"></span> <span th:text="#{previous}">Previous</span>
+		    	</a>
+		      	<a class="btn btn-sm btn-secondary text-uppercase" th:href="@{|?${next}${params}|}" th:classappend="${not page.hasNext()} ? 'disabled'">
+		    		<span th:text="#{next}">Next</span> <span class="icon-right-open"></span>
+		       	</a>
+			</th:block>
+      	</div>
+	</div>
+</body>
+
+</html>

@@ -1,12 +1,14 @@
 package com.dbs.loyalty.service;
 
 import java.time.Instant;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.MessageConstant;
 import com.dbs.loyalty.domain.Event;
 import com.dbs.loyalty.domain.EventCustomer;
@@ -57,8 +59,13 @@ public class EventCustomerService {
 		}
 	}
 	
-	public Page<EventCustomer> findWithCustomerByEventId(String eventId, Pageable pageable){
-		return eventCustomerRepository.findWithCustomerByEventId(eventId, pageable);
+	public Page<EventCustomer> findEventCustomers(String eventId, Map<String, String> params, Pageable pageable){
+		if(params.containsKey(Constant.KY_PARAM)) {
+			String keyword = String.format(Constant.LIKE_FORMAT, params.get(Constant.KY_PARAM).trim().toLowerCase());
+			return eventCustomerRepository.findByEventIdAndKeyword(eventId, keyword, pageable);
+		}else {
+			return eventCustomerRepository.findByEventId(eventId, pageable);
+		}
 	}
 	
 	private EventAnswer getEventAnswer(String answer) throws BadRequestException {
