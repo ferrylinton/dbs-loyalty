@@ -16,7 +16,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.dbs.loyalty.service.SettingService;
+import com.dbs.loyalty.config.constant.DateConstant;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.EqualsAndHashCode;
@@ -45,13 +45,13 @@ public class Appointment extends AbstractAuditing {
 	@GeneratedValue(generator = "IdGenerator")
 	private String id;
 
-	@DateTimeFormat(pattern = SettingService.JAVA_DATE)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = SettingService.JAVA_DATE)
+	@DateTimeFormat(pattern = DateConstant.JAVA_DATE)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateConstant.JAVA_DATE)
 	@Column(name = "date", nullable = false)
 	private LocalDate date;
 	
-	@DateTimeFormat(pattern = SettingService.JAVA_TIME)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = SettingService.JAVA_TIME)
+	@DateTimeFormat(pattern = DateConstant.JAVA_TIME)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateConstant.JAVA_TIME)
 	@Column(name = "time", nullable = false)
 	private LocalTime time;
 	

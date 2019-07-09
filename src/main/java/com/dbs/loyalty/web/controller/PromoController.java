@@ -1,10 +1,5 @@
 package com.dbs.loyalty.web.controller;
 
-import static com.dbs.loyalty.config.constant.Constant.ERROR;
-import static com.dbs.loyalty.config.constant.Constant.TOAST;
-import static com.dbs.loyalty.config.constant.Constant.ZERO;
-import static com.dbs.loyalty.service.SettingService.JAVA_DATE;
-
 import java.beans.PropertyEditorSupport;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -35,14 +30,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dbs.loyalty.config.constant.Constant;
+import com.dbs.loyalty.config.constant.DateConstant;
 import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.FileImageTask;
 import com.dbs.loyalty.domain.Promo;
 import com.dbs.loyalty.domain.PromoCategory;
-import com.dbs.loyalty.domain.PromoCustomer;
 import com.dbs.loyalty.service.ImageService;
 import com.dbs.loyalty.service.PromoCategoryService;
-import com.dbs.loyalty.service.PromoCustomerService;
 import com.dbs.loyalty.service.PromoService;
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.util.MessageUtil;
@@ -72,12 +66,10 @@ public class PromoController {
 	private final ImageService imageService;
 
 	private final PromoCategoryService promoCategoryService;
-	
-	private final PromoCustomerService promoCustomerService;
-	
+
 	private final TaskService taskService;
 	
-	private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(JAVA_DATE);
+	private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DateConstant.JAVA_DATE);
 
 	@PreAuthorize("hasAnyRole('PROMO_MK', 'PROMO_CK')")
 	@GetMapping
@@ -102,24 +94,6 @@ public class PromoController {
 	}
 	
 	@PreAuthorize("hasAnyRole('PROMO_MK', 'PROMO_CK')")
-	@GetMapping("/{id}/customer")
-	public String viewPromoCustomers(@RequestParam Map<String, String> params, @PathVariable String id, Sort sort, Model model) {
-		Order order = PageUtil.getOrder(sort, "customer.name");
-		Page<PromoCustomer> page = promoCustomerService.findWithCustomerByPromoId(id, PageUtil.getPageable(params, order));
-
-		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
-			return "redirect:/promo" + id + "/customer";
-		}else {
-			model.addAttribute(Constant.PAGE, page);
-			model.addAttribute(Constant.ORDER, order);
-			model.addAttribute(Constant.PREVIOUS, QueryStringUtil.page(order, page.getNumber() - 1));
-			model.addAttribute(Constant.NEXT, QueryStringUtil.page(order, page.getNumber() + 1));
-			model.addAttribute(Constant.PARAMS, QueryStringUtil.params(params));
-			return "promo/promo-customer";
-		}
-	}
-	
-	@PreAuthorize("hasAnyRole('PROMO_MK', 'PROMO_CK')")
 	@GetMapping("/{id}/detail")
 	public String viewPromoDetail(ModelMap model, @PathVariable String id){
 		getById(model, id);
@@ -129,7 +103,7 @@ public class PromoController {
 	@PreAuthorize("hasRole('PROMO_MK')")
 	@GetMapping("/{id}")
 	public String viewPromoForm(ModelMap model, @PathVariable String id){
-		if (id.equals(ZERO)) {
+		if (id.equals(Constant.ZERO)) {
 			model.addAttribute(DomainConstant.PROMO, new Promo());
 		} else {
 			getById(model, id);
@@ -167,7 +141,7 @@ public class PromoController {
 				}
 			}
 
-			attributes.addFlashAttribute(TOAST, MessageUtil.taskIsSavedMessage(DomainConstant.PROMO, promo.getTitle()));
+			attributes.addFlashAttribute(Constant.TOAST, MessageUtil.taskIsSavedMessage(DomainConstant.PROMO, promo.getTitle()));
 			return REDIRECT;
 		}
 	}
@@ -181,7 +155,7 @@ public class PromoController {
 		if(current.isPresent()) {
 			taskService.saveTaskDelete(DomainConstant.PROMO, current.get());
 			promoService.save(true, id);
-			attributes.addFlashAttribute(TOAST, MessageUtil.taskIsSavedMessage(DomainConstant.PROMO, current.get().getTitle()));
+			attributes.addFlashAttribute(Constant.TOAST, MessageUtil.taskIsSavedMessage(DomainConstant.PROMO, current.get().getTitle()));
 		}
 		
 		return REDIRECT;
@@ -212,7 +186,7 @@ public class PromoController {
 		if (current.isPresent()) {
 			model.addAttribute(DomainConstant.PROMO, current.get());
 		} else {
-			model.addAttribute(ERROR, MessageUtil.getNotFoundMessage(id));
+			model.addAttribute(Constant.ERROR, MessageUtil.getNotFoundMessage(id));
 		}
 	}
 

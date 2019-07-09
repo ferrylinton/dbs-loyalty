@@ -9,14 +9,14 @@ import java.time.temporal.ChronoUnit;
 import javax.servlet.http.HttpServletRequest;
 
 import com.dbs.loyalty.config.constant.Constant;
-import com.dbs.loyalty.service.SettingService;
+import com.dbs.loyalty.config.constant.DateConstant;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class DateSpecification {
 	
-	public static final DateTimeFormatter FORMATTER =  DateTimeFormatter.ofPattern(SettingService.JAVA_DATE);
+	public static final DateTimeFormatter FORMATTER =  DateTimeFormatter.ofPattern(DateConstant.JAVA_DATE);
 	
 	public static Instant getStartDate(String startDate) {
 		try {

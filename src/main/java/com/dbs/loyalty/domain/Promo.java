@@ -4,7 +4,6 @@ package com.dbs.loyalty.domain;
 import static com.dbs.loyalty.config.constant.DomainConstant.ID;
 import static com.dbs.loyalty.config.constant.DomainConstant.ID_GENERATOR;
 import static com.dbs.loyalty.config.constant.DomainConstant.ID_GENERATOR_STRATEGY;
-import static com.dbs.loyalty.service.SettingService.JAVA_DATE;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -27,6 +26,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.dbs.loyalty.config.constant.DateConstant;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -84,11 +84,11 @@ public class Promo extends AbstractTask implements Serializable {
     @Column(name = "term_and_condition", nullable = false, columnDefinition="TEXT")
     private String termAndCondition;
 
-    @DateTimeFormat(pattern = JAVA_DATE)
+    @DateTimeFormat(pattern = DateConstant.JAVA_DATE)
     @Column(name = "start_period", nullable = false)
     private LocalDate startPeriod;
 
-    @DateTimeFormat(pattern = JAVA_DATE)
+    @DateTimeFormat(pattern = DateConstant.JAVA_DATE)
     @Column(name = "end_period", nullable = false)
     private LocalDate endPeriod;
     

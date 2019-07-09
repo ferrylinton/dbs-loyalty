@@ -1,9 +1,8 @@
 package com.dbs.loyalty.service.dto;
 
-import static com.dbs.loyalty.service.SettingService.JAVA_DATE;
-
 import java.time.LocalDate;
 
+import com.dbs.loyalty.config.constant.DateConstant;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import io.swagger.annotations.ApiModel;
@@ -32,7 +31,7 @@ public class CustomerDto {
 	private String customerType;
 	
 	@ApiModelProperty(value = "Customer's date of birth", example = "21/01/1980", position = 5)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = JAVA_DATE)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateConstant.JAVA_DATE)
 	private LocalDate dob;
 	
 	@ApiModelProperty(value = "Customer's image url", example = "/api/customers/image", position = 6)

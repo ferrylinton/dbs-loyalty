@@ -1,12 +1,14 @@
 package com.dbs.loyalty.service;
 
 import java.time.Instant;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.MessageConstant;
 import com.dbs.loyalty.domain.Promo;
 import com.dbs.loyalty.domain.PromoCustomer;
@@ -50,8 +52,14 @@ public class PromoCustomerService{
 		}
 	}
 	
-	public Page<PromoCustomer> findWithCustomerByPromoId(String promoId, Pageable pageable){
-		return promoCustomerRepository.findWithCustomerByPromoId(promoId, pageable);
+	public Page<PromoCustomer> findPromoCustomers(String promoId, Map<String, String> params, Pageable pageable){
+		if(params.containsKey(Constant.KY_PARAM)) {
+			String keyword = String.format(Constant.LIKE_FORMAT, params.get(Constant.KY_PARAM).trim().toLowerCase());
+			return promoCustomerRepository.findByPromoIdAndKeyword(promoId, keyword, pageable);
+		}else {
+			return promoCustomerRepository.findByPromoId(promoId, pageable);
+		}
+		
 	}
 	
 }

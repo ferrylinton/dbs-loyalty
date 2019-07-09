@@ -26,9 +26,9 @@ import org.hibernate.annotations.Proxy;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.dbs.loyalty.config.constant.DateConstant;
 import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.config.constant.RegexConstant;
-import com.dbs.loyalty.service.SettingService;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -87,8 +87,8 @@ public class Customer extends AbstractTask implements Serializable {
 	@Column(name = "customer_type", length = 10, nullable = false)
 	private String customerType;
 
-	@DateTimeFormat(pattern = SettingService.JAVA_DATE)
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = SettingService.JAVA_DATE)
+	@DateTimeFormat(pattern = DateConstant.JAVA_DATE)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateConstant.JAVA_DATE)
 	@Column(name = "dob", nullable = false)
 	private LocalDate dob;
 
