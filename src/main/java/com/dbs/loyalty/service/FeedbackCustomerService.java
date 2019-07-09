@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.domain.FeedbackAnswer;
 import com.dbs.loyalty.domain.FeedbackCustomer;
 import com.dbs.loyalty.domain.FeedbackCustomerId;
@@ -65,8 +66,13 @@ public class FeedbackCustomerService {
 		}
 	}
 	
-	public Page<FeedbackCustomer> findWithCustomerAndAnswersByEventId(String eventId, Pageable pageable){
-		return feedbackCustomerRepository.findWithCustomerAndAnswersByEventId(eventId, pageable);
+	public Page<FeedbackCustomer> findFeedbackCustomers(String eventId, Map<String, String> params, Pageable pageable){
+		if(params.containsKey(Constant.KY_PARAM)) {
+			String keyword = String.format(Constant.LIKE_FORMAT, params.get(Constant.KY_PARAM).trim().toLowerCase());
+			return feedbackCustomerRepository.findByEventIdAndKeyword(eventId, keyword, pageable);
+		}else {
+			return feedbackCustomerRepository.findByEventId(eventId, pageable);
+		}
 	}
 	
 	public Optional<FeedbackCustomer> findWithAnswersById(String feedbackId, String customerId){

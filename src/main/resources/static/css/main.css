@@ -20,6 +20,7 @@ a:hover{
 /* OVERRIDE BOOTSTRAP */
 
 .btn, 
+.alert,
 .modal-content, 
 .dropdown-menu, 
 .custom-select, 

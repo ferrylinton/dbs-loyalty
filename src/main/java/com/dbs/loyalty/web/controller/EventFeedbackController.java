@@ -27,7 +27,9 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/event")
 public class EventFeedbackController {
 
-	private static final String VIEW 		= "event/event-feedback";
+	private static final String REDIRECT 	= "redirect:/event/%s/feedback";
+	
+	private static final String VIEW 		= "eventfeedback/eventfeedback-view";
 	
 	private static final String SORT_BY 	= "customer.name";
 	
@@ -43,10 +45,11 @@ public class EventFeedbackController {
 			Sort sort, Model model) {
 		
 		Order order = PageUtil.getOrder(sort, SORT_BY);
-		Page<FeedbackCustomer> page = feedbackCustomerService.findWithCustomerAndAnswersByEventId(eventId, PageUtil.getPageable(params, order));
+		Page<FeedbackCustomer> page = feedbackCustomerService.findFeedbackCustomers(eventId, params, PageUtil.getPageable(params, order));
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
-			return "redirect:/event" + eventId + "/feedback";
+			return String.format(REDIRECT, eventId);
 		}else {
+			model.addAttribute("eventId", eventId);
 			model.addAttribute(Constant.PAGE, page);
 			model.addAttribute(Constant.ORDER, order);
 			model.addAttribute(Constant.PREVIOUS, QueryStringUtil.page(order, page.getNumber() - 1));

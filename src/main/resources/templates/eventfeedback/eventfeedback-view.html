@@ -18,15 +18,8 @@
       	</ol>
 	</nav>
 	<div layout:fragment="content">
-        	<table class="mb-3">
-	        	<tbody th:remove="all-but-first">
-	            	<tr th:each="question : ${questions}">
-	             		<td th:text="|${question.questionNumber}. ${question.questionText}|">1</td>
-	           		</tr>
-	          	</tbody>
-	     	</table>
-            <!-- TABLE DATA -->
-            <div class="table-responsive border border-top-0" th:if="${page.getTotalElements() > 0}">
+		<div th:replace="fragment/search.html :: content(|/event/${eventId}/feedback|, #{name}, false)"></div>
+  		<div class="table-responsive border border-top-0" th:if="${page.getTotalElements() > 0}">
                 <table class="table table-sm table-striped table-hover border-bottom" style="min-width: 800px;">
                     <thead>
                         <tr th:with="ascending=${order.getDirection().name() == 'ASC'}">
@@ -51,25 +44,29 @@
                         </tr>
                     </tbody>
                 </table>
-            </div>
-            <!-- NOT FOUND MESSAGE -->
-            <div class="border alert alert-light text-center" role="alert" th:if="${page.getTotalElements() == 0}">
-	            <span class="icon-attention"></span> <span th:text="#{message.dataNotFound}">Data not found</span>
-	        </div>
-            <!-- TOOLBAR -->
-            <div class="toolbar">
-                <a class="btn btn-light" href="/event/event-view.html" th:href="@{/event}">
-                    <span class="icon-left"></span> <span th:text="#{back}">Back</span>
-                </a>
-                <th:block th:if="${page != null && page.getTotalPages() > 1}">
-	                <a class="btn btn-light" th:href="@{|?${previous}${params}|}" th:classappend="${not page.hasPrevious()} ? 'disabled'">
-	                    <span class="icon-left-open"></span> <span th:text="#{previous}">Previous</span>
-	                </a>
-	                <a class="btn btn-light" th:href="@{|?${next}${params}|}" th:classappend="${not page.hasNext()} ? 'disabled'">
-	                    <span th:text="#{next}">Next</span> <span class="icon-right-open"></span>
-	                </a>
-                </th:block>
-            </div>
+   		</div>
+   		
+        <div th:replace="fragment/not-found.html :: content"></div>
+		<div class="toolbar">
+        	<a class="btn btn-sm btn-secondary" th:href="@{/event}">
+     			<span class="icon-left"></span> <span th:text="#{back}">Back</span>
+         	</a>
+         	<th:block th:if="${page != null && page.getTotalPages() > 1}">
+				<a class="btn btn-sm btn-secondary text-uppercase" th:href="@{|?${previous}${params}|}" th:classappend="${not page.hasPrevious()} ? 'disabled'">
+		       		<span class="icon-left-open"></span> <span th:text="#{previous}">Previous</span>
+		    	</a>
+		      	<a class="btn btn-sm btn-secondary text-uppercase" th:href="@{|?${next}${params}|}" th:classappend="${not page.hasNext()} ? 'disabled'">
+		    		<span th:text="#{next}">Next</span> <span class="icon-right-open"></span>
+		       	</a>
+			</th:block>
+      	</div>
+      	<table class="mt-3" th:if="${page != null}">
+	   		<tbody th:remove="all-but-first">
+	        	<tr th:each="question : ${questions}">
+	           		<td th:text="|${question.questionNumber}. ${question.questionText}|">1</td>
+	         	</tr>
+	      	</tbody>
+	   	</table>
 	</div>
 </body>
 

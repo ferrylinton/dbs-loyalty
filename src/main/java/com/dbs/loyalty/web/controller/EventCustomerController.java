@@ -28,7 +28,7 @@ public class EventCustomerController {
 
 	private static final String REDIRECT 	= "redirect:/event/%s/customer";
 	
-	private static final String VIEW 		= "eventcustomer/eventcustomer-view.html";
+	private static final String VIEW 		= "eventcustomer/eventcustomer-view";
 	
 	private static final String SORT_BY 	= "customer.name";
 	
