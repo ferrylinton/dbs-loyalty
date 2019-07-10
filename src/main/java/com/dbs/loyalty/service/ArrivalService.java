@@ -32,7 +32,7 @@ public class ArrivalService {
 	
 	private final CustomerRepository customerRespository;
 	
-	private final AirportAssistanceRepository travelAssistanceRepository;
+	private final AirportAssistanceRepository airportAssistanceRepository;
 	
 	public Optional<Arrival> findById(String id){
 		return arrivalRepository.findById(id);
@@ -47,11 +47,11 @@ public class ArrivalService {
 		Optional<Customer> customer = customerRespository.findById(SecurityUtil.getId());
 		
 		if(customer.isPresent()) {
-			Optional<AirportAssistance> travelAssistance = travelAssistanceRepository.findById(SecurityUtil.getId());
+			Optional<AirportAssistance> airportAssistance = airportAssistanceRepository.findById(SecurityUtil.getId());
 			
-			if(travelAssistance.isPresent() && travelAssistance.get().getTotal() > 0) {
-				travelAssistance.get().setTotal(travelAssistance.get().getTotal() - 1);
-				travelAssistanceRepository.save(travelAssistance.get());
+			if(airportAssistance.isPresent() && airportAssistance.get().getTotal() > 0) {
+				airportAssistance.get().setTotal(airportAssistance.get().getTotal() - 1);
+				airportAssistanceRepository.save(airportAssistance.get());
 				
 				arrival.setCustomer(customer.get());
 				arrival.setCreatedBy(SecurityUtil.getLogged());

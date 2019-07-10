@@ -57,7 +57,7 @@ public class LogRequestFilter extends OncePerRequestFilter implements Ordered {
         	LogApi logApi = getLogAudit(request, response);
             logApi.setBody(getBody(wrappedRequest));
             logApi.setError(getError(request));
-            logApi.setCreatedBy(SecurityUtil.getId());
+            logApi.setCreatedBy(SecurityUtil.getLogged());
             logApi.setCreatedDate(Instant.now());
             logApiService.save(logApi);
             log.info(logApi.toString());
@@ -92,13 +92,15 @@ public class LogRequestFilter extends OncePerRequestFilter implements Ordered {
     }
 
     private String getError(HttpServletRequest request) {
-        Throwable exception = (Throwable) request.getAttribute(EXCEPTION_ATTRIBUTE);
-        
-        if(exception != null) {
-        	return exception.getMessage();
-        }else {
-        	return null;
-        }
+    	if(request.getAttribute(EXCEPTION_ATTRIBUTE) instanceof Throwable) {
+    		Throwable exception = (Throwable) request.getAttribute(EXCEPTION_ATTRIBUTE);
+            
+            if(exception != null) {
+            	return exception.getMessage();
+            }
+    	}
+    	
+    	return null;
     }
 
 }

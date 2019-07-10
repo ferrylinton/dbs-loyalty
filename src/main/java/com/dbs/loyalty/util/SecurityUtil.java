@@ -11,7 +11,11 @@ import com.dbs.loyalty.security.web.WebAuthentication;
 public final class SecurityUtil {
 
 	public static String getLogged() {
-		return SecurityContextHolder.getContext().getAuthentication().getName();
+		if(SecurityContextHolder.getContext().getAuthentication() != null) {
+			return SecurityContextHolder.getContext().getAuthentication().getName();
+		}else {
+			return null;
+		}
     }
 	
 	public static String getId() {

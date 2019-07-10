@@ -14,7 +14,9 @@ public final class SwaggerConstant {
 	
 	public static final String PROMO 				= "Promo";
 
-	public static final String PRIVILEDGE_ORDER		= "PriviledgeOrder";
+	public static final String ORDER				= "Order";
+	
+	public static final String PRODUCT				= "Product";
 	
 	public static final String REWARD 				= "Reward";
 	

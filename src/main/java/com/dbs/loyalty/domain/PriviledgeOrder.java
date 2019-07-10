@@ -13,10 +13,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.GenericGenerator;
 
 import com.dbs.loyalty.config.constant.DomainConstant;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -42,21 +44,26 @@ public class PriviledgeOrder implements Serializable {
 	@GeneratedValue(generator = DomainConstant.ID_GENERATOR)
 	private String id;
 
+    @NotNull
 	@Column(name = "item_id", length=22, nullable = false)
 	private String itemId;
 
+    @NotNull
     @Column(name = "item_name", length = 150, nullable = false)
     private String itemName;
     
+    @NotNull
     @Column(name = "item_point", nullable = false)
 	private Integer itemPoint;
 
+    @NotNull
     @Column(name = "item_quantity", nullable = false)
 	private Integer itemQuantity;
     
     @Column(name = "created_date", nullable = false, updatable = false)
     private Instant createdDate;
     
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", foreignKey = @ForeignKey(name = "p_priviledge_order_fk"))
 	private Customer customer;

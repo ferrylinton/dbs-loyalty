@@ -5,9 +5,7 @@ public class RestConstant {
 	public static final String AUTHENTICATE = "Authenticate";
 	
 	public static final String ADD_ARRIVAL = "AddArrival";
-	
-	public static final String ADD_DEPARTURE = "AddDeparture";
-	
+
 	public static final String GET_TRAVEL_ASSISTANCE_LIMIT = "GetTravelAssitanceLimit";
 	
 	public static final String GET_WELLNESS_LIMIT = "GetWellnessLimit";

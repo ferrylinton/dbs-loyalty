@@ -1,6 +1,5 @@
 package com.dbs.loyalty.web.controller.rest;
 
-import static com.dbs.loyalty.config.constant.SwaggerConstant.PRIVILEDGE_ORDER;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.JWT;
 
 import java.util.List;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.domain.FileImage;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.ImageService;
@@ -38,11 +38,11 @@ import lombok.RequiredArgsConstructor;
  * @author Ferry L. H. <ferrylinton@gmail.com>
  * 
  */
-@Api(tags = { PRIVILEDGE_ORDER })
+@Api(tags = { SwaggerConstant.PRODUCT })
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('CUSTOMER')")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/priviledge-products")
 public class PriviledgeProductRestController {
 
 	private static final String NOT_FOUND_FORMAT = "ProductPriviledge [id=%s] is not found";
@@ -60,7 +60,7 @@ public class PriviledgeProductRestController {
     		produces=MediaType.APPLICATION_JSON_VALUE, 
     		authorizations = { @Authorization(value=JWT) })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = ProductPriviledgeDto.class)})
-    @GetMapping("/priviledge-products")
+    @GetMapping
     public List<ProductPriviledgeDto> getAllProductPriviledges(){
 		return productService
 				.findAll()
@@ -76,7 +76,7 @@ public class PriviledgeProductRestController {
     		produces=MediaType.APPLICATION_JSON_VALUE, 
     		authorizations = { @Authorization(value=JWT) })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = ProductPriviledgeDto.class)})
-    @GetMapping("/priviledge-products/{id}")
+    @GetMapping("/{id}")
     public ProductPriviledgeDto getById(
     		@ApiParam(name = "id", value = "Product Id", example = "zO0dDp9K")
     		@PathVariable String id) throws NotFoundException{
@@ -99,7 +99,7 @@ public class PriviledgeProductRestController {
 			produces= "image/png, image/jpeg", 
     		authorizations = { @Authorization(value=JWT) })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Byte.class)})
-    @GetMapping("/priviledge-products/{id}/image")
+    @GetMapping("/{id}/image")
     public ResponseEntity<byte[]> getProductPriviledgeImageById(
     		@ApiParam(name = "id", value = "ProductPriviledge Id", example = "zO0dDp9K")
     		@PathVariable String id) throws NotFoundException{
@@ -127,7 +127,7 @@ public class PriviledgeProductRestController {
     		produces=MediaType.TEXT_PLAIN_VALUE, 
     		authorizations = { @Authorization(value=JWT) })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = String.class)})
-    @GetMapping("/priviledge-products/{id}/term")
+    @GetMapping("/{id}/term")
     public ResponseEntity<String> getTermAndConditionById(
     		@ApiParam(name = "id", value = "Product Id", example = "zO0dDp9K")
     		@PathVariable String id) throws NotFoundException{

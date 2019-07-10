@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import com.dbs.loyalty.domain.Reward;
 import com.dbs.loyalty.repository.RewardRepository;
-import com.dbs.loyalty.service.dto.TotalDto;
 import com.dbs.loyalty.util.SecurityUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -21,15 +20,23 @@ public class RewardService {
 		return rewardRepository.findAllValid(SecurityUtil.getId());
 	}
 	
-	public TotalDto getTotal(){
-		Integer total = 0;
+	public int getTotal(){
 		List<Reward> rewards = rewardRepository.findAllValid(SecurityUtil.getId());
-		
+		return getTotal(rewards);
+	}
+	
+	public int getTotal(List<Reward> rewards){
+		Integer total = 0;
+
 		for(Reward reward : rewards) {
 			total += reward.getPoint();
 		}
 
-		return new TotalDto(total);
+		return total;
+	}
+	
+	public void save(List<Reward> rewards) {
+		rewardRepository.saveAll(rewards);
 	}
 	
 }

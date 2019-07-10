@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.config.constant.SwaggerConstant;
+import com.dbs.loyalty.domain.PriviledgeOrder;
 import com.dbs.loyalty.exception.BadRequestException;
-import com.dbs.loyalty.service.DepartureService;
-import com.dbs.loyalty.service.dto.DepartureDto;
-import com.dbs.loyalty.service.mapper.DepartureMapper;
+import com.dbs.loyalty.service.PriviledgeOrderService;
+import com.dbs.loyalty.service.PriviledgeProductService;
 import com.dbs.loyalty.web.response.Response;
-import com.dbs.loyalty.web.validator.rest.DepartureDtoValidator;
+import com.dbs.loyalty.web.validator.rest.PriviledgeOrderValidator;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,35 +26,35 @@ import io.swagger.annotations.Authorization;
 import lombok.RequiredArgsConstructor;
 
 /**
- * REST controller for Departure API
+ * REST controller for Order API
  * 
  * @author Ferry L. H. <ferrylinton@gmail.com>
  * 
  */
-@Api(tags = { SwaggerConstant.AIRPORT_ASSISTANCE })
+@Api(tags = { SwaggerConstant.ORDER })
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('CUSTOMER')")
 @RestController
-@RequestMapping("/api/departures")
-public class DepartureRestController {
+@RequestMapping("/api/priviledge-orders")
+public class PriviledgeOrderRestController {
 
-	private final DepartureService departureService;
+	private final PriviledgeProductService priviledgeProductService;
 	
-	private final DepartureMapper departureMapper;
+	private final PriviledgeOrderService priviledgeOrderService;
 
 	@ApiOperation(
-			value="AddDeparture", 
+			value="AddPriviledgeOrder", 
 			produces=SwaggerConstant.JSON, 
 			authorizations={@Authorization(value=SwaggerConstant.JWT)})
     @ApiResponses(value={ @ApiResponse(code=200, message=SwaggerConstant.OK, response=Response.class)})
     @PostMapping
-    public Response addDeparture(@Valid @RequestBody DepartureDto departureDto) throws BadRequestException{
-		return departureService.save(departureMapper.toEntity(departureDto));
+    public PriviledgeOrder addDeparture(@Valid @RequestBody PriviledgeOrder priviledgeOrder) throws BadRequestException{
+		return priviledgeOrderService.save(priviledgeOrder);
     }
     
-	@InitBinder("departureDto")
+	@InitBinder("priviledgeOrder")
 	protected void initBinder(WebDataBinder binder) {
-		binder.addValidators(new DepartureDtoValidator(departureService));
+		binder.addValidators(new PriviledgeOrderValidator(priviledgeProductService));
 	}
 	
 }
