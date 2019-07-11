@@ -1,6 +1,5 @@
 package com.dbs.loyalty.config;
 
-import java.io.IOException;
 import java.util.Arrays;
 
 import org.apache.http.conn.ssl.NoopHostnameVerifier;
@@ -9,7 +8,6 @@ import org.apache.http.impl.client.HttpClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.ClientHttpRequestFactory;
-import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
@@ -19,7 +17,6 @@ import org.springframework.security.oauth2.client.token.AccessTokenProviderChain
 import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordAccessTokenProvider;
 import org.springframework.security.oauth2.client.token.grant.password.ResourceOwnerPasswordResourceDetails;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
-import org.springframework.web.client.DefaultResponseErrorHandler;
 
 import lombok.RequiredArgsConstructor;
 
@@ -71,17 +68,7 @@ public class RestClientConfig {
 		OAuth2RestTemplate restTemplate = new OAuth2RestTemplate(resource(), new DefaultOAuth2ClientContext());
 		restTemplate.setRequestFactory(httpRequestFactory());
 		restTemplate.setAccessTokenProvider(accessTokenProvider());
-		restTemplate.setErrorHandler(getErrorHandler());
 		return restTemplate;
 	}
 
-	private DefaultResponseErrorHandler getErrorHandler() {
-		return new DefaultResponseErrorHandler() {
-        	@Override
-			public void handleError(ClientHttpResponse response) throws IOException {
-        		// skip error handle
-			}
-		};
-	}
-	
 }

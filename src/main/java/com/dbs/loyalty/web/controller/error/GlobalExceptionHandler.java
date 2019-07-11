@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
@@ -22,29 +23,22 @@ import org.springframework.web.multipart.support.MissingServletRequestPartExcept
 
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
-import com.dbs.loyalty.model.ErrorData;
 import com.dbs.loyalty.util.ErrorUtil;
 import com.dbs.loyalty.web.response.ErrorResponse;
 import com.dbs.loyalty.web.response.Response;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @ControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler extends AbstractErrorController{
 
-	private static final String ERROR_DATA = "errorData";
+	public GlobalExceptionHandler(final ObjectMapper objectMapper) {
+		super(objectMapper);
+	}
 	
 	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public String handleError405(HttpServletRequest request, HttpRequestMethodNotSupportedException e) {
-		log.error(e.getLocalizedMessage(), e);
-		return handleWebError(new ErrorData(request), request);
+    public String handleError405(HttpServletRequest request, HttpServletResponse response, HttpRequestMethodNotSupportedException e) {
+		return super.handleApiOrWebError(request, response);
     }
-	
-	private String handleWebError(ErrorData errorData, HttpServletRequest request) {
-		request.setAttribute(ERROR_DATA, errorData);
-		return "error/error-view";
-	}
 	
 	@ExceptionHandler(value = ConstraintViolationException.class)
     public ResponseEntity<ErrorResponse> methodNotSupportErrorHandler(ConstraintViolationException ex){
