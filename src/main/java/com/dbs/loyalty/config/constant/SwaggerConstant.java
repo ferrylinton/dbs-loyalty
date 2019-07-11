@@ -28,6 +28,8 @@ public final class SwaggerConstant {
 	
 	public static final String EVENT 				= "Event";
 	
+	public static final String TADA 				= "TADA";
+	
 	public static final String JWT 					= "JWT";
 	
 	public static final String OK 					= "OK";
