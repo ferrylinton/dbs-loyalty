@@ -24,6 +24,10 @@ public class ApplicationProperties {
 	private Mail mail;
 	
 	private File file;
+	
+	private Tada tada;
+	
+	private Http http;
 
 	@Getter
 	@Setter
@@ -84,6 +88,40 @@ public class ApplicationProperties {
 		private String pdfContentType = "application/pdf";
 		
 		private List<String> imageContentTypes = Arrays.asList("image/png", "image/jpg", "image/jpeg");
+		
+	}
+	
+	@Getter
+	@Setter
+	public static class Tada{
+		
+		private String domain = "https://staging-distribution-api.gift.id/oauth/token";
+		
+		private String accessTokenUri = "/oauth/token";
+		
+		private String clientId = "54ud8nSSMxHughBhNe7JQWep9";
+		
+		private String clientSecret = "OIBA5lyZXm8x3cyo2XC6NFjuD8tooMzbTQHp5MN1SV7JzuHxAU";
+		
+		private String grantType = "password";
+		
+		private String username = "17527002";
+		
+		private String password = "2571";
+		
+		private List<String> scope = Arrays.asList("offline_access");
+		
+	}
+	
+	@Getter
+	@Setter
+	public static class Http{
+		
+		private int connectionRequestTimeout;
+		
+		private int connectTimeout;
+		
+		private int readTimeout;
 		
 	}
 	

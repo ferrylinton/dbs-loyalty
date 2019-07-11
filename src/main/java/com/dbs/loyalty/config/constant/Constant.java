@@ -4,6 +4,10 @@ public final class Constant {
 
 	public static final String EMPTY 				= "";
 	
+	public static final String QUESTION				= "?";
+	
+	public static final String API_TADA				= "/api/tada";
+	
 	public static final String COMMA 				= ",";
 	
 	public static final String DOT 					= ".";

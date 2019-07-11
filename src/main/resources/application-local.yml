@@ -30,6 +30,21 @@ application:
       - image/png
       - image/jpg
       - image/jpeg
+  tada:
+    domain: https://staging-distribution-api.gift.id
+    access-token-uri: /oauth/token
+    client-id: 54ud8nSSMxHughBhNe7JQWep9
+    client-secret: OIBA5lyZXm8x3cyo2XC6NFjuD8tooMzbTQHp5MN1SV7JzuHxAU
+    grant-type: password
+    username: 17527002
+    password: 2571
+    scope:
+      - offline_access
+  http:
+    connect-timeout: 30000
+    connection-request-timeout: 30000 
+    read-timeout: 30000
+    
 spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
