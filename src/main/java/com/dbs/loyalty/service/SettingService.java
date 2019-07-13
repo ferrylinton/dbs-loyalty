@@ -1,8 +1,15 @@
 package com.dbs.loyalty.service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import com.dbs.loyalty.config.constant.DateConstant;
+import com.dbs.loyalty.config.constant.CachingConstant;
+import com.dbs.loyalty.domain.Setting;
+import com.dbs.loyalty.repository.SettingRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -10,28 +17,21 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class SettingService {
 
-	public String jsDatetime() {
-		return DateConstant.JS_DATETIME;
-	}
+	public static final String POINT_TO_RUPIAH = "1point-to-rupiah";
 	
-	public String jsDate() {
-		return DateConstant.JS_DATE;
-	}
-	
-	public String jsTime() {
-		return DateConstant.JS_TIME;
-	}
-	
-	public String javaDatetime() {
-		return DateConstant.JAVA_DATETIME;
-	}
-	
-	public String javaDate() {
-		return DateConstant.JAVA_DATE;
-	}
-	
-	public String javaTime() {
-		return DateConstant.JAVA_TIME;
+	private final SettingRepository settingRepository;
+
+	@Cacheable(CachingConstant.SETTINGS)
+	public Map<String, String> settings() {
+		Map<String, String> map = new HashMap<String, String>();
+
+		List<Setting> settings = settingRepository.findAll();
+
+		for (Setting setting : settings) {
+			map.put(setting.getName(), setting.getValue());
+		}
+
+		return map;
 	}
 
 }

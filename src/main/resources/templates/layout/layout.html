@@ -14,6 +14,7 @@
     <link th:href="@{/static/image/favicon.png}" rel="shorcut icon" />
     <th:block th:with="libs=${hasCdnjsProfile} ? 'https://cdnjs.cloudflare.com/ajax/libs' : @{/static/libs}">
     	<link rel="stylesheet" th:href="|${libs}/twitter-bootstrap/4.3.1/css/bootstrap.min.css|" />
+    	<link rel="stylesheet" th:href="|${libs}/simplebar/4.1.0/simplebar.min.css|" />
     	<link rel="stylesheet" th:href="|${libs}/jquery.inputmask/3.3.4/css/inputmask.min.css|" />
     	<link rel="stylesheet" th:href="|${libs}/tempusdominus-bootstrap-4/5.1.2/css/tempusdominus-bootstrap-4.min.css|" />
     	<link rel="stylesheet" th:href="|${libs}/Trumbowyg/2.17.0/ui/trumbowyg.min.css|" />
@@ -31,12 +32,12 @@
 
 <body>
     <div th:replace="fragment/navbar.html :: content"></div>
+    <div th:replace="fragment/sidenav.html :: content"></div>
     <div id="content-box">
     	<div layout:fragment="breadcrumb"></div>
     	<div layout:fragment="content" id="main-content"></div>
     	<div th:replace="fragment/footer.html :: content"></div>
     </div>
-    <div th:replace="fragment/sidenav.html :: content"></div>
     <!-- ###### LIBS - JAVASCRIPT ###### -->
 	<th:block th:with="libs=${hasCdnjsProfile} ? 'https://cdnjs.cloudflare.com/ajax/libs' : @{/static/libs}">
 		<script th:src="|${libs}/moment.js/2.24.0/moment.min.js|"></script>
@@ -44,6 +45,7 @@
 	 	<script th:src="|${libs}/jquery/3.4.1/jquery.min.js|"></script>
 		<script th:src="|${libs}/popper.js/1.15.0/umd/popper.min.js|"></script>
 	  	<script th:src="|${libs}/twitter-bootstrap/4.3.1/js/bootstrap.min.js|"></script>
+	  	<script th:src="|${libs}/simplebar/4.1.0/simplebar.min.js|"></script>
 	   	<script th:src="|${libs}/jquery.inputmask/3.3.4/jquery.inputmask.bundle.min.js|"></script>
 	  	<script th:src="|${libs}/jquery.inputmask/3.3.4/bindings/inputmask.binding.min.js|"></script>
 		<script th:src="|${libs}/tempusdominus-bootstrap-4/5.1.2/js/tempusdominus-bootstrap-4.min.js|"></script>

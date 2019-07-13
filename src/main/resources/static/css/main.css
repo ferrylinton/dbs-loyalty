@@ -226,10 +226,15 @@ a:hover{
 
 .navbar .btn-menu{
 	height: 56px;
-	background-color: #1d2023;
+	border-right: solid 1px #212121;
 	font-size: 1.4rem;
 	padding: .15rem .85rem;
 	color: #fff;
+}
+
+.navbar .btn-menu:focus{
+	outline: none !important;
+  	box-shadow: none !important;
 }
 	
 .navbar .btn-group.btn-nav .btn{
@@ -309,22 +314,17 @@ a:hover{
 	position: fixed;
 	z-index: 1001;
 	top: 60px;
-	right: 0;
+	left: -250px;
 	overflow-x: hidden;
 	transition: 0.8s;
 	background-color: #242527;
-	right: -250px;
+	border-right: solid 1px #141313;
 }
 
-@media (min-width: 768px){
-
-	#content-box{
-		padding-right: 250px;
-	}
-
-	#sidenav-box{
-		right: 0;
-	}
+#sidenav-box.shadow{
+	-webkit-box-shadow: 2px 0px 2px 0px rgba(135,135,135,1)!important;;
+	-moz-box-shadow: 2px 0px 2px 0px rgba(135,135,135,1)!important;;
+	box-shadow: 2px 0px 2px 0px rgba(135,135,135,1)!important;;
 }
 
 #main-content{

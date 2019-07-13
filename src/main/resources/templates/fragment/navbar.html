@@ -8,6 +8,9 @@
 <body>
 <div th:fragment="content" th:remove="tag">
 	<nav class="navbar navbar-dark fixed-top">
+		<button class="btn btn-menu" type="button" onclick="Sidenav.toggle()">
+			<span class="icon-menu"></span>
+		</button>
     	<a class="navbar-brand clearfix ml-3" href="index.html" th:href="@{/}">
         	<img class="float-left" alt="dbs.png" th:src="@{/static/image/dbs.png}"></img>
      	</a>
@@ -24,12 +27,9 @@
              		</form>
             	</div>
          	</div>
-      		<a class="btn btn-nav" th:href="@{/}">
+         	<a class="btn btn-nav mr-3" th:href="@{/}">
            		<span class="icon-home"></span>
          	</a>
-          	<button class="btn btn-menu" type="button" onclick="Sidenav.toggle()">
-				<span class="icon-menu"></span>
-			</button>
     	</div>
 	</nav>
 </div>

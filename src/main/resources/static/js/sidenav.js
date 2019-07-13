@@ -3,44 +3,31 @@ var Sidenav = (function(){
     'use strict';
 
     function initSidenav() {
-        var content = $('#content-box');
         var sidenav = $('#sidenav-box');
         var btnMenu = $('.btn-menu span');
     
-        if ($(window).width() >= 768) {
-            content.css('padding-right', '250px');
-            sidenav.css('right', '0');
-            btnMenu.removeClass('icon-menu');
-            btnMenu.addClass('icon-cancel');
-        } else {
-            content.css('padding-right', '0');
-            sidenav.css('right', '-250px');
-            btnMenu.addClass('icon-menu');
-            btnMenu.removeClass('icon-cancel');
-        }
+        sidenav.css('left', '-250px');
+        btnMenu.addClass('icon-menu');
+        btnMenu.removeClass('icon-cancel');
     }
     
     function toggle(){
-        var content = $('#content-box');
         var sidenav = $('#sidenav-box');
-        var btnMenu = $('.btn-menu span');
+        var btnMenu = $('.btn-menu');
+        var btnMenuIcon = $('.btn-menu span');
 
-        if (sidenav.css('right') == '0px'){
-            sidenav.css('right', '-250px');
-            btnMenu.addClass('icon-menu');
-            btnMenu.removeClass('icon-cancel');
-
-            if ($(window).width() >= 768) {
-                content.css('padding-right', '0');
-            }
+        if (sidenav.css('left') == '0px'){
+            sidenav.css('left', '-250px');
+            sidenav.removeClass('shadow');
+            btnMenu.css('background-color', '#000000');
+            btnMenuIcon.addClass('icon-menu');
+            btnMenuIcon.removeClass('icon-cancel');
         }else{
-            sidenav.css('right', '0');
-            btnMenu.removeClass('icon-menu');
-            btnMenu.addClass('icon-cancel');
-            
-            if ($(window).width() >= 768) {
-                content.css('padding-right', '250px');
-            }
+            sidenav.css('left', '0');
+            sidenav.addClass('shadow');
+            btnMenu.css('background-color', '#151515');
+            btnMenuIcon.removeClass('icon-menu');
+            btnMenuIcon.addClass('icon-cancel');
         }
     }
 

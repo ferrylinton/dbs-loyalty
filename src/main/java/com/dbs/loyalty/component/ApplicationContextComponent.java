@@ -6,6 +6,8 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 
 import com.dbs.loyalty.util.MessageUtil;
+import com.dbs.loyalty.util.ObjectMapperUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Component
 public class ApplicationContextComponent implements ApplicationContextAware {
@@ -13,6 +15,7 @@ public class ApplicationContextComponent implements ApplicationContextAware {
     @Override
     public void setApplicationContext(ApplicationContext context) {
     	MessageUtil.setMessageSource(context.getBean(MessageSource.class));
+    	ObjectMapperUtil.setObjectMapper(context.getBean(ObjectMapper.class));
     }
     
 }
