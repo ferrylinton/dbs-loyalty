@@ -12,7 +12,7 @@ import javax.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
 
 import com.dbs.loyalty.config.constant.Constant;
-import com.dbs.loyalty.domain.Arrival;
+import com.dbs.loyalty.domain.ass.Arrival;
 
 import lombok.RequiredArgsConstructor;
 

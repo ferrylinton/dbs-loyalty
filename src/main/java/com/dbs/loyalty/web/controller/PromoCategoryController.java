@@ -26,7 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.DomainConstant;
-import com.dbs.loyalty.domain.PromoCategory;
+import com.dbs.loyalty.domain.prm.PromoCategory;
 import com.dbs.loyalty.service.PromoCategoryService;
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.util.MessageUtil;

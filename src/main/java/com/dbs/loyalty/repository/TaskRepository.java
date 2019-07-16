@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import com.dbs.loyalty.domain.Task;
-import com.dbs.loyalty.domain.enumeration.TaskStatus;
+import com.dbs.loyalty.enumeration.TaskStatus;
 
 public interface TaskRepository extends JpaRepository<Task, String>, JpaSpecificationExecutor<Task>{
 

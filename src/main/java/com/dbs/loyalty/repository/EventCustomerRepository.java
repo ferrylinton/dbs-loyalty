@@ -5,8 +5,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.dbs.loyalty.domain.EventCustomerId;
-import com.dbs.loyalty.domain.EventCustomer;
+import com.dbs.loyalty.domain.evt.EventCustomer;
+import com.dbs.loyalty.domain.evt.EventCustomerId;
 
 public interface EventCustomerRepository extends JpaRepository<EventCustomer, EventCustomerId> {
 

@@ -16,8 +16,8 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.dbs.loyalty.config.constant.DomainConstant;
-import com.dbs.loyalty.domain.enumeration.TaskOperation;
-import com.dbs.loyalty.domain.enumeration.TaskStatus;
+import com.dbs.loyalty.enumeration.TaskOperation;
+import com.dbs.loyalty.enumeration.TaskStatus;
 
 import lombok.Getter;
 import lombok.Setter;

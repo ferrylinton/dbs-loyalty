@@ -1,0 +1,63 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog 
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+     
+    <changeSet author="FLH" id="loved-one-schema-1">
+    
+        <createTable tableName="cst_loved_one">
+            <column name="id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="dob" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="phone" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="customer_id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+    </changeSet>
+    
+	<changeSet author="FLH" id="loved-one-schema-2">
+        <addPrimaryKey columnNames="id" constraintName="cst_loved_one_pk" tableName="cst_loved_one"/>
+    </changeSet>
+    
+  	<changeSet author="FLH" id="loved-one-schema-3">
+        <addForeignKeyConstraint baseColumnNames="customer_id" baseTableName="cst_loved_one" constraintName="m_customer_fk" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="cst_customer"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="loved-one-schema-4">
+        <createIndex indexName="cst_loved_one_name_idx" tableName="cst_loved_one">
+            <column name="name"/>
+        </createIndex>
+    </changeSet>
+    
+    <changeSet author="FLH" id="loved-one-schema-5">
+        <createIndex indexName="cst_loved_one_phone_idx" tableName="cst_loved_one">
+            <column name="phone"/>
+        </createIndex>
+    </changeSet>
+    
+    <changeSet author="FLH" id="loved-one-schema-6">
+        <createIndex indexName="cst_loved_one_dob_idx" tableName="cst_loved_one">
+            <column name="dob"/>
+        </createIndex>
+    </changeSet>
+    
+</databaseChangeLog>

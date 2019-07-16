@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.dbs.loyalty.domain.PriviledgeProduct;
+import com.dbs.loyalty.domain.trx.PriviledgeProduct;
 import com.dbs.loyalty.repository.PriviledgeProductRepository;
 
 import lombok.RequiredArgsConstructor;

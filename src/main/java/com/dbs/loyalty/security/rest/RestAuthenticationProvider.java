@@ -14,8 +14,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 
 import com.dbs.loyalty.config.constant.SecurityConstant;
-import com.dbs.loyalty.domain.Customer;
-import com.dbs.loyalty.domain.LogToken;
+import com.dbs.loyalty.domain.cst.Customer;
+import com.dbs.loyalty.domain.log.LogToken;
 import com.dbs.loyalty.model.TokenData;
 import com.dbs.loyalty.repository.CustomerRepository;
 import com.dbs.loyalty.service.LogTokenService;
@@ -38,10 +38,10 @@ public class RestAuthenticationProvider implements AuthenticationProvider {
 		Optional<Customer> customer = customerRepository.findByEmail(email);
 		
 		if(customer.isPresent()) {
-			if(!customer.get().isActivated()) {
+			if(!customer.get().getActivated()) {
 				save(email, FAIL);
 				throw new BadCredentialsException(CUSTOMER_NOT_ACTIVATED);
-			}else if(customer.get().isLocked()) {
+			}else if(customer.get().getLocked()) {
 				save(email, FAIL);
 				throw new BadCredentialsException(CUSTOMER_LOCKED);
 			}else if(PasswordUtil.matches(password, customer.get().getPasswordHash())) {

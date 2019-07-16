@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.dbs.loyalty.domain.AirportAssistance;
+import com.dbs.loyalty.domain.ass.AirportAssistance;
 import com.dbs.loyalty.repository.AirportAssistanceRepository;
 import com.dbs.loyalty.util.SecurityUtil;
 

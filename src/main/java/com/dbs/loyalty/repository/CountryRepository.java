@@ -6,7 +6,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.dbs.loyalty.domain.Country;
+import com.dbs.loyalty.domain.mst.Country;
 
 public interface CountryRepository extends JpaRepository<Country, String>{
 	

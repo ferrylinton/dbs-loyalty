@@ -2,7 +2,7 @@ package com.dbs.loyalty.service.dto;
 
 import java.util.List;
 
-import com.dbs.loyalty.domain.enumeration.FormType;
+import com.dbs.loyalty.enumeration.FormType;
 import com.dbs.loyalty.model.Pair;
 
 import io.swagger.annotations.ApiModel;

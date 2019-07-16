@@ -1,0 +1,212 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+	<property name="Admin" value="3RHlPxnhbxGfks4vgGFo9k" />
+	<property name="Maker" value="5EIWrrJFrijNCv2tISSW6O" />
+	<property name="Checker" value="3CYZnXHhxtJ3xvHzUJe6bh" />
+	<property name="AirportAssistance" value="7cyB8fi6xDBHfDTppCagyC" />
+	
+    <changeSet author="FLH" id="role-data-1">
+    
+        <insert tableName="sec_role">
+            <column name="id" value="${Admin}"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="name" value="Admin"/>
+        </insert>
+        
+        <insert tableName="sec_role">
+            <column name="id" value="${Maker}"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="name" value="Maker"/>
+        </insert>
+        
+        <insert tableName="sec_role">
+            <column name="id" value="${Checker}"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="name" value="Checker"/>
+        </insert>
+        
+        <insert tableName="sec_role">
+            <column name="id" value="${AirportAssistance}"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="name" value="AirportAssistance"/>
+        </insert>
+        
+    </changeSet>
+    
+    <changeSet author="FLH" id="role-data-2">
+		
+		<!-- ROLE ADMINISTRATOR -->
+		
+		<insert tableName="sec_role_authority">
+            <column name="role_id" value="${Admin}"/>
+            <column name="authority_id" value="${ROLE_MK}"/>
+        </insert>
+        
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Admin}"/>
+            <column name="authority_id" value="${USER_MK}"/>
+        </insert>
+        
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Admin}"/>
+            <column name="authority_id" value="${CUSTOMER_MK}"/>
+        </insert>
+        
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Admin}"/>
+            <column name="authority_id" value="${PROMO_CATEGORY_MK}"/>
+        </insert>
+        
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Admin}"/>
+            <column name="authority_id" value="${PROMO_MK}"/>
+        </insert>
+        
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Admin}"/>
+            <column name="authority_id" value="${EVENT_MK}"/>
+        </insert>
+        
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Admin}"/>
+            <column name="authority_id" value="${WELLNESS}"/>
+        </insert>
+
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Admin}"/>
+            <column name="authority_id" value="${ROLE_CK}"/>
+        </insert>
+        
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Admin}"/>
+            <column name="authority_id" value="${USER_CK}"/>
+        </insert>
+        
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Admin}"/>
+            <column name="authority_id" value="${CUSTOMER_CK}"/>
+        </insert>
+        
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Admin}"/>
+            <column name="authority_id" value="${PROMO_CATEGORY_CK}"/>
+        </insert>
+        
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Admin}"/>
+            <column name="authority_id" value="${PROMO_CK}"/>
+        </insert>
+        
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Admin}"/>
+            <column name="authority_id" value="${EVENT_CK}"/>
+        </insert>
+
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Admin}"/>
+            <column name="authority_id" value="${AIRPORT_ASSISTANCE}"/>
+        </insert>
+        
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Admin}"/>
+            <column name="authority_id" value="${LOG}"/>
+        </insert>
+        
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Admin}"/>
+            <column name="authority_id" value="${SETTING}"/>
+        </insert>
+        
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Admin}"/>
+            <column name="authority_id" value="${TRANSACTION}"/>
+        </insert>
+        
+        <!-- ROLE MAKER -->
+        
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Maker}"/>
+            <column name="authority_id" value="${ROLE_MK}"/>
+        </insert>
+        
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Maker}"/>
+            <column name="authority_id" value="${USER_MK}"/>
+        </insert>
+        
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Maker}"/>
+            <column name="authority_id" value="${CUSTOMER_MK}"/>
+        </insert>
+        
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Maker}"/>
+            <column name="authority_id" value="${PROMO_CATEGORY_MK}"/>
+        </insert>
+        
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Maker}"/>
+            <column name="authority_id" value="${PROMO_MK}"/>
+        </insert>
+        
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Maker}"/>
+            <column name="authority_id" value="${EVENT_MK}"/>
+        </insert>
+        
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Maker}"/>
+            <column name="authority_id" value="${WELLNESS}"/>
+        </insert>
+        
+        <!-- ROLE CHECKER -->
+        
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Checker}"/>
+            <column name="authority_id" value="${ROLE_CK}"/>
+        </insert>
+        
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Checker}"/>
+            <column name="authority_id" value="${USER_CK}"/>
+        </insert>
+        
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Checker}"/>
+            <column name="authority_id" value="${CUSTOMER_CK}"/>
+        </insert>
+        
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Checker}"/>
+            <column name="authority_id" value="${PROMO_CATEGORY_CK}"/>
+        </insert>
+        
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Checker}"/>
+            <column name="authority_id" value="${PROMO_CK}"/>
+        </insert>
+        
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Checker}"/>
+            <column name="authority_id" value="${EVENT_CK}"/>
+        </insert>
+        
+        <!-- ROLE AIRPORT ASSISTANCE -->
+		
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${AirportAssistance}"/>
+            <column name="authority_id" value="${AIRPORT_ASSISTANCE}"/>
+        </insert>
+
+    </changeSet>
+    
+</databaseChangeLog>

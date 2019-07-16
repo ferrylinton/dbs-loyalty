@@ -15,7 +15,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.ContentCachingRequestWrapper;
 import org.springframework.web.util.WebUtils;
 
-import com.dbs.loyalty.domain.LogApi;
+import com.dbs.loyalty.domain.log.LogApi;
 import com.dbs.loyalty.service.LogApiService;
 import com.dbs.loyalty.util.SecurityUtil;
 

@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.config.constant.DomainConstant;
-import com.dbs.loyalty.domain.FileImage;
-import com.dbs.loyalty.domain.FilePdf;
+import com.dbs.loyalty.domain.file.FileImage;
+import com.dbs.loyalty.domain.file.FilePdf;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.EventCustomerService;

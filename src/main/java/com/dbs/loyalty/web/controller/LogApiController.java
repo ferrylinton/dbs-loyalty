@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dbs.loyalty.config.constant.Constant;
-import com.dbs.loyalty.domain.LogApi;
+import com.dbs.loyalty.domain.log.LogApi;
 import com.dbs.loyalty.service.LogApiService;
 import com.dbs.loyalty.util.PageUtil;
 import com.dbs.loyalty.util.QueryStringUtil;

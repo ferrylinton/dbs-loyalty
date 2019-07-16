@@ -1,0 +1,56 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog 
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    
+    <changeSet author="FLH" id="user-schema-1">
+    
+        <createTable tableName="sec_user">
+            <column name="id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="activated" type="BIT(1)" defaultValueBoolean="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="locked" type="BIT(1)" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_type" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="login_attempt_count" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="username" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password_hash" type="VARCHAR(100)"/>
+            <column name="role_id" type="VARCHAR(22)"/>
+            <column name="pending" type="BIT(1)" defaultValueBoolean="false"/>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+        
+    </changeSet>
+    
+    <changeSet author="FLH" id="user-schema-2">
+        <addPrimaryKey columnNames="id" constraintName="sec_user_pk" tableName="sec_user"/>
+    </changeSet>
+
+    <changeSet author="FLH" id="user-schema-3">
+        <addUniqueConstraint columnNames="username" constraintName="sec_user_username_uq" tableName="sec_user"/>
+    </changeSet>
+
+	<changeSet author="FLH" id="user-schema-4">
+        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="sec_user" constraintName="sec_user_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="sec_role"/>
+    </changeSet>
+
+</databaseChangeLog>

@@ -13,9 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.config.constant.MessageConstant;
-import com.dbs.loyalty.domain.Appointment;
-import com.dbs.loyalty.domain.Customer;
-import com.dbs.loyalty.domain.Wellness;
+import com.dbs.loyalty.domain.cst.Customer;
+import com.dbs.loyalty.domain.med.Appointment;
+import com.dbs.loyalty.domain.med.Wellness;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.repository.AppointmentRepository;

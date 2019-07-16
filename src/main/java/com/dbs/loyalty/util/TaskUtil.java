@@ -3,8 +3,8 @@ package com.dbs.loyalty.util;
 import java.util.Map;
 
 import com.dbs.loyalty.config.constant.Constant;
-import com.dbs.loyalty.domain.enumeration.TaskOperation;
-import com.dbs.loyalty.domain.enumeration.TaskStatus;
+import com.dbs.loyalty.enumeration.TaskOperation;
+import com.dbs.loyalty.enumeration.TaskStatus;
 
 import lombok.extern.slf4j.Slf4j;
 

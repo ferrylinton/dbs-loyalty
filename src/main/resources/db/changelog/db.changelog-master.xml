@@ -8,64 +8,87 @@
 	<!-- Schema -->
 	
     <include file="release-100/schema/variables.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/schema/setting-schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/schema/task-schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/schema/country-schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/schema/airport-schema.xml" relativeToChangelogFile="true"/>
-	<include file="release-100/schema/image-schema.xml" relativeToChangelogFile="true"/>
-	<include file="release-100/schema/image-task-schema.xml" relativeToChangelogFile="true"/>
-	<include file="release-100/schema/pdf-schema.xml" relativeToChangelogFile="true"/>
-	<include file="release-100/schema/pdf-task-schema.xml" relativeToChangelogFile="true"/>
-	<include file="release-100/schema/authority-schema.xml" relativeToChangelogFile="true"/>
-	<include file="release-100/schema/role-schema.xml" relativeToChangelogFile="true"/>
-	<include file="release-100/schema/role-authority-schema.xml" relativeToChangelogFile="true"/>
-	<include file="release-100/schema/user-schema.xml" relativeToChangelogFile="true"/>
-	<include file="release-100/schema/log-login-schema.xml" relativeToChangelogFile="true"/>
-	<include file="release-100/schema/log-token-schema.xml" relativeToChangelogFile="true"/>
-	<include file="release-100/schema/log-api-schema.xml" relativeToChangelogFile="true"/>
-	<include file="release-100/schema/customer-schema.xml" relativeToChangelogFile="true"/>
-	<include file="release-100/schema/loved-one-schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/schema/promo-category-schema.xml" relativeToChangelogFile="true"/>
-	<include file="release-100/schema/promo-schema.xml" relativeToChangelogFile="true"/>
-	<include file="release-100/schema/promo-customer-schema.xml" relativeToChangelogFile="true"/>
-	<include file="release-100/schema/feedback-schema.xml" relativeToChangelogFile="true"/>
-	<include file="release-100/schema/feedback-question-schema.xml" relativeToChangelogFile="true"/>
-	<include file="release-100/schema/feedback-customer-schema.xml" relativeToChangelogFile="true"/>
-	<include file="release-100/schema/feedback-answer-schema.xml" relativeToChangelogFile="true"/>
-	<include file="release-100/schema/event-schema.xml" relativeToChangelogFile="true"/>
-	<include file="release-100/schema/event-customer-schema.xml" relativeToChangelogFile="true"/>
-	<include file="release-100/schema/departure-schema.xml" relativeToChangelogFile="true"/>
-	<include file="release-100/schema/arrival-schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/schema/airport-assistance-schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/schema/medical-provider-schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/schema/medical-provider-city-schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/schema/medical-provider-branch-schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/schema/wellness-schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/schema/health-package-schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/schema/appointment-schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/schema/reward-schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/schema/priviledge-product-schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/schema/priviledge-order-schema.xml" relativeToChangelogFile="true"/>
     <include file="release-100/schema/batch-schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/schema/verification-token-schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/schema/task-schema.xml" relativeToChangelogFile="true"/>
+    
+    <include file="release-100/schema/sec/authority-schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-100/schema/sec/role-schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-100/schema/sec/role-authority-schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-100/schema/sec/user-schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-100/schema/sec/verification-token-schema.xml" relativeToChangelogFile="true"/>
+	
+	<include file="release-100/schema/file/image-schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-100/schema/file/image-task-schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-100/schema/file/pdf-schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-100/schema/file/pdf-task-schema.xml" relativeToChangelogFile="true"/>
+     
+    <include file="release-100/schema/mst/setting-schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/schema/mst/country-schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/schema/mst/province-schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/schema/mst/city-schema.xml" relativeToChangelogFile="true"/>
+
+	<include file="release-100/schema/cst/customer-schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-100/schema/cst/address-schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-100/schema/cst/loved-one-schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-100/schema/cst/reward-schema.xml" relativeToChangelogFile="true"/>
+	
+    <include file="release-100/schema/ass/airport-schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/schema/ass/airport-assistance-schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/schema/ass/departure-schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-100/schema/ass/arrival-schema.xml" relativeToChangelogFile="true"/>
+
+	<include file="release-100/schema/log/log-login-schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-100/schema/log/log-token-schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-100/schema/log/log-api-schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-100/schema/log/log-api-url-schema.xml" relativeToChangelogFile="true"/>
+	
+    <include file="release-100/schema/prm/promo-category-schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-100/schema/prm/promo-schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-100/schema/prm/promo-customer-schema.xml" relativeToChangelogFile="true"/>
+	
+	<include file="release-100/schema/evt/feedback-schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-100/schema/evt/feedback-question-schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-100/schema/evt/event-schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-100/schema/evt/event-customer-schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-100/schema/evt/feedback-customer-schema.xml" relativeToChangelogFile="true"/>
+	<include file="release-100/schema/evt/feedback-answer-schema.xml" relativeToChangelogFile="true"/>
+	
+    <include file="release-100/schema/med/medical-provider-schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/schema/med/medical-provider-city-schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/schema/med/medical-provider-branch-schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/schema/med/wellness-schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/schema/med/health-package-schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/schema/med/appointment-schema.xml" relativeToChangelogFile="true"/>
+    
+    <include file="release-100/schema/trx/priviledge-product-schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/schema/trx/priviledge-order-schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/schema/trx/tada-order-schema.xml" relativeToChangelogFile="true"/>
     
     <!-- Data -->
     
-    <include file="release-100/data/user-system-data.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/data/authority-data.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/data/role-data.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/data/user-data.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/data/country-data.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/data/airport-data.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/data/medical-provider-data.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/data/health-package-data.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/data/customer-data.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/data/promo-data.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/data/feedback-data.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/data/event-data.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/data/airport-assistance-data.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/data/wellness-data.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/data/reward-data.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/data/priviledge-data.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/data/sec/user-system-data.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/data/sec/authority-data.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/data/sec/role-data.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/data/sec/user-data.xml" relativeToChangelogFile="true"/>
+    
+    <include file="release-100/data/mst/setting-data.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/data/mst/country-data.xml" relativeToChangelogFile="true"/>
+    
+    <include file="release-100/data/cst/customer-data.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/data/cst/reward-data.xml" relativeToChangelogFile="true"/>
+    
+    <include file="release-100/data/ass/airport-data.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/data/ass/airport-assistance-data.xml" relativeToChangelogFile="true"/>
+    
+    <include file="release-100/data/prm/promo-data.xml" relativeToChangelogFile="true"/>
+    
+    <include file="release-100/data/evt/feedback-data.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/data/evt/event-data.xml" relativeToChangelogFile="true"/>
+    
+    <include file="release-100/data/med/medical-provider-data.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/data/med/health-package-data.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/data/med/wellness-data.xml" relativeToChangelogFile="true"/>
+    
+    <include file="release-100/data/trx/priviledge-data.xml" relativeToChangelogFile="true"/>
     
 </databaseChangeLog>

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbs.loyalty.domain.Wellness;
+import com.dbs.loyalty.domain.med.Wellness;
 import com.dbs.loyalty.service.WellnessService;
 import com.dbs.loyalty.service.dto.WellnessDto;
 import com.dbs.loyalty.service.mapper.WellnessMapper;

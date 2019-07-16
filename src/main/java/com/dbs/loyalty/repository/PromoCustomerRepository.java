@@ -5,8 +5,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.dbs.loyalty.domain.PromoCustomer;
-import com.dbs.loyalty.domain.PromoCustomerId;
+import com.dbs.loyalty.domain.prm.PromoCustomer;
+import com.dbs.loyalty.domain.prm.PromoCustomerId;
 
 public interface PromoCustomerRepository extends JpaRepository<PromoCustomer, PromoCustomerId>{
 

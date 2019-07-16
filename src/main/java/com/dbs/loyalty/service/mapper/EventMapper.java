@@ -7,7 +7,7 @@ import org.mapstruct.MappingTarget;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.dbs.loyalty.config.constant.PathConstant;
-import com.dbs.loyalty.domain.Event;
+import com.dbs.loyalty.domain.evt.Event;
 import com.dbs.loyalty.service.dto.EventDto;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)

@@ -1,0 +1,41 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog 
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+	
+    <changeSet author="FLH" id="medical-provider-city-schema-1">
+        <createTable tableName="med_medical_provider_city">
+            <column name="id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="medical_provider_id" type="VARCHAR(22)"/>
+            <column name="pending" type="BIT(1)" defaultValueBoolean="false"/>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+    </changeSet>
+    
+    <changeSet author="FLH" id="medical-provider-city-schema-2">
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="med_medical_provider_city"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="medical-provider-city-schema-3">
+        <addUniqueConstraint columnNames="name" constraintName="med_medical_provider_city_name_uq" tableName="med_medical_provider_city"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="medical-provider-city-schema-4">
+        <addForeignKeyConstraint baseColumnNames="medical_provider_id" baseTableName="med_medical_provider_city" constraintName="med_medical_provider_city_fk" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="med_medical_provider"/>
+    </changeSet>
+
+</databaseChangeLog>

@@ -40,15 +40,15 @@
                             </tr>
                             <tr th:if="${event.startPeriod}">
                                 <th th:text="#{startPeriod}">Start Period</th>
-                                <td><span th:data-date="${@settingService.jsDate()}" th:text="${event.startPeriod}">2019-05-01</span></td>
+                                <td><span th:data-date="${@dateService.jsDate()}" th:text="${event.startPeriod}">2019-05-01</span></td>
                             </tr>
                             <tr th:if="${event.endPeriod}">
                                 <th th:text="#{endPeriod}">End Period</th>
-                                <td><span th:data-date="${@settingService.jsDate()}" th:text="${event.endPeriod}">2019-05-01</span></td>
+                                <td><span th:data-date="${@dateService.jsDate()}" th:text="${event.endPeriod}">2019-05-01</span></td>
                             </tr>
                             <tr>
                                 <th th:text="#{timePeriod}">Time Period</th>
-                                <td><span th:data-date="${@settingService.jsTime()}" th:text="${event.endPeriod}">2019-05-01</span></td>
+                                <td><span th:data-date="${@dateService.jsTime()}" th:text="${event.endPeriod}">2019-05-01</span></td>
                             </tr>
                             <tr>
                                 <th th:text="#{place}">Place</th>

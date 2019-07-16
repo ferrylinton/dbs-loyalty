@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.DomainConstant;
-import com.dbs.loyalty.domain.Arrival;
+import com.dbs.loyalty.domain.ass.Arrival;
 import com.dbs.loyalty.service.ArrivalService;
 import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.util.PageUtil;

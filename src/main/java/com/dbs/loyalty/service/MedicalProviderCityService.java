@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.dbs.loyalty.domain.MedicalProviderCity;
+import com.dbs.loyalty.domain.med.MedicalProviderCity;
 import com.dbs.loyalty.repository.MedicalProviderCityRepository;
 
 import lombok.RequiredArgsConstructor;

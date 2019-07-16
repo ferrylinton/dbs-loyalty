@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
-import com.dbs.loyalty.domain.Arrival;
+import com.dbs.loyalty.domain.ass.Arrival;
 
 public interface ArrivalRepository extends JpaRepository<Arrival, String>, JpaSpecificationExecutor<Arrival>{
 	

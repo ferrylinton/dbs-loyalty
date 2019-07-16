@@ -8,7 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import com.dbs.loyalty.domain.Customer;
+import com.dbs.loyalty.domain.cst.Customer;
 import com.dbs.loyalty.model.TokenData;
 
 

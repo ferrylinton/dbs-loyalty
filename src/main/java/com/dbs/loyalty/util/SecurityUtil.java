@@ -4,7 +4,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import com.dbs.loyalty.domain.User;
+import com.dbs.loyalty.domain.sec.User;
 import com.dbs.loyalty.security.rest.RestAuthentication;
 import com.dbs.loyalty.security.web.WebAuthentication;
 

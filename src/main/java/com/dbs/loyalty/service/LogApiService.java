@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dbs.loyalty.domain.LogApi;
+import com.dbs.loyalty.domain.log.LogApi;
 import com.dbs.loyalty.repository.LogApiRepository;
 import com.dbs.loyalty.service.specification.LogApiSpec;
 

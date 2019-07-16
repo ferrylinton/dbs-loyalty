@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import com.dbs.loyalty.domain.HealthPackage;
+import com.dbs.loyalty.domain.med.HealthPackage;
 import com.dbs.loyalty.repository.HealthPackageRepository;
 
 import lombok.RequiredArgsConstructor;

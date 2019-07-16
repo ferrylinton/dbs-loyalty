@@ -1,0 +1,47 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog 
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="FLH" id="address-schema-1">
+        <createTable tableName="cst_address">
+            <column name="id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address" type="VARCHAR(250)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="postal_code" type="VARCHAR(20)"/>
+            <column name="primary" type="BOOLEAN" defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="city_id" type="INT"/>
+            <column name="customer_id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+    </changeSet>
+    
+    <changeSet author="FLH" id="address-schema-2">
+        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="cst_address"/>
+    </changeSet>
+
+    <changeSet author="FLH" id="address-schema-3">
+        <addForeignKeyConstraint baseColumnNames="city_id" baseTableName="cst_address" constraintName="cst_address_fk1" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="mst_city"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="address-schema-4">
+        <addForeignKeyConstraint baseColumnNames="customer_id" baseTableName="cst_address" constraintName="cst_address_fk2" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="cst_customer"/>
+    </changeSet>
+    
+</databaseChangeLog>

@@ -5,7 +5,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import com.dbs.loyalty.config.constant.DateConstant;
-import com.dbs.loyalty.domain.Arrival;
+import com.dbs.loyalty.domain.ass.Arrival;
 import com.dbs.loyalty.service.dto.ArrivalDto;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)

@@ -9,7 +9,7 @@ import org.springframework.batch.item.ItemProcessor;
 
 import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.DateConstant;
-import com.dbs.loyalty.domain.Customer;
+import com.dbs.loyalty.domain.cst.Customer;
 import com.dbs.loyalty.repository.CustomerRepository;
 import com.devskiller.friendly_id.FriendlyId;
 

@@ -10,9 +10,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dbs.loyalty.domain.AirportAssistance;
-import com.dbs.loyalty.domain.Customer;
-import com.dbs.loyalty.domain.Departure;
+import com.dbs.loyalty.domain.ass.AirportAssistance;
+import com.dbs.loyalty.domain.ass.Departure;
+import com.dbs.loyalty.domain.cst.Customer;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.repository.AirportAssistanceRepository;
 import com.dbs.loyalty.repository.CustomerRepository;

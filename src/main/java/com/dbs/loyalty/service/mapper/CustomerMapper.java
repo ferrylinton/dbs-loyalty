@@ -8,7 +8,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.dbs.loyalty.config.constant.CustomerTypeConstant;
 import com.dbs.loyalty.config.constant.PathConstant;
-import com.dbs.loyalty.domain.Customer;
+import com.dbs.loyalty.domain.cst.Customer;
 import com.dbs.loyalty.service.dto.CustomerDto;
 
 import lombok.RequiredArgsConstructor;

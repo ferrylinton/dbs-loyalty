@@ -10,8 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.dbs.loyalty.domain.Task;
-import com.dbs.loyalty.domain.User;
-import com.dbs.loyalty.domain.enumeration.TaskOperation;
+import com.dbs.loyalty.domain.sec.User;
+import com.dbs.loyalty.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.UserRepository;
 import com.dbs.loyalty.service.specification.UserSpec;
 import com.dbs.loyalty.util.SecurityUtil;

@@ -9,9 +9,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.domain.Task;
-import com.dbs.loyalty.domain.enumeration.TaskOperation;
+import com.dbs.loyalty.domain.cst.Customer;
+import com.dbs.loyalty.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.CustomerRepository;
 import com.dbs.loyalty.service.dto.CustomerNewPasswordDto;
 import com.dbs.loyalty.service.dto.CustomerPasswordDto;

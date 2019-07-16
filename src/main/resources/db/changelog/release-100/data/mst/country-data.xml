@@ -1,0 +1,43 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+	<property name="Indonesia" value="1" />
+	<property name="Singapore" value="2" />
+	<property name="Taiwan" value="3" />
+	
+	
+    <changeSet author="FLH" id="country-data-1">
+
+        <insert tableName="mst_country">
+            <column name="id" value="${Indonesia}"/>
+            <column name="code" value="ID"/>
+            <column name="name" value="Indonesia"/>
+        </insert>
+
+    </changeSet>
+    
+    <changeSet author="FLH" id="country-data-2">
+
+		<insert tableName="mst_country">
+            <column name="id" value="${Singapore}"/>
+            <column name="code" value="SG"/>
+            <column name="name" value="Singapore"/>
+        </insert>
+
+    </changeSet>
+    
+    <changeSet author="FLH" id="country-data-3">
+        
+        <insert tableName="mst_country">
+            <column name="id" value="${Taiwan}"/>
+            <column name="code" value="TW"/>
+            <column name="name" value="Taiwan"/>
+        </insert>
+
+    </changeSet>
+    
+</databaseChangeLog>

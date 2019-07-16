@@ -14,7 +14,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.DomainConstant;
-import com.dbs.loyalty.domain.LogApi;
+import com.dbs.loyalty.domain.log.LogApi;
 
 import lombok.RequiredArgsConstructor;
 

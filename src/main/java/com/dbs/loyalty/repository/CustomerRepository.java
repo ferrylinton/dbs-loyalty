@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dbs.loyalty.domain.Customer;
+import com.dbs.loyalty.domain.cst.Customer;
 
 public interface CustomerRepository extends JpaRepository<Customer, String>, JpaSpecificationExecutor<Customer>{
 

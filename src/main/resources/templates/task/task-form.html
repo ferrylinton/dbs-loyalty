@@ -36,7 +36,7 @@
                         <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
                             <div class="form-group">
                                 <label th:text="#{madeDate}">Made Date</label>
-                                <div class="form-control"><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.jsDatetime()}" th:text="${task.madeDate}">2019-05-01T21:24:44Z</span></div>
+                                <div class="form-control"><span th:data-date="${@dateService.jsDatetime()}" th:text="${task.madeDate}">2019-05-01T21:24:44Z</span></div>
                             </div>
                         </div>
                         <div class="col-12" th:if="${task.taskDataOld != null}">

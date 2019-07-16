@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.dbs.loyalty.domain.FilePdf;
+import com.dbs.loyalty.domain.file.FilePdf;
 
 public interface FilePdfRepository extends JpaRepository<FilePdf, String>{
 

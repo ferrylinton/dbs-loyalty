@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbs.loyalty.domain.MedicalProviderBranch;
+import com.dbs.loyalty.domain.med.MedicalProviderBranch;
 import com.dbs.loyalty.service.MedicalProviderBranchService;
 import com.dbs.loyalty.service.dto.MedicalProviderBranchDto;
 import com.dbs.loyalty.service.dto.MedicalProviderDto;

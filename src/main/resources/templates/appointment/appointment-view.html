@@ -63,7 +63,7 @@
 									<button type="button" class="btn btn-default dropdown-toggle px-1 py-0 font-12" id="dropdownMenuButton" data-boundary="window" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 										<span class="icon-cog"></span>
 									</button>
-									<div class="dropdown-menu py-0 shadow" aria-labelledby="dropdownMenuButton">
+									<div class="dropdown-menu py-0 shadow-sm" aria-labelledby="dropdownMenuButton">
 										<a class="dropdown-item pl-1" href="/appointment/appointment-detail.html" th:href="@{|/appointment/${appointment.id}|}">
 										    <span class="icon-eye"></span> <span th:text="#{detail}">Detail</span>
                                         </a>
@@ -71,7 +71,7 @@
 								</div>
 							</td>
 	                        <td th:text="${row.count + (page.number * page.size)}">1</td>
-	                        <td><span th:data-date="${@settingService.jsDatetime()}" th:text="${appointment.date}">Date</span></td>
+	                        <td><span th:data-date="${@dateService.jsDatetime()}" th:text="${appointment.date}">Date</span></td>
 	                        <td th:text="${appointment.customer.name}">Name</td>
 	                        <td th:text="${appointment.medicalProvider.name}">BIOTEST INDONESIA</td>
 	                    </tr>

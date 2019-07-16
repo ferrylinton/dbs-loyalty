@@ -9,11 +9,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.dbs.loyalty.domain.Event;
-import com.dbs.loyalty.domain.Feedback;
-import com.dbs.loyalty.domain.FeedbackQuestion;
 import com.dbs.loyalty.domain.Task;
-import com.dbs.loyalty.domain.enumeration.TaskOperation;
+import com.dbs.loyalty.domain.evt.Event;
+import com.dbs.loyalty.domain.evt.Feedback;
+import com.dbs.loyalty.domain.evt.FeedbackQuestion;
+import com.dbs.loyalty.enumeration.TaskOperation;
 import com.dbs.loyalty.model.Pair;
 import com.dbs.loyalty.repository.EventRepository;
 import com.dbs.loyalty.service.specification.EventSpec;

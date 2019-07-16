@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.config.constant.DomainConstant;
-import com.dbs.loyalty.domain.FileImage;
+import com.dbs.loyalty.domain.file.FileImage;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.ImageService;
 

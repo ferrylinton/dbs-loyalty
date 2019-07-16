@@ -14,8 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.Task;
-import com.dbs.loyalty.domain.enumeration.TaskOperation;
-import com.dbs.loyalty.domain.enumeration.TaskStatus;
+import com.dbs.loyalty.enumeration.TaskOperation;
+import com.dbs.loyalty.enumeration.TaskStatus;
 import com.dbs.loyalty.repository.TaskRepository;
 import com.dbs.loyalty.service.specification.TaskSpec;
 import com.dbs.loyalty.util.ErrorUtil;

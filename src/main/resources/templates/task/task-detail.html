@@ -44,7 +44,7 @@
                             </tr>
                             <tr>
                                 <th th:text="#{madeDate}">Made Date</th>
-                            	<td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.jsDatetime()}" th:text="${task.madeDate}">2019-05-01T21:24:44Z</span></td>
+                            	<td><span th:data-date="${@dateService.jsDatetime()}" th:text="${task.madeDate}">2019-05-01T21:24:44Z</span></td>
                             </tr>
                             <tr th:if="${task.checker}">
                                 <th th:text="#{checker}">Checker</th>
@@ -52,7 +52,7 @@
                             </tr>
                             <tr th:if="${task.checkedDate}">
                                 <th th:text="#{checkedDate}">Checked Date</th>
-                                <td><span data-date="DD/MM/YYYY HH:mm:ss" th:data-date="${@settingService.jsDatetime()}" th:text="${task.checkedDate}">2019-05-01T21:24:44Z</span></td>
+                                <td><span th:data-date="${@dateService.jsDatetime()}" th:text="${task.checkedDate}">2019-05-01T21:24:44Z</span></td>
                             </tr>
                             <tr th:if="${task.taskDataOld}">
                                 <th th:text="#{taskDataOld}">Task Data Old</th>
