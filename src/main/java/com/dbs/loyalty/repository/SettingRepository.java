@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.dbs.loyalty.domain.mst.Setting;
+import com.dbs.loyalty.domain.Setting;
 
 
 public interface SettingRepository extends JpaRepository<Setting, String>{

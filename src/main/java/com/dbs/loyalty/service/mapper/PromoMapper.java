@@ -7,7 +7,7 @@ import org.mapstruct.MappingTarget;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.dbs.loyalty.config.constant.PathConstant;
-import com.dbs.loyalty.domain.prm.Promo;
+import com.dbs.loyalty.domain.Promo;
 import com.dbs.loyalty.service.dto.CarouselDto;
 import com.dbs.loyalty.service.dto.PromoDto;
 

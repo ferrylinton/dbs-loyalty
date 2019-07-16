@@ -11,8 +11,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.dbs.loyalty.config.constant.DomainConstant;
+import com.dbs.loyalty.domain.Role;
 import com.dbs.loyalty.domain.Task;
-import com.dbs.loyalty.domain.sec.Role;
 import com.dbs.loyalty.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.RoleRepository;
 import com.dbs.loyalty.service.specification.RoleSpec;

@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
-import com.dbs.loyalty.domain.evt.Event;
+import com.dbs.loyalty.domain.Event;
 
 public interface EventRepository extends JpaRepository<Event, String>, JpaSpecificationExecutor<Event>{
 

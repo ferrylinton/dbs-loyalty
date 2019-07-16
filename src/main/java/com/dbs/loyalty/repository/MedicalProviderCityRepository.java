@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.dbs.loyalty.domain.med.MedicalProviderCity;
+import com.dbs.loyalty.domain.MedicalProviderCity;
 
 public interface MedicalProviderCityRepository extends JpaRepository<MedicalProviderCity, String>{
 

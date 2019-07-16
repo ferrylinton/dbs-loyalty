@@ -13,7 +13,7 @@ import org.springframework.security.core.Authentication;
 
 import com.dbs.loyalty.config.ApplicationProperties;
 import com.dbs.loyalty.config.constant.UserTypeConstant;
-import com.dbs.loyalty.domain.sec.User;
+import com.dbs.loyalty.domain.User;
 import com.dbs.loyalty.repository.UserRepository;
 import com.dbs.loyalty.service.AuthenticateLdapService;
 import com.dbs.loyalty.util.PasswordUtil;

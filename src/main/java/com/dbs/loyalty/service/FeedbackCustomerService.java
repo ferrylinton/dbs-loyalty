@@ -14,10 +14,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dbs.loyalty.config.constant.Constant;
-import com.dbs.loyalty.domain.evt.FeedbackAnswer;
-import com.dbs.loyalty.domain.evt.FeedbackCustomer;
-import com.dbs.loyalty.domain.evt.FeedbackCustomerId;
-import com.dbs.loyalty.domain.evt.FeedbackQuestion;
+import com.dbs.loyalty.domain.FeedbackAnswer;
+import com.dbs.loyalty.domain.FeedbackCustomer;
+import com.dbs.loyalty.domain.FeedbackCustomerId;
+import com.dbs.loyalty.domain.FeedbackQuestion;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.repository.FeedbackAnswerRepository;
 import com.dbs.loyalty.repository.FeedbackCustomerRepository;

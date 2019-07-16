@@ -8,7 +8,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import com.dbs.loyalty.config.constant.CachingConstant;
-import com.dbs.loyalty.domain.mst.Setting;
+import com.dbs.loyalty.domain.Setting;
 import com.dbs.loyalty.repository.SettingRepository;
 
 import lombok.RequiredArgsConstructor;

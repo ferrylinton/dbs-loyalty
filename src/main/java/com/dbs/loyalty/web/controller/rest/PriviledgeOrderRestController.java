@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.config.constant.SwaggerConstant;
-import com.dbs.loyalty.domain.trx.PriviledgeOrder;
+import com.dbs.loyalty.domain.PriviledgeOrder;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.service.PriviledgeOrderService;
 import com.dbs.loyalty.service.PriviledgeProductService;

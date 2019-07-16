@@ -9,8 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.dbs.loyalty.domain.Promo;
 import com.dbs.loyalty.domain.Task;
-import com.dbs.loyalty.domain.prm.Promo;
 import com.dbs.loyalty.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.PromoRepository;
 import com.dbs.loyalty.service.specification.PromoSpec;

@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
-import com.dbs.loyalty.domain.sec.Role;
+import com.dbs.loyalty.domain.Role;
 
 public interface RoleRepository extends JpaRepository<Role, String>, JpaSpecificationExecutor<Role>{
 

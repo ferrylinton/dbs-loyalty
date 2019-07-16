@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import com.dbs.loyalty.domain.cst.Customer;
+import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.service.CustomerService;
 import com.dbs.loyalty.service.dto.CustomerUpdateDto;
 import com.dbs.loyalty.util.MessageUtil;

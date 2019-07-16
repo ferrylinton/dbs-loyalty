@@ -5,7 +5,7 @@ import org.springframework.validation.Validator;
 
 import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.config.constant.ValidationConstant;
-import com.dbs.loyalty.domain.prm.Promo;
+import com.dbs.loyalty.domain.Promo;
 import com.dbs.loyalty.service.PromoService;
 import com.dbs.loyalty.util.MessageUtil;
 

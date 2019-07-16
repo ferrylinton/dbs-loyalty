@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbs.loyalty.domain.ass.AirportAssistance;
+import com.dbs.loyalty.domain.AirportAssistance;
 import com.dbs.loyalty.service.AirportAssistanceService;
 import com.dbs.loyalty.service.dto.AirportAssistanceDto;
 import com.dbs.loyalty.service.mapper.AirportAssistanceMapper;

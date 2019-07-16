@@ -10,8 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.dbs.loyalty.domain.PromoCategory;
 import com.dbs.loyalty.domain.Task;
-import com.dbs.loyalty.domain.prm.PromoCategory;
 import com.dbs.loyalty.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.PromoCategoryRepository;
 import com.dbs.loyalty.service.specification.PromoCategorySpec;

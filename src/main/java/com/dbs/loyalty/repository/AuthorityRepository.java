@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.dbs.loyalty.domain.sec.Authority;
+import com.dbs.loyalty.domain.Authority;
 
 public interface AuthorityRepository extends JpaRepository<Authority, String>{
 

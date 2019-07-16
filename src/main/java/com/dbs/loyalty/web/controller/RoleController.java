@@ -27,8 +27,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.DomainConstant;
-import com.dbs.loyalty.domain.sec.Authority;
-import com.dbs.loyalty.domain.sec.Role;
+import com.dbs.loyalty.domain.Authority;
+import com.dbs.loyalty.domain.Role;
 import com.dbs.loyalty.service.AuthorityService;
 import com.dbs.loyalty.service.RoleService;
 import com.dbs.loyalty.service.TaskService;

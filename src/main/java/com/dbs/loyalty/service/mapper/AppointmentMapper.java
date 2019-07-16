@@ -5,7 +5,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 import com.dbs.loyalty.config.constant.DateConstant;
-import com.dbs.loyalty.domain.med.Appointment;
+import com.dbs.loyalty.domain.Appointment;
 import com.dbs.loyalty.service.dto.AppointmentDto;
 
 @Mapper(

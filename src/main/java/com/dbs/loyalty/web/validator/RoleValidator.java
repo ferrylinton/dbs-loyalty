@@ -6,7 +6,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import com.dbs.loyalty.config.constant.DomainConstant;
-import com.dbs.loyalty.domain.sec.Role;
+import com.dbs.loyalty.domain.Role;
 import com.dbs.loyalty.service.RoleService;
 import com.dbs.loyalty.util.MessageUtil;
 

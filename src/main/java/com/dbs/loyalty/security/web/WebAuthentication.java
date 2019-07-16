@@ -8,8 +8,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import com.dbs.loyalty.domain.sec.Authority;
-import com.dbs.loyalty.domain.sec.User;
+import com.dbs.loyalty.domain.Authority;
+import com.dbs.loyalty.domain.User;
 
 
 public class WebAuthentication implements Authentication {

@@ -3,7 +3,7 @@ package com.dbs.loyalty.web.converter;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-import com.dbs.loyalty.domain.sec.Role;
+import com.dbs.loyalty.domain.Role;
 
 @Component
 public class RoleConverter implements Converter<String, Role> {

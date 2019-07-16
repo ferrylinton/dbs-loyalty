@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.dbs.loyalty.domain.cst.Reward;
+import com.dbs.loyalty.domain.Reward;
 import com.dbs.loyalty.repository.RewardRepository;
 import com.dbs.loyalty.util.SecurityUtil;
 

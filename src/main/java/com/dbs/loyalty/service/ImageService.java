@@ -7,8 +7,8 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.dbs.loyalty.domain.file.FileImage;
-import com.dbs.loyalty.domain.file.FileImageTask;
+import com.dbs.loyalty.domain.FileImage;
+import com.dbs.loyalty.domain.FileImageTask;
 import com.dbs.loyalty.repository.FileImageRepository;
 import com.dbs.loyalty.repository.FileImageTaskRepository;
 import com.dbs.loyalty.util.ImageUtil;

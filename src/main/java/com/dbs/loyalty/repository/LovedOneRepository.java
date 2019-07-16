@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.dbs.loyalty.domain.cst.LovedOne;
+import com.dbs.loyalty.domain.LovedOne;
 
 public interface LovedOneRepository extends JpaRepository<LovedOne, String>, JpaSpecificationExecutor<LovedOne>{
 

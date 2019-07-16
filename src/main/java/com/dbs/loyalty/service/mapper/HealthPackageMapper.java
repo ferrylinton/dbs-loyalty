@@ -9,7 +9,7 @@ import org.mapstruct.MappingTarget;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.dbs.loyalty.config.constant.PathConstant;
-import com.dbs.loyalty.domain.med.HealthPackage;
+import com.dbs.loyalty.domain.HealthPackage;
 import com.dbs.loyalty.service.dto.HealthPackageDto;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)

@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-import com.dbs.loyalty.domain.log.LogLogin;
+import com.dbs.loyalty.domain.LogLogin;
 
 public interface LogLoginRepository extends JpaRepository<LogLogin, String>, JpaSpecificationExecutor<LogLogin>{
 

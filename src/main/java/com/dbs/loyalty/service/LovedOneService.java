@@ -6,8 +6,8 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.dbs.loyalty.domain.cst.Customer;
-import com.dbs.loyalty.domain.cst.LovedOne;
+import com.dbs.loyalty.domain.Customer;
+import com.dbs.loyalty.domain.LovedOne;
 import com.dbs.loyalty.repository.CustomerRepository;
 import com.dbs.loyalty.repository.LovedOneRepository;
 import com.dbs.loyalty.service.dto.LovedOneAddDto;

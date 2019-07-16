@@ -5,8 +5,8 @@ import java.util.Optional;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import com.dbs.loyalty.domain.trx.PriviledgeOrder;
-import com.dbs.loyalty.domain.trx.PriviledgeProduct;
+import com.dbs.loyalty.domain.PriviledgeOrder;
+import com.dbs.loyalty.domain.PriviledgeProduct;
 import com.dbs.loyalty.service.PriviledgeProductService;
 
 import lombok.RequiredArgsConstructor;

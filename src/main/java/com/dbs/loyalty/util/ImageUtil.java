@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.dbs.loyalty.domain.file.AbstractFileImage;
+import com.dbs.loyalty.domain.AbstractFileImage;
 
 public final class ImageUtil {
 

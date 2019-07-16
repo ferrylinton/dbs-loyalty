@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dbs.loyalty.config.constant.MessageConstant;
-import com.dbs.loyalty.domain.ass.AirportAssistance;
-import com.dbs.loyalty.domain.ass.Arrival;
-import com.dbs.loyalty.domain.cst.Customer;
+import com.dbs.loyalty.domain.AirportAssistance;
+import com.dbs.loyalty.domain.Arrival;
+import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.repository.ArrivalRepository;
 import com.dbs.loyalty.repository.CustomerRepository;

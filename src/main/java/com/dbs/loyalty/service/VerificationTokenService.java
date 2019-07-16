@@ -13,8 +13,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
 import com.dbs.loyalty.config.ApplicationProperties;
-import com.dbs.loyalty.domain.cst.Customer;
-import com.dbs.loyalty.domain.sec.VerificationToken;
+import com.dbs.loyalty.domain.Customer;
+import com.dbs.loyalty.domain.VerificationToken;
 import com.dbs.loyalty.repository.VerificationTokenRepository;
 
 import lombok.RequiredArgsConstructor;

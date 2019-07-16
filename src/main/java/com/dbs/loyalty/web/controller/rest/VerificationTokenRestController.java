@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.config.ApplicationProperties;
-import com.dbs.loyalty.domain.sec.VerificationToken;
+import com.dbs.loyalty.domain.VerificationToken;
 import com.dbs.loyalty.model.TokenData;
 import com.dbs.loyalty.security.rest.RestTokenProvider;
 import com.dbs.loyalty.service.MailService;

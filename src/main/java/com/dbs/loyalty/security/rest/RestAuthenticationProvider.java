@@ -14,8 +14,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 
 import com.dbs.loyalty.config.constant.SecurityConstant;
-import com.dbs.loyalty.domain.cst.Customer;
-import com.dbs.loyalty.domain.log.LogToken;
+import com.dbs.loyalty.domain.Customer;
+import com.dbs.loyalty.domain.LogToken;
 import com.dbs.loyalty.model.TokenData;
 import com.dbs.loyalty.repository.CustomerRepository;
 import com.dbs.loyalty.service.LogTokenService;

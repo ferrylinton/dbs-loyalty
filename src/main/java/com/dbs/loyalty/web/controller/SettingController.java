@@ -22,13 +22,13 @@ public class SettingController {
 	
 	private static final String REDIRECT = "redirect:/setting";
 	
-	private static final String VIEW = "setting/settingview";
+	private static final String VIEW = "setting/setting-view";
 	
 	private final SettingService settingService;
 	
 	private final CachingService cachingService;
 
-	@PreAuthorize("hasAnyRole('SETTING_MK', 'SETTING_CK')")
+	@PreAuthorize("hasRole('SETTING')")
 	@GetMapping
 	public String viewSettings(HttpServletRequest request) {
 		Map<String, String> settings = settingService.settings();
@@ -36,7 +36,7 @@ public class SettingController {
 		return VIEW;
 	}
 	
-	@PreAuthorize("hasAnyRole('SETTING_MK', 'SETTING_CK')")
+	@PreAuthorize("hasRole('SETTING')")
 	@GetMapping("/reload")
 	public String reloadSettings(HttpServletRequest request) {
 		cachingService.evict(CachingConstant.SETTINGS);

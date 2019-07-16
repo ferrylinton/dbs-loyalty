@@ -7,8 +7,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.dbs.loyalty.domain.evt.FeedbackCustomer;
-import com.dbs.loyalty.domain.evt.FeedbackCustomerId;
+import com.dbs.loyalty.domain.FeedbackCustomer;
+import com.dbs.loyalty.domain.FeedbackCustomerId;
 
 public interface FeedbackCustomerRepository extends JpaRepository<FeedbackCustomer, FeedbackCustomerId>{
 

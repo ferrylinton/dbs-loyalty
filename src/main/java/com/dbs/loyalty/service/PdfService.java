@@ -7,8 +7,8 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.dbs.loyalty.domain.file.FilePdf;
-import com.dbs.loyalty.domain.file.FilePdfTask;
+import com.dbs.loyalty.domain.FilePdf;
+import com.dbs.loyalty.domain.FilePdfTask;
 import com.dbs.loyalty.repository.FilePdfRepository;
 import com.dbs.loyalty.repository.FilePdfTaskRepository;
 import com.dbs.loyalty.util.SecurityUtil;

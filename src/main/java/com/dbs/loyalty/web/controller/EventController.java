@@ -29,10 +29,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.DomainConstant;
-import com.dbs.loyalty.domain.evt.Event;
-import com.dbs.loyalty.domain.evt.Feedback;
-import com.dbs.loyalty.domain.file.FileImageTask;
-import com.dbs.loyalty.domain.file.FilePdfTask;
+import com.dbs.loyalty.domain.Event;
+import com.dbs.loyalty.domain.Feedback;
+import com.dbs.loyalty.domain.FileImageTask;
+import com.dbs.loyalty.domain.FilePdfTask;
 import com.dbs.loyalty.service.EventService;
 import com.dbs.loyalty.service.FeedbackService;
 import com.dbs.loyalty.service.ImageService;

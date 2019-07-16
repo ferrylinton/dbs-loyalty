@@ -11,7 +11,7 @@ import com.blueconic.browscap.Capabilities;
 import com.blueconic.browscap.ParseException;
 import com.blueconic.browscap.UserAgentParser;
 import com.blueconic.browscap.UserAgentService;
-import com.dbs.loyalty.domain.log.LogLogin;
+import com.dbs.loyalty.domain.LogLogin;
 import com.dbs.loyalty.util.IpUtil;
 
 @Service

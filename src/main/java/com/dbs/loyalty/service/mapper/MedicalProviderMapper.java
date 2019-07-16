@@ -5,7 +5,7 @@ import java.util.List;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
 
-import com.dbs.loyalty.domain.med.MedicalProvider;
+import com.dbs.loyalty.domain.MedicalProvider;
 import com.dbs.loyalty.service.dto.MedicalProviderDto;
 
 @Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)

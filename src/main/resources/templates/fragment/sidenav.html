@@ -24,6 +24,9 @@
                     <li th:if="${#authorization.expression('hasAnyAuthority(''EVENT_MK'', ''EVENT_CK'')')}">
                         <a class="icon-database" data-menu="event" th:href="@{/event}" th:text="#{event}">Event</a>
                     </li>
+                    <li th:if="${#authorization.expression('hasAnyAuthority(''SETTING'')')}">
+                        <a class="icon-database" data-menu="setting" th:href="@{/setting}" th:text="#{setting}">Setting</a>
+                    </li>
                 </ul>
             </li>
             <li>

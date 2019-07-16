@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.dbs.loyalty.domain.file.AbstractFileImage;
+import com.dbs.loyalty.domain.AbstractFileImage;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.ImageService;
 import com.dbs.loyalty.util.MessageUtil;

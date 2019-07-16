@@ -9,7 +9,7 @@ import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.config.constant.RegexConstant;
 import com.dbs.loyalty.config.constant.UserTypeConstant;
 import com.dbs.loyalty.config.constant.ValidationConstant;
-import com.dbs.loyalty.domain.sec.User;
+import com.dbs.loyalty.domain.User;
 import com.dbs.loyalty.service.UserLdapService;
 import com.dbs.loyalty.service.UserService;
 import com.dbs.loyalty.util.MessageUtil;

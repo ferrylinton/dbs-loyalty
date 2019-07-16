@@ -12,7 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbs.loyalty.domain.med.MedicalProvider;
+import com.dbs.loyalty.domain.MedicalProvider;
 import com.dbs.loyalty.service.MedicalProviderService;
 import com.dbs.loyalty.service.dto.MedicalProviderDto;
 import com.dbs.loyalty.service.mapper.MedicalProviderMapper;

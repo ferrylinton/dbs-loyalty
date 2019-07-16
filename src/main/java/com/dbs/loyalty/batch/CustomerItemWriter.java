@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.batch.item.ItemWriter;
 
-import com.dbs.loyalty.domain.cst.Customer;
+import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.repository.CustomerRepository;
 
 import lombok.RequiredArgsConstructor;

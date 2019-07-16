@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.dbs.loyalty.domain.log.LogLogin;
+import com.dbs.loyalty.domain.LogLogin;
 import com.dbs.loyalty.repository.LogLoginRepository;
 import com.dbs.loyalty.service.specification.LogLoginSpec;
 import com.dbs.loyalty.util.SecurityUtil;

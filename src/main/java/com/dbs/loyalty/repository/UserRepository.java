@@ -13,7 +13,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dbs.loyalty.domain.sec.User;
+import com.dbs.loyalty.domain.User;
 
 public interface UserRepository extends JpaRepository<User, String>, JpaSpecificationExecutor<User>{
 

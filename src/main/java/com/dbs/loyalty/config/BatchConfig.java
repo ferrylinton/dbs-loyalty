@@ -17,7 +17,7 @@ import com.dbs.loyalty.batch.CustomerItem;
 import com.dbs.loyalty.batch.CustomerItemProcessor;
 import com.dbs.loyalty.batch.CustomerItemWriter;
 import com.dbs.loyalty.batch.JobCompletionNotificationListener;
-import com.dbs.loyalty.domain.cst.Customer;
+import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.repository.CustomerRepository;
 
 import lombok.RequiredArgsConstructor;

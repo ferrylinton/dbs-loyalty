@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 
 import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.MessageConstant;
-import com.dbs.loyalty.domain.prm.Promo;
-import com.dbs.loyalty.domain.prm.PromoCustomer;
-import com.dbs.loyalty.domain.prm.PromoCustomerId;
+import com.dbs.loyalty.domain.Promo;
+import com.dbs.loyalty.domain.PromoCustomer;
+import com.dbs.loyalty.domain.PromoCustomerId;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.repository.PromoCustomerRepository;
 import com.dbs.loyalty.repository.PromoRepository;

@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import com.dbs.loyalty.domain.log.LogToken;
+import com.dbs.loyalty.domain.LogToken;
 import com.dbs.loyalty.repository.LogTokenRepository;
 import com.dbs.loyalty.service.specification.LogTokenSpec;
 

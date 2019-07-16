@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.dbs.loyalty.domain.sec.VerificationToken;
+import com.dbs.loyalty.domain.VerificationToken;
 
 public interface VerificationTokenRepository extends JpaRepository<VerificationToken, String>{
 	

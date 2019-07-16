@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.config.constant.MessageConstant;
 import com.dbs.loyalty.config.constant.SecurityConstant;
-import com.dbs.loyalty.domain.cst.Customer;
+import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.model.Pair;
 import com.dbs.loyalty.model.TokenData;

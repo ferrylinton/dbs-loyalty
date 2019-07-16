@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.dbs.loyalty.domain.evt.FeedbackQuestion;
+import com.dbs.loyalty.domain.FeedbackQuestion;
 
 public interface FeedbackQuestionRepository extends JpaRepository<FeedbackQuestion, String>{
 

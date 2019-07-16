@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 
 import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.MessageConstant;
-import com.dbs.loyalty.domain.evt.Event;
-import com.dbs.loyalty.domain.evt.EventCustomer;
-import com.dbs.loyalty.domain.evt.EventCustomerId;
+import com.dbs.loyalty.domain.Event;
+import com.dbs.loyalty.domain.EventCustomer;
+import com.dbs.loyalty.domain.EventCustomerId;
 import com.dbs.loyalty.enumeration.EventAnswer;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;

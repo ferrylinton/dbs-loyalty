@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.dbs.loyalty.domain.prm.Promo;
+import com.dbs.loyalty.domain.Promo;
 
 public interface PromoRepository extends JpaRepository<Promo, String>, JpaSpecificationExecutor<Promo>{
 

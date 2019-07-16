@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.dbs.loyalty.domain.evt.FeedbackQuestion;
+import com.dbs.loyalty.domain.FeedbackQuestion;
 import com.dbs.loyalty.repository.FeedbackQuestionRepository;
 
 import lombok.RequiredArgsConstructor;

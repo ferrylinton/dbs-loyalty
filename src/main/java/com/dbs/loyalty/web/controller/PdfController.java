@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.dbs.loyalty.domain.file.FilePdf;
-import com.dbs.loyalty.domain.file.FilePdfTask;
+import com.dbs.loyalty.domain.FilePdf;
+import com.dbs.loyalty.domain.FilePdfTask;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.PdfService;
 import com.dbs.loyalty.util.MessageUtil;
