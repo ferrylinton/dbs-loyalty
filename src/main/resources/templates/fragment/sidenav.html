@@ -72,6 +72,9 @@
                     <li th:if="${#authorization.expression('hasAuthority(''LOG'')')}">
                         <a class="icon-history" data-menu="logapi" th:href="@{/logapi}" th:text="#{logapi}">Log Api</a>
                     </li>
+                    <li th:if="${#authorization.expression('hasAuthority(''LOG'')')}">
+                        <a class="icon-history" data-menu="logapiurl" th:href="@{/logapiurl}" th:text="#{logapiurl}">Log Api URL</a>
+                    </li>
                 </ul>
             </li>
             <li>

@@ -23,10 +23,10 @@
 }
 
 .vertical-menu a{
-	font-size: .9em;
+	font-size: .85em;
 	padding: 5px 15px 5px 15px;
 	text-decoration: none;
-	color: #fff;
+	color: #d3d7cf;
 }
 
 .vertical-menu a.active{
@@ -35,7 +35,7 @@
 }
 
 .vertical-menu a:hover{
-	color: #007bff;
+	color: #fff;
 	background-color: #272b30;
 }
 

@@ -19,7 +19,8 @@ public class CachingConfig {
     public CacheManager cacheManager() {
         SimpleCacheManager cacheManager = new SimpleCacheManager();
         cacheManager.setCaches(Arrays.asList(
-        		new ConcurrentMapCache(CachingConstant.SETTINGS)
+        		new ConcurrentMapCache(CachingConstant.SETTINGS),
+        		new ConcurrentMapCache(CachingConstant.LOG_API_URLS)
         ));
         
         return cacheManager;

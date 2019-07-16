@@ -4,7 +4,6 @@ import java.beans.PropertyEditorSupport;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -34,10 +33,8 @@ import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.CustomerTypeConstant;
 import com.dbs.loyalty.config.constant.DateConstant;
 import com.dbs.loyalty.config.constant.DomainConstant;
-import com.dbs.loyalty.domain.Country;
 import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.domain.FileImageTask;
-import com.dbs.loyalty.service.CountryService;
 import com.dbs.loyalty.service.CustomerService;
 import com.dbs.loyalty.service.ImageService;
 import com.dbs.loyalty.service.TaskService;
@@ -67,9 +64,7 @@ public class CustomerController {
 	private final ImageService imageService;
 	
 	private final CustomerService customerService;
-	
-	private final CountryService countryService;
-	
+
 	private final TaskService taskService;
 	
 	private final ApplicationProperties applicationProperties;
@@ -164,11 +159,6 @@ public class CustomerController {
 		}
 		
 		return REDIRECT;
-	}
-	
-	@ModelAttribute(DomainConstant.COUNTRIES)
-	public List<Country> getCountries(){
-		return countryService.findAll();
 	}
 
 	@InitBinder(DomainConstant.CUSTOMER)

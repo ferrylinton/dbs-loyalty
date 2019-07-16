@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dbs.loyalty.config.constant.CachingConstant;
 import com.dbs.loyalty.config.constant.Constant;
-import com.dbs.loyalty.domain.Setting;
+import com.dbs.loyalty.domain.LogApiUrl;
 import com.dbs.loyalty.service.CachingService;
-import com.dbs.loyalty.service.SettingService;
+import com.dbs.loyalty.service.LogApiUrlService;
 import com.dbs.loyalty.util.PageUtil;
 import com.dbs.loyalty.util.QueryStringUtil;
 
@@ -24,32 +24,32 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Controller
-@RequestMapping("/setting")
-public class SettingController {
+@RequestMapping("/logapiurl")
+public class LogApiUrlController {
 	
-	private static final String REDIRECT 	= "redirect:/setting";
+	private static final String REDIRECT 	= "redirect:/logapiurl";
 	
-	private static final String VIEW 		= "setting/setting-view";
+	private static final String VIEW 		= "logapiurl/logapiurl-view";
 
-	private static final String SORT_BY 	= "name";
+	private static final String SORT_BY 	= "url";
 	
-	private final SettingService settingService;
+	private final LogApiUrlService logApiUrlService;
 	
 	private final CachingService cachingService;
 
-	@PreAuthorize("hasRole('SETTING')")
+	@PreAuthorize("hasRole('LOG')")
 	@GetMapping
-	public String viewSettings(
+	public String viewLogApiUrls(
 			@RequestParam Map<String, String> params, 
 			Sort sort, Model model) {
 		
 		Order order = PageUtil.getOrder(sort, SORT_BY);
-		Page<Setting> page = settingService.findAll(params, PageUtil.getPageable(params, order));
+		Page<LogApiUrl> page = logApiUrlService.findAll(params, PageUtil.getPageable(params, order));
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
 			return REDIRECT;
 		}else {
-			cachingService.evict(CachingConstant.SETTINGS);
+			cachingService.evict(CachingConstant.LOG_API_URLS);
 			model.addAttribute(Constant.PAGE, page);
 			model.addAttribute(Constant.ORDER, order);
 			model.addAttribute(Constant.PREVIOUS, QueryStringUtil.page(order, page.getNumber() - 1));

@@ -65,14 +65,6 @@
                                 <input class="form-control" type="text" th:placeholder="#{dob}" id="dob" name="dob" th:value="${#temporals.format(customer.dob, @dateService.javaDate())}" />
                             </div>
                         </div>
-                        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
-	                     	<div class="form-group">
-	                         	<label for="country" th:text="#{country}">Country</label>
-	                        	<select class="custom-select" th:field="*{country}">
-	                                    <option th:each="ctry: ${countries}" th:value="${ctry.id}" th:text="${ctry.name}">Country</option>
-	                          	</select>
-	                      	</div>
-	               		</div>
                         <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4" th:if="*{id != null}">
                         	<div class="pt-sm-3 mb-3 mt-sm-4">
 		                    	<div class="custom-control custom-switch d-inline-block">
