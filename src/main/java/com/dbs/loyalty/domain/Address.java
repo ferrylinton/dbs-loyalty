@@ -40,7 +40,7 @@ public class Address extends AbstractAuditing implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@Column(name = "id", length=22)
+	@Column(name = DomainConstant.ID, length=22)
 	@GenericGenerator(name = DomainConstant.ID_GENERATOR, strategy = DomainConstant.ID_GENERATOR_STRATEGY)
 	@GeneratedValue(generator = DomainConstant.ID_GENERATOR)
 	private String id;
@@ -50,15 +50,13 @@ public class Address extends AbstractAuditing implements Serializable {
 	@Column(name = "address", length = 250, nullable = false)
 	private String address;
 
-	@NotNull
 	@Size(min = 2, max = 20)
 	@Column(name = "postal_code", length = 20, nullable = false)
 	private String postalCode;
     
-	@Column(name = "primary", nullable = false)
+	@Column(name = "isprimary", nullable = false)
 	private Boolean primary = false;
-	
-	@NotNull
+
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "city_id", nullable = false, foreignKey = @ForeignKey(name = "cst_address_fk1"))
 	private City city;

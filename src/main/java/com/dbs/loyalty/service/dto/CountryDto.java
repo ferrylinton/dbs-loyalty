@@ -1,5 +1,6 @@
 package com.dbs.loyalty.service.dto;
 
+import java.time.Instant;
 import java.util.List;
 
 import io.swagger.annotations.ApiModel;
@@ -17,8 +18,20 @@ import lombok.Setter;
 @Getter
 public class CountryDto {
 
+	private Integer id;
+	
+	private String code;
+	
 	@ApiModelProperty(value = "Country's name", example = "Indonesia", position = 0)
     private String name;
+	
+	private Boolean active;
+	
+	private Instant createdAt;
+	
+	private Instant updatedAt;
+	
+	private Instant deletedAt;
 	
 	@ApiModelProperty(value = "List of airports", position = 1)
 	private List<AirportDto> airports;

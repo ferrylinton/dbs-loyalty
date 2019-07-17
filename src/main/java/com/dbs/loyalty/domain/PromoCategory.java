@@ -1,10 +1,6 @@
 package com.dbs.loyalty.domain;
 
 
-import static com.dbs.loyalty.config.constant.DomainConstant.ID;
-import static com.dbs.loyalty.config.constant.DomainConstant.ID_GENERATOR;
-import static com.dbs.loyalty.config.constant.DomainConstant.ID_GENERATOR_STRATEGY;
-
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -19,6 +15,8 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.GenericGenerator;
+
+import com.dbs.loyalty.config.constant.DomainConstant;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -46,9 +44,9 @@ public class PromoCategory extends AbstractTask implements Serializable {
     private static final long serialVersionUID = 1L;
   
     @Id
-	@Column(name = ID, length=22)
-    @GenericGenerator(name = ID_GENERATOR, strategy = ID_GENERATOR_STRATEGY)
-	@GeneratedValue(generator = ID_GENERATOR)
+	@Column(name = DomainConstant.ID, length=22)
+	@GenericGenerator(name = DomainConstant.ID_GENERATOR, strategy = DomainConstant.ID_GENERATOR_STRATEGY)
+	@GeneratedValue(generator = DomainConstant.ID_GENERATOR)
 	private String id;
     
     @Size(min = 2, max = 100)

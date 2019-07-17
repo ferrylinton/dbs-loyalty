@@ -73,6 +73,8 @@
     
     <include file="release-100/data/mst/setting-data.xml" relativeToChangelogFile="true"/>
     <include file="release-100/data/mst/country-data.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/data/mst/province-data.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/data/mst/city-data.xml" relativeToChangelogFile="true"/>
     
     <include file="release-100/data/cst/customer-data.xml" relativeToChangelogFile="true"/>
     <include file="release-100/data/cst/reward-data.xml" relativeToChangelogFile="true"/>

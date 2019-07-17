@@ -27,7 +27,7 @@ import lombok.ToString;
 @Setter
 @Getter
 @EqualsAndHashCode(of = { "id" }, callSuper = false)
-@ToString(of = { "id", "name" })
+@ToString(of = { "id", "name", "active" })
 @Entity
 @Table(	
 	name = "mst_province", 

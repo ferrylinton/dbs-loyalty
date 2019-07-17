@@ -21,6 +21,7 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.enumeration.FormType;
 import com.dbs.loyalty.model.Pair;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -42,8 +43,8 @@ public class FeedbackQuestion extends AbstractAuditing implements Serializable, 
 
 	@Id
 	@Column(name = "id", length=22)
-	@GenericGenerator(name = "IdGenerator", strategy = "com.dbs.loyalty.domain.IdGenerator")
-	@GeneratedValue(generator = "IdGenerator")
+	@GenericGenerator(name = DomainConstant.ID_GENERATOR, strategy = DomainConstant.ID_GENERATOR_STRATEGY)
+	@GeneratedValue(generator = DomainConstant.ID_GENERATOR)
 	private String id;
     
     @Column(name = "question_number", nullable = false, columnDefinition="TINYINT")

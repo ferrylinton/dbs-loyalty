@@ -36,8 +36,8 @@ public class Task implements Serializable {
     private static final long serialVersionUID = 1L;
     
     @Id
-	@Column(name = "id", length=22)
-    @GenericGenerator(name = DomainConstant.ID_GENERATOR, strategy = DomainConstant.ID_GENERATOR_STRATEGY)
+	@Column(name = DomainConstant.ID, length=22)
+	@GenericGenerator(name = DomainConstant.ID_GENERATOR, strategy = DomainConstant.ID_GENERATOR_STRATEGY)
 	@GeneratedValue(generator = DomainConstant.ID_GENERATOR)
 	private String id;
 

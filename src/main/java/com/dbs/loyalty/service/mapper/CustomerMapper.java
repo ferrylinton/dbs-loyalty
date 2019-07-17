@@ -14,7 +14,7 @@ import com.dbs.loyalty.service.dto.CustomerDto;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR)
+@Mapper(componentModel = "spring", uses = AddressMapper.class, injectionStrategy = InjectionStrategy.CONSTRUCTOR)
 public abstract class CustomerMapper {
 
 	public abstract CustomerDto toDto(Customer customer);

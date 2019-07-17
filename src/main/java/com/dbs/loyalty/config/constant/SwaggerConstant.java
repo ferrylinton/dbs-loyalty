@@ -8,6 +8,10 @@ public final class SwaggerConstant {
 	
 	public static final String AIRPORT_ASSISTANCE 	= "AirportAssistance";
 	
+	public static final String COUNTRY 				= "Country";
+	
+	public static final String ADDRESS 				= "Address";
+	
 	public static final String VERIFICATION_TOKEN 	= "VerificationToken";
 	
 	public static final String WELLNESS 			= "Wellness";

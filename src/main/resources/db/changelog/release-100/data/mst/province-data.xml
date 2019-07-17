@@ -1,19 +1,14 @@
 <?xml version="1.1" encoding="UTF-8" standalone="no"?>
-<databaseChangeLog
-	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<databaseChangeLog 
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
-
-	<property name="Indonesia" value="1" />
-	<property name="Singapore" value="2" />
-	<property name="Taiwan" value="3" />
-	
-	
-    <changeSet author="FLH" id="country-data-1">
+    
+ 	<changeSet author="FLH" id="province-data-1">
         <sqlFile
             endDelimiter=";"
-            path="country-data.sql"
+            path="province-data.sql"
             relativeToChangelogFile="true"
             splitStatements="true"
             stripComments="true"/>

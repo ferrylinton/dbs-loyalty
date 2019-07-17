@@ -1,6 +1,8 @@
 package com.dbs.loyalty.service.dto;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.dbs.loyalty.config.constant.DateConstant;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -37,4 +39,7 @@ public class CustomerDto {
 	@ApiModelProperty(value = "Customer's image url", example = "/api/customers/image", position = 6)
 	private String imageUrl;
 
+	@ApiModelProperty(value = "Customer's addresses", position = 6)
+	private Set<AddressDto> addresses = new HashSet<>();
+	
 }

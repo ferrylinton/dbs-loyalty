@@ -21,6 +21,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.dbs.loyalty.config.constant.DomainConstant;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -50,9 +51,9 @@ public class Event extends AbstractTask implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-	@Column(name = "id", length=22)
-	@GenericGenerator(name = "IdGenerator", strategy = "com.dbs.loyalty.domain.IdGenerator")
-	@GeneratedValue(generator = "IdGenerator")
+	@Column(name = DomainConstant.ID, length=22)
+	@GenericGenerator(name = DomainConstant.ID_GENERATOR, strategy = DomainConstant.ID_GENERATOR_STRATEGY)
+	@GeneratedValue(generator = DomainConstant.ID_GENERATOR)
 	private String id;
 
     @Size(min=2, max = 150)

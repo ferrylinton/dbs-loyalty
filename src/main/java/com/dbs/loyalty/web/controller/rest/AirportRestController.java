@@ -48,7 +48,7 @@ public class AirportRestController {
     @ApiResponses(value = { @ApiResponse(code=200, message=OK, response=CountryDto.class, responseContainer="List")})
     @GetMapping("/api/airports")
     public List<CountryDto> getAirports() {
-    	List<CountryDto> countries = countryMapper.toDto(countryService.findAll());
+    	List<CountryDto> countries = countryMapper.toDto(countryService.findWithAirports());
     	
     	for(CountryDto country : countries) {
     		Collections.sort(country.getAirports());

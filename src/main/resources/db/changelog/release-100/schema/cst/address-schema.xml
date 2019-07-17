@@ -14,7 +14,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="postal_code" type="VARCHAR(20)"/>
-            <column name="primary" type="BOOLEAN" defaultValueBoolean="false">
+            <column name="isprimary" type="BOOLEAN" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
             <column name="city_id" type="INT"/>
