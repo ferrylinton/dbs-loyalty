@@ -45,6 +45,9 @@ public class Address extends AbstractAuditing implements Serializable {
 	@GeneratedValue(generator = DomainConstant.ID_GENERATOR)
 	private String id;
 	
+	@Column(name = "label", length = 20, nullable = false)
+	private String label;
+	
 	@NotNull
 	@Size(min = 2, max = 250)
 	@Column(name = "address", length = 250, nullable = false)
@@ -53,9 +56,6 @@ public class Address extends AbstractAuditing implements Serializable {
 	@Size(min = 2, max = 20)
 	@Column(name = "postal_code", length = 20, nullable = false)
 	private String postalCode;
-    
-	@Column(name = "isprimary", nullable = false)
-	private Boolean primary = false;
 
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "city_id", nullable = false, foreignKey = @ForeignKey(name = "cst_address_fk1"))

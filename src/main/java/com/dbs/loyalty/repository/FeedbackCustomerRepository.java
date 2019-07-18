@@ -28,10 +28,10 @@ public interface FeedbackCustomerRepository extends JpaRepository<FeedbackCustom
 	@Query(value = "select f from FeedbackCustomer f "
 			+ "join fetch f.customer c "
 			+ "join fetch f.answers a "
-			+ "where f.id.eventId = ?1 and lower(c.name) like ?2 ",
+			+ "where f.id.eventId = ?1 and lower(c.firstName) like ?2 ",
 			countQuery = "select count(f) from FeedbackCustomer f "
 					+ "join f.customer c "
-					+ "where f.id.eventId = ?1 and lower(c.name) like ?2 ")
+					+ "where f.id.eventId = ?1 and lower(c.firstName) like ?2 ")
 	Page<FeedbackCustomer> findByEventIdAndKeyword(String eventId, String keyword, Pageable pageable);
 	
 }

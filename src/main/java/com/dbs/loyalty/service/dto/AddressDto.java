@@ -13,13 +13,13 @@ import lombok.Setter;
 @Setter
 @Getter
 public class AddressDto {
+	
+	private String label;
 
 	private String address;
 	
 	private String city;
 	
 	private String postalCode;
-	
-	private Boolean primary = false;
 	
 }

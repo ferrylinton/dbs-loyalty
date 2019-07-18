@@ -57,7 +57,7 @@ public class CountryService {
 			List<Country> countries = objectMapper.readValue(objectMapper.writeValueAsString(response.getBody().get("data")), new TypeReference<List<Country>>(){});
 			
 			for(Country country : countries) {
-				sync(countryRepository.save(country));
+				save(country);
 			}
 			
 		} catch (IOException e) {
@@ -71,7 +71,7 @@ public class CountryService {
 			List<Province> provinces = objectMapper.readValue(objectMapper.writeValueAsString(response.getBody().get("data")), new TypeReference<List<Province>>(){});
 			
 			for(Province province : provinces) {
-				sync(country, provinceRepository.save(province));
+				save(country, province);
 			}
 		} catch (IOException e) {
 			log.error(e.getLocalizedMessage(), e);
@@ -84,9 +84,33 @@ public class CountryService {
 			List<City> cities = objectMapper.readValue(objectMapper.writeValueAsString(response.getBody().get("data")), new TypeReference<List<City>>(){});
 			
 			for(City city : cities) {
-				cityRepository.save(city);
+				save(city);
 			}
 		} catch (IOException e) {
+			log.error(e.getLocalizedMessage(), e);
+		}
+	}
+	
+	private void save(Country country) {
+		try {
+			sync(countryRepository.save(country));
+		} catch (Exception e) {
+			log.error(e.getLocalizedMessage(), e);
+		}
+	}
+	
+	private void save(Country country, Province province) {
+		try {
+			sync(country, provinceRepository.save(province));
+		} catch (Exception e) {
+			log.error(e.getLocalizedMessage(), e);
+		}
+	}
+	
+	private void save(City city) {
+		try {
+			cityRepository.save(city);
+		} catch (Exception e) {
 			log.error(e.getLocalizedMessage(), e);
 		}
 	}

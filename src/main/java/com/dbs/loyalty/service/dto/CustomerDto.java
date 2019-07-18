@@ -23,23 +23,26 @@ public class CustomerDto {
 	@ApiModelProperty(value = "Customer's email", example = "johnsmith@dbs.com", position = 1)
 	private String email;
 	
-	@ApiModelProperty(value = "Customer's name", example = "John Smith", position = 2)
-	private String name;
+	@ApiModelProperty(value = "Customer's first name", example = "John", position = 2)
+	private String firstName;
 	
-	@ApiModelProperty(value = "Customer's phone", example = "+62 8123456789", position = 3)
+	@ApiModelProperty(value = "Customer's last name", example = "Smith", position = 3)
+	private String lastName;
+	
+	@ApiModelProperty(value = "Customer's phone", example = "+62 8123456789", position = 4)
 	private String phone;
 	
-	@ApiModelProperty(value = "Customer's type", example = "TPC", position = 4)
+	@ApiModelProperty(value = "Customer's type", example = "TPC", position = 5)
 	private String customerType;
 	
-	@ApiModelProperty(value = "Customer's date of birth", example = "21/01/1980", position = 5)
+	@ApiModelProperty(value = "Customer's date of birth", example = "21/01/1980", position = 6)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateConstant.JAVA_DATE)
 	private LocalDate dob;
 	
-	@ApiModelProperty(value = "Customer's image url", example = "/api/customers/image", position = 6)
+	@ApiModelProperty(value = "Customer's image url", example = "/api/customers/image", position = 7)
 	private String imageUrl;
 
-	@ApiModelProperty(value = "Customer's addresses", position = 6)
+	@ApiModelProperty(value = "Customer's addresses", position = 8)
 	private Set<AddressDto> addresses = new HashSet<>();
 	
 }

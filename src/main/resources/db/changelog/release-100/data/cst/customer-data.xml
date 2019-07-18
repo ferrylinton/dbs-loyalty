@@ -9,6 +9,15 @@
 	<property name="Customer02" value="1WUqbiXZnscJsVJD3DVjXy" />
 	<property name="Customer03" value="4dIMucfQGdLNyJPPb3hfv4" />
 	<property name="Customer04" value="4ik8B4Ba7r2RZMou9LeGP0" />
+	<property name="Customer05" value="VrhwGdp2CmacUqhPIgwv4" />
+	<property name="Customer06" value="6CymGhn90BLoRfJWKwZT0Z" />
+	<property name="Customer07" value="2NBSK4H1cBWwXTJ37nVLAe" />
+	<property name="Customer08" value="2TD6mLnPex0pAfpM9ZajdC" />
+	<property name="Customer09" value="3VdnJn8r4WFQN9HSsU0Cj0" />
+	<property name="Customer10" value="1XoACCaN6ykwrtV3YWaZp3" />
+	<property name="Customer11" value="2Y2cwaDbAL4t2sxy0duNBp" />
+	<property name="Customer12" value="7YNTF87ipkWErx1kgjiePo" />
+	
 
     <changeSet author="FLH" id="customer-data-1">
 
@@ -21,7 +30,8 @@
             <column name="locked" valueBoolean="false"/>
             <column name="email" value="customer01@dbs.com"/>
             <column name="password_hash" value="${password}"/>
-            <column name="name" value="Customer 01"/>
+            <column name="first_name" value="Customer01"/>
+            <column name="last_name" value="Customer01"/>
             <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
             <column name="customer_type" value="0025"/>
@@ -36,6 +46,28 @@
             <column name="width" valueNumeric="300"/>
 			<column name="height" valueNumeric="300"/>
         </insert>
+        
+        <insert tableName="cst_address">
+            <column name="id" value="3YnFwUN9JuJkgFOVJF2i4H"/>
+            <column name="label" value="Primary"/>
+            <column name="address" value="PT Infovesta Utama, Total Building fl. 10 Jl. Let. Jend S. Parman Kav. 106A"/>
+            <column name="postal_code" value="11440"/>
+            <column name="city_id" valueNumeric="5"/>
+            <column name="customer_id" value="${Customer01}"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+        
+        <insert tableName="cst_address">
+            <column name="id" value="6chEXkF5qmfd2gvjhHIi23"/>
+            <column name="label" value="Secondary"/>
+            <column name="address" value="Jalan Lingkar Luar, RT.2/RW.1, Kembangan Selatan, Kembangan"/>
+            <column name="postal_code" value="11610"/>
+            <column name="city_id" valueNumeric="5"/>
+            <column name="customer_id" value="${Customer01}"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
 
         <insert tableName="cst_customer">
             <column name="id" value="${Customer02}"/>
@@ -46,7 +78,8 @@
             <column name="locked" valueBoolean="false"/>
             <column name="email" value="customer02@dbs.com"/>
             <column name="password_hash" value="${password}"/>
-            <column name="name" value="Customer 02"/>
+            <column name="first_name" value="Customer02"/>
+            <column name="last_name" value="Customer02"/>
             <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
             <column name="customer_type" value="0025"/>
@@ -60,6 +93,28 @@
             <column name="content_type" value="image/png"/>
             <column name="width" valueNumeric="300"/>
 			<column name="height" valueNumeric="300"/>
+        </insert>
+        
+        <insert tableName="cst_address">
+            <column name="id" value="2Va503yXdYnRgq0us7anzn"/>
+            <column name="label" value="Primary"/>
+            <column name="address" value="PT Infovesta Utama, Total Building fl. 10 Jl. Let. Jend S. Parman Kav. 106A"/>
+            <column name="postal_code" value="11440"/>
+            <column name="city_id" valueNumeric="5"/>
+            <column name="customer_id" value="${Customer02}"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+        
+        <insert tableName="cst_address">
+            <column name="id" value="3zDg5AD8xlBZhtlBmUi7ep"/>
+            <column name="label" value="Secondary"/>
+            <column name="address" value="Jalan Lingkar Luar, RT.2/RW.1, Kembangan Selatan, Kembangan"/>
+            <column name="postal_code" value="11610"/>
+            <column name="city_id" valueNumeric="5"/>
+            <column name="customer_id" value="${Customer02}"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
         </insert>
 
         <insert tableName="cst_customer">
@@ -71,7 +126,8 @@
             <column name="locked" valueBoolean="false"/>
             <column name="email" value="customer03@dbs.com"/>
             <column name="password_hash" value="${password}"/>
-            <column name="name" value="Customer 03"/>
+            <column name="first_name" value="Customer03"/>
+            <column name="last_name" value="Customer03"/>
             <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
             <column name="customer_type" value="0025"/>
@@ -86,6 +142,28 @@
             <column name="width" valueNumeric="300"/>
 			<column name="height" valueNumeric="300"/>
         </insert>
+        
+        <insert tableName="cst_address">
+            <column name="id" value="3AE3B25qxRuHe1svw8m18C"/>
+            <column name="label" value="Primary"/>
+            <column name="address" value="PT Infovesta Utama, Total Building fl. 10 Jl. Let. Jend S. Parman Kav. 106A"/>
+            <column name="postal_code" value="11440"/>
+            <column name="city_id" valueNumeric="5"/>
+            <column name="customer_id" value="${Customer03}"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+        
+        <insert tableName="cst_address">
+            <column name="id" value="1nB8hiz7nXNU5EGpVgslt4"/>
+            <column name="label" value="Secondary"/>
+            <column name="address" value="Jalan Lingkar Luar, RT.2/RW.1, Kembangan Selatan, Kembangan"/>
+            <column name="postal_code" value="11610"/>
+            <column name="city_id" valueNumeric="5"/>
+            <column name="customer_id" value="${Customer03}"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
 
         <insert tableName="cst_customer">
             <column name="id" value="${Customer04}"/>
@@ -96,7 +174,8 @@
             <column name="locked" valueBoolean="false"/>
             <column name="email" value="customer04@dbs.com"/>
             <column name="password_hash" value="${password}"/>
-            <column name="name" value="Customer 04"/>
+            <column name="first_name" value="Customer04"/>
+            <column name="last_name" value="Customer04"/>
             <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
             <column name="customer_type" value="0025"/>
@@ -111,9 +190,31 @@
             <column name="width" valueNumeric="300"/>
 			<column name="height" valueNumeric="300"/>
         </insert>
+        
+        <insert tableName="cst_address">
+            <column name="id" value="Mw80UuUKYMmO1LlccR7rE"/>
+            <column name="label" value="Primary"/>
+            <column name="address" value="PT Infovesta Utama, Total Building fl. 10 Jl. Let. Jend S. Parman Kav. 106A"/>
+            <column name="postal_code" value="11440"/>
+            <column name="city_id" valueNumeric="5"/>
+            <column name="customer_id" value="${Customer04}"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+        
+        <insert tableName="cst_address">
+            <column name="id" value="2hnHXGf1p4sRsnmvA3x6LO"/>
+            <column name="label" value="Secondary"/>
+            <column name="address" value="Jalan Lingkar Luar, RT.2/RW.1, Kembangan Selatan, Kembangan"/>
+            <column name="postal_code" value="11610"/>
+            <column name="city_id" valueNumeric="5"/>
+            <column name="customer_id" value="${Customer04}"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
 
         <insert tableName="cst_customer">
-            <column name="id" value="VrhwGdp2CmacUqhPIgwv4"/>
+            <column name="id" value="${Customer05}"/>
             <column name="cif" value="00000005"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
@@ -121,14 +222,15 @@
             <column name="locked" valueBoolean="false"/>
             <column name="email" value="customer05@dbs.com"/>
             <column name="password_hash" value="${password}"/>
-            <column name="name" value="Customer 05"/>
+            <column name="first_name" value="Customer05"/>
+            <column name="last_name" value="Customer05"/>
             <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
             <column name="customer_type" value="0025"/>
         </insert>
         
         <insert tableName="file_image">
-            <column name="id" value="VrhwGdp2CmacUqhPIgwv4"/>
+            <column name="id" value="${Customer05}"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="bytes" valueBlobFile="250x250.png"/>
@@ -137,8 +239,30 @@
 			<column name="height" valueNumeric="300"/>
         </insert>
         
+        <insert tableName="cst_address">
+            <column name="id" value="10CZyKeGOnCIlKEG5czRIT"/>
+            <column name="label" value="Primary"/>
+            <column name="address" value="PT Infovesta Utama, Total Building fl. 10 Jl. Let. Jend S. Parman Kav. 106A"/>
+            <column name="postal_code" value="11440"/>
+            <column name="city_id" valueNumeric="5"/>
+            <column name="customer_id" value="${Customer05}"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+        
+        <insert tableName="cst_address">
+            <column name="id" value="4MFdvM2UKUgbGeU58HCQyn"/>
+            <column name="label" value="Secondary"/>
+            <column name="address" value="Jalan Lingkar Luar, RT.2/RW.1, Kembangan Selatan, Kembangan"/>
+            <column name="postal_code" value="11610"/>
+            <column name="city_id" valueNumeric="5"/>
+            <column name="customer_id" value="${Customer05}"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+        
         <insert tableName="cst_customer">
-            <column name="id" value="6CymGhn90BLoRfJWKwZT0Z"/>
+            <column name="id" value="${Customer06}"/>
             <column name="cif" value="00000006"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
@@ -146,14 +270,15 @@
             <column name="locked" valueBoolean="false"/>
             <column name="email" value="customer06@dbs.com"/>
             <column name="password_hash" value="${password}"/>
-            <column name="name" value="Customer 06"/>
+            <column name="first_name" value="Customer06"/>
+            <column name="last_name" value="Customer06"/>
             <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
             <column name="customer_type" value="0025"/>
         </insert>
         
         <insert tableName="file_image">
-            <column name="id" value="6CymGhn90BLoRfJWKwZT0Z"/>
+            <column name="id" value="${Customer06}"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="bytes" valueBlobFile="250x250.png"/>
@@ -162,8 +287,30 @@
 			<column name="height" valueNumeric="300"/>
         </insert>
         
+        <insert tableName="cst_address">
+            <column name="id" value="1rsulQdCWMsbKHNiHyyiM6"/>
+            <column name="label" value="Primary"/>
+            <column name="address" value="PT Infovesta Utama, Total Building fl. 10 Jl. Let. Jend S. Parman Kav. 106A"/>
+            <column name="postal_code" value="11440"/>
+            <column name="city_id" valueNumeric="5"/>
+            <column name="customer_id" value="${Customer06}"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+        
+        <insert tableName="cst_address">
+            <column name="id" value="1NZbMsqJMKRwle5Kr1GYnV"/>
+            <column name="label" value="Secondary"/>
+            <column name="address" value="Jalan Lingkar Luar, RT.2/RW.1, Kembangan Selatan, Kembangan"/>
+            <column name="postal_code" value="11610"/>
+            <column name="city_id" valueNumeric="5"/>
+            <column name="customer_id" value="${Customer06}"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+        
         <insert tableName="cst_customer">
-            <column name="id" value="2NBSK4H1cBWwXTJ37nVLAe"/>
+            <column name="id" value="${Customer07}"/>
             <column name="cif" value="00000007"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
@@ -171,14 +318,15 @@
             <column name="locked" valueBoolean="false"/>
             <column name="email" value="customer07@dbs.com"/>
             <column name="password_hash" value="${password}"/>
-            <column name="name" value="Customer 07"/>
+            <column name="first_name" value="Customer07"/>
+            <column name="last_name" value="Customer07"/>
             <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
             <column name="customer_type" value="0025"/>
         </insert>
         
         <insert tableName="file_image">
-            <column name="id" value="2NBSK4H1cBWwXTJ37nVLAe"/>
+            <column name="id" value="${Customer07}"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="bytes" valueBlobFile="250x250.png"/>
@@ -187,8 +335,30 @@
 			<column name="height" valueNumeric="300"/>
         </insert>
         
+        <insert tableName="cst_address">
+            <column name="id" value="7HnrjUGBWxQP9Qz1LdwNfB"/>
+            <column name="label" value="Primary"/>
+            <column name="address" value="PT Infovesta Utama, Total Building fl. 10 Jl. Let. Jend S. Parman Kav. 106A"/>
+            <column name="postal_code" value="11440"/>
+            <column name="city_id" valueNumeric="5"/>
+            <column name="customer_id" value="${Customer07}"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+        
+        <insert tableName="cst_address">
+            <column name="id" value="1x4sIGC1hT0sIs2KOdY1wg"/>
+            <column name="label" value="Secondary"/>
+            <column name="address" value="Jalan Lingkar Luar, RT.2/RW.1, Kembangan Selatan, Kembangan"/>
+            <column name="postal_code" value="11610"/>
+            <column name="city_id" valueNumeric="5"/>
+            <column name="customer_id" value="${Customer07}"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+        
         <insert tableName="cst_customer">
-            <column name="id" value="2TD6mLnPex0pAfpM9ZajdC"/>
+            <column name="id" value="${Customer08}"/>
             <column name="cif" value="00000008"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
@@ -196,14 +366,15 @@
             <column name="locked" valueBoolean="false"/>
             <column name="email" value="customer08@dbs.com"/>
             <column name="password_hash" value="${password}"/>
-            <column name="name" value="Customer 08"/>
+            <column name="first_name" value="Customer08"/>
+            <column name="last_name" value="Customer08"/>
             <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
             <column name="customer_type" value="0025"/>
         </insert>
         
         <insert tableName="file_image">
-            <column name="id" value="2TD6mLnPex0pAfpM9ZajdC"/>
+            <column name="id" value="${Customer08}"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="bytes" valueBlobFile="250x250.png"/>
@@ -212,8 +383,30 @@
 			<column name="height" valueNumeric="300"/>
         </insert>
         
+        <insert tableName="cst_address">
+            <column name="id" value="ylbSo7YQA5fiY6Pxcz9GA"/>
+            <column name="label" value="Primary"/>
+            <column name="address" value="PT Infovesta Utama, Total Building fl. 10 Jl. Let. Jend S. Parman Kav. 106A"/>
+            <column name="postal_code" value="11440"/>
+            <column name="city_id" valueNumeric="5"/>
+            <column name="customer_id" value="${Customer08}"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+        
+        <insert tableName="cst_address">
+            <column name="id" value="5IHOPyBe9qj8WRyaAC9o2Q"/>
+            <column name="label" value="Secondary"/>
+            <column name="address" value="Jalan Lingkar Luar, RT.2/RW.1, Kembangan Selatan, Kembangan"/>
+            <column name="postal_code" value="11610"/>
+            <column name="city_id" valueNumeric="5"/>
+            <column name="customer_id" value="${Customer08}"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+        
         <insert tableName="cst_customer">
-            <column name="id" value="3VdnJn8r4WFQN9HSsU0Cj0"/>
+            <column name="id" value="${Customer09}"/>
             <column name="cif" value="00000009"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
@@ -221,14 +414,15 @@
             <column name="locked" valueBoolean="false"/>
             <column name="email" value="customer09@dbs.com"/>
             <column name="password_hash" value="${password}"/>
-            <column name="name" value="Customer 09"/>
+            <column name="first_name" value="Customer09"/>
+            <column name="last_name" value="Customer09"/>
             <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
             <column name="customer_type" value="0012"/>
         </insert>
         
         <insert tableName="file_image">
-            <column name="id" value="3VdnJn8r4WFQN9HSsU0Cj0"/>
+            <column name="id" value="${Customer09}"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="bytes" valueBlobFile="250x250.png"/>
@@ -237,8 +431,30 @@
 			<column name="height" valueNumeric="300"/>
         </insert>
         
+         <insert tableName="cst_address">
+            <column name="id" value="3CYUTM0xLBVaBkXxbpNssC"/>
+            <column name="label" value="Primary"/>
+            <column name="address" value="PT Infovesta Utama, Total Building fl. 10 Jl. Let. Jend S. Parman Kav. 106A"/>
+            <column name="postal_code" value="11440"/>
+            <column name="city_id" valueNumeric="5"/>
+            <column name="customer_id" value="${Customer09}"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+        
+        <insert tableName="cst_address">
+            <column name="id" value="3UAneiH8cRx6as7QgQG4FS"/>
+            <column name="label" value="Secondary"/>
+            <column name="address" value="Jalan Lingkar Luar, RT.2/RW.1, Kembangan Selatan, Kembangan"/>
+            <column name="postal_code" value="11610"/>
+            <column name="city_id" valueNumeric="5"/>
+            <column name="customer_id" value="${Customer09}"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+        
         <insert tableName="cst_customer">
-            <column name="id" value="1XoACCaN6ykwrtV3YWaZp3"/>
+            <column name="id" value="${Customer10}"/>
             <column name="cif" value="00000010"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
@@ -246,14 +462,15 @@
             <column name="locked" valueBoolean="false"/>
             <column name="email" value="customer10@dbs.com"/>
             <column name="password_hash" value="${password}"/>
-            <column name="name" value="Customer 10"/>
+            <column name="first_name" value="Customer10"/>
+            <column name="last_name" value="Customer10"/>
             <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
             <column name="customer_type" value="0012"/>
         </insert>
         
         <insert tableName="file_image">
-            <column name="id" value="1XoACCaN6ykwrtV3YWaZp3"/>
+            <column name="id" value="${Customer10}"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="bytes" valueBlobFile="250x250.png"/>
@@ -262,8 +479,30 @@
 			<column name="height" valueNumeric="300"/>
         </insert>
         
+         <insert tableName="cst_address">
+            <column name="id" value="7G6ysggpmp23E884ZsSdoU"/>
+            <column name="label" value="Primary"/>
+            <column name="address" value="PT Infovesta Utama, Total Building fl. 10 Jl. Let. Jend S. Parman Kav. 106A"/>
+            <column name="postal_code" value="11440"/>
+            <column name="city_id" valueNumeric="5"/>
+            <column name="customer_id" value="${Customer10}"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+        
+        <insert tableName="cst_address">
+            <column name="id" value="4JkHXCb3qiQoCqV7zqTumZ"/>
+            <column name="label" value="Secondary"/>
+            <column name="address" value="Jalan Lingkar Luar, RT.2/RW.1, Kembangan Selatan, Kembangan"/>
+            <column name="postal_code" value="11610"/>
+            <column name="city_id" valueNumeric="5"/>
+            <column name="customer_id" value="${Customer10}"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+        
         <insert tableName="cst_customer">
-            <column name="id" value="2Y2cwaDbAL4t2sxy0duNBp"/>
+            <column name="id" value="${Customer11}"/>
             <column name="cif" value="00000011"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
@@ -271,14 +510,15 @@
             <column name="locked" valueBoolean="false"/>
             <column name="email" value="customer11@dbs.com"/>
             <column name="password_hash" value="${password}"/>
-            <column name="name" value="Customer 11"/>
+            <column name="first_name" value="Customer11"/>
+            <column name="last_name" value="Customer11"/>
             <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
             <column name="customer_type" value="0012"/>
         </insert>
         
         <insert tableName="file_image">
-            <column name="id" value="2Y2cwaDbAL4t2sxy0duNBp"/>
+            <column name="id" value="${Customer11}"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="bytes" valueBlobFile="250x250.png"/>
@@ -287,8 +527,30 @@
 			<column name="height" valueNumeric="300"/>
         </insert>
         
+        <insert tableName="cst_address">
+            <column name="id" value="6tSnfFO3RzAuEZok4faL17"/>
+            <column name="label" value="Primary"/>
+            <column name="address" value="PT Infovesta Utama, Total Building fl. 10 Jl. Let. Jend S. Parman Kav. 106A"/>
+            <column name="postal_code" value="11440"/>
+            <column name="city_id" valueNumeric="5"/>
+            <column name="customer_id" value="${Customer11}"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+        
+        <insert tableName="cst_address">
+            <column name="id" value="1GuZRJnob18GGk8QFhEi08"/>
+            <column name="label" value="Secondary"/>
+            <column name="address" value="Jalan Lingkar Luar, RT.2/RW.1, Kembangan Selatan, Kembangan"/>
+            <column name="postal_code" value="11610"/>
+            <column name="city_id" valueNumeric="5"/>
+            <column name="customer_id" value="${Customer11}"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+        
         <insert tableName="cst_customer">
-            <column name="id" value="7YNTF87ipkWErx1kgjiePo"/>
+            <column name="id" value="${Customer12}"/>
             <column name="cif" value="00000012"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
@@ -296,20 +558,43 @@
             <column name="locked" valueBoolean="false"/>
             <column name="email" value="customer12@dbs.com"/>
             <column name="password_hash" value="${password}"/>
-            <column name="name" value="Customer 12"/>
+            <column name="first_name" value="Customer12"/>
+            <column name="last_name" value="Customer12"/>
             <column name="dob" valueDate="1980-01-01"/>
             <column name="phone" value="+62 8123456789"/>
             <column name="customer_type" value="0012"/>
         </insert>
         
         <insert tableName="file_image">
-            <column name="id" value="7YNTF87ipkWErx1kgjiePo"/>
+            <column name="id" value="${Customer12}"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="bytes" valueBlobFile="250x250.png"/>
             <column name="content_type" value="image/png"/>
             <column name="width" valueNumeric="300"/>
 			<column name="height" valueNumeric="300"/>
+        </insert>
+        
+        <insert tableName="cst_address">
+            <column name="id" value="4K6m0X6igwzN0DpRC52Wd"/>
+            <column name="label" value="Primary"/>
+            <column name="address" value="PT Infovesta Utama, Total Building fl. 10 Jl. Let. Jend S. Parman Kav. 106A"/>
+            <column name="postal_code" value="11440"/>
+            <column name="city_id" valueNumeric="5"/>
+            <column name="customer_id" value="${Customer12}"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+        
+        <insert tableName="cst_address">
+            <column name="id" value="5Dhl2WOf1hLdiLPzkxRzzf"/>
+            <column name="label" value="Secondary"/>
+            <column name="address" value="Jalan Lingkar Luar, RT.2/RW.1, Kembangan Selatan, Kembangan"/>
+            <column name="postal_code" value="11610"/>
+            <column name="city_id" valueNumeric="5"/>
+            <column name="customer_id" value="${Customer12}"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
         </insert>
         
     </changeSet>

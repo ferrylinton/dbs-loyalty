@@ -6,37 +6,100 @@
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
     
     <changeSet author="FLH" id="tada-order-schema-1">
+        <createTable tableName="trx_tada_item">
+            <column name="id" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="custom_price" type="DOUBLE"/>
+            <column name="payment_currency" type="VARCHAR(50)"/>
+            <column name="phone" type="VARCHAR(50)"/>
+            <column name="quantity" type="INT"/>
+            <column name="variant_id" type="VARCHAR(50)"/>
+            <column name="tada_order_id" type="VARCHAR(22)"/>
+        </createTable>
+    </changeSet>
     
+    <changeSet author="FLH" id="tada-order-schema-2">
         <createTable tableName="trx_tada_order">
-        	<column name="id" type="VARCHAR(22)">
+            <column name="id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
             </column>
-            <column name="order_reference" type="VARCHAR(20)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="content" type="TEXT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="customer_id" type="VARCHAR(50)">
+            <column name="created_by" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
             <column name="created_date" type="timestamp">
                 <constraints nullable="false"/>
             </column>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+            <column name="content" type="LONGTEXT"/>
+            <column name="order_reference" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pending" type="BIT" defaultValueBoolean="true"/>
         </createTable>
-        
-    </changeSet>
-    
-	<changeSet author="FLH" id="tada-order-schema-2">
-        <addPrimaryKey columnNames="id" constraintName="trx_tada_order_pk" tableName="trx_tada_order"/>
     </changeSet>
     
     <changeSet author="FLH" id="tada-order-schema-3">
-        <addUniqueConstraint columnNames="order_reference" constraintName="trx_tada_order_reference_uq" tableName="trx_tada_order"/>
+        <createTable tableName="trx_tada_payment">
+            <column name="id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="payment_channel" type="VARCHAR(50)"/>
+            <column name="payment_currency" type="VARCHAR(50)"/>
+            <column name="payment_type" type="VARCHAR(50)"/>
+            <column name="payment_wallet_name" type="VARCHAR(50)"/>
+            <column name="payment_wallet_type" type="VARCHAR(50)"/>
+            <column name="tada_order_id" type="VARCHAR(22)"/>
+        </createTable>
     </changeSet>
     
     <changeSet author="FLH" id="tada-order-schema-4">
-        <addForeignKeyConstraint baseColumnNames="customer_id" baseTableName="trx_tada_order" constraintName="trx_tada_order_fk" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="cst_customer"/>
+        <createTable tableName="trx_tada_recipient">
+            <column name="id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address" type="VARCHAR(250)"/>
+            <column name="city_id" type="INT"/>
+            <column name="email" type="VARCHAR(50)"/>
+            <column name="first_name" type="VARCHAR(50)"/>
+            <column name="last_name" type="VARCHAR(50)"/>
+            <column name="phone" type="VARCHAR(50)"/>
+            <column name="postal_code" type="VARCHAR(50)"/>
+            <column name="tada_order_id" type="VARCHAR(22)"/>
+        </createTable>
+    </changeSet>
+    
+    <changeSet author="FLH" id="tada-order-schema-5">
+        <addPrimaryKey columnNames="id" constraintName="trx_tada_itemPK" tableName="trx_tada_item"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="tada-order-schema-6">
+        <addPrimaryKey columnNames="id" constraintName="trx_tada_orderPK" tableName="trx_tada_order"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="tada-order-schema-7">
+        <addPrimaryKey columnNames="id" constraintName="trx_tada_paymentPK" tableName="trx_tada_payment"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="tada-order-schema-8">
+        <addPrimaryKey columnNames="id" constraintName="trx_tada_recipientPK" tableName="trx_tada_recipient"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="tada-order-schema-9">
+        <addUniqueConstraint columnNames="order_reference" constraintName="trx_tada_order_reference_uq" tableName="trx_tada_order"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="tada-order-schema-10">
+        <addForeignKeyConstraint baseColumnNames="tada_order_id" baseTableName="trx_tada_item" constraintName="trx_tada_item_fk" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="trx_tada_order"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="tada-order-schema-11">
+        <addForeignKeyConstraint baseColumnNames="tada_order_id" baseTableName="trx_tada_payment" constraintName="trx_tada_payment_fk" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="trx_tada_order"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="tada-order-schema-12">
+        <addForeignKeyConstraint baseColumnNames="tada_order_id" baseTableName="trx_tada_recipient" constraintName="trx_tada_recipient_fk" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="trx_tada_order"/>
     </changeSet>
     
 </databaseChangeLog>

@@ -1,17 +1,17 @@
 package com.dbs.loyalty.domain;
 
 import java.io.Serializable;
-import java.time.Instant;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
@@ -20,7 +20,6 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import com.dbs.loyalty.config.constant.DomainConstant;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -43,7 +42,7 @@ import lombok.ToString;
 		@UniqueConstraint(name = "trx_tada_order_reference_uq", columnNames = {"order_reference"})
 	}
 )
-public class TadaOrder implements Serializable {
+public class TadaOrder extends AbstractAuditing implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -56,18 +55,22 @@ public class TadaOrder implements Serializable {
 	@NotNull
     @Column(name = "order_reference", length = 20, nullable = false)
     private String orderReference;
+	
+	@OneToOne(mappedBy = "tadaOrder", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private TadaPayment tadaPayment;
+	
+	@OneToOne(mappedBy = "tadaOrder", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	private TadaRecipient tadaRecipient;
+	
+	@OneToMany(mappedBy = "tadaOrder", fetch = FetchType.LAZY)
+	private Set<TadaItem> tadaItems;
 
 	@Lob
 	@Type(type = "org.hibernate.type.TextType")
-	@Column(name = "content", nullable = false)
+	@Column(name = "content")
     private String content;
 	
-	@Column(name = "created_date", nullable = false, updatable = false)
-    private Instant createdDate;
-    
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id", foreignKey = @ForeignKey(name = "trx_tada_order_fk"))
-	private Customer customer;
-    
+	@Column(name = "pending")
+	private Boolean pending;
+	
 }

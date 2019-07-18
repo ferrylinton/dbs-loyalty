@@ -16,11 +16,11 @@ public interface CustomerRepository extends JpaRepository<Customer, String>, Jpa
 
 	Optional<Customer> findById(String id);
 	
+	Optional<Customer> findByCif(String cif);
+	
 	Optional<Customer> findByEmail(String email);
 	
 	Optional<Customer> findByEmailIgnoreCase(String email);
-	
-	Optional<Customer> findByNameIgnoreCaseOrEmailIgnoreCase(String name, String email);
 	
 	@Transactional(propagation=Propagation.REQUIRED)
 	@Modifying

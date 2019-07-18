@@ -17,7 +17,10 @@
             <column name="email" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="name" type="VARCHAR(50)">
+            <column name="first_name" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
             <column name="phone" type="VARCHAR(20)">
@@ -30,13 +33,13 @@
                 <constraints nullable="false"/>
             </column>
             <column name="password_hash" type="VARCHAR(100)"/>
-            <column name="activated" type="BIT(1)" defaultValueBoolean="false">
+            <column name="activated" type="BOOLEAN" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
-            <column name="locked" type="BIT(1)" defaultValueBoolean="false">
+            <column name="locked" type="BOOLEAN" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
-            <column name="pending" type="BIT(1)" defaultValueBoolean="false"/>
+            <column name="pending" type="BOOLEAN" defaultValueBoolean="false"/>
             <column name="created_by" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>

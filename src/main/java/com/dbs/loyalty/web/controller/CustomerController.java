@@ -141,7 +141,7 @@ public class CustomerController {
 				}
 			}
 
-			attributes.addFlashAttribute(Constant.TOAST, MessageUtil.taskIsSavedMessage(DomainConstant.CUSTOMER, customer.getName()));
+			attributes.addFlashAttribute(Constant.TOAST, MessageUtil.taskIsSavedMessage(DomainConstant.CUSTOMER, customer.getFirstName()));
 			return REDIRECT;
 		}
 	}
@@ -155,7 +155,7 @@ public class CustomerController {
 		if(current.isPresent()) {
 			taskService.saveTaskDelete(DomainConstant.CUSTOMER, current.get());
 			customerService.save(true, id);
-			attributes.addFlashAttribute(Constant.TOAST, MessageUtil.taskIsSavedMessage(DomainConstant.CUSTOMER, current.get().getName()));
+			attributes.addFlashAttribute(Constant.TOAST, MessageUtil.taskIsSavedMessage(DomainConstant.CUSTOMER, current.get().getFirstName()));
 		}
 		
 		return REDIRECT;

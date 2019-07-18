@@ -7,9 +7,13 @@ import lombok.Setter;
 @Getter
 public class CustomerItem {
 
+	private String cif;
+	
 	private String email;
 	
-	private String name;
+	private String firstName;
+	
+	private String lastName;
 	
 	private String phone;
 	

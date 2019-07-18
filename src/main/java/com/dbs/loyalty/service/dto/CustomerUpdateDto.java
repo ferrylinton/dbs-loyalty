@@ -25,11 +25,15 @@ public class CustomerUpdateDto {
     @Size(min = 5, max = 50, message = "{validation.size.email}")
 	private String email;
 	
-	@ApiModelProperty(value = "Customer's name", example = "John Smith", required = true, position = 2)
+	@ApiModelProperty(value = "Customer's name", example = "John", required = true, position = 2)
 	@NotNull(message = "{validation.notnull.name}")
-	@Pattern(regexp = RegexConstant.NAME, message = RegexConstant.NAME_MESSAGE)
 	@Size(min = 2, max = 50, message = "{validation.size.name}")
-	private String name;
+	private String firstName;
+	
+	@ApiModelProperty(value = "Customer's name", example = "Smith", required = true, position = 2)
+	@NotNull(message = "{validation.notnull.name}")
+	@Size(min = 2, max = 50, message = "{validation.size.name}")
+	private String lastName;
 	
 	@ApiModelProperty(value = "Customer's phone", example = "+62 8123456789", required = true, position = 3)
 	@NotNull(message = "{validation.notnull.phone}")

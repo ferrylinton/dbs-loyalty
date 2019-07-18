@@ -19,10 +19,10 @@ public interface EventCustomerRepository extends JpaRepository<EventCustomer, Ev
 	
 	@Query(value = "select e from EventCustomer e "
 			+ "join fetch e.customer c "
-			+ "where e.id.eventId = ?1 and (lower(c.name) like ?2 or lower(c.email) like ?2 or lower(c.phone) like ?2)", 
+			+ "where e.id.eventId = ?1 and (lower(c.firstName) like ?2 or lower(c.email) like ?2 or lower(c.phone) like ?2)", 
 			countQuery = "select count(e) from EventCustomer e "
 					+ "join e.customer c "
-					+ "where e.id.eventId = ?1 and (lower(c.name) like ?2 or lower(c.email) like ?2 or lower(c.phone) like ?2)")
+					+ "where e.id.eventId = ?1 and (lower(c.firstName) like ?2 or lower(c.email) like ?2 or lower(c.phone) like ?2)")
 	Page<EventCustomer> findByEventIdAndKeyword(String eventId, String keyword, Pageable pageable);
 	
 }

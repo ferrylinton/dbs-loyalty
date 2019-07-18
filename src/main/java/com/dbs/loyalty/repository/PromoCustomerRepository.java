@@ -19,10 +19,10 @@ public interface PromoCustomerRepository extends JpaRepository<PromoCustomer, Pr
 	
 	@Query(value = "select p from PromoCustomer p "
 			+ "join fetch p.customer c "
-			+ "where p.id.promoId = ?1 and (lower(c.name) like ?2 or lower(c.email) like ?2 or lower(c.phone) like ?2)", 
+			+ "where p.id.promoId = ?1 and (lower(c.firstName) like ?2 or lower(c.email) like ?2 or lower(c.phone) like ?2)", 
 			countQuery = "select count(p) from PromoCustomer p "
 					+ "join p.customer c "
-					+ "where p.id.promoId = ?1 and (lower(c.name) like ?2 or lower(c.email) like ?2 or lower(c.phone) like ?2)")
+					+ "where p.id.promoId = ?1 and (lower(c.firstName) like ?2 or lower(c.email) like ?2 or lower(c.phone) like ?2)")
 	Page<PromoCustomer> findByPromoIdAndKeyword(String promoId, String keyword, Pageable pageable);
 	
 }

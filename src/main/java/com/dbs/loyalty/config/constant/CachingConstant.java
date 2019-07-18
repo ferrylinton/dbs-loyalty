@@ -6,4 +6,8 @@ public class CachingConstant {
 	
 	public static final String LOG_API_URLS = "logapiurls";
 
+	private CachingConstant() {
+		// hide constructor
+	}
+	
 }

@@ -345,7 +345,7 @@
                     <changeLogFile>src/main/resources/db/changelog/db.changelog-master.xml</changeLogFile>
                     <outputChangeLogFile>src/main/resources/db/changelog/liquibase-outputChangeLog.xml</outputChangeLogFile>
                     <diffChangeLogFile>src/main/resources/db/changelog/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
-                	<diffExcludeObjects>table:SPRING_.*</diffExcludeObjects>
+                	<diffExcludeObjects>table:batch_.*</diffExcludeObjects>
                 	<driver>org.mariadb.jdbc.Driver</driver>
                     <url>jdbc:mariadb://localhost:3306/loyalty</url>
                     <defaultSchemaName></defaultSchemaName>

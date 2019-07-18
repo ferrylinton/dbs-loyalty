@@ -69,7 +69,8 @@ public class CustomerService{
 		if(current.isPresent()) {
 			Customer customer = current.get();
 			customer.setEmail(customerUpdateDto.getEmail());
-			customer.setName(customerUpdateDto.getName());
+			customer.setFirstName(customerUpdateDto.getFirstName());
+			customer.setLastName(customerUpdateDto.getLastName());
 			customer.setPhone(customerUpdateDto.getPhone());
 			customer.setLastModifiedBy(SecurityUtil.getLogged());
 			customer.setLastModifiedDate(Instant.now());

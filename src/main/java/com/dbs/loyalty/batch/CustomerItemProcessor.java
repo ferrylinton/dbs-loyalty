@@ -22,11 +22,13 @@ public class CustomerItemProcessor implements ItemProcessor<CustomerItem, Custom
 	
 	@Override
 	public Customer process(CustomerItem customerItem) throws Exception {
-		Optional<Customer> current = customerRepository.findByNameIgnoreCaseOrEmailIgnoreCase(customerItem.getName(), customerItem.getEmail());
+		Optional<Customer> current = customerRepository.findByCif(customerItem.getCif());
 		
 		if(current.isPresent()) {
+			current.get().setCif(customerItem.getCif());
 			current.get().setEmail(customerItem.getEmail());
-			current.get().setName(customerItem.getName());
+			current.get().setFirstName(customerItem.getFirstName());
+			current.get().setLastName(customerItem.getLastName());
 			current.get().setPhone(customerItem.getPhone());
 			current.get().setCustomerType(customerItem.getCustomerType());
 			current.get().setDob(LocalDate.parse(customerItem.getDob(), DateTimeFormatter.ofPattern(DateConstant.JAVA_DATE)));
@@ -37,8 +39,10 @@ public class CustomerItemProcessor implements ItemProcessor<CustomerItem, Custom
 		}else {
 			Customer customer = new Customer();
 			customer.setId(FriendlyId.createFriendlyId());
+			customer.setCif(customerItem.getCif());
 			customer.setEmail(customerItem.getEmail());
-			customer.setName(customerItem.getName());
+			customer.setFirstName(customerItem.getFirstName());
+			customer.setLastName(customerItem.getLastName());
 			customer.setPhone(customerItem.getPhone());
 			customer.setCustomerType(customerItem.getCustomerType());
 			customer.setDob(LocalDate.parse(customerItem.getDob(), DateTimeFormatter.ofPattern(DateConstant.JAVA_DATE)));
