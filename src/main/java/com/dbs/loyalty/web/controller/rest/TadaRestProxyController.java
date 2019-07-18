@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -28,6 +30,10 @@ import org.springframework.web.client.HttpClientErrorException;
 import com.dbs.loyalty.config.ApplicationProperties;
 import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
+import com.dbs.loyalty.domain.TadaOrder;
+import com.dbs.loyalty.service.TadaOrderService;
+import com.dbs.loyalty.util.SecurityUtil;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -60,6 +66,10 @@ public class TadaRestProxyController {
 	private final ApplicationProperties applicationProperties;
 	
 	private final OAuth2RestTemplate oauth2RestTemplate;
+	
+	private final TadaOrderService tadaOrderService;
+	
+	private final ObjectMapper objectMapper;
 
 	@ApiOperation(
 			nickname=TADA_GET, 
@@ -68,19 +78,18 @@ public class TadaRestProxyController {
 			authorizations={@Authorization(value=SwaggerConstant.JWT)})
     @ApiResponses(value = { @ApiResponse(code=200, message=SwaggerConstant.OK, response=Resource.class)})
     @GetMapping("/**/**")
-    public ResponseEntity<Resource> get(HttpServletRequest request) throws URISyntaxException, IOException{
+    public ResponseEntity<String> get(HttpServletRequest request) throws URISyntaxException, IOException{
 		log.info("Call TADA API :: GET :: " + getURI(request));
 		
 		try {
-			return oauth2RestTemplate.exchange(getURI(request), HttpMethod.GET, null, Resource.class);
+			return oauth2RestTemplate.exchange(getURI(request), HttpMethod.GET, null, String.class);
 		} catch (HttpClientErrorException e) {
-			String result = e.getResponseBodyAsString();
-			InputStreamResource inputStreamResource = new InputStreamResource(new ByteArrayInputStream(result.getBytes(StandardCharsets.UTF_8)));
-			return new ResponseEntity<>(inputStreamResource, e.getResponseHeaders(), e.getStatusCode());
+			log.error(e.getLocalizedMessage(), e);
+			return new ResponseEntity<>(e.getResponseBodyAsString(), e.getResponseHeaders(), e.getStatusCode());
 		} catch (Exception e) {
+			log.error(e.getLocalizedMessage(), e);
 			String result = String.format(RESULT_FORMAT, e.getLocalizedMessage());
-			InputStreamResource inputStreamResource = new InputStreamResource(new ByteArrayInputStream(result.getBytes(StandardCharsets.UTF_8)));
-			return new ResponseEntity<>(inputStreamResource, getHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(result, getHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
     }
 	
@@ -91,20 +100,25 @@ public class TadaRestProxyController {
 			authorizations={@Authorization(value=SwaggerConstant.JWT)})
     @ApiResponses(value = { @ApiResponse(code=200, message=SwaggerConstant.OK, response=Resource.class)})
     @PostMapping("/**/**")
-    public ResponseEntity<Resource> post(@RequestBody String body, HttpServletRequest request) throws URISyntaxException, IOException{
+    public ResponseEntity<String> post(@RequestBody String body, HttpServletRequest request) throws URISyntaxException, IOException{
 		log.info("Call TADA API :: POST :: " + getURI(request));
 		
 		try {
 			HttpEntity<String> requestEntity = new HttpEntity<>(body, getHeaders()); 
-			return oauth2RestTemplate.exchange(getURI(request), HttpMethod.POST, requestEntity, Resource.class);
+			ResponseEntity<String> response = oauth2RestTemplate.exchange(getURI(request), HttpMethod.POST, requestEntity, String.class);
+			
+			if(request.getRequestURI().contains("/orders")) {
+				saveTadaOrder(body, response);
+			}
+
+			return response;
 		} catch (HttpClientErrorException e) {
-			String result = e.getResponseBodyAsString();
-			InputStreamResource inputStreamResource = new InputStreamResource(new ByteArrayInputStream(result.getBytes(StandardCharsets.UTF_8)));
-			return new ResponseEntity<>(inputStreamResource, e.getResponseHeaders(), e.getStatusCode());
+			log.error(e.getLocalizedMessage(), e);
+			return new ResponseEntity<>(e.getResponseBodyAsString(), e.getResponseHeaders(), e.getStatusCode());
 		} catch (Exception e) {
+			log.error(e.getLocalizedMessage(), e);
 			String result = String.format(RESULT_FORMAT, e.getLocalizedMessage());
-			InputStreamResource inputStreamResource = new InputStreamResource(new ByteArrayInputStream(result.getBytes(StandardCharsets.UTF_8)));
-			return new ResponseEntity<>(inputStreamResource, getHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<>(result, getHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
     }
 	
@@ -121,6 +135,25 @@ public class TadaRestProxyController {
 			return new URI(applicationProperties.getTada().getDomain() + url + Constant.QUESTION + request.getQueryString());
 		}else {
 			return new URI(applicationProperties.getTada().getDomain() + url);
+		}
+	}
+	
+	private void saveTadaOrder(String body, ResponseEntity<String> response) {
+		try {
+			TadaOrder requestTadaOrder = objectMapper.readValue(body, TadaOrder.class);
+			if(requestTadaOrder != null) {
+				Optional<TadaOrder> pendingTadaOrder = tadaOrderService.findByOrderReferenceAndCreatedBy(requestTadaOrder.getOrderReference(), SecurityUtil.getLogged());
+			
+				if(pendingTadaOrder.isPresent()) {
+					pendingTadaOrder.get().setContent(response.getBody());
+					pendingTadaOrder.get().setPending(false);
+					pendingTadaOrder.get().setLastModifiedBy(SecurityUtil.getLogged());
+					pendingTadaOrder.get().setLastModifiedDate(Instant.now());
+					tadaOrderService.save(pendingTadaOrder.get());
+				}
+			}
+		} catch (IOException e) {
+			log.error(e.getLocalizedMessage(), e);
 		}
 	}
 }
