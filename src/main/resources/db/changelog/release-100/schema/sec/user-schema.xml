@@ -11,10 +11,10 @@
             <column name="id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
             </column>
-            <column name="activated" type="BIT(1)" defaultValueBoolean="true">
+            <column name="activated" type="BOOLEAN" defaultValueBoolean="true">
                 <constraints nullable="false"/>
             </column>
-            <column name="locked" type="BIT(1)" defaultValueBoolean="false">
+            <column name="locked" type="BOOLEAN" defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
             <column name="user_type" type="VARCHAR(10)">
@@ -28,7 +28,7 @@
             </column>
             <column name="password_hash" type="VARCHAR(100)"/>
             <column name="role_id" type="VARCHAR(22)"/>
-            <column name="pending" type="BIT(1)" defaultValueBoolean="false"/>
+            <column name="pending" type="BOOLEAN" defaultValueBoolean="false"/>
             <column name="created_by" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>

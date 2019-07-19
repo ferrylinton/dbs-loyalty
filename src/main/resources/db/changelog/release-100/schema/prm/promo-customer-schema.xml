@@ -14,7 +14,6 @@
             <column name="promo_id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
             </column>
-            <column name="pending" type="BIT(1)" defaultValueBoolean="false"/>
             <column name="created_date" type="timestamp">
                 <constraints nullable="false"/>
             </column>

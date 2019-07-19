@@ -26,7 +26,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="guest_phone" type="VARCHAR(20)"/>
-            <column name="airport_transfer" type="BIT(1)">
+            <column name="airport_transfer" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
             <column name="number_of_passengers" type="INT">

@@ -13,7 +13,7 @@
             <column name="name" type="VARCHAR(40)">
                 <constraints nullable="false"/>
             </column>
-            <column name="pending" type="BIT(1)" defaultValueBoolean="false"/>
+            <column name="pending" type="BOOLEAN" defaultValueBoolean="false"/>
             <column name="created_by" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>

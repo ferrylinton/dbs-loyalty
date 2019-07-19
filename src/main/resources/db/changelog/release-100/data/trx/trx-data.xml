@@ -1,0 +1,87 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <!-- PRIVILEDGE PRODUCT -->
+    
+    <changeSet author="FLH" id="trx-data-1">
+
+        <insert tableName="trx_product">
+            <column name="id" value="5hEPoEaJDlZLRAOmmR7Rz1"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="name" value="Cashback"/>
+            <column name="point" valueNumeric="1"/>
+            <column name="description" value="1 point for ${point}${currency}"/>
+        </insert>
+        
+        <insert tableName="file_image">
+            <column name="id" value="5hEPoEaJDlZLRAOmmR7Rz1"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="bytes" valueBlobFile="5hEPoEaJDlZLRAOmmR7Rz1.png"/>
+            <column name="content_type" value="image/png"/>
+            <column name="width" valueNumeric="300"/>
+			<column name="height" valueNumeric="300"/>
+        </insert>
+        
+        <insert tableName="trx_product">
+            <column name="id" value="4HIEDXIOSAFtc3tCIIYGzK"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="name" value="Free RTGS Fee"/>
+            <column name="point" valueNumeric="50"/>
+        </insert>
+        
+        <insert tableName="file_image">
+            <column name="id" value="4HIEDXIOSAFtc3tCIIYGzK"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="bytes" valueBlobFile="4HIEDXIOSAFtc3tCIIYGzK.png"/>
+            <column name="content_type" value="image/png"/>
+            <column name="width" valueNumeric="300"/>
+			<column name="height" valueNumeric="300"/>
+        </insert>
+        
+        <insert tableName="trx_product">
+            <column name="id" value="4yiaVFELpqNWZPDXNPK049"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="name" value="Free SDB Rental Fee"/>
+            <column name="point" valueNumeric="50"/>
+        </insert>
+        
+        <insert tableName="file_image">
+            <column name="id" value="4yiaVFELpqNWZPDXNPK049"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="bytes" valueBlobFile="4yiaVFELpqNWZPDXNPK049.png"/>
+            <column name="content_type" value="image/png"/>
+            <column name="width" valueNumeric="300"/>
+			<column name="height" valueNumeric="300"/>
+        </insert>
+        
+        <insert tableName="trx_product">
+            <column name="id" value="6VOTnxXqlvv0fOXZRAVZG6"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="name" value="Free Service Charge Fee"/>
+            <column name="point" valueNumeric="50"/>
+        </insert>
+        
+        <insert tableName="file_image">
+            <column name="id" value="6VOTnxXqlvv0fOXZRAVZG6"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="bytes" valueBlobFile="6VOTnxXqlvv0fOXZRAVZG6.png"/>
+            <column name="content_type" value="image/png"/>
+            <column name="width" valueNumeric="300"/>
+			<column name="height" valueNumeric="300"/>
+        </insert>
+        
+    </changeSet>
+    
+</databaseChangeLog>

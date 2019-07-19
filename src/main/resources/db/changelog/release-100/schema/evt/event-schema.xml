@@ -29,7 +29,7 @@
             <column name="place" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="pending" type="BIT(1)" defaultValueBoolean="false"/>
+            <column name="pending" type="BOOLEAN" defaultValueBoolean="false"/>
             <column name="feedback_id" type="VARCHAR(22)" defaultValue="default">
                 <constraints nullable="false"/>
             </column>

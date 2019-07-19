@@ -63,6 +63,8 @@
     <include file="release-100/schema/trx/priviledge-product-schema.xml" relativeToChangelogFile="true"/>
     <include file="release-100/schema/trx/priviledge-order-schema.xml" relativeToChangelogFile="true"/>
     <include file="release-100/schema/trx/tada-order-schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/schema/trx/trx-product-schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/schema/trx/trx-order-schema.xml" relativeToChangelogFile="true"/>
     
     <!-- Data -->
     
@@ -92,5 +94,6 @@
     <include file="release-100/data/med/wellness-data.xml" relativeToChangelogFile="true"/>
     
     <include file="release-100/data/trx/priviledge-data.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/data/trx/trx-data.xml" relativeToChangelogFile="true"/>
     
 </databaseChangeLog>

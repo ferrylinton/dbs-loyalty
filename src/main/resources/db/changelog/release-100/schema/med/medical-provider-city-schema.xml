@@ -14,7 +14,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="medical_provider_id" type="VARCHAR(22)"/>
-            <column name="pending" type="BIT(1)" defaultValueBoolean="false"/>
+            <column name="pending" type="BOOLEAN" defaultValueBoolean="false"/>
             <column name="created_by" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>

@@ -1,0 +1,38 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    
+    <changeSet author="FLH" id="trx-order-1">
+        <createTable tableName="trx_order">
+            <column name="id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="account_no" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="customer_name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="item_id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="item_name" type="VARCHAR(150)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="item_point" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="withdraw" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="customer_id" type="VARCHAR(22)"/>
+        </createTable>
+    </changeSet>
+    
+    <changeSet author="FLH" id="trx-order-2">
+        <addPrimaryKey columnNames="id" constraintName="trx_order_pk" tableName="trx_order"/>
+    </changeSet>
+
+</databaseChangeLog>
