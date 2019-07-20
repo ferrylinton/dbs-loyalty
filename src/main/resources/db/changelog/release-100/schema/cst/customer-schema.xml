@@ -14,6 +14,9 @@
             <column name="cif" type="VARCHAR(30)">
                 <constraints nullable="false"/>
             </column>
+            <column name="account_no" type="VARCHAR(20)">
+                <constraints nullable="false"/>
+            </column>
             <column name="email" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>

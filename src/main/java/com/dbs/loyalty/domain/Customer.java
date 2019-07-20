@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -76,6 +77,10 @@ public class Customer extends AbstractTask implements Serializable {
 	@Size(min = 2, max = 50)
 	@Column(name = "last_name", length = 50, nullable = false)
 	private String lastName;
+	
+	@NotNull
+    @Column(name = "account_no", length = 20, nullable = false)
+    private String accountNo;
 	
 	@Size(min = 6, max = 20)
 	@Column(name = "phone", length = 20, nullable = false)

@@ -20,7 +20,9 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class RestAccessFilter extends GenericFilterBean {
-
+	
+	public static final String NOT_FOUND_TOKEN = "Token is not found";
+	
     private final RestTokenProvider restTokenProvider;
 
     @Override
@@ -28,7 +30,7 @@ public class RestAccessFilter extends GenericFilterBean {
         String token = HeaderTokenUtil.resolveToken((HttpServletRequest) request);
         
         if(token == null){
-        	request.setAttribute(Constant.MESSAGE, MessageConstant.NOT_FOUND_TOKEN);
+        	request.setAttribute(Constant.MESSAGE, NOT_FOUND_TOKEN);
         }else if(restTokenProvider.validateToken(token)) {
             Authentication authentication = restTokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);

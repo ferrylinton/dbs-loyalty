@@ -1,10 +1,9 @@
 package com.dbs.loyalty.service;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +19,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Service
 public class SettingService {
+	
+	private static final String DEFAULT_CURRENCY = "IDR";
+	
+	private static final Integer DEFAULT_POINT_TO_RUPIAH = 1000;
 
 	private final SettingRepository settingRepository;
 
@@ -31,17 +34,26 @@ public class SettingService {
 		return settingRepository.findByNameIgnoreCase(name);
 	}
 	
-	@Cacheable(CachingConstant.SETTINGS)
-	public Map<String, String> settings() {
-		Map<String, String> map = new HashMap<String, String>();
+	@Cacheable(CachingConstant.POINT_TO_RUPIAH)
+	public Integer getPointToRupiah() {
+		Optional<Setting> setting = settingRepository.findByNameIgnoreCase(CachingConstant.POINT_TO_RUPIAH);
 
-		List<Setting> settings = settingRepository.findAll();
-
-		for (Setting setting : settings) {
-			map.put(setting.getName(), setting.getValue());
+		if(setting.isPresent() && StringUtils.isNumeric(setting.get().getValue())) {
+			return Integer.valueOf(setting.get().getValue());
 		}
 
-		return map;
+		return DEFAULT_POINT_TO_RUPIAH;
+	}
+	
+	@Cacheable(CachingConstant.CURRENCY)
+	public String getCurrency() {
+		Optional<Setting> setting = settingRepository.findByNameIgnoreCase(CachingConstant.CURRENCY);
+
+		if(setting.isPresent()) {
+			return setting.get().getValue();
+		}
+
+		return DEFAULT_CURRENCY;
 	}
 
 	public Page<Setting> findAll(Map<String, String> params, Pageable pageable) {

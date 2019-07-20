@@ -1,9 +1,5 @@
 package com.dbs.loyalty.service;
 
-import static com.dbs.loyalty.config.constant.MessageConstant.EXPIRED_TOKEN;
-import static com.dbs.loyalty.config.constant.MessageConstant.INVALID_TOKEN;
-import static com.dbs.loyalty.config.constant.MessageConstant.NOT_FOUND_TOKEN;
-
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
@@ -22,6 +18,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Service
 public class VerificationTokenService {
+	
+	public static final String INVALID_TOKEN = "Token is invalid";
+	
+	public static final String EXPIRED_TOKEN = "Token is expired";
+	
+	public static final String NOT_FOUND_TOKEN = "Token is not found";
 	
 	private final VerificationTokenRepository tokenRepository;
 	

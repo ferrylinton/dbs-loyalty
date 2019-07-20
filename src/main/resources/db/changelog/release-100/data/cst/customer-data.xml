@@ -23,7 +23,8 @@
 
         <insert tableName="cst_customer">
             <column name="id" value="${Customer01}"/>
-            <column name="cif" value="00000001"/>
+            <column name="cif" value="10000001"/>
+            <column name="account_no" value="00000001"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
@@ -72,6 +73,7 @@
         <insert tableName="cst_customer">
             <column name="id" value="${Customer02}"/>
             <column name="cif" value="00000002"/>
+            <column name="account_no" value="10000002"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
@@ -120,6 +122,7 @@
         <insert tableName="cst_customer">
             <column name="id" value="${Customer03}"/>
             <column name="cif" value="00000003"/>
+            <column name="account_no" value="10000003"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
@@ -168,6 +171,7 @@
         <insert tableName="cst_customer">
             <column name="id" value="${Customer04}"/>
             <column name="cif" value="00000004"/>
+            <column name="account_no" value="10000004"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
@@ -216,6 +220,7 @@
         <insert tableName="cst_customer">
             <column name="id" value="${Customer05}"/>
             <column name="cif" value="00000005"/>
+            <column name="account_no" value="10000005"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
@@ -264,6 +269,7 @@
         <insert tableName="cst_customer">
             <column name="id" value="${Customer06}"/>
             <column name="cif" value="00000006"/>
+            <column name="account_no" value="10000006"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
@@ -312,6 +318,7 @@
         <insert tableName="cst_customer">
             <column name="id" value="${Customer07}"/>
             <column name="cif" value="00000007"/>
+            <column name="account_no" value="10000007"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
@@ -360,6 +367,7 @@
         <insert tableName="cst_customer">
             <column name="id" value="${Customer08}"/>
             <column name="cif" value="00000008"/>
+            <column name="account_no" value="10000008"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
@@ -407,6 +415,7 @@
         
         <insert tableName="cst_customer">
             <column name="id" value="${Customer09}"/>
+            <column name="account_no" value="10000009"/>
             <column name="cif" value="00000009"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
@@ -456,6 +465,7 @@
         <insert tableName="cst_customer">
             <column name="id" value="${Customer10}"/>
             <column name="cif" value="00000010"/>
+            <column name="account_no" value="10000010"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
@@ -504,6 +514,7 @@
         <insert tableName="cst_customer">
             <column name="id" value="${Customer11}"/>
             <column name="cif" value="00000011"/>
+            <column name="account_no" value="10000011"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
@@ -552,6 +563,7 @@
         <insert tableName="cst_customer">
             <column name="id" value="${Customer12}"/>
             <column name="cif" value="00000012"/>
+            <column name="account_no" value="10000012"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>
