@@ -27,8 +27,12 @@
                      	<td th:text="${appointment.id}">Id</td>
                		</tr>
                 	<tr>
-                     	<th th:text="#{name}">Name</th>
-                    	<td th:text="${appointment.customer.name}">Name</td>
+                     	<th th:text="#{firstName}">First Name</th>
+                    	<td th:text="${appointment.customer.firstName}">First Name</td>
+                   	</tr>
+                   	<tr>
+                     	<th th:text="#{lastName}">Last Name</th>
+                    	<td th:text="${appointment.customer.lastName}">Last Name</td>
                    	</tr>
                   	<tr>
                       	<th th:text="#{medicalProvider}">Medical Provider</th>

@@ -51,7 +51,8 @@
                                     <span th:text="#{flightDate}">Flight Date</span> <span th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></span>
                                 </a>
                             </th>
-                            <th th:text="#{name}">Name</th>
+                            <th th:text="#{firstName}">First Name</th>
+                            <th th:text="#{lastName}">Last Name</th>
                             <th th:text="#{typeOfService}">Type Of Service</th>
                             <th th:text="#{airportTransfer}">Airport Transfer</th>
                         </tr>
@@ -72,7 +73,8 @@
 							</td>
 	                        <td th:text="${row.count + (page.number * page.size)}">1</td>
 	                        <td><span th:data-date="${@dateService.jsDatetime()}" th:text="${arrival.flightDate}">2019-05-01T21:24:44Z</span></td>
-	                        <td th:text="${arrival.customer.name}">Name</td>
+	                        <td th:text="${arrival.customer.firstName}">First Name</td>
+	                        <td th:text="${arrival.customer.lastName}">Last Name</td>
 	                        <td th:text="${arrival.typeOfService}">Type Of Service</td>
 	                        <td><span th:class="${arrival.airportTransfer} ? 'text-success icon-ok' : 'text-danger icon-cancel'"></span></td>
 	                    </tr>

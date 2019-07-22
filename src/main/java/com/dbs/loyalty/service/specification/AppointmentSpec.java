@@ -30,7 +30,8 @@ public class AppointmentSpec implements Specification<Appointment>{
 		if(params.containsKey(Constant.KY_PARAM) && !Constant.EMPTY.equals(params.get(Constant.KY_PARAM))) {
 			String keyword = String.format(Constant.LIKE_FORMAT, params.get(Constant.KY_PARAM).trim().toLowerCase());
 			predicates.add(cb.or(
-					cb.like(cb.lower(root.get("customer").get("name")), keyword),
+					cb.like(cb.lower(root.get("customer").get("firstName")), keyword),
+					cb.like(cb.lower(root.get("customer").get("lastName")), keyword),
 					cb.like(cb.lower(root.get("medicalProvider").get("name")), keyword)
 				));
 		}

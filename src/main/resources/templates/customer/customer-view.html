@@ -24,7 +24,7 @@
 	        		<tr th:with="ascending=${order.getDirection().name() == 'ASC'}">
 	                 	<th style="width:40px"></th>
 						<th style="width:40px">#</th>
-	               		<th th:with="sort=|&sort=name,${ascending ? 'DESC' : 'ASC'}|">
+	               		<th th:with="sort=|&sort=firstName,${ascending ? 'DESC' : 'ASC'}|">
                       		<a th:href="@{|?page=${page.getNumber()}${params}${sort}|}" class="text-decoration-none">
                             	<span th:text="#{firstName}">First Name</span> <span th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></span>
                           	</a>

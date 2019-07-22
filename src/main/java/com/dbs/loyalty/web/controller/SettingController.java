@@ -49,7 +49,7 @@ public class SettingController {
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
 			return REDIRECT;
 		}else {
-			cachingService.evict(CachingConstant.SETTINGS);
+			evict();
 			model.addAttribute(Constant.PAGE, page);
 			model.addAttribute(Constant.ORDER, order);
 			model.addAttribute(Constant.PREVIOUS, QueryStringUtil.page(order, page.getNumber() - 1));
@@ -57,6 +57,11 @@ public class SettingController {
 			model.addAttribute(Constant.PARAMS, QueryStringUtil.params(params));
 			return VIEW;
 		}
+	}
+	
+	private void evict() {
+		cachingService.evict(CachingConstant.POINT_TO_RUPIAH);
+		cachingService.evict(CachingConstant.CURRENCY);
 	}
 	
 }

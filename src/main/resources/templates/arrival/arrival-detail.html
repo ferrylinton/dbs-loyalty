@@ -50,8 +50,12 @@
                       	<td th:text="${arrival.flightNumber}">Flight Number</td>
                   	</tr>
                		<tr>
-                     	<th th:text="#{name}">Name</th>
-                      	<td th:text="${arrival.customer.name}">Name</td>
+                     	<th th:text="#{firstName}">First Name</th>
+                      	<td th:text="${arrival.customer.firstName}">First Name</td>
+                	</tr>
+                	<tr>
+                     	<th th:text="#{lastName}">Last Name</th>
+                      	<td th:text="${arrival.customer.lastName}">Last Name</td>
                 	</tr>
                   	<tr>
                       	<th th:text="#{customerPhone}">Customer Phone</th>
@@ -86,7 +90,7 @@
        		</table>
     	</div>
 		<div class="toolbar">
-     		<a class="btn btn-light" th:href="@{/arrival}">
+     		<a class="btn btn-sm btn-secondary" th:href="@{/arrival}">
           		<span class="icon-left"></span> <span th:text="#{back}">Back</span>
        		</a>
       	</div>

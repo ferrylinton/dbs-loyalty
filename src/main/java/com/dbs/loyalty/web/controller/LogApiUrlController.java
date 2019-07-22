@@ -12,10 +12,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.dbs.loyalty.config.constant.CachingConstant;
 import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.domain.LogApiUrl;
-import com.dbs.loyalty.service.CachingService;
 import com.dbs.loyalty.service.LogApiUrlService;
 import com.dbs.loyalty.util.PageUtil;
 import com.dbs.loyalty.util.QueryStringUtil;
@@ -34,8 +32,6 @@ public class LogApiUrlController {
 	private static final String SORT_BY 	= "url";
 	
 	private final LogApiUrlService logApiUrlService;
-	
-	private final CachingService cachingService;
 
 	@PreAuthorize("hasRole('LOG')")
 	@GetMapping
@@ -49,7 +45,6 @@ public class LogApiUrlController {
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
 			return REDIRECT;
 		}else {
-			cachingService.evict(CachingConstant.LOG_API_URLS);
 			model.addAttribute(Constant.PAGE, page);
 			model.addAttribute(Constant.ORDER, order);
 			model.addAttribute(Constant.PREVIOUS, QueryStringUtil.page(order, page.getNumber() - 1));

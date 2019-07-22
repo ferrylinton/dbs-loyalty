@@ -52,7 +52,8 @@
                                     <span th:text="#{arrivalDate}">Arrival Date</span> <span th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></span>
                                 </a>
                             </th>
-                            <th th:text="#{name}">Name</th>
+                            <th th:text="#{firstName}">First Name</th>
+                            <th th:text="#{lastName}">Last Name</th>
                             <th th:text="#{medicalProvider}">Medical Provider</th>
                         </tr>
               	</thead>
@@ -64,7 +65,7 @@
 										<span class="icon-cog"></span>
 									</button>
 									<div class="dropdown-menu py-0 shadow-sm" aria-labelledby="dropdownMenuButton">
-										<a class="dropdown-item pl-1" href="/appointment/appointment-detail.html" th:href="@{|/appointment/${appointment.id}|}">
+										<a class="dropdown-item pl-1" th:href="@{|/appointment/${appointment.id}|}">
 										    <span class="icon-eye"></span> <span th:text="#{detail}">Detail</span>
                                         </a>
 									</div>
@@ -72,7 +73,8 @@
 							</td>
 	                        <td th:text="${row.count + (page.number * page.size)}">1</td>
 	                        <td><span th:data-date="${@dateService.jsDatetime()}" th:text="${appointment.date}">Date</span></td>
-	                        <td th:text="${appointment.customer.name}">Name</td>
+	                        <td th:text="${appointment.customer.firstName}">First Name</td>
+	                        <td th:text="${appointment.customer.lastName}">Last Name</td>
 	                        <td th:text="${appointment.medicalProvider.name}">BIOTEST INDONESIA</td>
 	                    </tr>
 	        	</tbody>

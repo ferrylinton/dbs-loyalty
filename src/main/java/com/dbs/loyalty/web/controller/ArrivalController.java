@@ -64,7 +64,7 @@ public class ArrivalController {
 	}
 	
 	@PreAuthorize("hasAnyRole('AIRPORT_ASSISTANCE')")
-	@GetMapping("/arrival/{id}")
+	@GetMapping("/{id}")
 	public String arrival(ModelMap model, @PathVariable String id){
 		Optional<Arrival> current = arrivalService.findById(id);
 
