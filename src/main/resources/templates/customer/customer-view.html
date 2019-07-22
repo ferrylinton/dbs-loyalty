@@ -17,7 +17,7 @@
 		</ol>
 	</nav>
 	<div layout:fragment="content">
-		<div th:replace="fragment/search.html :: content('/customer', |#{name}, #{email}, #{phone}|, ${isMaker})"></div>
+		<div th:replace="fragment/search.html :: content('/customer', |#{firstName}, #{lastName}, #{email}, #{phone}|, ${isMaker})"></div>
 		<div class="table-responsive border border-top-0" th:if="${page.getTotalElements() > 0}">
 	   		<table class="table table-sm table-striped table-hover border-bottom" style="min-width: 800px;">
 	     		<thead>
@@ -26,9 +26,10 @@
 						<th style="width:40px">#</th>
 	               		<th th:with="sort=|&sort=name,${ascending ? 'DESC' : 'ASC'}|">
                       		<a th:href="@{|?page=${page.getNumber()}${params}${sort}|}" class="text-decoration-none">
-                            	<span th:text="#{name}">Name</span> <span th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></span>
+                            	<span th:text="#{firstName}">First Name</span> <span th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></span>
                           	</a>
                     	</th>
+                    	<th th:text="#{lastName}">Last Name</th>
                    		<th th:text="#{customerType}">Type</th>
                       	<th th:text="#{email}">Email</th>
                      	<th th:text="#{phone}">Phone</th>
@@ -60,7 +61,8 @@
 									</div>
 						</td>
 	               		<td th:text="${row.count + (page.number * page.size)}">1</td>
-	                 	<td th:text="${customer.name}">Ferry Linton Hutapea</td>
+	                 	<td th:text="${customer.firstName}">Ferry</td>
+	                 	<td th:text="${customer.lastName}">Hutapea</td>
 						<td th:text="${customer.customerType == T(com.dbs.loyalty.config.constant.CustomerTypeConstant).TPC_VALUE ? 'TPC' : 'TREASURE'}">TREASURE</td>
 						<td th:text="${customer.email}">ferrylinton@gmail.com</td>
 						<td th:text="${customer.phone}">1234567890</td>

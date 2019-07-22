@@ -40,7 +40,12 @@ var Lang = (function () {
 				"timePeriod": "Time",
 				"feedback": "Feedback",
 				"cif": "CIF",
-				"country": "Country"
+				"country": "Country",
+				"firstName": "First Name",
+				"lastName": "Last Name",
+				"accountNo": "Account No",
+				"0025": "TPC",
+				"0012": "TREASURE"
 			},
 			"label":{
 				"activated" : "Activated",
@@ -90,7 +95,12 @@ var Lang = (function () {
 				"timePeriod": "Jam",
 				"feedback": "Feedback",
 				"cif": "CIF",
-				"country": "Negara"
+				"country": "Negara",
+				"firstName": "Nama Depan",
+				"lastName": "Nama Belakan",
+				"accountNo": "No Akun",
+				"0025": "TPC",
+				"0012": "TREASURE"
 			},
 			"label":{
 				"activated" : "Aktif",

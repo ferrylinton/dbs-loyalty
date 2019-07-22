@@ -60,7 +60,7 @@ import lombok.extern.slf4j.Slf4j;
 @PreAuthorize("hasRole('CUSTOMER')")
 @RestController
 @RequestMapping("/api/tada")
-public class TadaProxyController {
+public class TadaRestController {
 	
 	private static final String RESULT_FORMAT = "{\"message\":\"%s\"}";
 	
@@ -200,7 +200,7 @@ public class TadaProxyController {
 		String url = applicationProperties.getTada().getOrdersUrl();
 		ResponseEntity<String> response = oauth2RestTemplate.exchange(getURI(url, request), HttpMethod.POST, requestEntity, String.class);
 		
-		tadaOrder.setContent(response.getBody());
+		tadaOrder.setResponse(response.getBody());
 		tadaOrder.setLastModifiedBy(email);
 		tadaOrder.setLastModifiedDate(Instant.now());
 		tadaOrderService.save(tadaOrder);

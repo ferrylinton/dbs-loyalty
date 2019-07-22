@@ -33,7 +33,8 @@ private static final long serialVersionUID = 1L;
 			String keyword = String.format(Constant.LIKE_FORMAT, params.get(Constant.KY_PARAM).trim().toLowerCase());
 			predicates.add(cb.or(
 					cb.like(cb.lower(root.get(DomainConstant.EMAIL)), keyword),
-					cb.like(cb.lower(root.get(DomainConstant.NAME)), keyword),
+					cb.like(cb.lower(root.get(DomainConstant.FIRST_NAME)), keyword),
+					cb.like(cb.lower(root.get(DomainConstant.LAST_NAME)), keyword),
 					cb.like(cb.lower(root.get(DomainConstant.PHONE)), keyword)
 			));
 		}

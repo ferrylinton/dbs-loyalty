@@ -73,7 +73,7 @@ public class TadaOrder extends AbstractAuditing implements Serializable {
 
 	@Lob
 	@Type(type = "org.hibernate.type.TextType")
-	@Column(name = "content")
-    private String content;
+	@Column(name = "response")
+    private String response;
 
 }

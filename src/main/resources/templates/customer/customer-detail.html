@@ -29,9 +29,17 @@
                			<th th:text="#{cif}">CIF</th>
                     	<td th:text="${customer.cif}">0000001</td>
                		</tr>
+               		<tr>
+               			<th th:text="#{accountNo}">Account No</th>
+                    	<td th:text="${customer.accountNo}">0000001</td>
+               		</tr>
          			<tr>
-                    	<th th:text="#{name}">Name</th>
-                      	<td th:text="${customer.name}">Ferry Linton Hutapea</td>
+                    	<th th:text="#{firstName}">First Name</th>
+                      	<td th:text="${customer.firstName}">Ferry</td>
+           			</tr>
+           			<tr>
+                    	<th th:text="#{lastName}">First Name</th>
+                      	<td th:text="${customer.lastName}">Hutapea</td>
            			</tr>
                   	<tr>
                  		<th th:text="#{email}">Email</th>

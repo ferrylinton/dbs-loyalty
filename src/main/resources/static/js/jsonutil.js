@@ -23,8 +23,6 @@ var JsonUtil = (function () {
                         } 
                         table += '</td>';
                     }else if(jQuery.type(obj[key]) === 'object'){
-                        console.log(2);
-                        
                         table += '<td>' + objectJsonToString(obj[key]) + '</td>';
                     }else if(key == 'image'){
                         var path = (obj['id'] == undefined || obj['id'] != obj[key]) ? 'image/task/' + obj[key] : 'image/' + obj[key];
@@ -43,7 +41,7 @@ var JsonUtil = (function () {
                     }else{
                         var val = obj[key];
                         
-                        if(typeof val === 'boolean'){
+                        if(typeof val === 'boolean' || val == '0025' || val == '0012'){
                             val = Lang.field(val);
                         }
                         

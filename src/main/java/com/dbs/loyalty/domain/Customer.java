@@ -78,7 +78,7 @@ public class Customer extends AbstractTask implements Serializable {
 	@Column(name = "last_name", length = 50, nullable = false)
 	private String lastName;
 	
-	@NotNull
+	@Size(min = 2, max = 30)
     @Column(name = "account_no", length = 20, nullable = false)
     private String accountNo;
 	
@@ -89,6 +89,7 @@ public class Customer extends AbstractTask implements Serializable {
 	@Column(name = "customer_type", length = 10, nullable = false)
 	private String customerType;
 
+	@NotNull
 	@DateTimeFormat(pattern = DateConstant.JAVA_DATE)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateConstant.JAVA_DATE)
 	@Column(name = "dob", nullable = false)

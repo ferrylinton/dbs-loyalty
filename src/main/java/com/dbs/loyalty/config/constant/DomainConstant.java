@@ -60,6 +60,10 @@ public final class DomainConstant {
 
 	public static final String NAME					= "name";
 	
+	public static final String FIRST_NAME			= "firstName";
+	
+	public static final String LAST_NAME			= "lastName";
+	
 	public static final String URL					= "url";
 	
 	public static final String PHONE				= "phone";

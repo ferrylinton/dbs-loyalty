@@ -15,7 +15,7 @@
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="name" value="Cashback"/>
             <column name="point" valueNumeric="1"/>
-            <column name="description" value="1 point for ${point}${currency}"/>
+            <column name="description" value="1 point for ${POINT_TO_RUPIAH} ${CURRENCY}"/>
         </insert>
         
         <insert tableName="file_image">
@@ -34,6 +34,7 @@
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="name" value="Free RTGS Fee"/>
             <column name="point" valueNumeric="50"/>
+            <column name="description" value="50 points"/>
         </insert>
         
         <insert tableName="file_image">
@@ -52,6 +53,7 @@
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="name" value="Free SDB Rental Fee"/>
             <column name="point" valueNumeric="50"/>
+            <column name="description" value="50 points"/>
         </insert>
         
         <insert tableName="file_image">
@@ -70,6 +72,7 @@
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="name" value="Free Service Charge Fee"/>
             <column name="point" valueNumeric="50"/>
+            <column name="description" value="50 points"/>
         </insert>
         
         <insert tableName="file_image">

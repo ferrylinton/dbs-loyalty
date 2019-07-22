@@ -59,7 +59,7 @@ public class CustomerController {
 	
 	private static final String FORM 		= "customer/customer-form";
 	
-	private static final String SORT_BY 	= "name";
+	private static final String SORT_BY 	= "firstName";
 	
 	private final ImageService imageService;
 	
@@ -168,7 +168,8 @@ public class CustomerController {
 			
 		    @Override
 		    public void setAsText(String text) throws IllegalArgumentException{
-		      setValue(LocalDate.parse(text, DateTimeFormatter.ofPattern(DateConstant.JAVA_DATE)));
+		    	setValue(LocalDate.parse(text, DateTimeFormatter.ofPattern(DateConstant.JAVA_DATE)));
+		      
 		    }
 
 		    @Override

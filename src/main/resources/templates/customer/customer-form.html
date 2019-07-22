@@ -40,9 +40,23 @@
                         </div>
                         <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
                             <div class="form-group">
-                                <label for="name" th:text="#{name}">Name *</label>
-                                <input class="form-control" th:classappend="${#fields.hasErrors('name') ? 'is-invalid' : ''}" type="text" th:placeholder="#{name}" th:field="*{name}" maxlength="50" />
-                            	<div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:uerrors="*{name}">Error</div>
+                                <label for="accountNo" th:text="#{accountNo}">Account No *</label>
+                                <input class="form-control" th:classappend="${#fields.hasErrors('accountNo') ? 'is-invalid' : ''}" type="text" th:placeholder="#{accountNo}" th:field="*{accountNo}" maxlength="50" />
+                            	<div class="invalid-feedback" th:if="${#fields.hasErrors('accountNo')}" th:uerrors="*{accountNo}">Error</div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
+                            <div class="form-group">
+                                <label for="firstName" th:text="#{firstName}">First Name *</label>
+                                <input class="form-control" th:classappend="${#fields.hasErrors('firstName') ? 'is-invalid' : ''}" type="text" th:placeholder="#{firstName}" th:field="*{firstName}" maxlength="50" />
+                            	<div class="invalid-feedback" th:if="${#fields.hasErrors('firstName')}" th:uerrors="*{firstName}">Error</div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
+                            <div class="form-group">
+                                <label for="lastName" th:text="#{lastName}">Last Name *</label>
+                                <input class="form-control" th:classappend="${#fields.hasErrors('lastName') ? 'is-invalid' : ''}" type="text" th:placeholder="#{lastName}" th:field="*{lastName}" maxlength="50" />
+                            	<div class="invalid-feedback" th:if="${#fields.hasErrors('lastName')}" th:uerrors="*{lastName}">Error</div>
                             </div>
                         </div>
                         <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
@@ -62,7 +76,7 @@
                         <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
                             <div class="form-group">
                                 <label for="dob" th:text="|#{dob} *|">DOB *</label>
-                                <input class="form-control" type="text" th:placeholder="#{dob}" id="dob" name="dob" th:value="${#temporals.format(customer.dob, @dateService.javaDate())}" />
+                                <input class="form-control" th:classappend="${#fields.hasErrors('dob') ? 'is-invalid' : ''}" type="text" th:placeholder="#{dob}" id="dob" name="dob" th:value="${#temporals.format(customer.dob, @dateService.javaDate())}" />
                             </div>
                         </div>
                         <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4" th:if="*{id != null}">

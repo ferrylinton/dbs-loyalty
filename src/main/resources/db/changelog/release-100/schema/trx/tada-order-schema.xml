@@ -34,11 +34,10 @@
             </column>
             <column name="last_modified_by" type="VARCHAR(50)"/>
             <column name="last_modified_date" type="timestamp"/>
-            <column name="content" type="LONGTEXT"/>
+            <column name="response" type="LONGTEXT"/>
             <column name="order_reference" type="VARCHAR(20)">
                 <constraints nullable="false"/>
             </column>
-            <column name="pending" type="BIT" defaultValueBoolean="true"/>
         </createTable>
     </changeSet>
     
@@ -73,19 +72,19 @@
     </changeSet>
     
     <changeSet author="FLH" id="tada-order-schema-5">
-        <addPrimaryKey columnNames="id" constraintName="trx_tada_itemPK" tableName="trx_tada_item"/>
+        <addPrimaryKey columnNames="id" constraintName="trx_tada_item_pk" tableName="trx_tada_item"/>
     </changeSet>
     
     <changeSet author="FLH" id="tada-order-schema-6">
-        <addPrimaryKey columnNames="id" constraintName="trx_tada_orderPK" tableName="trx_tada_order"/>
+        <addPrimaryKey columnNames="id" constraintName="trx_tada_order_pk" tableName="trx_tada_order"/>
     </changeSet>
     
     <changeSet author="FLH" id="tada-order-schema-7">
-        <addPrimaryKey columnNames="id" constraintName="trx_tada_paymentPK" tableName="trx_tada_payment"/>
+        <addPrimaryKey columnNames="id" constraintName="trx_tada_payment_pk" tableName="trx_tada_payment"/>
     </changeSet>
     
     <changeSet author="FLH" id="tada-order-schema-8">
-        <addPrimaryKey columnNames="id" constraintName="trx_tada_recipientPK" tableName="trx_tada_recipient"/>
+        <addPrimaryKey columnNames="id" constraintName="trx_tada_recipient_pk" tableName="trx_tada_recipient"/>
     </changeSet>
     
     <changeSet author="FLH" id="tada-order-schema-9">
