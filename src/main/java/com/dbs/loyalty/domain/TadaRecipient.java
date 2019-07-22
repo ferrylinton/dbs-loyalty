@@ -15,6 +15,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.dbs.loyalty.config.constant.DomainConstant;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -54,6 +55,7 @@ public class TadaRecipient implements Serializable {
     @Column(name = "phone", length = 50)
     private String phone;
     
+    @JsonProperty("CityId")
     @Column(name = "city_id")
     private Integer cityId;
     

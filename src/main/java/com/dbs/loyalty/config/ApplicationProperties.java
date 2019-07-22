@@ -27,6 +27,8 @@ public class ApplicationProperties {
 	
 	private Tada tada;
 	
+	private TadaPayment tadaPayment;
+	
 	private Http http;
 
 	@Getter
@@ -95,9 +97,7 @@ public class ApplicationProperties {
 	@Setter
 	public static class Tada{
 		
-		private String domain = "https://staging-distribution-api.gift.id/oauth/token";
-		
-		private String accessTokenUri = "/oauth/token";
+		private String accessTokenUri = "https://staging-distribution-api.gift.id/oauth/token";
 		
 		private String clientId = "54ud8nSSMxHughBhNe7JQWep9";
 		
@@ -110,6 +110,28 @@ public class ApplicationProperties {
 		private String password = "2571";
 		
 		private List<String> scope = Arrays.asList("offline_access");
+
+		private String categoriesUrl = "https://staging-distribution-api.gift.id/v2/categories";
+		
+		private String itemsUrl = "https://staging-distribution-api.gift.id/v2/items";
+		
+		private String ordersUrl = "https://staging-distribution-api.gift.id/v2/orders";
+		
+		private String ordersByIdUrl = "https://staging-distribution-api.gift.id/v2/orders/{id}";
+
+	}
+	
+	@Getter
+	@Setter
+	public static class TadaPayment{
+		
+		private String type = "tada";
+		
+		private String walletType = "balance";
+		
+		private String cardNumber = "3671287772281932";
+		
+		private String cardPin = "286812";
 		
 	}
 	

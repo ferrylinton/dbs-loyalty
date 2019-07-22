@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.dbs.loyalty.config.constant.DomainConstant;
 
@@ -33,13 +34,22 @@ public class TadaItem implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@NotNull
 	@Id
 	@Column(name = DomainConstant.ID, length=50)
 	private String id;
 
+	@NotNull
     @Column(name = "variant_id", length = 50)
     private String variantId;
 
+	@NotNull
+    @Column(name = "price")
+    private Integer price;
+    
+    private Integer point;
+    
+    @NotNull
     @Column(name = "quantity")
     private Integer quantity;
     
@@ -49,8 +59,8 @@ public class TadaItem implements Serializable {
     @Column(name = "phone", length = 50)
     private String phone;
     
-    @Column(name = "custom_price", precision=10, scale=0)
-    private Double customPrice;
+    @Column(name = "custom_price")
+    private Integer customPrice;
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tada_order_id", foreignKey = @ForeignKey(name = "trx_tada_item_fk"))

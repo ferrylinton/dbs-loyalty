@@ -5,9 +5,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
 import java.util.List;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -17,7 +17,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,12 +30,15 @@ import org.springframework.web.client.RestClientException;
 import com.dbs.loyalty.config.ApplicationProperties;
 import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
+import com.dbs.loyalty.domain.Reward;
+import com.dbs.loyalty.domain.TadaItem;
 import com.dbs.loyalty.domain.TadaOrder;
+import com.dbs.loyalty.domain.TadaPayment;
+import com.dbs.loyalty.exception.BadRequestException;
+import com.dbs.loyalty.service.RewardService;
+import com.dbs.loyalty.service.SettingService;
 import com.dbs.loyalty.service.TadaOrderService;
-import com.dbs.loyalty.service.dto.TadaCategoryDto;
-import com.dbs.loyalty.service.dto.TadaPageDto;
 import com.dbs.loyalty.util.SecurityUtil;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.annotations.Api;
@@ -57,44 +62,70 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api/tada")
 public class TadaProxyController {
 	
-	private static final String API_TADA_PATH = "/api/tada";
-	
-	private static final String ORDERS_PATH = "/orders";
-	
-	private static final String ITEMS_PATH = "/items";
-	
-	private static final String CATEGORIES_PATH = "/categories";
-
 	private static final String RESULT_FORMAT = "{\"message\":\"%s\"}";
-
-	private static final String TADA_GET = "Tada :: Get API";
-
-	private static final String TADA_POST = "Tada :: Post API";
-
+	
 	private final ApplicationProperties applicationProperties;
 
 	private final OAuth2RestTemplate oauth2RestTemplate;
 
 	private final TadaOrderService tadaOrderService;
+	
+	private final SettingService settingService;
+	
+	private final RewardService rewardService;
 
 	private final ObjectMapper objectMapper;
+	
+	@ApiOperation(
+		nickname = "GetTadaItems", 
+		value = "GetTadaItems", 
+		produces = SwaggerConstant.JSON, 
+		authorizations = { @Authorization(value = SwaggerConstant.JWT) })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = SwaggerConstant.OK, response = String.class) })
+	@GetMapping("/items")
+	public ResponseEntity<String> getItems(HttpServletRequest request) {
+		String url = applicationProperties.getTada().getItemsUrl();
+		return exchangeGet(url, request);
+	}
+	
+	@ApiOperation(
+		nickname = "GetTadaCategories", 
+		value = "GetTadaCategories", 
+		produces = SwaggerConstant.JSON, 
+		authorizations = { @Authorization(value = SwaggerConstant.JWT) })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = SwaggerConstant.OK, response = String.class) })
+	@GetMapping("/categories")
+	public ResponseEntity<String> getCategories(HttpServletRequest request) {
+		String url = applicationProperties.getTada().getCategoriesUrl();
+		return exchangeGet(url, request);
+	}
+	
+	@ApiOperation(
+		nickname = "GetTadaOrderById", 
+		value = "GetTadaOrderById", 
+		produces = SwaggerConstant.JSON, 
+		authorizations = { @Authorization(value = SwaggerConstant.JWT) })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = SwaggerConstant.OK, response = String.class) })
+	@GetMapping("/orders/{id}")
+	public ResponseEntity<String> getTadaOrderById(@PathVariable String id, HttpServletRequest request) {
+		String url = applicationProperties.getTada().getOrdersByIdUrl().replace("{id}", id);
+		return exchangeGet(url, request);
+	}
 
 	@ApiOperation(
-			nickname = TADA_GET, 
-			value = TADA_GET, 
-			produces = SwaggerConstant.JSON, 
-			authorizations = { @Authorization(value = SwaggerConstant.JWT) })
+		nickname = "CreateOrder", 
+		value = "CreateOrder", 
+		produces = SwaggerConstant.JSON, 
+		authorizations = { @Authorization(value = SwaggerConstant.JWT) })
 	@ApiResponses(value = { @ApiResponse(code = 200, message = SwaggerConstant.OK, response = String.class) })
-	@GetMapping(value = {"/**", "/**/**"})
-	public ResponseEntity<String> get(HttpServletRequest request) {
+	@PostMapping("/orders")
+	public ResponseEntity<String> post(@RequestBody @Valid TadaOrder tadaOrder, HttpServletRequest request) {
 		try {
-			if (request.getRequestURI().contains(ITEMS_PATH)) {
-				return getItems(request);
-			}else if (request.getRequestURI().contains(CATEGORIES_PATH)) {
-				return getCategories(request);
-			}else {
-				return oauth2RestTemplate.exchange(getURI(request), HttpMethod.GET, null, String.class);
-			}
+			return saveTadaOrder(tadaOrder, SecurityUtil.getLogged(), request);
+		} catch (BadRequestException e) {
+			log.error(e.getLocalizedMessage(), e);
+			String result = String.format(RESULT_FORMAT, e.getLocalizedMessage());
+			return new ResponseEntity<>(result, getHeaders(), HttpStatus.BAD_REQUEST);
 		} catch (HttpClientErrorException e) {
 			log.error(e.getLocalizedMessage(), e);
 			return new ResponseEntity<>(e.getResponseBodyAsString(), e.getResponseHeaders(), e.getStatusCode());
@@ -104,95 +135,86 @@ public class TadaProxyController {
 			return new ResponseEntity<>(result, getHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-
-	@ApiOperation(
-			nickname = TADA_POST, 
-			value = TADA_POST, 
-			produces = SwaggerConstant.JSON, 
-			authorizations = { @Authorization(value = SwaggerConstant.JWT) })
-	@ApiResponses(value = { @ApiResponse(code = 200, message = SwaggerConstant.OK, response = String.class) })
-	@PostMapping(value = {"/**", "/**/**"})
-	public ResponseEntity<String> post(@RequestBody String body, HttpServletRequest request) {
-		try {
-			if (request.getRequestURI().contains(ORDERS_PATH)) {
-				return saveTadaOrder(body, request);
-			} else {
-				return postProxy(body, request);
-			}
-		} catch (HttpClientErrorException e) {
-			log.error(e.getLocalizedMessage(), e);
-			return new ResponseEntity<>(e.getResponseBodyAsString(), e.getResponseHeaders(), e.getStatusCode());
-		} catch (Exception e) {
-			log.error(e.getLocalizedMessage(), e);
-			String result = String.format(RESULT_FORMAT, e.getLocalizedMessage());
-			return new ResponseEntity<>(result, getHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-
+	
 	private HttpHeaders getHeaders() {
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.APPLICATION_JSON);
 		return headers;
-	}
-
-	private URI getURI(HttpServletRequest request) throws URISyntaxException {
-		String url = request.getRequestURI().replace(request.getContextPath() + API_TADA_PATH, Constant.EMPTY);
-		String domain = applicationProperties.getTada().getDomain();
+	}	
+	
+	private URI getURI(String url, HttpServletRequest request) throws URISyntaxException {
 		if (request.getQueryString() != null) {
-			return new URI(domain + url + Constant.QUESTION + request.getQueryString());
+			return new URI(url + Constant.QUESTION + request.getQueryString());
 		} else {
-			return new URI(domain + url);
+			return new URI(url);
+		}
+	}
+	
+	private ResponseEntity<String> exchangeGet(String url, HttpServletRequest request) {
+		try {
+			return oauth2RestTemplate.exchange(getURI(url, request), HttpMethod.GET, null, String.class);
+		} catch (HttpClientErrorException e) {
+			log.error(e.getLocalizedMessage(), e);
+			return new ResponseEntity<>(e.getResponseBodyAsString(), e.getResponseHeaders(), e.getStatusCode());
+		} catch (Exception e) {
+			log.error(e.getLocalizedMessage(), e);
+			String result = String.format(RESULT_FORMAT, e.getLocalizedMessage());
+			return new ResponseEntity<>(result, getHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
-	private ResponseEntity<String> postProxy(String body, HttpServletRequest request) throws RestClientException, URISyntaxException {
-		HttpEntity<String> requestEntity = new HttpEntity<>(body, getHeaders());
-		return oauth2RestTemplate.exchange(getURI(request), HttpMethod.POST, requestEntity, String.class);
-	}
-	
-	private ResponseEntity<String> getItems(HttpServletRequest request) throws RestClientException, URISyntaxException, IOException {
-		ResponseEntity<String> response = oauth2RestTemplate.exchange(getURI(request), HttpMethod.GET, null, String.class);
-		TadaPageDto tadaPageDto = objectMapper.readValue(response.getBody(), TadaPageDto.class);
-		return new ResponseEntity<>(objectMapper.writeValueAsString(tadaPageDto), response.getHeaders(), response.getStatusCode());
-	}
-	
-	private ResponseEntity<String> getCategories(HttpServletRequest request) throws RestClientException, URISyntaxException, IOException {
-		ResponseEntity<String> response = oauth2RestTemplate.exchange(getURI(request), HttpMethod.GET, null, String.class);
-		List<TadaCategoryDto> tadaCategoryDtos = objectMapper.readValue(response.getBody(), new TypeReference<List<TadaCategoryDto>>(){});
-		return new ResponseEntity<>(objectMapper.writeValueAsString(tadaCategoryDtos), response.getHeaders(), response.getStatusCode());
-	}
-
-	private ResponseEntity<String> saveTadaOrder(String body, HttpServletRequest request) throws RestClientException, URISyntaxException, IOException {
-		HttpEntity<String> requestEntity = new HttpEntity<>(body, getHeaders());
-		ResponseEntity<String> response = oauth2RestTemplate.exchange(getURI(request), HttpMethod.POST, requestEntity, String.class);
-
-		TadaOrder requestTadaOrder = objectMapper.readValue(body, TadaOrder.class);
+	private TadaOrder prepareTadaOrder(TadaOrder tadaOrder) {
+		TadaPayment tadaPayment = new TadaPayment();
+		tadaPayment.setPaymentType(applicationProperties.getTadaPayment().getType());
+		tadaPayment.setPaymentWalletType(applicationProperties.getTadaPayment().getWalletType());
+		tadaPayment.setCardNumber(applicationProperties.getTadaPayment().getCardNumber());
+		tadaPayment.setCardPin(applicationProperties.getTadaPayment().getCardPin());
+		tadaOrder.setTadaPayment(tadaPayment);
 		
-		if (requestTadaOrder != null) {
-			Optional<TadaOrder> pendingTadaOrder = tadaOrderService.findByOrderReferenceAndCreatedBy(requestTadaOrder.getOrderReference(), SecurityUtil.getLogged());
-
-			if (pendingTadaOrder.isPresent()) {
-				pendingTadaOrder.get().setContent(response.getBody());
-				pendingTadaOrder.get().setPending(false);
-				pendingTadaOrder.get().setLastModifiedBy(SecurityUtil.getLogged());
-				pendingTadaOrder.get().setLastModifiedDate(Instant.now());
-				tadaOrderService.save(pendingTadaOrder.get());
-			}
+		for(TadaItem tadaItem : tadaOrder.getTadaItems()) {
+			tadaItem.setPrice(null);
 		}
-
+		
+		tadaOrder.setOrderReference(tadaOrderService.generate());
+		return tadaOrder;
+	}
+	
+	@Transactional
+	private ResponseEntity<String> saveTadaOrder(TadaOrder tadaOrder, String email, HttpServletRequest request) throws BadRequestException, RestClientException, URISyntaxException, IOException {
+		ResponseEntity<String> response = null;
+		List<Reward> rewards = rewardService.findAllValid();
+		int availablePoints = rewardService.getAvailablePoints(rewards);
+		int orderPoints = getOrderPoints(tadaOrder);
+		
+		if(availablePoints > orderPoints) {
+			response = exchange(prepareTadaOrder(tadaOrder), email, request);
+			rewardService.deduct(email, rewards, orderPoints);
+			return response;
+		}else {
+			throw new BadRequestException("Insufficient points");
+		}
+	}
+	
+	private ResponseEntity<String> exchange(TadaOrder tadaOrder, String email, HttpServletRequest request) throws RestClientException, URISyntaxException, IOException, BadRequestException {
+		HttpEntity<String> requestEntity = new HttpEntity<>(objectMapper.writeValueAsString(tadaOrder), getHeaders());
+		String url = applicationProperties.getTada().getOrdersUrl();
+		ResponseEntity<String> response = oauth2RestTemplate.exchange(getURI(url, request), HttpMethod.POST, requestEntity, String.class);
+		
+		tadaOrder.setContent(response.getBody());
+		tadaOrder.setLastModifiedBy(email);
+		tadaOrder.setLastModifiedDate(Instant.now());
+		tadaOrderService.save(tadaOrder);
 		return response;
 	}
-	
-//	private boolean validateItems(TadaOrder tadaOrder){
-//		if(tadaOrder.getTadaItems() > 0) {
-//			double totalPrice = 0;
-//			
-//			for(TadaItem tadaItem : tadaOrder.getTadaItems()) {
-//				totalPrice += tadaItem.get
-//			}
-//		}
-//		
-//		return false;
-//	}
+
+	private Integer getOrderPoints(TadaOrder tadaOrder){
+		Integer totalPrice = 0;
+		
+		for(TadaItem tadaItem : tadaOrder.getTadaItems()) {
+			totalPrice += tadaItem.getPrice() * tadaItem.getQuantity();
+		}
+		
+		return totalPrice / settingService.getPointToRupiah();
+	}
 	
 }

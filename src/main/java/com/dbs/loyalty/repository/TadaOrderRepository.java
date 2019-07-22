@@ -12,7 +12,5 @@ public interface TadaOrderRepository extends JpaRepository<TadaOrder, String>, J
 	Optional<TadaOrder> findByOrderReference(String orderReference);
 	
 	Optional<TadaOrder> findByOrderReferenceAndCreatedBy(String orderReference, String createdBy);
-	
-	Optional<TadaOrder> findByPendingAndCreatedBy(Boolean pending, String createdBy);
 
 }

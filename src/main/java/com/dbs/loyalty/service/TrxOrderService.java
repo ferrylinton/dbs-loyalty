@@ -37,7 +37,7 @@ public class TrxOrderService{
 	@Transactional
 	public TrxOrder save(TrxOrder trxOrder) throws BadRequestException{
 		List<Reward> rewards = rewardService.findAllValid();
-		int totalCustomerPoint = rewardService.getTotal(rewards);
+		int totalCustomerPoint = rewardService.getAvailablePoints(rewards);
 		int totalOrderPoint = trxOrder.getItemPoint();
 		
 		if(totalCustomerPoint > totalOrderPoint) {

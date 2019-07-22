@@ -1,5 +1,6 @@
 package com.dbs.loyalty.service;
 
+import java.time.Instant;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -20,12 +21,12 @@ public class RewardService {
 		return rewardRepository.findAllValid(SecurityUtil.getId());
 	}
 	
-	public int getTotal(){
+	public int getAvailablePoints(){
 		List<Reward> rewards = rewardRepository.findAllValid(SecurityUtil.getId());
-		return getTotal(rewards);
+		return getAvailablePoints(rewards);
 	}
 	
-	public int getTotal(List<Reward> rewards){
+	public int getAvailablePoints(List<Reward> rewards){
 		Integer total = 0;
 
 		for(Reward reward : rewards) {
@@ -39,4 +40,22 @@ public class RewardService {
 		rewardRepository.saveAll(rewards);
 	}
 	
+	public void deduct(String email, List<Reward> rewards, Integer deduction) {
+		for(Reward reward : rewards) {
+			if(deduction > 0) {
+				if(deduction > reward.getPoint()) {
+					deduction = deduction - reward.getPoint();
+					reward.setPoint(0);
+				}else{
+					reward.setPoint(reward.getPoint() - deduction);
+					deduction = 0;
+				}
+				
+				reward.setLastModifiedBy(email);
+				reward.setLastModifiedDate(Instant.now());
+			}
+		}
+		
+		rewardRepository.saveAll(rewards);
+	}
 }

@@ -46,7 +46,7 @@ public class RewardRestController {
 	@ApiResponses(value={@ApiResponse(code=200, message=OK, response=TotalDto.class)})
 	@GetMapping("/api/rewards/total")
 	public TotalDto getTotalRewards(){
-		return new TotalDto(rewardService.getTotal());
+		return new TotalDto(rewardService.getAvailablePoints());
 	}
 	
 	@ApiOperation(value=GET_ALL_REWARDS, produces=JSON, authorizations={@Authorization(value=JWT)})

@@ -48,8 +48,15 @@ public class VerificationToken implements Serializable{
 	@Column(name = "expiry_date", nullable = false, updatable = false)
     private Instant expiryDate;
 	
+	@JsonIgnore
+	@Column(name = "verified", nullable = true)
+	private Boolean verified;
+	
 	@Column(name = "created_date", nullable = false, updatable = false)
     private Instant createdDate;
+
+	@Column(name = "last_modified_date")
+    private Instant lastModifiedDate;
 	
 	@Transient
 	@JsonIgnore

@@ -23,8 +23,8 @@
 
         <insert tableName="cst_customer">
             <column name="id" value="${Customer01}"/>
-            <column name="cif" value="10000001"/>
-            <column name="account_no" value="00000001"/>
+            <column name="cif" value="00000001"/>
+            <column name="account_no" value="10000001"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
             <column name="activated" valueBoolean="true"/>

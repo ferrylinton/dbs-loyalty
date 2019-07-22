@@ -17,4 +17,16 @@
 
     </changeSet>
     
+    <changeSet author="FLH" id="setting-data-2">
+
+        <insert tableName="mst_setting">
+            <column name="id" value="6ugCzCqPNGnWsV9YPyXq2i"/>
+            <column name="name" value="CURRENCY"/>
+            <column name="value" value="IDR"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+
+    </changeSet>
+    
 </databaseChangeLog>

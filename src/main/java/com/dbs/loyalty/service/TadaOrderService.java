@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.dbs.loyalty.domain.TadaOrder;
 import com.dbs.loyalty.repository.TadaOrderRepository;
-import com.dbs.loyalty.util.SecurityUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,34 +28,23 @@ public class TadaOrderService{
 	
 	public String generate() {
 		String orderReference = PREFIX + RandomStringUtils.randomNumeric(10);
-		Optional<TadaOrder> current = tadaOrderRepository.findByPendingAndCreatedBy(true, SecurityUtil.getLogged());
+		Optional<TadaOrder> current = tadaOrderRepository.findByOrderReference(orderReference);
 		
 		if(current.isPresent()) {
-			return current.get().getOrderReference();
-		}else {
-			tadaOrderRepository.findByOrderReference(orderReference);
+			orderReference = PREFIX + RandomStringUtils.randomNumeric(10);
+			current = tadaOrderRepository.findByOrderReference(orderReference);
 			
 			if(current.isPresent()) {
 				orderReference = PREFIX + RandomStringUtils.randomNumeric(10);
 				current = tadaOrderRepository.findByOrderReference(orderReference);
 				
 				if(current.isPresent()) {
-					orderReference = PREFIX + RandomStringUtils.randomNumeric(10);
-					current = tadaOrderRepository.findByOrderReference(orderReference);
-					
-					if(current.isPresent()) {
-						return null;
-					}
+					return null;
 				}
 			}
-			
-			TadaOrder newTadaOrder = new TadaOrder();
-			newTadaOrder.setOrderReference(orderReference);
-			newTadaOrder.setCreatedBy(SecurityUtil.getLogged());
-			newTadaOrder.setPending(true);
-			tadaOrderRepository.save(newTadaOrder);
-			return orderReference;
 		}
+
+		return orderReference;
 	}
 	
 	public TadaOrder save(TadaOrder tadaOrder) {

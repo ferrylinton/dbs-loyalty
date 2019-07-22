@@ -20,9 +20,11 @@
             <column name="expiry_date" type="timestamp">
                 <constraints nullable="false"/>
             </column>
+            <column name="verified" type="BOOLEAN" defaultValueBoolean="false"/>
             <column name="created_date" type="timestamp">
                 <constraints nullable="false"/>
             </column>
+            <column name="last_modified_date" type="timestamp"/>
         </createTable>
         
     </changeSet>

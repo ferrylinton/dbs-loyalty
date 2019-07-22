@@ -10,7 +10,9 @@
             <column name="id" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="custom_price" type="DOUBLE"/>
+            <column name="custom_price" type="INT"/>
+            <column name="price" type="INT"/>
+            <column name="point" type="INT"/>
             <column name="payment_currency" type="VARCHAR(50)"/>
             <column name="phone" type="VARCHAR(50)"/>
             <column name="quantity" type="INT"/>

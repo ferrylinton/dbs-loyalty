@@ -14,12 +14,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.NotNull;
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import com.dbs.loyalty.config.constant.DomainConstant;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -51,17 +53,21 @@ public class TadaOrder extends AbstractAuditing implements Serializable {
 	@GenericGenerator(name = DomainConstant.ID_GENERATOR, strategy = DomainConstant.ID_GENERATOR_STRATEGY)
 	@GeneratedValue(generator = DomainConstant.ID_GENERATOR)
 	private String id;
-	
-	@NotNull
+
     @Column(name = "order_reference", length = 20, nullable = false)
     private String orderReference;
 	
+	@JsonProperty("payment")
 	@OneToOne(mappedBy = "tadaOrder", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private TadaPayment tadaPayment;
 	
+	@JsonProperty("recipient")
 	@OneToOne(mappedBy = "tadaOrder", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private TadaRecipient tadaRecipient;
 	
+	@JsonProperty("items")
+	@Valid
+	@NotEmpty
 	@OneToMany(mappedBy = "tadaOrder", fetch = FetchType.LAZY)
 	private Set<TadaItem> tadaItems;
 
@@ -69,8 +75,5 @@ public class TadaOrder extends AbstractAuditing implements Serializable {
 	@Type(type = "org.hibernate.type.TextType")
 	@Column(name = "content")
     private String content;
-	
-	@Column(name = "pending")
-	private Boolean pending;
-	
+
 }

@@ -30,7 +30,7 @@ public class RestClientConfig {
 	@Bean
 	public OAuth2ProtectedResourceDetails resource() {
 		ResourceOwnerPasswordResourceDetails details = new ResourceOwnerPasswordResourceDetails();
-		details.setAccessTokenUri(applicationProperties.getTada().getDomain() + applicationProperties.getTada().getAccessTokenUri());
+		details.setAccessTokenUri(applicationProperties.getTada().getAccessTokenUri());
 		details.setClientId(applicationProperties.getTada().getClientId());
 		details.setClientSecret(applicationProperties.getTada().getClientSecret());
 		details.setGrantType(applicationProperties.getTada().getGrantType());
