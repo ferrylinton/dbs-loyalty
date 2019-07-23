@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dbs.loyalty.aop.LogAuditApi;
 import com.dbs.loyalty.service.JWTAuthenticationService;
 import com.dbs.loyalty.service.dto.JWTLoginDto;
 import com.dbs.loyalty.service.dto.JWTTokenDto;
@@ -40,6 +41,7 @@ public class JWTRestController {
 
     private final JWTAuthenticationService jwtAuthenticationService;
 
+    @LogAuditApi(name="JWT Authentiate", saveRequest = true, saveResponse = true)
     @ApiOperation(value=AUTHENTICATE, consumes=JSON, produces=JSON)
     @ApiNotes("authenticate.md")
     @ApiResponses(value={@ApiResponse(code=200, message=OK, response=JWTTokenDto.class)})

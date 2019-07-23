@@ -40,7 +40,6 @@
 	<include file="release-100/schema/log/log-login-schema.xml" relativeToChangelogFile="true"/>
 	<include file="release-100/schema/log/log-token-schema.xml" relativeToChangelogFile="true"/>
 	<include file="release-100/schema/log/log-api-schema.xml" relativeToChangelogFile="true"/>
-	<include file="release-100/schema/log/log-api-url-schema.xml" relativeToChangelogFile="true"/>
 	
     <include file="release-100/schema/prm/promo-category-schema.xml" relativeToChangelogFile="true"/>
 	<include file="release-100/schema/prm/promo-schema.xml" relativeToChangelogFile="true"/>

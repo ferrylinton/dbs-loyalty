@@ -5,13 +5,18 @@ import java.time.Instant;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Index;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import com.dbs.loyalty.config.constant.DomainConstant;
 
@@ -29,9 +34,9 @@ import lombok.Setter;
 @Table(
 	name = "log_api",
 	indexes= {
-			@Index(name = "log_api_created_by_idx", columnList = "created_by"),
+			@Index(name = "log_api_customer_id_idx", columnList = "customer_id"),
 			@Index(name = "log_api_created_date_idx", columnList = "created_date"),
-			@Index(name = "log_api_request_uri_idx", columnList = "request_uri")
+			@Index(name = "log_api_url_idx", columnList = "url")
 	}
 )
 public class LogApi implements Serializable {
@@ -44,36 +49,36 @@ public class LogApi implements Serializable {
 	@GeneratedValue(generator = DomainConstant.ID_GENERATOR)
 	private String id;
 
-    @Column(name = "request_uri")
-    private String requestURI;
+    @Column(name = "name", length = 100, nullable = false)
+    private String name;
     
-    @Column(name = "query_string")
-    private String queryString;
-    
-    @Column(name = "method")
-    private String method;
-    
-    @Column(name = "status")
-    private Integer status;
+    @Column(name = "url", length = 100, nullable = false)
+    private String url;
+
+    @Column(name = "status", length = 10, nullable = false, updatable = false)
+	private String status;
 
     @Lob
-    @Column(name = "body")
-    private String body;
+	@Type(type = "org.hibernate.type.TextType")
+    @Column(name = "request")
+    private String request;
 
     @Lob
+	@Type(type = "org.hibernate.type.TextType")
+    @Column(name = "response")
+    private String response;
+    
+    @Lob
+	@Type(type = "org.hibernate.type.TextType")
     @Column(name = "error")
     private String error;
 
-    @Column(name = "created_by")
-    private String createdBy;
+    @ManyToOne(optional = true, fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id", foreignKey = @ForeignKey(name = "log_api_fk"))
+	private Customer customer;
 
     @Column(name = "created_date")
     private Instant createdDate;
 
-	@Override
-	public String toString() {
-		return "[" + requestURI + "," + queryString + "," + method + "," + status + "," + createdBy + "]";
-	}
-    
     
 }

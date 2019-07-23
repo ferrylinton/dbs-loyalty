@@ -11,13 +11,19 @@
             <column name="id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
             </column>
-            <column name="request_uri" type="VARCHAR(255)"/>
-            <column name="query_string" type="VARCHAR(255)"/>
-            <column name="method" type="VARCHAR(10)"/>
-            <column name="status" type="int"/>
-            <column name="body" type="clob"/>
-            <column name="error" type="clob"/>
-            <column name="created_by" type="VARCHAR(22)"/>
+            <column name="name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="url" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="request" type="LONGTEXT"/>
+            <column name="response" type="LONGTEXT"/>
+            <column name="error" type="LONGTEXT"/>
+            <column name="customer_id" type="VARCHAR(22)"/>
             <column name="created_date" type="timestamp">
                 <constraints nullable="false"/>
             </column>
@@ -30,14 +36,18 @@
     </changeSet>
     
     <changeSet author="FLH" id="log-api-3">
+        <addForeignKeyConstraint baseColumnNames="customer_id" baseTableName="log_api" constraintName="log_api_fk" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="cst_customer"/>
+    </changeSet>
     
-        <createIndex indexName="log_api_created_by_idx" tableName="log_api">
-            <column name="created_by"/>
+    <changeSet author="FLH" id="log-api-4">
+    
+        <createIndex indexName="log_api_customer_id_idx" tableName="log_api">
+            <column name="customer_id"/>
         </createIndex>
 
     </changeSet>
     
-    <changeSet author="FLH" id="log-api-4">
+    <changeSet author="FLH" id="log-api-5">
 
       	<createIndex indexName="log_api_created_date_idx" tableName="log_api">
             <column name="created_date"/>
@@ -45,10 +55,10 @@
 
     </changeSet>
     
-    <changeSet author="FLH" id="log-api-5">
+    <changeSet author="FLH" id="log-api-6">
 
-        <createIndex indexName="log_api_request_uri_idx" tableName="log_api">
-            <column name="request_uri"/>
+        <createIndex indexName="log_api_url_idx" tableName="log_api">
+            <column name="url"/>
         </createIndex>
         
     </changeSet>

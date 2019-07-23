@@ -6,7 +6,6 @@ import java.util.Locale;
 
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,8 +21,6 @@ import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect;
 
-import com.dbs.loyalty.filter.LogRequestFilter;
-import com.dbs.loyalty.service.LogApiService;
 import com.github.bufferings.thymeleaf.extras.nl2br.dialect.Nl2brDialect;
 
 import lombok.RequiredArgsConstructor;
@@ -34,8 +31,6 @@ import nz.net.ultraq.thymeleaf.LayoutDialect;
 @AutoConfigureAfter(DispatcherServletAutoConfiguration.class)
 public class WebConfiguration implements WebMvcConfigurer{
 
-	private final LogApiService logAuditService;
-	
 	@Bean
 	public Nl2brDialect dialect() {
 	  return new Nl2brDialect();
@@ -70,13 +65,6 @@ public class WebConfiguration implements WebMvcConfigurer{
 	    ByteArrayHttpMessageConverter arrayHttpMessageConverter = new ByteArrayHttpMessageConverter();
 	    arrayHttpMessageConverter.setSupportedMediaTypes(getSupportedMediaTypes());
 	    return arrayHttpMessageConverter;
-	}
-	
-	@Bean
-	public FilterRegistrationBean<LogRequestFilter> loggingFilter(){
-	    FilterRegistrationBean<LogRequestFilter> registrationBean = new FilterRegistrationBean<>();
-	    registrationBean.setFilter(new LogRequestFilter(logAuditService));
-	    return registrationBean;    
 	}
 	 
 	private List<MediaType> getSupportedMediaTypes() {

@@ -4,6 +4,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.domain.User;
 import com.dbs.loyalty.security.rest.RestAuthentication;
 import com.dbs.loyalty.security.web.WebAuthentication;
@@ -25,6 +26,18 @@ public final class SecurityUtil {
 		}else if(SecurityContextHolder.getContext().getAuthentication() instanceof RestAuthentication) {
 			WebAuthentication authentication = (WebAuthentication) SecurityContextHolder.getContext().getAuthentication();
 			return authentication.getUser().getId();
+		}
+		
+		return null;
+    }
+	
+	public static Customer getCustomer() {
+		if(SecurityContextHolder.getContext().getAuthentication() instanceof RestAuthentication) {
+			RestAuthentication authentication = (RestAuthentication) SecurityContextHolder.getContext().getAuthentication();
+			Customer customer = new Customer();
+			customer.setId(authentication.getId());
+			customer.setEmail(authentication.getName());
+			return customer;
 		}
 		
 		return null;
