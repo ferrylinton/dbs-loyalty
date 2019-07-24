@@ -74,8 +74,6 @@ public final class DomainConstant {
 	
 	public static final String IP = "ip";
 	
-	public static final String REQUEST_URI = "requestURI";
-	
 	public static final String CREATED_DATE = "createdDate";
 	
 	public static final String BROWSER = "browser";

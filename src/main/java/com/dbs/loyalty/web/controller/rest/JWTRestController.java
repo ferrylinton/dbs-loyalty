@@ -1,12 +1,6 @@
 package com.dbs.loyalty.web.controller.rest;
 
-import static com.dbs.loyalty.config.constant.RestConstant.AUTHENTICATE;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.AUTHENTICATION;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.JSON;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.OK;
-
-import java.io.IOException;
-
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,7 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbs.loyalty.aop.LogAuditApi;
+import com.dbs.loyalty.config.constant.RestConstant;
+import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.service.JWTAuthenticationService;
 import com.dbs.loyalty.service.dto.JWTLoginDto;
 import com.dbs.loyalty.service.dto.JWTTokenDto;
@@ -34,24 +29,24 @@ import lombok.RequiredArgsConstructor;
  * @author Ferry L. H. <ferrylinton@gmail.com>
  * 
  */
-@Api(tags = { AUTHENTICATION })
+@Api(tags = { SwaggerConstant.AUTHENTICATION })
 @RequiredArgsConstructor
 @RestController
 public class JWTRestController {
 
     private final JWTAuthenticationService jwtAuthenticationService;
 
-    @LogAuditApi(name="JWT Authentiate", saveRequest = true, saveResponse = true)
-    @ApiOperation(value=AUTHENTICATE, consumes=JSON, produces=JSON)
+    @ApiOperation(value=RestConstant.AUTHENTICATE, consumes=SwaggerConstant.JSON, produces=SwaggerConstant.JSON)
     @ApiNotes("authenticate.md")
-    @ApiResponses(value={@ApiResponse(code=200, message=OK, response=JWTTokenDto.class)})
+    @ApiResponses(value={@ApiResponse(code=200, message=SwaggerConstant.OK, response=JWTTokenDto.class)})
     @PostMapping("/api/authenticate")
     public JWTTokenDto authenticate(
     		@ApiParam(name = "JWTLoginData", value = "Customer's login data to get JWT token")
-    		@Valid @RequestBody JWTLoginDto jwtLoginDto) throws IOException {
+    		@Valid @RequestBody JWTLoginDto jwtLoginDto,
+    		HttpServletRequest request) throws Exception {
     	
     	Authentication authentication = new UsernamePasswordAuthenticationToken(jwtLoginDto.getEmail(), jwtLoginDto.getPassword());
-    	return jwtAuthenticationService.authenticate(authentication, jwtLoginDto.isRememberMe());
+    	return jwtAuthenticationService.authenticate(request, authentication, jwtLoginDto.isRememberMe());
     }
 
 }

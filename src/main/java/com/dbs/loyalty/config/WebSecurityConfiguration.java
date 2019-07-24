@@ -28,7 +28,6 @@ import com.dbs.loyalty.security.web.WebAuthenticationProvider;
 import com.dbs.loyalty.security.web.WebAuthenticationSuccessHandler;
 import com.dbs.loyalty.service.AuthenticateLdapService;
 import com.dbs.loyalty.service.BrowserService;
-import com.dbs.loyalty.service.LogTokenService;
 import com.dbs.loyalty.service.LogLoginService;
 
 import lombok.RequiredArgsConstructor;
@@ -112,10 +111,10 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	}
 	
 	@Bean
-	public AuthenticationManager authenticationManager(UserRepository userRepository, AuthenticateLdapService authenticateLdapService, CustomerRepository customerRepository, LogTokenService logCustomerLoginService) {
+	public AuthenticationManager authenticationManager(UserRepository userRepository, AuthenticateLdapService authenticateLdapService, CustomerRepository customerRepository) {
 	    return new ProviderManager(Arrays.asList(
 	    		webAuthenticationProvider(userRepository, authenticateLdapService), 
-	    		restAuthenticationProvider(customerRepository, logCustomerLoginService)
+	    		restAuthenticationProvider(customerRepository)
 	    	));
 	}
  
@@ -125,8 +124,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	}
 	
 	@Bean("restAuthenticationProvider")
-	public RestAuthenticationProvider restAuthenticationProvider(CustomerRepository customerRepository, LogTokenService logCustomerLoginService){
-		return new RestAuthenticationProvider(customerRepository, logCustomerLoginService);
+	public RestAuthenticationProvider restAuthenticationProvider(CustomerRepository customerRepository){
+		return new RestAuthenticationProvider(customerRepository);
 	}
 	
 	@Bean  

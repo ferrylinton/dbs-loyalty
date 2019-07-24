@@ -67,9 +67,6 @@
                         <a class="icon-history" data-menu="loglogin" th:href="@{/loglogin}" th:text="#{loglogin}">Log Login</a>
                     </li>
                     <li th:if="${#authorization.expression('hasAuthority(''LOG'')')}">
-                        <a class="icon-history" data-menu="logtoken" th:href="@{/logtoken}" th:text="#{logtoken}">Log Token</a>
-                    </li>
-                    <li th:if="${#authorization.expression('hasAuthority(''LOG'')')}">
                         <a class="icon-history" data-menu="logapi" th:href="@{/logapi}" th:text="#{logapi}">Log Api</a>
                     </li>
                 </ul>

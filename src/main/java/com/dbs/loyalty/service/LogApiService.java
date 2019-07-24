@@ -6,12 +6,14 @@ import java.util.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dbs.loyalty.aop.LogAuditApi;
 import com.dbs.loyalty.config.constant.StatusConstant;
+import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.domain.LogApi;
 import com.dbs.loyalty.repository.LogApiRepository;
 import com.dbs.loyalty.service.specification.LogApiSpec;
@@ -24,6 +26,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Service
 public class LogApiService {
+	
+	private static final String JWT_AUTHENTICATE_NAME = "JWT Authentiate";
+	
+	private static final String REQUEST_FORMAT = "{\"email\": \"%s\", \"password\" : \"********\"}";
 
 	private final LogApiRepository logApiRepository;
 	
@@ -106,6 +112,37 @@ public class LogApiService {
         	logApi.setRequest(toString(request));
         }
 
+        logApiRepository.save(logApi);
+	}
+	
+	@Async
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public void save(String url, Customer customer) {
+		LogApi logApi = new LogApi();
+    	logApi.setName(JWT_AUTHENTICATE_NAME);
+    	logApi.setUrl(url);
+    	logApi.setStatus(StatusConstant.SUCCEED);
+        logApi.setCreatedDate(Instant.now());
+        logApi.setCustomer(customer);
+       
+        logApiRepository.save(logApi);
+	}
+	
+	@Async
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public void saveError(String url, Authentication authentication, Customer customer, String error) {
+		LogApi logApi = new LogApi();
+    	logApi.setName(JWT_AUTHENTICATE_NAME);
+    	logApi.setUrl(url);
+    	logApi.setStatus(StatusConstant.FAIL);
+        logApi.setCreatedDate(Instant.now());
+        logApi.setError(error);
+        logApi.setRequest(String.format(REQUEST_FORMAT, authentication.getName()));
+        
+        if(customer != null) {
+        	logApi.setCustomer(customer);
+        }
+        
         logApiRepository.save(logApi);
 	}
 	

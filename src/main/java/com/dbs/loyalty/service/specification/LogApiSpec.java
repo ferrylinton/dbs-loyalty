@@ -31,7 +31,7 @@ public class LogApiSpec implements Specification<LogApi>{
 		
 		if(params.containsKey(Constant.KY_PARAM) && !Constant.EMPTY.equals(params.get(Constant.KY_PARAM))) {
 			String keyword = String.format(Constant.LIKE_FORMAT, params.get(Constant.KY_PARAM).trim().toLowerCase());
-			predicates.add(cb.like(cb.lower(root.get(DomainConstant.REQUEST_URI)), keyword));
+			predicates.add(cb.like(cb.lower(root.get(DomainConstant.URL)), keyword));
 		}
 		
 		if(params.containsKey(Constant.START_DATE_PARAM) && !params.get(Constant.START_DATE_PARAM).equals(Constant.EMPTY)) {
