@@ -39,6 +39,11 @@ application:
     password: 2571
     scope:
       - offline_access
+    categories-url: https://staging-distribution-api.gift.id/v2/categories
+    items-url: https://staging-distribution-api.gift.id/v2/items
+    orders-url: https://staging-distribution-api.gift.id/v2/orders
+    ordersById-url: https://staging-distribution-api.gift.id/v2/orders/{id}
+    countries-url: https://staging-distribution-api.gift.id/v2/countries
   tada-payment:
     type: tada
     wallet-type: balance

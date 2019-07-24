@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dbs.loyalty.aop.LogAuditApi;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.domain.Address;
 import com.dbs.loyalty.domain.Customer;
@@ -67,10 +68,10 @@ public class AddressRestController {
     		produces=SwaggerConstant.JSON, 
     		authorizations={@Authorization(value=SwaggerConstant.JWT)})
     @ApiResponses(value = { @ApiResponse(code=200, message=SwaggerConstant.OK, response=CountryDto.class, responseContainer="List")})
+    @LogAuditApi(name=GET_ADDRESSES)
     @GetMapping
     public List<AddressDto> getAddresses() {
-    	List<AddressDto> addresses = addressMapper.toDto(addressService.findByCustomerEmail(SecurityUtil.getLogged()));
-    	return addresses;
+    	return addressMapper.toDto(addressService.findByCustomerEmail(SecurityUtil.getLogged()));
     }
     
     /**
@@ -84,6 +85,7 @@ public class AddressRestController {
     		produces=SwaggerConstant.JSON, 
     		authorizations={@Authorization(value=SwaggerConstant.JWT)})
     @ApiResponses(value = { @ApiResponse(code=200, message=SwaggerConstant.OK, response=AddressDto.class)})
+    @LogAuditApi(name=ADD_ADDRESS, saveRequest=true, saveResponse=true)
     @PostMapping
     public AddressDto save(@Valid @RequestBody AddressDto addressDto) throws BadRequestException{
     	Optional<Customer> customer = customerService.findByEmail(SecurityUtil.getLogged());

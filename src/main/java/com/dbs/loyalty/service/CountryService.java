@@ -12,6 +12,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.stereotype.Service;
 
+import com.dbs.loyalty.config.ApplicationProperties;
 import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.City;
 import com.dbs.loyalty.domain.Country;
@@ -31,6 +32,8 @@ import lombok.extern.slf4j.Slf4j;
 public class CountryService {
 
 	public static final Sort SORT_BY = Sort.by(DomainConstant.NAME);
+	
+	private final ApplicationProperties applicationProperties;
 	
 	private final CountryRepository countryRepository;
 	
@@ -53,7 +56,7 @@ public class CountryService {
 	@Async
 	public void sync(){
 		try {
-			ResponseEntity<Map<String, Object>> response = oauth2RestTemplate.exchange("https://staging-distribution-api.gift.id/v2/countries", HttpMethod.GET, null, new ParameterizedTypeReference<Map<String, Object>>(){});
+			ResponseEntity<Map<String, Object>> response = oauth2RestTemplate.exchange(applicationProperties.getTada().getCountriesUrl(), HttpMethod.GET, null, new ParameterizedTypeReference<Map<String, Object>>(){});
 			List<Country> countries = objectMapper.readValue(objectMapper.writeValueAsString(response.getBody().get("data")), new TypeReference<List<Country>>(){});
 			
 			for(Country country : countries) {
@@ -67,7 +70,7 @@ public class CountryService {
 	
 	public void sync(Country country){
 		try {
-			ResponseEntity<Map<String, Object>> response = oauth2RestTemplate.exchange("https://staging-distribution-api.gift.id/v2/countries" + "/" + country.getId() + "/provinces", HttpMethod.GET, null, new ParameterizedTypeReference<Map<String, Object>>(){});
+			ResponseEntity<Map<String, Object>> response = oauth2RestTemplate.exchange(applicationProperties.getTada().getCountriesUrl() + "/" + country.getId() + "/provinces", HttpMethod.GET, null, new ParameterizedTypeReference<Map<String, Object>>(){});
 			List<Province> provinces = objectMapper.readValue(objectMapper.writeValueAsString(response.getBody().get("data")), new TypeReference<List<Province>>(){});
 			
 			for(Province province : provinces) {
@@ -80,7 +83,7 @@ public class CountryService {
 	
 	public void sync(Country country, Province province){
 		try {
-			ResponseEntity<Map<String, Object>> response = oauth2RestTemplate.exchange("https://staging-distribution-api.gift.id/v2/countries" + "/" + country.getId() + "/provinces" + "/" + province.getId() + "/cities", HttpMethod.GET, null, new ParameterizedTypeReference<Map<String, Object>>(){});
+			ResponseEntity<Map<String, Object>> response = oauth2RestTemplate.exchange(applicationProperties.getTada().getCountriesUrl()+ "/" + country.getId() + "/provinces" + "/" + province.getId() + "/cities", HttpMethod.GET, null, new ParameterizedTypeReference<Map<String, Object>>(){});
 			List<City> cities = objectMapper.readValue(objectMapper.writeValueAsString(response.getBody().get("data")), new TypeReference<List<City>>(){});
 			
 			for(City city : cities) {

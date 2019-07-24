@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbs.loyalty.config.constant.RestConstant;
+import com.dbs.loyalty.aop.LogAuditApi;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
@@ -39,23 +39,28 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/appointments")
 public class AppointmentRestController {
+	
+	public static final String ADD_APPOINTMENT = "AddAppointment";
+	
+	public static final String BINDER_NAME = "appointmentDto";
 
 	private final AppointmentService appointmentService;
 	
 	private final AppointmentMapper appointmentMapper;
 
 	@ApiOperation(
-			nickname=RestConstant.ADD_APPOINTMENT, 
-			value=RestConstant.ADD_APPOINTMENT, 
+			nickname=ADD_APPOINTMENT, 
+			value=ADD_APPOINTMENT, 
 			produces=SwaggerConstant.JSON, 
 			authorizations={@Authorization(value=SwaggerConstant.JWT)})
 	@ApiResponses(value={@ApiResponse(code=200, message=SwaggerConstant.OK, response=Response.class)})
-    @PostMapping
+	@LogAuditApi(name=ADD_APPOINTMENT, saveRequest=true, saveResponse=true)
+	@PostMapping
     public Response addAppointment(@Valid @RequestBody AppointmentDto appointmentDto) throws BadRequestException, NotFoundException{
     	return appointmentService.save(appointmentMapper.toEntity(appointmentDto));
     }
     
-	@InitBinder("appointmentDto")
+	@InitBinder(BINDER_NAME)
 	protected void initBinder(WebDataBinder binder) {
 		binder.addValidators(new AppointmentDtoValidator(appointmentService));
 	}

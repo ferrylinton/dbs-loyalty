@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -23,16 +24,23 @@ import org.springframework.web.multipart.support.MissingServletRequestPartExcept
 
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
+import com.dbs.loyalty.service.LogApiService;
 import com.dbs.loyalty.util.ErrorUtil;
+import com.dbs.loyalty.util.SecurityUtil;
+import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.response.ErrorResponse;
 import com.dbs.loyalty.web.response.Response;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+
 @ControllerAdvice
 public class GlobalExceptionHandler extends AbstractErrorController{
 
-	public GlobalExceptionHandler(final ObjectMapper objectMapper) {
+	private final LogApiService logApiService;
+	
+	public GlobalExceptionHandler(final ObjectMapper objectMapper, final LogApiService logApiService) {
 		super(objectMapper);
+		this.logApiService = logApiService;
 	}
 	
 	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
@@ -97,17 +105,31 @@ public class GlobalExceptionHandler extends AbstractErrorController{
 	}
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+	public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex, HttpServletRequest request) {
+		Map<String, String> errors = getErrors(ex);
+		saveError(ex, request, errors);
+		return ResponseEntity
+	            .status(HttpStatus.BAD_REQUEST)
+	            .body(errors);
+	}
+	
+	private Map<String, String> getErrors(MethodArgumentNotValidException ex){
 		Map<String, String> errors = new HashMap<>();
 		
 		for(ObjectError objectError : ex.getBindingResult().getAllErrors()) {
 			FieldError fieldError = (FieldError) objectError;
 			errors.put(fieldError.getField(), fieldError.getDefaultMessage());
 		}
-
-		return ResponseEntity
-	            .status(HttpStatus.BAD_REQUEST)
-	            .body(errors);
+		
+		return errors;
 	}
 	
+	private void saveError(MethodArgumentNotValidException ex, HttpServletRequest request, Map<String, String> errors) {
+		for(Map.Entry<String, Object> entry : ex.getBindingResult().getModel().entrySet()) {
+			if(!(entry.getValue() instanceof BeanPropertyBindingResult)) {
+				logApiService.saveError(UrlUtil.getFullUrl(request), entry.getKey(), SecurityUtil.getCustomer(), entry.getValue(), errors);
+			}
+		}
+	}
+
 }

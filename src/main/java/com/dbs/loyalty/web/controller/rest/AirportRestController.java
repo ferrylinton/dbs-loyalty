@@ -1,18 +1,15 @@
 package com.dbs.loyalty.web.controller.rest;
 
-import static com.dbs.loyalty.config.constant.RestConstant.GET_AIRPORTS;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.JSON;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.JWT;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.OK;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.AIRPORT_ASSISTANCE;
-
 import java.util.Collections;
 import java.util.List;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dbs.loyalty.aop.LogAuditApi;
+import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.service.CountryService;
 import com.dbs.loyalty.service.dto.CountryDto;
 import com.dbs.loyalty.service.mapper.CountryMapper;
@@ -29,11 +26,14 @@ import lombok.RequiredArgsConstructor;
  * 
  * @author Ferry L. H. <ferrylinton@gmail.com>
  */
-@Api(tags = { AIRPORT_ASSISTANCE })
+@Api(tags = { SwaggerConstant.AIRPORT_ASSISTANCE })
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('CUSTOMER')")
 @RestController
+@RequestMapping("/api/airports")
 public class AirportRestController {
+	
+	public static final String GET_AIRPORTS = "GetAirports";
 
     private final CountryService countryService;
     
@@ -44,14 +44,21 @@ public class AirportRestController {
      *
      * @return list of airports
      */
-    @ApiOperation(nickname=GET_AIRPORTS, value=GET_AIRPORTS, produces=JSON, authorizations={@Authorization(value=JWT)})
-    @ApiResponses(value = { @ApiResponse(code=200, message=OK, response=CountryDto.class, responseContainer="List")})
-    @GetMapping("/api/airports")
+    @ApiOperation(
+    		nickname=GET_AIRPORTS, 
+    		value=GET_AIRPORTS, 
+    		produces=SwaggerConstant.JSON, 
+    		authorizations={@Authorization(value=SwaggerConstant.JWT)})
+    @ApiResponses(value = { @ApiResponse(code=200, message=SwaggerConstant.OK, response=CountryDto.class, responseContainer="List")})
+    @LogAuditApi(name=GET_AIRPORTS)
+    @GetMapping
     public List<CountryDto> getAirports() {
-    	List<CountryDto> countries = countryMapper.toDto(countryService.findWithAirports());
+    	List<CountryDto> countries = countryMapper.toDtoWithAirports(countryService.findAll());
     	
     	for(CountryDto country : countries) {
-    		Collections.sort(country.getAirports());
+    		if(country.getAirports() != null) {
+    			Collections.sort(country.getAirports());
+    		}
     	}
     	
     	return countries;

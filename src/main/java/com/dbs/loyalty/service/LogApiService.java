@@ -1,6 +1,7 @@
 package com.dbs.loyalty.service;
 
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.data.domain.Page;
@@ -18,6 +19,7 @@ import com.dbs.loyalty.domain.LogApi;
 import com.dbs.loyalty.repository.LogApiRepository;
 import com.dbs.loyalty.service.specification.LogApiSpec;
 import com.dbs.loyalty.util.SecurityUtil;
+import com.dbs.loyalty.web.controller.rest.AppointmentRestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -27,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class LogApiService {
 	
-	private static final String JWT_AUTHENTICATE_NAME = "JWT Authentiate";
+	private static final String JWT_AUTHENTICATE_NAME = "JWTAuthentiate";
 	
 	private static final String REQUEST_FORMAT = "{\"email\": \"%s\", \"password\" : \"********\"}";
 
@@ -144,6 +146,30 @@ public class LogApiService {
         }
         
         logApiRepository.save(logApi);
+	}
+	
+	@Async
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public void saveError(String url, String binderName , Customer customer, Object request, Map<String, String> errors) {
+		LogApi logApi = new LogApi();
+    	logApi.setName(getLogApiName().get(binderName));
+    	logApi.setUrl(url);
+    	logApi.setStatus(StatusConstant.FAIL);
+        logApi.setCreatedDate(Instant.now());
+        logApi.setError(toString(errors));
+        logApi.setRequest(toString(request));
+        
+        if(customer != null) {
+        	logApi.setCustomer(customer);
+        }
+        
+        logApiRepository.save(logApi);
+	}
+	
+	private Map<String, String> getLogApiName(){
+		Map<String, String> logApiNames = new HashMap<>();
+		logApiNames.put(AppointmentRestController.BINDER_NAME, AppointmentRestController.ADD_APPOINTMENT);
+		return logApiNames;
 	}
 	
 	private String toString(Object obj) {

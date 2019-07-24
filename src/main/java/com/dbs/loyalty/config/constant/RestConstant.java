@@ -4,16 +4,10 @@ public class RestConstant {
 	
 	public static final String AUTHENTICATE = "Authenticate";
 	
-	public static final String ADD_ARRIVAL = "AddArrival";
-
-	public static final String GET_TRAVEL_ASSISTANCE_LIMIT = "GetTravelAssitanceLimit";
-	
 	public static final String GET_WELLNESS_LIMIT = "GetWellnessLimit";
 	
 	public static final String GET_PROMO_CATEGORIES = "GetPromoCategories";
 
-	public static final String GET_AIRPORTS = "GetAirports";
-	
 	public static final String GET_HEALTH_PACKAGES = "GetHealthPackages";
 	
 	public static final String GET_CONTENT_BY_ID = "GetContentById";
@@ -24,7 +18,7 @@ public class RestConstant {
 	
 	public static final String GET_MEDICAL_PROVIDER_BRANCHES = "GetMedicalProviderBranches";
 	
-	public static final String ADD_APPOINTMENT = "AddAppointment";
+	
 	
 	public static final String GENERATE_VERIFICATION_TOKEN = "GenerateVerificationToken";
 	

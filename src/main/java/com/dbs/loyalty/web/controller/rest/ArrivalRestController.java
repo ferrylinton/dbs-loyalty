@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.aop.LogAuditApi;
-import com.dbs.loyalty.config.constant.RestConstant;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.service.ArrivalService;
@@ -39,17 +38,19 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/arrivals")
 public class ArrivalRestController {
+	
+	private static final String ADD_ARRIVAL = "AddArrival";
 
 	private final ArrivalService arrivalService;
 	
 	private final ArrivalMapper arrivalMapper;
 
     @ApiOperation(
-    		value=RestConstant.ADD_ARRIVAL, 
+    		value=ADD_ARRIVAL, 
     		produces=SwaggerConstant.JSON, 
     		authorizations={@Authorization(value=SwaggerConstant.JWT)})
     @ApiResponses(value={@ApiResponse(code=200, message=SwaggerConstant.OK, response=Response.class)})
-    @LogAuditApi(name="Add Arrival", saveRequest = true, saveResponse = true)
+    @LogAuditApi(name=ADD_ARRIVAL, saveRequest=true, saveResponse=true)
     @PostMapping
     public Response addArrival(@Valid @RequestBody ArrivalDto arrivalDto) throws BadRequestException{
     	return arrivalService.save(arrivalMapper.toEntity(arrivalDto));

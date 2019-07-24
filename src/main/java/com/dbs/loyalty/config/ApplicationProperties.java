@@ -118,6 +118,8 @@ public class ApplicationProperties {
 		private String ordersUrl = "https://staging-distribution-api.gift.id/v2/orders";
 		
 		private String ordersByIdUrl = "https://staging-distribution-api.gift.id/v2/orders/{id}";
+		
+		private String countriesUrl = "https://staging-distribution-api.gift.id/v2/countries";
 
 	}
 	

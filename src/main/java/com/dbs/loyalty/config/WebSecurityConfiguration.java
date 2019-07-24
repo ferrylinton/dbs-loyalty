@@ -2,6 +2,7 @@ package com.dbs.loyalty.config;
 
 import java.util.Arrays;
 
+import org.springframework.beans.factory.config.MethodInvokingFactoryBean;
 import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.core.GrantedAuthorityDefaults;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
@@ -131,6 +133,15 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Bean  
 	public GrantedAuthorityDefaults grantedAuthorityDefaults() {  
 	    return new GrantedAuthorityDefaults(Constant.EMPTY); // Remove the ROLE_ prefix  
+	}
+	
+	@Bean
+	public MethodInvokingFactoryBean methodInvokingFactoryBean() {
+	    MethodInvokingFactoryBean methodInvokingFactoryBean = new MethodInvokingFactoryBean();
+	    methodInvokingFactoryBean.setTargetClass(SecurityContextHolder.class);
+	    methodInvokingFactoryBean.setTargetMethod("setStrategyName");
+	    methodInvokingFactoryBean.setArguments(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
+	    return methodInvokingFactoryBean;
 	}
 	
 }

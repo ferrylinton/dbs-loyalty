@@ -1,6 +1,7 @@
 package com.dbs.loyalty.web.validator.rest;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.regex.Pattern;
 
@@ -20,6 +21,8 @@ import lombok.extern.slf4j.Slf4j;
 public class AppointmentDtoValidator implements Validator {
 	
 	private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(DateConstant.JAVA_DATE);
+	
+	private final DateTimeFormatter datetimeFormatter = DateTimeFormatter.ofPattern(DateConstant.JAVA_DATETIME);
 
 	private final AppointmentService appointmentService;
 
@@ -45,9 +48,9 @@ public class AppointmentDtoValidator implements Validator {
 			}else {
 				try {
 					LocalDate date = LocalDate.parse(appointmentDto.getDate(), dateFormatter);
-		            
-					if(!date.isAfter(LocalDate.now())) {
-						message = "Invalid date, must equal or after today";
+					
+					if(!LocalDateTime.parse(String.format("%s %s", appointmentDto.getDate(), appointmentDto.getTime()), datetimeFormatter).isAfter(LocalDateTime.now())) {
+						message = "Invalid date and time, must be equal or after current date and time";
 						errors.rejectValue("date", message, message);
 					}else if(appointmentService.isExist(appointmentDto.getMedicalProvider().getId(), date)) {
 						message = "Data is already exist";
