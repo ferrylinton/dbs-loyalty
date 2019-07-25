@@ -23,6 +23,7 @@ import com.dbs.loyalty.web.controller.rest.AppointmentRestController;
 import com.dbs.loyalty.web.controller.rest.CustomerActivateRestController;
 import com.dbs.loyalty.web.controller.rest.CustomerRestController;
 import com.dbs.loyalty.web.controller.rest.DepartureRestController;
+import com.dbs.loyalty.web.controller.rest.FeedbackAnswerRestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -152,19 +153,24 @@ public class LogApiService {
 	@Async
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void saveError(String url, String binderName , Customer customer, Object request, Map<String, String> errors) {
-		LogApi logApi = new LogApi();
-    	logApi.setName(getLogApiName().get(binderName));
-    	logApi.setUrl(url);
-    	logApi.setStatus(StatusConstant.FAIL);
-        logApi.setCreatedDate(Instant.now());
-        logApi.setError(toString(errors));
-        logApi.setRequest(toString(request));
-        
-        if(customer != null) {
-        	logApi.setCustomer(customer);
-        }
-        
-        save(logApi);
+		if(getLogApiName().containsKey(binderName)) {
+			LogApi logApi = new LogApi();
+	    	logApi.setName(getLogApiName().get(binderName));
+	    	logApi.setUrl(url);
+	    	logApi.setStatus(StatusConstant.FAIL);
+	        logApi.setCreatedDate(Instant.now());
+	        logApi.setError(toString(errors));
+	        logApi.setRequest(toString(request));
+	        
+	        if(customer != null) {
+	        	logApi.setCustomer(customer);
+	        }
+	        
+	        save(logApi);
+		}else {
+			log.warn(String.format("LogApiService::getLogApiName()::Warn:: %s is not found", binderName));
+		}
+		
 	}
 	
 	@Async
@@ -190,6 +196,8 @@ public class LogApiService {
 			logApiNames.put(AppointmentRestController.BINDER_NAME, AppointmentRestController.ADD_APPOINTMENT);
 			logApiNames.put(DepartureRestController.BINDER_NAME, DepartureRestController.ADD_DEPARTURE);
 			logApiNames.put(CustomerActivateRestController.BINDER_NAME, CustomerActivateRestController.ACTIVATE_CUSTOMER);
+			logApiNames.put(FeedbackAnswerRestController.BINDER_NAME, FeedbackAnswerRestController.ADD_FEEDBACK_CUSTOMER);
+			
 			logApiNames.put(CustomerRestController.CUSTOMER_UPDATE_BINDER_NAME, CustomerRestController.UPDATE_CUSTOMER);
 			logApiNames.put(CustomerRestController.CUSTOMER_PASSWORD_BINDER_NAME, CustomerRestController.CHANGE_PASSWORD);
 		}
@@ -205,7 +213,7 @@ public class LogApiService {
         		return objectMapper.writeValueAsString(obj);
         	}
 		} catch (JsonProcessingException e) {
-			return "LogApiService::toString()::Error::" +  e.getLocalizedMessage();
+			return "LogApiService::toString()::Warn::" +  e.getLocalizedMessage();
 		}
 	}
 	
