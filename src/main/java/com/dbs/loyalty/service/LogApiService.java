@@ -20,11 +20,15 @@ import com.dbs.loyalty.repository.LogApiRepository;
 import com.dbs.loyalty.service.specification.LogApiSpec;
 import com.dbs.loyalty.util.SecurityUtil;
 import com.dbs.loyalty.web.controller.rest.AppointmentRestController;
+import com.dbs.loyalty.web.controller.rest.CustomerActivateRestController;
+import com.dbs.loyalty.web.controller.rest.CustomerRestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class LogApiService {
@@ -37,14 +41,10 @@ public class LogApiService {
 	
 	private final ObjectMapper objectMapper;
 	
+	private Map<String, String> logApiNames = null;
+	
 	public Page<LogApi> findAll(Map<String, String> params, Pageable pageable) {
 		return logApiRepository.findAll(new LogApiSpec(params), pageable);
-	}
-	
-	@Async
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public void save(LogApi logApi) {
-		logApiRepository.save(logApi);
 	}
 	
 	@Async
@@ -61,7 +61,7 @@ public class LogApiService {
         	logApi.setResponse(toString(response));
         }
         
-        logApiRepository.save(logApi);
+        save(logApi);
 	}
 	
 	@Async
@@ -75,7 +75,7 @@ public class LogApiService {
         logApi.setCustomer(SecurityUtil.getCustomer());
         logApi.setError(throwable.getLocalizedMessage());
         
-        logApiRepository.save(logApi);
+        save(logApi);
 	}
 	
 	@Async
@@ -96,7 +96,7 @@ public class LogApiService {
         	logApi.setResponse(toString(response));
         }
         
-        logApiRepository.save(logApi);
+        save(logApi);
 	}
 	
 	@Async
@@ -114,7 +114,7 @@ public class LogApiService {
         	logApi.setRequest(toString(request));
         }
 
-        logApiRepository.save(logApi);
+        save(logApi);
 	}
 	
 	@Async
@@ -127,7 +127,7 @@ public class LogApiService {
         logApi.setCreatedDate(Instant.now());
         logApi.setCustomer(customer);
        
-        logApiRepository.save(logApi);
+        save(logApi);
 	}
 	
 	@Async
@@ -145,7 +145,7 @@ public class LogApiService {
         	logApi.setCustomer(customer);
         }
         
-        logApiRepository.save(logApi);
+        save(logApi);
 	}
 	
 	@Async
@@ -163,12 +163,35 @@ public class LogApiService {
         	logApi.setCustomer(customer);
         }
         
-        logApiRepository.save(logApi);
+        save(logApi);
+	}
+	
+	@Async
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public void saveFileError(String url, Customer customer, String error) {
+		LogApi logApi = new LogApi();
+    	logApi.setName("File");
+    	logApi.setUrl(url);
+    	logApi.setStatus(StatusConstant.FAIL);
+        logApi.setCreatedDate(Instant.now());
+        logApi.setError(error);
+        
+        if(customer != null) {
+        	logApi.setCustomer(customer);
+        }
+        
+        save(logApi);
 	}
 	
 	private Map<String, String> getLogApiName(){
-		Map<String, String> logApiNames = new HashMap<>();
-		logApiNames.put(AppointmentRestController.BINDER_NAME, AppointmentRestController.ADD_APPOINTMENT);
+		if(logApiNames == null) {
+			logApiNames = new HashMap<>();
+			logApiNames.put(AppointmentRestController.BINDER_NAME, AppointmentRestController.ADD_APPOINTMENT);
+			logApiNames.put(CustomerActivateRestController.BINDER_NAME, CustomerActivateRestController.ACTIVATE_CUSTOMER);
+			logApiNames.put(CustomerRestController.CUSTOMER_UPDATE_BINDER_NAME, CustomerRestController.UPDATE_CUSTOMER);
+			logApiNames.put(CustomerRestController.CUSTOMER_PASSWORD_BINDER_NAME, CustomerRestController.CHANGE_PASSWORD);
+		}
+		
 		return logApiNames;
 	}
 	
@@ -179,4 +202,13 @@ public class LogApiService {
 			return e.getLocalizedMessage();
 		}
 	}
+	
+	private void save(LogApi logApi) {
+		try {
+			logApiRepository.save(logApi);
+		} catch (Exception e) {
+			log.error(e.getLocalizedMessage(), e);
+		}
+	}
+	
 }

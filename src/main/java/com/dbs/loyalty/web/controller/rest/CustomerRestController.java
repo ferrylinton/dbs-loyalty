@@ -1,42 +1,39 @@
 package com.dbs.loyalty.web.controller.rest;
 
-import static com.dbs.loyalty.config.constant.MessageConstant.DATA_IS_NOT_FOUND;
-import static com.dbs.loyalty.config.constant.RestConstant.CHANGE_PASSWORD;
-import static com.dbs.loyalty.config.constant.RestConstant.GET_CUSTOMER_INFO;
-import static com.dbs.loyalty.config.constant.RestConstant.UPDATE_CUSTOMER;
-import static com.dbs.loyalty.config.constant.RestConstant.UPDATE_CUSTOMER_NOTES;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.CUSTOMER;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.JSON;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.JWT;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.OK;
 
+import java.beans.PropertyEditorSupport;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dbs.loyalty.aop.LogAuditApi;
+import com.dbs.loyalty.config.constant.DateConstant;
 import com.dbs.loyalty.config.constant.MessageConstant;
 import com.dbs.loyalty.config.constant.SecurityConstant;
+import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.domain.Customer;
+import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
-import com.dbs.loyalty.model.Pair;
 import com.dbs.loyalty.model.TokenData;
 import com.dbs.loyalty.security.rest.RestTokenProvider;
 import com.dbs.loyalty.service.CustomerService;
 import com.dbs.loyalty.service.dto.CustomerDto;
+import com.dbs.loyalty.service.dto.CustomerNewPasswordDto;
 import com.dbs.loyalty.service.dto.CustomerPasswordDto;
 import com.dbs.loyalty.service.dto.CustomerUpdateDto;
 import com.dbs.loyalty.service.dto.JWTTokenDto;
@@ -55,11 +52,26 @@ import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
 import lombok.RequiredArgsConstructor;
 
-@Api(tags = { CUSTOMER })
+@Api(tags = { SwaggerConstant.CUSTOMER })
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('CUSTOMER')")
 @RestController
+@RequestMapping("/api/customers")
 public class CustomerRestController {
+	
+	public static final String CUSTOMER_UPDATE_BINDER_NAME = "customerUpdateDto";
+	
+	public static final String CUSTOMER_PASSWORD_BINDER_NAME = "customerPasswordDto";
+	
+	public static final String GET_CUSTOMER_INFO = "GetCustomerInfo";
+	
+	public static final String UPDATE_CUSTOMER = "UpdateCustomer";
+	
+	public static final String UPDATE_CUSTOMER_NOTES = "Update customer information, and after update customer must use new token or relogin";
+	
+	public static final String CHANGE_PASSWORD = "ChangePassword";
+	
+	public static final String FORGOT_PASSWORD =  "ForgotPassword";
 
     private final CustomerService customerService;
 
@@ -67,22 +79,32 @@ public class CustomerRestController {
     
     private final CustomerMapper customerMapper;
     
-    @ApiOperation(value=GET_CUSTOMER_INFO, produces=JSON, authorizations={@Authorization(value=JWT)})
-    @ApiResponses(value={@ApiResponse(code=200, message=OK, response = CustomerDto.class)})
-    @GetMapping("/api/customers/info")
+    @ApiOperation(
+    		value=GET_CUSTOMER_INFO, 
+    		produces=SwaggerConstant.JSON, 
+    		authorizations={@Authorization(value=SwaggerConstant.JWT)})
+    @ApiResponses(value={@ApiResponse(code=200, message=SwaggerConstant.OK, response = CustomerDto.class)})
+    @LogAuditApi(name=GET_CUSTOMER_INFO)
+    @GetMapping("/info")
 	public CustomerDto getCustomerInfo() throws NotFoundException{
     	Optional<Customer> current = customerService.findByEmail(SecurityUtil.getLogged());
 		
 		if(current.isPresent()) {
 			return customerMapper.toDto(current.get());
 		}else {
-			throw new NotFoundException(String.format(DATA_IS_NOT_FOUND, CUSTOMER, SecurityUtil.getLogged()));
+			throw new NotFoundException(String.format(MessageConstant.DATA_IS_NOT_FOUND, SwaggerConstant.CUSTOMER, SecurityUtil.getLogged()));
 		}
 	}
     
-    @ApiOperation(value=UPDATE_CUSTOMER, notes=UPDATE_CUSTOMER_NOTES, consumes=JSON, produces=JSON, authorizations={@Authorization(value=JWT)})
-    @ApiResponses(value={@ApiResponse(code=200, message=OK, response = JWTTokenDto.class)})
-    @PutMapping("/api/customers")
+    @ApiOperation(
+    		value=UPDATE_CUSTOMER, 
+    		notes=UPDATE_CUSTOMER_NOTES, 
+    		consumes=SwaggerConstant.JSON, 
+    		produces=SwaggerConstant.JSON, 
+    		authorizations={@Authorization(value=SwaggerConstant.JWT)})
+    @ApiResponses(value={@ApiResponse(code=200, message=SwaggerConstant.OK, response = JWTTokenDto.class)})
+    @LogAuditApi(name=UPDATE_CUSTOMER, saveRequest=true, saveResponse=true)
+    @PutMapping
     public JWTTokenDto updateCustomer(
     		@ApiParam(name = "CustomerNewData", value = "Customer's new data") 
     		@Valid @RequestBody CustomerUpdateDto customerUpdateDto,
@@ -103,9 +125,14 @@ public class CustomerRestController {
 		return new JWTTokenDto(token, customerDto);
     }
     
-    @ApiOperation(value=CHANGE_PASSWORD, consumes=JSON, produces=JSON, authorizations={@Authorization(value=JWT)})
-    @ApiResponses(value={@ApiResponse(code=200, message=OK, response = Pair.class)})
-    @PutMapping("/api/customers/change-password")
+    @ApiOperation(
+    		value=CHANGE_PASSWORD, 
+    		consumes=SwaggerConstant.JSON, 
+    		produces=SwaggerConstant.JSON, 
+    		authorizations={@Authorization(value=SwaggerConstant.JWT)})
+    @ApiResponses(value={@ApiResponse(code=200, message=SwaggerConstant.OK, response = Response.class)})
+    @LogAuditApi(name=CHANGE_PASSWORD)
+    @PostMapping("/change-password")
     public Response changePassword(
     		@ApiParam(name = "ChangePasswordData", value = "Customer's password data") 
     		@Valid @RequestBody CustomerPasswordDto customerPasswordDto)  {
@@ -113,14 +140,47 @@ public class CustomerRestController {
     	customerService.changePassword(customerPasswordDto);
 		return new Response(MessageConstant.DATA_IS_SAVED);
     }
+
+    @ApiOperation(
+    		value=FORGOT_PASSWORD, 
+    		produces=SwaggerConstant.JSON, 
+    		authorizations={@Authorization(value=SwaggerConstant.JWT)})
+    @ApiResponses(value={@ApiResponse(code=200, message=SwaggerConstant.OK, response=Response.class)})
+    @PreAuthorize("hasRole('TOKEN')")
+    @LogAuditApi(name=FORGOT_PASSWORD)
+    @PutMapping("/forgot")
+    public Response forgot(
+    		@ApiParam(name = "CustomerNewPassword", value = "Customer's new password") 
+    		@Valid @RequestBody CustomerNewPasswordDto customerNewPasswordDto) throws BadRequestException  {
+    	
+    	if(!customerNewPasswordDto.getPassword().equals(customerNewPasswordDto.getConfirmPassword())) {
+    		throw new BadRequestException(MessageConstant.PASSWORD_IS_NOT_CONFIRMED);
+    	}
+    	
+    	customerService.changePassword(customerNewPasswordDto);
+    	return new Response(MessageConstant.CUSTOMER_IS_ACTIVATED);
+    }
     
-    @InitBinder("customerUpdateDto")
+    @InitBinder(CUSTOMER_UPDATE_BINDER_NAME)
 	protected void initBinder(WebDataBinder binder) {
-		binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("dd-MM-yyyy"), true, 10)); 
+		binder.registerCustomEditor(LocalDate.class, new PropertyEditorSupport() {
+			
+		    @Override
+		    public void setAsText(String text) throws IllegalArgumentException{
+		      setValue(LocalDate.parse(text, DateTimeFormatter.ofPattern(DateConstant.JAVA_DATE)));
+		    }
+
+		    @Override
+		    public String getAsText() throws IllegalArgumentException {
+		      return DateTimeFormatter.ofPattern(DateConstant.JAVA_DATE).format((LocalDate) getValue());
+		    }
+		    
+		});
+		
 		binder.addValidators(new CustomerUpdateValidator(customerService));
 	}
     
-    @InitBinder("customerPasswordDto")
+    @InitBinder(CUSTOMER_PASSWORD_BINDER_NAME)
 	protected void initPasswordBinder(WebDataBinder binder) {
 		binder.addValidators(new CustomerPasswordValidator(customerService));
 	}

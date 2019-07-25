@@ -84,21 +84,23 @@ public class GlobalExceptionHandler extends AbstractErrorController{
     }
 	
 	@ExceptionHandler(value = MissingServletRequestPartException.class)
-    public ResponseEntity<Response> missingServletRequestPartException(MissingServletRequestPartException ex){
-       return ResponseEntity
+    public ResponseEntity<Response> missingServletRequestPartException(MissingServletRequestPartException ex, HttpServletRequest request){
+		return ResponseEntity
 	            .status(HttpStatus.BAD_REQUEST)
 	            .body(new Response(ex.getMessage()));
     }
 	
 	@ExceptionHandler(value = MultipartException.class)
-    public ResponseEntity<Response> multipartException(MultipartException ex){
-       return ResponseEntity
+    public ResponseEntity<Response> multipartException(MultipartException ex, HttpServletRequest request){
+		logApiService.saveFileError(UrlUtil.getFullUrl(request), SecurityUtil.getCustomer(), ex.getLocalizedMessage());
+		return ResponseEntity
 	            .status(HttpStatus.BAD_REQUEST)
 	            .body(new Response(ex.getMessage()));
     }
 	
 	@ExceptionHandler(MaxUploadSizeExceededException.class)
-	public ResponseEntity<Response> handleException(MaxUploadSizeExceededException ex){
+	public ResponseEntity<Response> handleException(MaxUploadSizeExceededException ex, HttpServletRequest request){
+		logApiService.saveFileError(UrlUtil.getFullUrl(request), SecurityUtil.getCustomer(), ex.getLocalizedMessage());
 		return ResponseEntity
 	            .status(HttpStatus.BAD_REQUEST)
 	            .body(new Response(ex.getMessage()));

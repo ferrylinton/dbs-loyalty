@@ -18,8 +18,6 @@ public class RestConstant {
 	
 	public static final String GET_MEDICAL_PROVIDER_BRANCHES = "GetMedicalProviderBranches";
 	
-	
-	
 	public static final String GENERATE_VERIFICATION_TOKEN = "GenerateVerificationToken";
 	
 	public static final String VERIFY_VERIFICATION_TOKEN = "VerificationToken";
@@ -42,20 +40,6 @@ public class RestConstant {
 	
 	public static final String ADD_TO_INTERESTED_IN_PROMO =  "AddToInterestedInPromo";
 
-	public static final String FORGOT_PASSWORD =  "ForgotPassword";
 	
-	public static final String ACTIVATE_CUSTOMER =  "ActivateCustomer";
-	
-	public static final String GET_CUSTOMER_INFO = "GetCustomerInfo";
-	
-	public static final String GET_CUSTOMER_IMAGE = "GetCustomerImage";
-	
-	public static final String UPDATE_CUSTOMER = "UpdateCustomer";
-	
-	public static final String UPDATE_CUSTOMER_NOTES = "Update customer information, and after update customer must use new token or relogin";
-	
-	public static final String UPDATE_CUSTOMER_IMAGE = "UpdateCustomerImage";
-	
-	public static final String CHANGE_PASSWORD = "ChangePassword";
-	
+
 }

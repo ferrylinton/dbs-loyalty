@@ -23,12 +23,12 @@ public class LogAuditApiAspect {
 
 	private final LogApiService logApiService;
 
-	@Around("@annotation(logAuditApi)")
+	@Around("@annotation(logAuditApi) && args()")
 	public Object logGet(ProceedingJoinPoint joinPoint, LogAuditApi logAuditApi) throws Throwable {
 		return logAuditApi(joinPoint, logAuditApi);
 	}
 	
-	@Around("@annotation(logAuditApi) && args(body)")
+	@Around("@annotation(logAuditApi) && execution(* *(@org.springframework.web.bind.annotation.RequestBody (*), ..)) && args(body, ..)")
 	public Object logPost(ProceedingJoinPoint joinPoint, LogAuditApi logAuditApi, Object body) throws Throwable {
 		return logAuditApi(joinPoint, logAuditApi, body);
 	}

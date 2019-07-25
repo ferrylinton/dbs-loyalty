@@ -13,6 +13,7 @@ import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.CustomerRepository;
+import com.dbs.loyalty.service.dto.CustomerActivateDto;
 import com.dbs.loyalty.service.dto.CustomerNewPasswordDto;
 import com.dbs.loyalty.service.dto.CustomerPasswordDto;
 import com.dbs.loyalty.service.dto.CustomerUpdateDto;
@@ -72,6 +73,9 @@ public class CustomerService{
 			customer.setFirstName(customerUpdateDto.getFirstName());
 			customer.setLastName(customerUpdateDto.getLastName());
 			customer.setPhone(customerUpdateDto.getPhone());
+			customer.setAccountNo(customerUpdateDto.getAccountNo());
+			customer.setCif(customerUpdateDto.getCif());
+			customer.setDob(customerUpdateDto.getDob());
 			customer.setLastModifiedBy(SecurityUtil.getLogged());
 			customer.setLastModifiedDate(Instant.now());
 			
@@ -86,13 +90,26 @@ public class CustomerService{
 		customerRepository.changePassword(passwordHash, SecurityUtil.getLogged());
 	}
 	
-	public void activate(CustomerNewPasswordDto customerActivateDto) {
-		Optional<Customer> customer = customerRepository.findByEmailIgnoreCase(SecurityUtil.getLogged());
+	public void activate(CustomerActivateDto customerActivateDto) {
+		Optional<Customer> customer = customerRepository.findByEmailIgnoreCase(customerActivateDto.getEmail());
 		
 		if(customer.isPresent()) {
 			customer.get().setActivated(true);
 			customer.get().setLocked(false);
 			customer.get().setPasswordHash(PasswordUtil.encode(customerActivateDto.getPassword()));
+			customer.get().setLastModifiedBy(SecurityUtil.getLogged());
+			customer.get().setLastModifiedDate(Instant.now());
+			customerRepository.save(customer.get());
+		}
+	}
+	
+	public void changePassword(CustomerNewPasswordDto customerNewPasswordDto) {
+		Optional<Customer> customer = customerRepository.findByEmailIgnoreCase(SecurityUtil.getLogged());
+		
+		if(customer.isPresent()) {
+			customer.get().setActivated(true);
+			customer.get().setLocked(false);
+			customer.get().setPasswordHash(PasswordUtil.encode(customerNewPasswordDto.getPassword()));
 			customer.get().setLastModifiedBy(SecurityUtil.getLogged());
 			customer.get().setLastModifiedDate(Instant.now());
 			customerRepository.save(customer.get());
