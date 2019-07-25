@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dbs.loyalty.aop.LogAuditApi;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.domain.FileImage;
 import com.dbs.loyalty.exception.NotFoundException;
@@ -47,6 +48,14 @@ public class PriviledgeProductRestController {
 
 	private static final String NOT_FOUND_FORMAT = "ProductPriviledge [id=%s] is not found";
 	
+	public static final String GET_ALL_PRODUCT_PRIVILEDGES = "GetAllProductPriviledges";
+	
+	public static final String GET_PRODUCT_PRIVILEDGE_BY_ID = "GetProductPriviledgeById";
+	
+	public static final String GET_PRODUCT_PRIVILEDGE_IMAGE_BY_ID = "GetProductPriviledgeImageById";
+	
+	public static final String GET_PRODUCT_PRIVILEDGE_TERM_BY_ID = "GetProductPriviledgeTermById";
+	
 	private final ImageService imageService;
 	
 	private final PriviledgeProductService productService;
@@ -54,13 +63,14 @@ public class PriviledgeProductRestController {
 	private final ProductPriviledgeMapper productMapper;
 
 	@ApiOperation(
-			nickname="GetAllProductPriviledges", 
-			value="GetAllProductPriviledges", 
+			nickname=GET_ALL_PRODUCT_PRIVILEDGES, 
+			value=GET_ALL_PRODUCT_PRIVILEDGES, 
 			notes="Get All Product Priviledges",
-    		produces=MediaType.APPLICATION_JSON_VALUE, 
-    		authorizations = { @Authorization(value=JWT) })
+    		produces="application/json", 
+    		authorizations = { @Authorization(value="JWT") })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = ProductPriviledgeDto.class)})
-    @GetMapping
+	@LogAuditApi(name=GET_ALL_PRODUCT_PRIVILEDGES)
+	@GetMapping
     public List<ProductPriviledgeDto> getAllProductPriviledges(){
 		return productService
 				.findAll()
@@ -70,12 +80,13 @@ public class PriviledgeProductRestController {
     }
 	
 	@ApiOperation(
-			nickname="GetProductPriviledgeById", 
-			value="GetProductPriviledgeById", 
+			nickname=GET_PRODUCT_PRIVILEDGE_BY_ID, 
+			value=GET_PRODUCT_PRIVILEDGE_BY_ID, 
 			notes="Get Product Priviledge by Id",
     		produces=MediaType.APPLICATION_JSON_VALUE, 
-    		authorizations = { @Authorization(value=JWT) })
+    		authorizations = { @Authorization(value="JWT") })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = ProductPriviledgeDto.class)})
+	@LogAuditApi(name=GET_PRODUCT_PRIVILEDGE_BY_ID)
     @GetMapping("/{id}")
     public ProductPriviledgeDto getById(
     		@ApiParam(name = "id", value = "Product Id", example = "zO0dDp9K")
@@ -93,12 +104,13 @@ public class PriviledgeProductRestController {
     }
     
 	@ApiOperation(
-			nickname="GetProductPriviledgeImageById", 
-			value="GetProductPriviledgeImageById", 
+			nickname=GET_PRODUCT_PRIVILEDGE_IMAGE_BY_ID, 
+			value=GET_PRODUCT_PRIVILEDGE_IMAGE_BY_ID, 
 			notes="Get Product Priviledge Image by Id",
 			produces= "image/png, image/jpeg", 
     		authorizations = { @Authorization(value=JWT) })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Byte.class)})
+	@LogAuditApi(name=GET_PRODUCT_PRIVILEDGE_IMAGE_BY_ID)
     @GetMapping("/{id}/image")
     public ResponseEntity<byte[]> getProductPriviledgeImageById(
     		@ApiParam(name = "id", value = "ProductPriviledge Id", example = "zO0dDp9K")
@@ -121,13 +133,14 @@ public class PriviledgeProductRestController {
     }
 	
 	@ApiOperation(
-			nickname="GetProductPriviledgeTermById", 
-			value="GetProductPriviledgeTermById", 
+			nickname=GET_PRODUCT_PRIVILEDGE_TERM_BY_ID, 
+			value=GET_PRODUCT_PRIVILEDGE_TERM_BY_ID, 
 			notes="Get Product Priviledge Term And Condition by Id",
     		produces=MediaType.TEXT_PLAIN_VALUE, 
     		authorizations = { @Authorization(value=JWT) })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = String.class)})
-    @GetMapping("/{id}/term")
+	@LogAuditApi(name=GET_PRODUCT_PRIVILEDGE_TERM_BY_ID)
+	@GetMapping("/{id}/term")
     public ResponseEntity<String> getTermAndConditionById(
     		@ApiParam(name = "id", value = "Product Id", example = "zO0dDp9K")
     		@PathVariable String id) throws NotFoundException{

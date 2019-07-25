@@ -1,17 +1,14 @@
 package com.dbs.loyalty.web.controller.rest;
 
-import static com.dbs.loyalty.config.constant.RestConstant.GET_MEDICAL_PROVIDERS;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.JSON;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.JWT;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.OK;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.WELLNESS;
-
 import java.util.List;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dbs.loyalty.aop.LogAuditApi;
+import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.domain.MedicalProvider;
 import com.dbs.loyalty.service.MedicalProviderService;
 import com.dbs.loyalty.service.dto.MedicalProviderDto;
@@ -30,11 +27,14 @@ import lombok.RequiredArgsConstructor;
  * @author Ferry L. H. <ferrylinton@gmail.com>
  * 
  */
-@Api(tags = { WELLNESS })
+@Api(tags = { SwaggerConstant.WELLNESS })
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('CUSTOMER')")
 @RestController
+@RequestMapping("/api/medical-providers")
 public class MedicalProviderRestController {
+	
+	public static final String GET_MEDICAL_PROVIDERS = "GetMedicalProviders";
 
     private final MedicalProviderService medicalProviderService;
     
@@ -45,9 +45,14 @@ public class MedicalProviderRestController {
      *
      * @return the list of medical providers
      */
-    @ApiOperation(nickname=GET_MEDICAL_PROVIDERS, value=GET_MEDICAL_PROVIDERS, produces=JSON, authorizations={@Authorization(value=JWT)})
-    @ApiResponses(value={@ApiResponse(code=200, message=OK, response=MedicalProviderDto.class)})
-    @GetMapping("/api/medical-providers")
+    @ApiOperation(
+    		nickname=GET_MEDICAL_PROVIDERS, 
+    		value=GET_MEDICAL_PROVIDERS, 
+    		produces=SwaggerConstant.JSON, 
+    		authorizations={@Authorization(value=SwaggerConstant.JWT)})
+    @ApiResponses(value={@ApiResponse(code=200, message=SwaggerConstant.OK, response=MedicalProviderDto.class)})
+    @LogAuditApi(name=GET_MEDICAL_PROVIDERS)
+    @GetMapping
     public List<MedicalProviderDto> getMedicalProviders() {
     	List<MedicalProvider> medicalProviders = medicalProviderService.findAll();
     	return medicalProviderMapper.toDto(medicalProviders);

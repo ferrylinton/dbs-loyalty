@@ -1,18 +1,15 @@
 package com.dbs.loyalty.web.controller.rest;
 
-import static com.dbs.loyalty.config.constant.RestConstant.GET_MEDICAL_PROVIDER_BRANCHES;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.JSON;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.JWT;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.OK;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.WELLNESS;
-
 import java.util.List;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dbs.loyalty.aop.LogAuditApi;
+import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.domain.MedicalProviderBranch;
 import com.dbs.loyalty.service.MedicalProviderBranchService;
 import com.dbs.loyalty.service.dto.MedicalProviderBranchDto;
@@ -33,12 +30,15 @@ import lombok.RequiredArgsConstructor;
  * @author Ferry L. H. <ferrylinton@gmail.com>
  * 
  */
-@Api(tags = { WELLNESS })
+@Api(tags = { SwaggerConstant.WELLNESS })
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('CUSTOMER')")
 @RestController
+@RequestMapping("/api/medical-provider-branches")
 public class MedicalProviderBranchRestController {
 
+	public static final String GET_MEDICAL_PROVIDER_BRANCHES = "GetMedicalProviderBranches";
+	
     private final MedicalProviderBranchService medicalProviderBranchService;
     
     private final MedicalProviderBranchMapper medicalProviderBranchMapper;
@@ -48,9 +48,14 @@ public class MedicalProviderBranchRestController {
      *
      * @return the list of medical provider branches
      */
-    @ApiOperation(nickname=GET_MEDICAL_PROVIDER_BRANCHES, value=GET_MEDICAL_PROVIDER_BRANCHES, produces=JSON, authorizations={@Authorization(value=JWT)})
-    @ApiResponses(value={@ApiResponse(code=200, message=OK, response=MedicalProviderDto.class)})
-    @GetMapping("/api/medical-provider-branches/{medicalProviderCityId}")
+    @ApiOperation(
+    		nickname=GET_MEDICAL_PROVIDER_BRANCHES, 
+    		value=GET_MEDICAL_PROVIDER_BRANCHES, 
+    		produces=SwaggerConstant.JSON, 
+    		authorizations={@Authorization(value=SwaggerConstant.JWT)})
+    @ApiResponses(value={@ApiResponse(code=200, message=SwaggerConstant.OK, response=MedicalProviderDto.class)})
+    @LogAuditApi(name=GET_MEDICAL_PROVIDER_BRANCHES)
+    @GetMapping("/{medicalProviderCityId}")
     public List<MedicalProviderBranchDto> getMedicalProviderBranches(
     		@ApiParam(name = "MedicalProviderCityId", value = "MedicalProviderCityId", example = "6nJfmxAD6GWtsehXfSkShg")
     		@PathVariable String medicalProviderCityId) {

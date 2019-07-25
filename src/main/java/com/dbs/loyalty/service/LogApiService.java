@@ -24,6 +24,8 @@ import com.dbs.loyalty.web.controller.rest.CustomerActivateRestController;
 import com.dbs.loyalty.web.controller.rest.CustomerRestController;
 import com.dbs.loyalty.web.controller.rest.DepartureRestController;
 import com.dbs.loyalty.web.controller.rest.FeedbackAnswerRestController;
+import com.dbs.loyalty.web.controller.rest.PriviledgeOrderRestController;
+import com.dbs.loyalty.web.controller.rest.TrxOrderRestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -197,6 +199,8 @@ public class LogApiService {
 			logApiNames.put(DepartureRestController.BINDER_NAME, DepartureRestController.ADD_DEPARTURE);
 			logApiNames.put(CustomerActivateRestController.BINDER_NAME, CustomerActivateRestController.ACTIVATE_CUSTOMER);
 			logApiNames.put(FeedbackAnswerRestController.BINDER_NAME, FeedbackAnswerRestController.ADD_FEEDBACK_CUSTOMER);
+			logApiNames.put(TrxOrderRestController.BINDER_NAME, TrxOrderRestController.ADD_TRX_ORDER);
+			logApiNames.put(PriviledgeOrderRestController.BINDER_NAME, PriviledgeOrderRestController.ADD_PRIVILEDGE_ORDER);
 			
 			logApiNames.put(CustomerRestController.CUSTOMER_UPDATE_BINDER_NAME, CustomerRestController.UPDATE_CUSTOMER);
 			logApiNames.put(CustomerRestController.CUSTOMER_PASSWORD_BINDER_NAME, CustomerRestController.CHANGE_PASSWORD);

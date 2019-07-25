@@ -1,18 +1,14 @@
 package com.dbs.loyalty.web.controller.rest;
 
-import static com.dbs.loyalty.config.constant.RestConstant.GET_ALL_REWARDS;
-import static com.dbs.loyalty.config.constant.RestConstant.GET_TOTAL_REWARDS;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.JSON;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.JWT;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.OK;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dbs.loyalty.aop.LogAuditApi;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.service.RewardService;
 import com.dbs.loyalty.service.dto.RewardDto;
@@ -36,22 +32,35 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('CUSTOMER')")
 @RestController
+@RequestMapping("/api/rewards")
 public class RewardRestController {
+	
+	public static final String GET_TOTAL_REWARDS = "GetTotalRewards";
+	
+	public static final String GET_ALL_REWARDS = "GetAllRewards";
 	
 	private final RewardService rewardService;
 
 	private final RewardMapper rewardMapper;
 	
-	@ApiOperation(value=GET_TOTAL_REWARDS, produces=JSON, authorizations={@Authorization(value=JWT)})
-	@ApiResponses(value={@ApiResponse(code=200, message=OK, response=TotalDto.class)})
-	@GetMapping("/api/rewards/total")
+	@ApiOperation(
+			value=GET_TOTAL_REWARDS, 
+			produces="application/json", 
+			authorizations={@Authorization(value="JWT")})
+	@ApiResponses(value={@ApiResponse(code=200, message="OK", response=TotalDto.class)})
+	@LogAuditApi(name=GET_TOTAL_REWARDS)
+	@GetMapping("/total")
 	public TotalDto getTotalRewards(){
 		return new TotalDto(rewardService.getAvailablePoints());
 	}
 	
-	@ApiOperation(value=GET_ALL_REWARDS, produces=JSON, authorizations={@Authorization(value=JWT)})
-	@ApiResponses(value={@ApiResponse(code=200, message=OK, response=RewardDto.class)})
-	@GetMapping("/api/rewards")
+	@ApiOperation(
+			value=GET_ALL_REWARDS, 
+			produces="application/json", 
+			authorizations={@Authorization(value="JWT")})
+	@ApiResponses(value={@ApiResponse(code=200, message="OK", response=RewardDto.class)})
+	@LogAuditApi(name=GET_ALL_REWARDS)
+	@GetMapping
 	public List<RewardDto> getAllRewards(){
 		return rewardService
 				.findAllValid()

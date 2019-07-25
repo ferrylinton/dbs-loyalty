@@ -1,11 +1,5 @@
 package com.dbs.loyalty.web.controller.rest;
 
-import static com.dbs.loyalty.config.constant.RestConstant.GET_WELLNESS_LIMIT;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.JSON;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.JWT;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.OK;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.WELLNESS;
-
 import java.util.Optional;
 
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,6 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dbs.loyalty.aop.LogAuditApi;
+import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.domain.Wellness;
 import com.dbs.loyalty.service.WellnessService;
 import com.dbs.loyalty.service.dto.WellnessDto;
@@ -31,20 +27,26 @@ import lombok.RequiredArgsConstructor;
  * @author Ferry L. H. <ferrylinton@gmail.com>
  * 
  */
-@Api(tags = { WELLNESS })
+@Api(tags = { SwaggerConstant.WELLNESS })
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('CUSTOMER')")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/wellness")
 public class WellnessRestController {
+	
+	public static final String GET_WELLNESS_LIMIT = "GetWellnessLimit";
 
 	private final WellnessService wellnessService;
 	
 	private final WellnessMapper wellnessMapper;
 
-	@ApiOperation(value=GET_WELLNESS_LIMIT, produces=JSON, authorizations={@Authorization(value=JWT)})
-	@ApiResponses(value={@ApiResponse(code=200, message=OK, response=WellnessDto.class)})
-    @GetMapping("/wellness")
+	@ApiOperation(
+			value=GET_WELLNESS_LIMIT, 
+			produces=SwaggerConstant.JSON, 
+			authorizations={@Authorization(value=SwaggerConstant.JWT)})
+	@ApiResponses(value={@ApiResponse(code=200, message=SwaggerConstant.OK, response=WellnessDto.class)})
+	@LogAuditApi(name=GET_WELLNESS_LIMIT)
+	@GetMapping
     public WellnessDto getLimit() {
     	Optional<Wellness> wellness = wellnessService.findById();
     	

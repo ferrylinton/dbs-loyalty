@@ -1,12 +1,5 @@
 package com.dbs.loyalty.web.controller.rest;
 
-import static com.dbs.loyalty.config.constant.MessageConstant.DATA_IS_NOT_FOUND;
-import static com.dbs.loyalty.config.constant.RestConstant.GET_IMAGE_BY_PROMO_ID;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.IMAGE;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.JWT;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.OK;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.PROMO;
-
 import java.util.Optional;
 
 import org.springframework.http.CacheControl;
@@ -19,7 +12,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dbs.loyalty.aop.LogAuditApi;
 import com.dbs.loyalty.config.constant.DomainConstant;
+import com.dbs.loyalty.config.constant.MessageConstant;
+import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.domain.FileImage;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.ImageService;
@@ -38,18 +34,24 @@ import lombok.RequiredArgsConstructor;
  * @author Ferry L. H. <ferrylinton@gmail.com>
  * 
  */
-@Api(tags = { PROMO })
+@Api(tags = { SwaggerConstant.PROMO })
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('CUSTOMER')")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/promos")
 public class PromoImageRestController {
 
+	public static final String GET_PROMO_IMAGE_BY_ID = "GetPromoImageById";
+	
 	private final ImageService imageService;
 	
-	@ApiOperation(value=GET_IMAGE_BY_PROMO_ID, produces=IMAGE, authorizations={@Authorization(value=JWT)})
-	@ApiResponses(value={@ApiResponse(code=200, message=OK, response=Byte.class)})
-    @GetMapping("/promos/{id}/image")
+	@ApiOperation(
+			value=GET_PROMO_IMAGE_BY_ID, 
+			produces="image/png, image/jpeg", 
+			authorizations={@Authorization(value="JWT")})
+	@ApiResponses(value={@ApiResponse(code=200, message="OK", response=Byte.class)})
+	@LogAuditApi(name=GET_PROMO_IMAGE_BY_ID)
+	@GetMapping("/{id}/image")
     public ResponseEntity<byte[]> getImageByPromoId(
     		@ApiParam(name = "id", value = "Promo Id", example = "5WTqpHYs3wZoIdhAkbWt1W")
     		@PathVariable String id) throws NotFoundException{
@@ -66,7 +68,7 @@ public class PromoImageRestController {
 					.headers(headers)
 					.body(fileImage.get().getBytes());
     	}else {
-    		throw new NotFoundException(String.format(DATA_IS_NOT_FOUND, DomainConstant.PROMO, id));
+    		throw new NotFoundException(String.format(MessageConstant.DATA_IS_NOT_FOUND, DomainConstant.PROMO, id));
     	}
     }
 	

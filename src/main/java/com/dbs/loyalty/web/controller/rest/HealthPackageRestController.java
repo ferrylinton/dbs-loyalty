@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dbs.loyalty.aop.LogAuditApi;
 import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.config.constant.MessageConstant;
-import com.dbs.loyalty.config.constant.RestConstant;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.domain.HealthPackage;
 import com.dbs.loyalty.exception.NotFoundException;
@@ -41,6 +41,10 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/health-packages")
 public class HealthPackageRestController {
 
+	public static final String GET_HEALTH_PACKAGES = "GetHealthPackages";
+	
+	public static final String GET_HEALTH_PACKAGE_CONTENT_BY_ID = "GetHealthPackageContentById";
+
     private final HealthPackageService healthPackageService;
     
     private final HealthPackageMapper healthPackageMapper;
@@ -51,11 +55,12 @@ public class HealthPackageRestController {
      * @return the list of health packages
      */
     @ApiOperation(
-    		nickname=RestConstant.GET_HEALTH_PACKAGES, 
-    		value=RestConstant.GET_MEDICAL_PROVIDERS, 
+    		nickname=GET_HEALTH_PACKAGES, 
+    		value=GET_HEALTH_PACKAGES, 
     		produces=SwaggerConstant.JSON, 
     		authorizations={@Authorization(value=SwaggerConstant.JWT)})
     @ApiResponses(value={@ApiResponse(code=200, message=SwaggerConstant.OK, response=HealthPackageDto.class)})
+    @LogAuditApi(name=GET_HEALTH_PACKAGES)
     @GetMapping
     public List<HealthPackageDto> getHealthPackages() {
     	List<HealthPackage> healthPackages = healthPackageService.findAll();
@@ -63,11 +68,12 @@ public class HealthPackageRestController {
     }
 
     @ApiOperation(
-    		nickname=RestConstant.GET_CONTENT_BY_ID, 
-    		value=RestConstant.GET_CONTENT_BY_ID, 
+    		nickname=GET_HEALTH_PACKAGE_CONTENT_BY_ID, 
+    		value=GET_HEALTH_PACKAGE_CONTENT_BY_ID, 
     		produces=SwaggerConstant.TEXT, 
     		authorizations={@Authorization(value=SwaggerConstant.JWT)})
     @ApiResponses(value={@ApiResponse(code=200, message=SwaggerConstant.OK, response=String.class)})
+    @LogAuditApi(name=GET_HEALTH_PACKAGE_CONTENT_BY_ID)
     @GetMapping(value="/{id}/content", produces=SwaggerConstant.TEXT)
     public String getContentById(
     		@ApiParam(name = "id", value = "Health Package Id", example = "5WTqpHYs3wZoIdhAkbWt1W")

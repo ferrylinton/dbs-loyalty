@@ -1,9 +1,5 @@
 package com.dbs.loyalty.web.controller.rest;
 
-import static com.dbs.loyalty.config.constant.RestConstant.ADD_TO_INTERESTED_IN_PROMO;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.JSON;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.JWT;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.OK;
 import static com.dbs.loyalty.config.constant.SwaggerConstant.PROMO;
 
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dbs.loyalty.aop.LogAuditApi;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.PromoCustomerService;
 import com.dbs.loyalty.web.response.Response;
@@ -34,14 +31,20 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('CUSTOMER')")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/promos")
 public class PromoCustomerRestController {
 
+	public static final String ADD_TO_INTERESTED_IN_PROMO =  "AddToInterestedInPromo";
+	
 	private final PromoCustomerService customerPromoService;
 
-	@ApiOperation(value=ADD_TO_INTERESTED_IN_PROMO, produces=JSON, authorizations={@Authorization(value=JWT)})
-	@ApiResponses(value={@ApiResponse(code=200, message=OK, response=Response.class)})
-    @PostMapping("/promos/{id}")
+	@ApiOperation(
+			value=ADD_TO_INTERESTED_IN_PROMO, 
+			produces="application/json", 
+			authorizations={@Authorization(value="JWT")})
+	@ApiResponses(value={@ApiResponse(code=200, message="OK", response=Response.class)})
+	@LogAuditApi(name=ADD_TO_INTERESTED_IN_PROMO)
+    @PostMapping("/{id}")
     public Response addToInterestedInPromo(
     		@ApiParam(name = "id", value = "Promo Id", example = "5WTqpHYs3wZoIdhAkbWt1W")
     		@PathVariable String id) throws NotFoundException{

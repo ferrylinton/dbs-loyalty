@@ -65,9 +65,9 @@ public class AddressRestController {
     @ApiOperation(
     		nickname=GET_ADDRESSES, 
     		value=GET_ADDRESSES, 
-    		produces=SwaggerConstant.JSON, 
-    		authorizations={@Authorization(value=SwaggerConstant.JWT)})
-    @ApiResponses(value = { @ApiResponse(code=200, message=SwaggerConstant.OK, response=CountryDto.class, responseContainer="List")})
+    		produces="application/json", 
+    		authorizations={@Authorization(value="JWT")})
+    @ApiResponses(value = { @ApiResponse(code=200, message="OK", response=CountryDto.class, responseContainer="List")})
     @LogAuditApi(name=GET_ADDRESSES)
     @GetMapping
     public List<AddressDto> getAddresses() {

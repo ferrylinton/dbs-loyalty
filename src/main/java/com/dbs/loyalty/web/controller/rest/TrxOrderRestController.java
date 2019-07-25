@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dbs.loyalty.aop.LogAuditApi;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.domain.TrxOrder;
 import com.dbs.loyalty.exception.BadRequestException;
@@ -37,22 +38,27 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/trx-orders")
 public class TrxOrderRestController {
+	
+	public static final String ADD_TRX_ORDER = "AddTrxOrder";
+	
+	public static final String BINDER_NAME = "trxOrder";
 
 	private final TrxProductService trxProductService;
 	
 	private final TrxOrderService trxOrderService;
 
 	@ApiOperation(
-			value="AddTrxOrder", 
+			value=ADD_TRX_ORDER, 
 			produces=SwaggerConstant.JSON, 
 			authorizations={@Authorization(value=SwaggerConstant.JWT)})
     @ApiResponses(value={ @ApiResponse(code=200, message=SwaggerConstant.OK, response=Response.class)})
+	@LogAuditApi(name=ADD_TRX_ORDER, saveRequest=true, saveResponse=true)
     @PostMapping
     public TrxOrder addDeparture(@Valid @RequestBody TrxOrder trxOrder) throws BadRequestException{
 		return trxOrderService.save(trxOrder);
     }
     
-	@InitBinder("trxOrder")
+	@InitBinder(BINDER_NAME)
 	protected void initBinder(WebDataBinder binder) {
 		binder.addValidators(new TrxOrderValidator(trxProductService));
 	}

@@ -1,15 +1,7 @@
 package com.dbs.loyalty.web.controller.rest;
 
 import static com.dbs.loyalty.config.constant.MessageConstant.DATA_IS_NOT_FOUND;
-import static com.dbs.loyalty.config.constant.RestConstant.GET_ALL_BY_PROMO_CATEGORY_ID;
-import static com.dbs.loyalty.config.constant.RestConstant.GET_ALL_PROMO_IN_CAROUSEL;
-import static com.dbs.loyalty.config.constant.RestConstant.GET_PROMO_BY_ID;
-import static com.dbs.loyalty.config.constant.RestConstant.GET_TERM_BY_PROMO_ID;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.JSON;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.JWT;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.OK;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.PROMO;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.TEXT;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -18,9 +10,12 @@ import java.util.stream.Collectors;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dbs.loyalty.aop.LogAuditApi;
 import com.dbs.loyalty.config.constant.DomainConstant;
+import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.PromoService;
 import com.dbs.loyalty.service.dto.CarouselDto;
@@ -41,19 +36,32 @@ import lombok.RequiredArgsConstructor;
  * @author Ferry L. H. <ferrylinton@gmail.com>
  * 
  */
-@Api(tags = { PROMO })
+@Api(tags = { SwaggerConstant.PROMO })
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('CUSTOMER')")
 @RestController
+@RequestMapping("/api/promos")
 public class PromoRestController {
-
+	
+	public static final String GET_ALL_PROMO_IN_CAROUSEL = "GetAllPromoInCarousel";
+	
+	public static final String GET_ALL_BY_PROMO_CATEGORY_ID = "GetAllByPromoCategoryId";
+	
+	public static final String GET_PROMO_BY_ID = "GetPromoById";
+	
+	public static final String GET_PROMO_TERM_BY_ID = "GetPromoTermById";
+	
 	private final PromoService promoService;
 
 	private final PromoMapper promoMapper;
 
-	@ApiOperation(value=GET_ALL_PROMO_IN_CAROUSEL, produces=JSON, authorizations={@Authorization(value=JWT)})
-	@ApiResponses(value={@ApiResponse(code=200, message=OK, response=CarouselDto.class)})
-    @GetMapping("/api/promos/carousel")
+	@ApiOperation(
+			value=GET_ALL_PROMO_IN_CAROUSEL, 
+			produces="application/json", 
+			authorizations={@Authorization(value="JWT")})
+	@ApiResponses(value={@ApiResponse(code=200, message="OK", response=CarouselDto.class)})
+	@LogAuditApi(name=GET_ALL_PROMO_IN_CAROUSEL)
+	@GetMapping("/carousel")
     public List<CarouselDto> getAllPromoInCarousel(){
 		return promoService
 				.findPromoInCarousel()
@@ -62,9 +70,13 @@ public class PromoRestController {
 				.collect(Collectors.toList());
     }
 	
-	@ApiOperation(value=GET_ALL_BY_PROMO_CATEGORY_ID, produces=JSON, authorizations={@Authorization(value=JWT)})
-	@ApiResponses(value={@ApiResponse(code=200, message=OK, response=PromoDto.class)})
-    @GetMapping("/api/promos/promo-categories/{promoCategoryId}")
+	@ApiOperation(
+			value=GET_ALL_BY_PROMO_CATEGORY_ID, 
+			produces="application/json", 
+			authorizations={@Authorization(value="JWT")})
+	@ApiResponses(value={@ApiResponse(code=200, message="OK", response=PromoDto.class)})
+	@LogAuditApi(name=GET_ALL_BY_PROMO_CATEGORY_ID)
+	@GetMapping("/promo-categories/{promoCategoryId}")
     public List<PromoDto> getAllByPromoCategoryId(
     		@ApiParam(name = "promoCategoryId", value = "Promo Category Id", example = "6nJfmxAD6GWtsehXfSkShg")
     		@PathVariable String promoCategoryId){
@@ -76,9 +88,13 @@ public class PromoRestController {
 				.collect(Collectors.toList());
     }
 	
-	@ApiOperation(value=GET_PROMO_BY_ID, produces=JSON, authorizations={@Authorization(value=JWT)})
-	@ApiResponses(value={@ApiResponse(code=200, message=OK, response=PromoDto.class)})
-    @GetMapping("/api/promos/{id}")
+	@ApiOperation(
+			value=GET_PROMO_BY_ID, 
+			produces="application/json", 
+			authorizations={@Authorization(value="JWT")})
+	@ApiResponses(value={@ApiResponse(code=200, message="OK", response=PromoDto.class)})
+	@LogAuditApi(name=GET_PROMO_BY_ID)
+	@GetMapping("/{id}")
     public PromoDto getPromoById(
     		@ApiParam(name = "id", value = "Promo Id", example = "5WTqpHYs3wZoIdhAkbWt1W")
     		@PathVariable String id) throws NotFoundException{
@@ -94,9 +110,13 @@ public class PromoRestController {
     	}
     }
     
-    @ApiOperation(value=GET_TERM_BY_PROMO_ID, produces=TEXT, authorizations={@Authorization(value=JWT)})
-    @ApiResponses(value={@ApiResponse(code=200, message=OK, response=String.class)})
-    @GetMapping(value="/api/promos/{id}/term", produces=TEXT)
+    @ApiOperation(
+    		value=GET_PROMO_TERM_BY_ID, 
+    		produces="text/plain", 
+    		authorizations={@Authorization(value="JWT")})
+    @ApiResponses(value={@ApiResponse(code=200, message="OK", response=String.class)})
+    @LogAuditApi(name=GET_PROMO_TERM_BY_ID)
+    @GetMapping(value="/{id}/term", produces="text/plain")
     public String getTermAndConditionById(
     		@ApiParam(name = "id", value = "Promo Id", example = "5WTqpHYs3wZoIdhAkbWt1W")
     		@PathVariable String id) throws NotFoundException{

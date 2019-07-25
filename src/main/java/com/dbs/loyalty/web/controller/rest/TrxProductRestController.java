@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dbs.loyalty.aop.LogAuditApi;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.domain.FileImage;
 import com.dbs.loyalty.exception.NotFoundException;
@@ -43,6 +44,12 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/trx-products")
 public class TrxProductRestController {
+	
+	public static final String GET_ALL_TRX_PRODUCTS = "GetAllTrxProducts";
+	
+	public static final String GET_TRX_PRODUCT_BY_ID = "GetTrxProductById";
+	
+	public static final String GET_TRX_PRODUCT_IMAGE_BY_ID = "GetTrxProductImageById";
 
 	private static final String NOT_FOUND_FORMAT = "TrxProduct [id=%s] is not found";
 	
@@ -55,13 +62,14 @@ public class TrxProductRestController {
 	private final TrxProductMapper trxProductMapper;
 
 	@ApiOperation(
-			nickname="GetAllTrxProducts", 
-			value="GetAllTrxProducts", 
+			nickname=GET_ALL_TRX_PRODUCTS, 
+			value=GET_ALL_TRX_PRODUCTS, 
 			notes="Get All Bank Transaction Product",
     		produces=MediaType.APPLICATION_JSON_VALUE, 
     		authorizations = { @Authorization(value=SwaggerConstant.JWT) })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = TrxProductDto.class)})
-    @GetMapping
+	@LogAuditApi(name=GET_ALL_TRX_PRODUCTS)
+	@GetMapping
     public List<TrxProductDto> getAllTrxProducts(){
 		return trxProductService
 				.findAll()
@@ -71,13 +79,14 @@ public class TrxProductRestController {
     }
 	
 	@ApiOperation(
-			nickname="GetTrxProductById", 
-			value="GetTrxProductById", 
+			nickname=GET_TRX_PRODUCT_BY_ID, 
+			value=GET_TRX_PRODUCT_BY_ID, 
 			notes="Get Product Priviledge by Id",
     		produces=MediaType.APPLICATION_JSON_VALUE, 
     		authorizations = { @Authorization(value=SwaggerConstant.JWT) })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = TrxProductDto.class)})
-    @GetMapping("/{id}")
+	@LogAuditApi(name=GET_TRX_PRODUCT_BY_ID)
+	@GetMapping("/{id}")
     public TrxProductDto getById(
     		@ApiParam(name = "id", value = "Product Id", example = "zO0dDp9K")
     		@PathVariable String id) throws NotFoundException{
@@ -94,13 +103,14 @@ public class TrxProductRestController {
     }
     
 	@ApiOperation(
-			nickname="GetTrxProductImageById", 
-			value="GetTrxProductImageById", 
+			nickname=GET_TRX_PRODUCT_IMAGE_BY_ID, 
+			value=GET_TRX_PRODUCT_IMAGE_BY_ID, 
 			notes="Get Bank Transaction Product Image by Id",
 			produces= "image/png, image/jpeg", 
     		authorizations = { @Authorization(value=SwaggerConstant.JWT) })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Byte.class)})
-    @GetMapping("/{id}/image")
+	@LogAuditApi(name=GET_TRX_PRODUCT_IMAGE_BY_ID)
+	@GetMapping("/{id}/image")
     public ResponseEntity<byte[]> getTrxProductImageById(
     		@ApiParam(name = "id", value = "TrxProduct Id", example = "zO0dDp9K")
     		@PathVariable String id) throws NotFoundException{

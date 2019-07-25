@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbs.loyalty.config.constant.RestConstant;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.service.JWTAuthenticationService;
 import com.dbs.loyalty.service.dto.JWTLoginDto;
@@ -34,9 +33,11 @@ import lombok.RequiredArgsConstructor;
 @RestController
 public class JWTRestController {
 
+	public static final String AUTHENTICATE = "Authenticate";
+	
     private final JWTAuthenticationService jwtAuthenticationService;
 
-    @ApiOperation(value=RestConstant.AUTHENTICATE, consumes=SwaggerConstant.JSON, produces=SwaggerConstant.JSON)
+    @ApiOperation(value=AUTHENTICATE, consumes=SwaggerConstant.JSON, produces=SwaggerConstant.JSON)
     @ApiNotes("authenticate.md")
     @ApiResponses(value={@ApiResponse(code=200, message=SwaggerConstant.OK, response=JWTTokenDto.class)})
     @PostMapping("/api/authenticate")

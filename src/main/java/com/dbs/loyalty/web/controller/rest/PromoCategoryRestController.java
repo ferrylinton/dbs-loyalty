@@ -1,18 +1,15 @@
 package com.dbs.loyalty.web.controller.rest;
 
-import static com.dbs.loyalty.config.constant.RestConstant.GET_PROMO_CATEGORIES;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.JSON;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.JWT;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.OK;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.PROMO_CATEGORY;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dbs.loyalty.aop.LogAuditApi;
+import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.service.PromoCategoryService;
 import com.dbs.loyalty.service.dto.PromoCategoryDto;
 import com.dbs.loyalty.service.mapper.PromoCategoryMapper;
@@ -30,12 +27,15 @@ import lombok.RequiredArgsConstructor;
  * @author Ferry L. H. <ferrylinton@gmail.com>
  * 
  */
-@Api(tags = { PROMO_CATEGORY })
+@Api(tags = { SwaggerConstant.PROMO_CATEGORY })
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('CUSTOMER')")
 @RestController
+@RequestMapping("/api/promo-categories")
 public class PromoCategoryRestController {
 
+	public static final String GET_PROMO_CATEGORIES = "GetPromoCategories";
+	
     private final PromoCategoryService promoCategoryService;
     
     private final PromoCategoryMapper promoCategoryMapper;
@@ -45,9 +45,13 @@ public class PromoCategoryRestController {
      *
      * @return the list of Promo Categories
      */
-    @ApiOperation(value=GET_PROMO_CATEGORIES, produces=JSON, authorizations={@Authorization(value=JWT)})
-    @ApiResponses(value={@ApiResponse(code=200, message=OK, response=PromoCategoryDto.class)})
-    @GetMapping("/api/promo-categories")
+    @ApiOperation(
+    		value=GET_PROMO_CATEGORIES, 
+    		produces="application/json", 
+    		authorizations={@Authorization(value="JWT")})
+    @ApiResponses(value={@ApiResponse(code=200, message="OK", response=PromoCategoryDto.class)})
+    @LogAuditApi(name=GET_PROMO_CATEGORIES)
+    @GetMapping
     public List<PromoCategoryDto> getPromoCategories() {
     	return promoCategoryService
     			.findAll()

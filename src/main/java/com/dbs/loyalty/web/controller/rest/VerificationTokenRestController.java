@@ -1,14 +1,5 @@
 package com.dbs.loyalty.web.controller.rest;
 
-import static com.dbs.loyalty.config.constant.RestConstant.GENERATE_VERIFICATION_TOKEN;
-import static com.dbs.loyalty.config.constant.RestConstant.LOGIN_WITH_TOKEN;
-import static com.dbs.loyalty.config.constant.RestConstant.VERIFY_VERIFICATION_TOKEN;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.JSON;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.JWT;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.OK;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.VERIFICATION_TOKEN;
-import static com.dbs.loyalty.config.constant.SecurityConstant.ROLE_TOKEN;
-
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Date;
@@ -18,9 +9,13 @@ import javax.validation.Valid;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dbs.loyalty.aop.LogAuditApi;
 import com.dbs.loyalty.config.ApplicationProperties;
+import com.dbs.loyalty.config.constant.SecurityConstant;
+import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.domain.VerificationToken;
 import com.dbs.loyalty.model.TokenData;
 import com.dbs.loyalty.security.rest.RestTokenProvider;
@@ -45,10 +40,17 @@ import lombok.RequiredArgsConstructor;
  * 
  * @author Ferry L. H. <ferrylinton@gmail.com>
  */
-@Api(tags = { VERIFICATION_TOKEN })
+@Api(tags = { SwaggerConstant.VERIFICATION_TOKEN })
 @RequiredArgsConstructor
 @RestController
+@RequestMapping("/api/verification-tokens")
 public class VerificationTokenRestController {
+	
+	public static final String GENERATE_VERIFICATION_TOKEN = "GenerateVerificationToken";
+	
+	public static final String VERIFY_VERIFICATION_TOKEN = "VerificationToken";
+	
+	public static final String LOGIN_WITH_TOKEN = "LoginWithToken";
 	
 	private static final String VERIFIED = "verified";
 
@@ -67,9 +69,14 @@ public class VerificationTokenRestController {
      *
      * @return token
      */
-    @ApiOperation(nickname=GENERATE_VERIFICATION_TOKEN, value=GENERATE_VERIFICATION_TOKEN, consumes=JSON, produces=JSON)
-    @ApiResponses(value = { @ApiResponse(code=200, message=OK, response=VerificationTokenDto.class)})
-    @PostMapping("/api/verification-tokens/generate")
+    @ApiOperation(
+    		nickname=GENERATE_VERIFICATION_TOKEN, 
+    		value=GENERATE_VERIFICATION_TOKEN, 
+    		consumes=SwaggerConstant.JSON, 
+    		produces=SwaggerConstant.JSON)
+    @ApiResponses(value = { @ApiResponse(code=200, message=SwaggerConstant.OK, response=VerificationTokenDto.class)})
+    @LogAuditApi(name=GENERATE_VERIFICATION_TOKEN, saveRequest=true, saveResponse=true)
+    @PostMapping("/generate")
     public VerificationTokenDto generate(
     		@ApiParam(name = "GenerateTokenData", value = "Generate token data")
     		@Valid @RequestBody GenerateTokenDto generateToken) {
@@ -87,9 +94,14 @@ public class VerificationTokenRestController {
      *
      * @return boolean
      */
-    @ApiOperation(nickname=VERIFY_VERIFICATION_TOKEN, value=VERIFY_VERIFICATION_TOKEN, consumes=JSON, produces=JSON)
-    @ApiResponses(value = { @ApiResponse(code=200, message=OK, response=VerificationTokenDto.class)})
-    @PostMapping("/api/verification-tokens/verify")
+    @ApiOperation(
+    		nickname=VERIFY_VERIFICATION_TOKEN, 
+    		value=VERIFY_VERIFICATION_TOKEN, 
+    		consumes=SwaggerConstant.JSON, 
+    		produces=SwaggerConstant.JSON)
+    @ApiResponses(value = { @ApiResponse(code=200, message=SwaggerConstant.OK, response=VerificationTokenDto.class)})
+    @LogAuditApi(name=VERIFY_VERIFICATION_TOKEN, saveRequest=true, saveResponse=true)
+    @PostMapping("/verify")
     public Map<String, Boolean> verify(
     		@ApiParam(name = "VerificationTokenData", value = "Verification token data")
     		@Valid @RequestBody VerificationTokenDto verificationTokenDto) {
@@ -104,9 +116,14 @@ public class VerificationTokenRestController {
      * @return JWTTokenDto
      * @throws IOException 
      */
-    @ApiOperation(nickname=LOGIN_WITH_TOKEN, value=LOGIN_WITH_TOKEN, produces=JSON, authorizations={@Authorization(value=JWT)})
-    @ApiResponses(value = { @ApiResponse(code=200, message=OK, response=JWTTokenDto.class)})
-    @PostMapping("/api/verification-tokens/authenticate")
+    @ApiOperation(
+    		nickname=LOGIN_WITH_TOKEN, 
+    		value=LOGIN_WITH_TOKEN, 
+    		produces=SwaggerConstant.JSON, 
+    		authorizations={@Authorization(value=SwaggerConstant.JWT)})
+    @ApiResponses(value = { @ApiResponse(code=200, message=SwaggerConstant.OK, response=JWTTokenDto.class)})
+    @LogAuditApi(name=LOGIN_WITH_TOKEN, saveRequest=true, saveResponse=true)
+    @PostMapping("/authenticate")
     public JWTTokenDto authenticate(
     		@ApiParam(name = "VerificationTokenData", value = "Verification token data")
     		@Valid @RequestBody VerificationTokenDto verificationTokenDto) throws IOException {
@@ -121,7 +138,7 @@ public class VerificationTokenRestController {
     	TokenData tokenData = new TokenData();
     	tokenData.setId(verificationToken.getCustomer().getId());
     	tokenData.setEmail(verificationToken.getCustomer().getEmail());
-    	tokenData.setRole(ROLE_TOKEN);
+    	tokenData.setRole(SecurityConstant.ROLE_TOKEN);
     	return tokenData;
     }
     
