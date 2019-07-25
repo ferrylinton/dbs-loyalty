@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dbs.loyalty.aop.LogAuditApi;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.service.DepartureService;
@@ -37,6 +38,10 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/departures")
 public class DepartureRestController {
+	
+	public static final String BINDER_NAME = "departureDto";
+	
+	public static final String ADD_DEPARTURE = "AddDeparture";
 
 	private final DepartureService departureService;
 	
@@ -47,12 +52,13 @@ public class DepartureRestController {
 			produces=SwaggerConstant.JSON, 
 			authorizations={@Authorization(value=SwaggerConstant.JWT)})
     @ApiResponses(value={ @ApiResponse(code=200, message=SwaggerConstant.OK, response=Response.class)})
+	@LogAuditApi(name=ADD_DEPARTURE, saveRequest=true, saveResponse=true)
     @PostMapping
     public Response addDeparture(@Valid @RequestBody DepartureDto departureDto) throws BadRequestException{
 		return departureService.save(departureMapper.toEntity(departureDto));
     }
     
-	@InitBinder("departureDto")
+	@InitBinder(BINDER_NAME)
 	protected void initBinder(WebDataBinder binder) {
 		binder.addValidators(new DepartureDtoValidator(departureService));
 	}

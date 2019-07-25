@@ -1,9 +1,5 @@
 package com.dbs.loyalty.web.controller.rest;
 
-import static com.dbs.loyalty.config.constant.MessageConstant.DATA_IS_NOT_FOUND;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.EVENT;
-import static com.dbs.loyalty.config.constant.SwaggerConstant.JWT;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -19,9 +15,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dbs.loyalty.aop.LogAuditApi;
 import com.dbs.loyalty.config.constant.DomainConstant;
+import com.dbs.loyalty.config.constant.MessageConstant;
+import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.domain.FileImage;
 import com.dbs.loyalty.domain.FilePdf;
 import com.dbs.loyalty.exception.BadRequestException;
@@ -48,14 +48,27 @@ import lombok.RequiredArgsConstructor;
  * @author Ferry L. H. <ferrylinton@gmail.com>
  * 
  */
-@Api(tags = { EVENT })
+@Api(tags = { SwaggerConstant.EVENT })
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('CUSTOMER')")
 @RestController
+@RequestMapping("/api/events")
 public class EventRestController {
 	
-	private static final String CONTENT_DISPOSITION = "content-disposition";
+	public static final String GET_UPCOMING_EVENT = "GetUpcomingEvent";
 	
+	public static final String GET_PREVIOUS_EVENT = "GetPreviousEvent";
+	
+	public static final String GET_EVENT_BY_ID = "GetEventById";
+	
+	private static final String GET_EVENT_IMAGE = "GetEventImage";
+	
+	private static final String GET_EVENT_MATERIAL = "GetEventMaterial";
+	
+	private static final String ADD_CUSTOMER_EVENT_ANSWER = "AddCustomerEventAnswer";
+	
+	private static final String CONTENT_DISPOSITION = "content-disposition";
+
 	private static final String CONTENT_DISPOSITION_FORMAT = "attachment;filename=%s.pdf";
 
     private final EventService eventService;
@@ -69,17 +82,19 @@ public class EventRestController {
     private final EventMapper eventMapper;;
 
     /**
+     * Get Upcoming Event
      * 
-     * @return
+     * @return list of Event
      */
 	@ApiOperation(
-			nickname="GetUpcomingEvent", 
-			value="GetUpcomingEvent", 
+			nickname=GET_UPCOMING_EVENT, 
+			value=GET_UPCOMING_EVENT, 
 			notes="Get all upcoming event",
     		produces=MediaType.APPLICATION_JSON_VALUE, 
-    		authorizations = { @Authorization(value=JWT) })
-    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = EventDto.class)})
-    @GetMapping("/api/events/upcoming")
+    		authorizations = { @Authorization(value=SwaggerConstant.JWT) })
+    @ApiResponses(value={@ApiResponse(code=200, message=SwaggerConstant.OK, response = EventDto.class, responseContainer="list")})
+	@LogAuditApi(name=GET_UPCOMING_EVENT)
+    @GetMapping("/upcoming")
     public ResponseEntity<List<EventDto>> getUpcomingEvent(){
 		List<EventDto> events = eventService
 				.findUpcomingEvent()
@@ -93,13 +108,14 @@ public class EventRestController {
     }
 	
 	@ApiOperation(
-			nickname="GetPreviousEvent", 
-			value="GetPreviousEvent", 
+			nickname=GET_PREVIOUS_EVENT, 
+			value=GET_PREVIOUS_EVENT, 
 			notes="Get all previous event",
     		produces=MediaType.APPLICATION_JSON_VALUE, 
-    		authorizations = { @Authorization(value=JWT) })
-    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = EventDto.class)})
-    @GetMapping("/api/events/previous")
+    		authorizations = { @Authorization(value=SwaggerConstant.JWT) })
+    @ApiResponses(value={@ApiResponse(code=200, message=SwaggerConstant.OK, response = EventDto.class)})
+	@LogAuditApi(name=GET_PREVIOUS_EVENT)
+    @GetMapping("/previous")
     public ResponseEntity<List<EventDto>> getPreviousEvent(){
 		List<EventDto> events = eventService
 				.findPreviousEvent()
@@ -120,13 +136,14 @@ public class EventRestController {
      * @throws IOException 
      */
     @ApiOperation(
-    		nickname="GetEventById", 
-    		value="GetEventById", 
+    		nickname=GET_EVENT_BY_ID, 
+    		value=GET_EVENT_BY_ID, 
     		notes="Get event by id",
     		produces=MediaType.APPLICATION_JSON_VALUE, 
-    		authorizations = { @Authorization(value=JWT) })
-    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = EventDto.class)})
-    @GetMapping("/api/events/{id}")
+    		authorizations = { @Authorization(value=SwaggerConstant.JWT) })
+    @ApiResponses(value={@ApiResponse(code=200, message=SwaggerConstant.OK, response = EventDto.class)})
+    @LogAuditApi(name=GET_EVENT_BY_ID, saveRequest=true)
+    @GetMapping("/{id}")
     public ResponseEntity<EventDto> getEventById(
     		@ApiParam(name = "id", value = "Event Id", example = "77UTTDWJX3zNWABg9ixZX9")
     		@PathVariable String id) throws NotFoundException, IOException{
@@ -138,18 +155,19 @@ public class EventRestController {
 		if(current.isPresent()) {
 			return ResponseEntity.ok().body(current.get());
 		}else {
-			throw new NotFoundException(String.format(DATA_IS_NOT_FOUND, DomainConstant.PROMO, id));
+			throw new NotFoundException(String.format(MessageConstant.DATA_IS_NOT_FOUND, DomainConstant.EVENT, id));
 		}
     }
     
     @ApiOperation(
-    		nickname="GetEventImage", 
-    		value="GetEventImage", 
+    		nickname=GET_EVENT_IMAGE, 
+    		value=GET_EVENT_IMAGE, 
     		notes="Get Event Image", 
     		produces= "image/png, image/jpeg", 
-    		authorizations = { @Authorization(value=JWT) })
-    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Byte.class)})
-    @GetMapping("/api/events/{id}/image")
+    		authorizations = { @Authorization(value=SwaggerConstant.JWT) })
+    @ApiResponses(value={@ApiResponse(code=200, message=SwaggerConstant.OK, response = Byte.class)})
+    @LogAuditApi(name=GET_EVENT_IMAGE, saveRequest=true)
+    @GetMapping("/{id}/image")
 	public ResponseEntity<byte[]> getEventImage(
     		@ApiParam(name = "id", value = "Event Id", example = "77UTTDWJX3zNWABg9ixZX9")
     		@PathVariable String id) throws NotFoundException, IOException{
@@ -166,18 +184,19 @@ public class EventRestController {
 					.headers(headers)
 					.body(fileImage.get().getBytes());
 		}else {
-			throw new NotFoundException(String.format(DATA_IS_NOT_FOUND, DomainConstant.PROMO, id));
+			throw new NotFoundException(String.format(MessageConstant.DATA_IS_NOT_FOUND, DomainConstant.EVENT, id));
 		}
 	}
 	
 	@ApiOperation(
-    		nickname="GetEventMaterial", 
-    		value="GetEventMaterial", 
+    		nickname=GET_EVENT_MATERIAL, 
+    		value=GET_EVENT_MATERIAL, 
     		notes="Get Event Material", 
     		produces= "application/pdf", 
-    		authorizations = { @Authorization(value=JWT) })
+    		authorizations = { @Authorization(value=SwaggerConstant.JWT) })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Byte.class)})
-    @GetMapping("/api/events/{id}/material")
+	@LogAuditApi(name=GET_EVENT_MATERIAL, saveRequest=true)
+    @GetMapping("/{id}/material")
 	public ResponseEntity<InputStreamResource> getEventMaterial(
     		@ApiParam(name = "id", value = "Event Id", example = "77UTTDWJX3zNWABg9ixZX9")
     		@PathVariable String id) throws NotFoundException, IOException{
@@ -196,18 +215,19 @@ public class EventRestController {
 					.headers(headers)
 					.body(new InputStreamResource(resource.getInputStream()));
 		}else {
-			throw new NotFoundException(String.format(DATA_IS_NOT_FOUND, DomainConstant.PROMO, id));
+			throw new NotFoundException(String.format(MessageConstant.DATA_IS_NOT_FOUND, DomainConstant.EVENT, id));
 		}
 	}
 
     @ApiOperation(
-    		nickname="AddCustomerEventAnswer", 
-    		value="AddCustomerEventAnswer", 
+    		nickname=ADD_CUSTOMER_EVENT_ANSWER, 
+    		value=ADD_CUSTOMER_EVENT_ANSWER, 
     		notes="Add Customer's event answer",
     		produces=MediaType.APPLICATION_JSON_VALUE, 
-    		authorizations = { @Authorization(value=JWT) })
-    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Response.class)})
-    @PostMapping("/api/events/{id}/{answer}")
+    		authorizations = { @Authorization(value=SwaggerConstant.JWT) })
+    @ApiResponses(value={@ApiResponse(code=200, message=SwaggerConstant.OK, response = Response.class)})
+    @LogAuditApi(name=ADD_CUSTOMER_EVENT_ANSWER, saveRequest=true)
+    @PostMapping("/{id}/{answer}")
     public Response addCustomerEvent(
     		@ApiParam(name = "id", value = "Event Id", example = "10noLnNvqC4SwAUMcJ9GXm")
     		@PathVariable String id,

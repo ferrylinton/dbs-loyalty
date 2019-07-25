@@ -1,5 +1,7 @@
 package com.dbs.loyalty.service.mapper;
 
+import java.util.List;
+
 import org.mapstruct.AfterMapping;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.Mapper;
@@ -14,6 +16,8 @@ import com.dbs.loyalty.service.dto.EventDto;
 public abstract class EventMapper{
 
 	public abstract EventDto toDto(Event event);
+	
+	public abstract List<EventDto> toDto(List<Event> events);
 
 	@AfterMapping
     public void doAfterMapping(@MappingTarget EventDto eventDto){

@@ -22,6 +22,7 @@ import com.dbs.loyalty.util.SecurityUtil;
 import com.dbs.loyalty.web.controller.rest.AppointmentRestController;
 import com.dbs.loyalty.web.controller.rest.CustomerActivateRestController;
 import com.dbs.loyalty.web.controller.rest.CustomerRestController;
+import com.dbs.loyalty.web.controller.rest.DepartureRestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -187,6 +188,7 @@ public class LogApiService {
 		if(logApiNames == null) {
 			logApiNames = new HashMap<>();
 			logApiNames.put(AppointmentRestController.BINDER_NAME, AppointmentRestController.ADD_APPOINTMENT);
+			logApiNames.put(DepartureRestController.BINDER_NAME, DepartureRestController.ADD_DEPARTURE);
 			logApiNames.put(CustomerActivateRestController.BINDER_NAME, CustomerActivateRestController.ACTIVATE_CUSTOMER);
 			logApiNames.put(CustomerRestController.CUSTOMER_UPDATE_BINDER_NAME, CustomerRestController.UPDATE_CUSTOMER);
 			logApiNames.put(CustomerRestController.CUSTOMER_PASSWORD_BINDER_NAME, CustomerRestController.CHANGE_PASSWORD);
@@ -197,9 +199,13 @@ public class LogApiService {
 	
 	private String toString(Object obj) {
 		try {
-			return objectMapper.writeValueAsString(obj);
+			if(obj instanceof String) {
+        		return (String) obj;
+        	}else {
+        		return objectMapper.writeValueAsString(obj);
+        	}
 		} catch (JsonProcessingException e) {
-			return e.getLocalizedMessage();
+			return "LogApiService::toString()::Error::" +  e.getLocalizedMessage();
 		}
 	}
 	
