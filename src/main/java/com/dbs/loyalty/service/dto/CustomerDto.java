@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.dbs.loyalty.config.constant.DateConstant;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -47,6 +49,7 @@ public class CustomerDto {
 	private String customerType;
 	
 	@ApiModelProperty(value = "Customer's date of birth", example = "21-01-1980", position = 8)
+	@DateTimeFormat(pattern = DateConstant.JAVA_DATE)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateConstant.JAVA_DATE)
 	private LocalDate dob;
 	

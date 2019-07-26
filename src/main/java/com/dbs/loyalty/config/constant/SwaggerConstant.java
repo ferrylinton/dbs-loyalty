@@ -35,18 +35,6 @@ public final class SwaggerConstant {
 	public static final String EVENT 				= "Event";
 	
 	public static final String TADA 				= "TADA";
-	
-	public static final String JWT 					= "JWT";
-	
-	public static final String OK 					= "OK";
-	
-	public static final String JSON 				= "application/json";
-	
-	public static final String IMAGE 				= "image/png, image/jpeg";
-	
-	public static final String TEXT					= "text/plain";
-	
-	public static final String FORM					= "multipart/form-data";
 
 	private SwaggerConstant() {
 		// hide constructor

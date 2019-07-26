@@ -47,9 +47,9 @@ public class AirportRestController {
     @ApiOperation(
     		nickname=GET_AIRPORTS, 
     		value=GET_AIRPORTS, 
-    		produces=SwaggerConstant.JSON, 
-    		authorizations={@Authorization(value=SwaggerConstant.JWT)})
-    @ApiResponses(value = { @ApiResponse(code=200, message=SwaggerConstant.OK, response=CountryDto.class, responseContainer="List")})
+    		produces="application/json", 
+    		authorizations={@Authorization(value="JWT")})
+    @ApiResponses(value = { @ApiResponse(code=200, message="OK", response=CountryDto.class, responseContainer="List")})
     @LogAuditApi(name=GET_AIRPORTS)
     @GetMapping
     public List<CountryDto> getAirports() {

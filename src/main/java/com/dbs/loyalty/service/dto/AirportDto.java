@@ -18,14 +18,14 @@ import lombok.Setter;
 @Getter
 public class AirportDto implements Comparable<AirportDto>{
 
-	@NotNull(message = "{validation.notnull.id}")
-	@Size(min = 22, max = 22, message = "{validation.size.id}")
+	@NotNull
+	@Size(min = 22, max = 22)
 	@ApiModelProperty(value = "Airport's id", example = "53EHfQ52dsQ8h9R7ezwUbZ", required = true, position = 0)
 	private String id;
 
 	@ApiModelProperty(value = "Airport's name", example = "CKG-Soekarno-Hatta", required = true, position = 1)
-	@NotNull(message = "{validation.notnull.name}")
-	@Size(min = 2, max = 100, message = "{validation.size.name}")
+	@NotNull
+	@Size(min = 2, max = 100)
     private String name;
 
 	@Override

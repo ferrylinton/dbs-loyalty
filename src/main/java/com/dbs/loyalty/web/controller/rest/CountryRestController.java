@@ -49,9 +49,9 @@ public class CountryRestController {
     @ApiOperation(
     		nickname=GET_COUNTRIES, 
     		value=GET_COUNTRIES, 
-    		produces=SwaggerConstant.JSON, 
-    		authorizations={@Authorization(value=SwaggerConstant.JWT)})
-    @ApiResponses(value = { @ApiResponse(code=200, message=SwaggerConstant.OK, response=CountryDto.class, responseContainer="List")})
+    		produces="application/json", 
+    		authorizations={@Authorization(value="JWT")})
+    @ApiResponses(value = { @ApiResponse(code=200, message="OK", response=CountryDto.class, responseContainer="List")})
     @LogAuditApi(name=GET_COUNTRIES)
     @GetMapping
     public List<CountryDto> getCountries() {
@@ -67,9 +67,9 @@ public class CountryRestController {
     @ApiOperation(
     		nickname=SYNC_COUNTRIES, 
     		value=SYNC_COUNTRIES, 
-    		produces=SwaggerConstant.JSON, 
-    		authorizations={@Authorization(value=SwaggerConstant.JWT)})
-    @ApiResponses(value = { @ApiResponse(code=200, message=SwaggerConstant.OK, response=Response.class)})
+    		produces="application/json", 
+    		authorizations={@Authorization(value="JWT")})
+    @ApiResponses(value = { @ApiResponse(code=200, message="OK", response=Response.class)})
     @LogAuditApi(name=SYNC_COUNTRIES)
     @GetMapping("/sync")
     public Response sync() {

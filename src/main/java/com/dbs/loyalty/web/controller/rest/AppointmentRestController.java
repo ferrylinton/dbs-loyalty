@@ -51,9 +51,9 @@ public class AppointmentRestController {
 	@ApiOperation(
 			nickname=ADD_APPOINTMENT, 
 			value=ADD_APPOINTMENT, 
-			produces=SwaggerConstant.JSON, 
-			authorizations={@Authorization(value=SwaggerConstant.JWT)})
-	@ApiResponses(value={@ApiResponse(code=200, message=SwaggerConstant.OK, response=Response.class)})
+			produces="application/json", 
+			authorizations={@Authorization(value="JWT")})
+	@ApiResponses(value={@ApiResponse(code=200, message="OK", response=Response.class)})
 	@LogAuditApi(name=ADD_APPOINTMENT, saveRequest=true, saveResponse=true)
 	@PostMapping
     public Response addAppointment(@Valid @RequestBody AppointmentDto appointmentDto) throws BadRequestException, NotFoundException{

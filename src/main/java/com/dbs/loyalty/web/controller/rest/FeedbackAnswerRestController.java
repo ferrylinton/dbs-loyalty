@@ -63,7 +63,7 @@ public class FeedbackAnswerRestController {
     		value = ADD_FEEDBACK_CUSTOMER, 
     		notes = "Add feedback customer",
     		produces = MediaType.APPLICATION_JSON_VALUE, 
-    		authorizations = { @Authorization(value=SwaggerConstant.JWT) })
+    		authorizations = { @Authorization(value="JWT") })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = FeedbackAnswerDto.class)})
     @PreAuthorize("hasRole('CUSTOMER')")
     @LogAuditApi(name=ADD_FEEDBACK_CUSTOMER, saveRequest=true, saveResponse=true)

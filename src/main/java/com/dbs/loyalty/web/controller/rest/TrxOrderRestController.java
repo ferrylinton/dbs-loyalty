@@ -49,9 +49,9 @@ public class TrxOrderRestController {
 
 	@ApiOperation(
 			value=ADD_TRX_ORDER, 
-			produces=SwaggerConstant.JSON, 
-			authorizations={@Authorization(value=SwaggerConstant.JWT)})
-    @ApiResponses(value={ @ApiResponse(code=200, message=SwaggerConstant.OK, response=Response.class)})
+			produces="application/json", 
+			authorizations={@Authorization(value="JWT")})
+    @ApiResponses(value={ @ApiResponse(code=200, message="OK", response=Response.class)})
 	@LogAuditApi(name=ADD_TRX_ORDER, saveRequest=true, saveResponse=true)
     @PostMapping
     public TrxOrder addDeparture(@Valid @RequestBody TrxOrder trxOrder) throws BadRequestException{

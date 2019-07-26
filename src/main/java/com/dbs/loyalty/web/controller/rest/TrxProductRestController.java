@@ -66,7 +66,7 @@ public class TrxProductRestController {
 			value=GET_ALL_TRX_PRODUCTS, 
 			notes="Get All Bank Transaction Product",
     		produces=MediaType.APPLICATION_JSON_VALUE, 
-    		authorizations = { @Authorization(value=SwaggerConstant.JWT) })
+    		authorizations = { @Authorization(value="JWT") })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = TrxProductDto.class)})
 	@LogAuditApi(name=GET_ALL_TRX_PRODUCTS)
 	@GetMapping
@@ -83,7 +83,7 @@ public class TrxProductRestController {
 			value=GET_TRX_PRODUCT_BY_ID, 
 			notes="Get Product Priviledge by Id",
     		produces=MediaType.APPLICATION_JSON_VALUE, 
-    		authorizations = { @Authorization(value=SwaggerConstant.JWT) })
+    		authorizations = { @Authorization(value="JWT") })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = TrxProductDto.class)})
 	@LogAuditApi(name=GET_TRX_PRODUCT_BY_ID)
 	@GetMapping("/{id}")
@@ -107,7 +107,7 @@ public class TrxProductRestController {
 			value=GET_TRX_PRODUCT_IMAGE_BY_ID, 
 			notes="Get Bank Transaction Product Image by Id",
 			produces= "image/png, image/jpeg", 
-    		authorizations = { @Authorization(value=SwaggerConstant.JWT) })
+    		authorizations = { @Authorization(value="JWT") })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Byte.class)})
 	@LogAuditApi(name=GET_TRX_PRODUCT_IMAGE_BY_ID)
 	@GetMapping("/{id}/image")

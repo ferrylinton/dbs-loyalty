@@ -7,7 +7,9 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +27,7 @@ import com.dbs.loyalty.service.dto.AddressDto;
 import com.dbs.loyalty.service.dto.CountryDto;
 import com.dbs.loyalty.service.mapper.AddressMapper;
 import com.dbs.loyalty.util.SecurityUtil;
+import com.dbs.loyalty.web.validator.rest.AddressDtoValidator;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -45,9 +48,11 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/addresses")
 public class AddressRestController {
 	
-	private static final String GET_ADDRESSES = "GetAddresses";
+	public static final String BINDER_NAME = "addressDto";
 	
-	private static final String ADD_ADDRESS = "AddAddress";
+	public static final String GET_ADDRESSES = "GetAddresses";
+	
+	public static final String ADD_ADDRESS = "AddAddress";
 
     private final AddressService addressService;
     
@@ -82,21 +87,36 @@ public class AddressRestController {
     @ApiOperation(
     		nickname=ADD_ADDRESS, 
     		value=ADD_ADDRESS, 
-    		produces=SwaggerConstant.JSON, 
-    		authorizations={@Authorization(value=SwaggerConstant.JWT)})
-    @ApiResponses(value = { @ApiResponse(code=200, message=SwaggerConstant.OK, response=AddressDto.class)})
+    		produces="application/json", 
+    		authorizations={@Authorization(value="JWT")})
+    @ApiResponses(value = { @ApiResponse(code=200, message="OK", response=AddressDto.class)})
     @LogAuditApi(name=ADD_ADDRESS, saveRequest=true, saveResponse=true)
     @PostMapping
     public AddressDto save(@Valid @RequestBody AddressDto addressDto) throws BadRequestException{
     	Optional<Customer> customer = customerService.findByEmail(SecurityUtil.getLogged());
-    	
-    	Address address = addressMapper.toEntity(addressDto, cityService);
-    	address.setCustomer(customer.get());
-    	address.setCreatedBy(SecurityUtil.getLogged());
-    	address.setCreatedDate(Instant.now());
-    	
+    	Optional<Address> current = addressService.findByCustomerIdAndLabel(SecurityUtil.getId(), addressDto.getLabel());
+    	Address address = null;
+
+    	if(current.isPresent()) {
+    		address = addressMapper.toEntity(addressDto, cityService);
+    		address.setId(current.get().getId());
+    		address.setCustomer(customer.get());
+    		address.setLastModifiedBy(SecurityUtil.getLogged());
+    		address.setLastModifiedDate(Instant.now());
+    	}else {
+    		address = addressMapper.toEntity(addressDto, cityService);
+    		address.setCustomer(customer.get());
+    		address.setCreatedBy(SecurityUtil.getLogged());
+    		address.setCreatedDate(Instant.now());
+    	}
+    			
     	address = addressService.save(address);
     	return addressMapper.toDto(address);
     }
 
+    @InitBinder(BINDER_NAME)
+	protected void initPasswordBinder(WebDataBinder binder) {
+		binder.addValidators(new AddressDtoValidator(cityService));
+	}
+    
 }

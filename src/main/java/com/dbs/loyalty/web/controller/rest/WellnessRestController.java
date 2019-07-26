@@ -42,9 +42,9 @@ public class WellnessRestController {
 
 	@ApiOperation(
 			value=GET_WELLNESS_LIMIT, 
-			produces=SwaggerConstant.JSON, 
-			authorizations={@Authorization(value=SwaggerConstant.JWT)})
-	@ApiResponses(value={@ApiResponse(code=200, message=SwaggerConstant.OK, response=WellnessDto.class)})
+			produces="application/json", 
+			authorizations={@Authorization(value="JWT")})
+	@ApiResponses(value={@ApiResponse(code=200, message="OK", response=WellnessDto.class)})
 	@LogAuditApi(name=GET_WELLNESS_LIMIT)
 	@GetMapping
     public WellnessDto getLimit() {

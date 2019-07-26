@@ -121,7 +121,7 @@ public class SwaggerConfiguration {
 	}
 
 	private ApiKey apiKey() {
-        return new ApiKey(SwaggerConstant.JWT, HttpHeaders.AUTHORIZATION, In.HEADER.name());
+        return new ApiKey("JWT", HttpHeaders.AUTHORIZATION, In.HEADER.name());
     }
 
 	@Bean
@@ -141,7 +141,7 @@ public class SwaggerConfiguration {
     private List<SecurityReference> defaultAuth() {
         AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[] { authorizationScope };
-        return Lists.newArrayList(new SecurityReference(SwaggerConstant.JWT, authorizationScopes));
+        return Lists.newArrayList(new SecurityReference("JWT", authorizationScopes));
     }
 
     private ApiInfo apiInfo() {

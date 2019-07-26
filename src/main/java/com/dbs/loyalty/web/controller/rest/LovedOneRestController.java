@@ -1,18 +1,14 @@
 package com.dbs.loyalty.web.controller.rest;
 
-import java.security.Principal;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.beans.PropertyEditorSupport;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dbs.loyalty.aop.LogAuditApi;
+import com.dbs.loyalty.config.constant.DateConstant;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.domain.LovedOne;
 import com.dbs.loyalty.exception.NotFoundException;
@@ -32,6 +30,7 @@ import com.dbs.loyalty.service.dto.LovedOneDto;
 import com.dbs.loyalty.service.dto.LovedOneUpdateDto;
 import com.dbs.loyalty.service.mapper.LovedOneMapper;
 import com.dbs.loyalty.util.MessageUtil;
+import com.dbs.loyalty.util.SecurityUtil;
 import com.dbs.loyalty.web.validator.LovedOneAddValidator;
 import com.dbs.loyalty.web.validator.LovedOneUpdateValidator;
 
@@ -45,86 +44,119 @@ import lombok.RequiredArgsConstructor;
 
 @Api(tags = { SwaggerConstant.LOVED_ONE })
 @RequiredArgsConstructor
+@PreAuthorize("hasRole('CUSTOMER')")
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/loved-ones")
 public class LovedOneRestController {
+	
+	public static final String GET_LOVED_ONES = "GetLovedOnes";
+	
+	public static final String ADD_LOVED_ONE = "AddLovedOne";
+	
+	public static final String UPDATE_LOVED_ONE = "UpdateLovedOne";
+	
+	public static final String ADD_BINDER_NAME = "lovedOneAddDto";
+	
+	public static final String UPDATE_BINDER_NAME = "lovedOneUpdateDto";
 
     private final LovedOneService lovedOneService;
     
     private final LovedOneMapper lovedOneMapper;
     
     @ApiOperation(
-    		nickname="GetLovedOnes", 
-    		value="GetLovedOnes", 
+    		nickname=GET_LOVED_ONES, 
+    		value=GET_LOVED_ONES, 
     		notes="Get Customer's loved ones",
-    		produces=MediaType.APPLICATION_JSON_VALUE, 
-    		authorizations = { @Authorization(value=SwaggerConstant.JWT) })
-    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = LovedOneDto.class)})
-    @PreAuthorize("hasRole('CUSTOMER')")
-    @GetMapping("/loved-ones")
-	public ResponseEntity<List<LovedOneDto>> getLovedOnes(Principal principal){
+    		produces="application/json", 
+    		authorizations = { @Authorization(value="JWT") })
+    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = LovedOneDto.class, responseContainer="List")})
+    @LogAuditApi(name=GET_LOVED_ONES)
+    @GetMapping
+	public List<LovedOneDto> getLovedOnes(){
     	List<LovedOneDto> lovedOnes = lovedOneService
-    			.findByCustomerEmail(principal.getName())
+    			.findByCustomerEmail(SecurityUtil.getLogged())
     			.stream()
 				.map(lovedOne -> lovedOneMapper.toDto(lovedOne))
 				.collect(Collectors.toList());;
-		return ResponseEntity.ok().body(lovedOnes);
+		return lovedOnes;
 	}
     
     @ApiOperation(
-    		nickname="AddLovedOne", 
-    		value="AddLovedOne", 
+    		nickname=ADD_LOVED_ONE, 
+    		value=ADD_LOVED_ONE, 
     		notes="Add new customer's loved one information",
-    		consumes=MediaType.APPLICATION_JSON_VALUE,
-    		produces=MediaType.APPLICATION_JSON_VALUE, 
-    		authorizations = { @Authorization(value=SwaggerConstant.JWT) })
+    		consumes="application/json",
+    		produces="application/json", 
+    		authorizations = { @Authorization(value="JWT") })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = LovedOneDto.class)})
-    @PreAuthorize("hasRole('CUSTOMER')")
-    @PostMapping("/loved-ones")
-    public ResponseEntity<LovedOneDto> addCustomer(
+    @LogAuditApi(name=ADD_LOVED_ONE, saveRequest=true, saveResponse=true)
+    @PostMapping
+    public LovedOneDto addCustomer(
     		@ApiParam(name = "LovedOneData", value = "Customer's loved one new data") 
-    		@Valid @RequestBody LovedOneAddDto lovedOneAddDto,
-    		HttpServletRequest request)  {
+    		@Valid @RequestBody LovedOneAddDto lovedOneAddDto)  {
 
-    	LovedOneDto lovedOneDto = lovedOneMapper.toDto(lovedOneService.add(lovedOneAddDto));
-		return ResponseEntity.ok().body(lovedOneDto);
+    	return lovedOneMapper.toDto(lovedOneService.add(lovedOneAddDto));
     }
     
     @ApiOperation(
-    		nickname="UpdateLovedOne", 
-    		value="UpdateLovedOne", 
+    		nickname=UPDATE_LOVED_ONE, 
+    		value=UPDATE_LOVED_ONE, 
     		notes="Update customer's loved one information",
-    		consumes=MediaType.APPLICATION_JSON_VALUE,
-    		produces=MediaType.APPLICATION_JSON_VALUE, 
-    		authorizations = { @Authorization(value=SwaggerConstant.JWT) })
+    		consumes="application/json",
+    		produces="application/json", 
+    		authorizations = { @Authorization(value="JWT") })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = LovedOneDto.class)})
-    @PreAuthorize("hasRole('CUSTOMER')")
-    @PutMapping("/loved-ones")
-    public ResponseEntity<LovedOneDto> updateCustomer(
+    @LogAuditApi(name=UPDATE_LOVED_ONE, saveRequest=true, saveResponse=true)
+    @PutMapping
+    public LovedOneDto updateCustomer(
     		@ApiParam(name = "LovedOneData", value = "Customer's loved one new data") 
-    		@Valid @RequestBody LovedOneUpdateDto lovedOneUpdateDto,
-    		HttpServletRequest request) throws NotFoundException  {
+    		@Valid @RequestBody LovedOneUpdateDto lovedOneUpdateDto) throws NotFoundException  {
 
     	Optional<LovedOne> current = lovedOneService.findById(lovedOneUpdateDto.getId());
 		
 		if(current.isPresent()) {
-			LovedOneDto loveOneDto = lovedOneMapper.toDto(lovedOneService.update(lovedOneUpdateDto));
-    		return ResponseEntity.ok().body(loveOneDto);
+			return lovedOneMapper.toDto(lovedOneService.update(lovedOneUpdateDto));
 		}else {
 			String message = MessageUtil.getNotFoundMessage(lovedOneUpdateDto.getId()) ;
 			throw new NotFoundException(message);
 		}
     }
    
-    @InitBinder("lovedOneAddDto")
+    @InitBinder(ADD_BINDER_NAME)
 	protected void initAddBinder(WebDataBinder binder) {
-		binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("dd-MM-yyyy"), true, 10)); 
+    	binder.registerCustomEditor(LocalDate.class, new PropertyEditorSupport() {
+			
+		    @Override
+		    public void setAsText(String text) throws IllegalArgumentException{
+		      setValue(LocalDate.parse(text, DateTimeFormatter.ofPattern(DateConstant.JAVA_DATE)));
+		    }
+
+		    @Override
+		    public String getAsText() throws IllegalArgumentException {
+		      return DateTimeFormatter.ofPattern(DateConstant.JAVA_DATE).format((LocalDate) getValue());
+		    }
+		    
+		});
+    	
 		binder.addValidators(new LovedOneAddValidator(lovedOneService));
 	}
     
-    @InitBinder("lovedOneUpdateDto")
+    @InitBinder(UPDATE_BINDER_NAME)
 	protected void initUpdateBinder(WebDataBinder binder) {
-    	binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("dd-MM-yyyy"), true, 10)); 
+    	binder.registerCustomEditor(LocalDate.class, new PropertyEditorSupport() {
+			
+		    @Override
+		    public void setAsText(String text) throws IllegalArgumentException{
+		      setValue(LocalDate.parse(text, DateTimeFormatter.ofPattern(DateConstant.JAVA_DATE)));
+		    }
+
+		    @Override
+		    public String getAsText() throws IllegalArgumentException {
+		      return DateTimeFormatter.ofPattern(DateConstant.JAVA_DATE).format((LocalDate) getValue());
+		    }
+		    
+		});
+
 		binder.addValidators(new LovedOneUpdateValidator(lovedOneService));
 	}
     

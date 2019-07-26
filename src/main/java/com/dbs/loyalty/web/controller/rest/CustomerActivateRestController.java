@@ -40,9 +40,9 @@ public class CustomerActivateRestController {
 
     @ApiOperation(
     		value=ACTIVATE_CUSTOMER, 
-    		produces=SwaggerConstant.JSON, 
-    		authorizations={@Authorization(value=SwaggerConstant.JWT)})
-    @ApiResponses(value={@ApiResponse(code=200, message=SwaggerConstant.OK, response=Response.class)})
+    		produces="application/json", 
+    		authorizations={@Authorization(value="JWT")})
+    @ApiResponses(value={@ApiResponse(code=200, message="OK", response=Response.class)})
     @LogAuditApi(name=ACTIVATE_CUSTOMER, saveRequest=true, saveResponse=true)
     @PostMapping("/activate")
     public Response activate(

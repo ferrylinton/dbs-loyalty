@@ -51,9 +51,9 @@ public class MedicalProviderBranchRestController {
     @ApiOperation(
     		nickname=GET_MEDICAL_PROVIDER_BRANCHES, 
     		value=GET_MEDICAL_PROVIDER_BRANCHES, 
-    		produces=SwaggerConstant.JSON, 
-    		authorizations={@Authorization(value=SwaggerConstant.JWT)})
-    @ApiResponses(value={@ApiResponse(code=200, message=SwaggerConstant.OK, response=MedicalProviderDto.class)})
+    		produces="application/json", 
+    		authorizations={@Authorization(value="JWT")})
+    @ApiResponses(value={@ApiResponse(code=200, message="OK", response=MedicalProviderDto.class)})
     @LogAuditApi(name=GET_MEDICAL_PROVIDER_BRANCHES)
     @GetMapping("/{medicalProviderCityId}")
     public List<MedicalProviderBranchDto> getMedicalProviderBranches(

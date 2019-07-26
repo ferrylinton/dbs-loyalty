@@ -79,9 +79,9 @@ public class TadaRestController {
 	@ApiOperation(
 		nickname = "GetTadaItems", 
 		value = "GetTadaItems", 
-		produces = SwaggerConstant.JSON, 
-		authorizations = { @Authorization(value = SwaggerConstant.JWT) })
-	@ApiResponses(value = { @ApiResponse(code = 200, message = SwaggerConstant.OK, response = String.class) })
+		produces = "application/json", 
+		authorizations = { @Authorization(value = "JWT") })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = String.class) })
 	@GetMapping("/items")
 	public ResponseEntity<String> getItems(HttpServletRequest request) {
 		String url = applicationProperties.getTada().getItemsUrl();
@@ -91,9 +91,9 @@ public class TadaRestController {
 	@ApiOperation(
 		nickname = "GetTadaCategories", 
 		value = "GetTadaCategories", 
-		produces = SwaggerConstant.JSON, 
-		authorizations = { @Authorization(value = SwaggerConstant.JWT) })
-	@ApiResponses(value = { @ApiResponse(code = 200, message = SwaggerConstant.OK, response = String.class) })
+		produces = "application/json", 
+		authorizations = { @Authorization(value = "JWT") })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = String.class) })
 	@GetMapping("/categories")
 	public ResponseEntity<String> getCategories(HttpServletRequest request) {
 		String url = applicationProperties.getTada().getCategoriesUrl();
@@ -103,9 +103,9 @@ public class TadaRestController {
 	@ApiOperation(
 		nickname = "GetTadaOrderById", 
 		value = "GetTadaOrderById", 
-		produces = SwaggerConstant.JSON, 
-		authorizations = { @Authorization(value = SwaggerConstant.JWT) })
-	@ApiResponses(value = { @ApiResponse(code = 200, message = SwaggerConstant.OK, response = String.class) })
+		produces = "application/json", 
+		authorizations = { @Authorization(value = "JWT") })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = String.class) })
 	@GetMapping("/orders/{id}")
 	public ResponseEntity<String> getTadaOrderById(@PathVariable String id, HttpServletRequest request) {
 		String url = applicationProperties.getTada().getOrdersByIdUrl().replace("{id}", id);
@@ -115,9 +115,9 @@ public class TadaRestController {
 	@ApiOperation(
 		nickname = "CreateOrder", 
 		value = "CreateOrder", 
-		produces = SwaggerConstant.JSON, 
-		authorizations = { @Authorization(value = SwaggerConstant.JWT) })
-	@ApiResponses(value = { @ApiResponse(code = 200, message = SwaggerConstant.OK, response = String.class) })
+		produces = "application/json", 
+		authorizations = { @Authorization(value = "JWT") })
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = String.class) })
 	@PostMapping("/orders")
 	public ResponseEntity<String> post(@RequestBody @Valid TadaOrder tadaOrder, HttpServletRequest request) {
 		try {

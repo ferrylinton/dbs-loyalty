@@ -47,9 +47,9 @@ public class ArrivalRestController {
 
     @ApiOperation(
     		value=ADD_ARRIVAL, 
-    		produces=SwaggerConstant.JSON, 
-    		authorizations={@Authorization(value=SwaggerConstant.JWT)})
-    @ApiResponses(value={@ApiResponse(code=200, message=SwaggerConstant.OK, response=Response.class)})
+    		produces="application/json", 
+    		authorizations={@Authorization(value="JWT")})
+    @ApiResponses(value={@ApiResponse(code=200, message="OK", response=Response.class)})
     @LogAuditApi(name=ADD_ARRIVAL, saveRequest=true, saveResponse=true)
     @PostMapping
     public Response addArrival(@Valid @RequestBody ArrivalDto arrivalDto) throws BadRequestException{

@@ -49,9 +49,9 @@ public class CustomerImageRestController {
 	@ApiOperation(
 			nickname=GET_CUSTOMER_IMAGE, 
 			value=GET_CUSTOMER_IMAGE, 
-			produces=SwaggerConstant.IMAGE, 
-			authorizations={@Authorization(value=SwaggerConstant.JWT)})
-	@ApiResponses(value = { @ApiResponse(code=200, message=SwaggerConstant.OK, response = Byte.class)})
+			produces="image/png, image/jpeg", 
+			authorizations={@Authorization(value="JWT")})
+	@ApiResponses(value = { @ApiResponse(code=200, message="OK", response = Byte.class)})
 	@LogAuditApi(name=GET_CUSTOMER_IMAGE)
 	@GetMapping("/image")
 	public ResponseEntity<byte[]> getCustomerImage() throws NotFoundException {
@@ -74,10 +74,10 @@ public class CustomerImageRestController {
 	@ApiOperation(
 			nickname=UPDATE_CUSTOMER_IMAGE, 
 			value=UPDATE_CUSTOMER_IMAGE, 
-			consumes=SwaggerConstant.FORM, 
-			produces=SwaggerConstant.IMAGE, 
-			authorizations={@Authorization(value=SwaggerConstant.JWT)})
-	@ApiResponses(value = { @ApiResponse(code=200, message=SwaggerConstant.OK, response = Byte.class)})
+			consumes="multipart/form-data", 
+			produces="image/png, image/jpeg", 
+			authorizations={@Authorization(value="JWT")})
+	@ApiResponses(value = { @ApiResponse(code=200, message="OK", response = Byte.class)})
 	@LogAuditApi(name=UPDATE_CUSTOMER_IMAGE)
 	@PutMapping("/image")
     public ResponseEntity<byte[]> updateCustomerImage(

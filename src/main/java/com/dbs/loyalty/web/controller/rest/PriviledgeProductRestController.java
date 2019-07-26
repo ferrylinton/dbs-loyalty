@@ -1,7 +1,5 @@
 package com.dbs.loyalty.web.controller.rest;
 
-import static com.dbs.loyalty.config.constant.SwaggerConstant.JWT;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -108,7 +106,7 @@ public class PriviledgeProductRestController {
 			value=GET_PRODUCT_PRIVILEDGE_IMAGE_BY_ID, 
 			notes="Get Product Priviledge Image by Id",
 			produces= "image/png, image/jpeg", 
-    		authorizations = { @Authorization(value=JWT) })
+    		authorizations = { @Authorization(value="JWT") })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Byte.class)})
 	@LogAuditApi(name=GET_PRODUCT_PRIVILEDGE_IMAGE_BY_ID)
     @GetMapping("/{id}/image")
@@ -137,7 +135,7 @@ public class PriviledgeProductRestController {
 			value=GET_PRODUCT_PRIVILEDGE_TERM_BY_ID, 
 			notes="Get Product Priviledge Term And Condition by Id",
     		produces=MediaType.TEXT_PLAIN_VALUE, 
-    		authorizations = { @Authorization(value=JWT) })
+    		authorizations = { @Authorization(value="JWT") })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = String.class)})
 	@LogAuditApi(name=GET_PRODUCT_PRIVILEDGE_TERM_BY_ID)
 	@GetMapping("/{id}/term")

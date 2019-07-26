@@ -1,6 +1,7 @@
 package com.dbs.loyalty.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,10 @@ public class AddressService {
 
 	public List<Address> findByCustomerEmail(String customerEmail){
 		return addressRepository.findByCustomerEmail(customerEmail);
+	}
+	
+	public Optional<Address> findByCustomerIdAndLabel(String customerId, String label) {
+		return addressRepository.findByCustomerIdAndLabelIgnoreCase(customerId, label);
 	}
 	
 	public Address save(Address address) {

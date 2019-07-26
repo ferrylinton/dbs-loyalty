@@ -57,9 +57,9 @@ public class HealthPackageRestController {
     @ApiOperation(
     		nickname=GET_HEALTH_PACKAGES, 
     		value=GET_HEALTH_PACKAGES, 
-    		produces=SwaggerConstant.JSON, 
-    		authorizations={@Authorization(value=SwaggerConstant.JWT)})
-    @ApiResponses(value={@ApiResponse(code=200, message=SwaggerConstant.OK, response=HealthPackageDto.class)})
+    		produces="application/json", 
+    		authorizations={@Authorization(value="JWT")})
+    @ApiResponses(value={@ApiResponse(code=200, message="OK", response=HealthPackageDto.class)})
     @LogAuditApi(name=GET_HEALTH_PACKAGES)
     @GetMapping
     public List<HealthPackageDto> getHealthPackages() {
@@ -70,11 +70,11 @@ public class HealthPackageRestController {
     @ApiOperation(
     		nickname=GET_HEALTH_PACKAGE_CONTENT_BY_ID, 
     		value=GET_HEALTH_PACKAGE_CONTENT_BY_ID, 
-    		produces=SwaggerConstant.TEXT, 
-    		authorizations={@Authorization(value=SwaggerConstant.JWT)})
-    @ApiResponses(value={@ApiResponse(code=200, message=SwaggerConstant.OK, response=String.class)})
+    		produces="text/plain", 
+    		authorizations={@Authorization(value="JWT")})
+    @ApiResponses(value={@ApiResponse(code=200, message="OK", response=String.class)})
     @LogAuditApi(name=GET_HEALTH_PACKAGE_CONTENT_BY_ID)
-    @GetMapping(value="/{id}/content", produces=SwaggerConstant.TEXT)
+    @GetMapping(value="/{id}/content", produces="text/plain")
     public String getContentById(
     		@ApiParam(name = "id", value = "Health Package Id", example = "5WTqpHYs3wZoIdhAkbWt1W")
     		@PathVariable String id) throws NotFoundException{

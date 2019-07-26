@@ -72,9 +72,9 @@ public class VerificationTokenRestController {
     @ApiOperation(
     		nickname=GENERATE_VERIFICATION_TOKEN, 
     		value=GENERATE_VERIFICATION_TOKEN, 
-    		consumes=SwaggerConstant.JSON, 
-    		produces=SwaggerConstant.JSON)
-    @ApiResponses(value = { @ApiResponse(code=200, message=SwaggerConstant.OK, response=VerificationTokenDto.class)})
+    		consumes="application/json", 
+    		produces="application/json")
+    @ApiResponses(value = { @ApiResponse(code=200, message="OK", response=VerificationTokenDto.class)})
     @LogAuditApi(name=GENERATE_VERIFICATION_TOKEN, saveRequest=true, saveResponse=true)
     @PostMapping("/generate")
     public VerificationTokenDto generate(
@@ -97,9 +97,9 @@ public class VerificationTokenRestController {
     @ApiOperation(
     		nickname=VERIFY_VERIFICATION_TOKEN, 
     		value=VERIFY_VERIFICATION_TOKEN, 
-    		consumes=SwaggerConstant.JSON, 
-    		produces=SwaggerConstant.JSON)
-    @ApiResponses(value = { @ApiResponse(code=200, message=SwaggerConstant.OK, response=VerificationTokenDto.class)})
+    		consumes="application/json", 
+    		produces="application/json")
+    @ApiResponses(value = { @ApiResponse(code=200, message="OK", response=VerificationTokenDto.class)})
     @LogAuditApi(name=VERIFY_VERIFICATION_TOKEN, saveRequest=true, saveResponse=true)
     @PostMapping("/verify")
     public Map<String, Boolean> verify(
@@ -119,9 +119,9 @@ public class VerificationTokenRestController {
     @ApiOperation(
     		nickname=LOGIN_WITH_TOKEN, 
     		value=LOGIN_WITH_TOKEN, 
-    		produces=SwaggerConstant.JSON, 
-    		authorizations={@Authorization(value=SwaggerConstant.JWT)})
-    @ApiResponses(value = { @ApiResponse(code=200, message=SwaggerConstant.OK, response=JWTTokenDto.class)})
+    		produces="application/json", 
+    		authorizations={@Authorization(value="JWT")})
+    @ApiResponses(value = { @ApiResponse(code=200, message="OK", response=JWTTokenDto.class)})
     @LogAuditApi(name=LOGIN_WITH_TOKEN, saveRequest=true, saveResponse=true)
     @PostMapping("/authenticate")
     public JWTTokenDto authenticate(

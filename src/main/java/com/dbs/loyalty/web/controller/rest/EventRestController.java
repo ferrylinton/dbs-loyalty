@@ -91,8 +91,8 @@ public class EventRestController {
 			value=GET_UPCOMING_EVENT, 
 			notes="Get all upcoming event",
     		produces=MediaType.APPLICATION_JSON_VALUE, 
-    		authorizations = { @Authorization(value=SwaggerConstant.JWT) })
-    @ApiResponses(value={@ApiResponse(code=200, message=SwaggerConstant.OK, response = EventDto.class, responseContainer="list")})
+    		authorizations = { @Authorization(value="JWT") })
+    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = EventDto.class, responseContainer="list")})
 	@LogAuditApi(name=GET_UPCOMING_EVENT)
     @GetMapping("/upcoming")
     public ResponseEntity<List<EventDto>> getUpcomingEvent(){
@@ -112,8 +112,8 @@ public class EventRestController {
 			value=GET_PREVIOUS_EVENT, 
 			notes="Get all previous event",
     		produces=MediaType.APPLICATION_JSON_VALUE, 
-    		authorizations = { @Authorization(value=SwaggerConstant.JWT) })
-    @ApiResponses(value={@ApiResponse(code=200, message=SwaggerConstant.OK, response = EventDto.class)})
+    		authorizations = { @Authorization(value="JWT") })
+    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = EventDto.class)})
 	@LogAuditApi(name=GET_PREVIOUS_EVENT)
     @GetMapping("/previous")
     public ResponseEntity<List<EventDto>> getPreviousEvent(){
@@ -140,8 +140,8 @@ public class EventRestController {
     		value=GET_EVENT_BY_ID, 
     		notes="Get event by id",
     		produces=MediaType.APPLICATION_JSON_VALUE, 
-    		authorizations = { @Authorization(value=SwaggerConstant.JWT) })
-    @ApiResponses(value={@ApiResponse(code=200, message=SwaggerConstant.OK, response = EventDto.class)})
+    		authorizations = { @Authorization(value="JWT") })
+    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = EventDto.class)})
     @LogAuditApi(name=GET_EVENT_BY_ID, saveRequest=true)
     @GetMapping("/{id}")
     public ResponseEntity<EventDto> getEventById(
@@ -164,8 +164,8 @@ public class EventRestController {
     		value=GET_EVENT_IMAGE, 
     		notes="Get Event Image", 
     		produces= "image/png, image/jpeg", 
-    		authorizations = { @Authorization(value=SwaggerConstant.JWT) })
-    @ApiResponses(value={@ApiResponse(code=200, message=SwaggerConstant.OK, response = Byte.class)})
+    		authorizations = { @Authorization(value="JWT") })
+    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Byte.class)})
     @LogAuditApi(name=GET_EVENT_IMAGE, saveRequest=true)
     @GetMapping("/{id}/image")
 	public ResponseEntity<byte[]> getEventImage(
@@ -193,7 +193,7 @@ public class EventRestController {
     		value=GET_EVENT_MATERIAL, 
     		notes="Get Event Material", 
     		produces= "application/pdf", 
-    		authorizations = { @Authorization(value=SwaggerConstant.JWT) })
+    		authorizations = { @Authorization(value="JWT") })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Byte.class)})
 	@LogAuditApi(name=GET_EVENT_MATERIAL, saveRequest=true)
     @GetMapping("/{id}/material")
@@ -224,8 +224,8 @@ public class EventRestController {
     		value=ADD_CUSTOMER_EVENT_ANSWER, 
     		notes="Add Customer's event answer",
     		produces=MediaType.APPLICATION_JSON_VALUE, 
-    		authorizations = { @Authorization(value=SwaggerConstant.JWT) })
-    @ApiResponses(value={@ApiResponse(code=200, message=SwaggerConstant.OK, response = Response.class)})
+    		authorizations = { @Authorization(value="JWT") })
+    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Response.class)})
     @LogAuditApi(name=ADD_CUSTOMER_EVENT_ANSWER, saveRequest=true)
     @PostMapping("/{id}/{answer}")
     public Response addCustomerEvent(

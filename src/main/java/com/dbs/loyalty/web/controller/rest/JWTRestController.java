@@ -37,9 +37,9 @@ public class JWTRestController {
 	
     private final JWTAuthenticationService jwtAuthenticationService;
 
-    @ApiOperation(value=AUTHENTICATE, consumes=SwaggerConstant.JSON, produces=SwaggerConstant.JSON)
+    @ApiOperation(value=AUTHENTICATE, consumes="application/json", produces="application/json")
     @ApiNotes("authenticate.md")
-    @ApiResponses(value={@ApiResponse(code=200, message=SwaggerConstant.OK, response=JWTTokenDto.class)})
+    @ApiResponses(value={@ApiResponse(code=200, message="OK", response=JWTTokenDto.class)})
     @PostMapping("/api/authenticate")
     public JWTTokenDto authenticate(
     		@ApiParam(name = "JWTLoginData", value = "Customer's login data to get JWT token")

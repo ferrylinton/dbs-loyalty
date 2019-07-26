@@ -42,9 +42,9 @@ public class AirportAssistanceRestController {
 	
 	@ApiOperation(
 			value=GET_AIRPORT_ASSISTANCE_LIMIT, 
-			produces=SwaggerConstant.JSON, 
-			authorizations={@Authorization(value=SwaggerConstant.JWT)})
-    @ApiResponses(value={@ApiResponse(code=200, message=SwaggerConstant.OK, response=AirportAssistanceDto.class)})
+			produces="application/json", 
+			authorizations={@Authorization(value="JWT")})
+    @ApiResponses(value={@ApiResponse(code=200, message="OK", response=AirportAssistanceDto.class)})
 	@LogAuditApi(name=GET_AIRPORT_ASSISTANCE_LIMIT)
 	@GetMapping
     public AirportAssistanceDto getLimit(){

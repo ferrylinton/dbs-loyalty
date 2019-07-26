@@ -13,9 +13,9 @@ import lombok.Setter;
 @ApiModel(value="LovedOneUpdateData", description = "Loved One's new data")
 public class LovedOneUpdateDto extends LovedOneAddDto {
 
-	@ApiModelProperty(value = "Customer Loved One's id", example = "646e8a2a-4ca4-459a-9da8-2a31daaecd38", position = 0)
-	@NotNull(message = "{validation.notnull.id}")
-	@Size(min = 36, max = 36, message = "{validation.size.id}")
+	@ApiModelProperty(value = "Customer Loved One's id", example = "1ag4pm80QXDfiECcxVmvw3", position = 0)
+	@NotNull
+	@Size(min = 36, max = 36)
 	private String id;
 	
 }

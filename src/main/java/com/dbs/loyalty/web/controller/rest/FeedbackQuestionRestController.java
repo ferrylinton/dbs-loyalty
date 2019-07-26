@@ -58,8 +58,8 @@ public class FeedbackQuestionRestController {
     		value = GET_FEEDBACK_QUESTIONS, 
     		notes = "Get feedback questons",
     		produces = MediaType.APPLICATION_JSON_VALUE, 
-    		authorizations = { @Authorization(value=SwaggerConstant.JWT) })
-    @ApiResponses(value = { @ApiResponse(code=200, message=SwaggerConstant.OK, response = FeedbackQuestionDto.class, responseContainer="list") })
+    		authorizations = { @Authorization(value="JWT") })
+    @ApiResponses(value = { @ApiResponse(code=200, message="OK", response = FeedbackQuestionDto.class, responseContainer="list") })
     @PreAuthorize("hasRole('CUSTOMER')")
     @LogAuditApi(name=GET_FEEDBACK_QUESTIONS)
     @GetMapping("/{eventId}")

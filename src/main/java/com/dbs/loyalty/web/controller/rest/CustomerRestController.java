@@ -81,9 +81,9 @@ public class CustomerRestController {
     
     @ApiOperation(
     		value=GET_CUSTOMER_INFO, 
-    		produces=SwaggerConstant.JSON, 
-    		authorizations={@Authorization(value=SwaggerConstant.JWT)})
-    @ApiResponses(value={@ApiResponse(code=200, message=SwaggerConstant.OK, response = CustomerDto.class)})
+    		produces="application/json", 
+    		authorizations={@Authorization(value="JWT")})
+    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = CustomerDto.class)})
     @LogAuditApi(name=GET_CUSTOMER_INFO)
     @GetMapping("/info")
 	public CustomerDto getCustomerInfo() throws NotFoundException{
@@ -99,10 +99,10 @@ public class CustomerRestController {
     @ApiOperation(
     		value=UPDATE_CUSTOMER, 
     		notes=UPDATE_CUSTOMER_NOTES, 
-    		consumes=SwaggerConstant.JSON, 
-    		produces=SwaggerConstant.JSON, 
-    		authorizations={@Authorization(value=SwaggerConstant.JWT)})
-    @ApiResponses(value={@ApiResponse(code=200, message=SwaggerConstant.OK, response = JWTTokenDto.class)})
+    		consumes="application/json", 
+    		produces="application/json", 
+    		authorizations={@Authorization(value="JWT")})
+    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = JWTTokenDto.class)})
     @LogAuditApi(name=UPDATE_CUSTOMER, saveRequest=true, saveResponse=true)
     @PutMapping
     public JWTTokenDto updateCustomer(
@@ -127,10 +127,10 @@ public class CustomerRestController {
     
     @ApiOperation(
     		value=CHANGE_PASSWORD, 
-    		consumes=SwaggerConstant.JSON, 
-    		produces=SwaggerConstant.JSON, 
-    		authorizations={@Authorization(value=SwaggerConstant.JWT)})
-    @ApiResponses(value={@ApiResponse(code=200, message=SwaggerConstant.OK, response = Response.class)})
+    		consumes="application/json", 
+    		produces="application/json", 
+    		authorizations={@Authorization(value="JWT")})
+    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Response.class)})
     @LogAuditApi(name=CHANGE_PASSWORD)
     @PostMapping("/change-password")
     public Response changePassword(
@@ -143,9 +143,9 @@ public class CustomerRestController {
 
     @ApiOperation(
     		value=FORGOT_PASSWORD, 
-    		produces=SwaggerConstant.JSON, 
-    		authorizations={@Authorization(value=SwaggerConstant.JWT)})
-    @ApiResponses(value={@ApiResponse(code=200, message=SwaggerConstant.OK, response=Response.class)})
+    		produces="application/json", 
+    		authorizations={@Authorization(value="JWT")})
+    @ApiResponses(value={@ApiResponse(code=200, message="OK", response=Response.class)})
     @PreAuthorize("hasRole('TOKEN')")
     @LogAuditApi(name=FORGOT_PASSWORD)
     @PutMapping("/forgot")

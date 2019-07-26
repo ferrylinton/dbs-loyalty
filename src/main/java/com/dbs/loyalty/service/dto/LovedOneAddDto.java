@@ -6,6 +6,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.dbs.loyalty.config.constant.DateConstant;
 import com.dbs.loyalty.config.constant.RegexConstant;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -20,19 +23,20 @@ import lombok.Setter;
 public class LovedOneAddDto {
 
 	@ApiModelProperty(value = "Customer Loved One's name", example = "John Smith", position = 1)
-	@NotNull(message = "{validation.notnull.name}")
+	@NotNull
 	@Pattern(regexp = RegexConstant.NAME, message = RegexConstant.NAME_MESSAGE)
-	@Size(min = 2, max = 50, message = "{validation.size.name}")
+	@Size(min = 2, max = 50)
 	private String name;
 	
 	@ApiModelProperty(value = "Customer Loved One's phone", example = "+62 8123456789", position = 2)
-	@NotNull(message = "{validation.notnull.phone}")
-	@Size(min = 6, max = 20, message = "{validation.size.phone}")
+	@NotNull
+	@Size(min = 6, max = 20)
 	private String phone;
 	
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	@ApiModelProperty(value = "Customer Loved One's date of birth", example = "21-01-1980", position = 3)
-	@NotNull(message = "{validation.notnull.dob}")
+	@NotNull
+	@DateTimeFormat(pattern = DateConstant.JAVA_DATE)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = DateConstant.JAVA_DATE)
 	private Date dob;
 	
 }
