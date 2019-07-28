@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbs.loyalty.aop.LogAuditApi;
+import com.dbs.loyalty.aop.EnableLogAuditCustomer;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.domain.MedicalProviderBranch;
 import com.dbs.loyalty.service.MedicalProviderBranchService;
@@ -54,7 +54,7 @@ public class MedicalProviderBranchRestController {
     		produces="application/json", 
     		authorizations={@Authorization(value="JWT")})
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response=MedicalProviderDto.class)})
-    @LogAuditApi(name=GET_MEDICAL_PROVIDER_BRANCHES)
+    @EnableLogAuditCustomer(operation=GET_MEDICAL_PROVIDER_BRANCHES)
     @GetMapping("/{medicalProviderCityId}")
     public List<MedicalProviderBranchDto> getMedicalProviderBranches(
     		@ApiParam(name = "MedicalProviderCityId", value = "MedicalProviderCityId", example = "6nJfmxAD6GWtsehXfSkShg")

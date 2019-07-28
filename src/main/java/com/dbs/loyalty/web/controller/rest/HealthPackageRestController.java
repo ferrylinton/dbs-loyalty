@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbs.loyalty.aop.LogAuditApi;
+import com.dbs.loyalty.aop.EnableLogAuditCustomer;
 import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.config.constant.MessageConstant;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
@@ -60,7 +60,7 @@ public class HealthPackageRestController {
     		produces="application/json", 
     		authorizations={@Authorization(value="JWT")})
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response=HealthPackageDto.class)})
-    @LogAuditApi(name=GET_HEALTH_PACKAGES)
+    @EnableLogAuditCustomer(operation=GET_HEALTH_PACKAGES)
     @GetMapping
     public List<HealthPackageDto> getHealthPackages() {
     	List<HealthPackage> healthPackages = healthPackageService.findAll();
@@ -73,7 +73,7 @@ public class HealthPackageRestController {
     		produces="text/plain", 
     		authorizations={@Authorization(value="JWT")})
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response=String.class)})
-    @LogAuditApi(name=GET_HEALTH_PACKAGE_CONTENT_BY_ID)
+    @EnableLogAuditCustomer(operation=GET_HEALTH_PACKAGE_CONTENT_BY_ID)
     @GetMapping(value="/{id}/content", produces="text/plain")
     public String getContentById(
     		@ApiParam(name = "id", value = "Health Package Id", example = "5WTqpHYs3wZoIdhAkbWt1W")

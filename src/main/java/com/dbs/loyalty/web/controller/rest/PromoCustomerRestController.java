@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbs.loyalty.aop.LogAuditApi;
+import com.dbs.loyalty.aop.EnableLogAuditCustomer;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.PromoCustomerService;
 import com.dbs.loyalty.web.response.Response;
@@ -43,7 +43,7 @@ public class PromoCustomerRestController {
 			produces="application/json", 
 			authorizations={@Authorization(value="JWT")})
 	@ApiResponses(value={@ApiResponse(code=200, message="OK", response=Response.class)})
-	@LogAuditApi(name=ADD_TO_INTERESTED_IN_PROMO)
+	@EnableLogAuditCustomer(operation=ADD_TO_INTERESTED_IN_PROMO)
     @PostMapping("/{id}")
     public Response addToInterestedInPromo(
     		@ApiParam(name = "id", value = "Promo Id", example = "5WTqpHYs3wZoIdhAkbWt1W")

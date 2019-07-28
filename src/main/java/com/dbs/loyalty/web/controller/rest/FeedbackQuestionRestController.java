@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbs.loyalty.aop.LogAuditApi;
+import com.dbs.loyalty.aop.EnableLogAuditCustomer;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.FeedbackQuestionService;
@@ -61,7 +61,7 @@ public class FeedbackQuestionRestController {
     		authorizations = { @Authorization(value="JWT") })
     @ApiResponses(value = { @ApiResponse(code=200, message="OK", response = FeedbackQuestionDto.class, responseContainer="list") })
     @PreAuthorize("hasRole('CUSTOMER')")
-    @LogAuditApi(name=GET_FEEDBACK_QUESTIONS)
+    @EnableLogAuditCustomer(operation=GET_FEEDBACK_QUESTIONS)
     @GetMapping("/{eventId}")
     public List<FeedbackQuestionDto> getFeedbackById(
     		@ApiParam(name = "eventId", value = "Event Id", example = "77UTTDWJX3zNWABg9ixZX9")

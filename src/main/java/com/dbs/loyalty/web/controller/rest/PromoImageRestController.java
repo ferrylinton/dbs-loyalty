@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbs.loyalty.aop.LogAuditApi;
+import com.dbs.loyalty.aop.EnableLogAuditCustomer;
 import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.config.constant.MessageConstant;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
@@ -50,7 +50,7 @@ public class PromoImageRestController {
 			produces="image/png, image/jpeg", 
 			authorizations={@Authorization(value="JWT")})
 	@ApiResponses(value={@ApiResponse(code=200, message="OK", response=Byte.class)})
-	@LogAuditApi(name=GET_PROMO_IMAGE_BY_ID)
+	@EnableLogAuditCustomer(operation=GET_PROMO_IMAGE_BY_ID)
 	@GetMapping("/{id}/image")
     public ResponseEntity<byte[]> getImageByPromoId(
     		@ApiParam(name = "id", value = "Promo Id", example = "5WTqpHYs3wZoIdhAkbWt1W")

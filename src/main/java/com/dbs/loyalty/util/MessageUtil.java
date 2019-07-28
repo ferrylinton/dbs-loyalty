@@ -1,5 +1,7 @@
 package com.dbs.loyalty.util;
 
+import java.util.Locale;
+
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 
@@ -31,6 +33,14 @@ public final class MessageUtil {
 	public static String getMessage(String code, Object arg1, Object arg2) {
 		Object[] args = new Object[] {arg1, arg2};
 		return messageSource.getMessage(code, args, code, LocaleContextHolder.getLocale());
+	}
+	
+	public static String getMessage(String code, Locale locale) {
+		return messageSource.getMessage(code, null, code, locale);
+	}
+
+	public static String getMessage(String code, Object[] args, Locale locale) {
+		return messageSource.getMessage(code, args, code, locale);
 	}
 
 	public static String taskIsSavedMessage(String taskDataType, String val) {

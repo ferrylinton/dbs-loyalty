@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbs.loyalty.aop.LogAuditApi;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.service.DepartureService;
@@ -52,8 +51,7 @@ public class DepartureRestController {
 			produces="application/json", 
 			authorizations={@Authorization(value="JWT")})
     @ApiResponses(value={ @ApiResponse(code=200, message="OK", response=Response.class)})
-	@LogAuditApi(name=ADD_DEPARTURE, saveRequest=true, saveResponse=true)
-    @PostMapping
+	@PostMapping
     public Response addDeparture(@Valid @RequestBody DepartureDto departureDto) throws BadRequestException{
 		return departureService.save(departureMapper.toEntity(departureDto));
     }

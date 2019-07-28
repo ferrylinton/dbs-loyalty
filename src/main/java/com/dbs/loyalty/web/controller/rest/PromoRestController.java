@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbs.loyalty.aop.LogAuditApi;
+import com.dbs.loyalty.aop.EnableLogAuditCustomer;
 import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.exception.NotFoundException;
@@ -60,7 +60,7 @@ public class PromoRestController {
 			produces="application/json", 
 			authorizations={@Authorization(value="JWT")})
 	@ApiResponses(value={@ApiResponse(code=200, message="OK", response=CarouselDto.class)})
-	@LogAuditApi(name=GET_ALL_PROMO_IN_CAROUSEL)
+	@EnableLogAuditCustomer(operation=GET_ALL_PROMO_IN_CAROUSEL)
 	@GetMapping("/carousel")
     public List<CarouselDto> getAllPromoInCarousel(){
 		return promoService
@@ -75,7 +75,7 @@ public class PromoRestController {
 			produces="application/json", 
 			authorizations={@Authorization(value="JWT")})
 	@ApiResponses(value={@ApiResponse(code=200, message="OK", response=PromoDto.class)})
-	@LogAuditApi(name=GET_ALL_BY_PROMO_CATEGORY_ID)
+	@EnableLogAuditCustomer(operation=GET_ALL_BY_PROMO_CATEGORY_ID)
 	@GetMapping("/promo-categories/{promoCategoryId}")
     public List<PromoDto> getAllByPromoCategoryId(
     		@ApiParam(name = "promoCategoryId", value = "Promo Category Id", example = "6nJfmxAD6GWtsehXfSkShg")
@@ -93,7 +93,7 @@ public class PromoRestController {
 			produces="application/json", 
 			authorizations={@Authorization(value="JWT")})
 	@ApiResponses(value={@ApiResponse(code=200, message="OK", response=PromoDto.class)})
-	@LogAuditApi(name=GET_PROMO_BY_ID)
+	@EnableLogAuditCustomer(operation=GET_PROMO_BY_ID)
 	@GetMapping("/{id}")
     public PromoDto getPromoById(
     		@ApiParam(name = "id", value = "Promo Id", example = "5WTqpHYs3wZoIdhAkbWt1W")
@@ -115,7 +115,7 @@ public class PromoRestController {
     		produces="text/plain", 
     		authorizations={@Authorization(value="JWT")})
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response=String.class)})
-    @LogAuditApi(name=GET_PROMO_TERM_BY_ID)
+    @EnableLogAuditCustomer(operation=GET_PROMO_TERM_BY_ID)
     @GetMapping(value="/{id}/term", produces="text/plain")
     public String getTermAndConditionById(
     		@ApiParam(name = "id", value = "Promo Id", example = "5WTqpHYs3wZoIdhAkbWt1W")

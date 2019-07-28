@@ -24,7 +24,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Class of LogAudit
+ * Class of Log Audit Customer
  * 
  * @author Ferry L. H. <ferrylinton@gmail.com>
  */
@@ -32,14 +32,14 @@ import lombok.Setter;
 @Getter
 @Entity
 @Table(
-	name = "log_api",
+	name = "log_audit_customer",
 	indexes= {
-			@Index(name = "log_api_customer_id_idx", columnList = "customer_id"),
-			@Index(name = "log_api_created_date_idx", columnList = "created_date"),
-			@Index(name = "log_api_url_idx", columnList = "url")
+			@Index(name = "log_audit_customer_id_idx", columnList = "customer_id"),
+			@Index(name = "log_audit_customer_created_date_idx", columnList = "created_date"),
+			@Index(name = "log_audit_customer_url_idx", columnList = "url")
 	}
 )
-public class LogApi implements Serializable {
+public class LogAuditCustomer implements Serializable {
 
     private static final long serialVersionUID = 1L;
     
@@ -49,8 +49,8 @@ public class LogApi implements Serializable {
 	@GeneratedValue(generator = DomainConstant.ID_GENERATOR)
 	private String id;
 
-    @Column(name = "name", length = 100, nullable = false)
-    private String name;
+    @Column(name = "operation", length = 100, nullable = false)
+    private String operation;
     
     @Column(name = "url", length = 100, nullable = false)
     private String url;
@@ -58,15 +58,26 @@ public class LogApi implements Serializable {
     @Column(name = "status", length = 10, nullable = false, updatable = false)
 	private String status;
 
+    @Column(name = "content_type", length = 50)
+    private String contentType;
+    
     @Lob
 	@Type(type = "org.hibernate.type.TextType")
-    @Column(name = "request")
-    private String request;
+    @Column(name = "request_data")
+    private String requestData;
 
     @Lob
 	@Type(type = "org.hibernate.type.TextType")
-    @Column(name = "response")
-    private String response;
+    @Column(name = "old_data")
+    private String oldData;
+    
+    @Lob
+    @Column(name = "request_file", columnDefinition="MEDIUMBLOB")
+    private byte[] requestFile;
+    
+    @Lob
+    @Column(name = "old_file", columnDefinition="MEDIUMBLOB")
+    private byte[] oldFile;
     
     @Lob
 	@Type(type = "org.hibernate.type.TextType")
@@ -74,7 +85,7 @@ public class LogApi implements Serializable {
     private String error;
 
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id", foreignKey = @ForeignKey(name = "log_api_fk"))
+    @JoinColumn(name = "customer_id", foreignKey = @ForeignKey(name = "log_audit_customer_fk"))
 	private Customer customer;
 
     @Column(name = "created_date")

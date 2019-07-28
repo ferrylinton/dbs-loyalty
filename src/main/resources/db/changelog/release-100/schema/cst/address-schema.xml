@@ -44,4 +44,8 @@
         <addForeignKeyConstraint baseColumnNames="customer_id" baseTableName="cst_address" constraintName="cst_address_fk2" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="cst_customer"/>
     </changeSet>
     
+    <changeSet author="FLH" id="address-schema-5">
+        <addUniqueConstraint columnNames="label, customer_id" constraintName="cst_address_label_uq" tableName="cst_address"/>
+    </changeSet>
+    
 </databaseChangeLog>

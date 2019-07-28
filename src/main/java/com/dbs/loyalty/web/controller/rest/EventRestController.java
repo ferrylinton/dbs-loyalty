@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbs.loyalty.aop.LogAuditApi;
+import com.dbs.loyalty.aop.EnableLogAuditCustomer;
 import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.config.constant.MessageConstant;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
@@ -93,7 +93,7 @@ public class EventRestController {
     		produces=MediaType.APPLICATION_JSON_VALUE, 
     		authorizations = { @Authorization(value="JWT") })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = EventDto.class, responseContainer="list")})
-	@LogAuditApi(name=GET_UPCOMING_EVENT)
+	@EnableLogAuditCustomer(operation=GET_UPCOMING_EVENT)
     @GetMapping("/upcoming")
     public ResponseEntity<List<EventDto>> getUpcomingEvent(){
 		List<EventDto> events = eventService
@@ -114,7 +114,7 @@ public class EventRestController {
     		produces=MediaType.APPLICATION_JSON_VALUE, 
     		authorizations = { @Authorization(value="JWT") })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = EventDto.class)})
-	@LogAuditApi(name=GET_PREVIOUS_EVENT)
+	@EnableLogAuditCustomer(operation=GET_PREVIOUS_EVENT)
     @GetMapping("/previous")
     public ResponseEntity<List<EventDto>> getPreviousEvent(){
 		List<EventDto> events = eventService
@@ -142,7 +142,7 @@ public class EventRestController {
     		produces=MediaType.APPLICATION_JSON_VALUE, 
     		authorizations = { @Authorization(value="JWT") })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = EventDto.class)})
-    @LogAuditApi(name=GET_EVENT_BY_ID, saveRequest=true)
+    @EnableLogAuditCustomer(operation=GET_EVENT_BY_ID)
     @GetMapping("/{id}")
     public ResponseEntity<EventDto> getEventById(
     		@ApiParam(name = "id", value = "Event Id", example = "77UTTDWJX3zNWABg9ixZX9")
@@ -166,7 +166,7 @@ public class EventRestController {
     		produces= "image/png, image/jpeg", 
     		authorizations = { @Authorization(value="JWT") })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Byte.class)})
-    @LogAuditApi(name=GET_EVENT_IMAGE, saveRequest=true)
+    @EnableLogAuditCustomer(operation=GET_EVENT_IMAGE)
     @GetMapping("/{id}/image")
 	public ResponseEntity<byte[]> getEventImage(
     		@ApiParam(name = "id", value = "Event Id", example = "77UTTDWJX3zNWABg9ixZX9")
@@ -195,7 +195,7 @@ public class EventRestController {
     		produces= "application/pdf", 
     		authorizations = { @Authorization(value="JWT") })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Byte.class)})
-	@LogAuditApi(name=GET_EVENT_MATERIAL, saveRequest=true)
+	@EnableLogAuditCustomer(operation=GET_EVENT_MATERIAL)
     @GetMapping("/{id}/material")
 	public ResponseEntity<InputStreamResource> getEventMaterial(
     		@ApiParam(name = "id", value = "Event Id", example = "77UTTDWJX3zNWABg9ixZX9")
@@ -226,7 +226,7 @@ public class EventRestController {
     		produces=MediaType.APPLICATION_JSON_VALUE, 
     		authorizations = { @Authorization(value="JWT") })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Response.class)})
-    @LogAuditApi(name=ADD_CUSTOMER_EVENT_ANSWER, saveRequest=true)
+    @EnableLogAuditCustomer(operation=ADD_CUSTOMER_EVENT_ANSWER)
     @PostMapping("/{id}/{answer}")
     public Response addCustomerEvent(
     		@ApiParam(name = "id", value = "Event Id", example = "10noLnNvqC4SwAUMcJ9GXm")

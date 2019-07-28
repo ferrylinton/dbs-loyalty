@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbs.loyalty.aop.LogAuditApi;
 import com.dbs.loyalty.config.constant.MessageConstant;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.exception.BadRequestException;
@@ -43,7 +42,6 @@ public class CustomerActivateRestController {
     		produces="application/json", 
     		authorizations={@Authorization(value="JWT")})
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response=Response.class)})
-    @LogAuditApi(name=ACTIVATE_CUSTOMER, saveRequest=true, saveResponse=true)
     @PostMapping("/activate")
     public Response activate(
     		@ApiParam(name = "CustomerActivateData", value = "Customer's activate data") 

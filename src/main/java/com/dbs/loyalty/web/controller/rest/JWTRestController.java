@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.service.JWTAuthenticationService;
+import com.dbs.loyalty.service.LogAuditCustomerService;
 import com.dbs.loyalty.service.dto.JWTLoginDto;
 import com.dbs.loyalty.service.dto.JWTTokenDto;
+import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.swagger.ApiNotes;
 
 import io.swagger.annotations.Api;
@@ -35,7 +37,11 @@ public class JWTRestController {
 
 	public static final String AUTHENTICATE = "Authenticate";
 	
+	public static final String BINDER_NAME = "JWTLoginDto";
+	
     private final JWTAuthenticationService jwtAuthenticationService;
+    
+    private final LogAuditCustomerService logAuditCustomerService;
 
     @ApiOperation(value=AUTHENTICATE, consumes="application/json", produces="application/json")
     @ApiNotes("authenticate.md")
@@ -44,10 +50,17 @@ public class JWTRestController {
     public JWTTokenDto authenticate(
     		@ApiParam(name = "JWTLoginData", value = "Customer's login data to get JWT token")
     		@Valid @RequestBody JWTLoginDto jwtLoginDto,
-    		HttpServletRequest request) throws Exception {
-    	
-    	Authentication authentication = new UsernamePasswordAuthenticationToken(jwtLoginDto.getEmail(), jwtLoginDto.getPassword());
-    	return jwtAuthenticationService.authenticate(request, authentication, jwtLoginDto.isRememberMe());
+    		HttpServletRequest request) throws Throwable {
+
+    	try {
+    		Authentication authentication = new UsernamePasswordAuthenticationToken(jwtLoginDto.getEmail(), jwtLoginDto.getPassword());
+    		JWTTokenDto jWTTokenDto = jwtAuthenticationService.authenticate(request, authentication, jwtLoginDto.isRememberMe());
+    		logAuditCustomerService.save(AUTHENTICATE, UrlUtil.getFullUrl(request), jwtLoginDto);
+    		return jWTTokenDto;
+    	} catch (Throwable t) {
+    		logAuditCustomerService.saveError(AUTHENTICATE, UrlUtil.getFullUrl(request), jwtLoginDto, t);
+			throw t;
+		}
     }
 
 }

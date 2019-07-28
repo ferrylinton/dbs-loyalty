@@ -7,12 +7,8 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface LogAuditApi {
+public @interface EnableLogAuditCustomer {
 
-	String name();
-	
-	boolean saveRequest() default false;
-	
-	boolean saveResponse() default false;
+	String operation();
 
 }

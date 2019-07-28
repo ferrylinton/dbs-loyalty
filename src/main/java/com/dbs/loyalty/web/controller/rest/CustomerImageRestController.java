@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.dbs.loyalty.aop.LogAuditApi;
+import com.dbs.loyalty.aop.EnableLogAuditCustomer;
 import com.dbs.loyalty.config.constant.MessageConstant;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.domain.FileImage;
@@ -52,7 +52,7 @@ public class CustomerImageRestController {
 			produces="image/png, image/jpeg", 
 			authorizations={@Authorization(value="JWT")})
 	@ApiResponses(value = { @ApiResponse(code=200, message="OK", response = Byte.class)})
-	@LogAuditApi(name=GET_CUSTOMER_IMAGE)
+	@EnableLogAuditCustomer(operation=GET_CUSTOMER_IMAGE)
 	@GetMapping("/image")
 	public ResponseEntity<byte[]> getCustomerImage() throws NotFoundException {
     	Optional<FileImage> fileImage = imageService.findById(SecurityUtil.getId());
@@ -78,7 +78,6 @@ public class CustomerImageRestController {
 			produces="image/png, image/jpeg", 
 			authorizations={@Authorization(value="JWT")})
 	@ApiResponses(value = { @ApiResponse(code=200, message="OK", response = Byte.class)})
-	@LogAuditApi(name=UPDATE_CUSTOMER_IMAGE)
 	@PutMapping("/image")
     public ResponseEntity<byte[]> updateCustomerImage(
     		@ApiParam(name = "file", value = "Customer's image") 

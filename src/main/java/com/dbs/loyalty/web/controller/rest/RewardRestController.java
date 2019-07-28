@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbs.loyalty.aop.LogAuditApi;
+import com.dbs.loyalty.aop.EnableLogAuditCustomer;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.service.RewardService;
 import com.dbs.loyalty.service.dto.RewardDto;
@@ -48,7 +48,7 @@ public class RewardRestController {
 			produces="application/json", 
 			authorizations={@Authorization(value="JWT")})
 	@ApiResponses(value={@ApiResponse(code=200, message="OK", response=TotalDto.class)})
-	@LogAuditApi(name=GET_TOTAL_REWARDS)
+	@EnableLogAuditCustomer(operation=GET_TOTAL_REWARDS)
 	@GetMapping("/total")
 	public TotalDto getTotalRewards(){
 		return new TotalDto(rewardService.getAvailablePoints());
@@ -59,7 +59,7 @@ public class RewardRestController {
 			produces="application/json", 
 			authorizations={@Authorization(value="JWT")})
 	@ApiResponses(value={@ApiResponse(code=200, message="OK", response=RewardDto.class)})
-	@LogAuditApi(name=GET_ALL_REWARDS)
+	@EnableLogAuditCustomer(operation=GET_ALL_REWARDS)
 	@GetMapping
 	public List<RewardDto> getAllRewards(){
 		return rewardService

@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dbs.loyalty.config.constant.Constant;
-import com.dbs.loyalty.domain.LogApi;
-import com.dbs.loyalty.service.LogApiService;
+import com.dbs.loyalty.domain.LogAuditCustomer;
+import com.dbs.loyalty.service.LogAuditCustomerService;
 import com.dbs.loyalty.util.PageUtil;
 import com.dbs.loyalty.util.QueryStringUtil;
 
@@ -23,26 +23,26 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Controller
-@RequestMapping("/logapi")
-public class LogApiController {
+@RequestMapping("/logauditcustomer")
+public class LogAuditCustomerController {
 
-	private static final String REDIRECT 	= "redirect:/logapi";
+	private static final String REDIRECT 	= "redirect:/logauditcustomer";
 	
-	private static final String VIEW 		= "logapi/logapi-view";
+	private static final String VIEW 		= "logauditcustomer/logauditcustomer-view";
 	
 	private static final String SORT_BY 	= "createdDate";
 	
-	private final LogApiService logApiService;
+	private final LogAuditCustomerService logAuditCustomerService;
 
 	@PreAuthorize("hasRole('LOG')")
 	@GetMapping
-	public String viewLogApis(
+	public String viewLogAuditCustomers(
 			@ModelAttribute(Constant.TOAST) String toast, 
 			@RequestParam Map<String, String> params, 
 			Sort sort, Model model) {
 		
 		Order order = PageUtil.getOrder(sort, SORT_BY);
-		Page<LogApi> page = logApiService.findAll(params, PageUtil.getPageable(params, order));
+		Page<LogAuditCustomer> page = logAuditCustomerService.findAll(params, PageUtil.getPageable(params, order));
 		
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
 			return REDIRECT;

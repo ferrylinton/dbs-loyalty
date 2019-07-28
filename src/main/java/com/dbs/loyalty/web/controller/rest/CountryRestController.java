@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbs.loyalty.aop.LogAuditApi;
+import com.dbs.loyalty.aop.EnableLogAuditCustomer;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.service.CountryService;
 import com.dbs.loyalty.service.dto.CountryDto;
@@ -52,7 +52,7 @@ public class CountryRestController {
     		produces="application/json", 
     		authorizations={@Authorization(value="JWT")})
     @ApiResponses(value = { @ApiResponse(code=200, message="OK", response=CountryDto.class, responseContainer="List")})
-    @LogAuditApi(name=GET_COUNTRIES)
+    @EnableLogAuditCustomer(operation=GET_COUNTRIES)
     @GetMapping
     public List<CountryDto> getCountries() {
     	List<CountryDto> countries = countryMapper.toDto(countryService.findAll());
@@ -70,7 +70,7 @@ public class CountryRestController {
     		produces="application/json", 
     		authorizations={@Authorization(value="JWT")})
     @ApiResponses(value = { @ApiResponse(code=200, message="OK", response=Response.class)})
-    @LogAuditApi(name=SYNC_COUNTRIES)
+    @EnableLogAuditCustomer(operation=SYNC_COUNTRIES)
     @GetMapping("/sync")
     public Response sync() {
     	countryService.sync();

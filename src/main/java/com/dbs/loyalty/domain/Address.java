@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -34,7 +35,12 @@ import lombok.ToString;
 @ToString(of = {"id"})
 @EqualsAndHashCode(of = {"id"}, callSuper = false)
 @Entity
-@Table(name = "cst_address")
+@Table(
+	name = "cst_address",
+	uniqueConstraints = {
+		@UniqueConstraint(name = "cst_address_label_uq", columnNames = { "label", "customer_id" })
+	}
+)
 public class Address extends AbstractAuditing implements Serializable {
 
 	private static final long serialVersionUID = 1L;

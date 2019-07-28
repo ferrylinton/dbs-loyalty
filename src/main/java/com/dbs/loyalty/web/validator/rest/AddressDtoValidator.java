@@ -30,20 +30,14 @@ public class AddressDtoValidator implements Validator {
 		if(!(AddressLabelConstant.PRIMARY.equalsIgnoreCase(addressDto.getLabel()) || 
 				AddressLabelConstant.SECONDARY.equalsIgnoreCase(addressDto.getLabel()))) {
 			
-			String message = String.format("Label must be %s or %s", AddressLabelConstant.PRIMARY, AddressLabelConstant.SECONDARY);
+			String message = String.format("label must be '%s' or '%s'", AddressLabelConstant.PRIMARY, AddressLabelConstant.SECONDARY);
 			errors.rejectValue("label", message, message);
-		}else {
-			if(AddressLabelConstant.PRIMARY.equalsIgnoreCase(addressDto.getLabel())){
-				addressDto.setLabel(AddressLabelConstant.PRIMARY);
-			}else {
-				addressDto.setLabel(AddressLabelConstant.SECONDARY);
-			}
 		}
 		
 		Optional<City> current = cityService.findByNameIgnoreCase(addressDto.getCity());
 		
 		if(!current.isPresent()) {
-			String message = String.format("City [%s] is not valid", addressDto.getCity());
+			String message = String.format("city [%s] is not valid", addressDto.getCity());
 			errors.rejectValue("city", message, message);
 		}else {
 			addressDto.setCity(current.get().getName());

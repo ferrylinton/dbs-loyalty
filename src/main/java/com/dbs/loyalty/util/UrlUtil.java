@@ -2,16 +2,18 @@ package com.dbs.loyalty.util;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.dbs.loyalty.config.constant.Constant;
+
 public class UrlUtil {
 	
-	public static String getFullUrl(HttpServletRequest httpServletRequest) {
-		StringBuilder requestURL = new StringBuilder(httpServletRequest.getRequestURL().toString());
-		String queryString = httpServletRequest.getQueryString();
+	public static String getFullUrl(HttpServletRequest request) {
+		StringBuilder requestURL = new StringBuilder(request.getRequestURL().toString());
+		String queryString = request.getQueryString();
 		
 		if(queryString == null) {
 			return requestURL.toString();
 		}else {
-			return requestURL.append("?").append(queryString).toString();
+			return requestURL.append(Constant.QUESTION).append(queryString).toString();
 		}
 		
 	}

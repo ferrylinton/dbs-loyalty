@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbs.loyalty.aop.LogAuditApi;
 import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.config.constant.MessageConstant;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
@@ -66,7 +65,6 @@ public class FeedbackAnswerRestController {
     		authorizations = { @Authorization(value="JWT") })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = FeedbackAnswerDto.class)})
     @PreAuthorize("hasRole('CUSTOMER')")
-    @LogAuditApi(name=ADD_FEEDBACK_CUSTOMER, saveRequest=true, saveResponse=true)
     @PostMapping("/{eventId}")
     public ResponseEntity<List<FeedbackAnswerDto>> addFeedbackCustomer(
     		@ApiParam(name = "eventId", value = "Event Id", example = "77UTTDWJX3zNWABg9ixZX9")

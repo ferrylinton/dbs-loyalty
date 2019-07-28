@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbs.loyalty.aop.LogAuditApi;
+import com.dbs.loyalty.aop.EnableLogAuditCustomer;
 import com.dbs.loyalty.config.constant.DateConstant;
 import com.dbs.loyalty.config.constant.MessageConstant;
 import com.dbs.loyalty.config.constant.SecurityConstant;
@@ -84,7 +84,7 @@ public class CustomerRestController {
     		produces="application/json", 
     		authorizations={@Authorization(value="JWT")})
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = CustomerDto.class)})
-    @LogAuditApi(name=GET_CUSTOMER_INFO)
+    @EnableLogAuditCustomer(operation=GET_CUSTOMER_INFO)
     @GetMapping("/info")
 	public CustomerDto getCustomerInfo() throws NotFoundException{
     	Optional<Customer> current = customerService.findByEmail(SecurityUtil.getLogged());
@@ -103,7 +103,6 @@ public class CustomerRestController {
     		produces="application/json", 
     		authorizations={@Authorization(value="JWT")})
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = JWTTokenDto.class)})
-    @LogAuditApi(name=UPDATE_CUSTOMER, saveRequest=true, saveResponse=true)
     @PutMapping
     public JWTTokenDto updateCustomer(
     		@ApiParam(name = "CustomerNewData", value = "Customer's new data") 
@@ -131,7 +130,7 @@ public class CustomerRestController {
     		produces="application/json", 
     		authorizations={@Authorization(value="JWT")})
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Response.class)})
-    @LogAuditApi(name=CHANGE_PASSWORD)
+    @EnableLogAuditCustomer(operation=CHANGE_PASSWORD)
     @PostMapping("/change-password")
     public Response changePassword(
     		@ApiParam(name = "ChangePasswordData", value = "Customer's password data") 
@@ -147,7 +146,7 @@ public class CustomerRestController {
     		authorizations={@Authorization(value="JWT")})
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response=Response.class)})
     @PreAuthorize("hasRole('TOKEN')")
-    @LogAuditApi(name=FORGOT_PASSWORD)
+    @EnableLogAuditCustomer(operation=FORGOT_PASSWORD)
     @PutMapping("/forgot")
     public Response forgot(
     		@ApiParam(name = "CustomerNewPassword", value = "Customer's new password") 

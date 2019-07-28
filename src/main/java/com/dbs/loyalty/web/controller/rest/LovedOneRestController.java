@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbs.loyalty.aop.LogAuditApi;
+import com.dbs.loyalty.aop.EnableLogAuditCustomer;
 import com.dbs.loyalty.config.constant.DateConstant;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.domain.LovedOne;
@@ -70,7 +70,7 @@ public class LovedOneRestController {
     		produces="application/json", 
     		authorizations = { @Authorization(value="JWT") })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = LovedOneDto.class, responseContainer="List")})
-    @LogAuditApi(name=GET_LOVED_ONES)
+    @EnableLogAuditCustomer(operation=GET_LOVED_ONES)
     @GetMapping
 	public List<LovedOneDto> getLovedOnes(){
     	List<LovedOneDto> lovedOnes = lovedOneService
@@ -89,7 +89,6 @@ public class LovedOneRestController {
     		produces="application/json", 
     		authorizations = { @Authorization(value="JWT") })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = LovedOneDto.class)})
-    @LogAuditApi(name=ADD_LOVED_ONE, saveRequest=true, saveResponse=true)
     @PostMapping
     public LovedOneDto addCustomer(
     		@ApiParam(name = "LovedOneData", value = "Customer's loved one new data") 
@@ -106,7 +105,6 @@ public class LovedOneRestController {
     		produces="application/json", 
     		authorizations = { @Authorization(value="JWT") })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = LovedOneDto.class)})
-    @LogAuditApi(name=UPDATE_LOVED_ONE, saveRequest=true, saveResponse=true)
     @PutMapping
     public LovedOneDto updateCustomer(
     		@ApiParam(name = "LovedOneData", value = "Customer's loved one new data") 

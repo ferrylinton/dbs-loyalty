@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbs.loyalty.aop.LogAuditApi;
+import com.dbs.loyalty.aop.EnableLogAuditCustomer;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.domain.FileImage;
 import com.dbs.loyalty.exception.NotFoundException;
@@ -68,7 +68,7 @@ public class TrxProductRestController {
     		produces=MediaType.APPLICATION_JSON_VALUE, 
     		authorizations = { @Authorization(value="JWT") })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = TrxProductDto.class)})
-	@LogAuditApi(name=GET_ALL_TRX_PRODUCTS)
+	@EnableLogAuditCustomer(operation=GET_ALL_TRX_PRODUCTS)
 	@GetMapping
     public List<TrxProductDto> getAllTrxProducts(){
 		return trxProductService
@@ -85,7 +85,7 @@ public class TrxProductRestController {
     		produces=MediaType.APPLICATION_JSON_VALUE, 
     		authorizations = { @Authorization(value="JWT") })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = TrxProductDto.class)})
-	@LogAuditApi(name=GET_TRX_PRODUCT_BY_ID)
+	@EnableLogAuditCustomer(operation=GET_TRX_PRODUCT_BY_ID)
 	@GetMapping("/{id}")
     public TrxProductDto getById(
     		@ApiParam(name = "id", value = "Product Id", example = "zO0dDp9K")
@@ -109,7 +109,7 @@ public class TrxProductRestController {
 			produces= "image/png, image/jpeg", 
     		authorizations = { @Authorization(value="JWT") })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Byte.class)})
-	@LogAuditApi(name=GET_TRX_PRODUCT_IMAGE_BY_ID)
+	@EnableLogAuditCustomer(operation=GET_TRX_PRODUCT_IMAGE_BY_ID)
 	@GetMapping("/{id}/image")
     public ResponseEntity<byte[]> getTrxProductImageById(
     		@ApiParam(name = "id", value = "TrxProduct Id", example = "zO0dDp9K")

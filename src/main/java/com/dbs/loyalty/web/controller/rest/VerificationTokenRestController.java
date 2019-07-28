@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbs.loyalty.aop.LogAuditApi;
+import com.dbs.loyalty.aop.EnableLogAuditCustomer;
 import com.dbs.loyalty.config.ApplicationProperties;
 import com.dbs.loyalty.config.constant.SecurityConstant;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
@@ -75,7 +75,7 @@ public class VerificationTokenRestController {
     		consumes="application/json", 
     		produces="application/json")
     @ApiResponses(value = { @ApiResponse(code=200, message="OK", response=VerificationTokenDto.class)})
-    @LogAuditApi(name=GENERATE_VERIFICATION_TOKEN, saveRequest=true, saveResponse=true)
+    @EnableLogAuditCustomer(operation=GENERATE_VERIFICATION_TOKEN)
     @PostMapping("/generate")
     public VerificationTokenDto generate(
     		@ApiParam(name = "GenerateTokenData", value = "Generate token data")
@@ -100,7 +100,6 @@ public class VerificationTokenRestController {
     		consumes="application/json", 
     		produces="application/json")
     @ApiResponses(value = { @ApiResponse(code=200, message="OK", response=VerificationTokenDto.class)})
-    @LogAuditApi(name=VERIFY_VERIFICATION_TOKEN, saveRequest=true, saveResponse=true)
     @PostMapping("/verify")
     public Map<String, Boolean> verify(
     		@ApiParam(name = "VerificationTokenData", value = "Verification token data")
@@ -122,7 +121,6 @@ public class VerificationTokenRestController {
     		produces="application/json", 
     		authorizations={@Authorization(value="JWT")})
     @ApiResponses(value = { @ApiResponse(code=200, message="OK", response=JWTTokenDto.class)})
-    @LogAuditApi(name=LOGIN_WITH_TOKEN, saveRequest=true, saveResponse=true)
     @PostMapping("/authenticate")
     public JWTTokenDto authenticate(
     		@ApiParam(name = "VerificationTokenData", value = "Verification token data")

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbs.loyalty.aop.LogAuditApi;
+import com.dbs.loyalty.aop.EnableLogAuditCustomer;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.service.ArrivalService;
@@ -50,7 +50,7 @@ public class ArrivalRestController {
     		produces="application/json", 
     		authorizations={@Authorization(value="JWT")})
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response=Response.class)})
-    @LogAuditApi(name=ADD_ARRIVAL, saveRequest=true, saveResponse=true)
+    @EnableLogAuditCustomer(operation=ADD_ARRIVAL)
     @PostMapping
     public Response addArrival(@Valid @RequestBody ArrivalDto arrivalDto) throws BadRequestException{
     	return arrivalService.save(arrivalMapper.toEntity(arrivalDto));

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbs.loyalty.aop.LogAuditApi;
+import com.dbs.loyalty.aop.EnableLogAuditCustomer;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.domain.MedicalProvider;
 import com.dbs.loyalty.service.MedicalProviderService;
@@ -51,7 +51,7 @@ public class MedicalProviderRestController {
     		produces="application/json", 
     		authorizations={@Authorization(value="JWT")})
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response=MedicalProviderDto.class)})
-    @LogAuditApi(name=GET_MEDICAL_PROVIDERS)
+    @EnableLogAuditCustomer(operation=GET_MEDICAL_PROVIDERS)
     @GetMapping
     public List<MedicalProviderDto> getMedicalProviders() {
     	List<MedicalProvider> medicalProviders = medicalProviderService.findAll();

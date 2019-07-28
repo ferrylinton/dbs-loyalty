@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbs.loyalty.aop.LogAuditApi;
+import com.dbs.loyalty.aop.EnableLogAuditCustomer;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.domain.Wellness;
 import com.dbs.loyalty.service.WellnessService;
@@ -45,7 +45,7 @@ public class WellnessRestController {
 			produces="application/json", 
 			authorizations={@Authorization(value="JWT")})
 	@ApiResponses(value={@ApiResponse(code=200, message="OK", response=WellnessDto.class)})
-	@LogAuditApi(name=GET_WELLNESS_LIMIT)
+	@EnableLogAuditCustomer(operation=GET_WELLNESS_LIMIT)
 	@GetMapping
     public WellnessDto getLimit() {
     	Optional<Wellness> wellness = wellnessService.findById();

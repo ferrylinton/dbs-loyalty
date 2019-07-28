@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbs.loyalty.aop.LogAuditApi;
+import com.dbs.loyalty.aop.EnableLogAuditCustomer;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.domain.FileImage;
 import com.dbs.loyalty.exception.NotFoundException;
@@ -67,7 +67,7 @@ public class PriviledgeProductRestController {
     		produces="application/json", 
     		authorizations = { @Authorization(value="JWT") })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = ProductPriviledgeDto.class)})
-	@LogAuditApi(name=GET_ALL_PRODUCT_PRIVILEDGES)
+	@EnableLogAuditCustomer(operation=GET_ALL_PRODUCT_PRIVILEDGES)
 	@GetMapping
     public List<ProductPriviledgeDto> getAllProductPriviledges(){
 		return productService
@@ -84,7 +84,7 @@ public class PriviledgeProductRestController {
     		produces=MediaType.APPLICATION_JSON_VALUE, 
     		authorizations = { @Authorization(value="JWT") })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = ProductPriviledgeDto.class)})
-	@LogAuditApi(name=GET_PRODUCT_PRIVILEDGE_BY_ID)
+	@EnableLogAuditCustomer(operation=GET_PRODUCT_PRIVILEDGE_BY_ID)
     @GetMapping("/{id}")
     public ProductPriviledgeDto getById(
     		@ApiParam(name = "id", value = "Product Id", example = "zO0dDp9K")
@@ -108,7 +108,7 @@ public class PriviledgeProductRestController {
 			produces= "image/png, image/jpeg", 
     		authorizations = { @Authorization(value="JWT") })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = Byte.class)})
-	@LogAuditApi(name=GET_PRODUCT_PRIVILEDGE_IMAGE_BY_ID)
+	@EnableLogAuditCustomer(operation=GET_PRODUCT_PRIVILEDGE_IMAGE_BY_ID)
     @GetMapping("/{id}/image")
     public ResponseEntity<byte[]> getProductPriviledgeImageById(
     		@ApiParam(name = "id", value = "ProductPriviledge Id", example = "zO0dDp9K")
@@ -137,7 +137,7 @@ public class PriviledgeProductRestController {
     		produces=MediaType.TEXT_PLAIN_VALUE, 
     		authorizations = { @Authorization(value="JWT") })
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = String.class)})
-	@LogAuditApi(name=GET_PRODUCT_PRIVILEDGE_TERM_BY_ID)
+	@EnableLogAuditCustomer(operation=GET_PRODUCT_PRIVILEDGE_TERM_BY_ID)
 	@GetMapping("/{id}/term")
     public ResponseEntity<String> getTermAndConditionById(
     		@ApiParam(name = "id", value = "Product Id", example = "zO0dDp9K")

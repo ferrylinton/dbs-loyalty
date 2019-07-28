@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbs.loyalty.aop.LogAuditApi;
+import com.dbs.loyalty.aop.EnableLogAuditCustomer;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.domain.AirportAssistance;
 import com.dbs.loyalty.service.AirportAssistanceService;
@@ -45,7 +45,7 @@ public class AirportAssistanceRestController {
 			produces="application/json", 
 			authorizations={@Authorization(value="JWT")})
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response=AirportAssistanceDto.class)})
-	@LogAuditApi(name=GET_AIRPORT_ASSISTANCE_LIMIT)
+	@EnableLogAuditCustomer(operation=GET_AIRPORT_ASSISTANCE_LIMIT)
 	@GetMapping
     public AirportAssistanceDto getLimit(){
 		Optional<AirportAssistance> airportAssistance = airportAssistanceService.findById();

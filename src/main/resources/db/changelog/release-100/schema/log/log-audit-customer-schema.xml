@@ -1,0 +1,59 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog 
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    
+    <changeSet author="FLH" id="log-audit-customer-1">
+        <createTable tableName="log_audit_customer">
+            <column name="id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="content_type" type="VARCHAR(50)"/>
+            <column name="created_date" type="timestamp"/>
+            <column name="error" type="LONGTEXT"/>
+            <column name="request_data" type="LONGTEXT"/>
+            <column name="old_data" type="LONGTEXT"/>
+            <column name="request_file" type="${file.type}"/>
+            <column name="old_file" type="${file.type}"/>
+            <column name="operation" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="url" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="customer_id" type="VARCHAR(22)"/>
+        </createTable>
+    </changeSet>
+    
+    <changeSet author="FLH" id="log-audit-customer-2">
+        <addPrimaryKey columnNames="id" constraintName="log_audit_customerPK" tableName="log_audit_customer"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="log-audit-customer-3">
+        <createIndex indexName="log_audit_customer_created_date_idx" tableName="log_audit_customer">
+            <column name="created_date"/>
+        </createIndex>
+    </changeSet>
+    
+    <changeSet author="FLH" id="log-audit-customer-4">
+        <createIndex indexName="log_audit_customer_id_idx" tableName="log_audit_customer">
+            <column name="customer_id"/>
+        </createIndex>
+    </changeSet>
+    
+    <changeSet author="FLH" id="log-audit-customer-5">
+        <createIndex indexName="log_audit_customer_url_idx" tableName="log_audit_customer">
+            <column name="url"/>
+        </createIndex>
+    </changeSet>
+    
+    <changeSet author="FLH" id="log-audit-customer-6">
+        <addForeignKeyConstraint baseColumnNames="customer_id" baseTableName="log_audit_customer" constraintName="log_audit_customer_fk" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="cst_customer"/>
+    </changeSet>
+    
+</databaseChangeLog>

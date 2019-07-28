@@ -14,19 +14,19 @@ import org.springframework.data.jpa.domain.Specification;
 
 import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.DomainConstant;
-import com.dbs.loyalty.domain.LogApi;
+import com.dbs.loyalty.domain.LogAuditCustomer;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class LogApiSpec implements Specification<LogApi>{
+public class LogAuditCustomerSpec implements Specification<LogAuditCustomer>{
 
 	private static final long serialVersionUID = 1L;
 	
 	private final Map<String, String> params;
 	
 	@Override
-	public Predicate toPredicate(Root<LogApi> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
+	public Predicate toPredicate(Root<LogAuditCustomer> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
 		List<Predicate> predicates = new ArrayList<>();
 		
 		if(params.containsKey(Constant.KY_PARAM) && !Constant.EMPTY.equals(params.get(Constant.KY_PARAM))) {

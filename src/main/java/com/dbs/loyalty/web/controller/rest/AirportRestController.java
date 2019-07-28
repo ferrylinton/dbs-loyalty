@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbs.loyalty.aop.LogAuditApi;
+import com.dbs.loyalty.aop.EnableLogAuditCustomer;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.service.CountryService;
 import com.dbs.loyalty.service.dto.CountryDto;
@@ -50,7 +50,7 @@ public class AirportRestController {
     		produces="application/json", 
     		authorizations={@Authorization(value="JWT")})
     @ApiResponses(value = { @ApiResponse(code=200, message="OK", response=CountryDto.class, responseContainer="List")})
-    @LogAuditApi(name=GET_AIRPORTS)
+    @EnableLogAuditCustomer(operation=GET_AIRPORTS)
     @GetMapping
     public List<CountryDto> getAirports() {
     	List<CountryDto> countries = countryMapper.toDtoWithAirports(countryService.findAll());

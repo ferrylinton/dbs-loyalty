@@ -1,6 +1,7 @@
 package com.dbs.loyalty.web.controller.error;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,9 +25,9 @@ import org.springframework.web.multipart.support.MissingServletRequestPartExcept
 
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
-import com.dbs.loyalty.service.LogApiService;
+import com.dbs.loyalty.service.LogAuditCustomerService;
 import com.dbs.loyalty.util.ErrorUtil;
-import com.dbs.loyalty.util.SecurityUtil;
+import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.response.ErrorResponse;
 import com.dbs.loyalty.web.response.Response;
@@ -36,11 +37,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @ControllerAdvice
 public class GlobalExceptionHandler extends AbstractErrorController{
 
-	private final LogApiService logApiService;
+	private static final Locale locale = new Locale("en");
 	
-	public GlobalExceptionHandler(final ObjectMapper objectMapper, final LogApiService logApiService) {
+	private final LogAuditCustomerService logAuditCustomerService;
+	
+	public GlobalExceptionHandler(final ObjectMapper objectMapper, final LogAuditCustomerService logAuditCustomerService) {
 		super(objectMapper);
-		this.logApiService = logApiService;
+		this.logAuditCustomerService = logAuditCustomerService;
 	}
 	
 	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
@@ -92,7 +95,7 @@ public class GlobalExceptionHandler extends AbstractErrorController{
 	
 	@ExceptionHandler(value = MultipartException.class)
     public ResponseEntity<Response> multipartException(MultipartException ex, HttpServletRequest request){
-		logApiService.saveFileError(UrlUtil.getFullUrl(request), SecurityUtil.getCustomer(), ex.getLocalizedMessage());
+		logAuditCustomerService.saveFileError(UrlUtil.getFullUrl(request), ex.getLocalizedMessage());
 		return ResponseEntity
 	            .status(HttpStatus.BAD_REQUEST)
 	            .body(new Response(ex.getMessage()));
@@ -100,7 +103,7 @@ public class GlobalExceptionHandler extends AbstractErrorController{
 	
 	@ExceptionHandler(MaxUploadSizeExceededException.class)
 	public ResponseEntity<Response> handleException(MaxUploadSizeExceededException ex, HttpServletRequest request){
-		logApiService.saveFileError(UrlUtil.getFullUrl(request), SecurityUtil.getCustomer(), ex.getLocalizedMessage());
+		logAuditCustomerService.saveFileError(UrlUtil.getFullUrl(request), ex.getLocalizedMessage());
 		return ResponseEntity
 	            .status(HttpStatus.BAD_REQUEST)
 	            .body(new Response(ex.getMessage()));
@@ -108,19 +111,19 @@ public class GlobalExceptionHandler extends AbstractErrorController{
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex, HttpServletRequest request) {
-		Map<String, String> errors = getErrors(ex);
+		Map<String, String> errors = getErrors(ex, request);
 		saveError(ex, request, errors);
 		return ResponseEntity
 	            .status(HttpStatus.BAD_REQUEST)
 	            .body(errors);
 	}
 	
-	private Map<String, String> getErrors(MethodArgumentNotValidException ex){
+	private Map<String, String> getErrors(MethodArgumentNotValidException ex, HttpServletRequest request){
 		Map<String, String> errors = new HashMap<>();
 		
 		for(ObjectError objectError : ex.getBindingResult().getAllErrors()) {
 			FieldError fieldError = (FieldError) objectError;
-			errors.put(fieldError.getField(), fieldError.getDefaultMessage());
+			errors.put(fieldError.getField(), MessageUtil.getMessage(fieldError.getCode(), locale));
 		}
 		
 		return errors;
@@ -129,7 +132,7 @@ public class GlobalExceptionHandler extends AbstractErrorController{
 	private void saveError(MethodArgumentNotValidException ex, HttpServletRequest request, Map<String, String> errors) {
 		for(Map.Entry<String, Object> entry : ex.getBindingResult().getModel().entrySet()) {
 			if(!(entry.getValue() instanceof BeanPropertyBindingResult)) {
-				logApiService.saveError(UrlUtil.getFullUrl(request), entry.getKey(), SecurityUtil.getCustomer(), entry.getValue(), errors);
+				logAuditCustomerService.saveError(UrlUtil.getFullUrl(request), entry.getKey(), entry.getValue(), errors);
 			}
 		}
 	}
