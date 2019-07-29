@@ -32,6 +32,10 @@ public class ImageService{
 	public Optional<FileImageTask> findImageTaskById(String id){
 		return fileImageTaskRepository.findById(id);
 	}
+	
+	public FileImage save(FileImage fileImage) {
+		return fileImageRepository.save(fileImage);
+	}
 
 	public FileImageTask add(MultipartFile file) throws IOException {
 		FileImageTask fileTaskImage = new FileImageTask();
@@ -40,19 +44,6 @@ public class ImageService{
 		fileTaskImage.setCreatedDate(Instant.now());
 		ImageUtil.setFileImage(fileTaskImage, file);
 		return fileImageTaskRepository.save(fileTaskImage);
-	}
-	
-	public FileImage updateCustomerImage(MultipartFile file) throws IOException {
-		Optional<FileImage> fileImage = fileImageRepository.findById(SecurityUtil.getId());
-		
-		if(fileImage.isPresent()) {
-			fileImage.get().setLastModifiedBy(SecurityUtil.getLogged());
-			fileImage.get().setLastModifiedDate(Instant.now());
-			ImageUtil.setFileImage(fileImage.get(), file);
-			return fileImageRepository.save(fileImage.get());
-		}
-
-		return null;
 	}
 
 	public FileImage add(String id, String fileImageTaskId, String createdBy, Instant createdDate) {

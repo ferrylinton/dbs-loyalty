@@ -73,7 +73,7 @@ public class LogRequestFilter extends OncePerRequestFilter implements Ordered {
     }
     
     private void logAuditCustomer(ContentCachingRequestWrapper requestWrapper, ContentCachingResponseWrapper responseWrapper) {
-    	if(requestWrapper.getServletPath().contains(API) && responseWrapper.getStatus() >= 400) {
+    	if(requestWrapper.getServletPath().contains(API) && responseWrapper.getStatus() == 400) {
         	String url = UrlUtil.getFullUrl(requestWrapper);
         	String requestData = getString(requestWrapper);
         	

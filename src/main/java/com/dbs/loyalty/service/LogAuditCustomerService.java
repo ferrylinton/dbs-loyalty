@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.StatusConstant;
 import com.dbs.loyalty.domain.LogAuditCustomer;
 import com.dbs.loyalty.repository.LogAuditCustomerRepository;
@@ -20,6 +21,7 @@ import com.dbs.loyalty.web.controller.rest.AddressRestController;
 import com.dbs.loyalty.web.controller.rest.AppointmentRestController;
 import com.dbs.loyalty.web.controller.rest.ArrivalRestController;
 import com.dbs.loyalty.web.controller.rest.CustomerActivateRestController;
+import com.dbs.loyalty.web.controller.rest.CustomerImageRestController;
 import com.dbs.loyalty.web.controller.rest.CustomerRestController;
 import com.dbs.loyalty.web.controller.rest.DepartureRestController;
 import com.dbs.loyalty.web.controller.rest.FeedbackAnswerRestController;
@@ -38,8 +40,6 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class LogAuditCustomerService {
 	
-	private static final String JSON = "json";
-
 	private final LogAuditCustomerRepository logAuditCustomerRepository;
 	
 	private final ObjectMapper objectMapper;
@@ -66,7 +66,7 @@ public class LogAuditCustomerService {
     	logAuditCustomer.setUrl(url);
     	logAuditCustomer.setHttpStatus(200);
     	logAuditCustomer.setStatus(StatusConstant.SUCCEED);
-    	logAuditCustomer.setContentType(JSON);
+    	logAuditCustomer.setContentType(Constant.JSON);
     	logAuditCustomer.setRequestData(toString(requestData));
     	logAuditCustomer.setOldData(toString(oldData));
         logAuditCustomer.setCreatedDate(Instant.now());
@@ -75,7 +75,6 @@ public class LogAuditCustomerService {
         save(logAuditCustomer);
 	}
 
-	
 	@Async
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void saveError(String url, String servletPath, Object requestData, String responseData, Integer httpStatus) {
@@ -85,7 +84,7 @@ public class LogAuditCustomerService {
 	    	logAuditCustomer.setUrl(url);
 	    	logAuditCustomer.setStatus(StatusConstant.FAIL);
 	    	logAuditCustomer.setHttpStatus(httpStatus);
-	    	logAuditCustomer.setContentType(JSON);
+	    	logAuditCustomer.setContentType(Constant.JSON);
 	        logAuditCustomer.setCreatedDate(Instant.now());
 	        logAuditCustomer.setCustomer(SecurityUtil.getCustomer());
 	        logAuditCustomer.setRequestData(toString(requestData));
@@ -99,14 +98,48 @@ public class LogAuditCustomerService {
 	
 	@Async
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public void saveFileError(String url, String responseData) {
+	public void saveError(String operation, String url, String responseData, Integer httpStatus) {
 		LogAuditCustomer logAuditCustomer = new LogAuditCustomer();
-    	logAuditCustomer.setOperation("UploadFile");
+    	logAuditCustomer.setOperation(operation);
     	logAuditCustomer.setUrl(url);
     	logAuditCustomer.setStatus(StatusConstant.FAIL);
-    	logAuditCustomer.setContentType(JSON);
+    	logAuditCustomer.setHttpStatus(httpStatus);
+    	logAuditCustomer.setContentType(Constant.JSON);
         logAuditCustomer.setCreatedDate(Instant.now());
+        logAuditCustomer.setCustomer(SecurityUtil.getCustomer());
         logAuditCustomer.setResponseData(responseData);
+        
+        save(logAuditCustomer);
+	}
+	
+	@Async
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public void saveFile(String operation, String url, String contentType, byte[] requestFile, byte[] oldFile) {
+		LogAuditCustomer logAuditCustomer = new LogAuditCustomer();
+		logAuditCustomer.setOperation(operation);
+    	logAuditCustomer.setUrl(url);
+    	logAuditCustomer.setHttpStatus(200);
+    	logAuditCustomer.setStatus(StatusConstant.SUCCEED);
+    	logAuditCustomer.setContentType(contentType);
+    	logAuditCustomer.setRequestFile(requestFile);
+    	logAuditCustomer.setOldFile(oldFile);
+        logAuditCustomer.setCreatedDate(Instant.now());
+        logAuditCustomer.setCustomer(SecurityUtil.getCustomer());
+
+        save(logAuditCustomer);
+	}
+	
+	@Async
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public void saveFileError(String url, String responseData, Integer httpStatus) {
+		LogAuditCustomer logAuditCustomer = new LogAuditCustomer();
+    	logAuditCustomer.setOperation(Constant.UPLOAD_FILE);
+    	logAuditCustomer.setUrl(url);
+    	logAuditCustomer.setHttpStatus(httpStatus);
+    	logAuditCustomer.setStatus(StatusConstant.FAIL);
+    	logAuditCustomer.setContentType(Constant.JSON);
+    	logAuditCustomer.setResponseData(responseData);
+        logAuditCustomer.setCreatedDate(Instant.now());
         logAuditCustomer.setCustomer(SecurityUtil.getCustomer());
         
         save(logAuditCustomer);
@@ -142,12 +175,13 @@ public class LogAuditCustomerService {
 			operations.put("/api/arrivals", ArrivalRestController.ADD_ARRIVAL);
 			operations.put("/api/departures", DepartureRestController.ADD_DEPARTURE);
 			operations.put("/api/appointments", AppointmentRestController.ADD_APPOINTMENT);
+			operations.put("/api/customers", CustomerRestController.UPDATE_CUSTOMER);
 			operations.put("/api/customers/activate", CustomerActivateRestController.ACTIVATE_CUSTOMER);
+			operations.put("/api/customers/image", CustomerImageRestController.UPDATE_CUSTOMER_IMAGE);
+			operations.put("/api/customers/change-password", CustomerRestController.CHANGE_PASSWORD);
 			operations.put(FeedbackAnswerRestController.BINDER_NAME, FeedbackAnswerRestController.ADD_FEEDBACK_CUSTOMER);
 			operations.put(TrxOrderRestController.BINDER_NAME, TrxOrderRestController.ADD_TRX_ORDER);
 			operations.put(PriviledgeOrderRestController.BINDER_NAME, PriviledgeOrderRestController.ADD_PRIVILEDGE_ORDER);
-			operations.put(CustomerRestController.CUSTOMER_UPDATE_BINDER_NAME, CustomerRestController.UPDATE_CUSTOMER);
-			operations.put(CustomerRestController.CUSTOMER_PASSWORD_BINDER_NAME, CustomerRestController.CHANGE_PASSWORD);
 			operations.put(LovedOneRestController.ADD_BINDER_NAME, LovedOneRestController.ADD_LOVED_ONE);
 			operations.put(LovedOneRestController.UPDATE_BINDER_NAME, LovedOneRestController.UPDATE_LOVED_ONE);
 		}

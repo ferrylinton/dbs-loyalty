@@ -3,12 +3,11 @@ package com.dbs.loyalty.web.controller.rest;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-import org.springframework.core.io.ByteArrayResource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.CacheControl;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -32,6 +31,8 @@ import com.dbs.loyalty.service.ImageService;
 import com.dbs.loyalty.service.PdfService;
 import com.dbs.loyalty.service.dto.EventDto;
 import com.dbs.loyalty.service.mapper.EventMapper;
+import com.dbs.loyalty.util.ImageUtil;
+import com.dbs.loyalty.util.PdfUtil;
 import com.dbs.loyalty.web.response.Response;
 
 import io.swagger.annotations.Api;
@@ -67,10 +68,6 @@ public class EventRestController {
 	
 	private static final String ADD_CUSTOMER_EVENT_ANSWER = "AddCustomerEventAnswer";
 	
-	private static final String CONTENT_DISPOSITION = "content-disposition";
-
-	private static final String CONTENT_DISPOSITION_FORMAT = "attachment;filename=%s.pdf";
-
     private final EventService eventService;
     
     private final EventCustomerService customerEventService;
@@ -95,16 +92,8 @@ public class EventRestController {
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = EventDto.class, responseContainer="list")})
 	@EnableLogAuditCustomer(operation=GET_UPCOMING_EVENT)
     @GetMapping("/upcoming")
-    public ResponseEntity<List<EventDto>> getUpcomingEvent(){
-		List<EventDto> events = eventService
-				.findUpcomingEvent()
-				.stream()
-				.map(event -> eventMapper.toDto(event))
-				.collect(Collectors.toList());
-		
-    	return ResponseEntity
-    			.ok()
-    			.body(events);
+    public List<EventDto> getUpcomingEvent(HttpServletRequest request, HttpServletResponse response){
+		return eventMapper.toDto(eventService.findUpcomingEvent());
     }
 	
 	@ApiOperation(
@@ -116,16 +105,8 @@ public class EventRestController {
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = EventDto.class)})
 	@EnableLogAuditCustomer(operation=GET_PREVIOUS_EVENT)
     @GetMapping("/previous")
-    public ResponseEntity<List<EventDto>> getPreviousEvent(){
-		List<EventDto> events = eventService
-				.findPreviousEvent()
-				.stream()
-				.map(event -> eventMapper.toDto(event))
-				.collect(Collectors.toList());
-		
-    	return ResponseEntity
-    			.ok()
-    			.body(events);
+    public List<EventDto> getPreviousEvent(HttpServletRequest request, HttpServletResponse response){
+		return eventMapper.toDto(eventService.findPreviousEvent());
     }
 	
     /**
@@ -144,16 +125,18 @@ public class EventRestController {
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = EventDto.class)})
     @EnableLogAuditCustomer(operation=GET_EVENT_BY_ID)
     @GetMapping("/{id}")
-    public ResponseEntity<EventDto> getEventById(
+    public EventDto getEventById(
     		@ApiParam(name = "id", value = "Event Id", example = "77UTTDWJX3zNWABg9ixZX9")
-    		@PathVariable String id) throws NotFoundException, IOException{
+    		@PathVariable String id,
+    		HttpServletRequest request, 
+    		HttpServletResponse response) throws NotFoundException{
     	
     	Optional<EventDto> current = eventService
     			.findById(id)
     			.map(event -> eventMapper.toDto(event));
 		
 		if(current.isPresent()) {
-			return ResponseEntity.ok().body(current.get());
+			return current.get();
 		}else {
 			throw new NotFoundException(String.format(MessageConstant.DATA_IS_NOT_FOUND, DomainConstant.EVENT, id));
 		}
@@ -170,19 +153,14 @@ public class EventRestController {
     @GetMapping("/{id}/image")
 	public ResponseEntity<byte[]> getEventImage(
     		@ApiParam(name = "id", value = "Event Id", example = "77UTTDWJX3zNWABg9ixZX9")
-    		@PathVariable String id) throws NotFoundException, IOException{
+    		@PathVariable String id,
+    		HttpServletRequest request, 
+    		HttpServletResponse response) throws NotFoundException, IOException{
 		
     	Optional<FileImage> fileImage = imageService.findById(id);
     	
 		if(fileImage.isPresent()) {
-			HttpHeaders headers = new HttpHeaders();
-			headers.setCacheControl(CacheControl.noCache().getHeaderValue());
-			headers.setContentType(MediaType.valueOf(fileImage.get().getContentType()));
-			
-			return ResponseEntity
-					.ok()
-					.headers(headers)
-					.body(fileImage.get().getBytes());
+			return ImageUtil.getResponse(fileImage.get());
 		}else {
 			throw new NotFoundException(String.format(MessageConstant.DATA_IS_NOT_FOUND, DomainConstant.EVENT, id));
 		}
@@ -199,21 +177,14 @@ public class EventRestController {
     @GetMapping("/{id}/material")
 	public ResponseEntity<InputStreamResource> getEventMaterial(
     		@ApiParam(name = "id", value = "Event Id", example = "77UTTDWJX3zNWABg9ixZX9")
-    		@PathVariable String id) throws NotFoundException, IOException{
+    		@PathVariable String id,
+    		HttpServletRequest request, 
+    		HttpServletResponse response) throws NotFoundException, IOException{
 		
 		Optional<FilePdf> current = filePdfService.findById(id);
     	
 		if(current.isPresent()) {
-			HttpHeaders headers = new HttpHeaders();
-			headers.setCacheControl(CacheControl.noCache().getHeaderValue());
-			headers.setContentType(MediaType.APPLICATION_PDF);
-			headers.add(CONTENT_DISPOSITION, String.format(CONTENT_DISPOSITION_FORMAT, id));
-			ByteArrayResource resource = new ByteArrayResource(current.get().getBytes());
-			
-			return ResponseEntity
-					.ok()
-					.headers(headers)
-					.body(new InputStreamResource(resource.getInputStream()));
+			return PdfUtil.getResponse(current.get());
 		}else {
 			throw new NotFoundException(String.format(MessageConstant.DATA_IS_NOT_FOUND, DomainConstant.EVENT, id));
 		}
@@ -232,7 +203,9 @@ public class EventRestController {
     		@ApiParam(name = "id", value = "Event Id", example = "10noLnNvqC4SwAUMcJ9GXm")
     		@PathVariable String id,
     		@ApiParam(name = "answer", value = "Customer's answer", example = "NO, YES, MAYBE")
-    		@PathVariable String answer) throws NotFoundException, BadRequestException{
+    		@PathVariable String answer,
+    		HttpServletRequest request, 
+    		HttpServletResponse response) throws NotFoundException, BadRequestException{
     	
     	return customerEventService.save(id, answer);
     }

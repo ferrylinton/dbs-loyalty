@@ -7,9 +7,14 @@ import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
+import org.springframework.http.CacheControl;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dbs.loyalty.domain.AbstractFileImage;
+import com.dbs.loyalty.domain.FileImage;
 
 public final class ImageUtil {
 
@@ -57,6 +62,20 @@ public final class ImageUtil {
 		InputStream in = new ByteArrayInputStream(file.getBytes());
 		return ImageIO.read(in);
 	}
+	
+	public static HttpHeaders geHeaders(FileImage fileImage) {
+    	HttpHeaders headers = new HttpHeaders();
+		headers.setCacheControl(CacheControl.noCache().getHeaderValue());
+		headers.setContentType(MediaType.valueOf(fileImage.getContentType()));
+		return headers;
+    }
+    
+	public static ResponseEntity<byte[]> getResponse(FileImage fileImage){
+    	return ResponseEntity
+				.ok()
+				.headers(geHeaders(fileImage))
+				.body(fileImage.getBytes());
+    }
 	
 	private ImageUtil() {
 		// hide constructor

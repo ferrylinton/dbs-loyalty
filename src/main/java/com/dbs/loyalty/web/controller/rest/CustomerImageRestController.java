@@ -2,11 +2,12 @@ package com.dbs.loyalty.web.controller.rest;
 
 
 import java.io.IOException;
+import java.time.Instant;
 import java.util.Optional;
 
-import org.springframework.http.CacheControl;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,13 +18,17 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dbs.loyalty.aop.EnableLogAuditCustomer;
+import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.MessageConstant;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.domain.FileImage;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.ImageService;
+import com.dbs.loyalty.service.LogAuditCustomerService;
+import com.dbs.loyalty.util.ImageUtil;
 import com.dbs.loyalty.util.SecurityUtil;
+import com.dbs.loyalty.util.UrlUtil;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -45,6 +50,8 @@ public class CustomerImageRestController {
 	public static final String UPDATE_CUSTOMER_IMAGE = "UpdateCustomerImage";
 	
 	private final ImageService imageService;
+	
+	 private final LogAuditCustomerService logAuditCustomerService;
     
 	@ApiOperation(
 			nickname=GET_CUSTOMER_IMAGE, 
@@ -54,18 +61,11 @@ public class CustomerImageRestController {
 	@ApiResponses(value = { @ApiResponse(code=200, message="OK", response = Byte.class)})
 	@EnableLogAuditCustomer(operation=GET_CUSTOMER_IMAGE)
 	@GetMapping("/image")
-	public ResponseEntity<byte[]> getCustomerImage() throws NotFoundException {
+	public ResponseEntity<byte[]> getCustomerImage(HttpServletRequest request, HttpServletResponse response) throws NotFoundException {
     	Optional<FileImage> fileImage = imageService.findById(SecurityUtil.getId());
     	
 		if(fileImage.isPresent()) {
-			HttpHeaders headers = new HttpHeaders();
-			headers.setCacheControl(CacheControl.noCache().getHeaderValue());
-			headers.setContentType(MediaType.valueOf(fileImage.get().getContentType()));
-			
-			return ResponseEntity
-					.ok()
-					.headers(headers)
-					.body(fileImage.get().getBytes());
+			return ImageUtil.getResponse(fileImage.get());
 		}else {
 			throw new NotFoundException(String.format(MessageConstant.DATA_IS_NOT_FOUND, SwaggerConstant.CUSTOMER, SecurityUtil.getId()));
 		}
@@ -81,21 +81,31 @@ public class CustomerImageRestController {
 	@PutMapping("/image")
     public ResponseEntity<byte[]> updateCustomerImage(
     		@ApiParam(name = "file", value = "Customer's image") 
-    		@RequestParam("file") MultipartFile file) throws NotFoundException, IOException, BadRequestException  {
+    		@RequestParam("file") MultipartFile file,
+    		HttpServletRequest request) throws NotFoundException, IOException, BadRequestException  {
     	
     	if(file.isEmpty()) {
     		throw new BadRequestException(MessageConstant.FILE_IS_EMPTY);
     	}else {
-    		FileImage fileImage = imageService.updateCustomerImage(file);
-        	HttpHeaders headers = new HttpHeaders();
-    		headers.setCacheControl(CacheControl.noCache().getHeaderValue());
-    		headers.setContentType(MediaType.valueOf(fileImage.getContentType()));
+    		FileImage fileImage = new FileImage();
+    		Optional<FileImage> current = imageService.findById(SecurityUtil.getId());
+    		byte[] oldData = null;
     		
-    		return ResponseEntity
-    				.ok()
-    				.headers(headers)
-    				.body(fileImage.getBytes());
+    		if(current.isPresent()) {
+    			oldData = current.get().getBytes().clone();
+    			fileImage = current.get();
+    			fileImage.setLastModifiedBy(SecurityUtil.getLogged());
+    			fileImage.setLastModifiedDate(Instant.now());
+    		}else {
+    			fileImage.setCreatedBy(SecurityUtil.getLogged());
+    			fileImage.setCreatedDate(Instant.now());
+    		}
+    		
+    		ImageUtil.setFileImage(fileImage, file);
+    		fileImage = imageService.save(fileImage);
+    		logAuditCustomerService.saveFile(UPDATE_CUSTOMER_IMAGE, UrlUtil.getFullUrl(request), Constant.IMAGE, file.getBytes(), oldData);
+    		return ImageUtil.getResponse(fileImage);
     	}
     }
-    
+
 }

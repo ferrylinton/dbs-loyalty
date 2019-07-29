@@ -36,7 +36,7 @@ public class LogAuditCustomerAspect {
 			return result;
 		} catch (Throwable throwable) {
 			log.error(throwable.getLocalizedMessage(), throwable);
-			logAuditCustomerService.saveError(logAudit.operation(), UrlUtil.getFullUrl(request), null, String.format(ERROR_FORMAT, throwable.getLocalizedMessage()), response.getStatus());
+			logAuditCustomerService.saveError(logAudit.operation(), UrlUtil.getFullUrl(request), String.format(ERROR_FORMAT, throwable.getLocalizedMessage()), response.getStatus());
 			throw throwable;
 		}
 	}

@@ -80,6 +80,12 @@ public final class Constant {
 	
 	public static final String ST_PARAM = "st";
 	
+	public static final String JSON = "json";
+	
+	public static final String IMAGE = "image";
+	
+	public static final String UPLOAD_FILE = "UploadFile";
+	
 	private Constant() {
 		// hide constructor
 	}
