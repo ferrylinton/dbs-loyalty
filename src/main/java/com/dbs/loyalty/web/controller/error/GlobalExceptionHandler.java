@@ -130,11 +130,11 @@ public class GlobalExceptionHandler extends AbstractErrorController{
 	}
 	
 	private void saveError(MethodArgumentNotValidException ex, HttpServletRequest request, Map<String, String> errors) {
-		for(Map.Entry<String, Object> entry : ex.getBindingResult().getModel().entrySet()) {
-			if(!(entry.getValue() instanceof BeanPropertyBindingResult)) {
-				logAuditCustomerService.saveError(UrlUtil.getFullUrl(request), entry.getKey(), entry.getValue(), errors);
-			}
-		}
+//		for(Map.Entry<String, Object> entry : ex.getBindingResult().getModel().entrySet()) {
+//			if(!(entry.getValue() instanceof BeanPropertyBindingResult)) {
+//				logAuditCustomerService.saveError(UrlUtil.getFullUrl(request), entry.getValue().getClass().getSimpleName(), entry.getValue(), errors);
+//			}
+//		}
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.dbs.loyalty.web.controller.rest;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -12,11 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.aop.EnableLogAuditCustomer;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
-import com.dbs.loyalty.exception.BadRequestException;
-import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.AppointmentService;
+import com.dbs.loyalty.service.LogAuditCustomerService;
 import com.dbs.loyalty.service.dto.AppointmentDto;
 import com.dbs.loyalty.service.mapper.AppointmentMapper;
+import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.response.Response;
 import com.dbs.loyalty.web.validator.rest.AppointmentDtoValidator;
 
@@ -47,6 +48,8 @@ public class AppointmentRestController {
 	private final AppointmentService appointmentService;
 	
 	private final AppointmentMapper appointmentMapper;
+	
+	private final LogAuditCustomerService logAuditCustomerService;
 
 	@ApiOperation(
 			nickname=ADD_APPOINTMENT, 
@@ -56,8 +59,16 @@ public class AppointmentRestController {
 	@ApiResponses(value={@ApiResponse(code=200, message="OK", response=Response.class)})
 	@EnableLogAuditCustomer(operation=ADD_APPOINTMENT)
 	@PostMapping
-    public Response addAppointment(@Valid @RequestBody AppointmentDto appointmentDto) throws BadRequestException, NotFoundException{
-    	return appointmentService.save(appointmentMapper.toEntity(appointmentDto));
+    public Response addAppointment(@Valid @RequestBody AppointmentDto appointmentDto, HttpServletRequest request) throws Throwable{
+		String url = UrlUtil.getFullUrl(request);
+		
+		try {
+			return appointmentService.save(appointmentMapper.toEntity(appointmentDto));
+		} catch (Throwable t) {
+			logAuditCustomerService.save(ADD_APPOINTMENT, url, appointmentDto, t);
+			throw t;
+		}
+		
     }
     
 	@InitBinder(BINDER_NAME)

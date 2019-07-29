@@ -206,7 +206,7 @@ public class LogAuditCustomerService {
 			operations.put(FeedbackAnswerRestController.BINDER_NAME, FeedbackAnswerRestController.ADD_FEEDBACK_CUSTOMER);
 			operations.put(TrxOrderRestController.BINDER_NAME, TrxOrderRestController.ADD_TRX_ORDER);
 			operations.put(PriviledgeOrderRestController.BINDER_NAME, PriviledgeOrderRestController.ADD_PRIVILEDGE_ORDER);
-			operations.put(AddressRestController.BINDER_NAME, AddressRestController.ADD_ADDRESS);
+			operations.put("/api/addresses", AddressRestController.ADD_ADDRESS);
 			
 			operations.put(CustomerRestController.CUSTOMER_UPDATE_BINDER_NAME, CustomerRestController.UPDATE_CUSTOMER);
 			operations.put(CustomerRestController.CUSTOMER_PASSWORD_BINDER_NAME, CustomerRestController.CHANGE_PASSWORD);

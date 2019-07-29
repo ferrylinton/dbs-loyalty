@@ -6,6 +6,7 @@ import java.util.Locale;
 
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.web.servlet.DispatcherServletAutoConfiguration;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.thymeleaf.extras.springsecurity5.dialect.SpringSecurityDialect;
 
+import com.dbs.loyalty.filter.LogRequestFilter;
 import com.github.bufferings.thymeleaf.extras.nl2br.dialect.Nl2brDialect;
 
 import lombok.RequiredArgsConstructor;
@@ -65,6 +67,13 @@ public class WebConfiguration implements WebMvcConfigurer{
 	    ByteArrayHttpMessageConverter arrayHttpMessageConverter = new ByteArrayHttpMessageConverter();
 	    arrayHttpMessageConverter.setSupportedMediaTypes(getSupportedMediaTypes());
 	    return arrayHttpMessageConverter;
+	}
+	
+	@Bean
+	public FilterRegistrationBean<LogRequestFilter> loggingFilter(LogRequestFilter logRequestFilter){
+	    FilterRegistrationBean<LogRequestFilter> registrationBean = new FilterRegistrationBean<>();
+	    registrationBean.setFilter(logRequestFilter);
+	    return registrationBean;    
 	}
 	 
 	private List<MediaType> getSupportedMediaTypes() {

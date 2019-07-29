@@ -51,8 +51,6 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/addresses")
 public class AddressRestController {
 	
-	public static final String BINDER_NAME = "requestData";
-	
 	public static final String GET_ADDRESSES = "GetAddresses";
 	
 	public static final String ADD_ADDRESS = "AddAddress";
@@ -138,7 +136,7 @@ public class AddressRestController {
 		}
     }
 
-    @InitBinder(BINDER_NAME)
+    @InitBinder
 	protected void initPasswordBinder(WebDataBinder binder) {
 		binder.addValidators(new AddressDtoValidator(cityService));
 	}
