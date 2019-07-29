@@ -48,8 +48,8 @@ public final class MessageUtil {
 		return MessageUtil.getMessage(TASK_IS_SAVED, taskDataType, val);
 	}
 
-	public static String getNotFoundMessage(String id) {
-		return MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, id);
+	public static String getNotFoundMessage(String val) {
+		return MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, val);
 	}
 	
 	private MessageUtil() {

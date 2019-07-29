@@ -19,7 +19,6 @@ import com.dbs.loyalty.repository.CustomerRepository;
 import com.dbs.loyalty.repository.DepartureRepository;
 import com.dbs.loyalty.service.specification.DepartureSpec;
 import com.dbs.loyalty.util.SecurityUtil;
-import com.dbs.loyalty.web.response.Response;
 
 import lombok.RequiredArgsConstructor;
 
@@ -42,7 +41,7 @@ public class DepartureService {
 	}
 
 	@Transactional
-	public Response save(Departure departure) throws BadRequestException{
+	public Departure save(Departure departure) throws BadRequestException{
 		Optional<Customer> customer = customerRespository.findById(SecurityUtil.getId());
 		
 		if(customer.isPresent()) {
@@ -55,8 +54,7 @@ public class DepartureService {
 				departure.setCustomer(customer.get());
 				departure.setCreatedBy(SecurityUtil.getLogged());
 				departure.setCreatedDate(Instant.now());
-				departure = departureRepository.save(departure);
-				return new Response("Data is saved");
+				return departureRepository.save(departure);
 			}else {
 				throw new BadRequestException("No limit is available");
 			}

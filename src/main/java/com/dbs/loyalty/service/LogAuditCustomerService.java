@@ -18,6 +18,7 @@ import com.dbs.loyalty.service.specification.LogAuditCustomerSpec;
 import com.dbs.loyalty.util.SecurityUtil;
 import com.dbs.loyalty.web.controller.rest.AddressRestController;
 import com.dbs.loyalty.web.controller.rest.AppointmentRestController;
+import com.dbs.loyalty.web.controller.rest.ArrivalRestController;
 import com.dbs.loyalty.web.controller.rest.CustomerActivateRestController;
 import com.dbs.loyalty.web.controller.rest.CustomerRestController;
 import com.dbs.loyalty.web.controller.rest.DepartureRestController;
@@ -49,62 +50,12 @@ public class LogAuditCustomerService {
 		return logAuditCustomerRepository.findAll(new LogAuditCustomerSpec(params), pageable);
 	}
 	
-	@Async
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void save(String operation, String url) {
-		LogAuditCustomer logAuditCustomer = new LogAuditCustomer();
-    	logAuditCustomer.setOperation(operation);
-    	logAuditCustomer.setUrl(url);
-    	logAuditCustomer.setStatus(StatusConstant.SUCCEED);
-        logAuditCustomer.setCreatedDate(Instant.now());
-        logAuditCustomer.setCustomer(SecurityUtil.getCustomer());
-        
-        save(logAuditCustomer);
+		save(operation, url, null, null);
 	}
-	
-	@Async
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public void saveError(String operation, String url, Throwable throwable) {
-		LogAuditCustomer logAuditCustomer = new LogAuditCustomer();
-		logAuditCustomer.setOperation(operation);
-    	logAuditCustomer.setUrl(url);
-    	logAuditCustomer.setStatus(StatusConstant.FAIL);
-        logAuditCustomer.setCreatedDate(Instant.now());
-        logAuditCustomer.setCustomer(SecurityUtil.getCustomer());
-        logAuditCustomer.setError(throwable.getLocalizedMessage());
-        
-        save(logAuditCustomer);
-	}
-	
-	@Async
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
+
 	public void save(String operation, String url, Object requestData) {
-		LogAuditCustomer logAuditCustomer = new LogAuditCustomer();
-		logAuditCustomer.setOperation(operation);
-    	logAuditCustomer.setUrl(url);
-    	logAuditCustomer.setStatus(StatusConstant.SUCCEED);
-    	logAuditCustomer.setContentType(JSON);
-    	logAuditCustomer.setRequestData(toString(requestData));
-        logAuditCustomer.setCreatedDate(Instant.now());
-        logAuditCustomer.setCustomer(SecurityUtil.getCustomer());
-
-        save(logAuditCustomer);
-	}
-	
-	@Async
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public void saveError(String operation, String url, Object requestData, Throwable throwable) {
-		LogAuditCustomer logAuditCustomer = new LogAuditCustomer();
-		logAuditCustomer.setOperation(operation);
-    	logAuditCustomer.setUrl(url);
-    	logAuditCustomer.setStatus(StatusConstant.FAIL);
-    	logAuditCustomer.setContentType(JSON);
-    	logAuditCustomer.setRequestData(toString(requestData));
-        logAuditCustomer.setCreatedDate(Instant.now());
-        logAuditCustomer.setCustomer(SecurityUtil.getCustomer());
-        logAuditCustomer.setError(throwable.getLocalizedMessage());
-
-        save(logAuditCustomer);
+		save(operation, url, requestData, null);
 	}
 	
 	@Async
@@ -113,6 +64,7 @@ public class LogAuditCustomerService {
 		LogAuditCustomer logAuditCustomer = new LogAuditCustomer();
 		logAuditCustomer.setOperation(operation);
     	logAuditCustomer.setUrl(url);
+    	logAuditCustomer.setHttpStatus(200);
     	logAuditCustomer.setStatus(StatusConstant.SUCCEED);
     	logAuditCustomer.setContentType(JSON);
     	logAuditCustomer.setRequestData(toString(requestData));
@@ -122,55 +74,39 @@ public class LogAuditCustomerService {
 
         save(logAuditCustomer);
 	}
+
 	
 	@Async
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public void saveError(String operation, String url, Object requestData, Object oldData, Throwable throwable) {
-		LogAuditCustomer logAuditCustomer = new LogAuditCustomer();
-		logAuditCustomer.setOperation(operation);
-    	logAuditCustomer.setUrl(url);
-    	logAuditCustomer.setStatus(StatusConstant.SUCCEED);
-    	logAuditCustomer.setContentType(JSON);
-    	logAuditCustomer.setRequestData(toString(requestData));
-    	logAuditCustomer.setOldData(toString(oldData));
-        logAuditCustomer.setCreatedDate(Instant.now());
-        logAuditCustomer.setCustomer(SecurityUtil.getCustomer());
-        logAuditCustomer.setError(throwable.getLocalizedMessage());
-       
-        save(logAuditCustomer);
-	}
-	
-	@Async
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public void saveError(String url, String binderName, Object request, Object errors) {
-		if(getOperation().containsKey(binderName)) {
+	public void saveError(String url, String servletPath, Object requestData, String responseData, Integer httpStatus) {
+		if(getOperation().containsKey(servletPath)) {
 			LogAuditCustomer logAuditCustomer = new LogAuditCustomer();
-	    	logAuditCustomer.setOperation(getOperation().get(binderName));
+	    	logAuditCustomer.setOperation(getOperation().get(servletPath));
 	    	logAuditCustomer.setUrl(url);
 	    	logAuditCustomer.setStatus(StatusConstant.FAIL);
+	    	logAuditCustomer.setHttpStatus(httpStatus);
 	    	logAuditCustomer.setContentType(JSON);
 	        logAuditCustomer.setCreatedDate(Instant.now());
-	        logAuditCustomer.setError(toString(errors));
-	        logAuditCustomer.setRequestData(toString(request));
 	        logAuditCustomer.setCustomer(SecurityUtil.getCustomer());
+	        logAuditCustomer.setRequestData(toString(requestData));
+	        logAuditCustomer.setResponseData(responseData);
 	        
 	        save(logAuditCustomer);
 		}else {
-			log.warn(String.format("LogAuditCustomerService::getOperation()::Warn:: %s is not found", binderName));
+			log.warn(String.format("LogAuditCustomerService::getOperation() :: Warn :: %s is not found", servletPath));
 		}
-		
 	}
 	
 	@Async
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public void saveFileError(String url, String error) {
+	public void saveFileError(String url, String responseData) {
 		LogAuditCustomer logAuditCustomer = new LogAuditCustomer();
     	logAuditCustomer.setOperation("UploadFile");
     	logAuditCustomer.setUrl(url);
     	logAuditCustomer.setStatus(StatusConstant.FAIL);
     	logAuditCustomer.setContentType(JSON);
         logAuditCustomer.setCreatedDate(Instant.now());
-        logAuditCustomer.setError(error);
+        logAuditCustomer.setResponseData(responseData);
         logAuditCustomer.setCustomer(SecurityUtil.getCustomer());
         
         save(logAuditCustomer);
@@ -180,8 +116,10 @@ public class LogAuditCustomerService {
 		try {
 			if(obj instanceof String) {
         		return (String) obj;
-        	}else {
+        	}else if(obj != null) {
         		return objectMapper.writeValueAsString(obj);
+        	}else {
+        		return null;
         	}
 		} catch (JsonProcessingException e) {
 			return "LogAuditCustomerService::toString()::Warn::" +  e.getLocalizedMessage();
@@ -199,18 +137,17 @@ public class LogAuditCustomerService {
 	private Map<String, String> getOperation(){
 		if(operations == null) {
 			operations = new HashMap<>();
-			operations.put(JWTRestController.BINDER_NAME, JWTRestController.AUTHENTICATE);
-			operations.put(AppointmentRestController.BINDER_NAME, AppointmentRestController.ADD_APPOINTMENT);
-			operations.put(DepartureRestController.BINDER_NAME, DepartureRestController.ADD_DEPARTURE);
-			operations.put(CustomerActivateRestController.BINDER_NAME, CustomerActivateRestController.ACTIVATE_CUSTOMER);
+			operations.put("/api/authenticate", JWTRestController.AUTHENTICATE);
+			operations.put("/api/addresses", AddressRestController.ADD_ADDRESS);
+			operations.put("/api/arrivals", ArrivalRestController.ADD_ARRIVAL);
+			operations.put("/api/departures", DepartureRestController.ADD_DEPARTURE);
+			operations.put("/api/appointments", AppointmentRestController.ADD_APPOINTMENT);
+			operations.put("/api/customers/activate", CustomerActivateRestController.ACTIVATE_CUSTOMER);
 			operations.put(FeedbackAnswerRestController.BINDER_NAME, FeedbackAnswerRestController.ADD_FEEDBACK_CUSTOMER);
 			operations.put(TrxOrderRestController.BINDER_NAME, TrxOrderRestController.ADD_TRX_ORDER);
 			operations.put(PriviledgeOrderRestController.BINDER_NAME, PriviledgeOrderRestController.ADD_PRIVILEDGE_ORDER);
-			operations.put("/api/addresses", AddressRestController.ADD_ADDRESS);
-			
 			operations.put(CustomerRestController.CUSTOMER_UPDATE_BINDER_NAME, CustomerRestController.UPDATE_CUSTOMER);
 			operations.put(CustomerRestController.CUSTOMER_PASSWORD_BINDER_NAME, CustomerRestController.CHANGE_PASSWORD);
-			
 			operations.put(LovedOneRestController.ADD_BINDER_NAME, LovedOneRestController.ADD_LOVED_ONE);
 			operations.put(LovedOneRestController.UPDATE_BINDER_NAME, LovedOneRestController.UPDATE_LOVED_ONE);
 		}

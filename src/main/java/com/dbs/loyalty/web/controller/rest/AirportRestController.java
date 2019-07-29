@@ -3,6 +3,9 @@ package com.dbs.loyalty.web.controller.rest;
 import java.util.Collections;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,7 +55,7 @@ public class AirportRestController {
     @ApiResponses(value = { @ApiResponse(code=200, message="OK", response=CountryDto.class, responseContainer="List")})
     @EnableLogAuditCustomer(operation=GET_AIRPORTS)
     @GetMapping
-    public List<CountryDto> getAirports() {
+    public List<CountryDto> getAirports(HttpServletRequest request, HttpServletResponse response) {
     	List<CountryDto> countries = countryMapper.toDtoWithAirports(countryService.findAll());
     	
     	for(CountryDto country : countries) {

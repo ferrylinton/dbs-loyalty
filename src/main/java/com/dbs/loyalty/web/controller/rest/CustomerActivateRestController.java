@@ -1,5 +1,6 @@
 package com.dbs.loyalty.web.controller.rest;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.web.bind.WebDataBinder;
@@ -9,11 +10,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.dbs.loyalty.config.constant.MessageConstant;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
+import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.service.CustomerService;
+import com.dbs.loyalty.service.LogAuditCustomerService;
 import com.dbs.loyalty.service.dto.CustomerActivateDto;
+import com.dbs.loyalty.service.dto.CustomerDto;
+import com.dbs.loyalty.service.mapper.CustomerMapper;
+import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.response.Response;
 import com.dbs.loyalty.web.validator.CustomerActivateValidator;
 
@@ -33,9 +38,11 @@ public class CustomerActivateRestController {
 
 	public static final String ACTIVATE_CUSTOMER =  "ActivateCustomer";
 	
-	public static final String BINDER_NAME = "customerActivateDto";
-	
     private final CustomerService customerService;
+    
+    private final CustomerMapper customerMapper;
+    
+    private final LogAuditCustomerService logAuditCustomerService;
 
     @ApiOperation(
     		value=ACTIVATE_CUSTOMER, 
@@ -43,15 +50,17 @@ public class CustomerActivateRestController {
     		authorizations={@Authorization(value="JWT")})
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response=Response.class)})
     @PostMapping("/activate")
-    public Response activate(
+    public CustomerDto activate(
     		@ApiParam(name = "CustomerActivateData", value = "Customer's activate data") 
-    		@Valid @RequestBody CustomerActivateDto customerActivateDto) throws BadRequestException  {
+    		@Valid @RequestBody CustomerActivateDto requestData,
+    		HttpServletRequest request) throws BadRequestException  {
     	
-    	customerService.activate(customerActivateDto);
-    	return new Response(MessageConstant.CUSTOMER_IS_ACTIVATED);
+    	Customer customer = customerService.activate(requestData);
+    	logAuditCustomerService.save(ACTIVATE_CUSTOMER, UrlUtil.getFullUrl(request), requestData);
+    	return customerMapper.toDto(customer);
     }
     
-    @InitBinder(BINDER_NAME)
+    @InitBinder
 	protected void initPasswordBinder(WebDataBinder binder) {
 		binder.addValidators(new CustomerActivateValidator());
 	}

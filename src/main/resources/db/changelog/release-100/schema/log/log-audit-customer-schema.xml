@@ -12,7 +12,7 @@
             </column>
             <column name="content_type" type="VARCHAR(50)"/>
             <column name="created_date" type="timestamp"/>
-            <column name="error" type="LONGTEXT"/>
+            <column name="response_data" type="LONGTEXT"/>
             <column name="request_data" type="LONGTEXT"/>
             <column name="old_data" type="LONGTEXT"/>
             <column name="request_file" type="${file.type}"/>
@@ -21,6 +21,9 @@
                 <constraints nullable="false"/>
             </column>
             <column name="status" type="VARCHAR(10)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="http_status" type="INTEGER">
                 <constraints nullable="false"/>
             </column>
             <column name="url" type="VARCHAR(100)">

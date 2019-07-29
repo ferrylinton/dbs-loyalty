@@ -42,8 +42,6 @@ import lombok.RequiredArgsConstructor;
 public class AppointmentRestController {
 	
 	public static final String ADD_APPOINTMENT = "AddAppointment";
-	
-	public static final String BINDER_NAME = "appointmentDto";
 
 	private final AppointmentService appointmentService;
 	
@@ -59,19 +57,14 @@ public class AppointmentRestController {
 	@ApiResponses(value={@ApiResponse(code=200, message="OK", response=Response.class)})
 	@EnableLogAuditCustomer(operation=ADD_APPOINTMENT)
 	@PostMapping
-    public Response addAppointment(@Valid @RequestBody AppointmentDto appointmentDto, HttpServletRequest request) throws Throwable{
+    public Response addAppointment(@Valid @RequestBody AppointmentDto requestData, HttpServletRequest request) throws Throwable{
 		String url = UrlUtil.getFullUrl(request);
-		
-		try {
-			return appointmentService.save(appointmentMapper.toEntity(appointmentDto));
-		} catch (Throwable t) {
-			logAuditCustomerService.save(ADD_APPOINTMENT, url, appointmentDto, t);
-			throw t;
-		}
-		
+		Response response = appointmentService.save(appointmentMapper.toEntity(requestData));
+		logAuditCustomerService.save(ADD_APPOINTMENT, url, requestData);
+		return response;
     }
     
-	@InitBinder(BINDER_NAME)
+	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
 		binder.addValidators(new AppointmentDtoValidator(appointmentService));
 	}

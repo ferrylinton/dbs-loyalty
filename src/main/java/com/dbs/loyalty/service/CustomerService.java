@@ -12,12 +12,14 @@ import org.springframework.stereotype.Service;
 import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.enumeration.TaskOperation;
+import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.repository.CustomerRepository;
 import com.dbs.loyalty.service.dto.CustomerActivateDto;
 import com.dbs.loyalty.service.dto.CustomerNewPasswordDto;
 import com.dbs.loyalty.service.dto.CustomerPasswordDto;
 import com.dbs.loyalty.service.dto.CustomerUpdateDto;
 import com.dbs.loyalty.service.specification.CustomerSpec;
+import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.util.PasswordUtil;
 import com.dbs.loyalty.util.SecurityUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -90,7 +92,7 @@ public class CustomerService{
 		customerRepository.changePassword(passwordHash, SecurityUtil.getLogged());
 	}
 	
-	public void activate(CustomerActivateDto customerActivateDto) {
+	public Customer activate(CustomerActivateDto customerActivateDto) throws BadRequestException {
 		Optional<Customer> customer = customerRepository.findByEmailIgnoreCase(customerActivateDto.getEmail());
 		
 		if(customer.isPresent()) {
@@ -99,7 +101,9 @@ public class CustomerService{
 			customer.get().setPasswordHash(PasswordUtil.encode(customerActivateDto.getPassword()));
 			customer.get().setLastModifiedBy(SecurityUtil.getLogged());
 			customer.get().setLastModifiedDate(Instant.now());
-			customerRepository.save(customer.get());
+			return customerRepository.save(customer.get());
+		}else {
+			throw new BadRequestException(MessageUtil.getNotFoundMessage(customerActivateDto.getEmail()));
 		}
 	}
 	

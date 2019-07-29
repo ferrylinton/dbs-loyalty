@@ -13,6 +13,10 @@ public abstract class DepartureMapper{
 
 	@Mapping(source="flightDate", target="flightDate", dateFormat=DateConstant.UTC)
 	@Mapping(source="pickupTime", target="pickupTime", dateFormat=DateConstant.UTC)
-	public abstract Departure toEntity(DepartureDto departureDto);
+	public abstract Departure toEntity(DepartureDto dto);
+	
+	@Mapping(source="flightDate", target="flightDate", dateFormat=DateConstant.UTC)
+	@Mapping(source="pickupTime", target="pickupTime", dateFormat=DateConstant.UTC)
+	public abstract DepartureDto toDto(Departure entity);
 	
 }

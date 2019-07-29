@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -78,7 +79,7 @@ public class AddressRestController {
     @ApiResponses(value = { @ApiResponse(code=200, message="OK", response=CountryDto.class, responseContainer="List")})
     @EnableLogAuditCustomer(operation=GET_ADDRESSES)
     @GetMapping
-    public List<AddressDto> getAddresses() {
+    public List<AddressDto> getAddresses(HttpServletRequest request, HttpServletResponse response) {
     	return addressMapper.toDto(addressService.findByCustomerEmail(SecurityUtil.getLogged()));
     }
     
@@ -96,36 +97,28 @@ public class AddressRestController {
     @PostMapping
     public AddressDto save(@Valid @RequestBody AddressDto requestData, HttpServletRequest request){
     	String customerId = SecurityUtil.getId();
-    	String url = UrlUtil.getFullUrl(request);
-    	AddressDto oldData = null;
+    	Optional<Customer> customer = customerService.findById(customerId);
+    	Optional<Address> current = addressService.findByCustomerIdAndLabel(customerId, requestData.getLabel());
+    	Address address = null;
     	
-    	try {
-    		Optional<Customer> customer = customerService.findById(customerId);
-        	Optional<Address> current = addressService.findByCustomerIdAndLabel(customerId, requestData.getLabel());
-        	Address address = null;
-        	
-        	if(current.isPresent()) {
-        		address = addressMapper.toEntity(requestData, cityService);
-        		address.setId(current.get().getId());
-        		address.setCustomer(customer.get());
-        		address.setLastModifiedBy(SecurityUtil.getLogged());
-        		address.setLastModifiedDate(Instant.now());
-        	}else {
-        		address = addressMapper.toEntity(requestData, cityService);
-        		address.setCustomer(customer.get());
-        		address.setCreatedBy(SecurityUtil.getLogged());
-        		address.setCreatedDate(Instant.now());
-        	}
-		
-        	setLabel(address);
-        	address = addressService.save(address);
-        	oldData = current.isPresent() ? addressMapper.toDto(current.get()) : null;
-        	logAuditCustomerService.save(ADD_ADDRESS, url, requestData, oldData);
-        	return addressMapper.toDto(address);
-		} catch (Throwable t) {
-			logAuditCustomerService.save(ADD_ADDRESS, url, requestData, t);
-			throw t;
-		}
+    	if(current.isPresent()) {
+    		address = addressMapper.toEntity(requestData, cityService);
+    		address.setId(current.get().getId());
+    		address.setCustomer(customer.get());
+    		address.setLastModifiedBy(SecurityUtil.getLogged());
+    		address.setLastModifiedDate(Instant.now());
+    	}else {
+    		address = addressMapper.toEntity(requestData, cityService);
+    		address.setCustomer(customer.get());
+    		address.setCreatedBy(SecurityUtil.getLogged());
+    		address.setCreatedDate(Instant.now());
+    	}
+	
+    	setLabel(address);
+    	address = addressService.save(address);
+    	AddressDto oldData = current.isPresent() ? addressMapper.toDto(current.get()) : null;
+    	logAuditCustomerService.save(ADD_ADDRESS, UrlUtil.getFullUrl(request), requestData, oldData);
+    	return addressMapper.toDto(address);
     }
     
     private void setLabel(Address address) {

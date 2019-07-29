@@ -2,6 +2,8 @@ package com.dbs.loyalty.filter;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -27,8 +29,16 @@ import lombok.RequiredArgsConstructor;
 @Component
 public class LogRequestFilter extends OncePerRequestFilter implements Ordered {
 	
-    private final static int order = Ordered.LOWEST_PRECEDENCE - 8;
+	private static final String REGEX_JSON_PASSWORD = "(?i)(\\n?\\s*\".*password.*\"\\s*?:\\s*?\")[^\\n\"]*(\",?\\n?)";
+	
+	private static final String MASKED_PASSWORD = "$1*****$2";
+	
+    private static final String API = "/api"; 
     
+    private static final List<String> API_WITH_PASSWORD = Arrays.asList("/api/authenticate");
+
+	private static final int order = Ordered.LOWEST_PRECEDENCE - 8;
+
     private final LogAuditCustomerService logAuditCustomerService;
 
     @Override
@@ -43,10 +53,7 @@ public class LogRequestFilter extends OncePerRequestFilter implements Ordered {
         
         filterChain.doFilter(requestWrapper, responseWrapper);
         
-        if(response.getStatus() == 400) {
-        	logAuditCustomerService.saveError(UrlUtil.getFullUrl(request), request.getServletPath(), getString(requestWrapper), getString(responseWrapper));
-        }
-        
+        logAuditCustomer(requestWrapper, responseWrapper);
         responseWrapper.copyBodyToResponse();
     }
 
@@ -55,8 +62,7 @@ public class LogRequestFilter extends OncePerRequestFilter implements Ordered {
             byte[] buf = requestWrapper.getContentAsByteArray();
             if (buf.length > 0) {
                 try {
-                    String result = new String(buf, 0, buf.length, requestWrapper.getCharacterEncoding());
-                    return result.replace("\n", "").replace("\r", "");
+                    return new String(buf, 0, buf.length, requestWrapper.getCharacterEncoding());
                 }catch (UnsupportedEncodingException ex) {
                     return ex.getMessage();
                 }
@@ -64,6 +70,19 @@ public class LogRequestFilter extends OncePerRequestFilter implements Ordered {
         }
         
         return null;
+    }
+    
+    private void logAuditCustomer(ContentCachingRequestWrapper requestWrapper, ContentCachingResponseWrapper responseWrapper) {
+    	if(requestWrapper.getServletPath().contains(API) && responseWrapper.getStatus() >= 400) {
+        	String url = UrlUtil.getFullUrl(requestWrapper);
+        	String requestData = getString(requestWrapper);
+        	
+        	if(API_WITH_PASSWORD.contains(requestWrapper.getServletPath())) {
+        		requestData = maskPassword(requestData);
+        	}
+        	
+        	logAuditCustomerService.saveError(url, requestWrapper.getServletPath(), requestData, getString(responseWrapper), responseWrapper.getStatusCode());
+        }
     }
 
     private String getString(ContentCachingResponseWrapper responseWrapper) {
@@ -71,8 +90,7 @@ public class LogRequestFilter extends OncePerRequestFilter implements Ordered {
             byte[] buf = responseWrapper.getContentAsByteArray();
             if (buf.length > 0) {
                 try {
-                    String result = new String(buf, 0, buf.length, responseWrapper.getCharacterEncoding());
-                    return result.replace("\n", "").replace("\r", "");
+                    return new String(buf, 0, buf.length, responseWrapper.getCharacterEncoding());
                 }catch (UnsupportedEncodingException ex) {
                     return ex.getMessage();
                 }
@@ -81,5 +99,13 @@ public class LogRequestFilter extends OncePerRequestFilter implements Ordered {
         
         return null;
     }
+    
+	private String maskPassword(String jsonString){
+		if (jsonString == null) {
+			return null;
+		}
+
+    	return jsonString.replaceAll(REGEX_JSON_PASSWORD, MASKED_PASSWORD);
+	}
 
 }

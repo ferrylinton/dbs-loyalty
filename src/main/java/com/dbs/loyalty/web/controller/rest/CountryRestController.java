@@ -2,6 +2,9 @@ package com.dbs.loyalty.web.controller.rest;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,9 +57,8 @@ public class CountryRestController {
     @ApiResponses(value = { @ApiResponse(code=200, message="OK", response=CountryDto.class, responseContainer="List")})
     @EnableLogAuditCustomer(operation=GET_COUNTRIES)
     @GetMapping
-    public List<CountryDto> getCountries() {
-    	List<CountryDto> countries = countryMapper.toDto(countryService.findAll());
-    	return countries;
+    public List<CountryDto> getCountries(HttpServletRequest request, HttpServletResponse response) {
+    	return countryMapper.toDto(countryService.findAll());
     }
     
     /**
@@ -72,9 +74,9 @@ public class CountryRestController {
     @ApiResponses(value = { @ApiResponse(code=200, message="OK", response=Response.class)})
     @EnableLogAuditCustomer(operation=SYNC_COUNTRIES)
     @GetMapping("/sync")
-    public Response sync() {
+    public Response sync(HttpServletRequest request, HttpServletResponse response) {
     	countryService.sync();
-    	return new Response("Request is processed");
+    	return new Response("Sync Request is processed");
     }
 
 }

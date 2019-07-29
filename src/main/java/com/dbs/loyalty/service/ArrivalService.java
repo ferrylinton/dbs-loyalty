@@ -15,12 +15,11 @@ import com.dbs.loyalty.domain.AirportAssistance;
 import com.dbs.loyalty.domain.Arrival;
 import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.exception.BadRequestException;
+import com.dbs.loyalty.repository.AirportAssistanceRepository;
 import com.dbs.loyalty.repository.ArrivalRepository;
 import com.dbs.loyalty.repository.CustomerRepository;
 import com.dbs.loyalty.service.specification.ArrivalSpec;
-import com.dbs.loyalty.repository.AirportAssistanceRepository;
 import com.dbs.loyalty.util.SecurityUtil;
-import com.dbs.loyalty.web.response.Response;
 
 import lombok.RequiredArgsConstructor;
 
@@ -43,7 +42,7 @@ public class ArrivalService {
 	}
 
 	@Transactional
-	public Response save(Arrival arrival) throws BadRequestException{
+	public Arrival save(Arrival arrival) throws BadRequestException{
 		Optional<Customer> customer = customerRespository.findById(SecurityUtil.getId());
 		
 		if(customer.isPresent()) {
@@ -56,8 +55,7 @@ public class ArrivalService {
 				arrival.setCustomer(customer.get());
 				arrival.setCreatedBy(SecurityUtil.getLogged());
 				arrival.setCreatedDate(Instant.now());
-				arrival = arrivalRepository.save(arrival);
-				return new Response(MessageConstant.DATA_IS_SAVED);
+				return arrivalRepository.save(arrival);
 			}else {
 				throw new BadRequestException(MessageConstant.NO_LIMIT_iS_AVAILABLE);
 			}

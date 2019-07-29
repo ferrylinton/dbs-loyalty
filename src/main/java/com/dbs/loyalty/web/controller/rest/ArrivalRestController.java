@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.aop.EnableLogAuditCustomer;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
+import com.dbs.loyalty.domain.Arrival;
+import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.service.ArrivalService;
 import com.dbs.loyalty.service.LogAuditCustomerService;
 import com.dbs.loyalty.service.dto.ArrivalDto;
@@ -41,7 +43,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/arrivals")
 public class ArrivalRestController {
 	
-	private static final String ADD_ARRIVAL = "AddArrival";
+	public static final String ADD_ARRIVAL = "AddArrival";
 
 	private final ArrivalService arrivalService;
 	
@@ -56,20 +58,13 @@ public class ArrivalRestController {
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response=Response.class)})
     @EnableLogAuditCustomer(operation=ADD_ARRIVAL)
     @PostMapping
-    public Response addArrival(@Valid @RequestBody ArrivalDto arrivalDto, HttpServletRequest request) throws Throwable{
-    	String url = UrlUtil.getFullUrl(request);
-    	
-    	try {
-    		Response response = arrivalService.save(arrivalMapper.toEntity(arrivalDto));
-    		logAuditCustomerService.save(ADD_ARRIVAL, url, arrivalDto);
-    		return response;
-		} catch (Throwable t) {
-			logAuditCustomerService.saveError(ADD_ARRIVAL, url, arrivalDto, t);
-			throw t;
-		}
+    public ArrivalDto addArrival(@Valid @RequestBody ArrivalDto requestData, HttpServletRequest request) throws BadRequestException{
+    	Arrival arrival = arrivalService.save(arrivalMapper.toEntity(requestData));
+		logAuditCustomerService.save(ADD_ARRIVAL, UrlUtil.getFullUrl(request), requestData);
+		return arrivalMapper.toDto(arrival);
     }
     
-    @InitBinder("arrivalDto")
+    @InitBinder
 	protected void initBinder(WebDataBinder binder) {
 		binder.addValidators(new ArrivalDtoValidator(arrivalService));
 	}

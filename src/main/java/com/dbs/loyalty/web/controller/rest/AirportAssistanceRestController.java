@@ -2,6 +2,9 @@ package com.dbs.loyalty.web.controller.rest;
 
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,7 +50,7 @@ public class AirportAssistanceRestController {
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response=AirportAssistanceDto.class)})
 	@EnableLogAuditCustomer(operation=GET_AIRPORT_ASSISTANCE_LIMIT)
 	@GetMapping
-    public AirportAssistanceDto getLimit(){
+    public AirportAssistanceDto getLimit(HttpServletRequest request, HttpServletResponse response){
 		Optional<AirportAssistance> airportAssistance = airportAssistanceService.findById();
 		
 		if(airportAssistance.isPresent()) {

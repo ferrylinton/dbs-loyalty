@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.config.constant.SwaggerConstant;
+import com.dbs.loyalty.domain.Departure;
+import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.service.DepartureService;
 import com.dbs.loyalty.service.LogAuditCustomerService;
 import com.dbs.loyalty.service.dto.DepartureDto;
@@ -39,9 +41,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/departures")
 public class DepartureRestController {
-	
-	public static final String BINDER_NAME = "departureDto";
-	
+
 	public static final String ADD_DEPARTURE = "AddDeparture";
 
 	private final DepartureService departureService;
@@ -56,20 +56,13 @@ public class DepartureRestController {
 			authorizations={@Authorization(value="JWT")})
     @ApiResponses(value={ @ApiResponse(code=200, message="OK", response=Response.class)})
 	@PostMapping
-    public Response addDeparture(@Valid @RequestBody DepartureDto departureDto, HttpServletRequest request) throws Throwable{
-		String url = UrlUtil.getFullUrl(request);
-    	
-    	try {
-    		Response response = departureService.save(departureMapper.toEntity(departureDto));
-    		logAuditCustomerService.save(ADD_DEPARTURE, url, departureDto);
-    		return response;
-		} catch (Throwable t) {
-			logAuditCustomerService.saveError(ADD_DEPARTURE, url, departureDto, t);
-			throw t;
-		}
+    public DepartureDto addDeparture(@Valid @RequestBody DepartureDto requestData, HttpServletRequest request) throws BadRequestException{
+		Departure departure = departureService.save(departureMapper.toEntity(requestData));
+		logAuditCustomerService.save(ADD_DEPARTURE, UrlUtil.getFullUrl(request), requestData);
+		return departureMapper.toDto(departure);
     }
     
-	@InitBinder(BINDER_NAME)
+	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
 		binder.addValidators(new DepartureDtoValidator(departureService));
 	}

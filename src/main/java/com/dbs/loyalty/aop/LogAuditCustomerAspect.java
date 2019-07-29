@@ -1,13 +1,12 @@
 package com.dbs.loyalty.aop;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.dbs.loyalty.service.LogAuditCustomerService;
 import com.dbs.loyalty.util.UrlUtil;
@@ -21,23 +20,23 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class LogAuditCustomerAspect {
 
+	private static final String ERROR_FORMAT = "{\"error\" : \"%s\"}";
+	
 	private final LogAuditCustomerService logAuditCustomerService;
 
-	@Around("@annotation(logAudit)")
-	public Object logGet(ProceedingJoinPoint joinPoint, EnableLogAuditCustomer logAudit) throws Throwable {
-		return logAudit(joinPoint, logAudit);
+	@Around("@annotation(logAudit) && args(.., request, response)")
+	public Object logGet(ProceedingJoinPoint joinPoint, EnableLogAuditCustomer logAudit, HttpServletRequest request, HttpServletResponse response) throws Throwable {
+		return logAudit(joinPoint, logAudit, request, response);
 	}
 
-	private Object logAudit(ProceedingJoinPoint joinPoint, EnableLogAuditCustomer logAudit) throws Throwable {
-		HttpServletRequest httpServletRequest = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-		
+	private Object logAudit(ProceedingJoinPoint joinPoint, EnableLogAuditCustomer logAudit, HttpServletRequest request, HttpServletResponse response) throws Throwable {
 		try {
-			Object response = joinPoint.proceed();
-			logAuditCustomerService.save(logAudit.operation(), UrlUtil.getFullUrl(httpServletRequest));
-			return response;
+			Object result = joinPoint.proceed();
+			logAuditCustomerService.save(logAudit.operation(), UrlUtil.getFullUrl(request));
+			return result;
 		} catch (Throwable throwable) {
 			log.error(throwable.getLocalizedMessage(), throwable);
-			logAuditCustomerService.saveError(logAudit.operation(), UrlUtil.getFullUrl(httpServletRequest), throwable);
+			logAuditCustomerService.saveError(logAudit.operation(), UrlUtil.getFullUrl(request), null, String.format(ERROR_FORMAT, throwable.getLocalizedMessage()), response.getStatus());
 			throw throwable;
 		}
 	}

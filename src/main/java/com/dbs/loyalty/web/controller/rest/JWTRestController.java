@@ -50,17 +50,12 @@ public class JWTRestController {
     public JWTTokenDto authenticate(
     		@ApiParam(name = "JWTLoginData", value = "Customer's login data to get JWT token")
     		@Valid @RequestBody JWTLoginDto jwtLoginDto,
-    		HttpServletRequest request) throws Throwable {
+    		HttpServletRequest request) throws Exception {
 
-    	try {
-    		Authentication authentication = new UsernamePasswordAuthenticationToken(jwtLoginDto.getEmail(), jwtLoginDto.getPassword());
-    		JWTTokenDto jWTTokenDto = jwtAuthenticationService.authenticate(request, authentication, jwtLoginDto.isRememberMe());
-    		logAuditCustomerService.save(AUTHENTICATE, UrlUtil.getFullUrl(request), jwtLoginDto);
-    		return jWTTokenDto;
-    	} catch (Throwable t) {
-    		logAuditCustomerService.saveError(AUTHENTICATE, UrlUtil.getFullUrl(request), jwtLoginDto, t);
-			throw t;
-		}
+    	Authentication authentication = new UsernamePasswordAuthenticationToken(jwtLoginDto.getEmail(), jwtLoginDto.getPassword());
+		JWTTokenDto jWTTokenDto = jwtAuthenticationService.authenticate(request, authentication, jwtLoginDto.isRememberMe());
+		logAuditCustomerService.save(AUTHENTICATE, UrlUtil.getFullUrl(request), jwtLoginDto);
+		return jWTTokenDto;
     }
 
 }
