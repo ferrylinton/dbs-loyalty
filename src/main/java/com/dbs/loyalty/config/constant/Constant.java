@@ -82,6 +82,8 @@ public final class Constant {
 	
 	public static final String JSON = "json";
 	
+	public static final String TEXT = "text";
+	
 	public static final String IMAGE = "image";
 	
 	public static final String UPLOAD_FILE = "UploadFile";

@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,9 +23,11 @@ import com.dbs.loyalty.domain.Event;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.EventService;
 import com.dbs.loyalty.service.FeedbackCustomerService;
+import com.dbs.loyalty.service.LogAuditCustomerService;
 import com.dbs.loyalty.service.dto.FeedbackAnswerDto;
 import com.dbs.loyalty.service.dto.FeedbackAnswerFormListDto;
 import com.dbs.loyalty.service.mapper.FeedbackAnswerMapper;
+import com.dbs.loyalty.util.UrlUtil;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -48,14 +50,14 @@ import lombok.RequiredArgsConstructor;
 public class FeedbackAnswerRestController {
 	
 	public static final String ADD_FEEDBACK_CUSTOMER =  "AddFeedbackCustomer";
-	
-	public static final String BINDER_NAME = "feedbackAnswerFormListDto";
 
 	private final EventService eventService;
 	
     private final FeedbackCustomerService feedbackCustomerService;
     
     private final FeedbackAnswerMapper feedbackAnswerMapper;
+    
+    private final LogAuditCustomerService logAuditCustomerService;
 
     @ApiOperation(
     		nickname = ADD_FEEDBACK_CUSTOMER, 
@@ -66,23 +68,25 @@ public class FeedbackAnswerRestController {
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = FeedbackAnswerDto.class)})
     @PreAuthorize("hasRole('CUSTOMER')")
     @PostMapping("/{eventId}")
-    public ResponseEntity<List<FeedbackAnswerDto>> addFeedbackCustomer(
+    public List<FeedbackAnswerDto> addFeedbackCustomer(
     		@ApiParam(name = "eventId", value = "Event Id", example = "77UTTDWJX3zNWABg9ixZX9")
     		@PathVariable String eventId,
-    		@Valid @RequestBody FeedbackAnswerFormListDto feedbackAnswerFormListDto) throws NotFoundException{
+    		@Valid @RequestBody FeedbackAnswerFormListDto requestData, 
+    		HttpServletRequest request) throws NotFoundException{
     	
     	Optional<Event> event = eventService.findById(eventId);
     	
     	if(event.isPresent()) {
     		List<FeedbackAnswerDto> answers = feedbackCustomerService
-        			.save(eventId, feedbackAnswerFormListDto.getFeedbackAnswerFormDtos())
+        			.save(eventId, requestData.getFeedbackAnswerFormDtos())
         			.getAnswers()
         			.stream()
         			.map(feedbackAnswer -> feedbackAnswerMapper.toDto(feedbackAnswer))
         			.collect(Collectors.toList());
         	
         	Collections.sort(answers);
-        	return ResponseEntity.ok().body(answers);
+        	logAuditCustomerService.save(ADD_FEEDBACK_CUSTOMER, UrlUtil.getFullUrl(request), requestData);
+        	return answers;
     	}else {
     		throw new NotFoundException(String.format(MessageConstant.DATA_IS_NOT_FOUND, DomainConstant.EVENT, eventId));
     	}

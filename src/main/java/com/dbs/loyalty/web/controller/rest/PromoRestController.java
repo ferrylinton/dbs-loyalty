@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -62,7 +65,7 @@ public class PromoRestController {
 	@ApiResponses(value={@ApiResponse(code=200, message="OK", response=CarouselDto.class)})
 	@EnableLogAuditCustomer(operation=GET_ALL_PROMO_IN_CAROUSEL)
 	@GetMapping("/carousel")
-    public List<CarouselDto> getAllPromoInCarousel(){
+    public List<CarouselDto> getAllPromoInCarousel(HttpServletRequest request, HttpServletResponse response){
 		return promoService
 				.findPromoInCarousel()
 				.stream()
@@ -79,7 +82,8 @@ public class PromoRestController {
 	@GetMapping("/promo-categories/{promoCategoryId}")
     public List<PromoDto> getAllByPromoCategoryId(
     		@ApiParam(name = "promoCategoryId", value = "Promo Category Id", example = "6nJfmxAD6GWtsehXfSkShg")
-    		@PathVariable String promoCategoryId){
+    		@PathVariable String promoCategoryId,
+    		HttpServletRequest request, HttpServletResponse response){
     	
 		return promoService
 				.findByPromoCategoryId(promoCategoryId)
@@ -97,7 +101,8 @@ public class PromoRestController {
 	@GetMapping("/{id}")
     public PromoDto getPromoById(
     		@ApiParam(name = "id", value = "Promo Id", example = "5WTqpHYs3wZoIdhAkbWt1W")
-    		@PathVariable String id) throws NotFoundException{
+    		@PathVariable String id,
+    		HttpServletRequest request, HttpServletResponse response) throws NotFoundException{
     	
 		Optional<PromoDto> current = promoService
 				.findById(id)
@@ -119,7 +124,8 @@ public class PromoRestController {
     @GetMapping(value="/{id}/term", produces="text/plain")
     public String getTermAndConditionById(
     		@ApiParam(name = "id", value = "Promo Id", example = "5WTqpHYs3wZoIdhAkbWt1W")
-    		@PathVariable String id) throws NotFoundException{
+    		@PathVariable String id,
+    		HttpServletRequest request, HttpServletResponse response) throws NotFoundException{
     	
 		Optional<String> current = promoService.findTermAndConditionById(id);
     	

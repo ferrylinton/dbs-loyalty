@@ -51,22 +51,24 @@ public class LogAuditCustomerService {
 	}
 	
 	public void save(String operation, String url) {
-		save(operation, url, null, null);
+		save(operation, url, null, null, null);
 	}
 
 	public void save(String operation, String url, Object requestData) {
-		save(operation, url, requestData, null);
+		if(requestData instanceof String) {
+			save(operation, url, Constant.TEXT, requestData, null);
+		}else {
+			save(operation, url, Constant.JSON, requestData, null);
+		}
 	}
-	
-	@Async
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public void save(String operation, String url, Object requestData, Object oldData) {
+
+	public void save(String operation, String url, String contentType, Object requestData, Object oldData) {
 		LogAuditCustomer logAuditCustomer = new LogAuditCustomer();
 		logAuditCustomer.setOperation(operation);
     	logAuditCustomer.setUrl(url);
     	logAuditCustomer.setHttpStatus(200);
     	logAuditCustomer.setStatus(StatusConstant.SUCCEED);
-    	logAuditCustomer.setContentType(Constant.JSON);
+    	logAuditCustomer.setContentType(contentType);
     	logAuditCustomer.setRequestData(toString(requestData));
     	logAuditCustomer.setOldData(toString(oldData));
         logAuditCustomer.setCreatedDate(Instant.now());
@@ -75,8 +77,6 @@ public class LogAuditCustomerService {
         save(logAuditCustomer);
 	}
 
-	@Async
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void saveError(String url, String servletPath, Object requestData, String responseData, Integer httpStatus) {
 		if(getOperation().containsKey(servletPath)) {
 			LogAuditCustomer logAuditCustomer = new LogAuditCustomer();
@@ -95,9 +95,7 @@ public class LogAuditCustomerService {
 			log.warn(String.format("LogAuditCustomerService::getOperation() :: Warn :: %s is not found", servletPath));
 		}
 	}
-	
-	@Async
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
+
 	public void saveError(String operation, String url, String responseData, Integer httpStatus) {
 		LogAuditCustomer logAuditCustomer = new LogAuditCustomer();
     	logAuditCustomer.setOperation(operation);
@@ -111,9 +109,7 @@ public class LogAuditCustomerService {
         
         save(logAuditCustomer);
 	}
-	
-	@Async
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
+
 	public void saveFile(String operation, String url, String contentType, byte[] requestFile, byte[] oldFile) {
 		LogAuditCustomer logAuditCustomer = new LogAuditCustomer();
 		logAuditCustomer.setOperation(operation);
@@ -129,8 +125,7 @@ public class LogAuditCustomerService {
         save(logAuditCustomer);
 	}
 	
-	@Async
-	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	
 	public void saveFileError(String url, String responseData, Integer httpStatus) {
 		LogAuditCustomer logAuditCustomer = new LogAuditCustomer();
     	logAuditCustomer.setOperation(Constant.UPLOAD_FILE);
@@ -159,7 +154,9 @@ public class LogAuditCustomerService {
 		}
 	}
 	
-	private void save(LogAuditCustomer logAuditCustomer) {
+	@Async
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public void save(LogAuditCustomer logAuditCustomer) {
 		try {
 			logAuditCustomerRepository.save(logAuditCustomer);
 		} catch (Exception e) {
@@ -179,9 +176,9 @@ public class LogAuditCustomerService {
 			operations.put("/api/customers/activate", CustomerActivateRestController.ACTIVATE_CUSTOMER);
 			operations.put("/api/customers/image", CustomerImageRestController.UPDATE_CUSTOMER_IMAGE);
 			operations.put("/api/customers/change-password", CustomerRestController.CHANGE_PASSWORD);
-			operations.put(FeedbackAnswerRestController.BINDER_NAME, FeedbackAnswerRestController.ADD_FEEDBACK_CUSTOMER);
-			operations.put(TrxOrderRestController.BINDER_NAME, TrxOrderRestController.ADD_TRX_ORDER);
-			operations.put(PriviledgeOrderRestController.BINDER_NAME, PriviledgeOrderRestController.ADD_PRIVILEDGE_ORDER);
+			operations.put("/api/feedback-answers", FeedbackAnswerRestController.ADD_FEEDBACK_CUSTOMER);
+			operations.put("/api/trx-orders", TrxOrderRestController.ADD_TRX_ORDER);
+			operations.put("/api/priviledge-orders", PriviledgeOrderRestController.CREATE_PRIVILEDGE_ORDER);
 			operations.put(LovedOneRestController.ADD_BINDER_NAME, LovedOneRestController.ADD_LOVED_ONE);
 			operations.put(LovedOneRestController.UPDATE_BINDER_NAME, LovedOneRestController.UPDATE_LOVED_ONE);
 		}

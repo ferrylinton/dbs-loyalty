@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.aop.EnableLogAuditCustomer;
 import com.dbs.loyalty.config.constant.AddressLabelConstant;
+import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.domain.Address;
 import com.dbs.loyalty.domain.Customer;
@@ -117,7 +118,7 @@ public class AddressRestController {
     	setLabel(address);
     	address = addressService.save(address);
     	AddressDto oldData = current.isPresent() ? addressMapper.toDto(current.get()) : null;
-    	logAuditCustomerService.save(ADD_ADDRESS, UrlUtil.getFullUrl(request), requestData, oldData);
+    	logAuditCustomerService.save(ADD_ADDRESS, UrlUtil.getFullUrl(request), Constant.JSON, requestData, oldData);
     	return addressMapper.toDto(address);
     }
     

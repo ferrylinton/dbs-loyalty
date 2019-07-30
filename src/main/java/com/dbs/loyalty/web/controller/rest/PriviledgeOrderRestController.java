@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dbs.loyalty.aop.EnableLogAuditCustomer;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.domain.PriviledgeOrder;
 import com.dbs.loyalty.exception.BadRequestException;
@@ -38,25 +39,24 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/priviledge-orders")
 public class PriviledgeOrderRestController {
 
-	public static final String ADD_PRIVILEDGE_ORDER = "AddPriviledgeOrder";
-	
-	public static final String BINDER_NAME = "priviledgeOrder";
-	
+	public static final String CREATE_PRIVILEDGE_ORDER = "CreatePriviledgeOrder";
+
 	private final PriviledgeProductService priviledgeProductService;
 	
 	private final PriviledgeOrderService priviledgeOrderService;
 
 	@ApiOperation(
-			value=ADD_PRIVILEDGE_ORDER, 
+			value=CREATE_PRIVILEDGE_ORDER, 
 			produces="application/json", 
 			authorizations={@Authorization(value="JWT")})
     @ApiResponses(value={ @ApiResponse(code=200, message="OK", response=Response.class)})
+	@EnableLogAuditCustomer(operation=CREATE_PRIVILEDGE_ORDER)
 	@PostMapping
-    public PriviledgeOrder addDeparture(@Valid @RequestBody PriviledgeOrder priviledgeOrder) throws BadRequestException{
+    public PriviledgeOrder createOrder(@Valid @RequestBody PriviledgeOrder priviledgeOrder) throws BadRequestException{
 		return priviledgeOrderService.save(priviledgeOrder);
     }
     
-	@InitBinder(BINDER_NAME)
+	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
 		binder.addValidators(new PriviledgeOrderValidator(priviledgeProductService));
 	}

@@ -24,9 +24,14 @@ public class LogAuditCustomerAspect {
 	
 	private final LogAuditCustomerService logAuditCustomerService;
 
-	@Around("@annotation(logAudit) && args(.., request, response)")
-	public Object logGet(ProceedingJoinPoint joinPoint, EnableLogAuditCustomer logAudit, HttpServletRequest request, HttpServletResponse response) throws Throwable {
+	@Around("@annotation(logAudit) && args(request, response)")
+	public Object log(ProceedingJoinPoint joinPoint, EnableLogAuditCustomer logAudit, HttpServletRequest request, HttpServletResponse response) throws Throwable {
 		return logAudit(joinPoint, logAudit, request, response);
+	}
+	
+	@Around("@annotation(logAudit) && args(requestData, request, response)")
+	public Object log(ProceedingJoinPoint joinPoint, EnableLogAuditCustomer logAudit, Object requestData, HttpServletRequest request, HttpServletResponse response) throws Throwable {
+		return logAudit(joinPoint, logAudit, requestData, request, response);
 	}
 
 	private Object logAudit(ProceedingJoinPoint joinPoint, EnableLogAuditCustomer logAudit, HttpServletRequest request, HttpServletResponse response) throws Throwable {
@@ -37,6 +42,18 @@ public class LogAuditCustomerAspect {
 		} catch (Throwable throwable) {
 			log.error(throwable.getLocalizedMessage(), throwable);
 			logAuditCustomerService.saveError(logAudit.operation(), UrlUtil.getFullUrl(request), String.format(ERROR_FORMAT, throwable.getLocalizedMessage()), response.getStatus());
+			throw throwable;
+		}
+	}
+	
+	private Object logAudit(ProceedingJoinPoint joinPoint, EnableLogAuditCustomer logAudit, Object requestData, HttpServletRequest request, HttpServletResponse response) throws Throwable {
+		try {
+			Object result = joinPoint.proceed();
+			logAuditCustomerService.save(logAudit.operation(), UrlUtil.getFullUrl(request), requestData);
+			return result;
+		} catch (Throwable throwable) {
+			log.error(throwable.getLocalizedMessage(), throwable);
+			logAuditCustomerService.saveError(logAudit.operation(), UrlUtil.getFullUrl(request), requestData, String.format(ERROR_FORMAT, throwable.getLocalizedMessage()), response.getStatus());
 			throw throwable;
 		}
 	}

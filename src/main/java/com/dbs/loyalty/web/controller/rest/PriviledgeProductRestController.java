@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -69,7 +72,7 @@ public class PriviledgeProductRestController {
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = ProductPriviledgeDto.class)})
 	@EnableLogAuditCustomer(operation=GET_ALL_PRODUCT_PRIVILEDGES)
 	@GetMapping
-    public List<ProductPriviledgeDto> getAllProductPriviledges(){
+    public List<ProductPriviledgeDto> getAllProductPriviledges(HttpServletRequest request, HttpServletResponse response){
 		return productService
 				.findAll()
 				.stream()
@@ -88,7 +91,8 @@ public class PriviledgeProductRestController {
     @GetMapping("/{id}")
     public ProductPriviledgeDto getById(
     		@ApiParam(name = "id", value = "Product Id", example = "zO0dDp9K")
-    		@PathVariable String id) throws NotFoundException{
+    		@PathVariable String id,
+    		HttpServletRequest request, HttpServletResponse response) throws NotFoundException{
     	
 		Optional<ProductPriviledgeDto> current = productService
 				.findById(id)
@@ -112,7 +116,8 @@ public class PriviledgeProductRestController {
     @GetMapping("/{id}/image")
     public ResponseEntity<byte[]> getProductPriviledgeImageById(
     		@ApiParam(name = "id", value = "ProductPriviledge Id", example = "zO0dDp9K")
-    		@PathVariable String id) throws NotFoundException{
+    		@PathVariable String id,
+    		HttpServletRequest request, HttpServletResponse response) throws NotFoundException{
     	
     	Optional<FileImage> fileImage = imageService.findById(id);
     	
@@ -141,7 +146,8 @@ public class PriviledgeProductRestController {
 	@GetMapping("/{id}/term")
     public ResponseEntity<String> getTermAndConditionById(
     		@ApiParam(name = "id", value = "Product Id", example = "zO0dDp9K")
-    		@PathVariable String id) throws NotFoundException{
+    		@PathVariable String id,
+    		HttpServletRequest request, HttpServletResponse response) throws NotFoundException{
     	
 		Optional<String> current = productService.findTermAndConditionById(id);
     	

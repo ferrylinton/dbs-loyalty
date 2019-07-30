@@ -48,9 +48,11 @@ public class VerificationTokenRestController {
 	
 	public static final String GENERATE_VERIFICATION_TOKEN = "GenerateVerificationToken";
 	
+	public static final String VERIFY_TOKEN = "VerifyToken";
+	
 	public static final String VERIFY_VERIFICATION_TOKEN = "VerificationToken";
 	
-	public static final String LOGIN_WITH_TOKEN = "LoginWithToken";
+	public static final String LOGIN_WITH_VERIFICATION_TOKEN = "LoginWithVerificationToken";
 	
 	private static final String VERIFIED = "verified";
 
@@ -100,6 +102,7 @@ public class VerificationTokenRestController {
     		consumes="application/json", 
     		produces="application/json")
     @ApiResponses(value = { @ApiResponse(code=200, message="OK", response=VerificationTokenDto.class)})
+    @EnableLogAuditCustomer(operation=VERIFY_TOKEN)
     @PostMapping("/verify")
     public Map<String, Boolean> verify(
     		@ApiParam(name = "VerificationTokenData", value = "Verification token data")
@@ -116,11 +119,12 @@ public class VerificationTokenRestController {
      * @throws IOException 
      */
     @ApiOperation(
-    		nickname=LOGIN_WITH_TOKEN, 
-    		value=LOGIN_WITH_TOKEN, 
+    		nickname=LOGIN_WITH_VERIFICATION_TOKEN, 
+    		value=LOGIN_WITH_VERIFICATION_TOKEN, 
     		produces="application/json", 
     		authorizations={@Authorization(value="JWT")})
     @ApiResponses(value = { @ApiResponse(code=200, message="OK", response=JWTTokenDto.class)})
+    @EnableLogAuditCustomer(operation=LOGIN_WITH_VERIFICATION_TOKEN)
     @PostMapping("/authenticate")
     public JWTTokenDto authenticate(
     		@ApiParam(name = "VerificationTokenData", value = "Verification token data")

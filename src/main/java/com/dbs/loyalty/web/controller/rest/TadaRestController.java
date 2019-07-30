@@ -7,6 +7,7 @@ import java.time.Instant;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.http.HttpEntity;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 
+import com.dbs.loyalty.aop.EnableLogAuditCustomer;
 import com.dbs.loyalty.config.ApplicationProperties;
 import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
@@ -62,6 +64,14 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api/tada")
 public class TadaRestController {
 	
+	public static final String GET_TADA_ITEMS = "GetTadaItems";
+	
+	public static final String GET_TADA_CATEGORIES = "GetTadaCategories";
+	
+	public static final String GET_TADA_ORDER_BY_ID = "GetTadaOrderById";
+	
+	public static final String CREATE_TADA_ORDER = "CreateTadaOrder";
+	
 	private static final String RESULT_FORMAT = "{\"message\":\"%s\"}";
 	
 	private final ApplicationProperties applicationProperties;
@@ -77,49 +87,53 @@ public class TadaRestController {
 	private final ObjectMapper objectMapper;
 	
 	@ApiOperation(
-		nickname = "GetTadaItems", 
-		value = "GetTadaItems", 
+		nickname = GET_TADA_ITEMS, 
+		value = GET_TADA_ITEMS, 
 		produces = "application/json", 
 		authorizations = { @Authorization(value = "JWT") })
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = String.class) })
+	@EnableLogAuditCustomer(operation=GET_TADA_ITEMS)
 	@GetMapping("/items")
-	public ResponseEntity<String> getItems(HttpServletRequest request) {
+	public ResponseEntity<String> getItems(HttpServletRequest request, HttpServletResponse response) {
 		String url = applicationProperties.getTada().getItemsUrl();
 		return exchangeGet(url, request);
 	}
 	
 	@ApiOperation(
-		nickname = "GetTadaCategories", 
-		value = "GetTadaCategories", 
+		nickname = GET_TADA_CATEGORIES, 
+		value = GET_TADA_CATEGORIES, 
 		produces = "application/json", 
 		authorizations = { @Authorization(value = "JWT") })
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = String.class) })
+	@EnableLogAuditCustomer(operation=GET_TADA_CATEGORIES)
 	@GetMapping("/categories")
-	public ResponseEntity<String> getCategories(HttpServletRequest request) {
+	public ResponseEntity<String> getCategories(HttpServletRequest request, HttpServletResponse response) {
 		String url = applicationProperties.getTada().getCategoriesUrl();
 		return exchangeGet(url, request);
 	}
 	
 	@ApiOperation(
-		nickname = "GetTadaOrderById", 
-		value = "GetTadaOrderById", 
+		nickname = GET_TADA_ORDER_BY_ID, 
+		value = GET_TADA_ORDER_BY_ID, 
 		produces = "application/json", 
 		authorizations = { @Authorization(value = "JWT") })
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = String.class) })
+	@EnableLogAuditCustomer(operation=GET_TADA_ORDER_BY_ID)
 	@GetMapping("/orders/{id}")
-	public ResponseEntity<String> getTadaOrderById(@PathVariable String id, HttpServletRequest request) {
+	public ResponseEntity<String> getTadaOrderById(@PathVariable String id, HttpServletRequest request, HttpServletResponse response) {
 		String url = applicationProperties.getTada().getOrdersByIdUrl().replace("{id}", id);
 		return exchangeGet(url, request);
 	}
 
 	@ApiOperation(
-		nickname = "CreateOrder", 
-		value = "CreateOrder", 
+		nickname = CREATE_TADA_ORDER, 
+		value = CREATE_TADA_ORDER, 
 		produces = "application/json", 
 		authorizations = { @Authorization(value = "JWT") })
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = String.class) })
+	@EnableLogAuditCustomer(operation=CREATE_TADA_ORDER)
 	@PostMapping("/orders")
-	public ResponseEntity<String> post(@RequestBody @Valid TadaOrder tadaOrder, HttpServletRequest request) {
+	public ResponseEntity<String> post(@RequestBody @Valid TadaOrder tadaOrder, HttpServletRequest request, HttpServletResponse response) {
 		try {
 			return saveTadaOrder(tadaOrder, SecurityUtil.getLogged(), request);
 		} catch (BadRequestException e) {

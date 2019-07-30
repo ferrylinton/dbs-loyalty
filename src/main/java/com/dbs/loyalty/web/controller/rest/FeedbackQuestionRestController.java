@@ -5,6 +5,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -65,7 +68,8 @@ public class FeedbackQuestionRestController {
     @GetMapping("/{eventId}")
     public List<FeedbackQuestionDto> getFeedbackById(
     		@ApiParam(name = "eventId", value = "Event Id", example = "77UTTDWJX3zNWABg9ixZX9")
-    		@PathVariable String eventId) throws IOException, NotFoundException{
+    		@PathVariable String eventId,
+    		HttpServletRequest request, HttpServletResponse response) throws IOException, NotFoundException{
     	
     	List<FeedbackQuestionDto> questions = feedbackQuestionService
     			.findByEventId(eventId)

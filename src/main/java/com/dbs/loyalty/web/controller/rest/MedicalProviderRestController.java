@@ -2,6 +2,9 @@ package com.dbs.loyalty.web.controller.rest;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,7 +56,7 @@ public class MedicalProviderRestController {
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response=MedicalProviderDto.class)})
     @EnableLogAuditCustomer(operation=GET_MEDICAL_PROVIDERS)
     @GetMapping
-    public List<MedicalProviderDto> getMedicalProviders() {
+    public List<MedicalProviderDto> getMedicalProviders(HttpServletRequest request, HttpServletResponse response) {
     	List<MedicalProvider> medicalProviders = medicalProviderService.findAll();
     	return medicalProviderMapper.toDto(medicalProviders);
     }

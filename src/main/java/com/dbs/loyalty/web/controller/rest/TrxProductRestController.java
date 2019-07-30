@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -70,7 +73,7 @@ public class TrxProductRestController {
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = TrxProductDto.class)})
 	@EnableLogAuditCustomer(operation=GET_ALL_TRX_PRODUCTS)
 	@GetMapping
-    public List<TrxProductDto> getAllTrxProducts(){
+    public List<TrxProductDto> getAllTrxProducts(HttpServletRequest request, HttpServletResponse response){
 		return trxProductService
 				.findAll()
 				.stream()
@@ -89,7 +92,8 @@ public class TrxProductRestController {
 	@GetMapping("/{id}")
     public TrxProductDto getById(
     		@ApiParam(name = "id", value = "Product Id", example = "zO0dDp9K")
-    		@PathVariable String id) throws NotFoundException{
+    		@PathVariable String id,
+    		HttpServletRequest request, HttpServletResponse response) throws NotFoundException{
     	
 		Optional<TrxProductDto> current = trxProductService
 				.findById(id)
@@ -113,7 +117,8 @@ public class TrxProductRestController {
 	@GetMapping("/{id}/image")
     public ResponseEntity<byte[]> getTrxProductImageById(
     		@ApiParam(name = "id", value = "TrxProduct Id", example = "zO0dDp9K")
-    		@PathVariable String id) throws NotFoundException{
+    		@PathVariable String id,
+    		HttpServletRequest request, HttpServletResponse response) throws NotFoundException{
     	
     	Optional<FileImage> fileImage = imageService.findById(id);
     	

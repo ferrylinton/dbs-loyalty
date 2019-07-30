@@ -1,5 +1,7 @@
 package com.dbs.loyalty.web.controller.rest;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dbs.loyalty.aop.EnableLogAuditCustomer;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.domain.TrxOrder;
 import com.dbs.loyalty.exception.BadRequestException;
@@ -39,8 +42,6 @@ import lombok.RequiredArgsConstructor;
 public class TrxOrderRestController {
 	
 	public static final String ADD_TRX_ORDER = "AddTrxOrder";
-	
-	public static final String BINDER_NAME = "trxOrder";
 
 	private final TrxProductService trxProductService;
 	
@@ -51,12 +52,13 @@ public class TrxOrderRestController {
 			produces="application/json", 
 			authorizations={@Authorization(value="JWT")})
     @ApiResponses(value={ @ApiResponse(code=200, message="OK", response=Response.class)})
+	@EnableLogAuditCustomer(operation=ADD_TRX_ORDER)
 	@PostMapping
-    public TrxOrder addDeparture(@Valid @RequestBody TrxOrder trxOrder) throws BadRequestException{
+    public TrxOrder addDeparture(@Valid @RequestBody TrxOrder trxOrder, HttpServletRequest request, HttpServletResponse response) throws BadRequestException{
 		return trxOrderService.save(trxOrder);
     }
     
-	@InitBinder(BINDER_NAME)
+	@InitBinder
 	protected void initBinder(WebDataBinder binder) {
 		binder.addValidators(new TrxOrderValidator(trxProductService));
 	}

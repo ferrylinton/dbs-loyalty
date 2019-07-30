@@ -4,6 +4,9 @@ package com.dbs.loyalty.web.controller.rest;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -62,7 +65,7 @@ public class HealthPackageRestController {
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response=HealthPackageDto.class)})
     @EnableLogAuditCustomer(operation=GET_HEALTH_PACKAGES)
     @GetMapping
-    public List<HealthPackageDto> getHealthPackages() {
+    public List<HealthPackageDto> getHealthPackages(HttpServletRequest request, HttpServletResponse response) {
     	List<HealthPackage> healthPackages = healthPackageService.findAll();
     	return healthPackageMapper.toDto(healthPackages);
     }
@@ -77,7 +80,8 @@ public class HealthPackageRestController {
     @GetMapping(value="/{id}/content", produces="text/plain")
     public String getContentById(
     		@ApiParam(name = "id", value = "Health Package Id", example = "5WTqpHYs3wZoIdhAkbWt1W")
-    		@PathVariable String id) throws NotFoundException{
+    		@PathVariable String id,
+    		HttpServletRequest request, HttpServletResponse response) throws NotFoundException{
     	
 		Optional<HealthPackage> current = healthPackageService.findById(id);
     	

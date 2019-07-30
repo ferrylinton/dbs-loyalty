@@ -3,6 +3,9 @@ package com.dbs.loyalty.web.controller.rest;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,7 +55,7 @@ public class PromoCategoryRestController {
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response=PromoCategoryDto.class)})
     @EnableLogAuditCustomer(operation=GET_PROMO_CATEGORIES)
     @GetMapping
-    public List<PromoCategoryDto> getPromoCategories() {
+    public List<PromoCategoryDto> getPromoCategories(HttpServletRequest request, HttpServletResponse response) {
     	return promoCategoryService
     			.findAll()
     			.stream()

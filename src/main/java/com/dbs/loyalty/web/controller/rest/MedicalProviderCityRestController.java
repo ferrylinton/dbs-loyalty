@@ -2,6 +2,9 @@ package com.dbs.loyalty.web.controller.rest;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -58,7 +61,8 @@ public class MedicalProviderCityRestController {
     @GetMapping("/{medicalProviderId}")
     public List<MedicalProviderCityDto> getMedicalProviderCities(
     		@ApiParam(name = "MedicalProviderId", value = "MedicalProviderId", example = "6nJfmxAD6GWtsehXfSkShg")
-    		@PathVariable String medicalProviderId) {
+    		@PathVariable String medicalProviderId,
+    		HttpServletRequest request, HttpServletResponse response) {
     	
     	List<MedicalProviderCity> medicalProviderCities = medicalProviderCityService.findByMedicalProviderId(medicalProviderId);
     	return medicalProviderCityMapper.toDto(medicalProviderCities);

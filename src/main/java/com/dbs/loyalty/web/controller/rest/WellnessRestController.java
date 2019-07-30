@@ -2,6 +2,9 @@ package com.dbs.loyalty.web.controller.rest;
 
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,7 +50,7 @@ public class WellnessRestController {
 	@ApiResponses(value={@ApiResponse(code=200, message="OK", response=WellnessDto.class)})
 	@EnableLogAuditCustomer(operation=GET_WELLNESS_LIMIT)
 	@GetMapping
-    public WellnessDto getLimit() {
+    public WellnessDto getLimit(HttpServletRequest request, HttpServletResponse response) {
     	Optional<Wellness> wellness = wellnessService.findById();
     	
     	if(wellness.isPresent()) {

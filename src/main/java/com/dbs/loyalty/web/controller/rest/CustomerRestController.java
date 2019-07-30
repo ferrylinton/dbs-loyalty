@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.aop.EnableLogAuditCustomer;
+import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.DateConstant;
 import com.dbs.loyalty.config.constant.MessageConstant;
 import com.dbs.loyalty.config.constant.SecurityConstant;
@@ -112,7 +113,7 @@ public class CustomerRestController {
 
     	Optional<Customer> current = customerService.findByEmail(SecurityUtil.getLogged());
     	CustomerDto customerDto = customerMapper.toDto(customerService.update(requestDataCustomer));
-    	logAuditCustomerService.save(UPDATE_CUSTOMER, UrlUtil.getFullUrl(request), requestDataCustomer, customerMapper.toDto(current.get()));
+    	logAuditCustomerService.save(UPDATE_CUSTOMER, UrlUtil.getFullUrl(request), Constant.JSON, requestDataCustomer, customerMapper.toDto(current.get()));
 		return createToken(customerDto, request);
     }
     
