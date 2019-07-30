@@ -16,10 +16,8 @@ import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.domain.Arrival;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.service.ArrivalService;
-import com.dbs.loyalty.service.LogAuditCustomerService;
 import com.dbs.loyalty.service.dto.ArrivalDto;
 import com.dbs.loyalty.service.mapper.ArrivalMapper;
-import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.response.Response;
 import com.dbs.loyalty.web.validator.rest.ArrivalDtoValidator;
 
@@ -49,8 +47,6 @@ public class ArrivalRestController {
 	
 	private final ArrivalMapper arrivalMapper;
 	
-	private final LogAuditCustomerService logAuditCustomerService;
-
     @ApiOperation(
     		value=ADD_ARRIVAL, 
     		produces="application/json", 
@@ -60,7 +56,6 @@ public class ArrivalRestController {
     @PostMapping
     public ArrivalDto addArrival(@Valid @RequestBody ArrivalDto requestData, HttpServletRequest request) throws BadRequestException{
     	Arrival arrival = arrivalService.save(arrivalMapper.toEntity(requestData));
-		logAuditCustomerService.save(ADD_ARRIVAL, UrlUtil.getFullUrl(request), requestData);
 		return arrivalMapper.toDto(arrival);
     }
     

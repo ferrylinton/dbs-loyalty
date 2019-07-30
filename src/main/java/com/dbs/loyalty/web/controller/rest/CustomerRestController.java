@@ -34,7 +34,6 @@ import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.model.TokenData;
 import com.dbs.loyalty.security.rest.RestTokenProvider;
 import com.dbs.loyalty.service.CustomerService;
-import com.dbs.loyalty.service.LogAuditCustomerService;
 import com.dbs.loyalty.service.dto.CustomerDto;
 import com.dbs.loyalty.service.dto.CustomerNewPasswordDto;
 import com.dbs.loyalty.service.dto.CustomerPasswordDto;
@@ -43,7 +42,6 @@ import com.dbs.loyalty.service.dto.JWTTokenDto;
 import com.dbs.loyalty.service.mapper.CustomerMapper;
 import com.dbs.loyalty.util.HeaderTokenUtil;
 import com.dbs.loyalty.util.SecurityUtil;
-import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.response.Response;
 import com.dbs.loyalty.web.validator.CustomerPasswordValidator;
 import com.dbs.loyalty.web.validator.CustomerUpdateValidator;
@@ -78,9 +76,7 @@ public class CustomerRestController {
     private final RestTokenProvider restTokenProvider;
     
     private final CustomerMapper customerMapper;
-    
-    private final LogAuditCustomerService logAuditCustomerService;
-    
+
     @ApiOperation(
     		value=GET_CUSTOMER_INFO, 
     		produces="application/json", 
@@ -109,12 +105,13 @@ public class CustomerRestController {
     public JWTTokenDto updateCustomer(
     		@ApiParam(name = "CustomerNewData", value = "Customer's new data") 
     		@Valid @RequestBody CustomerUpdateDto requestDataCustomer,
-    		HttpServletRequest request) throws IOException  {
+    		HttpServletRequest request,
+    		HttpServletResponse response) throws IOException  {
 
     	Optional<Customer> current = customerService.findByEmail(SecurityUtil.getLogged());
     	CustomerDto customerDto = customerMapper.toDto(customerService.update(requestDataCustomer));
-    	logAuditCustomerService.save(UPDATE_CUSTOMER, UrlUtil.getFullUrl(request), Constant.JSON, requestDataCustomer, customerMapper.toDto(current.get()));
-		return createToken(customerDto, request);
+    	request.setAttribute(Constant.OLD_DATA, customerMapper.toDto(current.get()));
+    	return createToken(customerDto, request);
     }
     
     @ApiOperation(
@@ -128,11 +125,11 @@ public class CustomerRestController {
     public Response changePassword(
     		@ApiParam(name = "ChangePasswordData", value = "Customer's password data") 
     		@Valid @RequestBody CustomerPasswordDto requestDataPassword,
-    		HttpServletRequest request)  {
+    		HttpServletRequest request,
+    		HttpServletResponse response)  {
     	
     	customerService.changePassword(requestDataPassword);
-    	logAuditCustomerService.save(UPDATE_CUSTOMER, UrlUtil.getFullUrl(request), requestDataPassword);
-		return new Response(MessageConstant.DATA_IS_SAVED);
+    	return new Response(MessageConstant.DATA_IS_SAVED);
     }
 
     @ApiOperation(
@@ -146,14 +143,14 @@ public class CustomerRestController {
     public Response forgot(
     		@ApiParam(name = "CustomerNewPassword", value = "Customer's new password") 
     		@Valid @RequestBody CustomerNewPasswordDto requestData,
-    		HttpServletRequest request) throws BadRequestException  {
+    		HttpServletRequest request,
+    		HttpServletResponse response) throws BadRequestException  {
     	
     	if(!requestData.getPassword().equals(requestData.getConfirmPassword())) {
     		throw new BadRequestException(MessageConstant.PASSWORD_IS_NOT_CONFIRMED);
     	}
     	
     	customerService.changePassword(requestData);
-    	logAuditCustomerService.save(UPDATE_CUSTOMER, UrlUtil.getFullUrl(request), requestData);
     	return new Response(MessageConstant.CUSTOMER_IS_ACTIVATED);
     }
     

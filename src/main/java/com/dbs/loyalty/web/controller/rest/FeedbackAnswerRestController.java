@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.http.MediaType;
@@ -23,11 +24,9 @@ import com.dbs.loyalty.domain.Event;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.EventService;
 import com.dbs.loyalty.service.FeedbackCustomerService;
-import com.dbs.loyalty.service.LogAuditCustomerService;
 import com.dbs.loyalty.service.dto.FeedbackAnswerDto;
 import com.dbs.loyalty.service.dto.FeedbackAnswerFormListDto;
 import com.dbs.loyalty.service.mapper.FeedbackAnswerMapper;
-import com.dbs.loyalty.util.UrlUtil;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -56,8 +55,6 @@ public class FeedbackAnswerRestController {
     private final FeedbackCustomerService feedbackCustomerService;
     
     private final FeedbackAnswerMapper feedbackAnswerMapper;
-    
-    private final LogAuditCustomerService logAuditCustomerService;
 
     @ApiOperation(
     		nickname = ADD_FEEDBACK_CUSTOMER, 
@@ -72,7 +69,8 @@ public class FeedbackAnswerRestController {
     		@ApiParam(name = "eventId", value = "Event Id", example = "77UTTDWJX3zNWABg9ixZX9")
     		@PathVariable String eventId,
     		@Valid @RequestBody FeedbackAnswerFormListDto requestData, 
-    		HttpServletRequest request) throws NotFoundException{
+    		HttpServletRequest request,
+    		HttpServletResponse response) throws NotFoundException{
     	
     	Optional<Event> event = eventService.findById(eventId);
     	
@@ -85,7 +83,6 @@ public class FeedbackAnswerRestController {
         			.collect(Collectors.toList());
         	
         	Collections.sort(answers);
-        	logAuditCustomerService.save(ADD_FEEDBACK_CUSTOMER, UrlUtil.getFullUrl(request), requestData);
         	return answers;
     	}else {
     		throw new NotFoundException(String.format(MessageConstant.DATA_IS_NOT_FOUND, DomainConstant.EVENT, eventId));

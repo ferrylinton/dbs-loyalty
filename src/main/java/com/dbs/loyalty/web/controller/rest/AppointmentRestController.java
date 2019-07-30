@@ -13,11 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.aop.EnableLogAuditCustomer;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
+import com.dbs.loyalty.domain.Appointment;
 import com.dbs.loyalty.service.AppointmentService;
-import com.dbs.loyalty.service.LogAuditCustomerService;
 import com.dbs.loyalty.service.dto.AppointmentDto;
 import com.dbs.loyalty.service.mapper.AppointmentMapper;
-import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.response.Response;
 import com.dbs.loyalty.web.validator.rest.AppointmentDtoValidator;
 
@@ -46,8 +45,6 @@ public class AppointmentRestController {
 	private final AppointmentService appointmentService;
 	
 	private final AppointmentMapper appointmentMapper;
-	
-	private final LogAuditCustomerService logAuditCustomerService;
 
 	@ApiOperation(
 			nickname=ADD_APPOINTMENT, 
@@ -57,11 +54,9 @@ public class AppointmentRestController {
 	@ApiResponses(value={@ApiResponse(code=200, message="OK", response=Response.class)})
 	@EnableLogAuditCustomer(operation=ADD_APPOINTMENT)
 	@PostMapping
-    public Response addAppointment(@Valid @RequestBody AppointmentDto requestData, HttpServletRequest request) throws Throwable{
-		String url = UrlUtil.getFullUrl(request);
-		Response response = appointmentService.save(appointmentMapper.toEntity(requestData));
-		logAuditCustomerService.save(ADD_APPOINTMENT, url, requestData);
-		return response;
+    public AppointmentDto addAppointment(@Valid @RequestBody AppointmentDto appointmentDto, HttpServletRequest request) throws Throwable{
+		Appointment appointment = appointmentService.save(appointmentMapper.toEntity(appointmentDto));
+		return appointmentMapper.toDto(appointment);
     }
     
 	@InitBinder

@@ -8,6 +8,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
+import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.service.LogAuditCustomerService;
 import com.dbs.loyalty.util.UrlUtil;
 
@@ -20,42 +21,54 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class LogAuditCustomerAspect {
 
-	private static final String ERROR_FORMAT = "{\"error\" : \"%s\"}";
-	
 	private final LogAuditCustomerService logAuditCustomerService;
 
-	@Around("@annotation(logAudit) && args(request, response)")
-	public Object log(ProceedingJoinPoint joinPoint, EnableLogAuditCustomer logAudit, HttpServletRequest request, HttpServletResponse response) throws Throwable {
-		return logAudit(joinPoint, logAudit, request, response);
+	@Around("@annotation(enableLogAuditCustomer) && args(request, response)")
+	public Object log(ProceedingJoinPoint joinPoint, EnableLogAuditCustomer enableLogAuditCustomer, HttpServletRequest request, HttpServletResponse response) throws Throwable {
+		String url = UrlUtil.getFullUrl(request);
+		String operation = enableLogAuditCustomer.operation();
+		
+		try {
+			Object result = joinPoint.proceed();
+			logAuditCustomerService.save(operation, url);
+			return result;
+		} catch (Throwable throwable) {
+			log.error(throwable.getLocalizedMessage(), throwable);
+			logAuditCustomerService.saveError(operation, url, throwable.getLocalizedMessage(), response.getStatus());
+			throw throwable;
+		}
 	}
 	
-	@Around("@annotation(logAudit) && args(requestData, request, response)")
-	public Object log(ProceedingJoinPoint joinPoint, EnableLogAuditCustomer logAudit, Object requestData, HttpServletRequest request, HttpServletResponse response) throws Throwable {
-		return logAudit(joinPoint, logAudit, requestData, request, response);
+	@Around("@annotation(enableLogAuditCustomer) && execution(* *(@org.springframework.web.bind.annotation.PathVariable (*), ..)) && args(id, request, response)")
+	public Object logWithId(ProceedingJoinPoint joinPoint, EnableLogAuditCustomer enableLogAuditCustomer, String id, HttpServletRequest request, HttpServletResponse response) throws Throwable {
+		String url = UrlUtil.getFullUrl(request);
+		String operation = enableLogAuditCustomer.operation();
+		
+		try {
+			Object result = joinPoint.proceed();
+			logAuditCustomerService.save(operation, url, id);
+			return result;
+		} catch (Throwable throwable) {
+			log.error(throwable.getLocalizedMessage(), throwable);
+			logAuditCustomerService.saveError(operation, url, throwable.getLocalizedMessage(), response.getStatus());
+			throw throwable;
+		}
+	}
+	
+	@Around("@annotation(enableLogAuditCustomer) && execution(* *(@org.springframework.web.bind.annotation.RequestBody (*), ..)) && args(obj, request, response)")
+	public Object logWithBody(ProceedingJoinPoint joinPoint, EnableLogAuditCustomer enableLogAuditCustomer, Object obj, HttpServletRequest request, HttpServletResponse response) throws Throwable {
+		String url = UrlUtil.getFullUrl(request);
+		String operation = enableLogAuditCustomer.operation();
+		
+		try {
+			Object result = joinPoint.proceed();
+			logAuditCustomerService.saveJson(operation, url, obj, request.getAttribute(Constant.OLD_DATA));
+			return result;
+		} catch (Throwable throwable) {
+			log.error(throwable.getLocalizedMessage(), throwable);
+			logAuditCustomerService.saveError(operation, url, throwable.getLocalizedMessage(), response.getStatus());
+			throw throwable;
+		}
 	}
 
-	private Object logAudit(ProceedingJoinPoint joinPoint, EnableLogAuditCustomer logAudit, HttpServletRequest request, HttpServletResponse response) throws Throwable {
-		try {
-			Object result = joinPoint.proceed();
-			logAuditCustomerService.save(logAudit.operation(), UrlUtil.getFullUrl(request));
-			return result;
-		} catch (Throwable throwable) {
-			log.error(throwable.getLocalizedMessage(), throwable);
-			logAuditCustomerService.saveError(logAudit.operation(), UrlUtil.getFullUrl(request), String.format(ERROR_FORMAT, throwable.getLocalizedMessage()), response.getStatus());
-			throw throwable;
-		}
-	}
-	
-	private Object logAudit(ProceedingJoinPoint joinPoint, EnableLogAuditCustomer logAudit, Object requestData, HttpServletRequest request, HttpServletResponse response) throws Throwable {
-		try {
-			Object result = joinPoint.proceed();
-			logAuditCustomerService.save(logAudit.operation(), UrlUtil.getFullUrl(request), requestData);
-			return result;
-		} catch (Throwable throwable) {
-			log.error(throwable.getLocalizedMessage(), throwable);
-			logAuditCustomerService.saveError(logAudit.operation(), UrlUtil.getFullUrl(request), requestData, String.format(ERROR_FORMAT, throwable.getLocalizedMessage()), response.getStatus());
-			throw throwable;
-		}
-	}
-	
 }

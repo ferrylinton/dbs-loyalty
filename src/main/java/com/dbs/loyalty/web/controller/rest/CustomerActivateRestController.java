@@ -14,11 +14,9 @@ import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.service.CustomerService;
-import com.dbs.loyalty.service.LogAuditCustomerService;
 import com.dbs.loyalty.service.dto.CustomerActivateDto;
 import com.dbs.loyalty.service.dto.CustomerDto;
 import com.dbs.loyalty.service.mapper.CustomerMapper;
-import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.response.Response;
 import com.dbs.loyalty.web.validator.CustomerActivateValidator;
 
@@ -41,8 +39,6 @@ public class CustomerActivateRestController {
     private final CustomerService customerService;
     
     private final CustomerMapper customerMapper;
-    
-    private final LogAuditCustomerService logAuditCustomerService;
 
     @ApiOperation(
     		value=ACTIVATE_CUSTOMER, 
@@ -52,11 +48,10 @@ public class CustomerActivateRestController {
     @PostMapping("/activate")
     public CustomerDto activate(
     		@ApiParam(name = "CustomerActivateData", value = "Customer's activate data") 
-    		@Valid @RequestBody CustomerActivateDto requestData,
+    		@Valid @RequestBody CustomerActivateDto customerActivateDto,
     		HttpServletRequest request) throws BadRequestException  {
     	
-    	Customer customer = customerService.activate(requestData);
-    	logAuditCustomerService.save(ACTIVATE_CUSTOMER, UrlUtil.getFullUrl(request), requestData);
+    	Customer customer = customerService.activate(customerActivateDto);
     	return customerMapper.toDto(customer);
     }
     

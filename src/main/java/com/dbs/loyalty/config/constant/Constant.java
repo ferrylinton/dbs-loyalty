@@ -88,6 +88,8 @@ public final class Constant {
 	
 	public static final String UPLOAD_FILE = "UploadFile";
 	
+	public static final String OLD_DATA = "olddata";
+	
 	private Constant() {
 		// hide constructor
 	}

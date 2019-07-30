@@ -44,6 +44,24 @@ public class CustomerService{
 		return customerRepository.findByEmail(email);
 	}
 	
+	public Customer findLoggedUserById(String id) {
+		Optional<Customer> customer = customerRepository.findById(id);
+		if(customer.isPresent()) {
+			return customer.get();
+		}else {
+			return null;
+		}
+	}
+	
+	public Customer findLoggedUserByEmail(String email) {
+		Optional<Customer> customer = customerRepository.findByEmail(email);
+		if(customer.isPresent()) {
+			return customer.get();
+		}else {
+			return null;
+		}
+	}
+	
 	public Page<Customer> findAll(Map<String, String> params, Pageable pageable) {
 		return customerRepository.findAll(new CustomerSpec(params), pageable);
 	}

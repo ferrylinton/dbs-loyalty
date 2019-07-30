@@ -61,23 +61,18 @@ public class LogAuditCustomer implements Serializable {
     @Column(name = "status", length = 10, nullable = false, updatable = false)
 	private String status;
 
-    @Column(name = "content_type", length = 50)
-    private String contentType;
+    @Column(name = "request_text")
+    private String requestText;
     
     @Lob
 	@Type(type = "org.hibernate.type.TextType")
-    @Column(name = "request_data")
-    private String requestData;
-    
-    @Lob
-	@Type(type = "org.hibernate.type.TextType")
-    @Column(name = "response_data")
-    private String responseData;
+    @Column(name = "request_json")
+    private String requestJson;
 
     @Lob
 	@Type(type = "org.hibernate.type.TextType")
-    @Column(name = "old_data")
-    private String oldData;
+    @Column(name = "old_json")
+    private String oldJson;
     
     @Lob
     @Column(name = "request_file", columnDefinition="MEDIUMBLOB")
@@ -86,6 +81,14 @@ public class LogAuditCustomer implements Serializable {
     @Lob
     @Column(name = "old_file", columnDefinition="MEDIUMBLOB")
     private byte[] oldFile;
+
+    @Lob
+   	@Type(type = "org.hibernate.type.TextType")
+    @Column(name = "response_json")
+ 	private String responseJson;
+    
+    @Column(name = "response_text")
+    private String responseText;
 
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id", foreignKey = @ForeignKey(name = "log_audit_customer_fk"))

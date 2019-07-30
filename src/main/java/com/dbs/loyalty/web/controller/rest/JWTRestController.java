@@ -11,10 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.service.JWTAuthenticationService;
-import com.dbs.loyalty.service.LogAuditCustomerService;
 import com.dbs.loyalty.service.dto.JWTLoginDto;
 import com.dbs.loyalty.service.dto.JWTTokenDto;
-import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.swagger.ApiNotes;
 
 import io.swagger.annotations.Api;
@@ -41,8 +39,6 @@ public class JWTRestController {
 	
     private final JWTAuthenticationService jwtAuthenticationService;
     
-    private final LogAuditCustomerService logAuditCustomerService;
-
     @ApiOperation(value=AUTHENTICATE, consumes="application/json", produces="application/json")
     @ApiNotes("authenticate.md")
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response=JWTTokenDto.class)})
@@ -53,9 +49,7 @@ public class JWTRestController {
     		HttpServletRequest request) throws Exception {
 
     	Authentication authentication = new UsernamePasswordAuthenticationToken(jwtLoginDto.getEmail(), jwtLoginDto.getPassword());
-		JWTTokenDto jWTTokenDto = jwtAuthenticationService.authenticate(request, authentication, jwtLoginDto.isRememberMe());
-		logAuditCustomerService.save(AUTHENTICATE, UrlUtil.getFullUrl(request), jwtLoginDto);
-		return jWTTokenDto;
+		return jwtAuthenticationService.authenticate(request, authentication, jwtLoginDto.isRememberMe());
     }
 
 }

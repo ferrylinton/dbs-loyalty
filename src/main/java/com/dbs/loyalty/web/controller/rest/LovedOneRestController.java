@@ -27,7 +27,6 @@ import com.dbs.loyalty.config.constant.DateConstant;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.domain.LovedOne;
 import com.dbs.loyalty.exception.NotFoundException;
-import com.dbs.loyalty.service.LogAuditCustomerService;
 import com.dbs.loyalty.service.LovedOneService;
 import com.dbs.loyalty.service.dto.LovedOneAddDto;
 import com.dbs.loyalty.service.dto.LovedOneDto;
@@ -35,7 +34,6 @@ import com.dbs.loyalty.service.dto.LovedOneUpdateDto;
 import com.dbs.loyalty.service.mapper.LovedOneMapper;
 import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.util.SecurityUtil;
-import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.validator.LovedOneAddValidator;
 import com.dbs.loyalty.web.validator.LovedOneUpdateValidator;
 
@@ -67,9 +65,7 @@ public class LovedOneRestController {
     private final LovedOneService lovedOneService;
     
     private final LovedOneMapper lovedOneMapper;
-    
-    private final LogAuditCustomerService logAuditCustomerService;
-    
+
     @ApiOperation(
     		nickname=GET_LOVED_ONES, 
     		value=GET_LOVED_ONES, 
@@ -117,13 +113,14 @@ public class LovedOneRestController {
     public LovedOneDto updateCustomer(
     		@ApiParam(name = "LovedOneData", value = "Customer's loved one new data") 
     		@Valid @RequestBody LovedOneUpdateDto requestData,
-    		HttpServletRequest request) throws NotFoundException  {
+    		HttpServletRequest request,
+    		HttpServletResponse response) throws NotFoundException  {
 
     	Optional<LovedOne> current = lovedOneService.findById(requestData.getId());
 		
 		if(current.isPresent()) {
 			LovedOneDto lovedOneDto = lovedOneMapper.toDto(lovedOneService.update(requestData));
-			logAuditCustomerService.save(UPDATE_LOVED_ONE, UrlUtil.getFullUrl(request), Constant.JSON, requestData, lovedOneMapper.toDto(current.get()));
+			request.setAttribute(Constant.OLD_DATA, lovedOneMapper.toDto(current.get()));
 			return lovedOneDto;
 		}else {
 			String message = MessageUtil.getNotFoundMessage(requestData.getId()) ;

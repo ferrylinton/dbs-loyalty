@@ -18,4 +18,8 @@ public abstract class AppointmentMapper{
 	@Mapping(source="time", target="time", dateFormat=DateConstant.JAVA_TIME)
 	public abstract Appointment toEntity(AppointmentDto appointmentDto);
 	
+	@Mapping(source="date", target="date", dateFormat=DateConstant.JAVA_DATE)
+	@Mapping(source="time", target="time", dateFormat=DateConstant.JAVA_TIME)
+	public abstract AppointmentDto toDto(Appointment appointment);
+	
 }

@@ -23,7 +23,6 @@ import com.dbs.loyalty.repository.CustomerRepository;
 import com.dbs.loyalty.repository.WellnessRepository;
 import com.dbs.loyalty.service.specification.AppointmentSpec;
 import com.dbs.loyalty.util.SecurityUtil;
-import com.dbs.loyalty.web.response.Response;
 
 import lombok.RequiredArgsConstructor;
 
@@ -50,7 +49,7 @@ public class AppointmentService {
 	}
 
 	@Transactional
-	public Response save(Appointment appointment) throws BadRequestException, NotFoundException{
+	public Appointment save(Appointment appointment) throws BadRequestException, NotFoundException{
 		Optional<Customer> customer = customerRespository.findById(SecurityUtil.getId());
 
 		if(customer.isPresent()) {
@@ -63,8 +62,7 @@ public class AppointmentService {
 					appointment.setCustomer(customer.get());
 					appointment.setCreatedBy(SecurityUtil.getLogged());
 					appointment.setCreatedDate(Instant.now());
-					appointment = appointmentRepository.save(appointment);
-					return new Response(MessageConstant.DATA_IS_SAVED);
+					return appointmentRepository.save(appointment);
 				}else {
 					throw new BadRequestException(MessageConstant.NO_LIMIT_iS_AVAILABLE);
 				}

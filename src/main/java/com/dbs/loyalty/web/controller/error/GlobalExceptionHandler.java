@@ -103,6 +103,7 @@ public class GlobalExceptionHandler extends AbstractErrorController{
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex, HttpServletRequest request) {
+		System.out.println("--------- operation : " + request.getHeader("operation"));
 		return ResponseEntity
 	            .status(HttpStatus.BAD_REQUEST)
 	            .body(getErrors(ex));

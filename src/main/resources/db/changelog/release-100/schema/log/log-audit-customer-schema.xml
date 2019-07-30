@@ -10,13 +10,14 @@
             <column name="id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
             </column>
-            <column name="content_type" type="VARCHAR(50)"/>
             <column name="created_date" type="timestamp"/>
-            <column name="response_data" type="LONGTEXT"/>
-            <column name="request_data" type="LONGTEXT"/>
-            <column name="old_data" type="LONGTEXT"/>
+            <column name="request_text" type="VARCHAR(255)"/>
+            <column name="request_json" type="LONGTEXT"/>
+            <column name="old_json" type="LONGTEXT"/>
             <column name="request_file" type="${file.type}"/>
             <column name="old_file" type="${file.type}"/>
+            <column name="response_json" type="LONGTEXT"/>
+            <column name="response_text" type="VARCHAR(255)"/>
             <column name="operation" type="VARCHAR(100)">
                 <constraints nullable="false"/>
             </column>

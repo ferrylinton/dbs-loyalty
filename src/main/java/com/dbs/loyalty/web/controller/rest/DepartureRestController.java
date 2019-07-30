@@ -1,6 +1,7 @@
 package com.dbs.loyalty.web.controller.rest;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,10 +16,8 @@ import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.domain.Departure;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.service.DepartureService;
-import com.dbs.loyalty.service.LogAuditCustomerService;
 import com.dbs.loyalty.service.dto.DepartureDto;
 import com.dbs.loyalty.service.mapper.DepartureMapper;
-import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.response.Response;
 import com.dbs.loyalty.web.validator.rest.DepartureDtoValidator;
 
@@ -48,17 +47,18 @@ public class DepartureRestController {
 	
 	private final DepartureMapper departureMapper;
 	
-	private final LogAuditCustomerService logAuditCustomerService;
-
 	@ApiOperation(
 			value="AddDeparture", 
 			produces="application/json", 
 			authorizations={@Authorization(value="JWT")})
     @ApiResponses(value={ @ApiResponse(code=200, message="OK", response=Response.class)})
 	@PostMapping
-    public DepartureDto addDeparture(@Valid @RequestBody DepartureDto requestData, HttpServletRequest request) throws BadRequestException{
+    public DepartureDto addDeparture(
+    		@Valid @RequestBody DepartureDto requestData, 
+    		HttpServletRequest request,
+    		HttpServletResponse response) throws BadRequestException{
+		
 		Departure departure = departureService.save(departureMapper.toEntity(requestData));
-		logAuditCustomerService.save(ADD_DEPARTURE, UrlUtil.getFullUrl(request), requestData);
 		return departureMapper.toDto(departure);
     }
     

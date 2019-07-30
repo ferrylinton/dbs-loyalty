@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.StatusConstant;
 import com.dbs.loyalty.domain.LogAuditCustomer;
 import com.dbs.loyalty.repository.LogAuditCustomerRepository;
@@ -50,96 +50,6 @@ public class LogAuditCustomerService {
 		return logAuditCustomerRepository.findAll(new LogAuditCustomerSpec(params), pageable);
 	}
 	
-	public void save(String operation, String url) {
-		save(operation, url, null, null, null);
-	}
-
-	public void save(String operation, String url, Object requestData) {
-		if(requestData instanceof String) {
-			save(operation, url, Constant.TEXT, requestData, null);
-		}else {
-			save(operation, url, Constant.JSON, requestData, null);
-		}
-	}
-
-	public void save(String operation, String url, String contentType, Object requestData, Object oldData) {
-		LogAuditCustomer logAuditCustomer = new LogAuditCustomer();
-		logAuditCustomer.setOperation(operation);
-    	logAuditCustomer.setUrl(url);
-    	logAuditCustomer.setHttpStatus(200);
-    	logAuditCustomer.setStatus(StatusConstant.SUCCEED);
-    	logAuditCustomer.setContentType(contentType);
-    	logAuditCustomer.setRequestData(toString(requestData));
-    	logAuditCustomer.setOldData(toString(oldData));
-        logAuditCustomer.setCreatedDate(Instant.now());
-        logAuditCustomer.setCustomer(SecurityUtil.getCustomer());
-
-        save(logAuditCustomer);
-	}
-
-	public void saveError(String url, String servletPath, Object requestData, String responseData, Integer httpStatus) {
-		if(getOperation().containsKey(servletPath)) {
-			LogAuditCustomer logAuditCustomer = new LogAuditCustomer();
-	    	logAuditCustomer.setOperation(getOperation().get(servletPath));
-	    	logAuditCustomer.setUrl(url);
-	    	logAuditCustomer.setStatus(StatusConstant.FAIL);
-	    	logAuditCustomer.setHttpStatus(httpStatus);
-	    	logAuditCustomer.setContentType(Constant.JSON);
-	        logAuditCustomer.setCreatedDate(Instant.now());
-	        logAuditCustomer.setCustomer(SecurityUtil.getCustomer());
-	        logAuditCustomer.setRequestData(toString(requestData));
-	        logAuditCustomer.setResponseData(responseData);
-	        
-	        save(logAuditCustomer);
-		}else {
-			log.warn(String.format("LogAuditCustomerService::getOperation() :: Warn :: %s is not found", servletPath));
-		}
-	}
-
-	public void saveError(String operation, String url, String responseData, Integer httpStatus) {
-		LogAuditCustomer logAuditCustomer = new LogAuditCustomer();
-    	logAuditCustomer.setOperation(operation);
-    	logAuditCustomer.setUrl(url);
-    	logAuditCustomer.setStatus(StatusConstant.FAIL);
-    	logAuditCustomer.setHttpStatus(httpStatus);
-    	logAuditCustomer.setContentType(Constant.JSON);
-        logAuditCustomer.setCreatedDate(Instant.now());
-        logAuditCustomer.setCustomer(SecurityUtil.getCustomer());
-        logAuditCustomer.setResponseData(responseData);
-        
-        save(logAuditCustomer);
-	}
-
-	public void saveFile(String operation, String url, String contentType, byte[] requestFile, byte[] oldFile) {
-		LogAuditCustomer logAuditCustomer = new LogAuditCustomer();
-		logAuditCustomer.setOperation(operation);
-    	logAuditCustomer.setUrl(url);
-    	logAuditCustomer.setHttpStatus(200);
-    	logAuditCustomer.setStatus(StatusConstant.SUCCEED);
-    	logAuditCustomer.setContentType(contentType);
-    	logAuditCustomer.setRequestFile(requestFile);
-    	logAuditCustomer.setOldFile(oldFile);
-        logAuditCustomer.setCreatedDate(Instant.now());
-        logAuditCustomer.setCustomer(SecurityUtil.getCustomer());
-
-        save(logAuditCustomer);
-	}
-	
-	
-	public void saveFileError(String url, String responseData, Integer httpStatus) {
-		LogAuditCustomer logAuditCustomer = new LogAuditCustomer();
-    	logAuditCustomer.setOperation(Constant.UPLOAD_FILE);
-    	logAuditCustomer.setUrl(url);
-    	logAuditCustomer.setHttpStatus(httpStatus);
-    	logAuditCustomer.setStatus(StatusConstant.FAIL);
-    	logAuditCustomer.setContentType(Constant.JSON);
-    	logAuditCustomer.setResponseData(responseData);
-        logAuditCustomer.setCreatedDate(Instant.now());
-        logAuditCustomer.setCustomer(SecurityUtil.getCustomer());
-        
-        save(logAuditCustomer);
-	}
-
 	private String toString(Object obj) {
 		try {
 			if(obj instanceof String) {
@@ -184,6 +94,95 @@ public class LogAuditCustomerService {
 		}
 		
 		return operations;
+	}
+	
+	public void save(String operation, String url) {
+		LogAuditCustomer logAuditCustomer = new LogAuditCustomer();
+		logAuditCustomer.setOperation(operation);
+    	logAuditCustomer.setUrl(url);
+    	logAuditCustomer.setHttpStatus(200);
+    	logAuditCustomer.setStatus(StatusConstant.SUCCEED);
+        logAuditCustomer.setCreatedDate(Instant.now());
+        logAuditCustomer.setCustomer(SecurityUtil.getCustomer());
+
+        save(logAuditCustomer);
+	}
+	
+	public void save(String operation, String url, String id) {
+		LogAuditCustomer logAuditCustomer = new LogAuditCustomer();
+		logAuditCustomer.setOperation(operation);
+    	logAuditCustomer.setUrl(url);
+    	logAuditCustomer.setRequestText(id);
+    	logAuditCustomer.setHttpStatus(200);
+    	logAuditCustomer.setStatus(StatusConstant.SUCCEED);
+        logAuditCustomer.setCreatedDate(Instant.now());
+        logAuditCustomer.setCustomer(SecurityUtil.getCustomer());
+
+        save(logAuditCustomer);
+	}
+	
+	public void saveJson(String operation, String url, Object requestJson, Object oldJson) {
+		LogAuditCustomer logAuditCustomer = new LogAuditCustomer();
+		logAuditCustomer.setOperation(operation);
+    	logAuditCustomer.setUrl(url);
+    	logAuditCustomer.setHttpStatus(200);
+    	logAuditCustomer.setStatus(StatusConstant.SUCCEED);
+    	logAuditCustomer.setRequestJson(toString(requestJson));
+    	logAuditCustomer.setOldJson(toString(oldJson));
+        logAuditCustomer.setCreatedDate(Instant.now());
+        logAuditCustomer.setCustomer(SecurityUtil.getCustomer());
+
+        save(logAuditCustomer);
+	}
+	
+	public void saveFile(String operation, String url, byte[] requestFile, byte[] oldFile) {
+		LogAuditCustomer logAuditCustomer = new LogAuditCustomer();
+		logAuditCustomer.setOperation(operation);
+    	logAuditCustomer.setUrl(url);
+    	logAuditCustomer.setHttpStatus(200);
+    	logAuditCustomer.setStatus(StatusConstant.SUCCEED);
+    	logAuditCustomer.setRequestFile(requestFile);
+    	logAuditCustomer.setOldFile(oldFile);
+        logAuditCustomer.setCreatedDate(Instant.now());
+        logAuditCustomer.setCustomer(SecurityUtil.getCustomer());
+
+        save(logAuditCustomer);
+	}
+	
+	public void saveBadRequest(String url, String servletPath, Object requestJson, String responseJson) {
+		if(getOperation().containsKey(servletPath)) {
+			LogAuditCustomer logAuditCustomer = new LogAuditCustomer();
+	    	logAuditCustomer.setOperation(getOperation().get(servletPath));
+	    	logAuditCustomer.setUrl(url);
+	    	logAuditCustomer.setStatus(StatusConstant.FAIL);
+	    	logAuditCustomer.setHttpStatus(400);
+	        logAuditCustomer.setCreatedDate(Instant.now());
+	        logAuditCustomer.setCustomer(SecurityUtil.getCustomer());
+	        logAuditCustomer.setRequestJson(toString(requestJson));
+	        logAuditCustomer.setResponseJson(responseJson);
+	        
+	        save(logAuditCustomer);
+		}else {
+			log.warn(String.format("LogAuditCustomerService::getOperation() :: Warn :: %s is not found", servletPath));
+		}
+	}
+	
+	public void saveError(String operation, String url, Object requestJson, String error, Integer httpStatus) {
+		LogAuditCustomer logAuditCustomer = new LogAuditCustomer();
+		logAuditCustomer.setOperation(operation);
+    	logAuditCustomer.setUrl(url);
+    	logAuditCustomer.setHttpStatus(httpStatus);
+    	logAuditCustomer.setStatus(StatusConstant.FAIL);
+    	logAuditCustomer.setRequestJson(toString(requestJson));
+    	logAuditCustomer.setResponseText(StringUtils.substring(error, 0, 250));
+        logAuditCustomer.setCreatedDate(Instant.now());
+        logAuditCustomer.setCustomer(SecurityUtil.getCustomer());
+
+        save(logAuditCustomer);
+	}
+	
+	public void saveError(String operation, String url, String error, Integer httpStatus) {
+		saveError(operation, url, null, error, httpStatus);
 	}
 	
 }

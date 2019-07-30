@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.dbs.loyalty.aop.EnableLogAuditCustomer;
-import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.MessageConstant;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.domain.FileImage;
@@ -103,7 +102,7 @@ public class CustomerImageRestController {
     		
     		ImageUtil.setFileImage(fileImage, file);
     		fileImage = imageService.save(fileImage);
-    		logAuditCustomerService.saveFile(UPDATE_CUSTOMER_IMAGE, UrlUtil.getFullUrl(request), Constant.IMAGE, file.getBytes(), oldData);
+    		logAuditCustomerService.saveFile(UPDATE_CUSTOMER_IMAGE, UrlUtil.getFullUrl(request), file.getBytes(), oldData);
     		return ImageUtil.getResponse(fileImage);
     	}
     }
