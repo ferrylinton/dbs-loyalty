@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -77,11 +76,7 @@ public class AddressRestController {
     @ApiResponses(value = { @ApiResponse(code=200, message="OK", response=CountryDto.class, responseContainer="List")})
     @EnableLogAuditCustomer(operation=GET_ADDRESSES)
     @GetMapping
-    public List<AddressDto> getAddresses(
-    		@RequestHeader(defaultValue=GET_ADDRESSES) String operation, 
-    		HttpServletRequest request, 
-    		HttpServletResponse response) {
-
+    public List<AddressDto> getAddresses(HttpServletRequest request,HttpServletResponse response) {
     	return addressMapper.toDto(addressService.findByCustomerEmail(SecurityUtil.getLogged()));
     }
     
@@ -103,22 +98,22 @@ public class AddressRestController {
     		HttpServletRequest request,
     		HttpServletResponse response){
     	
-    	String customerId = SecurityUtil.getId();
-    	Optional<Customer> customer = customerService.findById(customerId);
-    	Optional<Address> current = addressService.findByCustomerIdAndLabel(customerId, addressDto.getLabel());
+    	String email = SecurityUtil.getLogged();
+    	Customer customer = customerService.findLoggedUserByEmail(email);
+    	Optional<Address> current = addressService.findByCustomerEmailAndLabel(email, addressDto.getLabel());
     	Address address = null;
     	
     	if(current.isPresent()) {
     		request.setAttribute(Constant.OLD_DATA, addressMapper.toDto(current.get()));
     		address = addressMapper.toEntity(addressDto, cityService);
     		address.setId(current.get().getId());
-    		address.setCustomer(customer.get());
-    		address.setLastModifiedBy(SecurityUtil.getLogged());
+    		address.setCustomer(customer);
+    		address.setLastModifiedBy(email);
     		address.setLastModifiedDate(Instant.now());
     	}else {
     		address = addressMapper.toEntity(addressDto, cityService);
-    		address.setCustomer(customer.get());
-    		address.setCreatedBy(SecurityUtil.getLogged());
+    		address.setCustomer(customer);
+    		address.setCreatedBy(email);
     		address.setCreatedDate(Instant.now());
     	}
 	

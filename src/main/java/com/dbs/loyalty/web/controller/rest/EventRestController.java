@@ -31,8 +31,7 @@ import com.dbs.loyalty.service.ImageService;
 import com.dbs.loyalty.service.PdfService;
 import com.dbs.loyalty.service.dto.EventDto;
 import com.dbs.loyalty.service.mapper.EventMapper;
-import com.dbs.loyalty.util.ImageUtil;
-import com.dbs.loyalty.util.PdfUtil;
+import com.dbs.loyalty.util.ResponseUtil;
 import com.dbs.loyalty.web.response.Response;
 
 import io.swagger.annotations.Api;
@@ -160,7 +159,7 @@ public class EventRestController {
     	Optional<FileImage> fileImage = imageService.findById(id);
     	
 		if(fileImage.isPresent()) {
-			return ImageUtil.getResponse(fileImage.get());
+			return ResponseUtil.createImageResponse(fileImage.get());
 		}else {
 			throw new NotFoundException(String.format(MessageConstant.DATA_IS_NOT_FOUND, DomainConstant.EVENT, id));
 		}
@@ -184,7 +183,7 @@ public class EventRestController {
 		Optional<FilePdf> current = filePdfService.findById(id);
     	
 		if(current.isPresent()) {
-			return PdfUtil.getResponse(current.get());
+			return ResponseUtil.createResponse(current.get());
 		}else {
 			throw new NotFoundException(String.format(MessageConstant.DATA_IS_NOT_FOUND, DomainConstant.EVENT, id));
 		}

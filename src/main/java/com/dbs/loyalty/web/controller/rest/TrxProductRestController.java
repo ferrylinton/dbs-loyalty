@@ -2,13 +2,10 @@ package com.dbs.loyalty.web.controller.rest;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.http.CacheControl;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,12 +17,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dbs.loyalty.aop.EnableLogAuditCustomer;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.domain.FileImage;
+import com.dbs.loyalty.domain.TrxProduct;
 import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.ImageService;
 import com.dbs.loyalty.service.SettingService;
 import com.dbs.loyalty.service.TrxProductService;
 import com.dbs.loyalty.service.dto.TrxProductDto;
 import com.dbs.loyalty.service.mapper.TrxProductMapper;
+import com.dbs.loyalty.util.ErrorUtil;
+import com.dbs.loyalty.util.ResponseUtil;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -54,8 +54,6 @@ public class TrxProductRestController {
 	
 	public static final String GET_TRX_PRODUCT_IMAGE_BY_ID = "GetTrxProductImageById";
 
-	private static final String NOT_FOUND_FORMAT = "TrxProduct [id=%s] is not found";
-	
 	private final ImageService imageService;
 	
 	private final TrxProductService trxProductService;
@@ -74,11 +72,7 @@ public class TrxProductRestController {
 	@EnableLogAuditCustomer(operation=GET_ALL_TRX_PRODUCTS)
 	@GetMapping
     public List<TrxProductDto> getAllTrxProducts(HttpServletRequest request, HttpServletResponse response){
-		return trxProductService
-				.findAll()
-				.stream()
-				.map(product -> trxProductMapper.toDto(product, settingService))
-				.collect(Collectors.toList());
+		return trxProductMapper.toDto(trxProductService.findAll(), settingService);
     }
 	
 	@ApiOperation(
@@ -91,18 +85,17 @@ public class TrxProductRestController {
 	@EnableLogAuditCustomer(operation=GET_TRX_PRODUCT_BY_ID)
 	@GetMapping("/{id}")
     public TrxProductDto getById(
-    		@ApiParam(name = "id", value = "Product Id", example = "zO0dDp9K")
+    		@ApiParam(name = "id", value = "Product Id", example = "4HIEDXIOSAFtc3tCIIYGzK")
     		@PathVariable String id,
-    		HttpServletRequest request, HttpServletResponse response) throws NotFoundException{
+    		HttpServletRequest request, 
+    		HttpServletResponse response) throws NotFoundException{
     	
-		Optional<TrxProductDto> current = trxProductService
-				.findById(id)
-				.map(product -> trxProductMapper.toDto(product, settingService));
+		Optional<TrxProduct> current = trxProductService.findById(id);
     	
     	if(current.isPresent()) {
-    		return current.get();
+    		return trxProductMapper.toDto(current.get(), settingService);
     	}else {
-    		throw new NotFoundException(String.format(NOT_FOUND_FORMAT, id));
+    		throw ErrorUtil.createNPE(ErrorUtil.PRODUCT, id);
     	}
     }
     
@@ -116,23 +109,17 @@ public class TrxProductRestController {
 	@EnableLogAuditCustomer(operation=GET_TRX_PRODUCT_IMAGE_BY_ID)
 	@GetMapping("/{id}/image")
     public ResponseEntity<byte[]> getTrxProductImageById(
-    		@ApiParam(name = "id", value = "TrxProduct Id", example = "zO0dDp9K")
+    		@ApiParam(name = "id", value = "TrxProduct Id", example = "4HIEDXIOSAFtc3tCIIYGzK")
     		@PathVariable String id,
-    		HttpServletRequest request, HttpServletResponse response) throws NotFoundException{
+    		HttpServletRequest request, 
+    		HttpServletResponse response) throws NotFoundException{
     	
     	Optional<FileImage> fileImage = imageService.findById(id);
     	
     	if(fileImage.isPresent()) {
-    		HttpHeaders headers = new HttpHeaders();
-			headers.setCacheControl(CacheControl.noCache().getHeaderValue());
-			headers.setContentType(MediaType.valueOf(fileImage.get().getContentType()));
-			
-			return ResponseEntity
-					.ok()
-					.headers(headers)
-					.body(fileImage.get().getBytes());
+    		return ResponseUtil.createImageResponse(fileImage.get());
     	}else {
-    		throw new NotFoundException(String.format(NOT_FOUND_FORMAT, id));
+    		throw ErrorUtil.createNPE(ErrorUtil.PRODUCT, id);
     	}
     }
 	

@@ -68,19 +68,19 @@ public final class DomainConstant {
 	
 	public static final String PHONE				= "phone";
 
-	public static final String DESCRIPTION = "description";
+	public static final String DESCRIPTION 			= "description";
 	
-	public static final String LOGIN_STATUS = "loginStatus";
+	public static final String LOGIN_STATUS 		= "loginStatus";
 	
-	public static final String IP = "ip";
+	public static final String IP 					= "ip";
 	
-	public static final String CREATED_DATE = "createdDate";
+	public static final String CREATED_DATE 		= "createdDate";
 	
-	public static final String BROWSER = "browser";
+	public static final String BROWSER				= "browser";
 	
-	public static final String DEVICE_TYPE = "deviceType";
+	public static final String DEVICE_TYPE 			= "deviceType";
 	
-	public static final String COUNTRIES = "countries";
+	public static final String COUNTRIES 			= "countries";
 
 	private DomainConstant() {
 		// hide constructor

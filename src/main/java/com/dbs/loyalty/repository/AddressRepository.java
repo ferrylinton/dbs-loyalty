@@ -12,6 +12,8 @@ public interface AddressRepository extends JpaRepository<Address, String>{
 	
 	Optional<Address> findByCustomerIdAndLabelIgnoreCase(String customerId, String label);
 	
+	Optional<Address> findByCustomerEmailAndLabelIgnoreCase(String email, String label);
+	
 	@Query(value = "from Address a "
 			+ "JOIN FETCH a.customer c "
 			+ "JOIN FETCH a.city ct "

@@ -26,6 +26,7 @@ import com.dbs.loyalty.exception.NotFoundException;
 import com.dbs.loyalty.service.ImageService;
 import com.dbs.loyalty.service.LogAuditCustomerService;
 import com.dbs.loyalty.util.ImageUtil;
+import com.dbs.loyalty.util.ResponseUtil;
 import com.dbs.loyalty.util.SecurityUtil;
 import com.dbs.loyalty.util.UrlUtil;
 
@@ -64,7 +65,7 @@ public class CustomerImageRestController {
     	Optional<FileImage> fileImage = imageService.findById(SecurityUtil.getId());
     	
 		if(fileImage.isPresent()) {
-			return ImageUtil.getResponse(fileImage.get());
+			return ResponseUtil.createImageResponse(fileImage.get());
 		}else {
 			throw new NotFoundException(String.format(MessageConstant.DATA_IS_NOT_FOUND, SwaggerConstant.CUSTOMER, SecurityUtil.getId()));
 		}
@@ -103,7 +104,7 @@ public class CustomerImageRestController {
     		ImageUtil.setFileImage(fileImage, file);
     		fileImage = imageService.save(fileImage);
     		logAuditCustomerService.saveFile(UPDATE_CUSTOMER_IMAGE, UrlUtil.getFullUrl(request), file.getBytes(), oldData);
-    		return ImageUtil.getResponse(fileImage);
+    		return ResponseUtil.createImageResponse(fileImage);
     	}
     }
 

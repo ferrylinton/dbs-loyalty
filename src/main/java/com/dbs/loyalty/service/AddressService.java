@@ -25,6 +25,10 @@ public class AddressService {
 		return addressRepository.findByCustomerIdAndLabelIgnoreCase(customerId, label);
 	}
 	
+	public Optional<Address> findByCustomerEmailAndLabel(String email, String label) {
+		return addressRepository.findByCustomerEmailAndLabelIgnoreCase(email, label);
+	}
+	
 	public Address save(Address address) {
 		return addressRepository.save(address);
 	}

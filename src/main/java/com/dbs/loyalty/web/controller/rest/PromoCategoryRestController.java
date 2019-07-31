@@ -1,7 +1,6 @@
 package com.dbs.loyalty.web.controller.rest;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -56,11 +55,7 @@ public class PromoCategoryRestController {
     @EnableLogAuditCustomer(operation=GET_PROMO_CATEGORIES)
     @GetMapping
     public List<PromoCategoryDto> getPromoCategories(HttpServletRequest request, HttpServletResponse response) {
-    	return promoCategoryService
-    			.findAll()
-    			.stream()
-				.map(promoCategory -> promoCategoryMapper.toDto(promoCategory))
-				.collect(Collectors.toList());
+    	return promoCategoryMapper.toDto(promoCategoryService.findAll());
     }
 
 }

@@ -13,7 +13,7 @@ import lombok.Setter;
 @ApiModel(value="ProductPriviledge", description = "ProductPriviledge's data")
 @Setter
 @Getter
-public class ProductPriviledgeDto {
+public class PriviledgeProductDto {
 
 	@ApiModelProperty(value = "ProductPriviledge's id", example = "6nJfmxAD6GWtsehXfSkShg", required = true, position = 0)
 	private String id;

@@ -1,6 +1,7 @@
 package com.dbs.loyalty.service.mapper;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.text.StrSubstitutor;
@@ -22,6 +23,8 @@ public abstract class TrxProductMapper{
 	private static final String IMAGE_URL = "/api/trx-products/%s/image";
 
 	public abstract TrxProductDto toDto(TrxProduct entity, @Context SettingService settingService);
+	
+	public abstract List<TrxProductDto> toDto(List<TrxProduct> entities, @Context SettingService settingService);
 
 	@AfterMapping
     public void doAfterMapping(@MappingTarget TrxProductDto dto, @Context SettingService settingService){
