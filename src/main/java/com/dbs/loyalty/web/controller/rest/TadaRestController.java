@@ -31,16 +31,19 @@ import org.springframework.web.client.RestClientException;
 import com.dbs.loyalty.aop.EnableLogAuditCustomer;
 import com.dbs.loyalty.config.ApplicationProperties;
 import com.dbs.loyalty.config.constant.Constant;
+import com.dbs.loyalty.config.constant.MessageConstant;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.domain.Reward;
 import com.dbs.loyalty.domain.TadaItem;
 import com.dbs.loyalty.domain.TadaOrder;
 import com.dbs.loyalty.domain.TadaPayment;
 import com.dbs.loyalty.exception.BadRequestException;
+import com.dbs.loyalty.service.LogAuditCustomerService;
 import com.dbs.loyalty.service.RewardService;
 import com.dbs.loyalty.service.SettingService;
 import com.dbs.loyalty.service.TadaOrderService;
 import com.dbs.loyalty.util.SecurityUtil;
+import com.dbs.loyalty.util.UrlUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.swagger.annotations.Api;
@@ -85,6 +88,8 @@ public class TadaRestController {
 	private final RewardService rewardService;
 
 	private final ObjectMapper objectMapper;
+	
+	private final LogAuditCustomerService logAuditCustomerService;
 	
 	@ApiOperation(
 		nickname = GET_TADA_ITEMS, 
@@ -131,21 +136,26 @@ public class TadaRestController {
 		produces = "application/json", 
 		authorizations = { @Authorization(value = "JWT") })
 	@ApiResponses(value = { @ApiResponse(code = 200, message = "OK", response = String.class) })
-	@EnableLogAuditCustomer(operation=CREATE_TADA_ORDER)
 	@PostMapping("/orders")
 	public ResponseEntity<String> post(@RequestBody @Valid TadaOrder tadaOrder, HttpServletRequest request, HttpServletResponse response) {
+		String url = UrlUtil.getFullUrl(request);
 		try {
-			return saveTadaOrder(tadaOrder, SecurityUtil.getLogged(), request);
+			ResponseEntity<String> result = saveTadaOrder(tadaOrder, SecurityUtil.getLogged(), request);
+			logAuditCustomerService.saveJson(CREATE_TADA_ORDER, url, tadaOrder, null);
+			return result;
 		} catch (BadRequestException e) {
 			log.error(e.getLocalizedMessage(), e);
 			String result = String.format(RESULT_FORMAT, e.getLocalizedMessage());
+			logAuditCustomerService.saveError(CREATE_TADA_ORDER, url, tadaOrder, e.getLocalizedMessage(), 400);
 			return new ResponseEntity<>(result, getHeaders(), HttpStatus.BAD_REQUEST);
 		} catch (HttpClientErrorException e) {
 			log.error(e.getLocalizedMessage(), e);
-			return new ResponseEntity<>(e.getResponseBodyAsString(), e.getResponseHeaders(), e.getStatusCode());
+			logAuditCustomerService.saveError(CREATE_TADA_ORDER, url, tadaOrder, e.getLocalizedMessage(), e.getStatusCode().value());
+			return new ResponseEntity<>(e.getResponseBodyAsString(), getHeaders(), e.getStatusCode());
 		} catch (Exception e) {
 			log.error(e.getLocalizedMessage(), e);
 			String result = String.format(RESULT_FORMAT, e.getLocalizedMessage());
+			logAuditCustomerService.saveError(CREATE_TADA_ORDER, url, tadaOrder, e.getLocalizedMessage(), 500);
 			return new ResponseEntity<>(result, getHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -205,7 +215,7 @@ public class TadaRestController {
 			rewardService.deduct(email, rewards, orderPoints);
 			return response;
 		}else {
-			throw new BadRequestException("Insufficient points");
+			throw new BadRequestException(MessageConstant.INSUFFICIENT_POINTS);
 		}
 	}
 	
@@ -228,7 +238,10 @@ public class TadaRestController {
 			totalPrice += tadaItem.getPrice() * tadaItem.getQuantity();
 		}
 		
-		return totalPrice / settingService.getPointToRupiah();
+		int remainder = totalPrice % settingService.getPointToRupiah();
+		int totalPoint = totalPrice / settingService.getPointToRupiah();
+		
+		return remainder == 0 ? totalPoint : totalPoint + 1;
 	}
 	
 }

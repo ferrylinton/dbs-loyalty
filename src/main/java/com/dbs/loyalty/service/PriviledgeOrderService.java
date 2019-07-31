@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dbs.loyalty.config.constant.MessageConstant;
 import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.domain.PriviledgeOrder;
 import com.dbs.loyalty.domain.Reward;
@@ -38,18 +39,14 @@ public class PriviledgeOrderService{
 		int orderPoints = priviledgeOrder.getItemQuantity() * priviledgeOrder.getItemPoint();
 		
 		if(availablePoints > orderPoints) {
-			Optional<Customer> customer = customerService.findById(SecurityUtil.getId());
-			if(customer.isPresent()) {
-				priviledgeOrder.setCustomer(customer.get());
-				
-				rewardService.deduct(customer.get().getEmail(), rewards, orderPoints);
-				airportAssistanceService.add(priviledgeOrder.getItemQuantity());
-				return priviledgeOrderRepository.save(priviledgeOrder);
-			}else{
-				throw new BadRequestException("Invalid customer data");
-			}
+			Customer customer = customerService.findLoggedUserByEmail(SecurityUtil.getLogged());
+			priviledgeOrder.setCustomer(customer);
+			
+			rewardService.deduct(customer.getEmail(), rewards, orderPoints);
+			airportAssistanceService.add(priviledgeOrder.getItemQuantity());
+			return priviledgeOrderRepository.save(priviledgeOrder);
 		}else {
-			throw new BadRequestException("Insufficient points");
+			throw new BadRequestException(MessageConstant.INSUFFICIENT_POINTS);
 		}
 	}
 	

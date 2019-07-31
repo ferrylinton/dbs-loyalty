@@ -1,12 +1,12 @@
 package com.dbs.loyalty.service;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dbs.loyalty.config.constant.MessageConstant;
 import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.domain.Reward;
 import com.dbs.loyalty.domain.TrxOrder;
@@ -37,34 +37,18 @@ public class TrxOrderService{
 	@Transactional
 	public TrxOrder save(TrxOrder trxOrder) throws BadRequestException{
 		List<Reward> rewards = rewardService.findAllValid();
-		int totalCustomerPoint = rewardService.getAvailablePoints(rewards);
-		int totalOrderPoint = trxOrder.getItemPoint();
+		int availablePoints = rewardService.getAvailablePoints(rewards);
+		int orderPoints = trxOrder.getItemPoint();
 		
-		if(totalCustomerPoint > totalOrderPoint) {
-			Optional<Customer> customer = customerService.findById(SecurityUtil.getId());
-			if(customer.isPresent()) {
-				for(Reward reward : rewards) {
-					if(totalOrderPoint > 0) {
-						if(totalOrderPoint > reward.getPoint()) {
-							totalOrderPoint = totalOrderPoint - reward.getPoint();
-							reward.setPoint(0);
-						}else{
-							reward.setPoint(reward.getPoint() - totalOrderPoint);
-							totalOrderPoint = 0;
-						}
-						
-						reward.setLastModifiedBy(SecurityUtil.getLogged());
-						reward.setLastModifiedDate(Instant.now());
-					}
-				}
-				rewardService.save(rewards);
-				trxOrder.setCustomer(customer.get());
-				return trxOrderRepository.save(trxOrder);
-			}else{
-				throw new BadRequestException("Invalid customer data");
-			}
+		if(availablePoints > orderPoints) {
+			Customer customer = customerService.findLoggedUserByEmail(SecurityUtil.getLogged());
+			trxOrder.setCustomer(customer);
+			
+			rewardService.deduct(customer.getEmail(), rewards, orderPoints);
+			rewardService.save(rewards);
+			return trxOrderRepository.save(trxOrder);
 		}else {
-			throw new BadRequestException("Insufficient points");
+			throw new BadRequestException(MessageConstant.INSUFFICIENT_POINTS);
 		}
 	}
 	

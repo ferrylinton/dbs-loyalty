@@ -41,20 +41,24 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/trx-orders")
 public class TrxOrderRestController {
 	
-	public static final String ADD_TRX_ORDER = "AddTrxOrder";
+	public static final String CREATE_TRX_ORDER = "CreateTrxOrder";
 
 	private final TrxProductService trxProductService;
 	
 	private final TrxOrderService trxOrderService;
 
 	@ApiOperation(
-			value=ADD_TRX_ORDER, 
+			value=CREATE_TRX_ORDER, 
 			produces="application/json", 
 			authorizations={@Authorization(value="JWT")})
     @ApiResponses(value={ @ApiResponse(code=200, message="OK", response=Response.class)})
-	@EnableLogAuditCustomer(operation=ADD_TRX_ORDER)
+	@EnableLogAuditCustomer(operation=CREATE_TRX_ORDER)
 	@PostMapping
-    public TrxOrder addDeparture(@Valid @RequestBody TrxOrder trxOrder, HttpServletRequest request, HttpServletResponse response) throws BadRequestException{
+    public TrxOrder addDeparture(
+    		@Valid @RequestBody TrxOrder trxOrder, 
+    		HttpServletRequest request, 
+    		HttpServletResponse response) throws BadRequestException{
+		
 		return trxOrderService.save(trxOrder);
     }
     

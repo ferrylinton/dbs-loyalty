@@ -1,5 +1,7 @@
 package com.dbs.loyalty.web.controller.rest;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -52,7 +54,11 @@ public class PriviledgeOrderRestController {
     @ApiResponses(value={ @ApiResponse(code=200, message="OK", response=Response.class)})
 	@EnableLogAuditCustomer(operation=CREATE_PRIVILEDGE_ORDER)
 	@PostMapping
-    public PriviledgeOrder createOrder(@Valid @RequestBody PriviledgeOrder priviledgeOrder) throws BadRequestException{
+    public PriviledgeOrder createOrder(
+    		@Valid @RequestBody PriviledgeOrder priviledgeOrder,
+    		HttpServletRequest request, 
+    		HttpServletResponse response) throws BadRequestException{
+		
 		return priviledgeOrderService.save(priviledgeOrder);
     }
     

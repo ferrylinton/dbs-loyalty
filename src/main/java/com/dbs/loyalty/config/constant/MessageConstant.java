@@ -32,6 +32,8 @@ public final class MessageConstant {
 	
 	public static final String CUSTOMER_IS_ACTIVATED = "Customer is activated";
 	
+	public static final String INSUFFICIENT_POINTS = "Insufficient points";
+	
 	private MessageConstant() {
 		// hide constructor
 	}

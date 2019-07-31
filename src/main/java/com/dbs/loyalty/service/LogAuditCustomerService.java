@@ -87,9 +87,9 @@ public class LogAuditCustomerService {
 			operations.put("/api/customers/image", CustomerImageRestController.UPDATE_CUSTOMER_IMAGE);
 			operations.put("/api/customers/change-password", CustomerRestController.CHANGE_PASSWORD);
 			operations.put("/api/feedback-answers", FeedbackAnswerRestController.ADD_FEEDBACK_CUSTOMER);
-			operations.put("/api/trx-orders", TrxOrderRestController.ADD_TRX_ORDER);
+			operations.put("/api/trx-orders", TrxOrderRestController.CREATE_TRX_ORDER);
 			operations.put("/api/priviledge-orders", PriviledgeOrderRestController.CREATE_PRIVILEDGE_ORDER);
-			operations.put(LovedOneRestController.ADD_BINDER_NAME, LovedOneRestController.ADD_LOVED_ONE);
+			operations.put("/api/loved-ones", LovedOneRestController.ADD_LOVED_ONE);
 			operations.put(LovedOneRestController.UPDATE_BINDER_NAME, LovedOneRestController.UPDATE_LOVED_ONE);
 		}
 		

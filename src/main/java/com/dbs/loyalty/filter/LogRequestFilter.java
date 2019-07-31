@@ -35,7 +35,9 @@ public class LogRequestFilter extends OncePerRequestFilter implements Ordered {
 	
     private static final String API = "/api"; 
     
-    private static final List<String> API_WITH_PASSWORD = Arrays.asList("/api/authenticate");
+    private static final String TADA = "/tada"; 
+    
+    private static final List<String> API_WITH_PASSWORD = Arrays.asList("/api/authenticate", "/api/customers/change-password", "/api/customers/activate");
 
 	private static final int order = Ordered.LOWEST_PRECEDENCE - 8;
 
@@ -57,47 +59,45 @@ public class LogRequestFilter extends OncePerRequestFilter implements Ordered {
         responseWrapper.copyBodyToResponse();
     }
 
-    private String getString(ContentCachingRequestWrapper requestWrapper) {
-        if (requestWrapper != null) {
-            byte[] buf = requestWrapper.getContentAsByteArray();
-            if (buf.length > 0) {
-                try {
-                    return new String(buf, 0, buf.length, requestWrapper.getCharacterEncoding());
-                }catch (UnsupportedEncodingException ex) {
-                    return ex.getMessage();
-                }
-            }
-        }
-        
-        return null;
-    }
-    
     private void logAuditCustomer(ContentCachingRequestWrapper requestWrapper, ContentCachingResponseWrapper responseWrapper) {
-    	if(requestWrapper.getServletPath().contains(API) && responseWrapper.getStatus() == 400) {
+    	if(!requestWrapper.getServletPath().contains(TADA) && requestWrapper.getServletPath().contains(API) && responseWrapper.getStatus() == 400) {
         	String url = UrlUtil.getFullUrl(requestWrapper);
-        	String requestData = getString(requestWrapper);
+        	String requestJson = getString(requestWrapper);
         	
         	if(API_WITH_PASSWORD.contains(requestWrapper.getServletPath())) {
-        		requestData = maskPassword(requestData);
+        		requestJson = maskPassword(requestJson);
         	}
         	
-        	logAuditCustomerService.saveError(url, requestWrapper.getServletPath(), requestData, getString(responseWrapper), responseWrapper.getStatusCode());
+        	logAuditCustomerService.saveBadRequest(url, requestWrapper.getServletPath(), requestJson, getString(responseWrapper));
         }
     }
 
+    private String getString(ContentCachingRequestWrapper requestWrapper) {
+    	if (requestWrapper != null) {
+            return getString(requestWrapper.getContentAsByteArray(), requestWrapper.getCharacterEncoding());
+        }else {
+        	return null;
+        }
+    }
+    
     private String getString(ContentCachingResponseWrapper responseWrapper) {
         if (responseWrapper != null) {
-            byte[] buf = responseWrapper.getContentAsByteArray();
-            if (buf.length > 0) {
-                try {
-                    return new String(buf, 0, buf.length, responseWrapper.getCharacterEncoding());
-                }catch (UnsupportedEncodingException ex) {
-                    return ex.getMessage();
-                }
-            }
+            return getString(responseWrapper.getContentAsByteArray(), responseWrapper.getCharacterEncoding());
+        }else {
+        	return null;
         }
-        
-        return null;
+    }
+    
+    private String getString(byte[] buf, String characterEncoding) {
+        if (buf.length > 0) {
+            try {
+                return new String(buf, 0, buf.length, characterEncoding);
+            }catch (UnsupportedEncodingException ex) {
+                return ex.getMessage();
+            }
+        }else {
+        	return null;
+        }
     }
     
 	private String maskPassword(String jsonString){
