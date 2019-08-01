@@ -77,20 +77,20 @@ public class LogAuditCustomerService {
 	private Map<String, String> getOperation(){
 		if(operations == null) {
 			operations = new HashMap<>();
-			operations.put("/api/authenticate", JWTRestController.AUTHENTICATE);
-			operations.put("/api/addresses", AddressRestController.ADD_ADDRESS);
-			operations.put("/api/arrivals", ArrivalRestController.ADD_ARRIVAL);
-			operations.put("/api/departures", DepartureRestController.ADD_DEPARTURE);
-			operations.put("/api/appointments", AppointmentRestController.ADD_APPOINTMENT);
-			operations.put("/api/customers", CustomerRestController.UPDATE_CUSTOMER);
-			operations.put("/api/customers/activate", CustomerActivateRestController.ACTIVATE_CUSTOMER);
-			operations.put("/api/customers/image", CustomerImageRestController.UPDATE_CUSTOMER_IMAGE);
-			operations.put("/api/customers/change-password", CustomerRestController.CHANGE_PASSWORD);
-			operations.put("/api/feedback-answers", FeedbackAnswerRestController.ADD_FEEDBACK_CUSTOMER);
-			operations.put("/api/trx-orders", TrxOrderRestController.CREATE_TRX_ORDER);
-			operations.put("/api/priviledge-orders", PriviledgeOrderRestController.CREATE_PRIVILEDGE_ORDER);
-			operations.put("/api/loved-ones", LovedOneRestController.ADD_LOVED_ONE);
-			operations.put(LovedOneRestController.UPDATE_BINDER_NAME, LovedOneRestController.UPDATE_LOVED_ONE);
+			operations.put("POST:/api/authenticate", JWTRestController.AUTHENTICATE);
+			operations.put("POST:/api/addresses", AddressRestController.ADD_ADDRESS);
+			operations.put("POST:/api/arrivals", ArrivalRestController.ADD_ARRIVAL);
+			operations.put("POST:/api/departures", DepartureRestController.ADD_DEPARTURE);
+			operations.put("POST:/api/appointments", AppointmentRestController.ADD_APPOINTMENT);
+			operations.put("PUT:/api/customers", CustomerRestController.UPDATE_CUSTOMER);
+			operations.put("POST:/api/customers/activate", CustomerActivateRestController.ACTIVATE_CUSTOMER);
+			operations.put("PUT:/api/customers/image", CustomerImageRestController.UPDATE_CUSTOMER_IMAGE);
+			operations.put("POST:/api/customers/change-password", CustomerRestController.CHANGE_PASSWORD);
+			operations.put("POST:/api/feedback-answers", FeedbackAnswerRestController.ADD_FEEDBACK_CUSTOMER);
+			operations.put("POST:/api/trx-orders", TrxOrderRestController.CREATE_TRX_ORDER);
+			operations.put("POST:/api/priviledge-orders", PriviledgeOrderRestController.CREATE_PRIVILEDGE_ORDER);
+			operations.put("POST:/api/loved-ones", LovedOneRestController.ADD_LOVED_ONE);
+			operations.put("PUT:/api/loved-ones", LovedOneRestController.UPDATE_LOVED_ONE);
 		}
 		
 		return operations;
@@ -149,21 +149,21 @@ public class LogAuditCustomerService {
         save(logAuditCustomer);
 	}
 	
-	public void saveBadRequest(String url, String servletPath, Object requestJson, String responseJson) {
-		if(getOperation().containsKey(servletPath)) {
+	public void saveBadRequest(String url, String operationKey, Object requestJson, Object responseJson) {
+		if(getOperation().containsKey(operationKey)) {
 			LogAuditCustomer logAuditCustomer = new LogAuditCustomer();
-	    	logAuditCustomer.setOperation(getOperation().get(servletPath));
+	    	logAuditCustomer.setOperation(getOperation().get(operationKey));
 	    	logAuditCustomer.setUrl(url);
 	    	logAuditCustomer.setStatus(StatusConstant.FAIL);
 	    	logAuditCustomer.setHttpStatus(400);
 	        logAuditCustomer.setCreatedDate(Instant.now());
 	        logAuditCustomer.setCustomer(SecurityUtil.getCustomer());
 	        logAuditCustomer.setRequestJson(toString(requestJson));
-	        logAuditCustomer.setResponseJson(responseJson);
+	        logAuditCustomer.setResponseJson(toString(responseJson));
 	        
 	        save(logAuditCustomer);
 		}else {
-			log.warn(String.format("LogAuditCustomerService::getOperation() :: Warn :: %s is not found", servletPath));
+			log.warn(String.format("LogAuditCustomerService::getOperation() :: Warn :: %s is not found", operationKey));
 		}
 	}
 	
@@ -174,7 +174,13 @@ public class LogAuditCustomerService {
     	logAuditCustomer.setHttpStatus(httpStatus);
     	logAuditCustomer.setStatus(StatusConstant.FAIL);
     	logAuditCustomer.setRequestJson(toString(requestJson));
-    	logAuditCustomer.setResponseText(StringUtils.substring(error, 0, 250));
+    	
+    	if(error instanceof String) {
+    		logAuditCustomer.setResponseText(StringUtils.substring(error, 0, 250));
+    	}else {
+    		logAuditCustomer.setResponseJson(toString(error));
+    	}
+    	
         logAuditCustomer.setCreatedDate(Instant.now());
         logAuditCustomer.setCustomer(SecurityUtil.getCustomer());
 

@@ -27,7 +27,7 @@ public class AddressDtoValidator implements Validator {
 	public void validate(Object target, Errors errors) {
 		AddressDto addressDto = (AddressDto) target;
 		
-		if(!(AddressLabelConstant.PRIMARY.equalsIgnoreCase(addressDto.getLabel()) || 
+		if(addressDto.getLabel() != null && !(AddressLabelConstant.PRIMARY.equalsIgnoreCase(addressDto.getLabel()) || 
 				AddressLabelConstant.SECONDARY.equalsIgnoreCase(addressDto.getLabel()))) {
 			
 			String message = String.format("label must be '%s' or '%s'", AddressLabelConstant.PRIMARY, AddressLabelConstant.SECONDARY);

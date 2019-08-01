@@ -22,8 +22,6 @@ public final class SwaggerConstant {
 	
 	public static final String PRODUCT				= "Product";
 	
-	public static final String TRX_PRODUCT			= "BankTransactionProduct";
-	
 	public static final String REWARD 				= "Reward";
 	
 	public static final String CUSTOMER 			= "Customer";

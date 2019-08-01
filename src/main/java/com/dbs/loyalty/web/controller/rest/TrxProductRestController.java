@@ -41,7 +41,7 @@ import lombok.RequiredArgsConstructor;
  * @author Ferry L. H. <ferrylinton@gmail.com>
  * 
  */
-@Api(tags = { SwaggerConstant.TRX_PRODUCT })
+@Api(tags = { SwaggerConstant.PRODUCT })
 @RequiredArgsConstructor
 @PreAuthorize("hasRole('CUSTOMER')")
 @RestController

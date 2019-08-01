@@ -37,6 +37,8 @@ public class LogRequestFilter extends OncePerRequestFilter implements Ordered {
     
     private static final String TADA = "/tada"; 
     
+    private static final String OPERATION_KEY_FORMAT = "%s:%s";
+    
     private static final List<String> API_WITH_PASSWORD = Arrays.asList("/api/authenticate", "/api/customers/change-password", "/api/customers/activate");
 
 	private static final int order = Ordered.LOWEST_PRECEDENCE - 8;
@@ -63,12 +65,13 @@ public class LogRequestFilter extends OncePerRequestFilter implements Ordered {
     	if(!requestWrapper.getServletPath().contains(TADA) && requestWrapper.getServletPath().contains(API) && responseWrapper.getStatus() == 400) {
         	String url = UrlUtil.getFullUrl(requestWrapper);
         	String requestJson = getString(requestWrapper);
+        	String operationKey = String.format(OPERATION_KEY_FORMAT, requestWrapper.getMethod(), requestWrapper.getServletPath());
         	
         	if(API_WITH_PASSWORD.contains(requestWrapper.getServletPath())) {
         		requestJson = maskPassword(requestJson);
         	}
         	
-        	logAuditCustomerService.saveBadRequest(url, requestWrapper.getServletPath(), requestJson, getString(responseWrapper));
+        	logAuditCustomerService.saveBadRequest(url, operationKey, requestJson, getString(responseWrapper));
         }
     }
 

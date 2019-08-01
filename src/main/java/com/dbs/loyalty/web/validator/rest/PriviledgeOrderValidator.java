@@ -8,11 +8,16 @@ import org.springframework.validation.Validator;
 import com.dbs.loyalty.domain.PriviledgeOrder;
 import com.dbs.loyalty.domain.PriviledgeProduct;
 import com.dbs.loyalty.service.PriviledgeProductService;
+import com.dbs.loyalty.util.ErrorUtil;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class PriviledgeOrderValidator implements Validator {
+	
+	private static final String ITEM_ID = "itemId";
+	
+	private static final String ITEM_POINT = "itemPoint";
 	
 	private final PriviledgeProductService priviledgeProductService;
 
@@ -29,8 +34,11 @@ public class PriviledgeOrderValidator implements Validator {
 		Optional<PriviledgeProduct> priviledgeProduct = priviledgeProductService.findById(priviledgeOrder.getItemId());
 		
 		if(!priviledgeProduct.isPresent()) {
-			message = String.format("Product [id=%s] is not found", priviledgeOrder.getItemId());
-			errors.rejectValue("message", message, message);
+			message = ErrorUtil.getNotFoundMessage(ErrorUtil.PRODUCT, priviledgeOrder.getItemId());
+			errors.rejectValue(ITEM_ID, message, message);
+		}else if(priviledgeOrder.getItemPoint().intValue() != priviledgeProduct.get().getPoint().intValue()) {
+			message = ErrorUtil.getIvalidDataMessage(ITEM_POINT, String.valueOf(priviledgeProduct.get().getPoint()));
+			errors.rejectValue(ITEM_POINT, message, message);
 		}
 	}
 

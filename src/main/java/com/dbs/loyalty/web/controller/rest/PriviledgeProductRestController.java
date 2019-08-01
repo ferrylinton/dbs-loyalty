@@ -67,7 +67,7 @@ public class PriviledgeProductRestController {
 			notes="Get All Product Priviledges",
     		produces="application/json", 
     		authorizations = { @Authorization(value="JWT") })
-    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = PriviledgeProductDto.class)})
+    @ApiResponses(value={@ApiResponse(code=200, message="OK", response = PriviledgeProductDto.class, responseContainer = "List")})
 	@EnableLogAuditCustomer(operation=GET_ALL_PRIVILEDGE_PRODUCTS)
 	@GetMapping
     public List<PriviledgeProductDto> getAll(HttpServletRequest request, HttpServletResponse response){

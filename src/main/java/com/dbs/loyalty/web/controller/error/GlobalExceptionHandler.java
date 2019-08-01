@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -24,8 +25,10 @@ import org.springframework.web.multipart.support.MissingServletRequestPartExcept
 
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.exception.NotFoundException;
+import com.dbs.loyalty.service.LogAuditCustomerService;
 import com.dbs.loyalty.util.ErrorUtil;
 import com.dbs.loyalty.util.MessageUtil;
+import com.dbs.loyalty.util.UrlUtil;
 import com.dbs.loyalty.web.response.ErrorResponse;
 import com.dbs.loyalty.web.response.Response;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,9 +38,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class GlobalExceptionHandler extends AbstractErrorController{
 
 	private static final Locale locale = new Locale("en");
+	
+	private static final String OPERATION_KEY_FORMAT = "%s:%s";
+	
+	private final LogAuditCustomerService logAuditCustomerService;
 
-	public GlobalExceptionHandler(final ObjectMapper objectMapper) {
+	public GlobalExceptionHandler(final ObjectMapper objectMapper, LogAuditCustomerService logAuditCustomerService) {
 		super(objectMapper);
+		this.logAuditCustomerService = logAuditCustomerService;
 	}
 	
 	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)
@@ -103,10 +111,11 @@ public class GlobalExceptionHandler extends AbstractErrorController{
 	
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<Map<String, String>> handleValidationExceptions(MethodArgumentNotValidException ex, HttpServletRequest request) {
-		System.out.println("--------- operation : " + request.getHeader("operation"));
+		Map<String, String> errors = getErrors(ex);
+		saveError(ex, request, errors);
 		return ResponseEntity
 	            .status(HttpStatus.BAD_REQUEST)
-	            .body(getErrors(ex));
+	            .body(errors);
 	}
 	
 	private Map<String, String> getErrors(MethodArgumentNotValidException ex){
@@ -120,4 +129,18 @@ public class GlobalExceptionHandler extends AbstractErrorController{
 		return errors;
 	}
 
+	private void saveError(MethodArgumentNotValidException ex, HttpServletRequest request, Map<String, String> errors) {
+		for(Map.Entry<String, Object> entry : ex.getBindingResult().getModel().entrySet()) {
+			if(!(entry.getValue() instanceof BeanPropertyBindingResult)) {
+				saveError(request, entry.getValue(), errors);
+			}
+		}
+	}
+	
+	private void saveError(HttpServletRequest request,  Object requestJson, Map<String, String> errors) {
+		String operationKey = String.format(OPERATION_KEY_FORMAT, request.getMethod(), request.getServletPath());
+		String url = UrlUtil.getFullUrl(request);
+		logAuditCustomerService.saveBadRequest(url, operationKey, requestJson, errors);
+	}
+	
 }

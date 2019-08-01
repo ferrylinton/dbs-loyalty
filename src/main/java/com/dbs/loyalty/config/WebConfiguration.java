@@ -69,12 +69,12 @@ public class WebConfiguration implements WebMvcConfigurer{
 	    return arrayHttpMessageConverter;
 	}
 	
-	@Bean
-	public FilterRegistrationBean<LogRequestFilter> loggingFilter(LogRequestFilter logRequestFilter){
-	    FilterRegistrationBean<LogRequestFilter> registrationBean = new FilterRegistrationBean<>();
-	    registrationBean.setFilter(logRequestFilter);
-	    return registrationBean;    
-	}
+//	@Bean
+//	public FilterRegistrationBean<LogRequestFilter> loggingFilter(LogRequestFilter logRequestFilter){
+//	    FilterRegistrationBean<LogRequestFilter> registrationBean = new FilterRegistrationBean<>();
+//	    registrationBean.setFilter(logRequestFilter);
+//	    return registrationBean;    
+//	}
 	 
 	private List<MediaType> getSupportedMediaTypes() {
 	    List<MediaType> list = new ArrayList<MediaType>();

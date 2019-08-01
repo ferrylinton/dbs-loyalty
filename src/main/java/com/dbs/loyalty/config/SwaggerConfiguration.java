@@ -99,19 +99,21 @@ public class SwaggerConfiguration {
 	            		typeResolver.resolve(UnauthorizedResponse.class),
 	            		typeResolver.resolve(ErrorDataApi.class))
 	            .tags(
-	            	new Tag(SwaggerConstant.AUTHENTICATION, Constant.EMPTY, 0),
-	            	new Tag(SwaggerConstant.CUSTOMER, Constant.EMPTY, 1),
-	            	new Tag(SwaggerConstant.PROMO_CATEGORY, Constant.EMPTY, 2),
-	            	new Tag(SwaggerConstant.PROMO, Constant.EMPTY, 3),
-	            	new Tag(SwaggerConstant.EVENT, Constant.EMPTY, 4),
-	            	new Tag(SwaggerConstant.FEEDBACK, Constant.EMPTY, 5),
-	            	new Tag(SwaggerConstant.LOVED_ONE, Constant.EMPTY, 6),
-	            	new Tag(SwaggerConstant.REWARD, Constant.EMPTY, 7),
-	            	new Tag(SwaggerConstant.AIRPORT_ASSISTANCE, Constant.EMPTY, 8),
-	            	new Tag(SwaggerConstant.WELLNESS, Constant.EMPTY, 9),
-	            	new Tag(SwaggerConstant.PRODUCT, Constant.EMPTY, 10),
-	            	new Tag(SwaggerConstant.ORDER, Constant.EMPTY, 11),
-	            	new Tag(SwaggerConstant.VERIFICATION_TOKEN, Constant.EMPTY, 12)
+	            	new Tag(SwaggerConstant.ADDRESS, Constant.EMPTY, 1),
+	            	new Tag(SwaggerConstant.AIRPORT_ASSISTANCE, Constant.EMPTY, 2),
+	            	new Tag(SwaggerConstant.AUTHENTICATION, Constant.EMPTY, 3),
+	            	new Tag(SwaggerConstant.CUSTOMER, Constant.EMPTY, 4),
+	            	new Tag(SwaggerConstant.EVENT, Constant.EMPTY, 5),
+	            	new Tag(SwaggerConstant.FEEDBACK, Constant.EMPTY, 6),
+	            	new Tag(SwaggerConstant.LOVED_ONE, Constant.EMPTY, 7),
+	            	new Tag(SwaggerConstant.ORDER, Constant.EMPTY, 8),
+	            	new Tag(SwaggerConstant.PRODUCT, Constant.EMPTY, 9),
+	            	new Tag(SwaggerConstant.PROMO, Constant.EMPTY, 10),
+	            	new Tag(SwaggerConstant.PROMO_CATEGORY, Constant.EMPTY, 11),
+	            	new Tag(SwaggerConstant.REWARD, Constant.EMPTY, 12),
+	            	new Tag(SwaggerConstant.TADA, Constant.EMPTY, 13),
+	            	new Tag(SwaggerConstant.VERIFICATION_TOKEN, Constant.EMPTY, 14),
+	            	new Tag(SwaggerConstant.WELLNESS, Constant.EMPTY, 15)
 	            )
 				.select()
 				.apis(RequestHandlerSelectors.basePackage("com.dbs.loyalty.web.controller.rest"))

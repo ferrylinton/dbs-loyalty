@@ -27,13 +27,13 @@ import com.dbs.loyalty.service.AddressService;
 import com.dbs.loyalty.service.CityService;
 import com.dbs.loyalty.service.CustomerService;
 import com.dbs.loyalty.service.dto.AddressDto;
-import com.dbs.loyalty.service.dto.CountryDto;
 import com.dbs.loyalty.service.mapper.AddressMapper;
 import com.dbs.loyalty.util.SecurityUtil;
 import com.dbs.loyalty.web.validator.rest.AddressDtoValidator;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
@@ -73,7 +73,7 @@ public class AddressRestController {
     		value=GET_ADDRESSES, 
     		produces="application/json", 
     		authorizations={@Authorization(value="JWT")})
-    @ApiResponses(value = { @ApiResponse(code=200, message="OK", response=CountryDto.class, responseContainer="List")})
+    @ApiResponses(value = { @ApiResponse(code=200, message="OK", response=AddressDto.class, responseContainer="List")})
     @EnableLogAuditCustomer(operation=GET_ADDRESSES)
     @GetMapping
     public List<AddressDto> getAddresses(HttpServletRequest request,HttpServletResponse response) {
@@ -94,6 +94,7 @@ public class AddressRestController {
     @EnableLogAuditCustomer(operation=ADD_ADDRESS)
     @PostMapping
     public AddressDto save(
+    		@ApiParam(name = "Address", value = "Customer's address data") 
     		@Valid @RequestBody AddressDto addressDto, 
     		HttpServletRequest request,
     		HttpServletResponse response){

@@ -24,7 +24,7 @@ import lombok.Setter;
 @Getter
 public class ErrorDataApi {
 	
-	@ApiModelProperty(value = "Request Url", example = "http://0:0:0:0:0:0:0:1:8181/loyalty/api/airportsxxx", position = 0)
+	@ApiModelProperty(value = "Request Url", example = "http://localhost:8181/loyalty/api/airportsxxx", position = 0)
 	private String url;
 	
 	@ApiModelProperty(value = "Request Status", example = "404", position = 1)

@@ -23,6 +23,7 @@ import com.dbs.loyalty.web.validator.rest.PriviledgeOrderValidator;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Authorization;
@@ -55,6 +56,7 @@ public class PriviledgeOrderRestController {
 	@EnableLogAuditCustomer(operation=CREATE_PRIVILEDGE_ORDER)
 	@PostMapping
     public PriviledgeOrder createOrder(
+    		@ApiParam(name = "PriviledgeOrderData", value = "PriviledgeOrderData") 
     		@Valid @RequestBody PriviledgeOrder priviledgeOrder,
     		HttpServletRequest request, 
     		HttpServletResponse response) throws BadRequestException{
