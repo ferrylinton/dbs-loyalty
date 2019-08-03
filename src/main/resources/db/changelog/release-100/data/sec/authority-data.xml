@@ -18,23 +18,59 @@
 	<property name="PROMO_CK" value="1TTQ3Krpv67mXgXSVQMxta" />
 	<property name="EVENT_MK" value="5pCE5or9qYpE8MjCmEoE1T" />
 	<property name="EVENT_CK" value="20z68J3645AKPfPZikxWjr" />
-	<property name="AIRPORT_ASSISTANCE" value="7EkUrNoXxryCvNu5QVjHDT" />
-	<property name="WELLNESS" value="7SOgeukvTpvHkBFpspq3z6" />
-	<property name="LOVED_ONE" value="Z1oH73CbzVYyRSbDuE4s0" />
-	<property name="REWARD" value="58RmYQyduqZ0SBK3VvHElI" />
-	<property name="TRANSACTION" value="4UyI3EesvTpBE7HxAz0eBV" />
-	<property name="SETTING" value="390Vrwiwr2CvsX3h1eZYPc" />
+	<property name="PRODUCT_MK" value="1AzBIstrkm26CXVxp0bm8l" />
+	<property name="PRODUCT_CK" value="1hVq3CtIpRpLXT7P1Bs4tg" />
+	<property name="AIRPORT_MK" value="38LaNSQDQtJBaY8RW426Ob" />
+	<property name="AIRPORT_CK" value="1G7KrFsdaXotddbymcaqS1" />
+	<property name="HEALTH_PACKAGE_MK" value="3TxYYdsfgDf9H66l99dE3" />
+	<property name="HEALTH_PACKAGE_CK" value="40aQww5qz8c7fodEIrX2rR" />
+	<property name="MEDICAL_PROVIDER_MK" value="3wtWGc1ILgqU9nf6uZRjU" />
+	<property name="MEDICAL_PROVIDER_CK" value="7Z0pGaAaPaYXtUSu7vybJ7" />
+	<property name="MEDICAL_PROVIDER_CITY_MK" value="6uNUQovxQKxaQYaaDIshMW" />
+	<property name="MEDICAL_PROVIDER_CITY_CK" value="1xlCVdOVzgf4HlrpHAKZga" />
+	<property name="MEDICAL_PROVIDER_BRANCH_MK" value="6rIcyGJy0O32dM3eKxK9O0" />
+	<property name="MEDICAL_PROVIDER_BRANCH_CK" value="2BIP4LvFoDjGp5xPP49ilp" />
+	<property name="AIRPORT_ASSISTANCE_MK" value="3qyfT7rW4pwiwhHR21s9Bl" />
+	<property name="AIRPORT_ASSISTANCE_CK" value="rPEYKt14FoRFl1ZfQMmNc" />
+	<property name="ARRIVAL_MK" value="7EkUrNoXxryCvNu5QVjHDT" />
+	<property name="ARRIVAL_CK" value="31iLyJ43ZLzp69DbTtr3OP" />
+	<property name="DEPARTURE_CK" value="7dmdIbDCHJ7StHQkSqCZpq" />
+	<property name="DEPARTURE_MK" value="6A7VWUlTXahzVrgwhRU3HN" />
+	<property name="WELLNESS_MK" value="35tnVlZHRaa5vNM5Lxi130" />
+	<property name="WELLNESS_CK" value="16O0NO3VkpBefa201xaQJT" />
+	<property name="APPOINTMENT_CK" value="7SOgeukvTpvHkBFpspq3z6" />
+	<property name="APPOINTMENT_MK" value="377yyBBPa7K8nyyWnHEI0N" />
+	<property name="LOVED_ONE_MK" value="Z1oH73CbzVYyRSbDuE4s0" />
+	<property name="LOVED_ONE_CK" value="3MLfTrMYGjgl7x8qESfXyn" />
+	<property name="REWARD_MK" value="58RmYQyduqZ0SBK3VvHElI" />
+	<property name="REWARD_CK" value="5Q208Fski2TgcRizvmaVc3" />
+	<property name="ORDER_MK" value="4UyI3EesvTpBE7HxAz0eBV" />
+	<property name="ORDER_CK" value="14i9Uh50IUL8OBzCbgS3Ip" />
+	<property name="SETTING_CK" value="390Vrwiwr2CvsX3h1eZYPc" />
+	<property name="SETTING_MK" value="6F2AG3tjtkdSqK5WzggcEQ" />
+	<property name="COUNTRY_CK" value="11X3FZjzfatmtRpMnNR4Eh" />
+	<property name="COUNTRY_MK" value="5fv0RcdOfWC0h3YOU3NxjQ" />
 	
 	<changeSet author="FLH" id="authority-data-1">
 	
 		<insert tableName="sec_authority">
-            <column name="id" value="${TRANSACTION}"/>
-            <column name="name" value="TRANSACTION"/>
+            <column name="id" value="${ORDER_MK}"/>
+            <column name="name" value="ORDER_MK"/>
         </insert>
         
         <insert tableName="sec_authority">
-            <column name="id" value="${SETTING}"/>
-            <column name="name" value="SETTING"/>
+            <column name="id" value="${ORDER_CK}"/>
+            <column name="name" value="ORDER_CK"/>
+        </insert>
+        
+        <insert tableName="sec_authority">
+            <column name="id" value="${SETTING_MK}"/>
+            <column name="name" value="SETTING_MK"/>
+        </insert>
+        
+        <insert tableName="sec_authority">
+            <column name="id" value="${SETTING_CK}"/>
+            <column name="name" value="SETTING_CK"/>
         </insert>
         
 		<insert tableName="sec_authority">
@@ -103,23 +139,143 @@
         </insert>
 
         <insert tableName="sec_authority">
-            <column name="id" value="${AIRPORT_ASSISTANCE}"/>
-            <column name="name" value="AIRPORT_ASSISTANCE"/>
+            <column name="id" value="${AIRPORT_ASSISTANCE_MK}"/>
+            <column name="name" value="AIRPORT_ASSISTANCE_MK"/>
+        </insert>
+        
+        <insert tableName="sec_authority">
+            <column name="id" value="${AIRPORT_ASSISTANCE_CK}"/>
+            <column name="name" value="AIRPORT_ASSISTANCE_CK"/>
+        </insert>
+        
+        <insert tableName="sec_authority">
+            <column name="id" value="${ARRIVAL_MK}"/>
+            <column name="name" value="ARRIVAL_MK"/>
+        </insert>
+        
+        <insert tableName="sec_authority">
+            <column name="id" value="${ARRIVAL_CK}"/>
+            <column name="name" value="ARRIVAL_CK"/>
+        </insert>
+        
+        <insert tableName="sec_authority">
+            <column name="id" value="${DEPARTURE_MK}"/>
+            <column name="name" value="DEPARTURE_MK"/>
+        </insert>
+        
+        <insert tableName="sec_authority">
+            <column name="id" value="${DEPARTURE_CK}"/>
+            <column name="name" value="DEPARTURE_CK"/>
         </insert>
 
         <insert tableName="sec_authority">
-            <column name="id" value="${WELLNESS}"/>
-            <column name="name" value="WELLNESS"/>
+            <column name="id" value="${WELLNESS_MK}"/>
+            <column name="name" value="WELLNESS_MK"/>
         </insert>
         
         <insert tableName="sec_authority">
-            <column name="id" value="${LOVED_ONE}"/>
-            <column name="name" value="LOVED_ONE"/>
+            <column name="id" value="${WELLNESS_CK}"/>
+            <column name="name" value="WELLNESS_CK"/>
         </insert>
         
         <insert tableName="sec_authority">
-            <column name="id" value="${REWARD}"/>
-            <column name="name" value="REWARD"/>
+            <column name="id" value="${APPOINTMENT_MK}"/>
+            <column name="name" value="APPOINTMENT_MK"/>
+        </insert>
+        
+        <insert tableName="sec_authority">
+            <column name="id" value="${APPOINTMENT_CK}"/>
+            <column name="name" value="APPOINTMENT_CK"/>
+        </insert>
+        
+        <insert tableName="sec_authority">
+            <column name="id" value="${LOVED_ONE_MK}"/>
+            <column name="name" value="LOVED_ONE_MK"/>
+        </insert>
+        
+        <insert tableName="sec_authority">
+            <column name="id" value="${LOVED_ONE_CK}"/>
+            <column name="name" value="LOVED_ONE_CK"/>
+        </insert>
+        
+        <insert tableName="sec_authority">
+            <column name="id" value="${REWARD_MK}"/>
+            <column name="name" value="REWARD_MK"/>
+        </insert>
+        
+        <insert tableName="sec_authority">
+            <column name="id" value="${REWARD_CK}"/>
+            <column name="name" value="REWARD_CK"/>
+        </insert>
+        
+        <insert tableName="sec_authority">
+            <column name="id" value="${PRODUCT_MK}"/>
+            <column name="name" value="PRODUCT_MK"/>
+        </insert>
+        
+        <insert tableName="sec_authority">
+            <column name="id" value="${PRODUCT_CK}"/>
+            <column name="name" value="PRODUCT_CK"/>
+        </insert>
+        
+        <insert tableName="sec_authority">
+            <column name="id" value="${AIRPORT_MK}"/>
+            <column name="name" value="AIRPORT_MK"/>
+        </insert>
+        
+        <insert tableName="sec_authority">
+            <column name="id" value="${AIRPORT_CK}"/>
+            <column name="name" value="AIRPORT_CK"/>
+        </insert>
+        
+        <insert tableName="sec_authority">
+            <column name="id" value="${COUNTRY_MK}"/>
+            <column name="name" value="COUNTRY_MK"/>
+        </insert>
+        
+        <insert tableName="sec_authority">
+            <column name="id" value="${COUNTRY_CK}"/>
+            <column name="name" value="COUNTRY_CK"/>
+        </insert>
+        
+        <insert tableName="sec_authority">
+            <column name="id" value="${HEALTH_PACKAGE_MK}"/>
+            <column name="name" value="HEALTH_PACKAGE_MK"/>
+        </insert>
+        
+        <insert tableName="sec_authority">
+            <column name="id" value="${HEALTH_PACKAGE_CK}"/>
+            <column name="name" value="HEALTH_PACKAGE_CK"/>
+        </insert>
+        
+        <insert tableName="sec_authority">
+            <column name="id" value="${MEDICAL_PROVIDER_MK}"/>
+            <column name="name" value="MEDICAL_PROVIDER_MK"/>
+        </insert>
+        
+        <insert tableName="sec_authority">
+            <column name="id" value="${MEDICAL_PROVIDER_CK}"/>
+            <column name="name" value="MEDICAL_PROVIDER_CK"/>
+        </insert>
+        
+        <insert tableName="sec_authority">
+            <column name="id" value="${MEDICAL_PROVIDER_CITY_MK}"/>
+            <column name="name" value="MEDICAL_PROVIDER_CITY_MK"/>
+        </insert>
+        
+        <insert tableName="sec_authority">
+            <column name="id" value="${MEDICAL_PROVIDER_CITY_CK}"/>
+            <column name="name" value="MEDICAL_PROVIDER_CITY_CK"/>
+        </insert>
+        
+        <insert tableName="sec_authority">
+            <column name="id" value="${MEDICAL_PROVIDER_BRANCH_MK}"/>
+            <column name="name" value="MEDICAL_PROVIDER_BRANCH_MK"/>
+        </insert>
+        
+        <insert tableName="sec_authority">
+            <column name="id" value="${MEDICAL_PROVIDER_BRANCH_CK}"/>
+            <column name="name" value="MEDICAL_PROVIDER_BRANCH_CK"/>
         </insert>
         
     </changeSet>

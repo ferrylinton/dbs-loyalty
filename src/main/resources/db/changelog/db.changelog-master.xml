@@ -68,7 +68,10 @@
     
     <include file="release-100/data/sec/user-system-data.xml" relativeToChangelogFile="true"/>
     <include file="release-100/data/sec/authority-data.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/data/sec/role-data.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/data/sec/role-admin-data.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/data/sec/role-maker-data.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/data/sec/role-checker-data.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/data/sec/role-airport-assistance-data.xml" relativeToChangelogFile="true"/>
     <include file="release-100/data/sec/user-data.xml" relativeToChangelogFile="true"/>
     
     <include file="release-100/data/mst/setting-data.xml" relativeToChangelogFile="true"/>

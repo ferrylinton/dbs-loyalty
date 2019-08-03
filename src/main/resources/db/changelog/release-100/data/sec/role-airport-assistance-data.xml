@@ -1,0 +1,35 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+	<property name="AirportAssistance" value="7cyB8fi6xDBHfDTppCagyC" />
+	
+    <changeSet author="FLH" id="role-airport-assistance-data-1">
+
+        <insert tableName="sec_role">
+            <column name="id" value="${AirportAssistance}"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="name" value="AirportAssistance"/>
+        </insert>
+        
+    </changeSet>
+    
+    <changeSet author="FLH" id="role-airport-assistance-data-2">
+
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${AirportAssistance}"/>
+            <column name="authority_id" value="${ARRIVAL_MK}"/>
+        </insert>
+        
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${AirportAssistance}"/>
+            <column name="authority_id" value="${DEPARTURE_MK}"/>
+        </insert>
+
+    </changeSet>
+    
+</databaseChangeLog>

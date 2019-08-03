@@ -1,0 +1,135 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+	<property name="Checker" value="3CYZnXHhxtJ3xvHzUJe6bh" />
+	
+    <changeSet author="FLH" id="role-checker-data-1">
+
+        <insert tableName="sec_role">
+            <column name="id" value="${Checker}"/>
+            <column name="created_by" value="system"/>
+            <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
+            <column name="name" value="Checker"/>
+        </insert>
+
+    </changeSet>
+    
+    <changeSet author="FLH" id="role-checker-data-2">
+		
+		<insert tableName="sec_role_authority">
+            <column name="role_id" value="${Checker}"/>
+            <column name="authority_id" value="${ROLE_CK}"/>
+        </insert>
+
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Checker}"/>
+            <column name="authority_id" value="${USER_CK}"/>
+        </insert>
+
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Checker}"/>
+            <column name="authority_id" value="${CUSTOMER_CK}"/>
+        </insert>
+
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Checker}"/>
+            <column name="authority_id" value="${PROMO_CATEGORY_CK}"/>
+        </insert>
+ 
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Checker}"/>
+            <column name="authority_id" value="${PROMO_CK}"/>
+        </insert>
+
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Checker}"/>
+            <column name="authority_id" value="${EVENT_CK}"/>
+        </insert>
+
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Checker}"/>
+            <column name="authority_id" value="${PRODUCT_CK}"/>
+        </insert>
+
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Checker}"/>
+            <column name="authority_id" value="${AIRPORT_CK}"/>
+        </insert>
+
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Checker}"/>
+            <column name="authority_id" value="${HEALTH_PACKAGE_CK}"/>
+        </insert>
+  
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Checker}"/>
+            <column name="authority_id" value="${MEDICAL_PROVIDER_CK}"/>
+        </insert>
+
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Checker}"/>
+            <column name="authority_id" value="${MEDICAL_PROVIDER_CITY_CK}"/>
+        </insert>
+
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Checker}"/>
+            <column name="authority_id" value="${MEDICAL_PROVIDER_BRANCH_CK}"/>
+        </insert>
+        
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Checker}"/>
+            <column name="authority_id" value="${AIRPORT_ASSISTANCE_CK}"/>
+        </insert>
+
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Checker}"/>
+            <column name="authority_id" value="${ARRIVAL_CK}"/>
+        </insert>
+
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Checker}"/>
+            <column name="authority_id" value="${DEPARTURE_CK}"/>
+        </insert>
+
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Checker}"/>
+            <column name="authority_id" value="${WELLNESS_CK}"/>
+        </insert>
+
+		<insert tableName="sec_role_authority">
+            <column name="role_id" value="${Checker}"/>
+            <column name="authority_id" value="${APPOINTMENT_CK}"/>
+        </insert>
+
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Checker}"/>
+            <column name="authority_id" value="${LOVED_ONE_CK}"/>
+        </insert>
+
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Checker}"/>
+            <column name="authority_id" value="${REWARD_CK}"/>
+        </insert>
+
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Checker}"/>
+            <column name="authority_id" value="${ORDER_CK}"/>
+        </insert>
+
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Checker}"/>
+            <column name="authority_id" value="${SETTING_CK}"/>
+        </insert>
+
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Checker}"/>
+            <column name="authority_id" value="${COUNTRY_CK}"/>
+        </insert>
+        
+    </changeSet>
+    
+</databaseChangeLog>
