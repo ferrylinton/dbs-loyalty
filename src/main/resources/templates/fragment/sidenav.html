@@ -32,7 +32,7 @@
             <li>
                 <span th:text="#{wellness}">WELLNESS</span>
                 <ul>
-                    <li th:if="${#authorization.expression('hasAnyAuthority(''WELLNESS'')')}">
+                    <li th:if="${#authorization.expression('hasAnyAuthority(''APPOINTMENT_MK'', ''APPOINTMENT_CK'')')}">
                         <a class="icon-medical" data-menu="appointment" th:href="@{/appointment}" th:text="#{appointment}">Appointment</a>
                     </li>
                 </ul>
@@ -40,15 +40,36 @@
             <li>
                 <span th:text="#{airportAssistance}">Airport Assistance</span>
                 <ul>
-                    <li th:if="${#authorization.expression('hasAnyAuthority(''AIRPORT_ASSISTANCE'')')}">
+                    <li th:if="${#authorization.expression('hasAnyAuthority(''DEPARTURE_MK'', ''DEPARTURE_CK'')')}">
                         <a class="icon-airport" data-menu="departure" th:href="@{/departure}" th:text="#{departure}">Departure</a>
                     </li>
-                    <li th:if="${#authorization.expression('hasAnyAuthority(''AIRPORT_ASSISTANCE'')')}">
+                    <li th:if="${#authorization.expression('hasAnyAuthority(''ARRIVAL_MK'', ''ARRIVAL_CK'')')}">
                         <a class="icon-airport" data-menu="arrival" th:href="@{/arrival}" th:text="#{arrival}">Arrival</a>
                     </li>
                 </ul>
             </li>
-            
+            <li>
+                <span th:text="#{product}">Product</span>
+                <ul>
+                    <li th:if="${#authorization.expression('hasAnyAuthority(''PRODUCT_MK'', ''PRODUCT_CK'')')}">
+                        <a class="icon-bookmark" data-menu="priviledgeproduct" th:href="@{/priviledgeproduct}" th:text="#{priviledge}">Priviledge</a>
+                    </li>
+                   <li th:if="${#authorization.expression('hasAnyAuthority(''PRODUCT_MK'', ''PRODUCT_CK'')')}">
+                        <a class="icon-bookmark" data-menu="trxproduct" th:href="@{/trxproduct}" th:text="#{bankingTransaction}">Banking Transaction</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <span th:text="#{order}">Order</span>
+                <ul>
+                    <li th:if="${#authorization.expression('hasAnyAuthority(''ORDER_MK'', ''ORDER_CK'')')}">
+                        <a class="icon-basket" data-menu="priviledgeorder" th:href="@{/priviledgeorder}" th:text="#{priviledge}">Priviledge</a>
+                    </li>
+                   <li th:if="${#authorization.expression('hasAnyAuthority(''ORDER_MK'', ''ORDER_CK'')')}">
+                        <a class="icon-basket" data-menu="trxorder" th:href="@{/trxorder}" th:text="#{bankingTransaction}">Banking Transaction</a>
+                    </li>
+                </ul>
+            </li>
             <li>
                 <span th:text="#{userManagement}">User Management</span>
                 <ul>
@@ -67,7 +88,7 @@
                         <a class="icon-history" data-menu="loglogin" th:href="@{/loglogin}" th:text="#{loglogin}">Log Login</a>
                     </li>
                     <li th:if="${#authorization.expression('hasAuthority(''LOG'')')}">
-                        <a class="icon-history" data-menu="logapi" th:href="@{/logapi}" th:text="#{logapi}">Log Api</a>
+                        <a class="icon-history" data-menu="logauditcustomer" th:href="@{/logauditcustomer}" th:text="#{logauditcustomer}">Log Audit Customer</a>
                     </li>
                 </ul>
             </li>

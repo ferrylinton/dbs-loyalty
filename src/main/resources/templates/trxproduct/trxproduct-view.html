@@ -1,0 +1,70 @@
+<!doctype html>
+<html 
+	th:with="isMaker=${#authorization.expression('hasAuthority(''PRODUCT_MK'')')}"
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	layout:decorate="~{layout/layout}">
+
+<head>
+    <title th:text="|#{bankingTransaction} - #{product}|">Banking Transaction - Product</title>
+</head>
+
+<body data-menu="trxproduct">
+	<nav aria-label="breadcrumb" layout:fragment="breadcrumb">
+		<ol class="breadcrumb">
+ 			<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{home}">Home</a></li>
+   			<li class="breadcrumb-item active" aria-current="page" th:text="|#{bankingTransaction} - #{product}|">Banking Transaction - Product</li>
+		</ol>
+	</nav>
+	<div layout:fragment="content">
+		<div th:replace="fragment/search.html :: content('/trxproduct', #{name}, false)"></div>
+   		<div class="table-responsive border border-top-0" th:if="${page.getTotalElements() > 0}">
+			<table class="table table-sm table-striped table-hover border-bottom" style="min-width: 400px;">
+				<thead>
+                	<tr th:with="ascending=${order.getDirection().name() == 'ASC'}">
+                   		<th style="width:40px"></th>
+                      	<th style="width:40px">#</th>
+                      	<th th:with="sort=|&sort=name,${ascending ? 'DESC' : 'ASC'}|">
+                     		<a th:href="@{|?page=${page.getNumber()}${params}${sort}|}" class="text-decoration-none">
+                           		<span th:text="#{name}">Name</span> <span th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></span>
+                      		</a>
+                     	</th>
+               		</tr>
+				</thead>
+				<tbody th:remove="all-but-first">
+					<tr th:each="trxproduct,row : ${page}">
+						<td class="p-0">
+							<div class="dropdown">
+								<button type="button" class="btn btn-default dropdown-toggle" id="dropdownMenuButton" data-boundary="window" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<span class="icon-cog"></span>
+								</button>
+								<div class="dropdown-menu py-0 shadow-sm" aria-labelledby="dropdownMenuButton">
+									<a class="dropdown-item pl-1" th:href="@{|/trxproduct/${trxproduct.id}/detail|}">
+										<span class="icon-eye"></span> <span th:text="#{detail}">Detail</span>
+                              		</a>
+                                	<th:block th:if="${isMaker && !trxproduct.pending}">
+                                    	<a class="dropdown-item pl-1" th:href="@{|/trxproduct/${trxproduct.id}|}">
+                                     		<span class="icon-edit"></span> <span th:text="#{edit}">Edit</span>
+                                     	</a>
+										<div class="dropdown-divider my-0"></div>
+										<button class="dropdown-item pl-1 text-danger" th:title="@{|/trxproduct/delete/${trxproduct.id}|}" data-toggle="modal" data-target="#delete-modal">
+											<span class="icon-trash"></span> <span th:text="#{delete}">Delete</span>
+										</button>
+									</th:block>
+								</div>
+							</div>
+						</td>
+						<td th:text="${row.count + (page.number * page.size)}">1</td>
+						<td th:text="${trxproduct.name}">Name</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+     	<div th:replace="fragment/not-found.html :: content"></div>
+		<div th:replace="fragment/pager.html :: content"></div>
+		<div th:replace="fragment/toast.html :: content"></div>
+		<div th:replace="fragment/delete-modal.html :: content"></div>
+	</div>
+</body>
+
+</html>

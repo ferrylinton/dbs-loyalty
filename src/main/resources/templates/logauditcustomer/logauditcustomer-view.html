@@ -5,20 +5,20 @@
 	layout:decorate="~{layout/layout}">
 
 <head>
-    <title th:text="#{logapi}">Log API</title>
+    <title th:text="#{logauditcustomer}">Log Audit Customer</title>
 </head>
 
-<body data-menu="logapi">
+<body data-menu="logauditcustomer">
 	<nav aria-label="breadcrumb" layout:fragment="breadcrumb">
      	<ol class="breadcrumb">
        		<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{home}">Home</a></li>
-         	<li class="breadcrumb-item active" aria-current="page" th:text="#{logapi}">Log API</li>
+         	<li class="breadcrumb-item active" aria-current="page" th:text="#{logauditcustomer}">Log API</li>
       	</ol>
 	</nav>
 	<div layout:fragment="content">
     	<div class="row no-gutters mb-3">
         	<div class="col-12 col-sm-12 col-md-10 col-lg-7 col-xl-6">
-             	<form th:action="@{/logapi}" method="get" autocomplete="off" >
+             	<form th:action="@{/logauditcustomer}" method="get" autocomplete="off" >
 					<div class="input-group mb-2">
 						<input type="text" class="form-control datetimepicker-input" id="sd" name="sd" th:title="${param.sd}" placeholder="Start Date" th:placeholder="#{startDate}" data-toggle="datetimepicker" data-target="#sd">
 		              	<input type="text" class="form-control datetimepicker-input" id="ed" name="ed" th:title="${param.ed}" placeholder="End Date" th:placeholder="#{endDate}" data-toggle="datetimepicker" data-target="#ed">
@@ -27,12 +27,12 @@
 		              	</div>
 					</div>
                   	<div class="input-group">
-                    	<input class="form-control" name="ky" maxlength="40" th:value="${param.ky}" th:placeholder="|#{username}, #{ip}, #{browser}|" />
+                    	<input class="form-control" name="ky" maxlength="40" th:value="${param.ky}" th:placeholder="|#{operation}, #{url}|" />
                       	<div class="input-group-append">
                        		<button class="btn btn-light border text-secondary" type="submit">
                              	<span class="icon-search"></span>
                            	</button>
-                          	<a class="btn btn-light border text-secondary" th:href="@{/logapi}">
+                          	<a class="btn btn-light border text-secondary" th:href="@{/logauditcustomer}">
                             	<span class="icon-arrows-cw"></span>
                           	</a>
                        	</div>
@@ -50,20 +50,18 @@
                             	<span th:text="#{date}">Date</span> <span th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></span>
                        		</a>
                        	</th>
-                      	<th th:text="#{status}">Status</th>
-                     	<th th:text="#{id}">Id</th>
-                     	<th th:text="#{requestURI}">Request URI</th>
-                     	<th th:text="#{method}">Method</th>
+                      	<th th:text="#{operation}">Operation</th>
+                     	<th th:text="#{url}">Url</th>
+                     	<th th:text="#{status}">Status</th>
                 	</tr>
              	</thead>
 	         	<tbody th:remove="all-but-first">
-	           		<tr th:each="logapi,row : ${page}">
+	           		<tr th:each="logauditcustomer,row : ${page}">
 	                 	<td class="text-center" th:text="${row.count + (page.number * page.size)}">1</td>
-	                  	<td><span th:data-date="${@dateService.jsDatetime()}" th:text="${logapi.createdDate}">2019-05-01T21:24:44Z</span></td>
-						<td th:text="${logapi.status}">200</td>
-						<td th:text="${logapi.id}">id</td>
-						<td th:text="${logapi.requestURI}">Request URI</td>
-						<td th:text="${logapi.method}">Method</td>
+	                  	<td><span th:data-date="${@dateService.jsDatetime()}" th:text="${logauditcustomer.createdDate}">2019-05-01T21:24:44Z</span></td>
+						<td th:text="${logauditcustomer.operation}">Authenticate</td>
+						<td th:text="${logauditcustomer.url}">Url</td>
+						<td><span th:class="${logauditcustomer.status == 'Succeed'} ? 'badge badge-success' : 'badge badge-danger'" th:text="#{${logauditcustomer.status}}">Succeed</span></td>
 	              	</tr>
 	          	</tbody>
 	   		</table>

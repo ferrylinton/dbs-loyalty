@@ -1,12 +1,16 @@
 package com.dbs.loyalty.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.dbs.loyalty.domain.PriviledgeProduct;
 import com.dbs.loyalty.repository.PriviledgeProductRepository;
+import com.dbs.loyalty.service.specification.PriviledgeProductSpec;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,6 +30,10 @@ public class PriviledgeProductService{
 	
 	public List<PriviledgeProduct> findAll(){
 		return priviledgeProductRepository.findAll();
+	}
+	
+	public Page<PriviledgeProduct> findAll(Map<String, String> params, Pageable pageable) {
+		return priviledgeProductRepository.findAll(new PriviledgeProductSpec(params), pageable);
 	}
 	
 }

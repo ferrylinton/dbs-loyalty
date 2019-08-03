@@ -66,6 +66,8 @@ public final class DomainConstant {
 	
 	public static final String URL					= "url";
 	
+	public static final String OPERATION			= "operation";
+	
 	public static final String PHONE				= "phone";
 
 	public static final String DESCRIPTION 			= "description";
@@ -81,6 +83,10 @@ public final class DomainConstant {
 	public static final String DEVICE_TYPE 			= "deviceType";
 	
 	public static final String COUNTRIES 			= "countries";
+	
+	public static final String PRIVILEDGE_PRODUCT	= "priviledgeproduct";
+	
+	public static final String TRX_PRODUCT			= "trxproduct";
 
 	private DomainConstant() {
 		// hide constructor

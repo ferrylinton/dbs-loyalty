@@ -14,35 +14,27 @@ import org.springframework.data.jpa.domain.Specification;
 
 import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.DomainConstant;
-import com.dbs.loyalty.domain.LogAuditCustomer;
+import com.dbs.loyalty.domain.TrxProduct;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class LogAuditCustomerSpec implements Specification<LogAuditCustomer>{
+public class TrxProductSpec implements Specification<TrxProduct>{
 
 	private static final long serialVersionUID = 1L;
 	
 	private final Map<String, String> params;
 	
 	@Override
-	public Predicate toPredicate(Root<LogAuditCustomer> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
+	public Predicate toPredicate(Root<TrxProduct> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
 		List<Predicate> predicates = new ArrayList<>();
 		
 		if(params.containsKey(Constant.KY_PARAM) && !Constant.EMPTY.equals(params.get(Constant.KY_PARAM))) {
 			String keyword = String.format(Constant.LIKE_FORMAT, params.get(Constant.KY_PARAM).trim().toLowerCase());
 			predicates.add(cb.or(
-					cb.like(cb.lower(root.get(DomainConstant.URL)), keyword),
-					cb.like(cb.lower(root.get(DomainConstant.OPERATION)), keyword)
+					cb.like(cb.lower(root.get(DomainConstant.NAME)), keyword),
+					cb.like(cb.lower(root.get(DomainConstant.DESCRIPTION)), keyword)
 			));
-		}
-		
-		if(params.containsKey(Constant.START_DATE_PARAM) && !params.get(Constant.START_DATE_PARAM).equals(Constant.EMPTY)) {
-			predicates.add(cb.greaterThanOrEqualTo(root.get(DomainConstant.CREATED_DATE), DateSpecification.getStartDate(params.get(Constant.START_DATE_PARAM))));
-		}
-		
-		if(params.containsKey(Constant.END_DATE_PARAM) && !params.get(Constant.END_DATE_PARAM).equals(Constant.EMPTY)) {
-			predicates.add(cb.lessThanOrEqualTo(root.get(DomainConstant.CREATED_DATE), DateSpecification.getEndDate(params.get(Constant.END_DATE_PARAM))));
 		}
 		
 		return cb.and(predicates.toArray(new Predicate[predicates.size()]));
