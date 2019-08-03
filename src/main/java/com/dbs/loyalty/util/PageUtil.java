@@ -29,6 +29,16 @@ public class PageUtil {
 		return order;
 	}
 	
+	public static Order getOrderDesc(Sort sort, String field) {
+		Order order = sort.getOrderFor(field);
+		
+		if(order == null) {
+			order = Order.desc(field).ignoreCase();
+		}
+		
+		return order;
+	}
+	
 	public static void setViewAttributes(Page<?> page, Order order, Map<String, String> params, Model model) {
 		model.addAttribute(Constant.PAGE, page);
 		model.addAttribute(Constant.ORDER, order);

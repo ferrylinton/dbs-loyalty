@@ -86,7 +86,11 @@ public final class DomainConstant {
 	
 	public static final String PRIVILEDGE_PRODUCT	= "priviledgeproduct";
 	
+	public static final String PRIVILEDGE_ORDER 	= "priviledgeorder";
+	
 	public static final String TRX_PRODUCT			= "trxproduct";
+	
+	public static final String TRX_ORDER			= "trxorder";
 
 	private DomainConstant() {
 		// hide constructor

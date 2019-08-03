@@ -1,8 +1,11 @@
 package com.dbs.loyalty.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +15,7 @@ import com.dbs.loyalty.domain.PriviledgeOrder;
 import com.dbs.loyalty.domain.Reward;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.repository.PriviledgeOrderRepository;
+import com.dbs.loyalty.service.specification.PriviledgeOrderSpec;
 import com.dbs.loyalty.util.SecurityUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -30,6 +34,10 @@ public class PriviledgeOrderService{
 
 	public Optional<PriviledgeOrder> findById(String id){
 		return priviledgeOrderRepository.findById(id);
+	}
+	
+	public Page<PriviledgeOrder> findAll(Map<String, String> params, Pageable pageable) {
+		return priviledgeOrderRepository.findAll(new PriviledgeOrderSpec(params), pageable);
 	}
 	
 	@Transactional
