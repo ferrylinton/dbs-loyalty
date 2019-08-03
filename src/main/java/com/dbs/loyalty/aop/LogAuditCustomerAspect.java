@@ -40,13 +40,30 @@ public class LogAuditCustomerAspect {
 	}
 	
 	@Around("@annotation(enableLogAuditCustomer) && execution(* *(@org.springframework.web.bind.annotation.PathVariable (*), ..)) && args(id, request, response)")
-	public Object logWithId(ProceedingJoinPoint joinPoint, EnableLogAuditCustomer enableLogAuditCustomer, String id, HttpServletRequest request, HttpServletResponse response) throws Throwable {
+	public Object logWithId(ProceedingJoinPoint joinPoint, EnableLogAuditCustomer enableLogAuditCustomer, Object id, HttpServletRequest request, HttpServletResponse response) throws Throwable {
 		String url = UrlUtil.getFullUrl(request);
 		String operation = enableLogAuditCustomer.operation();
 		
 		try {
 			Object result = joinPoint.proceed();
-			logAuditCustomerService.save(operation, url, id);
+			logAuditCustomerService.save(operation, url, String.valueOf(id));
+			return result;
+		} catch (Throwable throwable) {
+			log.error(throwable.getLocalizedMessage(), throwable);
+			logAuditCustomerService.saveError(operation, url, throwable.getLocalizedMessage(), response.getStatus());
+			throw throwable;
+		}
+	}
+	
+	@Around("@annotation(enableLogAuditCustomer) && execution(* *(@org.springframework.web.bind.annotation.PathVariable (*), ..)) && args(firstId, secondId, request, response)")
+	public Object logWithId(ProceedingJoinPoint joinPoint, EnableLogAuditCustomer enableLogAuditCustomer, Object firstId, Object secondId, HttpServletRequest request, HttpServletResponse response) throws Throwable {
+		String url = UrlUtil.getFullUrl(request);
+		String operation = enableLogAuditCustomer.operation();
+		
+		try {
+			Object result = joinPoint.proceed();
+			String requestText = firstId + "," + secondId;
+			logAuditCustomerService.save(operation, url, requestText);
 			return result;
 		} catch (Throwable throwable) {
 			log.error(throwable.getLocalizedMessage(), throwable);

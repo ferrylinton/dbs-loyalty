@@ -111,9 +111,9 @@ public class SwaggerConfiguration {
 	            	new Tag(SwaggerConstant.PROMO, Constant.EMPTY, 10),
 	            	new Tag(SwaggerConstant.PROMO_CATEGORY, Constant.EMPTY, 11),
 	            	new Tag(SwaggerConstant.REWARD, Constant.EMPTY, 12),
-	            	new Tag(SwaggerConstant.TADA, Constant.EMPTY, 13),
-	            	new Tag(SwaggerConstant.VERIFICATION_TOKEN, Constant.EMPTY, 14),
-	            	new Tag(SwaggerConstant.WELLNESS, Constant.EMPTY, 15)
+	            	new Tag(SwaggerConstant.VERIFICATION_TOKEN, Constant.EMPTY, 13),
+	            	new Tag(SwaggerConstant.WELLNESS, Constant.EMPTY, 14),
+	            	new Tag(SwaggerConstant.TADA, Constant.EMPTY, 15)
 	            )
 				.select()
 				.apis(RequestHandlerSelectors.basePackage("com.dbs.loyalty.web.controller.rest"))

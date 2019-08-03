@@ -50,9 +50,9 @@ application:
     card-number: 3671287772281932
     card-pin: 286812
   http:
-    connect-timeout: 30000
-    connection-request-timeout: 30000 
-    read-timeout: 30000
+    connect-timeout: 60000
+    connection-request-timeout: 60000 
+    read-timeout: 60000
     
 spring:
   datasource:

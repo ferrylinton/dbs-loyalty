@@ -22,6 +22,8 @@ public final class SwaggerConstant {
 	
 	public static final String PRODUCT				= "Product";
 	
+	public static final String TADA					= "TADA";
+	
 	public static final String REWARD 				= "Reward";
 	
 	public static final String CUSTOMER 			= "Customer";
@@ -31,8 +33,7 @@ public final class SwaggerConstant {
 	public static final String FEEDBACK 			= "Feedback";
 	
 	public static final String EVENT 				= "Event";
-	
-	public static final String TADA 				= "TADA";
+
 
 	private SwaggerConstant() {
 		// hide constructor

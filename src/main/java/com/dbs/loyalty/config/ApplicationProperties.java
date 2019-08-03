@@ -120,6 +120,10 @@ public class ApplicationProperties {
 		private String ordersByIdUrl = "https://staging-distribution-api.gift.id/v2/orders/{id}";
 		
 		private String countriesUrl = "https://staging-distribution-api.gift.id/v2/countries";
+		
+		private String provincesUrl = "%s/%d/provinces";
+		
+		private String citiesUrl = "%s/%d/provinces/%d/cities";
 
 	}
 	
