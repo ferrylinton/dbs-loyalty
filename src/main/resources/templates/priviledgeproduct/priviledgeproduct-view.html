@@ -29,6 +29,8 @@
                            		<span th:text="#{name}">Name</span> <span th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></span>
                       		</a>
                      	</th>
+                     	<th th:text="#{point}">Point</th>
+                     	<th th:text="#{description}">Description</th>
                		</tr>
 				</thead>
 				<tbody th:remove="all-but-first">
@@ -42,20 +44,13 @@
 									<a class="dropdown-item pl-1" th:href="@{|/priviledgeproduct/${priviledgeproduct.id}/detail|}">
 										<span class="icon-eye"></span> <span th:text="#{detail}">Detail</span>
                               		</a>
-                                	<th:block th:if="${isMaker && !priviledgeproduct.pending}">
-                                    	<a class="dropdown-item pl-1" th:href="@{|/priviledgeproduct/${priviledgeproduct.id}|}">
-                                     		<span class="icon-edit"></span> <span th:text="#{edit}">Edit</span>
-                                     	</a>
-										<div class="dropdown-divider my-0"></div>
-										<button class="dropdown-item pl-1 text-danger" th:title="@{|/priviledgeproduct/delete/${priviledgeproduct.id}|}" data-toggle="modal" data-target="#delete-modal">
-											<span class="icon-trash"></span> <span th:text="#{delete}">Delete</span>
-										</button>
-									</th:block>
 								</div>
 							</div>
 						</td>
 						<td th:text="${row.count + (page.number * page.size)}">1</td>
 						<td th:text="${priviledgeproduct.name}">Name</td>
+						<td th:text="${priviledgeproduct.point}">Point</td>
+						<td th:text="${priviledgeproduct.description}">Description</td>
 					</tr>
 				</tbody>
 			</table>

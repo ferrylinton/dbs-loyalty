@@ -32,6 +32,7 @@
                        	<th th:text="#{itemName}">Item Name</th>
                        	<th th:text="#{point}">Item Point</th>
                        	<th th:text="#{email}">Email</th>
+                       	<th th:text="#{customerName}">Customer Name</th>
                		</tr>
 				</thead>
 				<tbody th:remove="all-but-first">
@@ -45,15 +46,6 @@
 									<a class="dropdown-item pl-1" th:href="@{|/trxorder/${trxorder.id}/detail|}">
 										<span class="icon-eye"></span> <span th:text="#{detail}">Detail</span>
                               		</a>
-                                	<th:block th:if="${isMaker}">
-                                    	<a class="dropdown-item pl-1" th:href="@{|/trxorder/${trxorder.id}|}">
-                                     		<span class="icon-edit"></span> <span th:text="#{edit}">Edit</span>
-                                     	</a>
-										<div class="dropdown-divider my-0"></div>
-										<button class="dropdown-item pl-1 text-danger" th:title="@{|/trxorder/delete/${trxorder.id}|}" data-toggle="modal" data-target="#delete-modal">
-											<span class="icon-trash"></span> <span th:text="#{delete}">Delete</span>
-										</button>
-									</th:block>
 								</div>
 							</div>
 						</td>
@@ -62,6 +54,7 @@
 						<td th:text="${trxorder.itemName}">Item Name</td>
 						<td th:text="${trxorder.itemPoint}">Item Point</td>
 						<td th:text="${trxorder.customer.email}">Email</td>
+						<td th:text="|${trxorder.customer.firstName} ${trxorder.customer.lastName}|">Customer Name</td>
 					</tr>
 				</tbody>
 			</table>

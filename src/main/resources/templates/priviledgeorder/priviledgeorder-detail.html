@@ -5,45 +5,81 @@
 	layout:decorate="~{layout/layout}">
 
 <head>
-    <title th:text="#{role}">Role</title>
+    <title th:text="|#{priviledge} - #{order}|">Priviledge - Order</title>
 </head>
 
-<body data-menu="role">
+<body data-menu="priviledgeorder">
 	<nav aria-label="breadcrumb" layout:fragment="breadcrumb">
    		<ol class="breadcrumb">
       		<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{home}">Home</a></li>
-       		<li class="breadcrumb-item"><a th:href="@{/role}" th:text="#{role}">Role</a></li>
+       		<li class="breadcrumb-item"><a th:href="@{/priviledgeorder}" th:text="|#{priviledge} - #{order}|">Priviledge - Order</a></li>
           	<li class="breadcrumb-item active" aria-current="page" th:text="#{detail}">Detail</li>
    		</ol>
 	</nav>
 	<div layout:fragment="content">
 		<div th:replace="fragment/value-not-found.html :: content"></div>
-		<div class="table-responsive border border-top-0" th:if="${role}">
+		<div class="table-responsive border border-top-0" th:if="${priviledgeorder}">
       		<table class="table table-sm table-detail" style="min-width: 400px;">
        			<tbody>
             		<tr>
                 		<th th:text="#{id}">Id</th>
-                     	<td th:text="${role.id}">ZwOkjFmG</td>
+                     	<td th:text="${priviledgeorder.id}">ZwOkjFmG</td>
                		</tr>
                 	<tr>
                   		<th th:text="#{name}">Name</th>
-                   		<td th:text="${role.name}">Admin</td>
+                   		<td th:text="${priviledgeorder.itemName}">Item Name</td>
               		</tr>
-             		<tr>
-                  		<th th:text="#{authorities}">Authorities</th>
-                      	<td>
-                   			<ol th:remove="all-but-first">
-                         		<li th:each="authority : ${role.authorities}" th:text="${authority.name}">Name</li>
-                           		<li>Name</li>
-                         	</ol>
-                  		</td>
+              		<tr>
+                  		<th th:text="#{point}">Point</th>
+                   		<td th:text="${priviledgeorder.itemPoint * priviledgeorder.itemQuantity}">Item Point</td>
+              		</tr>
+              		<tr>
+                  		<th th:text="#{date}">Date</th>
+                   		<td><span th:data-date="${@dateService.jsDatetime()}" th:text="${priviledgeorder.createdDate}">2019-05-01T21:24:44Z</span></td>
+              		</tr>
+     			</tbody>
+     		</table>
+     	</div>
+     	<div class="table-responsive border border-top-0 mt-1" th:if="${priviledgeorder}">
+     		<table class="table table-sm table-detail" style="min-width: 400px;">
+       			<tbody>
+              		<tr>
+               			<th th:text="#{cif}">CIF</th>
+                    	<td th:text="${priviledgeorder.customer.cif}">0000001</td>
                		</tr>
-					<tr th:replace="fragment/audit-detail.html :: content(data=${role})"></tr>
+               		<tr>
+               			<th th:text="#{accountNo}">Account No</th>
+                    	<td th:text="${priviledgeorder.customer.accountNo}">0000001</td>
+               		</tr>
+         			<tr>
+                    	<th th:text="#{firstName}">First Name</th>
+                      	<td th:text="${priviledgeorder.customer.firstName}">Ferry</td>
+           			</tr>
+           			<tr>
+                    	<th th:text="#{lastName}">First Name</th>
+                      	<td th:text="${priviledgeorder.customer.lastName}">Hutapea</td>
+           			</tr>
+                  	<tr>
+                 		<th th:text="#{email}">Email</th>
+                     	<td th:text="${priviledgeorder.customer.email}">ferrylinton@gmail.com</td>
+                  	</tr>
+               		<tr>
+                   		<th th:text="#{customerType}">Customer Type</th>
+                     	<td th:text="${priviledgeorder.customer.customerType == T(com.dbs.loyalty.config.constant.CustomerTypeConstant).TPC_VALUE ? 'TPC' : 'TREASURE'}">TREASURE</td>
+                	</tr>
+               		<tr>
+                    	<th th:text="#{phone}">Phone</th>
+                     	<td th:text="${priviledgeorder.customer.phone}">1234567890</td>
+                	</tr>
+                  	<tr>
+                     	<th th:text="#{dob}">DOB</th>
+                     	<td th:text="${#temporals.format(priviledgeorder.customer.dob, @dateService.javaDate())}">01-02-1999</td>
+                  	</tr>
      			</tbody>
      		</table>
      	</div>
 		<div class="toolbar">
-    		<a class="btn btn-sm btn-secondary" th:href="@{/role}">
+    		<a class="btn btn-sm btn-secondary" th:href="@{/priviledgeorder}">
        			<span class="icon-left"></span> <span th:text="#{back}">Back</span>
      		</a>
 		</div>

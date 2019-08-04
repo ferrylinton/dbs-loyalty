@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.TrxProduct;
+import com.dbs.loyalty.service.SettingService;
 import com.dbs.loyalty.service.TrxProductService;
 import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.util.PageUtil;
@@ -40,6 +41,8 @@ public class TrxProductController {
 	private static final String SORT_BY 	= "name";
 	
 	private final TrxProductService trxProductService;
+	
+	private final SettingService settingService;
 
 	@PreAuthorize("hasAnyRole('PRODUCT_MK', 'PRODUCT_CK')")
 	@GetMapping
@@ -59,6 +62,8 @@ public class TrxProductController {
 			model.addAttribute(Constant.PREVIOUS, QueryStringUtil.page(order, page.getNumber() - 1));
 			model.addAttribute(Constant.NEXT, QueryStringUtil.page(order, page.getNumber() + 1));
 			model.addAttribute(Constant.PARAMS, QueryStringUtil.params(params));
+			model.addAttribute("CURRENCY", settingService.getCurrency());
+			model.addAttribute("POINT_TO_RUPIAH", settingService.getPointToRupiah());
 			return VIEW;
 		}
 	}
@@ -66,7 +71,9 @@ public class TrxProductController {
 	@PreAuthorize("hasAnyRole('PRODUCT_MK', 'PRODUCT_CK')")
 	@GetMapping("/{id}/detail")
 	public String viewTrxProductDetail(ModelMap model, @PathVariable String id){
-		getById(model, id);		
+		getById(model, id);
+		model.addAttribute("CURRENCY", settingService.getCurrency());
+		model.addAttribute("POINT_TO_RUPIAH", settingService.getPointToRupiah());
 		return DETAIL;
 	}
 
