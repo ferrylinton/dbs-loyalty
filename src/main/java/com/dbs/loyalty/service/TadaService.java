@@ -85,8 +85,8 @@ public class TadaService {
 		int orderPoints = getOrderPoints(tadaOrder);
 		
 		if(availablePoints > orderPoints) {
-			response = exchangePost(initOrder(tadaOrder), email);
-			rewardService.deduct(email, rewards, orderPoints);
+			response = exchangePost(prepare(tadaOrder), email);
+			//rewardService.deduct(email, rewards, orderPoints);
 			return response;
 		}else {
 			throw new BadRequestException(MessageConstant.INSUFFICIENT_POINTS);
@@ -108,29 +108,26 @@ public class TadaService {
 	}
 	
 	private ResponseEntity<String> exchangePost(TadaOrder tadaOrder, String email) throws RestClientException, URISyntaxException, IOException, BadRequestException {
-		HttpEntity<String> requestEntity = new HttpEntity<>(objectMapper.writeValueAsString(tadaOrder), HeaderUtil.getJsonHeaders());
-		String url = applicationProperties.getTada().getOrdersUrl();
-		ResponseEntity<String> response = oauth2RestTemplate.exchange(getURI(url, null), HttpMethod.POST, requestEntity, String.class);
+		System.out.println(objectMapper.writeValueAsString(tadaOrder));
+		//HttpEntity<String> requestEntity = new HttpEntity<>(objectMapper.writeValueAsString(tadaOrder), HeaderUtil.getJsonHeaders());
+		//String url = applicationProperties.getTada().getOrdersUrl();
+		//ResponseEntity<String> response = oauth2RestTemplate.exchange(getURI(url, null), HttpMethod.POST, requestEntity, String.class);
 		
-		tadaOrder.setResponse(response.getBody());
-		tadaOrder.setLastModifiedBy(email);
-		tadaOrder.setLastModifiedDate(Instant.now());
+		//tadaOrder.setResponse(response.getBody());
+		tadaOrder.setCreatedBy(email);
+		tadaOrder.setCreatedDate(Instant.now());
 		tadaOrderService.save(tadaOrder);
-		return response;
+		//return response;
+		return new ResponseEntity<>(String.format(RESULT_FORMAT, "test dummy"), HeaderUtil.getJsonHeaders(), HttpStatus.OK);
 	}
 	
-	private TadaOrder initOrder(TadaOrder tadaOrder) {
+	private TadaOrder prepare(TadaOrder tadaOrder) {
 		TadaPayment tadaPayment = new TadaPayment();
 		tadaPayment.setPaymentType(applicationProperties.getTadaPayment().getType());
 		tadaPayment.setPaymentWalletType(applicationProperties.getTadaPayment().getWalletType());
 		tadaPayment.setCardNumber(applicationProperties.getTadaPayment().getCardNumber());
 		tadaPayment.setCardPin(applicationProperties.getTadaPayment().getCardPin());
 		tadaOrder.setTadaPayment(tadaPayment);
-		
-		for(TadaItem tadaItem : tadaOrder.getTadaItems()) {
-			tadaItem.setPrice(null);
-		}
-		
 		tadaOrder.setOrderReference(tadaOrderService.generate());
 		return tadaOrder;
 	}

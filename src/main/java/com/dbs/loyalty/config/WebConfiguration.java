@@ -49,7 +49,7 @@ public class WebConfiguration implements WebMvcConfigurer{
 	@Bean("localeResolver")
 	public LocaleResolver localeResolver() {
 		CookieLocaleResolver resolver = new CookieLocaleResolver();
-		resolver.setDefaultLocale(new Locale("in"));
+		resolver.setDefaultLocale(new Locale("en"));
 		return resolver;
 	}
 	

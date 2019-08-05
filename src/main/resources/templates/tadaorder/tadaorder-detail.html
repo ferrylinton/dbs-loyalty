@@ -1,0 +1,85 @@
+<!doctype html>
+<html
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	layout:decorate="~{layout/layout}">
+
+<head>
+    <title th:text="|#{gift} - #{order}|">Gift - Order</title>
+</head>
+
+<body data-menu="tadaorder">
+	<nav aria-label="breadcrumb" layout:fragment="breadcrumb">
+   		<ol class="breadcrumb">
+      		<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{home}">Home</a></li>
+       		<li class="breadcrumb-item"><a th:href="@{/tadaorder}" th:text="|#{gift} - #{order}|">Gift - Order</a></li>
+          	<li class="breadcrumb-item active" aria-current="page" th:text="#{detail}">Detail</li>
+   		</ol>
+	</nav>
+	<div layout:fragment="content">
+		<div th:replace="fragment/value-not-found.html :: content"></div>
+		<div class="table-responsive border border-top-0" th:if="${tadaorder}">
+      		<table class="table table-sm table-detail" style="min-width: 400px;">
+       			<tbody>
+            		<tr>
+                		<th th:text="#{id}">Id</th>
+                     	<td th:text="${tadaorder.id}">ZwOkjFmG</td>
+               		</tr>
+                	<tr>
+                  		<th th:text="#{orderReference}">Order Reference</th>
+                   		<td th:text="${tadaorder.orderReference}">Order Reference</td>
+              		</tr>
+              		<tr>
+                  		<th th:text="#{date}">Date</th>
+                   		<td><span th:data-date="${@dateService.jsDatetime()}" th:text="${tadaorder.createdDate}">2019-05-01T21:24:44Z</span></td>
+              		</tr>
+     			</tbody>
+     		</table>
+     	</div>
+     	<div class="table-responsive border border-top-0 mt-1" th:if="${tadaorder}">
+     		<table class="table table-sm table-detail" style="min-width: 400px;">
+       			<tbody>
+              		<tr>
+               			<th th:text="#{id}">Id</th>
+                    	<td th:text="${tadaorder.tadaRecipient.id}">0000001</td>
+               		</tr>
+         			<tr>
+                    	<th th:text="#{firstName}">First Name</th>
+                      	<td th:text="${tadaorder.tadaRecipient.firstName}">Ferry</td>
+           			</tr>
+           			<tr>
+                    	<th th:text="#{lastName}">First Name</th>
+                      	<td th:text="${tadaorder.tadaRecipient.lastName}">Hutapea</td>
+           			</tr>
+                  	<tr>
+                 		<th th:text="#{email}">Email</th>
+                     	<td th:text="${tadaorder.tadaRecipient.email}">ferrylinton@gmail.com</td>
+                  	</tr>
+               		<tr>
+                    	<th th:text="#{phone}">Phone</th>
+                     	<td th:text="${tadaorder.tadaRecipient.phone}">1234567890</td>
+                	</tr>
+                	<tr>
+                    	<th th:text="#{cityId}">City Id</th>
+                     	<td th:text="${tadaorder.tadaRecipient.cityId}">1</td>
+                	</tr>
+                	<tr>
+                    	<th th:text="#{address}">Address</th>
+                     	<td th:text="${tadaorder.tadaRecipient.address}">Address</td>
+                	</tr>
+                	<tr>
+                    	<th th:text="#{postalCode}">Postal Code</th>
+                     	<td th:text="${tadaorder.tadaRecipient.postalCode}">Postal Code</td>
+                	</tr>
+     			</tbody>
+     		</table>
+     	</div>
+		<div class="toolbar">
+    		<a class="btn btn-sm btn-secondary" th:href="@{/tadaorder}">
+       			<span class="icon-left"></span> <span th:text="#{back}">Back</span>
+     		</a>
+		</div>
+	</div>
+</body>
+
+</html>

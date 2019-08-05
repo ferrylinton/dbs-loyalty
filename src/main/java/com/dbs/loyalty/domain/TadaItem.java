@@ -13,6 +13,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import com.dbs.loyalty.config.constant.DomainConstant;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -44,6 +46,7 @@ public class TadaItem implements Serializable {
     private String variantId;
 
 	@NotNull
+	@JsonProperty( value = "price", access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "price")
     private Integer price;
     
@@ -62,6 +65,7 @@ public class TadaItem implements Serializable {
     @Column(name = "custom_price")
     private Integer customPrice;
     
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tada_order_id", foreignKey = @ForeignKey(name = "trx_tada_item_fk"))
     private TadaOrder tadaOrder;

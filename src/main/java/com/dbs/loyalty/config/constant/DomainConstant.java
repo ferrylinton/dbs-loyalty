@@ -91,6 +91,8 @@ public final class DomainConstant {
 	public static final String TRX_PRODUCT			= "trxproduct";
 	
 	public static final String TRX_ORDER			= "trxorder";
+	
+	public static final String TADA_ORDER			= "tadaorder";
 
 	private DomainConstant() {
 		// hide constructor

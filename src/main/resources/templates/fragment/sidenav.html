@@ -62,12 +62,15 @@
             <li>
                 <span th:text="#{order}">Order</span>
                 <ul>
+                	<li th:if="${#authorization.expression('hasAnyAuthority(''ORDER_MK'', ''ORDER_CK'')')}">
+                        <a class="icon-basket" data-menu="tadaorder" th:href="@{/tadaorder}" th:text="#{gift}">Gift</a>
+                   	</li>
                     <li th:if="${#authorization.expression('hasAnyAuthority(''ORDER_MK'', ''ORDER_CK'')')}">
                         <a class="icon-basket" data-menu="priviledgeorder" th:href="@{/priviledgeorder}" th:text="#{priviledge}">Priviledge</a>
                     </li>
-                   <li th:if="${#authorization.expression('hasAnyAuthority(''ORDER_MK'', ''ORDER_CK'')')}">
+                   	<li th:if="${#authorization.expression('hasAnyAuthority(''ORDER_MK'', ''ORDER_CK'')')}">
                         <a class="icon-basket" data-menu="trxorder" th:href="@{/trxorder}" th:text="#{bankingTransaction}">Banking Transaction</a>
-                    </li>
+                   	</li>
                 </ul>
             </li>
             <li>

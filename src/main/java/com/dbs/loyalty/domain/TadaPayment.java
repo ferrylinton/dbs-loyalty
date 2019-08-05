@@ -16,6 +16,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.dbs.loyalty.config.constant.DomainConstant;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.EqualsAndHashCode;
@@ -70,6 +71,7 @@ public class TadaPayment implements Serializable {
     @Transient
     private String cardPin;
     
+    @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tada_order_id", foreignKey = @ForeignKey(name = "trx_tada_payment_fk"))
     private TadaOrder tadaOrder;

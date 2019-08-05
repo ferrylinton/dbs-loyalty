@@ -68,7 +68,7 @@ public class TadaOrder extends AbstractAuditing implements Serializable {
 	@JsonProperty("items")
 	@Valid
 	@NotEmpty
-	@OneToMany(mappedBy = "tadaOrder", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "tadaOrder", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<TadaItem> tadaItems;
 
 	@Lob
