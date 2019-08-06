@@ -4,11 +4,12 @@ import java.util.List;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
 import com.dbs.loyalty.domain.Country;
 
-public interface CountryRepository extends JpaRepository<Country, Integer>{
+public interface CountryRepository extends JpaRepository<Country, Integer>, JpaSpecificationExecutor<Country>{
 	
 	List<Country> findAll(Sort sort);
 	

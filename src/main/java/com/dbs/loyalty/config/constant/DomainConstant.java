@@ -88,6 +88,8 @@ public final class DomainConstant {
 	
 	public static final String COUNTRIES 			= "countries";
 	
+	public static final String COUNTRY 				= "country";
+	
 	public static final String PRIVILEDGE_PRODUCT	= "priviledgeproduct";
 
 	public static final String PRIVILEDGE_ORDER 	= "priviledgeorder";
@@ -101,6 +103,8 @@ public final class DomainConstant {
 	public static final String MEDICAL_PROVIDER		= "medicalProvider";
 	
 	public static final String MEDICAL_CITY 		= "medicalCity";
+	
+	public static final String AIRPORT		 		= "airport";
 	
 	public static final String MEDICAL_BRANCH 		= "medicalBranch";
 	

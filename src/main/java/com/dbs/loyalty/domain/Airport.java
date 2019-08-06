@@ -49,7 +49,7 @@ public class Airport extends AbstractTask implements Serializable {
 	@GeneratedValue(generator = DomainConstant.ID_GENERATOR)
 	private String id;
 
-	@Size(min = 2, max = 100, message = "{validation.size.name}")
+	@Size(min = 2, max = 100)
     @Column(name = "name", length = 100, nullable = false)
     private String name;
 	

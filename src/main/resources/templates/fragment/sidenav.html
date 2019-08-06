@@ -58,6 +58,9 @@
                     <li th:if="${#authorization.expression('hasAnyAuthority(''ARRIVAL_MK'', ''ARRIVAL_CK'')')}">
                         <a class="icon-airport" data-menu="arrival" th:href="@{/arrival}" th:text="#{arrival}">Arrival</a>
                     </li>
+                    <li th:if="${#authorization.expression('hasAnyAuthority(''AIRPORT_MK'', ''AIRPORT_CK'')')}">
+                        <a class="icon-airport" data-menu="airport" th:href="@{/airport}" th:text="#{airport}">Airport</a>
+                    </li>
                 </ul>
             </li>
             <li>
