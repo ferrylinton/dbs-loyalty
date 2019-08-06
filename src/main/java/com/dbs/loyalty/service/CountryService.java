@@ -74,6 +74,7 @@ public class CountryService {
 			List<Province> provinces = objectMapper.readValue(objectMapper.writeValueAsString(response.getBody().get("data")), new TypeReference<List<Province>>(){});
 			
 			for(Province province : provinces) {
+				province.setCountry(country);
 				save(country, province);
 			}
 		} catch (IOException e) {
@@ -87,6 +88,7 @@ public class CountryService {
 			List<City> cities = objectMapper.readValue(objectMapper.writeValueAsString(response.getBody().get("data")), new TypeReference<List<City>>(){});
 			
 			for(City city : cities) {
+				city.setProvince(province);
 				save(city);
 			}
 		} catch (IOException e) {

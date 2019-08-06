@@ -9,7 +9,7 @@
 </head>
 
 <body data-menu="customer">
-	<nav aria-label="breadcrumb">
+	<nav aria-label="breadcrumb" layout:fragment="breadcrumb">
   		<ol class="breadcrumb">
       		<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{home}">Home</a></li>
       		<li class="breadcrumb-item"><a th:href="@{/customer}" th:text="#{customer}">Customer</a></li>
@@ -73,6 +73,42 @@
             	</tbody>
      		</table>
 		</div>
+		<div class="table-responsive border border-top-0" th:each="address,row : ${customer.addresses}" th:if="${customer}">
+       		<table class="table table-sm table-detail">
+          		<tbody>
+             		<tr>
+               			<th th:text="#{id}">Id</th>
+                    	<td th:text="${address.id}">Id</td>
+               		</tr>
+               		<tr>
+               			<th th:text="#{label}">Label</th>
+                    	<td th:text="${address.label}">Primary</td>
+               		</tr>
+               		<tr>
+               			<th th:text="#{address}">Address</th>
+                    	<td th:text="${address.address}">Address</td>
+               		</tr>
+               		<tr>
+               			<th th:text="#{postalCode}">Postal Code</th>
+                    	<td th:text="${address.postalCode}">12345678</td>
+               		</tr>
+               		<tr>
+               			<th th:text="#{city}">City</th>
+                    	<td th:text="${address.city.name}">Jakarta Barat</td>
+               		</tr>
+               		<th:block th:if="${address.city.province}">
+	               		<tr>
+	               			<th th:text="#{province}">Province</th>
+	                    	<td th:text="${address.city.province.name}">DKI Jakarta</td>
+	               		</tr>
+	               		<tr th:if="${address.city.province.country}">
+	               			<th th:text="#{country}">Country</th>
+	                    	<td th:text="${address.city.province.country.name}">Indonesia</td>
+	               		</tr>
+               		</th:block>
+               	</tbody>
+        	</table>
+        </div>
 		<div class="toolbar">
        		<a class="btn btn-sm btn-secondary" th:href="@{/customer}">
             	<span class="icon-left"></span> <span th:text="#{back}">Back</span>
