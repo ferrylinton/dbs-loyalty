@@ -7,7 +7,7 @@
 
 	<property name="Checker" value="3CYZnXHhxtJ3xvHzUJe6bh" />
 	
-    <changeSet author="FLH" id="role-checker-data-1">
+    <changeSet author="FLH" id="sec-role-checker-data-1">
 
         <insert tableName="sec_role">
             <column name="id" value="${Checker}"/>
@@ -18,7 +18,7 @@
 
     </changeSet>
     
-    <changeSet author="FLH" id="role-checker-data-2">
+    <changeSet author="FLH" id="sec-role-checker-data-2">
 		
 		<insert tableName="sec_role_authority">
             <column name="role_id" value="${Checker}"/>
@@ -72,12 +72,12 @@
 
         <insert tableName="sec_role_authority">
             <column name="role_id" value="${Checker}"/>
-            <column name="authority_id" value="${MEDICAL_PROVIDER_CITY_CK}"/>
+            <column name="authority_id" value="${MEDICAL_CITY_CK}"/>
         </insert>
 
         <insert tableName="sec_role_authority">
             <column name="role_id" value="${Checker}"/>
-            <column name="authority_id" value="${MEDICAL_PROVIDER_BRANCH_CK}"/>
+            <column name="authority_id" value="${MEDICAL_BRANCH_CK}"/>
         </insert>
         
         <insert tableName="sec_role_authority">

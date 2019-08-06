@@ -5,7 +5,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
     
-    <changeSet author="FLH" id="feedback-customer-schema-1">
+    <changeSet author="FLH" id="evt-feedback-customer-schema-1">
     
         <createTable tableName="evt_feedback_customer">
             <column name="customer_id" type="VARCHAR(22)">
@@ -21,15 +21,15 @@
         
     </changeSet>
     
-    <changeSet author="FLH" id="feedback-customer-schema-2">
+    <changeSet author="FLH" id="evt-feedback-customer-schema-2">
         <addPrimaryKey columnNames="customer_id, event_id" constraintName="evt_feedback_customer_pk" tableName="evt_feedback_customer"/>
     </changeSet>
     
-     <changeSet author="FLH" id="feedback-customer-schema-3">
+     <changeSet author="FLH" id="evt-feedback-customer-schema-3">
         <addForeignKeyConstraint baseColumnNames="event_id" baseTableName="evt_feedback_customer" constraintName="evt_feedback_customer_fk1" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="evt_event"/>
     </changeSet>
     
-    <changeSet author="FLH" id="feedback-customer-schema-4">
+    <changeSet author="FLH" id="evt-feedback-customer-schema-4">
         <addForeignKeyConstraint baseColumnNames="customer_id" baseTableName="evt_feedback_customer" constraintName="evt_feedback_customer_fk2" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="cst_customer"/>
     </changeSet>
     

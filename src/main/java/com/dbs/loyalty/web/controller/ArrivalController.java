@@ -41,7 +41,7 @@ public class ArrivalController {
 	
 	private final ArrivalService arrivalService;
 
-	@PreAuthorize("hasAnyRole('AIRPORT_ASSISTANCE')")
+	@PreAuthorize("hasAnyRole('ARRIVAL_MK', 'ARRIVAL_CK')")
 	@GetMapping
 	public String viewArrivals(
 			@ModelAttribute(Constant.TOAST) String toast, 
@@ -63,7 +63,7 @@ public class ArrivalController {
 		}
 	}
 	
-	@PreAuthorize("hasAnyRole('AIRPORT_ASSISTANCE')")
+	@PreAuthorize("hasAnyRole('ARRIVAL_MK', 'ARRIVAL_CK')")
 	@GetMapping("/{id}")
 	public String arrival(ModelMap model, @PathVariable String id){
 		Optional<Arrival> current = arrivalService.findById(id);

@@ -14,16 +14,16 @@
 
 	<!-- MEDICAL PROVIDER -->
 	
-    <changeSet author="FLH" id="medical-provider-data-1">
+    <changeSet author="FLH" id="md-medical-provider-data-1">
 
-        <insert tableName="med_medical_provider">
+        <insert tableName="md_medical_provider">
             <column name="id" value="${BIOTEST_INDONESIA}"/>
             <column name="name" value="BIOTEST INDONESIA"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
         </insert>
        
-		<insert tableName="med_medical_provider">
+		<insert tableName="md_medical_provider">
             <column name="id" value="${SINGAPORE_Hospital}"/>
             <column name="name" value="SINGAPORE Hospital"/>
             <column name="created_by" value="system"/>
@@ -34,9 +34,9 @@
     
     <!-- MEDICAL PROVIDER CITY -->
 	
-    <changeSet author="FLH" id="medical-provider-data-2">
+    <changeSet author="FLH" id="md-medical-provider-data-2">
 
-        <insert tableName="med_medical_provider_city">
+        <insert tableName="md_medical_city">
             <column name="id" value="${Jakarta}"/>
             <column name="name" value="Jakarta"/>
             <column name="medical_provider_id" value="${BIOTEST_INDONESIA}"/>
@@ -44,7 +44,7 @@
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
         </insert>
        
-		<insert tableName="med_medical_provider_city">
+		<insert tableName="md_medical_city">
             <column name="id" value="${Bandung}"/>
             <column name="name" value="Bandung"/>
             <column name="medical_provider_id" value="${BIOTEST_INDONESIA}"/>
@@ -52,7 +52,7 @@
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
         </insert>
         
-        <insert tableName="med_medical_provider_city">
+        <insert tableName="md_medical_city">
             <column name="id" value="${Surabaya}"/>
             <column name="name" value="Surabaya"/>
             <column name="medical_provider_id" value="${BIOTEST_INDONESIA}"/>
@@ -64,92 +64,92 @@
     
     <!-- MEDICAL PROVIDER BRANCH -->
 	
-    <changeSet author="FLH" id="medical-provider-data-3">
+    <changeSet author="FLH" id="md-medical-provider-data-3">
     
-    	<insert tableName="med_medical_provider_branch">
+    	<insert tableName="md_medical_branch">
             <column name="id" value="DckRIXf9Lkuufb4sgDxwO"/>
             <column name="address" value="Jl. Sumatra No. 48"/>
-            <column name="medical_provider_city_id" value="${Jakarta}"/>
+            <column name="medical_city_id" value="${Jakarta}"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
         </insert>
         
-        <insert tableName="med_medical_provider_branch">
+        <insert tableName="md_medical_branch">
             <column name="id" value="3OCOJ7tzGPXRX31D2sapn6"/>
             <column name="address" value="Jl. Pluit Sakti No. 25"/>
-            <column name="medical_provider_city_id" value="${Jakarta}"/>
+            <column name="medical_city_id" value="${Jakarta}"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
         </insert>
         
-        <insert tableName="med_medical_provider_branch">
+        <insert tableName="md_medical_branch">
             <column name="id" value="1FFdXb8RspOgqYSeUSa0cF"/>
             <column name="address" value="Jl. Wijaya I No. 28"/>
-            <column name="medical_provider_city_id" value="${Jakarta}"/>
+            <column name="medical_city_id" value="${Jakarta}"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
         </insert>
         
-        <insert tableName="med_medical_provider_branch">
+        <insert tableName="md_medical_branch">
             <column name="id" value="7UnoJYjYTtzVN4TzJMQxKI"/>
             <column name="address" value="Jl. Boulevard Raya No. A 03"/>
-            <column name="medical_provider_city_id" value="${Jakarta}"/>
+            <column name="medical_city_id" value="${Jakarta}"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
         </insert>
     
     </changeSet>
     
-    <changeSet author="FLH" id="medical-provider-data-4">
+    <changeSet author="FLH" id="md-medical-provider-data-4">
     
-    	<insert tableName="med_medical_provider_branch">
+    	<insert tableName="md_medical_branch">
             <column name="id" value="O4nacxmNRQc4aBVWNSeLW"/>
             <column name="address" value="Jl. Naripan No. 41"/>
-            <column name="medical_provider_city_id" value="${Bandung}"/>
+            <column name="medical_city_id" value="${Bandung}"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
         </insert>
         
-        <insert tableName="med_medical_provider_branch">
+        <insert tableName="md_medical_branch">
             <column name="id" value="4KHWx5dhKB4bz4nxdVfS6r"/>
             <column name="address" value="Jl. Buah Batu No. 24"/>
-            <column name="medical_provider_city_id" value="${Bandung}"/>
+            <column name="medical_city_id" value="${Bandung}"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
         </insert>
         
-        <insert tableName="med_medical_provider_branch">
+        <insert tableName="md_medical_branch">
             <column name="id" value="3tnoc0iFXHQ7zlPFM2w7wS"/>
             <column name="address" value="Jl. Kopo Bihbul No. 71"/>
-            <column name="medical_provider_city_id" value="${Bandung}"/>
+            <column name="medical_city_id" value="${Bandung}"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
         </insert>
 
     </changeSet>
     
-    <changeSet author="FLH" id="medical-provider-data-5">
+    <changeSet author="FLH" id="md-medical-provider-data-5">
     
-    	<insert tableName="med_medical_provider_branch">
+    	<insert tableName="md_medical_branch">
             <column name="id" value="7aAGrVTziIr50KZFFFS2rJ"/>
             <column name="address" value="Jl. RA Kartini No. 78"/>
-            <column name="medical_provider_city_id" value="${Surabaya}"/>
+            <column name="medical_city_id" value="${Surabaya}"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
         </insert>
         
-        <insert tableName="med_medical_provider_branch">
+        <insert tableName="md_medical_branch">
             <column name="id" value="1EwKJP0FhMGD9thWcrZ3NS"/>
             <column name="address" value="Jl. Kentajaya Indah No. 35F 304"/>
-            <column name="medical_provider_city_id" value="${Surabaya}"/>
+            <column name="medical_city_id" value="${Surabaya}"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
         </insert>
         
-        <insert tableName="med_medical_provider_branch">
+        <insert tableName="md_medical_branch">
             <column name="id" value="1hsVUXT1noncujAg6y42EQ"/>
             <column name="address" value="Jl. Bukit Darmo Boulevard"/>
-            <column name="medical_provider_city_id" value="${Surabaya}"/>
+            <column name="medical_city_id" value="${Surabaya}"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
         </insert>

@@ -8,9 +8,9 @@
 	<property name="Package1" value="6YugFxp0JiIaUzEI78R9Pw" />
 	<property name="Package2" value="2h1PLkO5AuIbiCSBOBLv6H" />
 	
-    <changeSet author="FLH" id="health-package-data-1">
+    <changeSet author="FLH" id="md-health-package-data-1">
     	
-    	<insert tableName="med_health_package">
+    	<insert tableName="md_health_package">
             <column name="id" value="${Package1}"/>
             <column name="name" value="Package 1"/>
             <column name="content" valueBlobFile="health-package.txt"/>
@@ -20,9 +20,9 @@
 
     </changeSet>
     
-    <changeSet author="FLH" id="health-package-data-2">
+    <changeSet author="FLH" id="md-health-package-data-2">
     	
-    	<insert tableName="med_health_package">
+    	<insert tableName="md_health_package">
             <column name="id" value="${Package2}"/>
             <column name="name" value="Package 2"/>
             <column name="content" valueBlobFile="health-package.txt"/>

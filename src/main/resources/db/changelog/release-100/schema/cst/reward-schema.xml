@@ -5,7 +5,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
     
-    <changeSet author="FLH" id="reward-schema-1">
+    <changeSet author="FLH" id="cst-reward-schema-1">
         <createTable tableName="cst_reward">
             <column name="id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
@@ -33,21 +33,21 @@
         </createTable>
     </changeSet>
     
-    <changeSet author="FLH" id="reward-schema-2">
+    <changeSet author="FLH" id="cst-reward-schema-2">
         <addPrimaryKey columnNames="id" constraintName="cst_reward_pk" tableName="cst_reward"/>
     </changeSet>
 
-    <changeSet author="FLH" id="reward-schema-4">
+    <changeSet author="FLH" id="cst-reward-schema-4">
         <addForeignKeyConstraint baseColumnNames="customer_id" baseTableName="cst_reward" constraintName="cst_reward_fk2" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="cst_customer"/>
     </changeSet>
     
-    <changeSet author="FLH" id="reward-schema-8">
+    <changeSet author="FLH" id="cst-reward-schema-8">
         <createIndex indexName="cst_reward_customer_id_idx" tableName="cst_reward">
             <column name="customer_id"/>
         </createIndex>
     </changeSet>
     
-    <changeSet author="FLH" id="reward-schema-9">
+    <changeSet author="FLH" id="cst-reward-schema-9">
         <createIndex indexName="cst_reward_expiry_date_idx" tableName="cst_reward">
             <column name="expiry_date"/>
         </createIndex>

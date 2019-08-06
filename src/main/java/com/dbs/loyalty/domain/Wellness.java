@@ -18,7 +18,7 @@ import lombok.Setter;
 @Getter
 @EqualsAndHashCode(of = { "id" }, callSuper = false)
 @Entity
-@Table(name = "med_wellness")
+@Table(name = "md_wellness")
 public class Wellness extends AbstractAuditing {
 
 	private static final long serialVersionUID = 1L;

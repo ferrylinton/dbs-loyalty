@@ -9,7 +9,7 @@
 	<property name="Investment" value="1x1QWZVCzvBKyCMBP16GRn" />
 	<property name="Loan" value="2GR9c0vmxoZJoMxWnmk3hY" />
 	
-    <changeSet author="FLH" id="promo-data-1">
+    <changeSet author="FLH" id="prm-promo-data-1">
 
         <insert tableName="prm_promo_category">
             <column name="id" value="${DebitCardPromo}"/>
@@ -34,7 +34,7 @@
         
     </changeSet>
     
-    <changeSet author="FLH" id="promo-data-2">
+    <changeSet author="FLH" id="prm-promo-data-2">
 
         <insert tableName="prm_promo">
             <column name="id" value="5WTqpHYs3wZoIdhAkbWt1W"/>

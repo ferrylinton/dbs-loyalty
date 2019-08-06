@@ -5,7 +5,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
     
-    <changeSet author="FLH" id="role-schema-1">
+    <changeSet author="FLH" id="sec-role-schema-1">
     
         <createTable tableName="sec_role">
             <column name="id" type="VARCHAR(22)">
@@ -27,11 +27,11 @@
         
     </changeSet>
 
-    <changeSet author="FLH" id="role-schema-2">
+    <changeSet author="FLH" id="sec-role-schema-2">
         <addPrimaryKey columnNames="id" constraintName="sec_role_pk" tableName="sec_role"/>
     </changeSet>
     
-    <changeSet author="FLH" id="role-schema-3">
+    <changeSet author="FLH" id="sec-role-schema-3">
         <addUniqueConstraint columnNames="name" constraintName="sec_role_name_uq" tableName="sec_role"/>
     </changeSet>
     

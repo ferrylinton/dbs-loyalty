@@ -51,12 +51,12 @@
 	<include file="release-100/schema/evt/feedback-customer-schema.xml" relativeToChangelogFile="true"/>
 	<include file="release-100/schema/evt/feedback-answer-schema.xml" relativeToChangelogFile="true"/>
 	
-    <include file="release-100/schema/med/medical-provider-schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/schema/med/medical-provider-city-schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/schema/med/medical-provider-branch-schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/schema/med/wellness-schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/schema/med/health-package-schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/schema/med/appointment-schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/schema/md/medical-provider-schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/schema/md/medical-city-schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/schema/md/medical-branch-schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/schema/md/wellness-schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/schema/md/health-package-schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/schema/md/appointment-schema.xml" relativeToChangelogFile="true"/>
     
     <include file="release-100/schema/trx/priviledge-product-schema.xml" relativeToChangelogFile="true"/>
     <include file="release-100/schema/trx/priviledge-order-schema.xml" relativeToChangelogFile="true"/>
@@ -90,9 +90,9 @@
     <include file="release-100/data/evt/feedback-data.xml" relativeToChangelogFile="true"/>
     <include file="release-100/data/evt/event-data.xml" relativeToChangelogFile="true"/>
     
-    <include file="release-100/data/med/medical-provider-data.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/data/med/health-package-data.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/data/med/wellness-data.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/data/md/medical-provider-data.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/data/md/health-package-data.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/data/md/wellness-data.xml" relativeToChangelogFile="true"/>
     
     <include file="release-100/data/trx/priviledge-data.xml" relativeToChangelogFile="true"/>
     <include file="release-100/data/trx/trx-data.xml" relativeToChangelogFile="true"/>

@@ -1,0 +1,44 @@
+<!doctype html>
+<html
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	layout:decorate="~{layout/layout}">
+
+<head>
+    <title th:text="#{medicalBranch}">Medical Branch</title>
+</head>
+
+<body data-menu="medicalbranch">
+	<nav aria-label="breadcrumb" layout:fragment="breadcrumb">
+   		<ol class="breadcrumb">
+      		<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{home}">Home</a></li>
+       		<li class="breadcrumb-item"><a th:href="@{/medicalbranch}" th:text="#{medicalbranch}">Medical Branch</a></li>
+          	<li class="breadcrumb-item active" aria-current="page" th:text="#{detail}">Detail</li>
+   		</ol>
+	</nav>
+	<div layout:fragment="content">
+		<div th:replace="fragment/value-not-found.html :: content"></div>
+		<div class="table-responsive border border-top-0" th:if="${medicalbranch}">
+      		<table class="table table-sm table-detail" style="min-width: 400px;">
+       			<tbody>
+            		<tr>
+                		<th th:text="#{id}">Id</th>
+                     	<td th:text="${medicalbranch.id}">ZwOkjFmG</td>
+               		</tr>
+                	<tr>
+                  		<th th:text="#{name}">Name</th>
+                   		<td th:text="${medicalbranch.address}">Address</td>
+              		</tr>
+					<tr th:replace="fragment/audit-detail.html :: content(data=${medicalbranch})"></tr>
+     			</tbody>
+     		</table>
+     	</div>
+		<div class="toolbar">
+    		<a class="btn btn-sm btn-secondary" th:href="@{/medicalbranch}">
+       			<span class="icon-left"></span> <span th:text="#{back}">Back</span>
+     		</a>
+		</div>
+	</div>
+</body>
+
+</html>

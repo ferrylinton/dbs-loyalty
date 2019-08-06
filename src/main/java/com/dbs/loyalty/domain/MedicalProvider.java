@@ -22,7 +22,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Class of MedicalProvider
+ * Class of Medical Provider
  * 
  * @author Ferry L. H. <ferrylinton@gmail.com>
  */
@@ -31,9 +31,9 @@ import lombok.Setter;
 @EqualsAndHashCode(of = { "id" }, callSuper = false)
 @Entity
 @Table(	
-	name = "med_medical_provider", 
+	name = "md_medical_provider", 
 	uniqueConstraints = {
-		@UniqueConstraint(name = "med_medical_provider_name_uq", columnNames = {"name"})
+		@UniqueConstraint(name = "md_medical_provider_name_uq", columnNames = {"name"})
 	}
 )
 public class MedicalProvider extends AbstractTask implements Serializable {
@@ -46,11 +46,11 @@ public class MedicalProvider extends AbstractTask implements Serializable {
 	@GeneratedValue(generator = DomainConstant.ID_GENERATOR)
 	private String id;
 
-	@Size(min = 2, max = 100, message = "{validation.size.name}")
+	@Size(min = 2, max = 100)
     @Column(name = "name", length = 100, nullable = false)
     private String name;
 
 	@OneToMany(mappedBy = "medicalProvider")
-    private Set<MedicalProviderCity> medicalProviderCities = new HashSet<>();
+    private Set<MedicalCity> medicalCities = new HashSet<>();
 	
 }

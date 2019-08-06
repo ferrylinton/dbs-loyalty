@@ -41,7 +41,7 @@ public class AppointmentController {
 
 	private final AppointmentService appointmentService;
 
-	@PreAuthorize("hasAnyRole('WELLNESS')")
+	@PreAuthorize("hasAnyRole('APPOINTMENT_MK', 'APPOINTMENT_CK')")
 	@GetMapping
 	public String viewAppointments(
 			@ModelAttribute(Constant.TOAST) String toast, 
@@ -63,7 +63,7 @@ public class AppointmentController {
 		}
 	}
 	
-	@PreAuthorize("hasAnyRole('WELLNESS')")
+	@PreAuthorize("hasAnyRole('APPOINTMENT_MK', 'APPOINTMENT_CK')")
 	@GetMapping("/{id}")
 	public String appointment(ModelMap model, @PathVariable String id){
 		Optional<Appointment> current = appointmentService.findById(id);

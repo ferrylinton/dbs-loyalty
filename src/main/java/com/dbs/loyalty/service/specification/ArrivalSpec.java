@@ -12,6 +12,7 @@ import javax.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
 
 import com.dbs.loyalty.config.constant.Constant;
+import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.Arrival;
 
 import lombok.RequiredArgsConstructor;
@@ -29,15 +30,15 @@ public class ArrivalSpec implements Specification<Arrival>{
 		
 		if(params.containsKey(Constant.KY_PARAM) && !Constant.EMPTY.equals(params.get(Constant.KY_PARAM))) {
 			String keyword = String.format(Constant.LIKE_FORMAT, params.get(Constant.KY_PARAM).trim().toLowerCase());
-			predicates.add(cb.like(root.get("customer").get("name"), keyword));
+			predicates.add(cb.like(root.get(DomainConstant.CUSTOMER).get(DomainConstant.NAME), keyword));
 		}
 		
 		if(params.containsKey(Constant.START_DATE_PARAM) && !params.get(Constant.START_DATE_PARAM).equals(Constant.EMPTY)) {
-			predicates.add(cb.greaterThanOrEqualTo(root.get("flightDate"), DateSpecification.getStartDate(params.get(Constant.START_DATE_PARAM))));
+			predicates.add(cb.greaterThanOrEqualTo(root.get(DomainConstant.FLIGHT_DATE), DateSpecification.getStartDate(params.get(Constant.START_DATE_PARAM))));
 		}
 		
 		if(params.containsKey(Constant.END_DATE_PARAM) && !params.get(Constant.END_DATE_PARAM).equals(Constant.EMPTY)) {
-			predicates.add(cb.lessThanOrEqualTo(root.get("flightDate"), DateSpecification.getEndDate(params.get(Constant.END_DATE_PARAM))));
+			predicates.add(cb.lessThanOrEqualTo(root.get(DomainConstant.FLIGHT_DATE), DateSpecification.getEndDate(params.get(Constant.END_DATE_PARAM))));
 		}
 		
 		return cb.and(predicates.toArray(new Predicate[predicates.size()]));

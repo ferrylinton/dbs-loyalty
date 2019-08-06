@@ -61,7 +61,7 @@
 	                  	<td><span th:data-date="${@dateService.jsDatetime()}" th:text="${logauditcustomer.createdDate}">2019-05-01T21:24:44Z</span></td>
 						<td th:text="${logauditcustomer.operation}">Authenticate</td>
 						<td th:text="${logauditcustomer.url}">Url</td>
-						<td><span th:class="${logauditcustomer.status == 'Succeed'} ? 'badge badge-success' : 'badge badge-danger'" th:text="#{${logauditcustomer.status}}">Succeed</span></td>
+						<td><span th:class="${logauditcustomer.status == 'Succeed'} ? 'badge badge-success' : 'badge badge-danger'" th:text="#{${#strings.toLowerCase(logauditcustomer.status)}}">Succeed</span></td>
 	              	</tr>
 	          	</tbody>
 	   		</table>

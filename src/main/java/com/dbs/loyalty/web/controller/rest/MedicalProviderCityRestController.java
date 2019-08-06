@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.aop.EnableLogAuditCustomer;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
-import com.dbs.loyalty.domain.MedicalProviderCity;
-import com.dbs.loyalty.service.MedicalProviderCityService;
+import com.dbs.loyalty.domain.MedicalCity;
+import com.dbs.loyalty.service.MedicalCityService;
 import com.dbs.loyalty.service.dto.MedicalProviderCityDto;
 import com.dbs.loyalty.service.dto.MedicalProviderDto;
 import com.dbs.loyalty.service.mapper.MedicalProviderCityMapper;
@@ -42,7 +42,7 @@ public class MedicalProviderCityRestController {
 	
 	public static final String GET_MEDICAL_PROVIDER_CITIES = "GetMedicalProviderCities";
 
-    private final MedicalProviderCityService medicalProviderCityService;
+    private final MedicalCityService medicalProviderCityService;
     
     private final MedicalProviderCityMapper medicalProviderCityMapper;
     
@@ -64,7 +64,7 @@ public class MedicalProviderCityRestController {
     		@PathVariable String medicalProviderId,
     		HttpServletRequest request, HttpServletResponse response) {
     	
-    	List<MedicalProviderCity> medicalProviderCities = medicalProviderCityService.findByMedicalProviderId(medicalProviderId);
+    	List<MedicalCity> medicalProviderCities = medicalProviderCityService.findByMedicalProviderId(medicalProviderId);
     	return medicalProviderCityMapper.toDto(medicalProviderCities);
     }
 

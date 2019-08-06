@@ -60,7 +60,7 @@
 	           		<tr th:each="loglogin,row : ${page}">
 	                  	<td class="text-center" th:text="${row.count + (page.number * page.size)}">1</td>
 	                	<td><span th:data-date="${@dateService.jsDatetime()}" th:text="${loglogin.createdDate}">2019-05-01T21:24:44Z</span></td>
-						<td><span th:class="${loglogin.status == 'Succeed'} ? 'badge badge-success' : 'badge badge-danger'" th:text="#{${loglogin.status}}">Succeed</span></td>
+						<td><span th:class="${loglogin.status == 'Succeed'} ? 'badge badge-success' : 'badge badge-danger'" th:text="#{${#strings.toLowerCase(loglogin.status)}}">Succeed</span></td>
 						<td th:text="${#strings.isEmpty(loglogin.username)} ? '-' : ${loglogin.username}">ferrylinton</td>
 						<td th:text="${loglogin.ip}">127.0.0.1</td>
 						<td th:text="${loglogin.browser}">Chrome</td>

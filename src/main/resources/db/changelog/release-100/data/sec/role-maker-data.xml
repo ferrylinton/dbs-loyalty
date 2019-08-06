@@ -7,7 +7,7 @@
 
 	<property name="Maker" value="5EIWrrJFrijNCv2tISSW6O" />
 	
-    <changeSet author="FLH" id="role-maker-data-1">
+    <changeSet author="FLH" id="sec-role-maker-data-1">
     
         <insert tableName="sec_role">
             <column name="id" value="${Maker}"/>
@@ -18,7 +18,7 @@
        
     </changeSet>
     
-    <changeSet author="FLH" id="role-maker-data-2">
+    <changeSet author="FLH" id="sec-role-maker-data-2">
 
 		<insert tableName="sec_role_authority">
             <column name="role_id" value="${Maker}"/>
@@ -72,12 +72,12 @@
 
         <insert tableName="sec_role_authority">
             <column name="role_id" value="${Maker}"/>
-            <column name="authority_id" value="${MEDICAL_PROVIDER_CITY_MK}"/>
+            <column name="authority_id" value="${MEDICAL_CITY_MK}"/>
         </insert>
 
         <insert tableName="sec_role_authority">
             <column name="role_id" value="${Maker}"/>
-            <column name="authority_id" value="${MEDICAL_PROVIDER_BRANCH_MK}"/>
+            <column name="authority_id" value="${MEDICAL_BRANCH_MK}"/>
         </insert>
         
         <insert tableName="sec_role_authority">

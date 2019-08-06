@@ -5,7 +5,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
-    <changeSet author="FLH" id="province-schema-1">
+    <changeSet author="FLH" id="mst-province-schema-1">
         <createTable tableName="mst_province">
             <column name="id" type="INT">
                 <constraints nullable="false"/>
@@ -21,15 +21,15 @@
         </createTable>
     </changeSet>
     
-    <changeSet author="FLH" id="province-schema-2">
+    <changeSet author="FLH" id="mst-province-schema-2">
         <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="mst_province"/>
     </changeSet>
 
-    <changeSet author="FLH" id="province-schema-3">
+    <changeSet author="FLH" id="mst-province-schema-3">
         <addUniqueConstraint columnNames="name" constraintName="mst_province_name_uq" tableName="mst_province"/>
     </changeSet>
     
-    <changeSet author="FLH" id="province-schema-4">
+    <changeSet author="FLH" id="mst-province-schema-4">
         <addForeignKeyConstraint baseColumnNames="country_id" baseTableName="mst_province" constraintName="mst_province_fk" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="mst_country"/>
     </changeSet>
     

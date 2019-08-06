@@ -49,7 +49,7 @@ public final class DomainConstant {
 	public static final String PROMO 				= "promo";
 	
 	public static final String HEALTH_PACKAGE 		= "healthpackage";
-	
+
 	public static final String EVENT 				= "event";
 	
 	public static final String DEPARTURE 			= "departure";
@@ -59,6 +59,10 @@ public final class DomainConstant {
 	public static final String APPOINTMENT 			= "appointment";
 
 	public static final String NAME					= "name";
+
+	public static final String FLIGHT_DATE			= "flightDate";
+	
+	public static final String CONTENT				= "content";
 	
 	public static final String FIRST_NAME			= "firstName";
 	
@@ -85,7 +89,7 @@ public final class DomainConstant {
 	public static final String COUNTRIES 			= "countries";
 	
 	public static final String PRIVILEDGE_PRODUCT	= "priviledgeproduct";
-	
+
 	public static final String PRIVILEDGE_ORDER 	= "priviledgeorder";
 	
 	public static final String TRX_PRODUCT			= "trxproduct";
@@ -93,6 +97,14 @@ public final class DomainConstant {
 	public static final String TRX_ORDER			= "trxorder";
 	
 	public static final String TADA_ORDER			= "tadaorder";
+	
+	public static final String MEDICAL_PROVIDER		= "medicalProvider";
+	
+	public static final String MEDICAL_CITY 		= "medicalCity";
+	
+	public static final String MEDICAL_BRANCH 		= "medicalBranch";
+	
+	public static final String ADDRESS					= "address";
 
 	private DomainConstant() {
 		// hide constructor

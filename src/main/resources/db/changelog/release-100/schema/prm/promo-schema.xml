@@ -5,7 +5,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
-    <changeSet author="FLH" id="promo-schema-1">
+    <changeSet author="FLH" id="prm-promo-schema-1">
     
         <createTable tableName="prm_promo">
             <column name="id" type="VARCHAR(22)">
@@ -53,19 +53,19 @@
         
     </changeSet>
     
-	<changeSet author="FLH" id="promo-schema-2">
+	<changeSet author="FLH" id="prm-promo-schema-2">
         <addPrimaryKey columnNames="id" constraintName="prm_promo_pk" tableName="prm_promo"/>
     </changeSet>
     
-    <changeSet author="FLH" id="promo-schema-3">
+    <changeSet author="FLH" id="prm-promo-schema-3">
         <addUniqueConstraint columnNames="code" constraintName="prm_promo_code_uq" tableName="prm_promo"/>
     </changeSet>
     
-    <changeSet author="FLH" id="promo-schema-4">
+    <changeSet author="FLH" id="prm-promo-schema-4">
         <addUniqueConstraint columnNames="title" constraintName="prm_promo_title_uq" tableName="prm_promo"/>
     </changeSet>
     
-    <changeSet author="FLH" id="promo-schema-5">
+    <changeSet author="FLH" id="prm-promo-schema-5">
         <addForeignKeyConstraint baseColumnNames="promo_category_id" baseTableName="prm_promo" constraintName="prm_promo_fk" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="prm_promo_category"/>
     </changeSet>
     

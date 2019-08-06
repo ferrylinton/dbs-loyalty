@@ -35,6 +35,18 @@
                     <li th:if="${#authorization.expression('hasAnyAuthority(''APPOINTMENT_MK'', ''APPOINTMENT_CK'')')}">
                         <a class="icon-medical" data-menu="appointment" th:href="@{/appointment}" th:text="#{appointment}">Appointment</a>
                     </li>
+                    <li th:if="${#authorization.expression('hasAnyAuthority(''MEDICAL_PROVIDER_MK'', ''MEDICAL_PROVIDER_CK'')')}">
+                        <a class="icon-medical" data-menu="medicalprovider" th:href="@{/medicalprovider}" th:text="#{medicalProvider}">Medical Provider</a>
+                    </li>
+                    <li th:if="${#authorization.expression('hasAnyAuthority(''MEDICAL_CITY_MK'', ''MEDICAL_CITY_CK'')')}">
+                        <a class="icon-medical" data-menu="medicalcity" th:href="@{/medicalcity}" th:text="#{medicalCity}">Medical City</a>
+                    </li>
+                    <li th:if="${#authorization.expression('hasAnyAuthority(''MEDICAL_BRANCH_MK'', ''MEDICAL_BRANCH_CK'')')}">
+                        <a class="icon-medical" data-menu="medicalbranch" th:href="@{/medicalbranch}" th:text="#{medicalBranch}">Medical Branch</a>
+                    </li>
+                    <li th:if="${#authorization.expression('hasAnyAuthority(''HEALTH_PACKAGE_MK'', ''HEALTH_PACKAGE_CK'')')}">
+                        <a class="icon-medical" data-menu="healthpackage" th:href="@{/healthpackage}" th:text="#{healthPackage}">Health Package</a>
+                    </li>
                 </ul>
             </li>
             <li>

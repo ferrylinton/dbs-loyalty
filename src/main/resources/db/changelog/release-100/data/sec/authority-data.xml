@@ -26,10 +26,10 @@
 	<property name="HEALTH_PACKAGE_CK" value="40aQww5qz8c7fodEIrX2rR" />
 	<property name="MEDICAL_PROVIDER_MK" value="3wtWGc1ILgqU9nf6uZRjU" />
 	<property name="MEDICAL_PROVIDER_CK" value="7Z0pGaAaPaYXtUSu7vybJ7" />
-	<property name="MEDICAL_PROVIDER_CITY_MK" value="6uNUQovxQKxaQYaaDIshMW" />
-	<property name="MEDICAL_PROVIDER_CITY_CK" value="1xlCVdOVzgf4HlrpHAKZga" />
-	<property name="MEDICAL_PROVIDER_BRANCH_MK" value="6rIcyGJy0O32dM3eKxK9O0" />
-	<property name="MEDICAL_PROVIDER_BRANCH_CK" value="2BIP4LvFoDjGp5xPP49ilp" />
+	<property name="MEDICAL_CITY_MK" value="6uNUQovxQKxaQYaaDIshMW" />
+	<property name="MEDICAL_CITY_CK" value="1xlCVdOVzgf4HlrpHAKZga" />
+	<property name="MEDICAL_BRANCH_MK" value="6rIcyGJy0O32dM3eKxK9O0" />
+	<property name="MEDICAL_BRANCH_CK" value="2BIP4LvFoDjGp5xPP49ilp" />
 	<property name="AIRPORT_ASSISTANCE_MK" value="3qyfT7rW4pwiwhHR21s9Bl" />
 	<property name="AIRPORT_ASSISTANCE_CK" value="rPEYKt14FoRFl1ZfQMmNc" />
 	<property name="ARRIVAL_MK" value="7EkUrNoXxryCvNu5QVjHDT" />
@@ -51,7 +51,7 @@
 	<property name="COUNTRY_CK" value="11X3FZjzfatmtRpMnNR4Eh" />
 	<property name="COUNTRY_MK" value="5fv0RcdOfWC0h3YOU3NxjQ" />
 	
-	<changeSet author="FLH" id="authority-data-1">
+	<changeSet author="FLH" id="sec-authority-data-1">
 	
 		<insert tableName="sec_authority">
             <column name="id" value="${ORDER_MK}"/>
@@ -259,23 +259,23 @@
         </insert>
         
         <insert tableName="sec_authority">
-            <column name="id" value="${MEDICAL_PROVIDER_CITY_MK}"/>
-            <column name="name" value="MEDICAL_PROVIDER_CITY_MK"/>
+            <column name="id" value="${MEDICAL_CITY_MK}"/>
+            <column name="name" value="MEDICAL_CITY_MK"/>
         </insert>
         
         <insert tableName="sec_authority">
-            <column name="id" value="${MEDICAL_PROVIDER_CITY_CK}"/>
-            <column name="name" value="MEDICAL_PROVIDER_CITY_CK"/>
+            <column name="id" value="${MEDICAL_CITY_CK}"/>
+            <column name="name" value="MEDICAL_CITY_CK"/>
         </insert>
         
         <insert tableName="sec_authority">
-            <column name="id" value="${MEDICAL_PROVIDER_BRANCH_MK}"/>
-            <column name="name" value="MEDICAL_PROVIDER_BRANCH_MK"/>
+            <column name="id" value="${MEDICAL_BRANCH_MK}"/>
+            <column name="name" value="MEDICAL_BRANCH_MK"/>
         </insert>
         
         <insert tableName="sec_authority">
-            <column name="id" value="${MEDICAL_PROVIDER_BRANCH_CK}"/>
-            <column name="name" value="MEDICAL_PROVIDER_BRANCH_CK"/>
+            <column name="id" value="${MEDICAL_BRANCH_CK}"/>
+            <column name="name" value="MEDICAL_BRANCH_CK"/>
         </insert>
         
     </changeSet>

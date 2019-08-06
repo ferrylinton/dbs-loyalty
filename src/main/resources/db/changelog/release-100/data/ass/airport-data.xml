@@ -5,7 +5,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
-    <changeSet author="FLH" id="airport-data-1">
+    <changeSet author="FLH" id="ass-airport-data-1">
     	
     	<insert tableName="ass_airport">
             <column name="id" value="53EHfQ52dsQ8h9R7ezwUbZ"/>
@@ -17,7 +17,7 @@
 
     </changeSet>
     
-    <changeSet author="FLH" id="airport-data-2">
+    <changeSet author="FLH" id="ass-airport-data-2">
 
         <insert tableName="ass_airport">
             <column name="id" value="47brE1Yp3a6qyCti9Suv7V"/>
@@ -29,7 +29,7 @@
         
     </changeSet>
  
-	<changeSet author="FLH" id="airport-data-3">
+	<changeSet author="FLH" id="ass-airport-data-3">
 
         <insert tableName="ass_airport">
             <column name="id" value="4gKxEoRwrNP44q97qciAdJ"/>
@@ -41,7 +41,7 @@
     
     </changeSet>
 
-    <changeSet author="FLH" id="airport-data-4">
+    <changeSet author="FLH" id="ass-airport-data-4">
 
         <insert tableName="ass_airport">
             <column name="id" value="6Os9WY1pW0wd4IBW43GSE2"/>
@@ -53,7 +53,7 @@
 
     </changeSet>
     
-    <changeSet author="FLH" id="airport-data-5">
+    <changeSet author="FLH" id="ass-airport-data-5">
 
         <insert tableName="ass_airport">
             <column name="id" value="OLFKBbiYITKLth1V3wD37"/>

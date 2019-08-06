@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.aop.EnableLogAuditCustomer;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
-import com.dbs.loyalty.domain.MedicalProviderBranch;
-import com.dbs.loyalty.service.MedicalProviderBranchService;
+import com.dbs.loyalty.domain.MedicalBranch;
+import com.dbs.loyalty.service.MedicalBranchService;
 import com.dbs.loyalty.service.dto.MedicalProviderBranchDto;
 import com.dbs.loyalty.service.dto.MedicalProviderDto;
 import com.dbs.loyalty.service.mapper.MedicalProviderBranchMapper;
@@ -42,7 +42,7 @@ public class MedicalProviderBranchRestController {
 
 	public static final String GET_MEDICAL_PROVIDER_BRANCHES = "GetMedicalProviderBranches";
 	
-    private final MedicalProviderBranchService medicalProviderBranchService;
+    private final MedicalBranchService medicalProviderBranchService;
     
     private final MedicalProviderBranchMapper medicalProviderBranchMapper;
     
@@ -64,7 +64,7 @@ public class MedicalProviderBranchRestController {
     		@PathVariable String medicalProviderCityId,
     		HttpServletRequest request, HttpServletResponse response) {
     	
-    	List<MedicalProviderBranch> medicalProviderBranches = medicalProviderBranchService.findByMedicalProviderCityId(medicalProviderCityId);
+    	List<MedicalBranch> medicalProviderBranches = medicalProviderBranchService.findByMedicalCityId(medicalProviderCityId);
     	return medicalProviderBranchMapper.toDto(medicalProviderBranches);
     }
 

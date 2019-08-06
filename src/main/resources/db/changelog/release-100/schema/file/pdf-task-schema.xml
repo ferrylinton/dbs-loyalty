@@ -5,7 +5,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
     
-    <changeSet author="FLH" id="pdf-task-schema-1">
+    <changeSet author="FLH" id="file-pdf-task-schema-1">
         
         <createTable tableName="file_pdf_task">
             <column name="id" type="VARCHAR(22)">
@@ -24,7 +24,7 @@
         
     </changeSet>
     
-    <changeSet author="FLH" id="pdf-task-schema-2">
+    <changeSet author="FLH" id="file-pdf-task-schema-2">
         <addPrimaryKey columnNames="id" constraintName="file_pdf_task_pk" tableName="file_pdf_task"/>
     </changeSet>
 

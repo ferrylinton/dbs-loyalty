@@ -4,16 +4,18 @@
 	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" 
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
-   
-    <changeSet author="FLH" id="medical-provider-branch-schema-1">
-        <createTable tableName="med_medical_provider_branch">
+    
+    <changeSet author="FLH" id="md-health-package-schema-1">
+        <createTable tableName="md_health_package">
             <column name="id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
             </column>
-            <column name="address" type="VARCHAR(150)">
+            <column name="name" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="medical_provider_city_id" type="VARCHAR(22)"/>
+            <column name="content" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
             <column name="pending" type="BOOLEAN" defaultValueBoolean="false"/>
             <column name="created_by" type="VARCHAR(50)">
                 <constraints nullable="false"/>
@@ -26,16 +28,12 @@
         </createTable>
     </changeSet>
     
-    <changeSet author="FLH" id="medical-provider-branch-schema-2">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="med_medical_provider_branch"/>
+    <changeSet author="FLH" id="md-health-package-schema-2">
+        <addPrimaryKey columnNames="id" constraintName="md_health_package_pk" tableName="md_health_package"/>
     </changeSet>
     
-    <changeSet author="FLH" id="medical-provider-branch-schema-3">
-        <addUniqueConstraint columnNames="address" constraintName="med_medical_provider_branch_address_uq" tableName="med_medical_provider_branch"/>
+    <changeSet author="FLH" id="md-health-package-schema-3">
+        <addUniqueConstraint columnNames="name" constraintName="md_health_package_name_uq" tableName="md_health_package"/>
     </changeSet>
-    
-    <changeSet author="FLH" id="medical-provider-branch-schema-4">
-        <addForeignKeyConstraint baseColumnNames="medical_provider_city_id" baseTableName="med_medical_provider_branch" constraintName="med_medical_provider_branch_fk" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="med_medical_provider_city"/>
-    </changeSet>
-    
+
 </databaseChangeLog>

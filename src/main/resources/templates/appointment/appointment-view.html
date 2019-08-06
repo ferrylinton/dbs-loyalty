@@ -49,7 +49,7 @@
                             <th style="width:40px">#</th>
                             <th style="width:180px" th:with="sort=|&sort=arrivalDate,${ascending ? 'DESC' : 'ASC'}|">
                                 <a th:href="@{|?page=${page.getNumber()}${params}${sort}|}" class="text-decoration-none">
-                                    <span th:text="#{arrivalDate}">Arrival Date</span> <span th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></span>
+                                    <span th:text="#{date}">Date</span> <span th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></span>
                                 </a>
                             </th>
                             <th th:text="#{firstName}">First Name</th>

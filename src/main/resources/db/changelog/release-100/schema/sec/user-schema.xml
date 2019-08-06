@@ -5,7 +5,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
     
-    <changeSet author="FLH" id="user-schema-1">
+    <changeSet author="FLH" id="sec-user-schema-1">
     
         <createTable tableName="sec_user">
             <column name="id" type="VARCHAR(22)">
@@ -41,15 +41,15 @@
         
     </changeSet>
     
-    <changeSet author="FLH" id="user-schema-2">
+    <changeSet author="FLH" id="sec-user-schema-2">
         <addPrimaryKey columnNames="id" constraintName="sec_user_pk" tableName="sec_user"/>
     </changeSet>
 
-    <changeSet author="FLH" id="user-schema-3">
+    <changeSet author="FLH" id="sec-user-schema-3">
         <addUniqueConstraint columnNames="username" constraintName="sec_user_username_uq" tableName="sec_user"/>
     </changeSet>
 
-	<changeSet author="FLH" id="user-schema-4">
+	<changeSet author="FLH" id="sec-user-schema-4">
         <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="sec_user" constraintName="sec_user_fk" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="sec_role"/>
     </changeSet>
 

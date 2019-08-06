@@ -7,7 +7,7 @@
 
     <!-- DEPARTURE -->
     
-    <changeSet author="FLH" id="airport-assistance-data-1">
+    <changeSet author="FLH" id="ass-airport-assistance-data-1">
     
     	<insert tableName="ass_departure">
             <column name="id" value="57iZ7hEtMLx2IpKg0x6MmH"/>
@@ -30,7 +30,7 @@
         
     </changeSet>
     
-    <changeSet author="FLH" id="airport-assistance-data-2">
+    <changeSet author="FLH" id="ass-airport-assistance-data-2">
         
         <insert tableName="ass_arrival">
             <column name="id" value="3K1aI9PFpfTbmlGGfEBaxV"/>
@@ -54,7 +54,7 @@
     
     <!-- TRAVEL ASSISTANCE -->
     
-    <changeSet author="FLH" id="airport-assistance-data-3">
+    <changeSet author="FLH" id="ass-airport-assistance-data-3">
     	
     	<insert tableName="ass_airport_assistance">
             <column name="id" value="1IUe73HCc9Qfjl1sxhasNI"/>

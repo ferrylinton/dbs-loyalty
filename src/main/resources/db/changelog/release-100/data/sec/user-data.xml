@@ -5,7 +5,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
  
-    <changeSet author="FLH" id="user-data-1">
+    <changeSet author="FLH" id="sec-user-data-1">
     
         <insert tableName="sec_user">
             <column name="id" value="1raAT34Ne9zq4gbwe71NdF"/>

@@ -25,6 +25,7 @@ import com.dbs.loyalty.domain.TadaOrder;
 import com.dbs.loyalty.domain.TadaPayment;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.util.HeaderUtil;
+import com.dbs.loyalty.util.ResponseUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -38,8 +39,6 @@ public class TadaService {
 	public static final String LOG_FORMAT = "CALL TADA API :: %s?%s";
 	
 	public static final String LOG_FORMAT_SIMPLE = "CALL TADA API :: %s";
-
-	public static final String RESULT_FORMAT = "{\"message\":\"%s\"}";
 
 	public final OAuth2RestTemplate oauth2RestTemplate;
 	
@@ -85,8 +84,8 @@ public class TadaService {
 		int orderPoints = getOrderPoints(tadaOrder);
 		
 		if(availablePoints > orderPoints) {
-			response = exchangePost(prepare(tadaOrder), email);
-			//rewardService.deduct(email, rewards, orderPoints);
+			response = exchangePost(tadaOrder, email);
+			rewardService.deduct(email, rewards, orderPoints);
 			return response;
 		}else {
 			throw new BadRequestException(MessageConstant.INSUFFICIENT_POINTS);
@@ -102,33 +101,32 @@ public class TadaService {
 			return new ResponseEntity<>(e.getResponseBodyAsString(), HeaderUtil.getJsonHeaders(), e.getStatusCode());
 		} catch (Exception e) {
 			log.error(e.getLocalizedMessage(), e);
-			String result = String.format(RESULT_FORMAT, e.getLocalizedMessage());
-			return new ResponseEntity<>(result, HeaderUtil.getJsonHeaders(), HttpStatus.INTERNAL_SERVER_ERROR);
+			return ResponseUtil.createResponse(e.getLocalizedMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 	
 	private ResponseEntity<String> exchangePost(TadaOrder tadaOrder, String email) throws RestClientException, URISyntaxException, IOException, BadRequestException {
-		System.out.println(objectMapper.writeValueAsString(tadaOrder));
-		//HttpEntity<String> requestEntity = new HttpEntity<>(objectMapper.writeValueAsString(tadaOrder), HeaderUtil.getJsonHeaders());
-		//String url = applicationProperties.getTada().getOrdersUrl();
-		//ResponseEntity<String> response = oauth2RestTemplate.exchange(getURI(url, null), HttpMethod.POST, requestEntity, String.class);
+		tadaOrder = prepare(tadaOrder, email);
+		HttpEntity<String> requestEntity = new HttpEntity<>(objectMapper.writeValueAsString(tadaOrder), HeaderUtil.getJsonHeaders());
+		String url = applicationProperties.getTada().getOrdersUrl();
+		ResponseEntity<String> response = oauth2RestTemplate.exchange(getURI(url, null), HttpMethod.POST, requestEntity, String.class);
 		
-		//tadaOrder.setResponse(response.getBody());
-		tadaOrder.setCreatedBy(email);
-		tadaOrder.setCreatedDate(Instant.now());
+		tadaOrder.setResponse(response.getBody());
 		tadaOrderService.save(tadaOrder);
-		//return response;
-		return new ResponseEntity<>(String.format(RESULT_FORMAT, "test dummy"), HeaderUtil.getJsonHeaders(), HttpStatus.OK);
+		return response;
 	}
 	
-	private TadaOrder prepare(TadaOrder tadaOrder) {
+	private TadaOrder prepare(TadaOrder tadaOrder, String email) {
 		TadaPayment tadaPayment = new TadaPayment();
 		tadaPayment.setPaymentType(applicationProperties.getTadaPayment().getType());
 		tadaPayment.setPaymentWalletType(applicationProperties.getTadaPayment().getWalletType());
 		tadaPayment.setCardNumber(applicationProperties.getTadaPayment().getCardNumber());
 		tadaPayment.setCardPin(applicationProperties.getTadaPayment().getCardPin());
+		
 		tadaOrder.setTadaPayment(tadaPayment);
 		tadaOrder.setOrderReference(tadaOrderService.generate());
+		tadaOrder.setCreatedBy(email);
+		tadaOrder.setCreatedDate(Instant.now());
 		return tadaOrder;
 	}
 	

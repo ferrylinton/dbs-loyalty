@@ -5,7 +5,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
     
-    <changeSet author="FLH" id="role-authority-schema-1">
+    <changeSet author="FLH" id="sec-role-authority-schema-1">
     
         <createTable tableName="sec_role_authority">
             <column name="role_id" type="VARCHAR(22)">
@@ -18,15 +18,15 @@
         </createTable>
     </changeSet>
    
-    <changeSet author="FLH" id="role-authority-schema-2">
+    <changeSet author="FLH" id="sec-role-authority-schema-2">
         <addPrimaryKey columnNames="role_id, authority_id" constraintName="sec_role_authority_pk" tableName="sec_role_authority"/>
     </changeSet>
     
-     <changeSet author="FLH" id="role-authority-schema-3">
+     <changeSet author="FLH" id="sec-role-authority-schema-3">
         <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="sec_role_authority" constraintName="sec_role_authority_fk1" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="sec_role"/>
     </changeSet>
     
-    <changeSet author="FLH" id="role-authority-schema-4">
+    <changeSet author="FLH" id="sec-role-authority-schema-4">
         <addForeignKeyConstraint baseColumnNames="authority_id" baseTableName="sec_role_authority" constraintName="sec_role_authority_fk2" deferrable="false" initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION" referencedColumnNames="id" referencedTableName="sec_authority"/>
     </changeSet>
 

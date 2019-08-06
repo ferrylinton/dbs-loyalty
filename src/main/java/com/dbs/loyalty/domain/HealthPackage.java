@@ -34,9 +34,9 @@ import lombok.ToString;
 @EqualsAndHashCode(of = {"id"}, callSuper = false)
 @Entity
 @Table(
-	name = "med_health_package",
+	name = "md_health_package",
 	uniqueConstraints = {
-		@UniqueConstraint(name = "med_health_package_name_uq", columnNames = { "name" })
+		@UniqueConstraint(name = "md_health_package_name_uq", columnNames = { "name" })
 	}
 )
 public class HealthPackage extends AbstractTask implements Serializable {

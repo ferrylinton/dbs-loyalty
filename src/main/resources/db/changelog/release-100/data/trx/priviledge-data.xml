@@ -7,7 +7,7 @@
 
     <!-- PRIVILEDGE PRODUCT -->
     
-    <changeSet author="FLH" id="priviledge-data-1">
+    <changeSet author="FLH" id="trx-priviledge-data-1">
 
         <insert tableName="trx_priviledge_product">
             <column name="id" value="5uox4w6t2fMaldCtRWmh2E"/>

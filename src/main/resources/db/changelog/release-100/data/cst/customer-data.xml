@@ -19,7 +19,7 @@
 	<property name="Customer12" value="7YNTF87ipkWErx1kgjiePo" />
 	
 
-    <changeSet author="FLH" id="customer-data-1">
+    <changeSet author="FLH" id="cst-customer-data-1">
 
         <insert tableName="cst_customer">
             <column name="id" value="${Customer01}"/>
@@ -611,7 +611,7 @@
         
     </changeSet>
     
-    <changeSet author="FLH" id="customer-data-2">
+    <changeSet author="FLH" id="cst-customer-data-2">
 
         <insert tableName="cst_loved_one">
             <column name="id" value="5t66VKhFqqopJ0lyGQcXwQ"/>

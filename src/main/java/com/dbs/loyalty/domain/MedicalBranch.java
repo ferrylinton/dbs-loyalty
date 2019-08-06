@@ -24,7 +24,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * Class of MedicalProviderBranch
+ * Class of Medical Branch
  * 
  * @author Ferry L. H. <ferrylinton@gmail.com>
  */
@@ -33,12 +33,12 @@ import lombok.Setter;
 @EqualsAndHashCode(of = { "id" }, callSuper = false)
 @Entity
 @Table(	
-	name = "med_medical_provider_branch", 
+	name = "md_medical_branch", 
 	uniqueConstraints = {
-		@UniqueConstraint(name = "med_medical_provider_branch_address_uq", columnNames = {"address"})
+		@UniqueConstraint(name = "md_medical_branch_address_uq", columnNames = {"address"})
 	}
 )
-public class MedicalProviderBranch extends AbstractTask implements Serializable {
+public class MedicalBranch extends AbstractTask implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -48,13 +48,13 @@ public class MedicalProviderBranch extends AbstractTask implements Serializable 
 	@GeneratedValue(generator = DomainConstant.ID_GENERATOR)
 	private String id;
 
-	@Size(min = 2, max = 150, message = "{validation.size.address}")
+	@Size(min = 2, max = 150)
     @Column(name = "address", length = 150, nullable = false)
     private String address;
 
-	@JsonIgnoreProperties("medicalProviderBranches")
+	@JsonIgnoreProperties("medicalBranches")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "medical_provider_city_id", nullable = false, foreignKey = @ForeignKey(name = "med_medical_provider_branch_fk"))
-    private MedicalProviderCity medicalProviderCity;
+    @JoinColumn(name = "medical_city_id", nullable = false, foreignKey = @ForeignKey(name = "md_medical_branch_fk"))
+    private MedicalCity medicalCity;
 	
 }

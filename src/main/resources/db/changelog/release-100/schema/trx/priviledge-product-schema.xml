@@ -5,7 +5,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
     
-    <changeSet author="FLH" id="priviledge-product-schema-1">
+    <changeSet author="FLH" id="trx-priviledge-product-schema-1">
     
         <createTable tableName="trx_priviledge_product">
             <column name="id" type="VARCHAR(22)">
@@ -29,11 +29,11 @@
         
     </changeSet>
     
-	<changeSet author="FLH" id="priviledge-product-schema-2">
+	<changeSet author="FLH" id="trx-priviledge-product-schema-2">
         <addPrimaryKey columnNames="id" constraintName="trx_priviledge_product_pk" tableName="trx_priviledge_product"/>
     </changeSet>
     
-    <changeSet author="FLH" id="priviledge-product-schema-3">
+    <changeSet author="FLH" id="trx-priviledge-product-schema-3">
         <addUniqueConstraint columnNames="name" constraintName="trx_priviledge_product_name_uq" tableName="trx_priviledge_product"/>
     </changeSet>
     

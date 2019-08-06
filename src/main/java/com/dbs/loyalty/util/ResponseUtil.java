@@ -4,12 +4,15 @@ import java.io.IOException;
 
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import com.dbs.loyalty.domain.FileImage;
 import com.dbs.loyalty.domain.FilePdf;
 
 public final class ResponseUtil {
+	
+	public static final String RESULT_FORMAT = "{\"message\":\"%s\"}";
 
 	public static ResponseEntity<byte[]> createImageResponse(FileImage fileImage){
     	return ResponseEntity
@@ -25,6 +28,10 @@ public final class ResponseUtil {
 				.ok()
 				.headers(HeaderUtil.gePdfHeaders(filePdf))
 				.body(new InputStreamResource(resource.getInputStream()));
+    }
+	
+	public static ResponseEntity<String> createResponse(String message, HttpStatus httpStatus){
+		return new ResponseEntity<>(String.format(RESULT_FORMAT, message), HeaderUtil.getJsonHeaders(), httpStatus);
     }
 	
 	private ResponseUtil() {

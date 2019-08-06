@@ -7,23 +7,23 @@
 
     <!-- WELLNESS -->
     
-    <changeSet author="FLH" id="wellness-data-1">
+    <changeSet author="FLH" id="md-wellness-data-1">
     	
-    	<insert tableName="med_wellness">
+    	<insert tableName="md_wellness">
             <column name="id" value="1IUe73HCc9Qfjl1sxhasNI"/>
             <column name="total" value="2"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
         </insert>
         
-        <insert tableName="med_wellness">
+        <insert tableName="md_wellness">
             <column name="id" value="1WUqbiXZnscJsVJD3DVjXy"/>
             <column name="total" value="2"/>
             <column name="created_by" value="system"/>
             <column name="created_date" valueComputed="CURRENT_TIMESTAMP"/>
         </insert>
         
-        <insert tableName="med_wellness">
+        <insert tableName="md_wellness">
             <column name="id" value="4dIMucfQGdLNyJPPb3hfv4"/>
             <column name="total" value="2"/>
             <column name="created_by" value="system"/>
@@ -34,13 +34,13 @@
 
     <!-- APPOINTMENT -->
     
-    <changeSet author="FLH" id="wellness-data-2">
+    <changeSet author="FLH" id="md-wellness-data-2">
     
-    	<insert tableName="med_appointment">
+    	<insert tableName="md_appointment">
             <column name="id" value="5Yq5GhLhw4i9J7VUgJ4S4"/>
             <column name="medical_provider_id" value="${BIOTEST_INDONESIA}"/>
-            <column name="medical_provider_city_id" value="${Jakarta}"/>
-            <column name="medical_provider_branch_id" value="DckRIXf9Lkuufb4sgDxwO"/>
+            <column name="medical_city_id" value="${Jakarta}"/>
+            <column name="medical_branch_id" value="DckRIXf9Lkuufb4sgDxwO"/>
             <column name="customer_id" value="1IUe73HCc9Qfjl1sxhasNI"/>
             <column name="health_package_id" value="${Package1}"/>
             <column name="date" valueDate="2019-08-01T10:00:00"/>

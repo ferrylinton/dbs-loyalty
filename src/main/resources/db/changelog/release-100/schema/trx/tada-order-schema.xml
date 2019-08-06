@@ -5,7 +5,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
     
-    <changeSet author="FLH" id="tada-order-schema-1">
+    <changeSet author="FLH" id="trx-tada-order-schema-1">
         <createTable tableName="trx_tada_item">
             <column name="id" type="VARCHAR(50)">
                 <constraints nullable="false"/>
@@ -21,7 +21,7 @@
         </createTable>
     </changeSet>
     
-    <changeSet author="FLH" id="tada-order-schema-2">
+    <changeSet author="FLH" id="trx-tada-order-schema-2">
         <createTable tableName="trx_tada_order">
             <column name="id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
@@ -41,7 +41,7 @@
         </createTable>
     </changeSet>
     
-    <changeSet author="FLH" id="tada-order-schema-3">
+    <changeSet author="FLH" id="trx-tada-order-schema-3">
         <createTable tableName="trx_tada_payment">
             <column name="id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
@@ -55,7 +55,7 @@
         </createTable>
     </changeSet>
     
-    <changeSet author="FLH" id="tada-order-schema-4">
+    <changeSet author="FLH" id="trx-tada-order-schema-4">
         <createTable tableName="trx_tada_recipient">
             <column name="id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
@@ -71,35 +71,35 @@
         </createTable>
     </changeSet>
     
-    <changeSet author="FLH" id="tada-order-schema-5">
+    <changeSet author="FLH" id="trx-tada-order-schema-5">
         <addPrimaryKey columnNames="id" constraintName="trx_tada_item_pk" tableName="trx_tada_item"/>
     </changeSet>
     
-    <changeSet author="FLH" id="tada-order-schema-6">
+    <changeSet author="FLH" id="trx-tada-order-schema-6">
         <addPrimaryKey columnNames="id" constraintName="trx_tada_order_pk" tableName="trx_tada_order"/>
     </changeSet>
     
-    <changeSet author="FLH" id="tada-order-schema-7">
+    <changeSet author="FLH" id="trx-tada-order-schema-7">
         <addPrimaryKey columnNames="id" constraintName="trx_tada_payment_pk" tableName="trx_tada_payment"/>
     </changeSet>
     
-    <changeSet author="FLH" id="tada-order-schema-8">
+    <changeSet author="FLH" id="trx-tada-order-schema-8">
         <addPrimaryKey columnNames="id" constraintName="trx_tada_recipient_pk" tableName="trx_tada_recipient"/>
     </changeSet>
     
-    <changeSet author="FLH" id="tada-order-schema-9">
+    <changeSet author="FLH" id="trx-tada-order-schema-9">
         <addUniqueConstraint columnNames="order_reference" constraintName="trx_tada_order_reference_uq" tableName="trx_tada_order"/>
     </changeSet>
     
-    <changeSet author="FLH" id="tada-order-schema-10">
+    <changeSet author="FLH" id="trx-tada-order-schema-10">
         <addForeignKeyConstraint baseColumnNames="tada_order_id" baseTableName="trx_tada_item" constraintName="trx_tada_item_fk" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="trx_tada_order"/>
     </changeSet>
     
-    <changeSet author="FLH" id="tada-order-schema-11">
+    <changeSet author="FLH" id="trx-tada-order-schema-11">
         <addForeignKeyConstraint baseColumnNames="tada_order_id" baseTableName="trx_tada_payment" constraintName="trx_tada_payment_fk" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="trx_tada_order"/>
     </changeSet>
     
-    <changeSet author="FLH" id="tada-order-schema-12">
+    <changeSet author="FLH" id="trx-tada-order-schema-12">
         <addForeignKeyConstraint baseColumnNames="tada_order_id" baseTableName="trx_tada_recipient" constraintName="trx_tada_recipient_fk" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="trx_tada_order"/>
     </changeSet>
     

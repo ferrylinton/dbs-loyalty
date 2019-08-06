@@ -5,7 +5,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
     
-    <changeSet author="FLH" id="airport-assistance-schema-1">
+    <changeSet author="FLH" id="ass-airport-assistance-schema-1">
         <createTable tableName="ass_airport_assistance">
             <column name="id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
@@ -24,11 +24,11 @@
         </createTable>
     </changeSet>
     
-    <changeSet author="FLH" id="airport-assistance-schema-2">
+    <changeSet author="FLH" id="ass-airport-assistance-schema-2">
         <addPrimaryKey columnNames="id" constraintName="ass_airport_assistance_pk" tableName="ass_airport_assistance"/>
     </changeSet>
  
-    <changeSet author="FLH" id="airport-assistance-schema-3">
+    <changeSet author="FLH" id="ass-airport-assistance-schema-3">
         <addForeignKeyConstraint baseColumnNames="id" baseTableName="ass_airport_assistance" constraintName="ass_airport_assistance_fk" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="cst_customer"/>
     </changeSet>
     

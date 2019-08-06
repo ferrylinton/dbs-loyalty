@@ -35,7 +35,7 @@ import lombok.ToString;
 @EqualsAndHashCode(of = { "id" }, callSuper = false)
 @ToString(of = { "id" }, callSuper = false)
 @Entity
-@Table(name = "med_appointment")
+@Table(name = "md_appointment")
 public class Appointment extends AbstractAuditing {
 
 	private static final long serialVersionUID = 1L;
@@ -57,23 +57,23 @@ public class Appointment extends AbstractAuditing {
 	private LocalTime time;
 	
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "medical_provider_id", foreignKey = @ForeignKey(name = "med_appointment_fk1"))
+    @JoinColumn(name = "medical_provider_id", foreignKey = @ForeignKey(name = "md_appointment_fk1"))
     private MedicalProvider medicalProvider;
 	
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "medical_provider_city_id", foreignKey = @ForeignKey(name = "med_appointment_fk2"))
-    private MedicalProviderCity medicalProviderCity;
+    @JoinColumn(name = "medical_city_id", foreignKey = @ForeignKey(name = "md_appointment_fk2"))
+    private MedicalCity medicalProviderCity;
 	
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "medical_provider_branch_id", foreignKey = @ForeignKey(name = "med_appointment_fk3"))
-    private MedicalProviderBranch medicalProviderBranch;
+    @JoinColumn(name = "medical_branch_id", foreignKey = @ForeignKey(name = "md_appointment_fk3"))
+    private MedicalBranch medicalProviderBranch;
 
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id", foreignKey = @ForeignKey(name = "med_appointment_fk4"))
+    @JoinColumn(name = "customer_id", foreignKey = @ForeignKey(name = "md_appointment_fk4"))
 	private Customer customer;
     
     @ManyToOne(optional = true, fetch = FetchType.LAZY)
-    @JoinColumn(name = "health_package_id", nullable = true, foreignKey = @ForeignKey(name = "med_appointment_fk5"))
+    @JoinColumn(name = "health_package_id", nullable = true, foreignKey = @ForeignKey(name = "md_appointment_fk5"))
     private HealthPackage healthPackage;
 	
 }

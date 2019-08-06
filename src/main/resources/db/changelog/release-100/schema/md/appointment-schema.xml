@@ -1,0 +1,65 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog 
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    
+    <changeSet author="FLH" id="md-appointment-schema-1">
+        <createTable tableName="md_appointment">
+            <column name="id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="time" type="time">
+                <constraints nullable="false"/>
+            </column>
+            <column name="medical_provider_id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="medical_city_id" type="VARCHAR(22)"/>
+            <column name="medical_branch_id" type="VARCHAR(22)"/>
+            <column name="health_package_id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="customer_id" type="VARCHAR(22)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="timestamp"/>
+        </createTable>
+    </changeSet>
+    
+    <changeSet author="FLH" id="md-appointment-schema-2">
+        <addPrimaryKey columnNames="id" constraintName="md_appointment_pk" tableName="md_appointment"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="md-appointment-schema-3">
+        <addForeignKeyConstraint baseColumnNames="medical_provider_id" baseTableName="md_appointment" constraintName="md_appointment_fk1" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="md_medical_provider"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="md-appointment-schema-4">
+        <addForeignKeyConstraint baseColumnNames="medical_city_id" baseTableName="md_appointment" constraintName="md_appointment_fk2" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="md_medical_city"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="md-appointment-schema-5">
+        <addForeignKeyConstraint baseColumnNames="medical_branch_id" baseTableName="md_appointment" constraintName="md_appointment_fk3" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="md_medical_branch"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="md-appointment-schema-6">
+        <addForeignKeyConstraint baseColumnNames="customer_id" baseTableName="md_appointment" constraintName="md_appointment_fk4" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="cst_customer"/>
+    </changeSet>
+    
+    <changeSet author="FLH" id="md-appointment-schema-7">
+        <addForeignKeyConstraint baseColumnNames="health_package_id" baseTableName="md_appointment" constraintName="md_appointment_fk5" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="md_health_package"/>
+    </changeSet>
+
+</databaseChangeLog>

@@ -41,7 +41,7 @@ public class DepartureController {
 	
 	private final DepartureService departureService;
 
-	@PreAuthorize("hasAnyRole('AIRPORT_ASSISTANCE')")
+	@PreAuthorize("hasAnyRole('DEPARTURE_MK', 'DEPARTURE_CK')")
 	@GetMapping
 	public String viewSepartures(
 			@ModelAttribute(Constant.TOAST) String toast, 
@@ -63,7 +63,7 @@ public class DepartureController {
 		}
 	}
 	
-	@PreAuthorize("hasAnyRole('AIRPORT_ASSISTANCE')")
+	@PreAuthorize("hasAnyRole('DEPARTURE_MK', 'DEPARTURE_CK')")
 	@GetMapping("/{id}")
 	public String departure(ModelMap model, @PathVariable String id){
 		Optional<Departure> current = departureService.findById(id);

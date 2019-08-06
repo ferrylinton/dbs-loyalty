@@ -5,7 +5,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
-    <changeSet author="FLH" id="reward-data-1">
+    <changeSet author="FLH" id="cst-reward-data-1">
 
         <insert tableName="cst_reward">
             <column name="id" value="3ZUQMtKhkagK8J3Z7JcTxG"/>
@@ -39,7 +39,7 @@
  
     </changeSet>
     
-    <changeSet author="FLH" id="reward-data-2">
+    <changeSet author="FLH" id="cst-reward-data-2">
 
         <insert tableName="cst_reward">
             <column name="id" value="3T9zR95dRMezDrXgtSR1c2"/>
@@ -73,7 +73,7 @@
  
     </changeSet>
     
-    <changeSet author="FLH" id="reward-data-3">
+    <changeSet author="FLH" id="cst-reward-data-3">
 
         <insert tableName="cst_reward">
             <column name="id" value="6CBVjO5V4b3cCbIVoVED1O"/>
@@ -107,7 +107,7 @@
  
     </changeSet>
     
-    <changeSet author="FLH" id="reward-data-4">
+    <changeSet author="FLH" id="cst-reward-data-4">
 
         <insert tableName="cst_reward">
             <column name="id" value="1TASURDNsNRfLKhkBdsY09"/>
