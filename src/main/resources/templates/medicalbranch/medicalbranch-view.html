@@ -17,7 +17,7 @@
 		</ol>
 	</nav>
 	<div layout:fragment="content">
-		<div th:replace="fragment/search.html :: content('/medicalbranch', #{address}, false)"></div>
+		<div th:replace="fragment/search.html :: content('/medicalbranch', |#{address}, #{city}, #{medicalProvider}|, false)"></div>
    		<div class="table-responsive border border-top-0" th:if="${page.getTotalElements() > 0}">
 			<table class="table table-sm table-striped table-hover border-bottom" style="min-width: 400px;">
 				<thead>
@@ -29,6 +29,8 @@
                            		<span th:text="#{address}">Address</span> <span th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></span>
                       		</a>
                      	</th>
+                     	<th th:text="#{city}">City</th>
+                     	<th th:text="#{medicalProvider}">Medical Provider</th>
                		</tr>
 				</thead>
 				<tbody th:remove="all-but-first">
@@ -47,6 +49,8 @@
 						</td>
 						<td th:text="${row.count + (page.number * page.size)}">1</td>
 						<td th:text="${medicalBranch.address}">Address</td>
+						<td th:text="${medicalBranch.medicalCity.name}">City Name</td>
+						<td th:text="${medicalBranch.medicalCity.medicalProvider.name}">Medical Provider</td>
 					</tr>
 				</tbody>
 			</table>

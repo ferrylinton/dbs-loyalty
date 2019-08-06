@@ -37,8 +37,6 @@ public class HealthPackageController {
 	
 	private static final String DETAIL 		= "healthpackage/healthpackage-detail";
 
-	private static final String SORT_BY 	= "name";
-	
 	private final HealthPackageService healthPackageService;
 
 	@PreAuthorize("hasAnyRole('HEALTH_PACKAGE_MK', 'HEALTH_PACKAGE_CK')")
@@ -48,7 +46,7 @@ public class HealthPackageController {
 			@RequestParam Map<String, String> params, 
 			Sort sort, Model model) {
 		
-		Order order = PageUtil.getOrder(sort, SORT_BY);
+		Order order = PageUtil.getOrder(sort, DomainConstant.NAME);
 		Page<HealthPackage> page = healthPackageService.findAll(params, PageUtil.getPageable(params, order));
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {

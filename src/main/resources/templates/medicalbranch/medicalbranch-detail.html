@@ -12,29 +12,37 @@
 	<nav aria-label="breadcrumb" layout:fragment="breadcrumb">
    		<ol class="breadcrumb">
       		<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{home}">Home</a></li>
-       		<li class="breadcrumb-item"><a th:href="@{/medicalbranch}" th:text="#{medicalbranch}">Medical Branch</a></li>
+       		<li class="breadcrumb-item"><a th:href="@{/medicalbranch}" th:text="#{medicalBranch}">Medical Branch</a></li>
           	<li class="breadcrumb-item active" aria-current="page" th:text="#{detail}">Detail</li>
    		</ol>
 	</nav>
 	<div layout:fragment="content">
 		<div th:replace="fragment/value-not-found.html :: content"></div>
-		<div class="table-responsive border border-top-0" th:if="${medicalbranch}">
+		<div class="table-responsive border border-top-0" th:if="${medicalBranch}">
       		<table class="table table-sm table-detail" style="min-width: 400px;">
        			<tbody>
             		<tr>
                 		<th th:text="#{id}">Id</th>
-                     	<td th:text="${medicalbranch.id}">ZwOkjFmG</td>
+                     	<td th:text="${medicalBranch.id}">ZwOkjFmG</td>
                		</tr>
                 	<tr>
-                  		<th th:text="#{name}">Name</th>
-                   		<td th:text="${medicalbranch.address}">Address</td>
+                  		<th th:text="#{address}">Name</th>
+                   		<td th:text="${medicalBranch.address}">Address</td>
               		</tr>
-					<tr th:replace="fragment/audit-detail.html :: content(data=${medicalbranch})"></tr>
+              		<tr>
+                  		<th th:text="#{city}">City</th>
+                   		<td th:text="${medicalBranch.medicalCity.name}">City Name</td>
+              		</tr>
+              		<tr>
+                  		<th th:text="#{medicalProvider}">Medical Provider</th>
+                   		<td th:text="${medicalBranch.medicalCity.medicalProvider.name}">Medical Provider</td>
+              		</tr>
+					<tr th:replace="fragment/audit-detail.html :: content(data=${medicalBranch})"></tr>
      			</tbody>
      		</table>
      	</div>
 		<div class="toolbar">
-    		<a class="btn btn-sm btn-secondary" th:href="@{/medicalbranch}">
+    		<a class="btn btn-sm btn-secondary" href="javascript:back();">
        			<span class="icon-left"></span> <span th:text="#{back}">Back</span>
      		</a>
 		</div>

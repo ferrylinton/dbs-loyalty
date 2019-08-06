@@ -133,6 +133,10 @@ function openNewTab(el) {
     return false;
 }
 
+function back(){
+	window.history.go(-1);
+}
+
 function initCustomFile(){
 	$('.custom-file input').change(function (e) {
         var files = [];
