@@ -114,10 +114,81 @@
 							</div>
 						</div>
 				</div>
-          		<input type="hidden" th:field="*{locked}" th:if="*{id == null}"/>
+				<input type="hidden" th:field="*{locked}" th:if="*{id == null}"/>
            		<input type="hidden" th:field="*{activated}"/>
              	<input type="hidden" th:field="*{passwordHash}"/>
 				<div th:replace="fragment/audit-form.html :: content"></div>
+				
+				<!-- Address - Primary -->
+
+				<div class="row">
+					<div class="col-12 col-sm-12 col-md-6 col-lg-7 col-xl-7">
+                    	<div class="form-group">
+                       		<label for="primary.address">
+                       			<span th:text="#{primary}" class="badge badge-primary"></span>
+                       			<span th:text="|#{address} *|">Address *</span>
+                       		</label>
+                        	<textarea class="form-control" th:classappend="${#fields.hasErrors('primary.address') ? 'is-invalid' : ''}" th:placeholder="#{address}" th:field="*{primary.address}" rows="3"  maxlength="250" ></textarea>
+                         	<div class="invalid-feedback" th:if="${#fields.hasErrors('primary.address')}" th:uerrors="*{primary.address}">Error</div>
+                     	</div>
+               		</div>
+               		<div class="col-12 col-sm-5 col-md-2 col-lg-2 col-xl-2">
+                    	<div class="form-group">
+                         	<label for="primary.postalCode" th:text="#{postalCode}">Postal Code *</label>
+                          	<input class="form-control" th:classappend="${#fields.hasErrors('primary.postalCode') ? 'is-invalid' : ''}" type="text" th:placeholder="#{postalCode}" th:field="*{primary.postalCode}" maxlength="20" />
+                         	<div class="invalid-feedback" th:if="${#fields.hasErrors('primary.postalCode')}" th:uerrors="*{primary.postalCode}">Error</div>
+                      	</div>
+                 	</div>
+                 	<div class="col-12 col-sm-7 col-md-4 col-lg-3 col-xl-3">
+                    	<div class="form-group">
+                         	<label for="primary.city" th:text="#{city}">City *</label>
+                          	<input class="form-control" th:classappend="${#fields.hasErrors('primary.city') ? 'is-invalid' : ''}" type="text" th:placeholder="#{city}" id="primary.city" name="primary.city" th:value="*{primary.city}" maxlength="20" />
+                         	<div class="invalid-feedback" th:if="${#fields.hasErrors('primary.city')}" th:uerrors="*{primary.city}">Error</div>
+                      	</div>
+                 	</div>
+               		<input type="hidden" th:field="*{primary.id}" th:if="*{primary.id != null}"/>
+               		<input type="hidden" id="primary.label" name="primary.label" th:value="${T(com.dbs.loyalty.config.constant.AddressConstant).PRIMARY}"/>
+			   		<input type="hidden" th:field="*{primary.createdBy}"/>
+			     	<input type="hidden" th:field="*{primary.createdDate}"/>
+			     	<input type="hidden" th:field="*{primary.lastModifiedBy}"/>
+			      	<input type="hidden" th:field="*{primary.lastModifiedDate}"/>
+				</div>
+				
+				<!-- Address - Secondary -->
+				
+				<div class="row pt-2">
+					<div class="col-12 col-sm-12 col-md-6 col-lg-7 col-xl-7">
+                    	<div class="form-group">
+                       		<label for="secondary.address">
+                       			<span th:text="#{secondary}" class="badge badge-primary"></span>
+                       			<span th:text="#{address}">Address *</span>
+                       		</label>
+                        	<textarea class="form-control" th:classappend="${#fields.hasErrors('secondary.address') ? 'is-invalid' : ''}" th:placeholder="#{address}" th:field="*{secondary.address}" rows="3"  maxlength="250" ></textarea>
+                         	<div class="invalid-feedback" th:if="${#fields.hasErrors('secondary.address')}" th:uerrors="*{secondary.address}">Error</div>
+                     	</div>
+               		</div>
+               		<div class="col-12 col-sm-5 col-md-2 col-lg-2 col-xl-2">
+                    	<div class="form-group">
+                         	<label for="secondary.postalCode" th:text="#{postalCode}">Postal Code *</label>
+                          	<input class="form-control" th:classappend="${#fields.hasErrors('secondary.postalCode') ? 'is-invalid' : ''}" type="text" th:placeholder="#{postalCode}" th:field="*{secondary.postalCode}" maxlength="20" />
+                         	<div class="invalid-feedback" th:if="${#fields.hasErrors('secondary.postalCode')}" th:uerrors="*{secondary.postalCode}">Error</div>
+                      	</div>
+                 	</div>
+                 	<div class="col-12 col-sm-7 col-md-4 col-lg-3 col-xl-3">
+                    	<div class="form-group">
+                         	<label for="secondary.city" th:text="#{city}">City *</label>
+                          	<input class="form-control" th:classappend="${#fields.hasErrors('secondary.city') ? 'is-invalid' : ''}" type="text" th:placeholder="#{city}" id="secondary.city" name="secondary.city" th:value="*{secondary.city}" maxlength="20" />
+                         	<div class="invalid-feedback" th:if="${#fields.hasErrors('secondary.city')}" th:uerrors="*{secondary.city}">Error</div>
+                      	</div>
+                 	</div>
+               		<input type="hidden" th:field="*{secondary.id}" th:if="*{secondary.id != null}"/>
+               		<input type="hidden" id="secondary.label" name="secondary.label" th:value="${T(com.dbs.loyalty.config.constant.AddressConstant).SECONDARY}"/>
+			   		<input type="hidden" th:field="*{secondary.createdBy}"/>
+			     	<input type="hidden" th:field="*{secondary.createdDate}"/>
+			     	<input type="hidden" th:field="*{secondary.lastModifiedBy}"/>
+			      	<input type="hidden" th:field="*{secondary.lastModifiedDate}"/>
+				</div>
+          		
 			</th:block>
           	<div class="toolbar">
            		<a class="btn btn-sm btn-secondary" th:href="@{/customer}">

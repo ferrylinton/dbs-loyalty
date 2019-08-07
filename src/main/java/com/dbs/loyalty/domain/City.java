@@ -17,7 +17,6 @@ import javax.persistence.UniqueConstraint;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 /**
  * Class of City
@@ -26,8 +25,7 @@ import lombok.ToString;
  */
 @Setter
 @Getter
-@EqualsAndHashCode(of = { "id" }, callSuper = false)
-@ToString(of = { "id", "name" })
+@EqualsAndHashCode(of = { "name" }, callSuper = false)
 @Entity
 @Table(	
 	name = "mst_city", 
@@ -64,5 +62,10 @@ public class City implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "province_id", nullable = false, foreignKey = @ForeignKey(name = "mst_city_fk"))
 	private Province province;
+
+	@Override
+	public String toString() {
+		return name;
+	}
 
 }

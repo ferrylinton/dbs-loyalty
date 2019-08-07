@@ -29,10 +29,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dbs.loyalty.config.ApplicationProperties;
+import com.dbs.loyalty.config.constant.AddressConstant;
 import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.CustomerTypeConstant;
 import com.dbs.loyalty.config.constant.DateConstant;
 import com.dbs.loyalty.config.constant.DomainConstant;
+import com.dbs.loyalty.domain.Address;
 import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.domain.FileImageTask;
 import com.dbs.loyalty.service.CustomerService;
@@ -104,6 +106,16 @@ public class CustomerController {
 		if (id.equals(Constant.ZERO)) {
 			Customer customer = new Customer();
 			customer.setCustomerType(CustomerTypeConstant.TPC_VALUE);
+			customer.setDob(LocalDate.now());
+			
+			Address primary = new Address();
+			primary.setLabel(AddressConstant.PRIMARY);
+			customer.setPrimary(primary);
+			
+			Address secondary = new Address();
+			primary.setLabel(AddressConstant.SECONDARY);
+			customer.setPrimary(secondary);
+			
 			model.addAttribute(DomainConstant.CUSTOMER, customer);
 		} else {
 			getById(model, id);
@@ -127,6 +139,8 @@ public class CustomerController {
 				Optional<Customer> current = customerService.findById(customer.getId());
 				
 				if(current.isPresent()) { 
+					prepareAddress(current.get());
+					
 					if(customer.getMultipartFileImage().isEmpty()) {
 						customer.setImage(customer.getId());
 					}else {
@@ -136,6 +150,7 @@ public class CustomerController {
 					
 					customer.setPasswordHash(current.get().getPasswordHash());
 					current.get().setImage(customer.getId());
+					
 					taskService.saveTaskModify(DomainConstant.CUSTOMER, current.get(), customer);
 					customerService.save(true, customer.getId());
 				}
@@ -184,10 +199,22 @@ public class CustomerController {
 		Optional<Customer> customer = customerService.findById(id);
 		
 		if (customer.isPresent()) {
+			prepareAddress(customer.get());
 			model.addAttribute(DomainConstant.CUSTOMER, customer.get());
 		} else {
 			model.addAttribute(Constant.ERROR, MessageUtil.getNotFoundMessage(id));
 		}
 	}
 	
+	private void prepareAddress(Customer customer) {
+		for(Address address: customer.getAddresses()) {
+			if(address.getLabel().equals(AddressConstant.PRIMARY)) {
+				customer.setPrimary(address);
+			}else if(address.getLabel().equals(AddressConstant.SECONDARY)) {
+				customer.setSecondary(address);
+			}
+		}
+		
+		customer.setAddresses(null);
+	}
 }

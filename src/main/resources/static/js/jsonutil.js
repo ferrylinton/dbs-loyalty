@@ -18,7 +18,7 @@ var JsonUtil = (function () {
                         
                         table += '<td>';
                         for (var i = 0; i < arr.length; i++) {
-                            table += objectJsonToString( arr[i]);
+                            table += objectJsonToString(arr[i]);
                             table += '<br>';
                         } 
                         table += '</td>';
@@ -59,12 +59,26 @@ var JsonUtil = (function () {
 
     function objectJsonToString(obj){
         var text = '';
+        text += '<table>';
         
         for (var key in obj) {
-            text += ((text === '') ? '[' : ', ') + Lang.field(key) + ' = ' + obj[key];
+        	text += '<tr>';
+    		text += '<th>' +  Lang.field(key) + '</th>';
+    		text += '<td>';
+    		
+    		if(jQuery.type(obj[key]) === 'object'){
+        		text += objectJsonToString(obj[key]);
+        	}else{
+        		text += obj[key];
+        	}
+    		
+    		text += '</td>';
+    		text += '</tr>';
+    		
+        	
         }
-        
-        text += ']';
+
+        text += '</table>';
         return text;
     }
 

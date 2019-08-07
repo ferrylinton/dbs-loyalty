@@ -13,12 +13,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.GenericGenerator;
 
 import com.dbs.loyalty.config.constant.DomainConstant;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -51,25 +51,23 @@ public class Address extends AbstractAuditing implements Serializable {
 	@GeneratedValue(generator = DomainConstant.ID_GENERATOR)
 	private String id;
 	
-	@Column(name = "label", length = 20, nullable = false)
+	@Column(name = "label", length = 20)
 	private String label;
-	
-	@NotNull
-	@Size(min = 2, max = 250)
-	@Column(name = "address", length = 250, nullable = false)
+
+	@Column(name = "address", length = 250)
 	private String address;
 
-	@Size(min = 2, max = 20)
-	@Column(name = "postal_code", length = 20, nullable = false)
+	@Column(name = "postal_code", length = 20)
 	private String postalCode;
 
+	@JsonIgnoreProperties({"active", "createdAt", "updatedAt", "province"})
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "city_id", nullable = false, foreignKey = @ForeignKey(name = "cst_address_fk1"))
+    @JoinColumn(name = "city_id", foreignKey = @ForeignKey(name = "cst_address_fk1"))
 	private City city;
-	
-	@NotNull
+
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id", nullable = false, foreignKey = @ForeignKey(name = "cst_address_fk2"))
+    @JoinColumn(name = "customer_id", foreignKey = @ForeignKey(name = "cst_addrss_fk2"))
 	private Customer customer;
 	
 }

@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import com.dbs.loyalty.config.constant.AddressLabelConstant;
+import com.dbs.loyalty.config.constant.AddressConstant;
 import com.dbs.loyalty.domain.City;
 import com.dbs.loyalty.service.CityService;
 import com.dbs.loyalty.service.dto.AddressDto;
@@ -27,10 +27,10 @@ public class AddressDtoValidator implements Validator {
 	public void validate(Object target, Errors errors) {
 		AddressDto addressDto = (AddressDto) target;
 		
-		if(addressDto.getLabel() != null && !(AddressLabelConstant.PRIMARY.equalsIgnoreCase(addressDto.getLabel()) || 
-				AddressLabelConstant.SECONDARY.equalsIgnoreCase(addressDto.getLabel()))) {
+		if(addressDto.getLabel() != null && !(AddressConstant.PRIMARY.equalsIgnoreCase(addressDto.getLabel()) || 
+				AddressConstant.SECONDARY.equalsIgnoreCase(addressDto.getLabel()))) {
 			
-			String message = String.format("label must be '%s' or '%s'", AddressLabelConstant.PRIMARY, AddressLabelConstant.SECONDARY);
+			String message = String.format("label must be '%s' or '%s'", AddressConstant.PRIMARY, AddressConstant.SECONDARY);
 			errors.rejectValue("label", message, message);
 		}
 		

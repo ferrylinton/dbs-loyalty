@@ -45,7 +45,13 @@ var Lang = (function () {
 				"lastName": "Last Name",
 				"accountNo": "Account No",
 				"0025": "TPC",
-				"0012": "TREASURE"
+				"0012": "TREASURE",
+				"label": "Label",
+				"address": "Address",
+				"postalCode": "Postal Code",
+				"city": "City",
+				"primary": "Primary",
+				"secondary": "Secondary"
 			},
 			"label":{
 				"activated" : "Activated",
@@ -100,7 +106,13 @@ var Lang = (function () {
 				"lastName": "Nama Belakan",
 				"accountNo": "No Akun",
 				"0025": "TPC",
-				"0012": "TREASURE"
+				"0012": "TREASURE",
+				"label": "Label",
+				"address": "Alamat",
+				"postalCode": "Kode Pos",
+				"city": "Kota",
+				"primary": "Primer",
+				"secondary": "Sekunder"
 			},
 			"label":{
 				"activated" : "Aktif",

@@ -111,6 +111,12 @@ public class Customer extends AbstractTask implements Serializable {
 	
 	@OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     private Set<Address> addresses = new HashSet<>();
+	
+	@Transient
+	private Address primary;
+	
+	@Transient
+	private Address secondary;
 
     @Transient
     private String image;

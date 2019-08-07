@@ -10,9 +10,7 @@
             <column name="id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
             </column>
-            <column name="address" type="VARCHAR(250)">
-                <constraints nullable="false"/>
-            </column>
+            <column name="address" type="VARCHAR(250)"/>
             <column name="postal_code" type="VARCHAR(20)"/>
             <column name="label" type="VARCHAR(20)" defaultValue="Secondary">
                 <constraints nullable="false"/>

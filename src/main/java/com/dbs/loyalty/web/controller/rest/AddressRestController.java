@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.aop.EnableLogAuditCustomer;
-import com.dbs.loyalty.config.constant.AddressLabelConstant;
+import com.dbs.loyalty.config.constant.AddressConstant;
 import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
 import com.dbs.loyalty.domain.Address;
@@ -123,10 +123,10 @@ public class AddressRestController {
     }
     
     private void setLabel(Address address) {
-    	if(AddressLabelConstant.PRIMARY.equalsIgnoreCase(address.getLabel())){
-    		address.setLabel(AddressLabelConstant.PRIMARY);
+    	if(AddressConstant.PRIMARY.equalsIgnoreCase(address.getLabel())){
+    		address.setLabel(AddressConstant.PRIMARY);
 		}else {
-			address.setLabel(AddressLabelConstant.SECONDARY);
+			address.setLabel(AddressConstant.SECONDARY);
 		}
     }
 

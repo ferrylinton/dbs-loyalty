@@ -18,99 +18,143 @@
 	</nav>
 	<div layout:fragment="content">
 		<div th:replace="fragment/value-not-found.html :: content"></div>
-		<div class="table-responsive border border-top-0" th:if="${customer}">
-       		<table class="table table-sm table-detail">
-          		<tbody>
-             		<tr>
-               			<th th:text="#{id}">Id</th>
-                    	<td th:text="${customer.id}">Id</td>
-               		</tr>
-               		<tr>
-               			<th th:text="#{cif}">CIF</th>
-                    	<td th:text="${customer.cif}">0000001</td>
-               		</tr>
-               		<tr>
-               			<th th:text="#{accountNo}">Account No</th>
-                    	<td th:text="${customer.accountNo}">0000001</td>
-               		</tr>
-         			<tr>
-                    	<th th:text="#{firstName}">First Name</th>
-                      	<td th:text="${customer.firstName}">Ferry</td>
-           			</tr>
-           			<tr>
-                    	<th th:text="#{lastName}">First Name</th>
-                      	<td th:text="${customer.lastName}">Hutapea</td>
-           			</tr>
-                  	<tr>
-                 		<th th:text="#{email}">Email</th>
-                     	<td th:text="${customer.email}">ferrylinton@gmail.com</td>
-                  	</tr>
-               		<tr>
-                   		<th th:text="#{customerType}">Customer Type</th>
-                     	<td th:text="${customer.customerType == T(com.dbs.loyalty.config.constant.CustomerTypeConstant).TPC_VALUE ? 'TPC' : 'TREASURE'}">TREASURE</td>
-                	</tr>
-               		<tr>
-                    	<th th:text="#{phone}">Phone</th>
-                     	<td th:text="${customer.phone}">1234567890</td>
-                	</tr>
-                  	<tr>
-                     	<th th:text="#{dob}">DOB</th>
-                     	<td th:text="${#temporals.format(customer.dob, @dateService.javaDate())}">01-02-1999</td>
-                  	</tr>
-              		<tr>
-                     	<th th:text="#{activated}">Activated</th>
-                    	<td><span class="text-success icon-ok" th:class="${customer.activated} ? 'text-success icon-ok' : 'text-danger icon-cancel'"></span></td>
-                  	</tr>
-                 	<tr>
-                    	<th th:text="#{image}">Image</th>
-                     	<td>
-                       		<div class="d-block overflow-auto">
-                            	<img class="border p-1" alt="image" th:src="@{|/image/${customer.id}|}" />
-                         	</div>
-                      	</td>
-                  	</tr>
-               		<tr th:replace="fragment/audit-detail.html :: content(data=${customer})"></tr>
-            	</tbody>
-     		</table>
-		</div>
-		<div class="table-responsive border border-top-0" th:each="address,row : ${customer.addresses}" th:if="${customer}">
-       		<table class="table table-sm table-detail">
-          		<tbody>
-             		<tr>
-               			<th th:text="#{id}">Id</th>
-                    	<td th:text="${address.id}">Id</td>
-               		</tr>
-               		<tr>
-               			<th th:text="#{label}">Label</th>
-                    	<td th:text="${address.label}">Primary</td>
-               		</tr>
-               		<tr>
-               			<th th:text="#{address}">Address</th>
-                    	<td th:text="${address.address}">Address</td>
-               		</tr>
-               		<tr>
-               			<th th:text="#{postalCode}">Postal Code</th>
-                    	<td th:text="${address.postalCode}">12345678</td>
-               		</tr>
-               		<tr>
-               			<th th:text="#{city}">City</th>
-                    	<td th:text="${address.city.name}">Jakarta Barat</td>
-               		</tr>
-               		<th:block th:if="${address.city.province}">
+		<th:block th:if="${customer}">
+			<div class="table-responsive border border-top-0">
+	       		<table class="table table-sm table-detail">
+	          		<tbody>
+	             		<tr>
+	               			<th th:text="#{id}">Id</th>
+	                    	<td th:text="${customer.id}">Id</td>
+	               		</tr>
 	               		<tr>
-	               			<th th:text="#{province}">Province</th>
-	                    	<td th:text="${address.city.province.name}">DKI Jakarta</td>
+	               			<th th:text="#{cif}">CIF</th>
+	                    	<td th:text="${customer.cif}">0000001</td>
 	               		</tr>
-	               		<tr th:if="${address.city.province.country}">
-	               			<th th:text="#{country}">Country</th>
-	                    	<td th:text="${address.city.province.country.name}">Indonesia</td>
+	               		<tr>
+	               			<th th:text="#{accountNo}">Account No</th>
+	                    	<td th:text="${customer.accountNo}">0000001</td>
 	               		</tr>
-               		</th:block>
-               	</tbody>
-        	</table>
-        </div>
+	         			<tr>
+	                    	<th th:text="#{firstName}">First Name</th>
+	                      	<td th:text="${customer.firstName}">Ferry</td>
+	           			</tr>
+	           			<tr>
+	                    	<th th:text="#{lastName}">First Name</th>
+	                      	<td th:text="${customer.lastName}">Hutapea</td>
+	           			</tr>
+	                  	<tr>
+	                 		<th th:text="#{email}">Email</th>
+	                     	<td th:text="${customer.email}">ferrylinton@gmail.com</td>
+	                  	</tr>
+	               		<tr>
+	                   		<th th:text="#{customerType}">Customer Type</th>
+	                     	<td th:text="${customer.customerType == T(com.dbs.loyalty.config.constant.CustomerTypeConstant).TPC_VALUE ? 'TPC' : 'TREASURE'}">TREASURE</td>
+	                	</tr>
+	               		<tr>
+	                    	<th th:text="#{phone}">Phone</th>
+	                     	<td th:text="${customer.phone}">1234567890</td>
+	                	</tr>
+	                  	<tr>
+	                     	<th th:text="#{dob}">DOB</th>
+	                     	<td th:text="${#temporals.format(customer.dob, @dateService.javaDate())}">01-02-1999</td>
+	                  	</tr>
+	              		<tr>
+	                     	<th th:text="#{activated}">Activated</th>
+	                    	<td><span class="text-success icon-ok" th:class="${customer.activated} ? 'text-success icon-ok' : 'text-danger icon-cancel'"></span></td>
+	                  	</tr>
+	                 	<tr>
+	                    	<th th:text="#{image}">Image</th>
+	                     	<td>
+	                       		<div class="d-block overflow-auto">
+	                            	<img class="border p-1" alt="image" th:src="@{|/image/${customer.id}|}" />
+	                         	</div>
+	                      	</td>
+	                  	</tr>
+	               		<tr th:replace="fragment/audit-detail.html :: content(data=${customer})"></tr>
+	            	</tbody>
+	     		</table>
+			</div>
+			<div class="table-responsive border border-top-0" th:if="${customer.primary}">
+	       		<table class="table table-sm table-detail">
+	          		<tbody>
+	             		<tr>
+	               			<th>
+	               				<span th:text="#{id}">Id</span>
+	               				<span th:text="#{primary}" class="badge badge-primary"></span>
+	               			</th>
+	                    	<td th:text="${customer.primary.id}">Id</td>
+	               		</tr>
+	               		<tr>
+	               			<th th:text="#{label}">Label</th>
+	                    	<td th:text="${customer.primary.label}">Primary</td>
+	               		</tr>
+	               		<tr>
+	               			<th th:text="#{primary}">Address</th>
+	                    	<td th:text="${customer.primary.address}">Address</td>
+	               		</tr>
+	               		<tr>
+	               			<th th:text="#{postalCode}">Postal Code</th>
+	                    	<td th:text="${customer.primary.postalCode}">12345678</td>
+	               		</tr>
+	               		<tr>
+	               			<th th:text="#{city}">City</th>
+	                    	<td th:text="${customer.primary.city.name}">Jakarta Barat</td>
+	               		</tr>
+	               		<th:block th:if="${customer.primary.city.province}">
+		               		<tr>
+		               			<th th:text="#{province}">Province</th>
+		                    	<td th:text="${customer.primary.city.province.name}">DKI Jakarta</td>
+		               		</tr>
+		               		<tr th:if="${customer.primary.city.province.country}">
+		               			<th th:text="#{country}">Country</th>
+		                    	<td th:text="${customer.primary.city.province.country.name}">Indonesia</td>
+		               		</tr>
+	               		</th:block>
+	               	</tbody>
+	        	</table>
+	        </div>
+	        <div class="table-responsive border border-top-0" th:if="${customer.secondary}">
+	       		<table class="table table-sm table-detail">
+	          		<tbody>
+	             		<tr>
+	               			<th>
+	               				<span th:text="#{id}">Id</span>
+	               				<span th:text="#{secondary}" class="badge badge-primary"></span>
+	               			</th>
+	                    	<td th:text="${customer.secondary.id}">Id</td>
+	               		</tr>
+	               		<tr>
+	               			<th th:text="#{label}">Label</th>
+	                    	<td th:text="${customer.secondary.label}">Primary</td>
+	               		</tr>
+	               		<tr>
+	               			<th th:text="#{secondary}">Address</th>
+	                    	<td th:text="${customer.secondary.address}">Address</td>
+	               		</tr>
+	               		<tr>
+	               			<th th:text="#{postalCode}">Postal Code</th>
+	                    	<td th:text="${customer.secondary.postalCode}">12345678</td>
+	               		</tr>
+	               		<tr>
+	               			<th th:text="#{city}">City</th>
+	                    	<td th:text="${customer.secondary.city.name}">Jakarta Barat</td>
+	               		</tr>
+	               		<th:block th:if="${customer.secondary.city.province}">
+		               		<tr>
+		               			<th th:text="#{province}">Province</th>
+		                    	<td th:text="${customer.secondary.city.province.name}">DKI Jakarta</td>
+		               		</tr>
+		               		<tr th:if="${customer.secondary.city.province.country}">
+		               			<th th:text="#{country}">Country</th>
+		                    	<td th:text="${customer.secondary.city.province.country.name}">Indonesia</td>
+		               		</tr>
+	               		</th:block>
+	               	</tbody>
+	        	</table>
+	        </div>
+        </th:block>
 		<div class="toolbar">
-       		<a class="btn btn-sm btn-secondary" th:href="@{/customer}">
+       		<a class="btn btn-sm btn-secondary" href="javascript:back();">
             	<span class="icon-left"></span> <span th:text="#{back}">Back</span>
          	</a>
 		</div>

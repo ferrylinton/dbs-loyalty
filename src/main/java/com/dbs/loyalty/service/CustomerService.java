@@ -9,10 +9,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.dbs.loyalty.domain.Address;
 import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.enumeration.TaskOperation;
 import com.dbs.loyalty.exception.BadRequestException;
+import com.dbs.loyalty.repository.AddressRepository;
 import com.dbs.loyalty.repository.CustomerRepository;
 import com.dbs.loyalty.service.dto.CustomerActivateDto;
 import com.dbs.loyalty.service.dto.CustomerNewPasswordDto;
@@ -31,6 +33,8 @@ import lombok.RequiredArgsConstructor;
 public class CustomerService{
 
 	private final CustomerRepository customerRepository;
+	
+	private final AddressRepository addressRepository;
 	
 	private final ImageService imageService;
 	
@@ -133,6 +137,8 @@ public class CustomerService{
 		Customer customer = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), Customer.class);
 
 		if(task.getVerified()) {
+			setAddresses(task, customer);
+
 			if(task.getTaskOperation() == TaskOperation.ADD) {
 				customer.setCreatedBy(task.getMaker());
 				customer.setCreatedDate(task.getMadeDate());
@@ -146,6 +152,7 @@ public class CustomerService{
 				imageService.update(customer.getId(), customer.getImage(), task.getMaker(), task.getMadeDate());
 			}else if(task.getTaskOperation() == TaskOperation.DELETE) {
 				customerRepository.delete(customer);
+				imageService.delete(customer.getId());
 			}
 		}else if(task.getTaskOperation() != TaskOperation.ADD) {
 			customerRepository.save(false, customer.getId());
@@ -154,4 +161,28 @@ public class CustomerService{
 		return customer.getEmail();
 	}
 
+	private void setAddresses(Task task, Customer customer) {
+		if(customer.getPrimary() != null) {
+			save(task, customer.getPrimary(), customer);
+		}
+		
+		if(customer.getSecondary() != null) {
+			save(task, customer.getSecondary(), customer);
+		}
+	}
+	
+	private void save(Task task, Address address, Customer customer) {
+		address.setCustomer(customer);
+		if(task.getTaskOperation() == TaskOperation.ADD) {
+			address.setCreatedBy(task.getMaker());
+			address.setCreatedDate(task.getMadeDate());
+			addressRepository.save(address);
+		}else if(task.getTaskOperation() == TaskOperation.MODIFY) {
+			address.setLastModifiedBy(task.getMaker());
+			address.setLastModifiedDate(task.getMadeDate());
+			addressRepository.save(address);
+		}else if(task.getTaskOperation() == TaskOperation.DELETE) {
+			addressRepository.delete(address);
+		}
+	}
 }
