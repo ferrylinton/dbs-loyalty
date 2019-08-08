@@ -19,7 +19,6 @@ var JsonUtil = (function () {
                         table += '<td>';
                         for (var i = 0; i < arr.length; i++) {
                             table += objectJsonToString(arr[i]);
-                            table += '<br>';
                         } 
                         table += '</td>';
                     }else if(jQuery.type(obj[key]) === 'object'){
@@ -59,7 +58,7 @@ var JsonUtil = (function () {
 
     function objectJsonToString(obj){
         var text = '';
-        text += '<table>';
+        text += '<table style="margin-bottom: 5px;">';
         
         for (var key in obj) {
         	text += '<tr>';

@@ -9,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.Role;
@@ -16,6 +18,7 @@ import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.RoleRepository;
 import com.dbs.loyalty.service.specification.RoleSpec;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -29,6 +32,8 @@ public class RoleService{
 	private final ObjectMapper objectMapper;
 	
 	private final RoleRepository roleRepository;
+	
+	private final TaskService taskService;
 
 	public Optional<Role> findById(String id){
 		return roleRepository.findById(id);
@@ -38,7 +43,7 @@ public class RoleService{
 		return roleRepository.findByNameIgnoreCase(name);
 	}
 	
-	public Optional<Role> findWithAuthoritiesById(String id){
+	public Role findWithAuthoritiesById(String id){
 		return roleRepository.findWithAuthoritiesById(id);
 	}
 
@@ -68,7 +73,25 @@ public class RoleService{
 		roleRepository.save(pending, id);
 	}
 	
-	public String execute(Task task) throws IOException {
+	@Transactional
+	public void taskSave(Role role) throws JsonProcessingException {
+		if(role.getId() == null) {
+			taskService.saveTaskAdd(DomainConstant.ROLE, role);
+		}else {
+			taskService.saveTaskModify(DomainConstant.ROLE, roleRepository.findWithAuthoritiesById(role.getId()), role);
+			save(true, role.getId());
+		}
+	}
+
+	@Transactional
+	public void taskDelete(Role role) throws JsonProcessingException {
+		taskService.saveTaskDelete(DomainConstant.ROLE, role);
+		save(true, role.getId());
+	}
+	
+	@Transactional
+	public String taskConfirm(Task task) throws IOException {
+		taskService.confirm(task);
 		Role role = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), Role.class);
 		
 		if(task.getVerified()) {
@@ -89,6 +112,22 @@ public class RoleService{
 		}
 
 		return role.getName();
+	}
+	
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
+	public String taskFailed(Exception ex, Task task) {
+		try {
+			Role role = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), Role.class);
+			
+			if(task.getTaskOperation() != TaskOperation.ADD) {
+				roleRepository.save(false, role.getId());
+			}
+
+			taskService.save(ex, task);
+			return ex.getLocalizedMessage();
+		} catch (Exception e) {
+			return e.getLocalizedMessage();
+		}
 	}
 	
 }

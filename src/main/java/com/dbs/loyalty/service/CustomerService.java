@@ -135,20 +135,24 @@ public class CustomerService{
 	
 	public String execute(Task task) throws IOException {
 		Customer customer = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), Customer.class);
-
+		Address primary = customer.getPrimary();
+		Address secondary = customer.getSecondary();
+		
 		if(task.getVerified()) {
-			setAddresses(task, customer);
-
 			if(task.getTaskOperation() == TaskOperation.ADD) {
 				customer.setCreatedBy(task.getMaker());
 				customer.setCreatedDate(task.getMadeDate());
-				customerRepository.save(customer);
+				customer = customerRepository.save(customer);
+				saveAddress(task, primary, customer);
+				saveAddress(task, secondary, customer);
 				imageService.add(customer.getId(), customer.getImage(), task.getMaker(), task.getMadeDate());
 			}else if(task.getTaskOperation() == TaskOperation.MODIFY) {
 				customer.setLastModifiedBy(task.getMaker());
 				customer.setLastModifiedDate(task.getMadeDate());
 				customer.setPending(false);
-				customerRepository.save(customer);
+				customer = customerRepository.save(customer);
+				saveAddress(task, primary, customer);
+				saveAddress(task, secondary, customer);
 				imageService.update(customer.getId(), customer.getImage(), task.getMaker(), task.getMadeDate());
 			}else if(task.getTaskOperation() == TaskOperation.DELETE) {
 				customerRepository.delete(customer);
@@ -161,28 +165,21 @@ public class CustomerService{
 		return customer.getEmail();
 	}
 
-	private void setAddresses(Task task, Customer customer) {
-		if(customer.getPrimary() != null) {
-			save(task, customer.getPrimary(), customer);
-		}
-		
-		if(customer.getSecondary() != null) {
-			save(task, customer.getSecondary(), customer);
-		}
-	}
-	
-	private void save(Task task, Address address, Customer customer) {
-		address.setCustomer(customer);
-		if(task.getTaskOperation() == TaskOperation.ADD) {
-			address.setCreatedBy(task.getMaker());
-			address.setCreatedDate(task.getMadeDate());
-			addressRepository.save(address);
-		}else if(task.getTaskOperation() == TaskOperation.MODIFY) {
-			address.setLastModifiedBy(task.getMaker());
-			address.setLastModifiedDate(task.getMadeDate());
-			addressRepository.save(address);
-		}else if(task.getTaskOperation() == TaskOperation.DELETE) {
-			addressRepository.delete(address);
+	private void saveAddress(Task task, Address address, Customer customer) {
+		if(address != null) {
+			address.setCustomer(customer);
+			if(task.getTaskOperation() == TaskOperation.ADD) {
+				address.setCreatedBy(task.getMaker());
+				address.setCreatedDate(task.getMadeDate());
+				addressRepository.save(address);
+			}else if(task.getTaskOperation() == TaskOperation.MODIFY) {
+				address.setLastModifiedBy(task.getMaker());
+				address.setLastModifiedDate(task.getMadeDate());
+				addressRepository.save(address);
+			}else if(task.getTaskOperation() == TaskOperation.DELETE) {
+				addressRepository.delete(address);
+			}
 		}
 	}
+
 }

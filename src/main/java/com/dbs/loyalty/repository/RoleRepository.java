@@ -19,8 +19,8 @@ public interface RoleRepository extends JpaRepository<Role, String>, JpaSpecific
 	Optional<Role> findByNameIgnoreCase(String name);
 	
 	@EntityGraph(attributePaths = { "authorities" })
-	Optional<Role> findWithAuthoritiesById(String id);
-	
+	Role findWithAuthoritiesById(String id);
+
 	@Modifying
 	@Query("update Role r set r.pending = ?1 where r.id = ?2")
 	void save(boolean pending, String id);

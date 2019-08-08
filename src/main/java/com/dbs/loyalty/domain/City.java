@@ -47,8 +47,8 @@ public class City implements Serializable {
 	@Column(name = "name", length = 50)
     private String name;
 	
-	@Column(name = "active", length = 50)
-	private Boolean active = false;
+	@Column(name = "active")
+	private Boolean active = true;
 	
 	@Column(name = "created_at")
 	private Instant createdAt;

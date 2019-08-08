@@ -47,6 +47,11 @@ public final class MessageUtil {
 		taskDataType = MessageUtil.getMessage(taskDataType);
 		return MessageUtil.getMessage(TASK_IS_SAVED, taskDataType, val);
 	}
+	
+	public static String taskIsSaved(String taskDataType, String val) {
+		taskDataType = MessageUtil.getMessage(taskDataType);
+		return MessageUtil.getMessage(TASK_IS_SAVED, taskDataType, val);
+	}
 
 	public static String getNotFoundMessage(String val) {
 		return MessageUtil.getMessage(DATA_WITH_VALUE_NOT_FOUND, val);

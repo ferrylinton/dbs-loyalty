@@ -34,6 +34,8 @@ $(document).ready(function () {
 	
 	JsonUtil.toTable();
 	
+	initAutoComplete();
+	
 });
 
 function initDobMask(){
@@ -145,4 +147,32 @@ function initCustomFile(){
         }
         $(this).next('.custom-file-label').html(files.join(', '));
     });
+}
+
+function initAutoComplete(){
+	var primarycity = $('#primarycity');
+	var secondarycity = $('#secondarycity');
+	
+	if(primarycity.length || secondarycity.length){
+		var contextPath = $('meta[name=contextPath]').attr('content');
+		var options = {
+			url: function(phrase) {
+				return contextPath + 'city/search/' + phrase;
+			},
+         	getValue: "name",
+         	list: {
+             	match: {
+                 	enabled: true
+             	}
+         	}
+		};
+
+		if(primarycity.length){
+			primarycity.easyAutocomplete(options);
+		}
+		
+		if(secondarycity.length){
+			secondarycity.easyAutocomplete(options);
+		}
+	}
 }

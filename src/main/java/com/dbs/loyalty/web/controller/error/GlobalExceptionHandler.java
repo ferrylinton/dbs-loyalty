@@ -1,6 +1,8 @@
 package com.dbs.loyalty.web.controller.error;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -37,9 +39,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @ControllerAdvice
 public class GlobalExceptionHandler extends AbstractErrorController{
 
-	private static final Locale locale = new Locale("en");
+	private static final Locale LOCALE = new Locale("en");
 	
 	private static final String OPERATION_KEY_FORMAT = "%s:%s";
+	
+	private static final List<String> CODES = Arrays.asList("NotNull", "Size", "NotEmpty");
+	
+	private static final String CODE_FORMAT = "javax.validation.constraints.%s.message";
 	
 	private final LogAuditCustomerService logAuditCustomerService;
 
@@ -123,7 +129,8 @@ public class GlobalExceptionHandler extends AbstractErrorController{
 		
 		for(ObjectError objectError : ex.getBindingResult().getAllErrors()) {
 			FieldError fieldError = (FieldError) objectError;
-			errors.put(fieldError.getField(), MessageUtil.getMessage(fieldError.getCode(), locale));
+			String code = CODES.contains(fieldError.getCode()) ? String.format(CODE_FORMAT, fieldError.getCode()) : fieldError.getCode();
+			errors.put(fieldError.getField(), MessageUtil.getMessage(code, LOCALE));
 		}
 		
 		return errors;

@@ -21,7 +21,7 @@
 		<div th:replace="fragment/value-not-found.html :: content"></div>
  		<form th:action="@{/customer}" th:object="${customer}" method="post" autocomplete="off" enctype="multipart/form-data">
 			<th:block th:if="${customer}">
-          		<div class="row" th:object="${customer}">
+          		<div class="row">
                         <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
                             <div class="form-group">
                                 <label for="customerType" th:text="#{customerType}">Customer Type</label>
@@ -76,7 +76,7 @@
                         <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
                             <div class="form-group">
                                 <label for="dob" th:text="|#{dob} *|">DOB *</label>
-                                <input class="form-control" th:classappend="${#fields.hasErrors('dob') ? 'is-invalid' : ''}" type="text" th:placeholder="#{dob}" id="dob" name="dob" th:value="${#temporals.format(customer.dob, @dateService.javaDate())}" />
+                                <input class="form-control" th:classappend="${#fields.hasErrors('dob') ? 'is-invalid' : ''}" type="text" th:placeholder="#{dob}" th:field="*{dob}" />
                             </div>
                         </div>
                         <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4" th:if="*{id != null}">
@@ -140,9 +140,9 @@
                       	</div>
                  	</div>
                  	<div class="col-12 col-sm-7 col-md-4 col-lg-3 col-xl-3">
-                    	<div class="form-group">
+                    	<div class="form-group input-grp-autocomplete">
                          	<label for="primary.city" th:text="#{city}">City *</label>
-                          	<input class="form-control" th:classappend="${#fields.hasErrors('primary.city') ? 'is-invalid' : ''}" type="text" th:placeholder="#{city}" id="primary.city" name="primary.city" th:value="*{primary.city}" maxlength="20" />
+                          	<input class="form-control" th:classappend="${#fields.hasErrors('primary.city') ? 'is-invalid' : ''}" type="text" th:placeholder="#{city}" id="primarycity" name="primary.city" th:value="*{primary.city}" maxlength="20"/>
                          	<div class="invalid-feedback" th:if="${#fields.hasErrors('primary.city')}" th:uerrors="*{primary.city}">Error</div>
                       	</div>
                  	</div>
@@ -160,7 +160,7 @@
 					<div class="col-12 col-sm-12 col-md-6 col-lg-7 col-xl-7">
                     	<div class="form-group">
                        		<label for="secondary.address">
-                       			<span th:text="#{secondary}" class="badge badge-primary"></span>
+                       			<span th:text="#{secondary}" class="badge badge-secondary"></span>
                        			<span th:text="#{address}">Address *</span>
                        		</label>
                         	<textarea class="form-control" th:classappend="${#fields.hasErrors('secondary.address') ? 'is-invalid' : ''}" th:placeholder="#{address}" th:field="*{secondary.address}" rows="3"  maxlength="250" ></textarea>
@@ -177,7 +177,7 @@
                  	<div class="col-12 col-sm-7 col-md-4 col-lg-3 col-xl-3">
                     	<div class="form-group">
                          	<label for="secondary.city" th:text="#{city}">City *</label>
-                          	<input class="form-control" th:classappend="${#fields.hasErrors('secondary.city') ? 'is-invalid' : ''}" type="text" th:placeholder="#{city}" id="secondary.city" name="secondary.city" th:value="*{secondary.city}" maxlength="20" />
+                          	<input class="form-control" th:classappend="${#fields.hasErrors('secondary.city') ? 'is-invalid' : ''}" type="text" th:placeholder="#{city}" id="secondarycity" name="secondary.city" th:value="*{secondary.city}" maxlength="20" />
                          	<div class="invalid-feedback" th:if="${#fields.hasErrors('secondary.city')}" th:uerrors="*{secondary.city}">Error</div>
                       	</div>
                  	</div>

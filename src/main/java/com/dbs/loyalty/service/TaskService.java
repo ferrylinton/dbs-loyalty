@@ -91,21 +91,22 @@ public class TaskService {
 		return execute(task);
 	}
 	
-	@Transactional(propagation=Propagation.REQUIRES_NEW)
+	public void confirm(Task task) {
+		task.setTaskStatus(task.getVerified() ? TaskStatus.VERIFIED : TaskStatus.REJECTED);
+		task.setChecker(SecurityUtil.getLogged());
+		task.setCheckedDate(Instant.now());
+		
+		taskRepository.save(task);
+	}
+
 	public void save(Exception ex, Task task) {
-		try {
-			task.setTaskStatus(TaskStatus.FAILED);
-			task.setError(ErrorUtil.getErrorMessage(ex));
-			taskRepository.save(task);
-		} catch (Exception e) {
-			log.error(e.getLocalizedMessage(), e);
-		}
+		task.setTaskStatus(TaskStatus.FAILED);
+		task.setError(ex.getLocalizedMessage());
+		taskRepository.save(task);
 	}
 	
 	private String execute(Task task) throws IOException {
-		if(task.getTaskDataType().equals(DomainConstant.ROLE)) {
-			return context.getBean(RoleService.class).execute(task);
-		}else if(task.getTaskDataType().equals(DomainConstant.USER)) {
+		if(task.getTaskDataType().equals(DomainConstant.USER)) {
 			return context.getBean(UserService.class).execute(task);
 		}else if(task.getTaskDataType().equals(DomainConstant.PROMO_CATEGORY)) {
 			return context.getBean(PromoCategoryService.class).execute(task);

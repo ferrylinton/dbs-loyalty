@@ -106,7 +106,6 @@ public class CustomerController {
 		if (id.equals(Constant.ZERO)) {
 			Customer customer = new Customer();
 			customer.setCustomerType(CustomerTypeConstant.TPC_VALUE);
-			customer.setDob(LocalDate.now());
 			
 			Address primary = new Address();
 			primary.setLabel(AddressConstant.PRIMARY);
@@ -184,12 +183,15 @@ public class CustomerController {
 		    @Override
 		    public void setAsText(String text) throws IllegalArgumentException{
 		    	setValue(LocalDate.parse(text, DateTimeFormatter.ofPattern(DateConstant.JAVA_DATE)));
-		      
 		    }
 
 		    @Override
 		    public String getAsText() throws IllegalArgumentException {
-		      return DateTimeFormatter.ofPattern(DateConstant.JAVA_DATE).format((LocalDate) getValue());
+		    	if(getValue() != null) {
+		    		return DateTimeFormatter.ofPattern(DateConstant.JAVA_DATE).format((LocalDate) getValue());
+		    	}else {
+		    		return null;
+		    	}
 		    }
 		    
 		});

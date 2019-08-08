@@ -20,13 +20,16 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.Task;
+import com.dbs.loyalty.service.RoleService;
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.util.PageUtil;
 import com.dbs.loyalty.util.QueryStringUtil;
 import com.dbs.loyalty.util.SecurityUtil;
 import com.dbs.loyalty.util.TaskUtil;
 
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 @RequestMapping("/taskrole")
 public class RoleTaskController extends AbstractTaskController {
@@ -35,8 +38,11 @@ public class RoleTaskController extends AbstractTaskController {
 	
 	private static final String REDIRECT 	= "redirect:/taskrole";
 	
-	public RoleTaskController(final TaskService taskService) {
+	private final RoleService roleService;
+	
+	public RoleTaskController(final TaskService taskService, final RoleService roleService) {
 		super(taskService);
+		this.roleService = roleService;
 	}
 
 	@PreAuthorize("hasAnyRole('ROLE_MK', 'ROLE_CK')")
@@ -84,7 +90,15 @@ public class RoleTaskController extends AbstractTaskController {
 	@PreAuthorize("hasRole('ROLE_CK')")
 	@PostMapping
 	public String saveTaskRole(@ModelAttribute Task task, RedirectAttributes attributes){
-		attributes.addFlashAttribute(Constant.TOAST, save(task));
+		try {
+			String val = roleService.taskConfirm(task);
+			attributes.addFlashAttribute(Constant.TOAST, getMessage(task, val));
+		} catch (Exception ex) {
+			log.error(ex.getLocalizedMessage(), ex);
+			roleService.taskFailed(ex, task);
+			attributes.addFlashAttribute(Constant.TOAST, ex.getLocalizedMessage());
+		}
+		
 		return REDIRECT;
 	}
 

@@ -27,18 +27,24 @@
                                 <div class="form-control" th:text="#{${task.taskOperation}}">Add</div>
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
                             <div class="form-group">
                                 <label th:text="#{maker}">Maker</label>
                                 <div class="form-control" th:text="${task.maker}">Maker</div>
                             </div>
                         </div>
+                   	</div>
+                    <div class="row">
                         <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
                             <div class="form-group">
                                 <label th:text="#{madeDate}">Made Date</label>
                                 <div class="form-control"><span th:data-date="${@dateService.jsDatetime()}" th:text="${task.madeDate}">2019-05-01T21:24:44Z</span></div>
                             </div>
                         </div>
+                 	</div>
+                    <div class="row">
                         <div class="col-12" th:if="${task.taskDataOld != null}">
                             <div class="form-group">
                                 <label th:text="#{taskDataOld}">Task Data Old</label>

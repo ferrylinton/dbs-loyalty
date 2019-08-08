@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -54,12 +56,14 @@ public class Address extends AbstractAuditing implements Serializable {
 	@Column(name = "label", length = 20)
 	private String label;
 
+	@Size(min = 5, max = 250)
 	@Column(name = "address", length = 250)
 	private String address;
 
 	@Column(name = "postal_code", length = 20)
 	private String postalCode;
 
+	@NotNull
 	@JsonIgnoreProperties({"active", "createdAt", "updatedAt", "province"})
 	@ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "city_id", foreignKey = @ForeignKey(name = "cst_address_fk1"))

@@ -1,7 +1,9 @@
 package com.dbs.loyalty.web.converter;
 
+import java.time.Instant;
 import java.util.Optional;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +25,17 @@ public class CityConverter implements Converter<String, City> {
 		if(city.isPresent()) {
 			return city.get();
 		}else {
-			return null;
+			try {
+				City newCity = new City();
+				newCity.setId(Integer.parseInt("99" + RandomStringUtils.randomNumeric(10)));
+				newCity.setName(name);
+				newCity.setActive(true);
+				newCity.setCreatedAt(Instant.now());
+				return cityRespository.save(newCity);
+			} catch (Exception e) {
+				return null;
+			}
+			
 		}
 	}
 

@@ -2,7 +2,6 @@ package com.dbs.loyalty.web.controller;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -11,7 +10,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -31,7 +29,6 @@ import com.dbs.loyalty.domain.Authority;
 import com.dbs.loyalty.domain.Role;
 import com.dbs.loyalty.service.AuthorityService;
 import com.dbs.loyalty.service.RoleService;
-import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.util.PageUtil;
 import com.dbs.loyalty.util.QueryStringUtil;
@@ -52,14 +49,10 @@ public class RoleController {
 	private static final String DETAIL 		= "role/role-detail";
 	
 	private static final String FORM 		= "role/role-form";
-	
-	private static final String SORT_BY 	= "name";
-	
+
 	private final RoleService roleService;
 
 	private final AuthorityService authorityService;
-	
-	private final TaskService taskService;
 
 	@PreAuthorize("hasAnyRole('ROLE_MK', 'ROLE_CK')")
 	@GetMapping
@@ -68,7 +61,7 @@ public class RoleController {
 			@RequestParam Map<String, String> params, 
 			Sort sort, Model model) {
 		
-		Order order = PageUtil.getOrder(sort, SORT_BY);
+		Order order = PageUtil.getOrder(sort, DomainConstant.NAME);
 		Page<Role> page = roleService.findAll(params, PageUtil.getPageable(params, order));
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
@@ -102,41 +95,37 @@ public class RoleController {
 		return FORM;
 	}
 
-	@Transactional
 	@PreAuthorize("hasRole('ROLE_MK')")
 	@PostMapping
-	public String save(@Valid @ModelAttribute(DomainConstant.ROLE) Role role, BindingResult result, RedirectAttributes attributes) throws JsonProcessingException{
+	public String save( @Valid @ModelAttribute(DomainConstant.ROLE) Role role, BindingResult result, RedirectAttributes attributes){
 		if (result.hasErrors()) {
 			return FORM;
 		}else {
-			if(role.getId() == null) {
-				taskService.saveTaskAdd(DomainConstant.ROLE, role);
-			}else {
-				Optional<Role> current = roleService.findWithAuthoritiesById(role.getId());
-				
-				if(current.isPresent()) {
-					taskService.saveTaskModify(DomainConstant.ROLE, current.get(), role);
-					roleService.save(true, role.getId());
-				}
+			try {
+				roleService.taskSave(role);
+				attributes.addFlashAttribute(Constant.TOAST, MessageUtil.taskIsSaved(DomainConstant.ROLE, role.getName()));
+			} catch (Exception e) {
+				attributes.addFlashAttribute(Constant.TOAST, e.getLocalizedMessage());
 			}
 
-			attributes.addFlashAttribute(Constant.TOAST, MessageUtil.taskIsSavedMessage(DomainConstant.ROLE, role.getName()));
 			return REDIRECT;
 		}
 	}
 
-	@Transactional
 	@PreAuthorize("hasRole('ROLE_MK')")
 	@PostMapping("/delete/{id}")
 	public String deleteRole(@PathVariable String id, RedirectAttributes attributes) throws JsonProcessingException {
-		Optional<Role> current = roleService.findWithAuthoritiesById(id);
+		String toast = null;
 		
-		if(current.isPresent()) {
-			taskService.saveTaskDelete(DomainConstant.ROLE, current.get());
-			roleService.save(true, id);
-			attributes.addFlashAttribute(Constant.TOAST, MessageUtil.taskIsSavedMessage(DomainConstant.ROLE, current.get().getName()));
+		try {
+			Role role = roleService.findWithAuthoritiesById(id);
+			roleService.taskDelete(role);
+			toast = MessageUtil.taskIsSavedMessage(DomainConstant.ROLE, role.getName());
+		} catch (Exception e) {
+			toast = e.getLocalizedMessage();
 		}
 		
+		attributes.addFlashAttribute(Constant.TOAST, toast);
 		return REDIRECT;
 	}
 
@@ -151,10 +140,10 @@ public class RoleController {
 	}
 
 	private void getById(ModelMap model, String id){
-		Optional<Role> current = roleService.findWithAuthoritiesById(id);
+		Role role = roleService.findWithAuthoritiesById(id);
 		
-		if (current.isPresent()) {
-			model.addAttribute(DomainConstant.ROLE, current.get());
+		if (role != null) {
+			model.addAttribute(DomainConstant.ROLE, role);
 		} else {
 			model.addAttribute(Constant.ERROR, MessageUtil.getNotFoundMessage(id));
 		}

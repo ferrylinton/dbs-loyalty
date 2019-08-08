@@ -387,13 +387,23 @@ a:hover{
 .json{
 	padding: 0;
 	margin-bottom: 0;
+	overflow: auto;
 }
 .json .table{
 	margin-bottom: 0;
 }
 .json .table th{
-	font-weight: normal;
-	background-color: #f7fafc;
+	font-weight: bold;
+	background-color: #f2f2f2;
+}
+
+.json .table table{
+	font-size: .9em;	
+}
+
+.json .table table th{
+	font-weight: bold;
+	background-color: #f9f9f9;
 }
 
 .json .btn{
@@ -487,4 +497,24 @@ a:hover{
 }
 .table-responsive .table .dropdown-toggle::after{
 	margin: 0;
+}
+
+/* EASYAUTOCOMPLETE */
+
+.easy-autocomplete{
+  width:100% !important;
+}
+
+.easy-autocomplete input{
+  width: 100%;
+}
+
+.easy-autocomplete input {
+  margin : 0px;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.input-grp-autocomplete{
+	padding-bottom: 2px !important;
 }
