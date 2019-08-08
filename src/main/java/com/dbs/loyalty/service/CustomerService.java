@@ -8,9 +8,14 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.dbs.loyalty.config.constant.AddressConstant;
+import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.Address;
 import com.dbs.loyalty.domain.Customer;
+import com.dbs.loyalty.domain.FileImageTask;
 import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.enumeration.TaskOperation;
 import com.dbs.loyalty.exception.BadRequestException;
@@ -24,6 +29,7 @@ import com.dbs.loyalty.service.specification.CustomerSpec;
 import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.util.PasswordUtil;
 import com.dbs.loyalty.util.SecurityUtil;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -39,9 +45,15 @@ public class CustomerService{
 	private final ImageService imageService;
 	
 	private final ObjectMapper objectMapper;
+	
+	private final TaskService taskService;
 
 	public Optional<Customer> findById(String id) {
 		return customerRepository.findById(id);
+	}
+	
+	public Customer getOne(String id) {
+		return customerRepository.getOne(id);
 	}
 	
 	public Optional<Customer> findByEmail(String email){
@@ -133,7 +145,40 @@ public class CustomerService{
 		}
 	}
 	
-	public String execute(Task task) throws IOException {
+	@Transactional
+	public void taskSave(Customer newCustomer) throws IOException {
+		if(newCustomer.getId() == null) {
+			FileImageTask fileImageTask = imageService.add(newCustomer.getMultipartFileImage());
+			newCustomer.setImage(fileImageTask.getId());
+			taskService.saveTaskAdd(DomainConstant.CUSTOMER, toString(newCustomer));
+		}else {
+			Customer oldCustomer = customerRepository.getOne(newCustomer.getId());
+			prepareAddress(oldCustomer);
+			
+			if(newCustomer.getMultipartFileImage().isEmpty()) {
+				newCustomer.setImage(newCustomer.getId());
+			}else {
+				FileImageTask fileImageTask = imageService.add(newCustomer.getMultipartFileImage());
+				newCustomer.setImage(fileImageTask.getId());
+			}
+			
+			newCustomer.setPasswordHash(oldCustomer.getPasswordHash());
+			oldCustomer.setImage(newCustomer.getId());
+			
+			customerRepository.save(true, newCustomer.getId());
+			taskService.saveTaskModify(DomainConstant.CUSTOMER, toString(oldCustomer), toString(newCustomer));
+		}
+	}
+
+	@Transactional
+	public void taskDelete(Customer customer) throws JsonProcessingException {
+		taskService.saveTaskDelete(DomainConstant.CUSTOMER, toString(customer));
+		customerRepository.save(true, customer.getId());
+	}
+	
+	@Transactional
+	public String taskConfirm(Task task) throws IOException {
+		taskService.confirm(task);
 		Customer customer = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), Customer.class);
 		Address primary = customer.getPrimary();
 		Address secondary = customer.getSecondary();
@@ -182,4 +227,40 @@ public class CustomerService{
 		}
 	}
 
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
+	public String taskFailed(Exception ex, Task task) {
+		try {
+			Customer customer = toCustomer((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew());
+			
+			if(task.getTaskOperation() != TaskOperation.ADD) {
+				customerRepository.save(false, customer.getId());
+			}
+
+			taskService.save(ex, task);
+			return ex.getLocalizedMessage();
+		} catch (Exception e) {
+			return e.getLocalizedMessage();
+		}
+	}
+	
+	public void prepareAddress(Customer customer) {
+		for(Address address: customer.getAddresses()) {
+			if(address.getLabel().equals(AddressConstant.PRIMARY)) {
+				customer.setPrimary(address);
+			}else if(address.getLabel().equals(AddressConstant.SECONDARY)) {
+				customer.setSecondary(address);
+			}
+		}
+		
+		customer.setAddresses(null);
+	}
+	
+	private String toString(Customer customer) throws JsonProcessingException {
+		return objectMapper.writeValueAsString(customer);
+	}
+	
+	private Customer toCustomer(String content) throws IOException {
+		return objectMapper.readValue(content, Customer.class);
+	}
+	
 }

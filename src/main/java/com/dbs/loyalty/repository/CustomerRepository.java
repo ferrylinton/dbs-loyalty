@@ -18,6 +18,9 @@ public interface CustomerRepository extends JpaRepository<Customer, String>, Jpa
 	@EntityGraph(attributePaths = { "addresses", "addresses.city", "addresses.city.province", "addresses.city.province.country" })
 	Optional<Customer> findById(String id);
 	
+	@EntityGraph(attributePaths = { "addresses", "addresses.city", "addresses.city.province", "addresses.city.province.country" })
+	Customer getOne(String id);
+	
 	Optional<Customer> findByCif(String cif);
 	
 	Optional<Customer> findByEmail(String email);

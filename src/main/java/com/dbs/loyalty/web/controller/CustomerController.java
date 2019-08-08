@@ -1,9 +1,6 @@
 package com.dbs.loyalty.web.controller;
 
-import java.beans.PropertyEditorSupport;
-import java.io.IOException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.Optional;
 
@@ -32,17 +29,14 @@ import com.dbs.loyalty.config.ApplicationProperties;
 import com.dbs.loyalty.config.constant.AddressConstant;
 import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.CustomerTypeConstant;
-import com.dbs.loyalty.config.constant.DateConstant;
 import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.Address;
 import com.dbs.loyalty.domain.Customer;
-import com.dbs.loyalty.domain.FileImageTask;
 import com.dbs.loyalty.service.CustomerService;
-import com.dbs.loyalty.service.ImageService;
-import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.util.PageUtil;
 import com.dbs.loyalty.util.QueryStringUtil;
+import com.dbs.loyalty.web.customeditor.LocalDateEditor;
 import com.dbs.loyalty.web.validator.CustomerValidator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
@@ -62,13 +56,9 @@ public class CustomerController {
 	private static final String FORM 		= "customer/customer-form";
 	
 	private static final String SORT_BY 	= "firstName";
-	
-	private final ImageService imageService;
-	
+
 	private final CustomerService customerService;
 
-	private final TaskService taskService;
-	
 	private final ApplicationProperties applicationProperties;
 
 	@PreAuthorize("hasAnyRole('CUSTOMER_MK', 'CUSTOMER_CK')")
@@ -123,39 +113,19 @@ public class CustomerController {
 		return FORM;
 	}
 	
-	@Transactional
 	@PreAuthorize("hasRole('CUSTOMER_MK')")
 	@PostMapping
-	public String saveCustomer(@Valid @ModelAttribute(DomainConstant.CUSTOMER) Customer customer, BindingResult result, RedirectAttributes attributes) throws IOException{
+	public String saveCustomer(@Valid @ModelAttribute(DomainConstant.CUSTOMER) Customer customer, BindingResult result, RedirectAttributes attributes){
 		if (result.hasErrors()) {
 			return FORM;
 		}else {
-			if(customer.getId() == null) {
-				FileImageTask fileImageTask = imageService.add(customer.getMultipartFileImage());
-				customer.setImage(fileImageTask.getId());
-				taskService.saveTaskAdd(DomainConstant.CUSTOMER, customer);
-			}else {
-				Optional<Customer> current = customerService.findById(customer.getId());
-				
-				if(current.isPresent()) { 
-					prepareAddress(current.get());
-					
-					if(customer.getMultipartFileImage().isEmpty()) {
-						customer.setImage(customer.getId());
-					}else {
-						FileImageTask fileImageTask = imageService.add(customer.getMultipartFileImage());
-						customer.setImage(fileImageTask.getId());
-					}
-					
-					customer.setPasswordHash(current.get().getPasswordHash());
-					current.get().setImage(customer.getId());
-					
-					taskService.saveTaskModify(DomainConstant.CUSTOMER, current.get(), customer);
-					customerService.save(true, customer.getId());
-				}
+			try {
+				customerService.taskSave(customer);
+				attributes.addFlashAttribute(Constant.TOAST, MessageUtil.taskIsSaved(DomainConstant.CUSTOMER, customer.getFirstName()));
+			} catch (Exception e) {
+				attributes.addFlashAttribute(Constant.TOAST, e.getLocalizedMessage());
 			}
 
-			attributes.addFlashAttribute(Constant.TOAST, MessageUtil.taskIsSavedMessage(DomainConstant.CUSTOMER, customer.getFirstName()));
 			return REDIRECT;
 		}
 	}
@@ -164,37 +134,24 @@ public class CustomerController {
 	@PreAuthorize("hasRole('CUSTOMER_MK')")
 	@PostMapping("/delete/{id}")
 	public String deleteCustomer(@PathVariable String id, RedirectAttributes attributes) throws JsonProcessingException {
-		Optional<Customer> current = customerService.findById(id);
+		String toast = null;
 		
-		if(current.isPresent()) {
-			taskService.saveTaskDelete(DomainConstant.CUSTOMER, current.get());
-			customerService.save(true, id);
-			attributes.addFlashAttribute(Constant.TOAST, MessageUtil.taskIsSavedMessage(DomainConstant.CUSTOMER, current.get().getFirstName()));
+		try {
+			Customer customer = customerService.getOne(id);
+			customerService.taskDelete(customer);
+			toast = MessageUtil.taskIsSavedMessage(DomainConstant.ROLE, customer.getFirstName());
+		} catch (Exception e) {
+			toast = e.getLocalizedMessage();
 		}
 		
+		attributes.addFlashAttribute(Constant.TOAST, toast);
 		return REDIRECT;
 	}
 
 	@InitBinder(DomainConstant.CUSTOMER)
 	protected void initBinder(WebDataBinder binder) {
 		binder.addValidators(new CustomerValidator(customerService, applicationProperties));
-		binder.registerCustomEditor(LocalDate.class, new PropertyEditorSupport() {
-			
-		    @Override
-		    public void setAsText(String text) throws IllegalArgumentException{
-		    	setValue(LocalDate.parse(text, DateTimeFormatter.ofPattern(DateConstant.JAVA_DATE)));
-		    }
-
-		    @Override
-		    public String getAsText() throws IllegalArgumentException {
-		    	if(getValue() != null) {
-		    		return DateTimeFormatter.ofPattern(DateConstant.JAVA_DATE).format((LocalDate) getValue());
-		    	}else {
-		    		return null;
-		    	}
-		    }
-		    
-		});
+		binder.registerCustomEditor(LocalDate.class, new LocalDateEditor());
 	}
 
 	private void getById(ModelMap model, String id){

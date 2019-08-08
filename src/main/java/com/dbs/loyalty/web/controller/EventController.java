@@ -13,7 +13,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -30,14 +29,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.Event;
-import com.dbs.loyalty.domain.Feedback;
-import com.dbs.loyalty.domain.FileImageTask;
-import com.dbs.loyalty.domain.FilePdfTask;
 import com.dbs.loyalty.service.EventService;
-import com.dbs.loyalty.service.FeedbackService;
-import com.dbs.loyalty.service.ImageService;
-import com.dbs.loyalty.service.PdfService;
-import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.util.PageUtil;
 import com.dbs.loyalty.util.QueryStringUtil;
@@ -58,18 +50,8 @@ public class EventController {
 	private static final String DETAIL 		= "event/event-detail";
 	
 	private static final String FORM		= "event/event-form";
-	
-	private static final String SORT_BY 	= "title";
-	
-	private final ImageService imageService;
-	
-	private final PdfService pdfService;
-	
-	private final EventService eventService;
 
-	private final TaskService taskService;
-	
-	private final FeedbackService feedbackService;
+	private final EventService eventService;
 
 	@PreAuthorize("hasAnyRole('EVENT_MK', 'EVENT_CK')")
 	@GetMapping
@@ -78,7 +60,7 @@ public class EventController {
 			@RequestParam Map<String, String> params, 
 			Sort sort, Model model) {
 		
-		Order order = PageUtil.getOrder(sort, SORT_BY);
+		Order order = PageUtil.getOrder(sort, DomainConstant.TITLE);
 		Page<Event> page = eventService.findAll(params, PageUtil.getPageable(params, order));
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
@@ -116,67 +98,33 @@ public class EventController {
 		return FORM;
 	}
 
-	@Transactional
 	@PreAuthorize("hasRole('EVENT_MK')")
 	@PostMapping
 	public String saveEvent(@ModelAttribute(DomainConstant.EVENT) @Valid Event event, BindingResult result, RedirectAttributes attributes) throws IOException, ParseException {
 		if(result.hasErrors()) {
 			return FORM;
 		}else {
-			Optional<Feedback> feedback = feedbackService.getDefault();
-			
-			if(feedback.isPresent()) {
-				event.setFeedback(feedback.get());
+			try {
+				eventService.taskSave(event);
+				attributes.addFlashAttribute(Constant.TOAST, MessageUtil.taskIsSaved(DomainConstant.EVENT, event.getTitle()));
+			} catch (Exception e) {
+				attributes.addFlashAttribute(Constant.TOAST, e.getLocalizedMessage());
 			}
 
-			if(event.getId() == null) {
-				FileImageTask fileImageTask = imageService.add(event.getMultipartFileImage());
-				event.setImage(fileImageTask.getId());
-				
-				FilePdfTask filePdfTask = pdfService.add(event.getMultipartFileMaterial());
-				event.setMaterial(filePdfTask.getId());
-				
-				taskService.saveTaskAdd(DomainConstant.EVENT, event);
-			}else {
-				Optional<Event> current = eventService.findById(event.getId());
-				
-				if(current.isPresent()) {
-					if(event.getMultipartFileImage().isEmpty()) {
-						event.setImage(event.getId());
-					}else {
-						FileImageTask fileImageTask = imageService.add(event.getMultipartFileImage());
-						event.setImage(fileImageTask.getId());
-					}
-					
-					if(event.getMultipartFileMaterial().isEmpty()) {
-						event.setMaterial(event.getId());
-					}else {
-						FilePdfTask filePdfTask = pdfService.add(event.getMultipartFileMaterial());
-						event.setMaterial(filePdfTask.getId());
-					}
-					
-					current.get().setImage(event.getId());
-					current.get().setMaterial(event.getId());
-					taskService.saveTaskModify(DomainConstant.EVENT, current.get(), event);
-					eventService.save(true, event.getId());
-				}
-			}
-
-			attributes.addFlashAttribute(Constant.TOAST, MessageUtil.taskIsSavedMessage(DomainConstant.EVENT, event.getTitle()));
 			return REDIRECT;
 		}
 	}
 
-	@Transactional
+
 	@PreAuthorize("hasRole('EVENT_MK')")
 	@PostMapping("/delete/{id}")
 	public String deleteEvent(@PathVariable String id, RedirectAttributes attributes) throws JsonProcessingException {
-		Optional<Event> current = eventService.findById(id);
-		
-		if(current.isPresent()) {
-			taskService.saveTaskDelete(DomainConstant.EVENT, current.get());
-			eventService.save(true, id);
-			attributes.addFlashAttribute(Constant.TOAST, MessageUtil.taskIsSavedMessage(DomainConstant.EVENT, current.get().getTitle()));
+		try {
+			Event event = eventService.getOne(id);
+			eventService.taskDelete(event);
+			attributes.addFlashAttribute(Constant.TOAST, MessageUtil.taskIsSavedMessage(DomainConstant.EVENT, event.getTitle()));
+		} catch (Exception e) {
+			attributes.addFlashAttribute(Constant.TOAST, e.getLocalizedMessage());
 		}
 		
 		return REDIRECT;

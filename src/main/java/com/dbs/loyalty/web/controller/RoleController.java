@@ -33,7 +33,6 @@ import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.util.PageUtil;
 import com.dbs.loyalty.util.QueryStringUtil;
 import com.dbs.loyalty.web.validator.RoleValidator;
-import com.fasterxml.jackson.core.JsonProcessingException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -97,7 +96,7 @@ public class RoleController {
 
 	@PreAuthorize("hasRole('ROLE_MK')")
 	@PostMapping
-	public String save( @Valid @ModelAttribute(DomainConstant.ROLE) Role role, BindingResult result, RedirectAttributes attributes){
+	public String saveRole( @Valid @ModelAttribute(DomainConstant.ROLE) Role role, BindingResult result, RedirectAttributes attributes){
 		if (result.hasErrors()) {
 			return FORM;
 		}else {
@@ -114,18 +113,15 @@ public class RoleController {
 
 	@PreAuthorize("hasRole('ROLE_MK')")
 	@PostMapping("/delete/{id}")
-	public String deleteRole(@PathVariable String id, RedirectAttributes attributes) throws JsonProcessingException {
-		String toast = null;
-		
+	public String deleteRole(@PathVariable String id, RedirectAttributes attributes) {
 		try {
 			Role role = roleService.findWithAuthoritiesById(id);
 			roleService.taskDelete(role);
-			toast = MessageUtil.taskIsSavedMessage(DomainConstant.ROLE, role.getName());
+			attributes.addFlashAttribute(Constant.TOAST, MessageUtil.taskIsSavedMessage(DomainConstant.ROLE, role.getName()));
 		} catch (Exception e) {
-			toast = e.getLocalizedMessage();
+			attributes.addFlashAttribute(Constant.TOAST, e.getLocalizedMessage());
 		}
 		
-		attributes.addFlashAttribute(Constant.TOAST, toast);
 		return REDIRECT;
 	}
 

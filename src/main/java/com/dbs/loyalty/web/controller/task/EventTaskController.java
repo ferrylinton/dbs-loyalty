@@ -1,6 +1,7 @@
 package com.dbs.loyalty.web.controller.task;
 
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
@@ -20,13 +21,18 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.Task;
+import com.dbs.loyalty.service.EventService;
 import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.util.PageUtil;
 import com.dbs.loyalty.util.QueryStringUtil;
 import com.dbs.loyalty.util.SecurityUtil;
 import com.dbs.loyalty.util.TaskUtil;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
+@RequiredArgsConstructor
 @Controller
 @RequestMapping("/taskevent")
 public class EventTaskController extends AbstractTaskController {
@@ -35,8 +41,13 @@ public class EventTaskController extends AbstractTaskController {
 	
 	private static final String REDIRECT = "redirect:/taskevent";
 	
-	public EventTaskController(final TaskService taskService) {
-		super(taskService);
+	private final EventService eventService;
+	
+	private final TaskService taskService;
+
+	@Override
+	protected Optional<Task> findById(String id) {
+		return taskService.findById(id);
 	}
 
 	@PreAuthorize("hasAnyRole('EVENT_MK', 'EVENT_CK')")
@@ -83,7 +94,15 @@ public class EventTaskController extends AbstractTaskController {
 	@PreAuthorize("hasRole('EVENT_CK')")
 	@PostMapping
 	public String saveTaskPromo(@ModelAttribute Task task, RedirectAttributes attributes){
-		attributes.addFlashAttribute(Constant.TOAST, save(task));
+		try {
+			String val = eventService.taskConfirm(task);
+			attributes.addFlashAttribute(Constant.TOAST, getMessage(task, val));
+		} catch (Exception ex) {
+			log.error(ex.getLocalizedMessage(), ex);
+			eventService.taskFailed(ex, task);
+			attributes.addFlashAttribute(Constant.TOAST, ex.getLocalizedMessage());
+		}
+		
 		return REDIRECT;
 	}
 

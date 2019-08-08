@@ -1,9 +1,7 @@
 package com.dbs.loyalty.web.controller;
 
-import java.beans.PropertyEditorSupport;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -30,18 +28,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dbs.loyalty.config.constant.Constant;
-import com.dbs.loyalty.config.constant.DateConstant;
 import com.dbs.loyalty.config.constant.DomainConstant;
-import com.dbs.loyalty.domain.FileImageTask;
 import com.dbs.loyalty.domain.Promo;
 import com.dbs.loyalty.domain.PromoCategory;
-import com.dbs.loyalty.service.ImageService;
 import com.dbs.loyalty.service.PromoCategoryService;
 import com.dbs.loyalty.service.PromoService;
-import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.util.PageUtil;
 import com.dbs.loyalty.util.QueryStringUtil;
+import com.dbs.loyalty.web.customeditor.LocalDateEditor;
 import com.dbs.loyalty.web.validator.PromoValidator;
 
 import lombok.RequiredArgsConstructor;
@@ -58,18 +53,10 @@ public class PromoController {
 	private static final String DETAIL 		= "promo/promo-detail";
 	
 	private static final String FORM 		= "promo/promo-form";
-	
-	private static final String SORT_BY 	= "title";
-	
+
 	private final PromoService promoService;
-	
-	private final ImageService imageService;
 
 	private final PromoCategoryService promoCategoryService;
-
-	private final TaskService taskService;
-	
-	private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DateConstant.JAVA_DATE);
 
 	@PreAuthorize("hasAnyRole('PROMO_MK', 'PROMO_CK')")
 	@GetMapping
@@ -78,7 +65,7 @@ public class PromoController {
 			@RequestParam Map<String, String> params, 
 			Sort sort, Model model) {
 		
-		Order order = PageUtil.getOrder(sort, SORT_BY);
+		Order order = PageUtil.getOrder(sort, DomainConstant.TITLE);
 		Page<Promo> page = promoService.findAll(params, PageUtil.getPageable(params, order));
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
@@ -115,33 +102,17 @@ public class PromoController {
 	@Transactional
 	@PreAuthorize("hasRole('PROMO_MK')")
 	@PostMapping
-	public String savePromo(@Valid @ModelAttribute(DomainConstant.PROMO) Promo promo, BindingResult result, RedirectAttributes attributes) throws IOException {
+	public String savePromo(@Valid @ModelAttribute(DomainConstant.PROMO) Promo promo, BindingResult result, RedirectAttributes attributes) {
 		if (result.hasErrors()) {
 			return FORM;
 		}else {
-			if(promo.getId() == null) {
-				FileImageTask fileImageTask = imageService.add(promo.getMultipartFileImage());
-				promo.setImage(fileImageTask.getId());
-
-				taskService.saveTaskAdd(DomainConstant.PROMO, promo);
-			}else {
-				Optional<Promo> current = promoService.findById(promo.getId());
-				
-				if(current.isPresent()) {
-					if(promo.getMultipartFileImage().isEmpty()) {
-						promo.setImage(promo.getId());
-					}else {
-						FileImageTask fileImageTask = imageService.add(promo.getMultipartFileImage());
-						promo.setImage(fileImageTask.getId());
-					}
-					
-					current.get().setImage(promo.getId());
-					taskService.saveTaskModify(DomainConstant.PROMO, current.get(), promo);
-					promoService.save(true, promo.getId());;
-				}
+			try {
+				promoService.taskSave(promo);
+				attributes.addFlashAttribute(Constant.TOAST, MessageUtil.taskIsSaved(DomainConstant.PROMO, promo.getTitle()));
+			} catch (Exception e) {
+				attributes.addFlashAttribute(Constant.TOAST, e.getLocalizedMessage());
 			}
 
-			attributes.addFlashAttribute(Constant.TOAST, MessageUtil.taskIsSavedMessage(DomainConstant.PROMO, promo.getTitle()));
 			return REDIRECT;
 		}
 	}
@@ -150,12 +121,12 @@ public class PromoController {
 	@PreAuthorize("hasRole('PROMO_MK')")
 	@PostMapping("/delete/{id}")
 	public String deletePromo(@PathVariable String id, RedirectAttributes attributes) throws IOException {
-		Optional<Promo> current = promoService.findById(id);
-		
-		if(current.isPresent()) {
-			taskService.saveTaskDelete(DomainConstant.PROMO, current.get());
-			promoService.save(true, id);
-			attributes.addFlashAttribute(Constant.TOAST, MessageUtil.taskIsSavedMessage(DomainConstant.PROMO, current.get().getTitle()));
+		try {
+			Promo promo = promoService.getOne(id);
+			promoService.taskDelete(promo);
+			attributes.addFlashAttribute(Constant.TOAST, MessageUtil.taskIsSavedMessage(DomainConstant.PROMO, promo.getTitle()));
+		} catch (Exception e) {
+			attributes.addFlashAttribute(Constant.TOAST, e.getLocalizedMessage());
 		}
 		
 		return REDIRECT;
@@ -168,14 +139,7 @@ public class PromoController {
 	
 	@InitBinder(DomainConstant.PROMO)
 	protected void initBinder(WebDataBinder binder) {
-		binder.registerCustomEditor(LocalDate.class, new PropertyEditorSupport() {
-			
-		    @Override
-		    public void setAsText(String text) throws IllegalArgumentException{
-		      setValue(LocalDate.parse(text, formatter));
-		    }
-		    
-		});
+		binder.registerCustomEditor(LocalDate.class, new LocalDateEditor());
 		
 		binder.addValidators(new PromoValidator(promoService));
 	}

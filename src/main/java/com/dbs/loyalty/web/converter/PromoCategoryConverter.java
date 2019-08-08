@@ -4,15 +4,19 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 import com.dbs.loyalty.domain.PromoCategory;
+import com.dbs.loyalty.repository.PromoCategoryRepository;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Component
 public class PromoCategoryConverter implements Converter<String, PromoCategory> {
 	
+	private PromoCategoryRepository promoCategoryRepository;
+	
 	@Override
 	public PromoCategory convert(String id) {
-		PromoCategory promoCategory = new PromoCategory();
-		promoCategory.setId(id);
-		return promoCategory;
+		return promoCategoryRepository.getOne(id);
 	}
 
 }

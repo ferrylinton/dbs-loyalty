@@ -1,43 +1,27 @@
 package com.dbs.loyalty.service;
 
-import java.io.IOException;
 import java.time.Instant;
 import java.util.Map;
 import java.util.Optional;
 
-import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.enumeration.TaskOperation;
 import com.dbs.loyalty.enumeration.TaskStatus;
 import com.dbs.loyalty.repository.TaskRepository;
 import com.dbs.loyalty.service.specification.TaskSpec;
-import com.dbs.loyalty.util.ErrorUtil;
 import com.dbs.loyalty.util.SecurityUtil;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RequiredArgsConstructor
 @Service
 public class TaskService {
-	
-	private static String NO_SERVICE_FORMAT = "No service for %s";
 
-	private final ApplicationContext context;
-	
 	private final TaskRepository taskRepository;
-	
-	private final ObjectMapper objectMapper;
 
 	public Optional<Task> findById(String id) {
 		return taskRepository.findById(id);
@@ -47,48 +31,38 @@ public class TaskService {
 		return taskRepository.findAll(new TaskSpec(taskDataType, params), pageable);
 	}
 	
-	public Task saveTaskAdd(String type, Object taskDataNew) throws JsonProcessingException {
+	public Task saveTaskAdd(String type, String taskDataNew) {
 		Task task = new Task();
 		task.setTaskOperation(TaskOperation.ADD);
 		task.setTaskStatus(TaskStatus.PENDING);
 		task.setTaskDataType(type);
-		task.setTaskDataNew(objectMapper.writeValueAsString(taskDataNew));
+		task.setTaskDataNew(taskDataNew);
 		task.setMaker(SecurityUtil.getLogged());
 		task.setMadeDate(Instant.now());
 		return taskRepository.save(task);
 	}
 	
-	public Task saveTaskModify(String type, Object taskDataOld, Object taskDataNew) throws JsonProcessingException {
+	public Task saveTaskModify(String type, String taskDataOld, String taskDataNew) {
 		Task task = new Task();
 		task.setTaskOperation(TaskOperation.MODIFY);
 		task.setTaskStatus(TaskStatus.PENDING);
 		task.setTaskDataType(type);
-		task.setTaskDataOld(objectMapper.writeValueAsString(taskDataOld));
-		task.setTaskDataNew(objectMapper.writeValueAsString(taskDataNew));
+		task.setTaskDataOld(taskDataOld);
+		task.setTaskDataNew(taskDataNew);
 		task.setMaker(SecurityUtil.getLogged());
 		task.setMadeDate(Instant.now());
 		return taskRepository.save(task);
 	}
 	
-	public Task saveTaskDelete(String type, Object taskDataOld) throws JsonProcessingException {
+	public Task saveTaskDelete(String type, String taskDataOld) {
 		Task task = new Task();
 		task.setTaskOperation(TaskOperation.DELETE);
 		task.setTaskStatus(TaskStatus.PENDING);
 		task.setTaskDataType(type);
-		task.setTaskDataOld(objectMapper.writeValueAsString(taskDataOld));
+		task.setTaskDataOld(taskDataOld);
 		task.setMaker(SecurityUtil.getLogged());
 		task.setMadeDate(Instant.now());
 		return taskRepository.save(task);
-	}
-	
-	@Transactional
-	public String save(Task task) throws IOException {
-		task.setTaskStatus(task.getVerified() ? TaskStatus.VERIFIED : TaskStatus.REJECTED);
-		task.setChecker(SecurityUtil.getLogged());
-		task.setCheckedDate(Instant.now());
-		
-		taskRepository.save(task);
-		return execute(task);
 	}
 	
 	public void confirm(Task task) {
@@ -105,20 +79,4 @@ public class TaskService {
 		taskRepository.save(task);
 	}
 	
-	private String execute(Task task) throws IOException {
-		if(task.getTaskDataType().equals(DomainConstant.USER)) {
-			return context.getBean(UserService.class).execute(task);
-		}else if(task.getTaskDataType().equals(DomainConstant.PROMO_CATEGORY)) {
-			return context.getBean(PromoCategoryService.class).execute(task);
-		}else if(task.getTaskDataType().equals(DomainConstant.PROMO)) {
-			return context.getBean(PromoService.class).execute(task);
-		}else if(task.getTaskDataType().equals(DomainConstant.CUSTOMER)) {
-			return context.getBean(CustomerService.class).execute(task);
-		}else if(task.getTaskDataType().equals(DomainConstant.EVENT)) {
-			return context.getBean(EventService.class).execute(task);
-		}
-		
-		return String.format(NO_SERVICE_FORMAT, task.getTaskDataType());
-	}
-
 }

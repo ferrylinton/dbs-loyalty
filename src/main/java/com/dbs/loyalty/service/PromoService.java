@@ -8,12 +8,17 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.dbs.loyalty.config.constant.DomainConstant;
+import com.dbs.loyalty.domain.FileImageTask;
 import com.dbs.loyalty.domain.Promo;
 import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.PromoRepository;
 import com.dbs.loyalty.service.specification.PromoSpec;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -27,9 +32,15 @@ public class PromoService{
 	private final ImageService imageService;
 	
 	private final ObjectMapper objectMapper;
+	
+	private final TaskService taskService;
 
 	public Optional<Promo> findById(String id){
 		return promoRepository.findById(id);
+	}
+	
+	public Promo getOne(String id){
+		return promoRepository.getOne(id);
 	}
 	
 	public Optional<String> findTermAndConditionById(String id){
@@ -83,7 +94,39 @@ public class PromoService{
 		promoRepository.save(pending, id);
 	}
 	
-	public String execute(Task task) throws IOException {
+	@Transactional
+	public void taskSave(Promo newPromo) throws IOException {
+		if(newPromo.getId() == null) {
+			FileImageTask fileImageTask = imageService.add(newPromo.getMultipartFileImage());
+			newPromo.setImage(fileImageTask.getId());
+			
+			taskService.saveTaskAdd(DomainConstant.ROLE, toString(newPromo));
+		}else {
+			Promo oldPromo = promoRepository.getOne(newPromo.getId());
+			
+			if(newPromo.getMultipartFileImage().isEmpty()) {
+				newPromo.setImage(newPromo.getId());
+			}else {
+				FileImageTask fileImageTask = imageService.add(newPromo.getMultipartFileImage());
+				newPromo.setImage(fileImageTask.getId());
+			}
+			
+			oldPromo.setImage(newPromo.getId());
+			
+			promoRepository.save(true, newPromo.getId());
+			taskService.saveTaskModify(DomainConstant.ROLE, toString(oldPromo), toString(newPromo));
+		}
+	}
+
+	@Transactional
+	public void taskDelete(Promo promo) throws JsonProcessingException {
+		taskService.saveTaskDelete(DomainConstant.ROLE, toString(promo));
+		promoRepository.save(true, promo.getId());
+	}
+	
+	@Transactional
+	public String taskConfirm(Task task) throws IOException {
+		taskService.confirm(task);
 		Promo promo = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), Promo.class);
 		
 		if(task.getVerified()) {
@@ -107,6 +150,30 @@ public class PromoService{
 		}
 
 		return promo.getTitle();
+	}
+	
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
+	public String taskFailed(Exception ex, Task task) {
+		try {
+			Promo promo = toPromo((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew());
+			
+			if(task.getTaskOperation() != TaskOperation.ADD) {
+				promoRepository.save(false, promo.getId());
+			}
+
+			taskService.save(ex, task);
+			return ex.getLocalizedMessage();
+		} catch (Exception e) {
+			return e.getLocalizedMessage();
+		}
+	}
+	
+	private String toString(Promo promo) throws JsonProcessingException {
+		return objectMapper.writeValueAsString(promo);
+	}
+	
+	private Promo toPromo(String content) throws IOException {
+		return objectMapper.readValue(content, Promo.class);
 	}
 	
 }

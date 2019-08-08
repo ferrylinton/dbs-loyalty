@@ -8,15 +8,21 @@ import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.Event;
 import com.dbs.loyalty.domain.Feedback;
 import com.dbs.loyalty.domain.FeedbackQuestion;
+import com.dbs.loyalty.domain.FileImageTask;
+import com.dbs.loyalty.domain.FilePdfTask;
 import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.enumeration.TaskOperation;
 import com.dbs.loyalty.model.Pair;
 import com.dbs.loyalty.repository.EventRepository;
 import com.dbs.loyalty.service.specification.EventSpec;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -32,10 +38,18 @@ public class EventService{
 	
 	private final PdfService pdfService;
 	
+	private final FeedbackService feedbackService;
+	
 	private final ObjectMapper objectMapper;
+	
+	private final TaskService taskService;
 	
 	public Optional<Event> findById(String id){
 		return eventRepository.findById(id);
+	}
+	
+	public Event getOne(String id){
+		return eventRepository.getOne(id);
 	}
 	
 	public Optional<Event> findWithFeedbackById(String id) throws IOException{
@@ -73,13 +87,58 @@ public class EventService{
 	public Event save(Event event) {
 		return eventRepository.save(event);
 	}
-	
-	public void save(boolean pending, String id) {
-		eventRepository.save(pending, id);
+
+	@Transactional
+	public void taskSave(Event newEvent) throws IOException {
+		Optional<Feedback> feedback = feedbackService.getDefault();
+		
+		if(feedback.isPresent()) {
+			newEvent.setFeedback(feedback.get());
+		}
+
+		if(newEvent.getId() == null) {
+			FileImageTask fileImageTask = imageService.add(newEvent.getMultipartFileImage());
+			newEvent.setImage(fileImageTask.getId());
+			
+			FilePdfTask filePdfTask = pdfService.add(newEvent.getMultipartFileMaterial());
+			newEvent.setMaterial(filePdfTask.getId());
+			
+			taskService.saveTaskAdd(DomainConstant.EVENT, toString(newEvent));
+		}else {
+			Event oldEvent = eventRepository.getOne(newEvent.getId());
+			
+			if(newEvent.getMultipartFileImage().isEmpty()) {
+				newEvent.setImage(newEvent.getId());
+			}else {
+				FileImageTask fileImageTask = imageService.add(newEvent.getMultipartFileImage());
+				newEvent.setImage(fileImageTask.getId());
+			}
+			
+			if(newEvent.getMultipartFileMaterial().isEmpty()) {
+				newEvent.setMaterial(newEvent.getId());
+			}else {
+				FilePdfTask filePdfTask = pdfService.add(newEvent.getMultipartFileMaterial());
+				newEvent.setMaterial(filePdfTask.getId());
+			}
+			
+			oldEvent.setImage(newEvent.getId());
+			oldEvent.setMaterial(newEvent.getId());
+			
+			eventRepository.save(true, newEvent.getId());
+			taskService.saveTaskModify(DomainConstant.EVENT, toString(oldEvent), toString(newEvent));
+		}
+	}
+
+	@Transactional
+	public void taskDelete(Event event) throws JsonProcessingException {
+		taskService.saveTaskDelete(DomainConstant.EVENT, toString(event));
+		eventRepository.save(true, event.getId());
 	}
 	
-	public String execute(Task task) throws IOException {
-		Event event = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), Event.class);
+	@Transactional
+	public String taskConfirm(Task task) throws IOException {
+		taskService.confirm(task);
+		Event event = toEvent((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew());
 		
 		if(task.getVerified()) {
 			if(task.getTaskOperation() == TaskOperation.ADD) {
@@ -116,4 +175,28 @@ public class EventService{
 		}
 	}
 	
+	@Transactional(propagation=Propagation.REQUIRES_NEW)
+	public String taskFailed(Exception ex, Task task) {
+		try {
+			Event event = toEvent((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew());
+			
+			if(task.getTaskOperation() != TaskOperation.ADD) {
+				eventRepository.save(false, event.getId());
+			}
+
+			taskService.save(ex, task);
+			return ex.getLocalizedMessage();
+		} catch (Exception e) {
+			return e.getLocalizedMessage();
+		}
+	}
+	
+	private String toString(Event event) throws JsonProcessingException {
+		return objectMapper.writeValueAsString(event);
+	}
+	
+	private Event toEvent(String content) throws IOException {
+		return objectMapper.readValue(content, Event.class);
+	}
+
 }

@@ -31,12 +31,10 @@ import com.dbs.loyalty.config.constant.UserTypeConstant;
 import com.dbs.loyalty.domain.Role;
 import com.dbs.loyalty.domain.User;
 import com.dbs.loyalty.service.RoleService;
-import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.service.UserLdapService;
 import com.dbs.loyalty.service.UserService;
 import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.util.PageUtil;
-import com.dbs.loyalty.util.PasswordUtil;
 import com.dbs.loyalty.util.QueryStringUtil;
 import com.dbs.loyalty.web.validator.UserValidator;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -55,17 +53,13 @@ public class UserController{
 	private static final String DETAIL 		= "user/user-detail";
 	
 	private static final String FORM 		= "user/user-form";
-	
-	private static final String SORT_BY 	= "username";
 
 	private final UserService userService;
 	
 	private final UserLdapService userLdapService;
 	
 	private final RoleService roleService;
-	
-	private final TaskService taskService;
-	
+
 	@PreAuthorize("hasAnyRole('USER_MK', 'USER_CK')")
 	@GetMapping
 	public String viewUsers(
@@ -73,7 +67,7 @@ public class UserController{
 			@RequestParam Map<String, String> params, 
 			Sort sort, Model model) {
 		
-		Order order = PageUtil.getOrder(sort, SORT_BY);
+		Order order = PageUtil.getOrder(sort, DomainConstant.USERNAME);
 		Page<User> page = userService.findAll(params, PageUtil.getPageable(params, order));
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
@@ -116,27 +110,13 @@ public class UserController{
 		if (result.hasErrors()) {
 			return FORM;
 		}else {
-			if(user.getId() == null) {
-				if(user.getUserType().equals(UserTypeConstant.EXTERNAL)) {
-					user.setPasswordHash(PasswordUtil.encode(user.getPasswordPlain()));
-					user.setPasswordPlain(null);
-				}
-				
-				taskService.saveTaskAdd(DomainConstant.USER, user);
-			}else {
-				Optional<User> current = userService.findWithRoleById(user.getId());
-				
-				if(current.isPresent()) {
-					if(user.getUserType().equals(UserTypeConstant.EXTERNAL)) {
-						user.setPasswordHash(current.get().getPasswordHash());
-					}
-					
-					taskService.saveTaskModify(DomainConstant.USER, current.get(), user);
-					userService.save(true, user.getId());
-				}
+			try {
+				userService.taskSave(user);
+				attributes.addFlashAttribute(Constant.TOAST, MessageUtil.taskIsSaved(DomainConstant.USER, user.getUsername()));
+			} catch (Exception e) {
+				attributes.addFlashAttribute(Constant.TOAST, e.getLocalizedMessage());
 			}
 
-			attributes.addFlashAttribute(Constant.TOAST, MessageUtil.taskIsSavedMessage(DomainConstant.USER, user.getUsername()));
 			return REDIRECT;
 		}
 	}
@@ -145,12 +125,12 @@ public class UserController{
 	@PreAuthorize("hasRole('USER_MK')")
 	@PostMapping("/delete/{id}")
 	public String deleteUser(@PathVariable String id, RedirectAttributes attributes) throws JsonProcessingException {
-		Optional<User> current = userService.findWithRoleById(id);
-		
-		if(current.isPresent()) {
-			taskService.saveTaskDelete(DomainConstant.USER, current.get());
-			userService.save(true, id);
-			attributes.addFlashAttribute(Constant.TOAST, MessageUtil.taskIsSavedMessage(DomainConstant.USER, current.get().getUsername()));
+		try {
+			User user = userService.getOne(id);
+			userService.taskDelete(user);
+			attributes.addFlashAttribute(Constant.TOAST, MessageUtil.taskIsSavedMessage(DomainConstant.USER, user.getUsername()));
+		} catch (Exception e) {
+			attributes.addFlashAttribute(Constant.TOAST, e.getLocalizedMessage());
 		}
 		
 		return REDIRECT;

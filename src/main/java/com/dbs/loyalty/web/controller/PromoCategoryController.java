@@ -10,7 +10,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -28,7 +27,6 @@ import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.PromoCategory;
 import com.dbs.loyalty.service.PromoCategoryService;
-import com.dbs.loyalty.service.TaskService;
 import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.util.PageUtil;
 import com.dbs.loyalty.util.QueryStringUtil;
@@ -49,12 +47,8 @@ public class PromoCategoryController {
 	private static final String DETAIL 		= "promocategory/promocategory-detail";
 	
 	private static final String FORM 		= "promocategory/promocategory-form";
-	
-	private static final String SORT_BY 	= "name";
-	
-	private final PromoCategoryService promoCategoryService;
 
-	private final TaskService taskService;
+	private final PromoCategoryService promoCategoryService;
 
 	@PreAuthorize("hasAnyRole('PROMO_CATEGORY_MK', 'PROMO_CATEGORY_CK')")
 	@GetMapping
@@ -63,7 +57,7 @@ public class PromoCategoryController {
 			@RequestParam Map<String, String> params, 
 			Sort sort, Model model) {
 		
-		Order order = PageUtil.getOrder(sort, SORT_BY);
+		Order order = PageUtil.getOrder(sort, DomainConstant.NAME);
 		Page<PromoCategory> page = promoCategoryService.findAll(params, PageUtil.getPageable(params, order));
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
@@ -97,39 +91,32 @@ public class PromoCategoryController {
 		return FORM;
 	}
 
-	@Transactional
 	@PreAuthorize("hasRole('PROMO_CATEGORY_MK')")
 	@PostMapping
-	public String save(@Valid @ModelAttribute(DomainConstant.PROMO_CATEGORY)  PromoCategory promoCategory, BindingResult result, RedirectAttributes attributes) throws JsonProcessingException {
+	public String savePromoCategory(@Valid @ModelAttribute(DomainConstant.PROMO_CATEGORY)  PromoCategory promoCategory, BindingResult result, RedirectAttributes attributes) {
 		if (result.hasErrors()) {
 			return FORM;
 		}else {
-			if(promoCategory.getId() == null) {
-				taskService.saveTaskAdd(DomainConstant.PROMO_CATEGORY, promoCategory);
-			} else {
-				Optional<PromoCategory> current = promoCategoryService.findById(promoCategory.getId());
-				
-				if(current.isPresent()) {
-					taskService.saveTaskModify(DomainConstant.PROMO_CATEGORY, current.get(), promoCategory);
-					promoCategoryService.save(true, promoCategory.getId());
-				}
+			try {
+				promoCategoryService.taskSave(promoCategory);
+				attributes.addFlashAttribute(Constant.TOAST, MessageUtil.taskIsSaved(DomainConstant.PROMO_CATEGORY, promoCategory.getName()));
+			} catch (Exception e) {
+				attributes.addFlashAttribute(Constant.TOAST, e.getLocalizedMessage());
 			}
-			
-			attributes.addFlashAttribute(Constant.TOAST, MessageUtil.taskIsSavedMessage(DomainConstant.PROMO_CATEGORY, promoCategory.getName()));
+
 			return REDIRECT;
 		}
 	}
 
-	@Transactional
 	@PreAuthorize("hasRole('PROMO_CATEGORY_MK')")
 	@PostMapping("/delete/{id}")
 	public String deletePromoCategory(@PathVariable String id, RedirectAttributes attributes) throws JsonProcessingException {
-		Optional<PromoCategory> current = promoCategoryService.findById(id);
-		
-		if(current.isPresent()) {
-			taskService.saveTaskDelete(DomainConstant.PROMO_CATEGORY, current.get());
-			promoCategoryService.save(true, id);
-			attributes.addFlashAttribute(Constant.TOAST, MessageUtil.taskIsSavedMessage(DomainConstant.PROMO_CATEGORY, current.get().getName()));
+		try {
+			PromoCategory promoCategory = promoCategoryService.getOne(id);
+			promoCategoryService.taskDelete(promoCategory);
+			attributes.addFlashAttribute(Constant.TOAST, MessageUtil.taskIsSavedMessage(DomainConstant.PROMO_CATEGORY, promoCategory.getName()));
+		} catch (Exception e) {
+			attributes.addFlashAttribute(Constant.TOAST, e.getLocalizedMessage());
 		}
 		
 		return REDIRECT;
