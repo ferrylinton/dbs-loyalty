@@ -6,7 +6,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.dbs.loyalty.config.constant.CustomerTypeConstant;
+import com.dbs.loyalty.config.constant.CustomerConstant;
 import com.dbs.loyalty.config.constant.PathConstant;
 import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.service.dto.CustomerDto;
@@ -27,7 +27,7 @@ public abstract class CustomerMapper {
                 .path(PathConstant.IMAGE)
                 .toUriString();
 		
-		customerDto.setCustomerType(CustomerTypeConstant.getCustomerType(customerDto.getCustomerType()));
+		customerDto.setCustomerType(CustomerConstant.getCustomerType(customerDto.getCustomerType()));
 		customerDto.setImageUrl(imageUrl);
     }
 

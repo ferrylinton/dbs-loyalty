@@ -20,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.DomainConstant;
+import com.dbs.loyalty.domain.PromoCategory;
 import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.service.PromoCategoryService;
 import com.dbs.loyalty.service.TaskService;
@@ -36,6 +37,8 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequestMapping("/taskpromocategory")
 public class PromoCategoryTaskController extends AbstractTaskController {
+		
+	private static final String TYPE 				= PromoCategory.class.getSimpleName();
 
 	private static final String PROMO_CATEGORY_CK 	= "PROMO_CATEGORY_CK";
 	
@@ -58,7 +61,7 @@ public class PromoCategoryTaskController extends AbstractTaskController {
 			Sort sort, Model model) {
 		
 		Order order = PageUtil.getOrder(sort, MADE_DATE);
-		Page<Task> page = taskService.findAll(DomainConstant.PROMO_CATEGORY, params, PageUtil.getPageable(params, order));
+		Page<Task> page = taskService.findAll(TYPE, params, PageUtil.getPageable(params, order));
 		
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
 			return REDIRECT;
@@ -71,7 +74,7 @@ public class PromoCategoryTaskController extends AbstractTaskController {
 
 			model.addAttribute(Constant.OP_PARAM, TaskUtil.getTaskOperation(params));
 			model.addAttribute(Constant.ST_PARAM, TaskUtil.getTaskStatus(params));
-			model.addAttribute(DomainConstant.TYPE, DomainConstant.PROMO_CATEGORY);
+			model.addAttribute(DomainConstant.TYPE, TYPE);
 			model.addAttribute(IS_CHECKER, SecurityUtil.hasAuthority(PROMO_CATEGORY_CK));
 			return TASK_VIEW_TEMPLATE;
 		}
@@ -80,7 +83,7 @@ public class PromoCategoryTaskController extends AbstractTaskController {
 	@PreAuthorize("hasAnyRole('PROMO_CATEGORY_MK', 'PROMO_CATEGORY_CK')")
 	@GetMapping("/{id}/detail")
 	public String viewTaskPromoCategoryDetail(ModelMap model, @PathVariable String id) {
-		view(DomainConstant.PROMO_CATEGORY, model, id);
+		view(TYPE, model, id);
 		return TASK_DETAIL_TEMPLATE;
 	}
 
@@ -88,7 +91,7 @@ public class PromoCategoryTaskController extends AbstractTaskController {
 	@PreAuthorize("hasRole('PROMO_CATEGORY_CK')")
 	@GetMapping("/{id}")
 	public String viewTaskPromoCategory(ModelMap model, @PathVariable String id) {
-		view(DomainConstant.PROMO_CATEGORY, model, id);
+		view(TYPE, model, id);
 		return TASK_FORM_TEMPLATE;
 	}
 

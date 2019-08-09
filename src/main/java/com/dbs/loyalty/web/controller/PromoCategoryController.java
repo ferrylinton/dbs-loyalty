@@ -31,7 +31,6 @@ import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.util.PageUtil;
 import com.dbs.loyalty.util.QueryStringUtil;
 import com.dbs.loyalty.web.validator.PromoCategoryValidator;
-import com.fasterxml.jackson.core.JsonProcessingException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -93,7 +92,7 @@ public class PromoCategoryController {
 
 	@PreAuthorize("hasRole('PROMO_CATEGORY_MK')")
 	@PostMapping
-	public String savePromoCategory(@Valid @ModelAttribute(DomainConstant.PROMO_CATEGORY)  PromoCategory promoCategory, BindingResult result, RedirectAttributes attributes) {
+	public String savePromoCategory(@Valid @ModelAttribute(DomainConstant.PROMO_CATEGORY) PromoCategory promoCategory, BindingResult result, RedirectAttributes attributes) {
 		if (result.hasErrors()) {
 			return FORM;
 		}else {
@@ -110,7 +109,7 @@ public class PromoCategoryController {
 
 	@PreAuthorize("hasRole('PROMO_CATEGORY_MK')")
 	@PostMapping("/delete/{id}")
-	public String deletePromoCategory(@PathVariable String id, RedirectAttributes attributes) throws JsonProcessingException {
+	public String deletePromoCategory(@PathVariable String id, RedirectAttributes attributes){
 		try {
 			PromoCategory promoCategory = promoCategoryService.getOne(id);
 			promoCategoryService.taskDelete(promoCategory);

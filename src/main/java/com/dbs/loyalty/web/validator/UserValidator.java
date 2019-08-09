@@ -7,7 +7,7 @@ import org.springframework.validation.Validator;
 
 import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.config.constant.RegexConstant;
-import com.dbs.loyalty.config.constant.UserTypeConstant;
+import com.dbs.loyalty.config.constant.UserConstant;
 import com.dbs.loyalty.config.constant.ValidationConstant;
 import com.dbs.loyalty.domain.User;
 import com.dbs.loyalty.service.UserLdapService;
@@ -32,7 +32,7 @@ public class UserValidator implements Validator {
 	public void validate(Object target, Errors errors) {
 		User user = (User) target;
 		
-		if(user.getId() == null && (user.getUserType().equals(UserTypeConstant.EXTERNAL))){
+		if(user.getId() == null && (user.getUserType().equals(UserConstant.EXTERNAL))){
 			if((user.getPasswordPlain() == null || user.getPasswordPlain().trim().length() < 6 || user.getPasswordPlain().trim().length() > 30)) {
 				Object[] errorArgs = new Object[] {user.getPasswordPlain(), 6, 30 };
 				String defaultMessage = MessageUtil.getMessage(ValidationConstant.VALIDATION_SIZE_PASSWORD, errorArgs);
@@ -53,7 +53,7 @@ public class UserValidator implements Validator {
 			errors.rejectValue(DomainConstant.USERNAME, ValidationConstant.VALIDATION_EXIST, errorArgs, defaultMessage);
 		}
 		
-		if(user.getUserType().equals(UserTypeConstant.INTERNAL) && !userLdapService.isUserExist(user.getUsername())) {
+		if(user.getUserType().equals(UserConstant.INTERNAL) && !userLdapService.isUserExist(user.getUsername())) {
 			Object[] errorArgs = new String[] { user.getUsername() };
 			String defaultMessage = MessageUtil.getMessage(ValidationConstant.VALIDATION_USER_LDAP_NOT_FOUND, errorArgs);
 			errors.rejectValue(DomainConstant.USERNAME, ValidationConstant.VALIDATION_USER_LDAP_NOT_FOUND, errorArgs, defaultMessage);

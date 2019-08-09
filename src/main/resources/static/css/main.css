@@ -380,10 +380,6 @@ a:hover{
 	margin: 0 0 0 15px;
 }
 
-.table-detail .json{
-	padding: 15px;
-}
-
 .json{
 	padding: 0;
 	margin-bottom: 0;
@@ -395,6 +391,7 @@ a:hover{
 .json .table th{
 	font-weight: bold;
 	background-color: #f2f2f2;
+	width: 100px;
 }
 
 .json .table table{

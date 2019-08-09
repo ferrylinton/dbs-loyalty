@@ -26,8 +26,8 @@
                             <div class="form-group">
                                 <label for="customerType" th:text="#{customerType}">Customer Type</label>
                                 <select class="custom-select" th:field="*{customerType}">
-                                    <option value="0025">TPC</option>
-                                    <option value="0012">TREASURE</option>
+                                    <option th:value="${T(com.dbs.loyalty.config.constant.CustomerConstant).TPC_VALUE}" th:text="${T(com.dbs.loyalty.config.constant.CustomerConstant).TPC}">TPC</option>
+                                    <option th:value="${T(com.dbs.loyalty.config.constant.CustomerConstant).TREASURE_VALUE}" th:text="${T(com.dbs.loyalty.config.constant.CustomerConstant).TREASURE}">TREASURE</option>
                                 </select>
                             </div>
                         </div>

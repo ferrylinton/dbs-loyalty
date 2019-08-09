@@ -11,24 +11,23 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.PromoCategory;
 import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.PromoCategoryRepository;
 import com.dbs.loyalty.service.specification.PromoCategorySpec;
+import com.dbs.loyalty.util.JsonUtil;
 import com.dbs.loyalty.util.SortUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Service
 public class PromoCategoryService{
-
-	private final ObjectMapper objectMapper;
 	
+	private static final String TYPE = PromoCategory.class.getSimpleName();
+
 	private final PromoCategoryRepository promoCategoryRepository;
 	
 	private final TaskService taskService;
@@ -46,7 +45,7 @@ public class PromoCategoryService{
 	}
 
 	public Page<PromoCategory> findAll(Map<String, String> params, Pageable pageable) {
-		return promoCategoryRepository.findAll(new  PromoCategorySpec(params), pageable);
+		return promoCategoryRepository.findAll(new PromoCategorySpec(params), pageable);
 	}
 	
 	public Optional<PromoCategory> findByName(String name) {
@@ -67,34 +66,29 @@ public class PromoCategoryService{
 		return promoCategoryRepository.save(promoCategory);
 	}
 	
-	public void save(boolean pending, String id) {
-		promoCategoryRepository.save(pending, id);
-	}
-	
 	@Transactional
 	public void taskSave(PromoCategory newPromoCategory) throws JsonProcessingException {
 		if(newPromoCategory.getId() == null) {
-			taskService.saveTaskAdd(DomainConstant.ROLE, toString(newPromoCategory));
+			taskService.saveTaskAdd(TYPE, JsonUtil.toStr(newPromoCategory));
 		}else {
 			PromoCategory oldPromoCategory = promoCategoryRepository.getOne(newPromoCategory.getId());
 			promoCategoryRepository.save(true, newPromoCategory.getId());
-			taskService.saveTaskModify(DomainConstant.ROLE, toString(oldPromoCategory), toString(newPromoCategory));
+			taskService.saveTaskModify(TYPE, JsonUtil.toStr(oldPromoCategory), JsonUtil.toStr(newPromoCategory));
 		}
 	}
 
 	@Transactional
 	public void taskDelete(PromoCategory promoCategory) throws JsonProcessingException {
-		taskService.saveTaskDelete(DomainConstant.ROLE, toString(promoCategory));
+		taskService.saveTaskDelete(TYPE, JsonUtil.toStr(promoCategory));
 		promoCategoryRepository.save(true, promoCategory.getId());
 	}
 	
 	@Transactional
 	public String taskConfirm(Task task) throws IOException {
 		taskService.confirm(task);
-		PromoCategory promoCategory = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), PromoCategory.class);
+		PromoCategory promoCategory = JsonUtil.toObj((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), PromoCategory.class);
 		
 		if(task.getVerified()) {
-			
 			if(task.getTaskOperation() == TaskOperation.ADD) {
 				promoCategory.setCreatedBy(task.getMaker());
 				promoCategory.setCreatedDate(task.getMadeDate());
@@ -117,7 +111,8 @@ public class PromoCategoryService{
 	@Transactional(propagation=Propagation.REQUIRES_NEW)
 	public String taskFailed(Exception ex, Task task) {
 		try {
-			PromoCategory promoCategory = toPromoCategory((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew());
+			String obj = (task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew();
+			PromoCategory promoCategory = JsonUtil.toObj(obj, PromoCategory.class);
 			
 			if(task.getTaskOperation() != TaskOperation.ADD) {
 				promoCategoryRepository.save(false, promoCategory.getId());
@@ -128,14 +123,6 @@ public class PromoCategoryService{
 		} catch (Exception e) {
 			return e.getLocalizedMessage();
 		}
-	}
-	
-	private String toString(PromoCategory promoCategory) throws JsonProcessingException {
-		return objectMapper.writeValueAsString(promoCategory);
-	}
-	
-	private PromoCategory toPromoCategory(String content) throws IOException {
-		return objectMapper.readValue(content, PromoCategory.class);
 	}
 	
 }

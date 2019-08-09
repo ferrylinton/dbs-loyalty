@@ -28,7 +28,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.dbs.loyalty.config.ApplicationProperties;
 import com.dbs.loyalty.config.constant.AddressConstant;
 import com.dbs.loyalty.config.constant.Constant;
-import com.dbs.loyalty.config.constant.CustomerTypeConstant;
+import com.dbs.loyalty.config.constant.CustomerConstant;
 import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.Address;
 import com.dbs.loyalty.domain.Customer;
@@ -95,7 +95,7 @@ public class CustomerController {
 	public String viewCustomerForm(ModelMap model, @PathVariable String id) {
 		if (id.equals(Constant.ZERO)) {
 			Customer customer = new Customer();
-			customer.setCustomerType(CustomerTypeConstant.TPC_VALUE);
+			customer.setCustomerType(CustomerConstant.TPC_VALUE);
 			
 			Address primary = new Address();
 			primary.setLabel(AddressConstant.PRIMARY);

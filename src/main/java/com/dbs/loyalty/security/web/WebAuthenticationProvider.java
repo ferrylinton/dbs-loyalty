@@ -12,7 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 
 import com.dbs.loyalty.config.ApplicationProperties;
-import com.dbs.loyalty.config.constant.UserTypeConstant;
+import com.dbs.loyalty.config.constant.UserConstant;
 import com.dbs.loyalty.domain.User;
 import com.dbs.loyalty.repository.UserRepository;
 import com.dbs.loyalty.service.AuthenticateLdapService;
@@ -65,7 +65,7 @@ public class WebAuthenticationProvider implements AuthenticationProvider {
 	}
 	
 	private boolean isAuthenticated(String password, User user) {
-		if(user.getUserType().equals(UserTypeConstant.INTERNAL)) {
+		if(user.getUserType().equals(UserConstant.INTERNAL)) {
 			return authenticateLdapService.authenticate(user.getUsername(), password);
 		}else{
 			return PasswordUtil.matches(password, user.getPasswordHash());

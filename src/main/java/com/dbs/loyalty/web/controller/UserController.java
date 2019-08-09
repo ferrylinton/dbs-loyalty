@@ -27,7 +27,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.DomainConstant;
-import com.dbs.loyalty.config.constant.UserTypeConstant;
+import com.dbs.loyalty.config.constant.UserConstant;
 import com.dbs.loyalty.domain.Role;
 import com.dbs.loyalty.domain.User;
 import com.dbs.loyalty.service.RoleService;
@@ -94,7 +94,7 @@ public class UserController{
 	public String viewUserForm(ModelMap model, @PathVariable String id) {
 		if (id.equals(Constant.ZERO)) {
 			User user = new User();
-			user.setUserType(UserTypeConstant.INTERNAL);
+			user.setUserType(UserConstant.INTERNAL);
 			model.addAttribute(DomainConstant.USER, user);
 		} else {
 			getById(model, id);

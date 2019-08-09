@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dbs.loyalty.config.constant.DomainConstant;
-import com.dbs.loyalty.config.constant.UserTypeConstant;
+import com.dbs.loyalty.config.constant.UserConstant;
 import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.domain.User;
 import com.dbs.loyalty.enumeration.TaskOperation;
@@ -90,7 +90,7 @@ public class UserService{
 	@Transactional
 	public void taskSave(User newUser) throws JsonProcessingException {
 		if(newUser.getId() == null) {
-			if(newUser.getUserType().equals(UserTypeConstant.EXTERNAL)) {
+			if(newUser.getUserType().equals(UserConstant.EXTERNAL)) {
 				newUser.setPasswordHash(PasswordUtil.encode(newUser.getPasswordPlain()));
 				newUser.setPasswordPlain(null);
 			}
@@ -99,7 +99,7 @@ public class UserService{
 		}else {
 			User oldUser = userRepository.getOne(newUser.getId());
 			
-			if(newUser.getUserType().equals(UserTypeConstant.EXTERNAL)) {
+			if(newUser.getUserType().equals(UserConstant.EXTERNAL)) {
 				newUser.setPasswordHash(oldUser.getPasswordHash());
 			}
 			

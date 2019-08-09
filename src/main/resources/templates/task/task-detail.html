@@ -1,18 +1,19 @@
 <!doctype html>
 <html
+	th:with="title=|#{task} - #{${#strings.unCapitalize(type)}}|, url=@{|/task${#strings.toLowerCase(type)}|}"
 	xmlns:th="http://www.thymeleaf.org" 
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
 	layout:decorate="~{layout/layout}">
 
 <head>
-    <title th:text="|#{task} - #{${type}}|">Title</title>
+    <title th:text="${title}">Title</title>
 </head>
 
-<body th:data-menu="|task${type}|">
+<body th:data-menu="|task${#strings.toLowerCase(type)}|">
 	<nav aria-label="breadcrumb" layout:fragment="breadcrumb">
 		<ol class="breadcrumb">
       		<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{home}">Home</a></li>
-    		<li class="breadcrumb-item"><a th:href="@{|/task${type}|}" th:text="|#{task} - #{${type}}|">Task Type</a></li>
+    		<li class="breadcrumb-item"><a th:href="${url}" th:text="${title}">Task Type</a></li>
     		<li class="breadcrumb-item active" aria-current="page" th:text="#{detail}">Detail</li>
 		</ol>
 	</nav>
@@ -25,10 +26,6 @@
                             <tr>
                                 <th th:text="#{id}">Id</th>
                                 <td th:text="${task.id}">fc82c62c-ae02-4c9a-b232-e1a6ec4b7a1d</td>
-                            </tr>
-                            <tr>
-                                <th th:text="#{taskDataType}">Task Data Type</th>
-                                <td th:text="#{${task.taskDataType}}">Role</td>
                             </tr>
                             <tr>
                                 <th th:text="#{taskOperation}">Task Operation</th>
@@ -54,62 +51,16 @@
                                 <th th:text="#{checkedDate}">Checked Date</th>
                                 <td><span th:data-date="${@dateService.jsDatetime()}" th:text="${task.checkedDate}">2019-05-01T21:24:44Z</span></td>
                             </tr>
-                            <tr th:if="${task.taskDataOld}">
+                            <tr th:if="${not #strings.isEmpty(task.taskDataOld)}">
                                 <th th:text="#{taskDataOld}">Task Data Old</th>
                                 <td>
-                                    <div class="json" th:text="${task.taskDataOld}">
-                                                {
-                                                    "name" : "test",
-                                                    "authorities" : [ {
-                                                      "id" : "ZwOkjFmG",
-                                                      "name" : "ADMIN"
-                                                    }, {
-                                                      "id" : "V6evDSIi",
-                                                      "name" : "CUSTOMER_MK"
-                                                    }, {
-                                                      "id" : "hYMMkMXN",
-                                                      "name" : "PROMO_CATEGORY_CK"
-                                                    }, {
-                                                      "id" : "LFVeEiRv",
-                                                      "name" : "PROMO_CK"
-                                                    }, {
-                                                      "id" : "tx1zwTpY",
-                                                      "name" : "REWARD"
-                                                    }, {
-                                                      "id" : "o6o0pHGS",
-                                                      "name" : "ROLE_MK"
-                                                    } ]
-                                                  }
-                                    </div>
+                                    <div class="json" th:text="${task.taskDataOld}"></div>
                                 </td>
                             </tr>
-                            <tr th:if="${task.taskDataNew}">
+                            <tr th:if="${not #strings.isEmpty(task.taskDataNew)}">
                                 <th th:text="#{taskDataNew}">Task Data New</th>
                                 <td>
-                                    <div class="json" th:text="${task.taskDataNew}">
-                                                    {
-                                                        "name" : "test",
-                                                        "authorities" : [ {
-                                                          "id" : "ZwOkjFmG",
-                                                          "name" : "ADMIN"
-                                                        }, {
-                                                          "id" : "V6evDSIi",
-                                                          "name" : "CUSTOMER_MK"
-                                                        }, {
-                                                          "id" : "hYMMkMXN",
-                                                          "name" : "PROMO_CATEGORY_CK"
-                                                        }, {
-                                                          "id" : "LFVeEiRv",
-                                                          "name" : "PROMO_CK"
-                                                        }, {
-                                                          "id" : "tx1zwTpY",
-                                                          "name" : "REWARD"
-                                                        }, {
-                                                          "id" : "o6o0pHGS",
-                                                          "name" : "ROLE_MK"
-                                                        } ]
-                                                      }
-                                    </div>
+                                    <div class="json" th:text="${task.taskDataNew}"></div>
                                 </td>
                             </tr>
                             <tr th:if="${task.message}">
@@ -124,7 +75,7 @@
                     </table>
                 </div>
                 <div class="toolbar">
-                    <a class="btn btn-sm btn-secondary" th:href="@{|/task${type}|}">
+                    <a class="btn btn-sm btn-secondary" href="javascript:back()">
                         <span class="icon-left"></span> <span th:text="#{back}">Back</span>
                     </a>
                 </div>

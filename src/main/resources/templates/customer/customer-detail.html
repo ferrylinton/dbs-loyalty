@@ -48,7 +48,7 @@
 	                  	</tr>
 	               		<tr>
 	                   		<th th:text="#{customerType}">Customer Type</th>
-	                     	<td th:text="${customer.customerType == T(com.dbs.loyalty.config.constant.CustomerTypeConstant).TPC_VALUE ? 'TPC' : 'TREASURE'}">TREASURE</td>
+	                     	<td th:text="${customer.customerType == T(com.dbs.loyalty.config.constant.CustomerConstant).TPC_VALUE ? 'TPC' : 'TREASURE'}">TREASURE</td>
 	                	</tr>
 	               		<tr>
 	                    	<th th:text="#{phone}">Phone</th>
@@ -119,7 +119,7 @@
 	             		<tr>
 	               			<th>
 	               				<span th:text="#{id}">Id</span>
-	               				<span th:text="#{secondary}" class="badge badge-primary"></span>
+	               				<span th:text="#{secondary}" class="badge badge-secondary"></span>
 	               			</th>
 	                    	<td th:text="${customer.secondary.id}">Id</td>
 	               		</tr>

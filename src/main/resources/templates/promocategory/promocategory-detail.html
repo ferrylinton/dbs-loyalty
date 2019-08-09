@@ -19,23 +19,23 @@
 	</nav>
 	<div layout:fragment="content">
 		<div th:replace="fragment/value-not-found.html :: content"></div>
-      	<div class="table-responsive border border-top-0">
+      	<div class="table-responsive border border-top-0" th:if="${promoCategory}">
          	<table class="table table-sm table-detail">
            		<tbody>
               		<tr>
                      	<th th:text="#{id}">Id</th>
-                     	<td th:text="${promocategory.id}">ZwOkjFmG</td>
+                     	<td th:text="${promoCategory.id}">ZwOkjFmG</td>
                 	</tr>
                   	<tr>
                      	<th th:text="#{name}">Name</th>
-                      	<td th:text="${promocategory.name}">Admin</td>
+                      	<td th:text="${promoCategory.name}">Admin</td>
                 	</tr>
-                    <tr th:replace="fragment/audit-detail.html :: content(data=${promocategory})"></tr>
+                    <tr th:replace="fragment/audit-detail.html :: content(data=${promoCategory})"></tr>
             	</tbody>
         	</table>
      	</div>
       	<div class="toolbar">
-         	<a class="btn btn-sm btn-secondary" th:href="@{/promocategory}">
+         	<a class="btn btn-sm btn-secondary" href="javascript:back();">
             	<span class="icon-left"></span> <span th:text="#{back}">Back</span>
           	</a>
        	</div>

@@ -45,11 +45,11 @@
 										 	<span class="icon-cog"></span>
 										</button>
 										<div class="dropdown-menu py-0 shadow" aria-labelledby="dropdownMenuButton">
-										    <a class="dropdown-item pl-1" href="/customer/customer-detail.html" th:href="@{|/customer/${customer.id}/detail|}">
+										    <a class="dropdown-item pl-1" th:href="@{|/customer/${customer.id}/detail|}">
 										    	<span class="icon-eye"></span> <span th:text="#{detail}">Detail</span>
                                             </a>
                                             <th:block th:if="${isMaker && !customer.pending}">
-                                                <a class="dropdown-item pl-1" href="/customer/customer-form.html" th:href="@{|/customer/${customer.id}|}">
+                                                <a class="dropdown-item pl-1" th:href="@{|/customer/${customer.id}|}">
                                                     <span class="icon-edit"></span> <span th:text="#{edit}">Edit</span>
                                                 </a>
 											   	<div class="dropdown-divider my-0"></div>
@@ -63,7 +63,7 @@
 	               		<td th:text="${row.count + (page.number * page.size)}">1</td>
 	                 	<td th:text="${customer.firstName}">Ferry</td>
 	                 	<td th:text="${customer.lastName}">Hutapea</td>
-						<td th:text="${customer.customerType == T(com.dbs.loyalty.config.constant.CustomerTypeConstant).TPC_VALUE ? 'TPC' : 'TREASURE'}">TREASURE</td>
+						<td th:text="${customer.customerType == T(com.dbs.loyalty.config.constant.CustomerConstant).TPC_VALUE ? 'TPC' : 'TREASURE'}">TREASURE</td>
 						<td th:text="${customer.email}">ferrylinton@gmail.com</td>
 						<td th:text="${customer.phone}">1234567890</td>
 						<td><span th:class="${customer.activated} ? 'text-success icon-ok' : 'text-danger icon-cancel'"></span></td>

@@ -6,14 +6,14 @@
 	layout:decorate="~{layout/layout}">
 
 <head>
-    <title th:text="#{promocategory}">Promo Category</title>
+    <title th:text="#{promoCategory}">Promo Category</title>
 </head>
 
 <body data-menu="promocategory">
 	<nav aria-label="breadcrumb" layout:fragment="breadcrumb">
 		<ol class="breadcrumb">
       		<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{home}">Home</a></li>
-         	<li class="breadcrumb-item active" aria-current="page" th:text="#{promocategory}">Promo Category</li>
+         	<li class="breadcrumb-item active" aria-current="page" th:text="#{promoCategory}">Promo Category</li>
 		</ol>
 	</nav>
 	<div layout:fragment="content">
@@ -32,22 +32,22 @@
 	                    </tr>
 	                </thead>
 	                <tbody th:remove="all-but-first">
-	                    <tr th:each="promocategory,row : ${page}">
+	                    <tr th:each="promoCategory,row : ${page}">
 	                        <td class="p-0">
 								<div class="dropdown">
 									<button type="button" class="btn btn-default dropdown-toggle px-1 py-0 font-12" id="dropdownMenuButton" data-boundary="window" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 										<span class="icon-cog"></span>
 									</button>
 									<div class="dropdown-menu py-0 shadow" aria-labelledby="dropdownMenuButton">
-										<a class="dropdown-item pl-1" href="/promocategory/promocategory-detail.html" th:href="@{|/promocategory/${promocategory.id}/detail|}">
+										<a class="dropdown-item pl-1" th:href="@{|/promocategory/${promoCategory.id}/detail|}">
 										    <span class="icon-eye"></span> <span th:text="#{detail}">Detail</span>
                                         </a>
-                                        <th:block th:if="${isMaker && !promocategory.pending}">
-                                            <a class="dropdown-item pl-1" href="/promocategory/promocategory-form.html" th:href="@{|/promocategory/${promocategory.id}|}">
+                                        <th:block th:if="${isMaker && !promoCategory.pending}">
+                                            <a class="dropdown-item pl-1" th:href="@{|/promocategory/${promoCategory.id}|}">
                                                 <span class="icon-edit"></span> <span th:text="#{edit}">Edit</span>
                                             </a>
 											<div class="dropdown-divider my-0"></div>
-											<button class="dropdown-item pl-1 text-danger" title="/promocategory/delete/promocategory-view.html/1" th:title="@{|/promocategory/delete/${promocategory.id}|}"  data-toggle="modal" data-target="#delete-modal">
+											<button class="dropdown-item pl-1 text-danger" th:title="@{|/promocategory/delete/${promoCategory.id}|}" data-toggle="modal" data-target="#delete-modal">
 												<span class="icon-trash"></span> <span th:text="#{delete}">Delete</span>
 											</button>
 										</th:block>
@@ -55,7 +55,7 @@
 								</div>
 							</td>
 	                        <td th:text="${row.count + (page.number * page.size)}">1</td>
-	                        <td th:text="${promocategory.name}">Promo Category Name</td>
+	                        <td th:text="${promoCategory.name}">Debit Card Promo</td>
 	                    </tr>
 	                </tbody>
 	            </table>

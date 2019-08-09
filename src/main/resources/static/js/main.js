@@ -8,6 +8,8 @@ $(document).ready(function () {
 	
 	initFormatDate();
 	
+	initToast();
+	
 	initDeleteModal();
 	
 	initTaskModal();
@@ -175,4 +177,8 @@ function initAutoComplete(){
 			secondarycity.easyAutocomplete(options);
 		}
 	}
+}
+
+function initToast(){
+	$('.toast').toast('show');
 }

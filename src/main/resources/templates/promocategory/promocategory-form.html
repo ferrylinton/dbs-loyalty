@@ -6,7 +6,7 @@
 	layout:decorate="~{layout/layout}">
 
 <head>
-    <title th:text="#{promocategory}">Promo Category</title>
+    <title th:text="#{promoCategory}">Promo Category</title>
 </head>
 
 <body data-menu="promocategory">
@@ -19,8 +19,8 @@
 	</nav>
 	<div layout:fragment="content">
 		<div th:replace="fragment/value-not-found.html :: content"></div>
-		<form action="/promocategory/promocategory-view.html" th:object="${promocategory}" th:action="@{/promocategory}" method="post" autocomplete="off">
-        	<th:block th:if="${promocategory}">
+		<form th:object="${promoCategory}" th:action="@{/promocategory}" method="post" autocomplete="off">
+        	<th:block th:if="${promoCategory}">
             	<div class="row">
                		<div class="col-12 col-sm-12 col-md-9 col-lg-6 col-xl-6">
                    		<div class="form-group">
@@ -33,11 +33,11 @@
             	<div th:replace="fragment/audit-form.html :: content"></div>
        		</th:block>
          	<div class="toolbar">
-            	<a class="btn btn-sm btn-secondary" th:href="@{/promocategory}">
+            	<a class="btn btn-sm btn-secondary" href="javascript:back();">
                		<span class="icon-left" th:text="#{back}">Back</span>
               	</a>
-              	<th:block th:if="${promocategory}">
-	             	<button class="btn btn-sm btn-primary" type="submit" th:if="${isMaker && !promocategory.pending}">
+              	<th:block th:if="${promoCategory}">
+	             	<button class="btn btn-sm btn-primary" type="submit" th:if="${isMaker && !promoCategory.pending}">
 	                	<span class="icon-floppy" th:text="#{save}">Save</span>
 	            	</button>
             	</th:block>

@@ -1,25 +1,26 @@
 <!doctype html>
 <html
+	th:with="title=|#{task} - #{${#strings.unCapitalize(type)}}|, url=@{|/task${#strings.toLowerCase(type)}|}"
 	xmlns:th="http://www.thymeleaf.org" 
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
 	layout:decorate="~{layout/layout}">
 
 <head>
-    <title th:text="|#{task} - #{${type}}|">Title</title>
+    <title th:text="${title}">Title</title>
 </head>
 
-<body th:data-menu="|task${type}|">
+<body th:data-menu="|task${#strings.toLowerCase(type)}|">
 	<nav aria-label="breadcrumb" layout:fragment="breadcrumb">
   		<ol class="breadcrumb">
        		<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{home}">Home</a></li>
-          	<li class="breadcrumb-item"><a th:href="@{|/task${type}|}" th:text="|#{task} - #{${type}}|">Task Type</a></li>
+          	<li class="breadcrumb-item"><a th:href="${url}" th:text="${title}">Task Type</a></li>
         	<li class="breadcrumb-item active" aria-current="page" th:text="#{confirm}">Confirm</li>
      	</ol>
 	</nav>
 	<div layout:fragment="content">
 		<div th:replace="fragment/value-not-found.html :: content"></div>
     	<th:block th:if="${task}">
-        	<form id="task-form" action="/task/task-view.html" th:action="@{|/task${type}|}" method="post" autocomplete="off">
+        	<form id="task-form" th:action="${url}" method="post" autocomplete="off">
                     <div class="row">
                         <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
                             <div class="form-group">
@@ -122,7 +123,7 @@
                     <input type="hidden" id="verified" th:field="${task.verified}" />
                     <!-- TOOLBAR -->
                     <div class="toolbar">
-                        <a class="btn btn-sm btn-secondary" th:href="@{|/task${type}|}">
+                        <a class="btn btn-sm btn-secondary" href="javascript:back()">
                             <span class="icon-left"></span> <span th:text="#{back}">Back</span>
                         </a>
                         <button class="btn btn-sm btn-success" type="button" data-toggle="modal" data-target="#verify-modal">

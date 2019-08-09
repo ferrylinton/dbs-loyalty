@@ -1,6 +1,6 @@
 package com.dbs.loyalty.config.constant;
 
-public final class CustomerTypeConstant {
+public final class CustomerConstant {
 
 	public static final String TPC_VALUE		= "0025";
 	
@@ -18,7 +18,7 @@ public final class CustomerTypeConstant {
 		}
 	}
 
-	private CustomerTypeConstant() {
+	private CustomerConstant() {
 		// hide constructor
 	}
 	
