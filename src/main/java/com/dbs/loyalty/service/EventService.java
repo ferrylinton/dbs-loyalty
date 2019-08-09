@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.Event;
 import com.dbs.loyalty.domain.Feedback;
 import com.dbs.loyalty.domain.FeedbackQuestion;
@@ -22,9 +21,10 @@ import com.dbs.loyalty.enumeration.TaskOperation;
 import com.dbs.loyalty.model.Pair;
 import com.dbs.loyalty.repository.EventRepository;
 import com.dbs.loyalty.service.specification.EventSpec;
+import com.dbs.loyalty.util.JsonUtil;
+import com.dbs.loyalty.util.TaskUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,6 +32,8 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class EventService{
 
+	private static final String TYPE = Event.class.getSimpleName();
+	
 	private final EventRepository eventRepository;
 	
 	private final ImageService imageService;
@@ -39,9 +41,7 @@ public class EventService{
 	private final PdfService pdfService;
 	
 	private final FeedbackService feedbackService;
-	
-	private final ObjectMapper objectMapper;
-	
+
 	private final TaskService taskService;
 	
 	public Optional<Event> findById(String id){
@@ -103,7 +103,7 @@ public class EventService{
 			FilePdfTask filePdfTask = pdfService.add(newEvent.getMultipartFileMaterial());
 			newEvent.setMaterial(filePdfTask.getId());
 			
-			taskService.saveTaskAdd(DomainConstant.EVENT, toString(newEvent));
+			taskService.saveTaskAdd(TYPE, JsonUtil.toString(newEvent));
 		}else {
 			Event oldEvent = eventRepository.getOne(newEvent.getId());
 			
@@ -125,20 +125,19 @@ public class EventService{
 			oldEvent.setMaterial(newEvent.getId());
 			
 			eventRepository.save(true, newEvent.getId());
-			taskService.saveTaskModify(DomainConstant.EVENT, toString(oldEvent), toString(newEvent));
+			taskService.saveTaskModify(TYPE, oldEvent.getId(), JsonUtil.toString(oldEvent), JsonUtil.toString(newEvent));
 		}
 	}
 
 	@Transactional
 	public void taskDelete(Event event) throws JsonProcessingException {
-		taskService.saveTaskDelete(DomainConstant.EVENT, toString(event));
+		taskService.saveTaskDelete(TYPE, event.getId(), JsonUtil.toString(event));
 		eventRepository.save(true, event.getId());
 	}
 	
 	@Transactional
 	public String taskConfirm(Task task) throws IOException {
-		taskService.confirm(task);
-		Event event = toEvent((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew());
+		Event event = TaskUtil.getObject(task, Event.class);
 		
 		if(task.getVerified()) {
 			if(task.getTaskOperation() == TaskOperation.ADD) {
@@ -163,40 +162,33 @@ public class EventService{
 			eventRepository.save(false, event.getId());
 		}
 
+		taskService.confirm(task);
 		return event.getTitle();
 	}
 	
 	private void setQuestionOptions(Feedback feedback) throws IOException{
 		for(FeedbackQuestion question: feedback.getQuestions()) {
 			if(question.getQuestionOption() != null) {
-				List<Pair<String, String>> questionOptions = objectMapper.readValue(question.getQuestionOption(), new TypeReference<List<Pair<String, String>>>() {});
+				List<Pair<String, String>> questionOptions = JsonUtil.readValue(question.getQuestionOption(), new TypeReference<List<Pair<String, String>>>() {});
 				question.setQuestionOptions(questionOptions);
 			}
 		}
 	}
 	
 	@Transactional(propagation=Propagation.REQUIRES_NEW)
-	public String taskFailed(Exception ex, Task task) {
+	public String taskFailed(Task task, String error) {
 		try {
-			Event event = toEvent((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew());
+			Event event = TaskUtil.getObject(task, Event.class);
 			
 			if(task.getTaskOperation() != TaskOperation.ADD) {
 				eventRepository.save(false, event.getId());
 			}
 
-			taskService.save(ex, task);
+			taskService.save(task, error);
+			return error;
+		} catch (Exception ex) {
 			return ex.getLocalizedMessage();
-		} catch (Exception e) {
-			return e.getLocalizedMessage();
 		}
-	}
-	
-	private String toString(Event event) throws JsonProcessingException {
-		return objectMapper.writeValueAsString(event);
-	}
-	
-	private Event toEvent(String content) throws IOException {
-		return objectMapper.readValue(content, Event.class);
 	}
 
 }

@@ -49,8 +49,11 @@ public class Task implements Serializable {
     @Column(name = "task_status", length = 10, nullable = false)
     private TaskStatus taskStatus;
 
-    @Column(name = "task_data_type", length = 30, nullable = false)
+    @Column(name = "task_data_type", length = 100, nullable = false)
     private String taskDataType;
+    
+    @Column(name = "task_data_id", length = 22)
+    private String taskDataId;
     
     @Lob
     @Column(name = "task_data_old")

@@ -100,7 +100,7 @@ public class PromoTaskController extends AbstractTaskController {
 			attributes.addFlashAttribute(Constant.TOAST, getMessage(task, val));
 		} catch (Exception ex) {
 			log.error(ex.getLocalizedMessage(), ex);
-			promoService.taskFailed(ex, task);
+			promoService.taskFailed(task, ex.getLocalizedMessage());
 			attributes.addFlashAttribute(Constant.TOAST, ex.getLocalizedMessage());
 		}
 		

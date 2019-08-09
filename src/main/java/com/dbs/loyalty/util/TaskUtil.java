@@ -1,8 +1,10 @@
 package com.dbs.loyalty.util;
 
+import java.io.IOException;
 import java.util.Map;
 
 import com.dbs.loyalty.config.constant.Constant;
+import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.enumeration.TaskOperation;
 import com.dbs.loyalty.enumeration.TaskStatus;
 
@@ -35,6 +37,15 @@ public class TaskUtil {
 		return TaskOperation.ALL;
 	}
 	
+	public static String getObject(Task task) {
+		return (task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew();
+	}
+	
+	public static <T> T getObject(Task task, Class<T> valueType) throws IOException {
+		String content = (task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew();
+		return JsonUtil.toObject(content, valueType);
+	}
+
 	private TaskUtil() {
 		// hide constructor
 	}

@@ -11,15 +11,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.Role;
 import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.RoleRepository;
 import com.dbs.loyalty.service.specification.RoleSpec;
+import com.dbs.loyalty.util.JsonUtil;
 import com.dbs.loyalty.util.SortUtil;
+import com.dbs.loyalty.util.TaskUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,8 +27,8 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class RoleService{
 
-	private final ObjectMapper objectMapper;
-	
+	private static final String TYPE = Role.class.getSimpleName();
+
 	private final RoleRepository roleRepository;
 	
 	private final TaskService taskService;
@@ -64,26 +64,25 @@ public class RoleService{
 	}
 
 	@Transactional
-	public void taskSave(Role newRole) throws JsonProcessingException {
-		if(newRole.getId() == null) {
-			taskService.saveTaskAdd(DomainConstant.ROLE, toString(newRole));
+	public void taskSave(Role newData) throws JsonProcessingException {
+		if(newData.getId() == null) {
+			taskService.saveTaskAdd(TYPE, JsonUtil.toString(newData));
 		}else {
-			Role oldRole = roleRepository.findWithAuthoritiesById(newRole.getId());
-			roleRepository.save(true, newRole.getId());
-			taskService.saveTaskModify(DomainConstant.ROLE, toString(oldRole), toString(newRole));
+			Role oldRole = roleRepository.findWithAuthoritiesById(newData.getId());
+			roleRepository.save(true, newData.getId());
+			taskService.saveTaskModify(TYPE, oldRole.getId(), JsonUtil.toString(oldRole), JsonUtil.toString(newData));
 		}
 	}
 
 	@Transactional
-	public void taskDelete(Role role) throws JsonProcessingException {
-		taskService.saveTaskDelete(DomainConstant.ROLE, toString(role));
-		roleRepository.save(true, role.getId());
+	public void taskDelete(Role oldData) throws JsonProcessingException {
+		taskService.saveTaskDelete(TYPE, oldData.getId(), JsonUtil.toString(oldData));
+		roleRepository.save(true, oldData.getId());
 	}
 	
 	@Transactional
 	public String taskConfirm(Task task) throws IOException {
-		taskService.confirm(task);
-		Role role = toRole((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew());
+		Role role = TaskUtil.getObject(task, Role.class);
 		
 		if(task.getVerified()) {
 			if(task.getTaskOperation() == TaskOperation.ADD) {
@@ -102,31 +101,22 @@ public class RoleService{
 			roleRepository.save(false, role.getId());
 		}
 
+		taskService.confirm(task);
 		return role.getName();
 	}
 	
 	@Transactional(propagation=Propagation.REQUIRES_NEW)
-	public String taskFailed(Exception ex, Task task) {
+	public String taskFailed(Task task, String error) {
 		try {
-			Role role = toRole((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew());
-			
-			if(task.getTaskOperation() != TaskOperation.ADD) {
-				roleRepository.save(false, role.getId());
+			if(task.getTaskDataId() != null) {
+				roleRepository.save(false, task.getTaskDataId());
 			}
 
-			taskService.save(ex, task);
+			taskService.save(task, error);
+			return error;
+		} catch (Exception ex) {
 			return ex.getLocalizedMessage();
-		} catch (Exception e) {
-			return e.getLocalizedMessage();
 		}
-	}
-	
-	private String toString(Role role) throws JsonProcessingException {
-		return objectMapper.writeValueAsString(role);
-	}
-	
-	private Role toRole(String content) throws IOException {
-		return objectMapper.readValue(content, Role.class);
 	}
 	
 }

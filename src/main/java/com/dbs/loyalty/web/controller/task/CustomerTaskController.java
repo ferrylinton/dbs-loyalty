@@ -100,7 +100,7 @@ public class CustomerTaskController extends AbstractTaskController {
 			attributes.addFlashAttribute(Constant.TOAST, getMessage(task, val));
 		} catch (Exception ex) {
 			log.error(ex.getLocalizedMessage(), ex);
-			customerService.taskFailed(ex, task);
+			customerService.taskFailed(task, ex.getLocalizedMessage());
 			attributes.addFlashAttribute(Constant.TOAST, ex.getLocalizedMessage());
 		}
 		

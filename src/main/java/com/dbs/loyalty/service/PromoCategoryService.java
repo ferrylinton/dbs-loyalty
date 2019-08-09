@@ -18,6 +18,7 @@ import com.dbs.loyalty.repository.PromoCategoryRepository;
 import com.dbs.loyalty.service.specification.PromoCategorySpec;
 import com.dbs.loyalty.util.JsonUtil;
 import com.dbs.loyalty.util.SortUtil;
+import com.dbs.loyalty.util.TaskUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import lombok.RequiredArgsConstructor;
@@ -62,66 +63,59 @@ public class PromoCategoryService{
 		}
 	}
 
-	public PromoCategory save(PromoCategory promoCategory) {
-		return promoCategoryRepository.save(promoCategory);
-	}
-	
 	@Transactional
-	public void taskSave(PromoCategory newPromoCategory) throws JsonProcessingException {
-		if(newPromoCategory.getId() == null) {
-			taskService.saveTaskAdd(TYPE, JsonUtil.toStr(newPromoCategory));
+	public void taskSave(PromoCategory newData) throws JsonProcessingException {
+		if(newData.getId() == null) {
+			taskService.saveTaskAdd(TYPE, JsonUtil.toString(newData));
 		}else {
-			PromoCategory oldPromoCategory = promoCategoryRepository.getOne(newPromoCategory.getId());
-			promoCategoryRepository.save(true, newPromoCategory.getId());
-			taskService.saveTaskModify(TYPE, JsonUtil.toStr(oldPromoCategory), JsonUtil.toStr(newPromoCategory));
+			PromoCategory oldData = promoCategoryRepository.getOne(newData.getId());
+			promoCategoryRepository.save(true, newData.getId());
+			taskService.saveTaskModify(TYPE, oldData.getId(), JsonUtil.toString(oldData), JsonUtil.toString(newData));
 		}
 	}
 
 	@Transactional
-	public void taskDelete(PromoCategory promoCategory) throws JsonProcessingException {
-		taskService.saveTaskDelete(TYPE, JsonUtil.toStr(promoCategory));
-		promoCategoryRepository.save(true, promoCategory.getId());
+	public void taskDelete(PromoCategory oldData) throws JsonProcessingException {
+		taskService.saveTaskDelete(TYPE, oldData.getId(), JsonUtil.toString(oldData));
+		promoCategoryRepository.save(true, oldData.getId());
 	}
 	
 	@Transactional
 	public String taskConfirm(Task task) throws IOException {
-		taskService.confirm(task);
-		PromoCategory promoCategory = JsonUtil.toObj((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), PromoCategory.class);
+		PromoCategory data = TaskUtil.getObject(task, PromoCategory.class);
 		
 		if(task.getVerified()) {
 			if(task.getTaskOperation() == TaskOperation.ADD) {
-				promoCategory.setCreatedBy(task.getMaker());
-				promoCategory.setCreatedDate(task.getMadeDate());
-				promoCategoryRepository.save(promoCategory);
+				data.setCreatedBy(task.getMaker());
+				data.setCreatedDate(task.getMadeDate());
+				promoCategoryRepository.save(data);
 			}else if(task.getTaskOperation() == TaskOperation.MODIFY) {
-				promoCategory.setLastModifiedBy(task.getMaker());
-				promoCategory.setLastModifiedDate(task.getMadeDate());
-				promoCategory.setPending(false);
-				promoCategoryRepository.save(promoCategory);
+				data.setLastModifiedBy(task.getMaker());
+				data.setLastModifiedDate(task.getMadeDate());
+				data.setPending(false);
+				promoCategoryRepository.save(data);
 			}else if(task.getTaskOperation() == TaskOperation.DELETE) {
-				promoCategoryRepository.delete(promoCategory);
+				promoCategoryRepository.delete(data);
 			}
 		}else if(task.getTaskOperation() != TaskOperation.ADD) {
-			promoCategoryRepository.save(false, promoCategory.getId());
+			promoCategoryRepository.save(false, data.getId());
 		}
 
-		return promoCategory.getName();
+		taskService.confirm(task);
+		return data.getName();
 	}
 	
 	@Transactional(propagation=Propagation.REQUIRES_NEW)
-	public String taskFailed(Exception ex, Task task) {
+	public String taskFailed(Task task, String error) {
 		try {
-			String obj = (task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew();
-			PromoCategory promoCategory = JsonUtil.toObj(obj, PromoCategory.class);
-			
-			if(task.getTaskOperation() != TaskOperation.ADD) {
-				promoCategoryRepository.save(false, promoCategory.getId());
+			if(task.getTaskDataId() != null) {
+				promoCategoryRepository.save(false, task.getTaskDataId());
 			}
 
-			taskService.save(ex, task);
+			taskService.save(task, error);
+			return error;
+		} catch (Exception ex) {
 			return ex.getLocalizedMessage();
-		} catch (Exception e) {
-			return e.getLocalizedMessage();
 		}
 	}
 	

@@ -11,17 +11,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.config.constant.UserConstant;
 import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.domain.User;
 import com.dbs.loyalty.enumeration.TaskOperation;
 import com.dbs.loyalty.repository.UserRepository;
 import com.dbs.loyalty.service.specification.UserSpec;
+import com.dbs.loyalty.util.JsonUtil;
 import com.dbs.loyalty.util.PasswordUtil;
 import com.dbs.loyalty.util.SecurityUtil;
+import com.dbs.loyalty.util.TaskUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class UserService{
 	
-	private final ObjectMapper objectMapper;
+	private static final String TYPE = User.class.getSimpleName();
 
 	private final UserRepository userRepository;
 	
@@ -88,79 +88,71 @@ public class UserService{
 	}
 	
 	@Transactional
-	public void taskSave(User newUser) throws JsonProcessingException {
-		if(newUser.getId() == null) {
-			if(newUser.getUserType().equals(UserConstant.EXTERNAL)) {
-				newUser.setPasswordHash(PasswordUtil.encode(newUser.getPasswordPlain()));
-				newUser.setPasswordPlain(null);
+	public void taskSave(User newData) throws JsonProcessingException {
+		if(newData.getId() == null) {
+			if(newData.getUserType().equals(UserConstant.EXTERNAL)) {
+				newData.setPasswordHash(PasswordUtil.encode(newData.getPasswordPlain()));
+				newData.setPasswordPlain(null);
 			}
 			
-			taskService.saveTaskAdd(DomainConstant.ROLE, toString(newUser));
+			taskService.saveTaskAdd(TYPE, JsonUtil.toString(newData));
 		}else {
-			User oldUser = userRepository.getOne(newUser.getId());
+			User oldData = userRepository.getOne(newData.getId());
 			
-			if(newUser.getUserType().equals(UserConstant.EXTERNAL)) {
-				newUser.setPasswordHash(oldUser.getPasswordHash());
+			if(newData.getUserType().equals(UserConstant.EXTERNAL)) {
+				newData.setPasswordHash(oldData.getPasswordHash());
 			}
 			
-			userRepository.save(true, newUser.getId());
-			taskService.saveTaskModify(DomainConstant.ROLE, toString(oldUser), toString(newUser));
+			userRepository.save(true, newData.getId());
+			taskService.saveTaskModify(TYPE, oldData.getId(), JsonUtil.toString(oldData), JsonUtil.toString(newData));
 		}
 	}
 
 	@Transactional
-	public void taskDelete(User user) throws JsonProcessingException {
-		taskService.saveTaskDelete(DomainConstant.ROLE, toString(user));
-		userRepository.save(true, user.getId());
+	public void taskDelete(User oldData) throws JsonProcessingException {
+		taskService.saveTaskDelete(TYPE, oldData.getId(), JsonUtil.toString(oldData));
+		userRepository.save(true, oldData.getId());
 	}
 	
 	@Transactional
 	public String taskConfirm(Task task) throws IOException {
-		taskService.confirm(task);
-		User user = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), User.class);
+		User data = TaskUtil.getObject(task, User.class);
 		
 		if(task.getVerified()) {
 			if(task.getTaskOperation() == TaskOperation.ADD) {
-				user.setCreatedBy(task.getMaker());
-				user.setCreatedDate(task.getMadeDate());
-				userRepository.save(user);
+				data.setCreatedBy(task.getMaker());
+				data.setCreatedDate(task.getMadeDate());
+				userRepository.save(data);
 			}else if(task.getTaskOperation() == TaskOperation.MODIFY) {
-				user.setLastModifiedBy(task.getMaker());
-				user.setLastModifiedDate(task.getMadeDate());
-				user.setPending(false);
-				userRepository.save(user);
+				data.setLastModifiedBy(task.getMaker());
+				data.setLastModifiedDate(task.getMadeDate());
+				data.setPending(false);
+				userRepository.save(data);
 			}else if(task.getTaskOperation() == TaskOperation.DELETE) {
-				userRepository.delete(user);
+				userRepository.delete(data);
 			}
 		}else if(task.getTaskOperation() != TaskOperation.ADD) {
-			userRepository.save(false, user.getId());
+			userRepository.save(false, data.getId());
 		}
 
-		return user.getUsername();
+		taskService.confirm(task);
+		return data.getUsername();
 	}
 	
 	@Transactional(propagation=Propagation.REQUIRES_NEW)
-	public String taskFailed(Exception ex, Task task) {
+	public String taskFailed(Task task, String error) {
 		try {
-			User user = toUser((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew());
+			User data = TaskUtil.getObject(task, User.class);
 			
 			if(task.getTaskOperation() != TaskOperation.ADD) {
-				userRepository.save(false, user.getId());
+				userRepository.save(false, data.getId());
 			}
 
-			taskService.save(ex, task);
+			taskService.save(task, error);
+			return error;
+		} catch (Exception ex) {
 			return ex.getLocalizedMessage();
-		} catch (Exception e) {
-			return e.getLocalizedMessage();
 		}
-	}
-	
-	private String toString(User user) throws JsonProcessingException {
-		return objectMapper.writeValueAsString(user);
-	}
-	
-	private User toUser(String content) throws IOException {
-		return objectMapper.readValue(content, User.class);
 	}
 	
 }

@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dbs.loyalty.config.constant.AddressConstant;
-import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.Address;
 import com.dbs.loyalty.domain.Customer;
 import com.dbs.loyalty.domain.FileImageTask;
@@ -26,11 +25,12 @@ import com.dbs.loyalty.service.dto.CustomerNewPasswordDto;
 import com.dbs.loyalty.service.dto.CustomerPasswordDto;
 import com.dbs.loyalty.service.dto.CustomerUpdateDto;
 import com.dbs.loyalty.service.specification.CustomerSpec;
+import com.dbs.loyalty.util.JsonUtil;
 import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.util.PasswordUtil;
 import com.dbs.loyalty.util.SecurityUtil;
+import com.dbs.loyalty.util.TaskUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -38,14 +38,14 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class CustomerService{
 
+	private static final String TYPE = Customer.class.getSimpleName();
+	
 	private final CustomerRepository customerRepository;
 	
 	private final AddressRepository addressRepository;
 	
 	private final ImageService imageService;
-	
-	private final ObjectMapper objectMapper;
-	
+
 	private final TaskService taskService;
 
 	public Optional<Customer> findById(String id) {
@@ -146,40 +146,39 @@ public class CustomerService{
 	}
 	
 	@Transactional
-	public void taskSave(Customer newCustomer) throws IOException {
-		if(newCustomer.getId() == null) {
-			FileImageTask fileImageTask = imageService.add(newCustomer.getMultipartFileImage());
-			newCustomer.setImage(fileImageTask.getId());
-			taskService.saveTaskAdd(DomainConstant.CUSTOMER, toString(newCustomer));
+	public void taskSave(Customer newData) throws IOException {
+		if(newData.getId() == null) {
+			FileImageTask fileImageTask = imageService.add(newData.getMultipartFileImage());
+			newData.setImage(fileImageTask.getId());
+			taskService.saveTaskAdd(TYPE, JsonUtil.toString(newData));
 		}else {
-			Customer oldCustomer = customerRepository.getOne(newCustomer.getId());
-			prepareAddress(oldCustomer);
+			Customer oldData = customerRepository.getOne(newData.getId());
+			prepareAddress(oldData);
 			
-			if(newCustomer.getMultipartFileImage().isEmpty()) {
-				newCustomer.setImage(newCustomer.getId());
+			if(newData.getMultipartFileImage().isEmpty()) {
+				newData.setImage(newData.getId());
 			}else {
-				FileImageTask fileImageTask = imageService.add(newCustomer.getMultipartFileImage());
-				newCustomer.setImage(fileImageTask.getId());
+				FileImageTask fileImageTask = imageService.add(newData.getMultipartFileImage());
+				newData.setImage(fileImageTask.getId());
 			}
 			
-			newCustomer.setPasswordHash(oldCustomer.getPasswordHash());
-			oldCustomer.setImage(newCustomer.getId());
+			newData.setPasswordHash(oldData.getPasswordHash());
+			oldData.setImage(newData.getId());
 			
-			customerRepository.save(true, newCustomer.getId());
-			taskService.saveTaskModify(DomainConstant.CUSTOMER, toString(oldCustomer), toString(newCustomer));
+			customerRepository.save(true, newData.getId());
+			taskService.saveTaskModify(TYPE, oldData.getId(), JsonUtil.toString(oldData), JsonUtil.toString(newData));
 		}
 	}
 
 	@Transactional
-	public void taskDelete(Customer customer) throws JsonProcessingException {
-		taskService.saveTaskDelete(DomainConstant.CUSTOMER, toString(customer));
-		customerRepository.save(true, customer.getId());
+	public void taskDelete(Customer oldData) throws JsonProcessingException {
+		taskService.saveTaskDelete(TYPE, oldData.getId(), JsonUtil.toString(oldData));
+		customerRepository.save(true, oldData.getId());
 	}
 	
 	@Transactional
 	public String taskConfirm(Task task) throws IOException {
-		taskService.confirm(task);
-		Customer customer = objectMapper.readValue((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew(), Customer.class);
+		Customer customer = TaskUtil.getObject(task, Customer.class);
 		Address primary = customer.getPrimary();
 		Address secondary = customer.getSecondary();
 		
@@ -207,6 +206,7 @@ public class CustomerService{
 			customerRepository.save(false, customer.getId());
 		}
 
+		taskService.confirm(task);
 		return customer.getEmail();
 	}
 
@@ -228,18 +228,18 @@ public class CustomerService{
 	}
 
 	@Transactional(propagation=Propagation.REQUIRES_NEW)
-	public String taskFailed(Exception ex, Task task) {
+	public String taskFailed(Task task, String error) {
 		try {
-			Customer customer = toCustomer((task.getTaskOperation() == TaskOperation.DELETE) ? task.getTaskDataOld() : task.getTaskDataNew());
+			Customer customer = TaskUtil.getObject(task, Customer.class);
 			
 			if(task.getTaskOperation() != TaskOperation.ADD) {
 				customerRepository.save(false, customer.getId());
 			}
 
-			taskService.save(ex, task);
+			taskService.save(task, error);
+			return error;
+		} catch (Exception ex) {
 			return ex.getLocalizedMessage();
-		} catch (Exception e) {
-			return e.getLocalizedMessage();
 		}
 	}
 	
@@ -254,13 +254,5 @@ public class CustomerService{
 		
 		customer.setAddresses(null);
 	}
-	
-	private String toString(Customer customer) throws JsonProcessingException {
-		return objectMapper.writeValueAsString(customer);
-	}
-	
-	private Customer toCustomer(String content) throws IOException {
-		return objectMapper.readValue(content, Customer.class);
-	}
-	
+
 }

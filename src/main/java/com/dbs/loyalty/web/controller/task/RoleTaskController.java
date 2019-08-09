@@ -100,7 +100,7 @@ public class RoleTaskController extends AbstractTaskController {
 			attributes.addFlashAttribute(Constant.TOAST, getMessage(task, val));
 		} catch (Exception ex) {
 			log.error(ex.getLocalizedMessage(), ex);
-			roleService.taskFailed(ex, task);
+			roleService.taskFailed(task, ex.getLocalizedMessage());
 			attributes.addFlashAttribute(Constant.TOAST, ex.getLocalizedMessage());
 		}
 		

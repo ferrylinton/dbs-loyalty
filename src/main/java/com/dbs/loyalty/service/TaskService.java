@@ -31,22 +31,23 @@ public class TaskService {
 		return taskRepository.findAll(new TaskSpec(taskDataType, params), pageable);
 	}
 	
-	public Task saveTaskAdd(String type, String taskDataNew) {
+	public Task saveTaskAdd(String taskDataType, String taskDataNew) {
 		Task task = new Task();
 		task.setTaskOperation(TaskOperation.ADD);
 		task.setTaskStatus(TaskStatus.PENDING);
-		task.setTaskDataType(type);
+		task.setTaskDataType(taskDataType);
 		task.setTaskDataNew(taskDataNew);
 		task.setMaker(SecurityUtil.getLogged());
 		task.setMadeDate(Instant.now());
 		return taskRepository.save(task);
 	}
 	
-	public Task saveTaskModify(String type, String taskDataOld, String taskDataNew) {
+	public Task saveTaskModify(String taskDataType, String taskDataId, String taskDataOld, String taskDataNew) {
 		Task task = new Task();
 		task.setTaskOperation(TaskOperation.MODIFY);
 		task.setTaskStatus(TaskStatus.PENDING);
-		task.setTaskDataType(type);
+		task.setTaskDataType(taskDataType);
+		task.setTaskDataId(taskDataId);
 		task.setTaskDataOld(taskDataOld);
 		task.setTaskDataNew(taskDataNew);
 		task.setMaker(SecurityUtil.getLogged());
@@ -54,11 +55,12 @@ public class TaskService {
 		return taskRepository.save(task);
 	}
 	
-	public Task saveTaskDelete(String type, String taskDataOld) {
+	public Task saveTaskDelete(String taskDataType, String taskDataId, String taskDataOld) {
 		Task task = new Task();
 		task.setTaskOperation(TaskOperation.DELETE);
 		task.setTaskStatus(TaskStatus.PENDING);
-		task.setTaskDataType(type);
+		task.setTaskDataType(taskDataType);
+		task.setTaskDataId(taskDataId);
 		task.setTaskDataOld(taskDataOld);
 		task.setMaker(SecurityUtil.getLogged());
 		task.setMadeDate(Instant.now());
@@ -73,9 +75,9 @@ public class TaskService {
 		taskRepository.save(task);
 	}
 
-	public void save(Exception ex, Task task) {
+	public void save(Task task, String error) {
 		task.setTaskStatus(TaskStatus.FAILED);
-		task.setError(ex.getLocalizedMessage());
+		task.setError(error);
 		taskRepository.save(task);
 	}
 	
