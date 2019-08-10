@@ -30,7 +30,7 @@ public class PromoCustomerController {
 	
 	private static final String VIEW 		= "promocustomer/promocustomer-view.html";
 	
-	private static final String SORT_BY 	= "customer.name";
+	private static final String SORT_BY 	= "customer.firstName";
 	
 	private final PromoCustomerService promoCustomerService;
 	

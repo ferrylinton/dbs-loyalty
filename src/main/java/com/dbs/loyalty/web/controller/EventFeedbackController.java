@@ -31,7 +31,7 @@ public class EventFeedbackController {
 	
 	private static final String VIEW 		= "eventfeedback/eventfeedback-view";
 	
-	private static final String SORT_BY 	= "customer.name";
+	private static final String SORT_BY 	= "customer.firstName";
 	
 	private final FeedbackQuestionService feedbackQuestionService;
 	

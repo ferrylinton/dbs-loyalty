@@ -24,7 +24,7 @@
                     <thead>
                         <tr th:with="ascending=${order.getDirection().name() == 'ASC'}">
                             <th style="width:40px">#</th>
-                            <th th:with="sort=|&sort=customer.name,${ascending ? 'DESC' : 'ASC'}|">
+                            <th th:with="sort=|&sort=customer.firstName,${ascending ? 'DESC' : 'ASC'}|">
                                 <a th:href="@{|?page=${page.getNumber()}${params}${sort}|}" class="text-decoration-none">
                                     <span th:text="#{name}">Name</span> <span th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></span>
                                 </a>
@@ -37,7 +37,7 @@
                     <tbody th:remove="all-but-first">
                         <tr th:each="feedback,row : ${page}">
                             <td th:text="${row.count + (page.number * page.size)}">1</td>
-                            <td th:text="${feedback.customer.name}">Ferry Linton Hutapea</td>
+                            <td th:text="${feedback.customer.firstName}">Ferry Linton Hutapea</td>
                             <th:block th:each="answer : ${feedback.answers}">
                             	<td title="Please rate your overall level of statisfaction with our event?" th:title="${answer.questionText}" th:text="${answer.questionAnswer}">1</td>
                             </th:block>

@@ -63,11 +63,11 @@
                                     <div class="json" th:text="${task.taskDataNew}"></div>
                                 </td>
                             </tr>
-                            <tr th:if="${task.message}">
+                            <tr th:if="${not #strings.isEmpty(task.message)}">
                                 <th th:text="#{message}">Message</th>
                                 <td th:text="${task.message}">Message</td>
                             </tr>
-                            <tr th:if="${task.error}">
+                            <tr th:if="${not #strings.isEmpty(task.error)}">
                                 <th th:text="#{error}">Error</th>
                                 <td th:text="${task.error}">Error</td>
                             </tr>

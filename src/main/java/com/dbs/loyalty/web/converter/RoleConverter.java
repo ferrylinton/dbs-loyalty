@@ -12,11 +12,15 @@ import lombok.RequiredArgsConstructor;
 @Component
 public class RoleConverter implements Converter<String, Role> {
 
-	private RoleRepository roleRepository;
+	private final RoleRepository roleRepository;
 	
 	@Override
 	public Role convert(String id) {
-		return roleRepository.getOne(id);
+		if(id != null) {
+			return roleRepository.getOne(id);
+		}else {
+			return null;
+		}
 	}
 
 }

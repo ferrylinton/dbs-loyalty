@@ -158,7 +158,7 @@ var Lang = (function () {
 		}
 
 		if (result == undefined || result == '') {
-			return locale + '.' + type + '.' + code;
+			return code.length > 0 ? code.charAt(0).toUpperCase() + code.slice(1) : code;
 		} else {
 			return result;
 		}

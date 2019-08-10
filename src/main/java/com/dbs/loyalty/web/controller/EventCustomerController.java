@@ -30,7 +30,7 @@ public class EventCustomerController {
 	
 	private static final String VIEW 		= "eventcustomer/eventcustomer-view";
 	
-	private static final String SORT_BY 	= "customer.name";
+	private static final String SORT_BY 	= "customer.firstName";
 	
 	private final EventCustomerService eventCustomerService;
 	

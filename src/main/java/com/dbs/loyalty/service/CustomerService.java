@@ -166,7 +166,7 @@ public class CustomerService{
 			oldData.setImage(newData.getId());
 			
 			customerRepository.save(true, newData.getId());
-			taskService.saveTaskModify(TYPE, oldData.getId(), JsonUtil.toString(oldData), JsonUtil.toString(newData));
+			taskService.saveTaskModify(TYPE, newData.getId(), JsonUtil.toString(oldData), JsonUtil.toString(newData));
 		}
 	}
 
@@ -184,23 +184,27 @@ public class CustomerService{
 		
 		if(task.getVerified()) {
 			if(task.getTaskOperation() == TaskOperation.ADD) {
+				imageService.add(customer.getId(), customer.getImage(), task.getMaker(), task.getMadeDate());
+				
 				customer.setCreatedBy(task.getMaker());
 				customer.setCreatedDate(task.getMadeDate());
 				customer = customerRepository.save(customer);
 				saveAddress(task, primary, customer);
 				saveAddress(task, secondary, customer);
-				imageService.add(customer.getId(), customer.getImage(), task.getMaker(), task.getMadeDate());
 			}else if(task.getTaskOperation() == TaskOperation.MODIFY) {
+				imageService.update(customer.getId(), customer.getImage(), task.getMaker(), task.getMadeDate());
+				saveAddress(task, primary, customer);
+				saveAddress(task, secondary, customer);
+				
+				System.out.println("--------------- primary : " + customer.getPrimary());
+				System.out.println("--------------- primary address : " + customer.getPrimary().getCity());
 				customer.setLastModifiedBy(task.getMaker());
 				customer.setLastModifiedDate(task.getMadeDate());
 				customer.setPending(false);
-				customer = customerRepository.save(customer);
-				saveAddress(task, primary, customer);
-				saveAddress(task, secondary, customer);
-				imageService.update(customer.getId(), customer.getImage(), task.getMaker(), task.getMadeDate());
+				customerRepository.save(customer);
 			}else if(task.getTaskOperation() == TaskOperation.DELETE) {
-				customerRepository.delete(customer);
 				imageService.delete(customer.getId());
+				customerRepository.delete(customer);
 			}
 		}else if(task.getTaskOperation() != TaskOperation.ADD) {
 			customerRepository.save(false, customer.getId());

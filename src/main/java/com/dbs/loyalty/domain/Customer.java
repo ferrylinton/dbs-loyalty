@@ -115,7 +115,6 @@ public class Customer extends AbstractTask implements Serializable {
     private Set<Address> addresses = new HashSet<>();
 	
 	@Valid
-	@NotNull
 	@Transient
 	private Address primary;
 	

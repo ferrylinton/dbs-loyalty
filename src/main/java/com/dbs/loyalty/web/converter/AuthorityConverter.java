@@ -16,7 +16,11 @@ public class AuthorityConverter implements Converter<String, Authority> {
 	
 	@Override
 	public Authority convert(String id) {
-		return authorityRepository.getOne(id);
+		if(id != null) {
+			return authorityRepository.getOne(id);
+		}else {
+			return null;
+		}
 	}
 
 }

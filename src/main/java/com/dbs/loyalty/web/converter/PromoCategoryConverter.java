@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 @Component
 public class PromoCategoryConverter implements Converter<String, PromoCategory> {
 	
-	private PromoCategoryRepository promoCategoryRepository;
+	private final PromoCategoryRepository promoCategoryRepository;
 	
 	@Override
 	public PromoCategory convert(String id) {

@@ -38,8 +38,8 @@
              	<tbody th:remove="all-but-first">
                		<tr th:each="event,row : ${page}">
                      	<td th:text="${row.count + (page.number * page.size)}">1</td>
-                    	<td th:text="${event.customer.name}">Ferry Linton Hutapea</td>
-                     	<td th:text="${event.customer.customerType == T(com.dbs.loyalty.config.constant.CustomerTypeConstant).TPC_VALUE ? 'TPC' : 'TREASURE'}">TREASURE</td>
+                    	<td th:text="${event.customer.firstName}">Ferry Linton Hutapea</td>
+                     	<td th:text="${event.customer.customerType == T(com.dbs.loyalty.config.constant.CustomerConstant).TPC_VALUE ? 'TPC' : 'TREASURE'}">TREASURE</td>
                       	<td th:text="${event.customer.email}">ferrylinton@gmail.com</td>
                      	<td th:text="${event.customer.phone}">1234567890</td>
                       	<td th:text="#{${event.eventAnswer}}">YES</td>

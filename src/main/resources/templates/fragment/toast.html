@@ -8,7 +8,7 @@
 <body>
 <div th:fragment="content" th:remove="tag">
 	<div aria-live="polite" aria-atomic="true" class="d-flex justify-content-center align-items-center" th:if="${not #strings.isEmpty(toast)}">
-		<div class="toast border-dark shadow" role="alert" aria-live="assertive" aria-atomic="true" data-delay="10000">
+		<div class="toast border-secondary border-2" role="alert" aria-live="assertive" aria-atomic="true" data-delay="8000">
 		  	<div class="toast-header">
 		    	<span class="mr-auto icon-info-circled" th:text="#{information}">Information</span>
 		    	<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">

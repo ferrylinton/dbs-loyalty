@@ -2,6 +2,7 @@ package com.dbs.loyalty.web.validator;
 
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
@@ -53,7 +54,7 @@ public class UserValidator implements Validator {
 			errors.rejectValue(DomainConstant.USERNAME, ValidationConstant.VALIDATION_EXIST, errorArgs, defaultMessage);
 		}
 		
-		if(user.getUserType().equals(UserConstant.INTERNAL) && !userLdapService.isUserExist(user.getUsername())) {
+		if(!StringUtils.isBlank(user.getUsername()) && user.getUserType().equals(UserConstant.INTERNAL) && !userLdapService.isUserExist(user.getUsername())) {
 			Object[] errorArgs = new String[] { user.getUsername() };
 			String defaultMessage = MessageUtil.getMessage(ValidationConstant.VALIDATION_USER_LDAP_NOT_FOUND, errorArgs);
 			errors.rejectValue(DomainConstant.USERNAME, ValidationConstant.VALIDATION_USER_LDAP_NOT_FOUND, errorArgs, defaultMessage);
