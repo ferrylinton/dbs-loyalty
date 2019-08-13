@@ -395,10 +395,6 @@ a:hover{
 	width: 130px;
 }
 
-.json .table table{
-	font-size: .9em;	
-}
-
 .json .table table th{
 	font-weight: bold;
 	background-color: #f9f9f9;

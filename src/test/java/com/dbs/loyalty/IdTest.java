@@ -14,7 +14,7 @@ public class IdTest {
 		int count = 0;
 		int total = 50;
 		
-		System.out.println(PromoCategory.class);
+		System.out.println(Integer.parseInt("990527691"));
 		for(int i=0; i<total; i++) {
 			System.out.println(FriendlyId.createFriendlyId());
 			count++;

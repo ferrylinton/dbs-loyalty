@@ -63,7 +63,7 @@
 	               		<td th:text="${row.count + (page.number * page.size)}">1</td>
 	                 	<td th:text="${customer.firstName}">Ferry</td>
 	                 	<td th:text="${customer.lastName}">Hutapea</td>
-						<td th:text="${customer.customerType == T(com.dbs.loyalty.config.constant.CustomerConstant).TPC_VALUE ? 'TPC' : 'TREASURE'}">TREASURE</td>
+						<td th:text="${@customerTypeService.getCustomerType(customer.customerType)}">TREASURE</td>
 						<td th:text="${customer.email}">ferrylinton@gmail.com</td>
 						<td th:text="${customer.phone}">1234567890</td>
 						<td><span th:class="${customer.activated} ? 'text-success icon-ok' : 'text-danger icon-cancel'"></span></td>

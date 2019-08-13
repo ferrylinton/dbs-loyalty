@@ -25,7 +25,7 @@
                         <tbody>
                             <tr>
                                 <th th:text="#{id}">Id</th>
-                                <td th:text="${task.id}">fc82c62c-ae02-4c9a-b232-e1a6ec4b7a1d</td>
+                                <td th:text="${task.id}">5AOinwogkmM1Nc8vMXsyOT</td>
                             </tr>
                             <tr>
                                 <th th:text="#{taskOperation}">Task Operation</th>
@@ -51,6 +51,10 @@
                                 <th th:text="#{checkedDate}">Checked Date</th>
                                 <td><span th:data-date="${@dateService.jsDatetime()}" th:text="${task.checkedDate}">2019-05-01T21:24:44Z</span></td>
                             </tr>
+                            <tr th:if="${task.taskDataId}">
+                                <th th:text="#{taskDataId}">Data Id</th>
+                                <td th:text="${task.taskDataId}">5AOinwogkmM1Nc8vMXsyOT</td>
+                            </tr>
                             <tr th:if="${not #strings.isEmpty(task.taskDataOld)}">
                                 <th th:text="#{taskDataOld}">Task Data Old</th>
                                 <td>
@@ -75,7 +79,7 @@
                     </table>
                 </div>
                 <div class="toolbar">
-                    <a class="btn btn-sm btn-secondary" href="javascript:back()">
+                    <a class="btn btn-sm btn-secondary" href="javascript:back();">
                         <span class="icon-left"></span> <span th:text="#{back}">Back</span>
                     </a>
                 </div>

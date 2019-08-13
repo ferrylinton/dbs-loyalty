@@ -48,7 +48,7 @@
 	                  	</tr>
 	               		<tr>
 	                   		<th th:text="#{customerType}">Customer Type</th>
-	                     	<td th:text="${customer.customerType == T(com.dbs.loyalty.config.constant.CustomerConstant).TPC_VALUE ? 'TPC' : 'TREASURE'}">TREASURE</td>
+	                     	<td th:text="${@customerTypeService.getCustomerType(customer.customerType)}">TREASURE</td>
 	                	</tr>
 	               		<tr>
 	                    	<th th:text="#{phone}">Phone</th>

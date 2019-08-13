@@ -5,6 +5,7 @@ import java.time.Instant;
 import java.util.Map;
 import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -147,6 +148,10 @@ public class CustomerService{
 	
 	@Transactional
 	public void taskSave(Customer newData) throws IOException {
+		if(newData.getSecondary().getCity() == null || StringUtils.isBlank(newData.getSecondary().getAddress())) {
+			newData.setSecondary(null);
+		}
+		
 		if(newData.getId() == null) {
 			FileImageTask fileImageTask = imageService.add(newData.getMultipartFileImage());
 			newData.setImage(fileImageTask.getId());
@@ -183,21 +188,18 @@ public class CustomerService{
 		Address secondary = customer.getSecondary();
 		
 		if(task.getVerified()) {
-			if(task.getTaskOperation() == TaskOperation.ADD) {
-				imageService.add(customer.getId(), customer.getImage(), task.getMaker(), task.getMadeDate());
-				
-				customer.setCreatedBy(task.getMaker());
+			if(task.getTaskOperation() == TaskOperation.ADD) {customer.setCreatedBy(task.getMaker());
 				customer.setCreatedDate(task.getMadeDate());
 				customer = customerRepository.save(customer);
+			
+				imageService.add(customer.getId(), customer.getImage(), task.getMaker(), task.getMadeDate());
 				saveAddress(task, primary, customer);
 				saveAddress(task, secondary, customer);
 			}else if(task.getTaskOperation() == TaskOperation.MODIFY) {
 				imageService.update(customer.getId(), customer.getImage(), task.getMaker(), task.getMadeDate());
 				saveAddress(task, primary, customer);
 				saveAddress(task, secondary, customer);
-				
-				System.out.println("--------------- primary : " + customer.getPrimary());
-				System.out.println("--------------- primary address : " + customer.getPrimary().getCity());
+
 				customer.setLastModifiedBy(task.getMaker());
 				customer.setLastModifiedDate(task.getMadeDate());
 				customer.setPending(false);

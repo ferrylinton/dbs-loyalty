@@ -6,6 +6,8 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
 
 import com.dbs.loyalty.util.MessageUtil;
+import com.dbs.loyalty.service.CustomerTypeService;
+import com.dbs.loyalty.util.CustomerUtil;
 import com.dbs.loyalty.util.JsonUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -16,6 +18,7 @@ public class ApplicationContextComponent implements ApplicationContextAware {
     public void setApplicationContext(ApplicationContext context) {
     	MessageUtil.setMessageSource(context.getBean(MessageSource.class));
     	JsonUtil.setObjectMapper(context.getBean(ObjectMapper.class));
+    	CustomerUtil.setCustomerTypeService(context.getBean(CustomerTypeService.class));
     }
     
 }

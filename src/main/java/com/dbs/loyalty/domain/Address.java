@@ -56,7 +56,7 @@ public class Address extends AbstractAuditing implements Serializable {
 	@Column(name = "label", length = 20)
 	private String label;
 
-	@Size(min = 5, max = 250)
+	@Size(min = 1, max = 250)
 	@Column(name = "address", length = 250)
 	private String address;
 

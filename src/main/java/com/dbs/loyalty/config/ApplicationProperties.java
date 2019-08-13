@@ -30,6 +30,8 @@ public class ApplicationProperties {
 	private TadaPayment tadaPayment;
 	
 	private Http http;
+	
+	private Customer customer;
 
 	@Getter
 	@Setter
@@ -150,6 +152,16 @@ public class ApplicationProperties {
 		private int connectTimeout;
 		
 		private int readTimeout;
+		
+	}
+	
+	@Getter
+	@Setter
+	public static class Customer{
+		
+		private String tpc = "0025";
+		
+		private String treasure = "0012";
 		
 	}
 	

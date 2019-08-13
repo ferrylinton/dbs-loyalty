@@ -18,6 +18,9 @@ application:
     file-path: /home/ferry/loyalty/customers.csv
   mail: 
     from: testdevku007@gmail.com
+  customer: 
+    tpc: "0025"
+    treasure: "0012"
   file:
     # 3x1024x102 5MB
     image-max-size: 3145728

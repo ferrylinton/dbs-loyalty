@@ -15,6 +15,12 @@ public final class ValidationConstant {
 	public static final String VALIDATION_NOT_PDF = "validation.not.pdf";
 	
 	public static final String VALIDATION_FILE_SIZE = "validation.file.size";
+	
+	public static final String VALIDATION_SIZE = "javax.validation.constraints.Size.message";
+	
+	public static final String NOT_NULL = "javax.validation.constraints.NotNull.message";
+	
+	public static final String NOT_EMPTY = "javax.validation.constraints.NotEmpty.message";
 
 	private ValidationConstant() {
 		// hide constructor
