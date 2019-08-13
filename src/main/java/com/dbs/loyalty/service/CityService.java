@@ -27,6 +27,10 @@ public class CityService {
 		return cityRepository.findById(id);
 	}
 	
+	public Optional<City> findWithProvinceById(Integer id){
+		return cityRepository.findWithProvinceById(id);
+	}
+	
 	public Optional<City> findByNameIgnoreCase(String name){
 		return cityRepository.findByNameIgnoreCase(name);
 	}

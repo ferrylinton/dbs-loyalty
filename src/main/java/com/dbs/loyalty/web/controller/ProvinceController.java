@@ -39,7 +39,7 @@ public class ProvinceController {
 
 	private final ProvinceService provinceService;
 
-	@PreAuthorize("hasAnyRole('COUNTRY_MK', 'COUNTRY_CK')")
+	@PreAuthorize("hasAnyRole('PROVINCE_MK', 'PROVINCE_CK')")
 	@GetMapping
 	public String viewPromoCategories(
 			@ModelAttribute(Constant.TOAST) String toast, 
@@ -61,7 +61,7 @@ public class ProvinceController {
 		}
 	}
 	
-	@PreAuthorize("hasAnyRole('COUNTRY_MK', 'COUNTRY_CK')")
+	@PreAuthorize("hasAnyRole('PROVINCE_MK', 'PROVINCE_CK')")
 	@GetMapping("/{id}/detail")
 	public String viewProvinceDetail(ModelMap model, @PathVariable int id){
 		getById(model, id);		
@@ -69,10 +69,10 @@ public class ProvinceController {
 	}
 
 	public void getById(ModelMap model, int id){
-		Optional<Province> current = provinceService.findById(id);
+		Optional<Province> current = provinceService.findWithCountryById(id);
 		
 		if (current.isPresent()) {
-			model.addAttribute(DomainConstant.COUNTRY, current.get());
+			model.addAttribute(DomainConstant.PROVINCE, current.get());
 		} else {
 			model.addAttribute(Constant.ERROR, MessageUtil.getNotFoundMessage(String.valueOf(id)));
 		}

@@ -30,7 +30,11 @@ public class CitySpec implements Specification<City>{
 		
 		if(params.containsKey(Constant.KY_PARAM) && !Constant.EMPTY.equals(params.get(Constant.KY_PARAM))) {
 			String keyword = String.format(Constant.LIKE_FORMAT, params.get(Constant.KY_PARAM).trim().toLowerCase());
-			predicates.add(cb.like(root.get(DomainConstant.ADDRESS), keyword));
+			predicates.add(cb.or(
+					cb.like(cb.lower(root.get(DomainConstant.NAME)), keyword),
+					cb.like(cb.lower(root.get(DomainConstant.PROVINCE).get(DomainConstant.NAME)), keyword),
+					cb.like(cb.lower(root.get(DomainConstant.PROVINCE).get(DomainConstant.COUNTRY).get(DomainConstant.NAME)), keyword)
+			));
 		}
 		
 		return cb.and(predicates.toArray(new Predicate[predicates.size()]));

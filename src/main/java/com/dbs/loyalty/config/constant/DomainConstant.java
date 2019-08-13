@@ -10,6 +10,7 @@ public final class DomainConstant {
 	public static final String AUTHORITIES 				= "authorities";
 	public static final String AUTHORITY 				= "authority";
 	public static final String BROWSER					= "browser";
+	public static final String CITY 					= "city";
 	public static final String CODE						= "code";
 	public static final String CONTENT					= "content";
 	public static final String COUNTRIES 				= "countries";
@@ -44,6 +45,7 @@ public final class DomainConstant {
 	public static final String PROMO 					= "promo";
 	public static final String PROMO_CATEGORIES 		= "promoCategories";
 	public static final String PROMO_CATEGORY 			= "promoCategory";
+	public static final String PROVINCE		 			= "province";
 	public static final String ROLE 					= "role";
 	public static final String ROLES 					= "roles";
 	public static final String SETTING 					= "setting";

@@ -50,6 +50,10 @@
 	<property name="SETTING_MK" value="6F2AG3tjtkdSqK5WzggcEQ" />
 	<property name="COUNTRY_CK" value="11X3FZjzfatmtRpMnNR4Eh" />
 	<property name="COUNTRY_MK" value="5fv0RcdOfWC0h3YOU3NxjQ" />
+	<property name="PROVINCE_CK" value="TDJ2KZW9GhvbqGyO2orT1" />
+	<property name="PROVINCE_MK" value="oZYkTDMVZsOmYR8uOXBDl" />
+	<property name="CITY_CK" value="2iHWE6khcqqMkIb7alqylI" />
+	<property name="CITY_MK" value="3CUfyvCbenrIuuUuUaqGrb" />
 	
 	<changeSet author="FLH" id="sec-authority-data-1">
 	
@@ -276,6 +280,26 @@
         <insert tableName="sec_authority">
             <column name="id" value="${MEDICAL_BRANCH_CK}"/>
             <column name="name" value="MEDICAL_BRANCH_CK"/>
+        </insert>
+        
+        <insert tableName="sec_authority">
+            <column name="id" value="${PROVINCE_MK}"/>
+            <column name="name" value="PROVINCE_MK"/>
+        </insert>
+        
+        <insert tableName="sec_authority">
+            <column name="id" value="${PROVINCE_CK}"/>
+            <column name="name" value="PROVINCE_CK"/>
+        </insert>
+        
+        <insert tableName="sec_authority">
+            <column name="id" value="${CITY_MK}"/>
+            <column name="name" value="CITY_MK"/>
+        </insert>
+        
+        <insert tableName="sec_authority">
+            <column name="id" value="${CITY_CK}"/>
+            <column name="name" value="CITY_CK"/>
         </insert>
         
     </changeSet>

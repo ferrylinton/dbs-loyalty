@@ -5,35 +5,34 @@
 	layout:decorate="~{layout/layout}">
 
 <head>
-    <title th:text="#{medicalCity}">Medical City</title>
+    <title th:text="#{province}">Province</title>
 </head>
 
-<body data-menu="medicalcity">
+<body data-menu="province">
 	<nav aria-label="breadcrumb" layout:fragment="breadcrumb">
    		<ol class="breadcrumb">
       		<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{home}">Home</a></li>
-       		<li class="breadcrumb-item"><a th:href="@{/medicalcity}" th:text="#{medicalCity}">Medical City</a></li>
+       		<li class="breadcrumb-item"><a th:href="@{/province}" th:text="#{province}">Province</a></li>
           	<li class="breadcrumb-item active" aria-current="page" th:text="#{detail}">Detail</li>
    		</ol>
 	</nav>
 	<div layout:fragment="content">
 		<div th:replace="fragment/value-not-found.html :: content"></div>
-		<div class="table-responsive border border-top-0" th:if="${medicalCity}">
+		<div class="table-responsive border border-top-0" th:if="${province}">
       		<table class="table table-sm table-detail" style="min-width: 400px;">
        			<tbody>
             		<tr>
                 		<th th:text="#{id}">Id</th>
-                     	<td th:text="${medicalCity.id}">1aC2gypfZh1T4sNgJUgmUx</td>
+                     	<td th:text="${province.id}">1aC2gypfZh1T4sNgJUgmUx</td>
                		</tr>
                 	<tr>
-                  		<th th:text="#{name}">Name</th>
-                   		<td th:text="${medicalCity.name}">Admin</td>
+                  		<th th:text="#{province}">Province</th>
+                   		<td th:text="${province.name}">Admin</td>
               		</tr>
-              		<tr>
-                  		<th th:text="#{medicalProvider}">Medical Provider</th>
-                   		<td th:text="${medicalCity.medicalProvider.name}">BIOTEST INDONESIA</td>
+              		<tr th:if="${province.country}">
+                  		<th th:text="#{country}">Country</th>
+                   		<td th:text="${province.country.name}">Country</td>
               		</tr>
-					<tr th:replace="fragment/audit-detail.html :: content(data=${medicalCity})"></tr>
      			</tbody>
      		</table>
      	</div>

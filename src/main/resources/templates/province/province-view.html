@@ -17,7 +17,7 @@
 		</ol>
 	</nav>
 	<div layout:fragment="content">
-		<div th:replace="fragment/search.html :: content('/province', |#{name}|, false)"></div>
+		<div th:replace="fragment/search.html :: content('/province', |#{province}, #{country}|, false)"></div>
    		<div class="table-responsive border border-top-0" th:if="${page.getTotalElements() > 0}">
 			<table class="table table-sm table-striped table-hover border-bottom" style="min-width: 400px;">
 				<thead>
@@ -26,7 +26,7 @@
                       	<th style="width:40px">#</th>
                       	<th th:with="sort=|&sort=name,${ascending ? 'DESC' : 'ASC'}|">
                      		<a th:href="@{|?page=${page.getNumber()}${params}${sort}|}" class="text-decoration-none">
-                           		<span th:text="#{name}">Name</span> <span th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></span>
+                           		<span th:text="#{province}">Province</span> <span th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></span>
                       		</a>
                      	</th>
                      	<th th:text="#{country}">Country</th>

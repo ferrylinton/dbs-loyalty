@@ -23,6 +23,10 @@ public class ProvinceService{
 		return provinceRepository.findById(id);
 	}
 	
+	public Optional<Province> findWithCountryById(Integer id){
+		return provinceRepository.findWithCountryById(id);
+	}
+	
 	public Page<Province> findAll(Map<String, String> params, Pageable pageable) {
 		return provinceRepository.findAll(new ProvinceSpec(params), pageable);
 	}

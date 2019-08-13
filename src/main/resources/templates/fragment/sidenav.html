@@ -27,10 +27,10 @@
                     <li th:if="${#authorization.expression('hasAnyAuthority(''COUNTRY_MK'', ''COUNTRY_CK'')')}">
                         <a class="icon-database" data-menu="country" th:href="@{/country}" th:text="#{country}">Country</a>
                     </li>
-                    <li th:if="${#authorization.expression('hasAnyAuthority(''COUNTRY_MK'', ''COUNTRY_CK'')')}">
+                    <li th:if="${#authorization.expression('hasAnyAuthority(''PROVINCE_MK'', ''PROVINCE_CK'')')}">
                         <a class="icon-database" data-menu="province" th:href="@{/province}" th:text="#{province}">Province</a>
                     </li>
-                    <li th:if="${#authorization.expression('hasAnyAuthority(''COUNTRY_MK'', ''COUNTRY_CK'')')}">
+                    <li th:if="${#authorization.expression('hasAnyAuthority(''CITY_MK'', ''CITY_CK'')')}">
                         <a class="icon-database" data-menu="city" th:href="@{/city}" th:text="#{city}">City</a>
                     </li>
                     <li th:if="${#authorization.expression('hasAnyAuthority(''SETTING'')')}">

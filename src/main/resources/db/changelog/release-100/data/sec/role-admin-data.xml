@@ -244,6 +244,26 @@
             <column name="role_id" value="${Admin}"/>
             <column name="authority_id" value="${COUNTRY_CK}"/>
         </insert>
+        
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Admin}"/>
+            <column name="authority_id" value="${PROVINCE_MK}"/>
+        </insert>
+        
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Admin}"/>
+            <column name="authority_id" value="${PROVINCE_CK}"/>
+        </insert>
+        
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Admin}"/>
+            <column name="authority_id" value="${CITY_MK}"/>
+        </insert>
+        
+        <insert tableName="sec_role_authority">
+            <column name="role_id" value="${Admin}"/>
+            <column name="authority_id" value="${CITY_CK}"/>
+        </insert>
 
     </changeSet>
     

@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.dbs.loyalty.domain.PromoCategory;
 import com.devskiller.friendly_id.FriendlyId;
 
 public class IdTest {
@@ -13,8 +12,7 @@ public class IdTest {
 	public void generate() {
 		int count = 0;
 		int total = 50;
-		
-		System.out.println(Integer.parseInt("990527691"));
+
 		for(int i=0; i<total; i++) {
 			System.out.println(FriendlyId.createFriendlyId());
 			count++;
