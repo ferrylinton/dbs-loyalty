@@ -1,6 +1,5 @@
 package com.dbs.loyalty.web.controller;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -16,13 +15,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.DomainConstant;
-import com.dbs.loyalty.domain.City;
-import com.dbs.loyalty.projection.NameOnly;
-import com.dbs.loyalty.service.CityService;
+import com.dbs.loyalty.domain.Country;
+import com.dbs.loyalty.service.CountryService;
 import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.util.PageUtil;
 import com.dbs.loyalty.util.QueryStringUtil;
@@ -31,16 +28,16 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Controller
-@RequestMapping("/city")
-public class CityController {
-
-	private static final String REDIRECT 	= "redirect:/city";
+@RequestMapping("/country")
+public class CountryController {
 	
-	private static final String VIEW 		= "city/city-view";
+	private static final String REDIRECT 	= "redirect:/country";
 	
-	private static final String DETAIL 		= "city/city-detail";
+	private static final String VIEW 		= "country/country-view";
+	
+	private static final String DETAIL 		= "country/country-detail";
 
-	private final CityService cityService;
+	private final CountryService countryService;
 
 	@PreAuthorize("hasAnyRole('COUNTRY_MK', 'COUNTRY_CK')")
 	@GetMapping
@@ -50,7 +47,7 @@ public class CityController {
 			Sort sort, Model model) {
 		
 		Order order = PageUtil.getOrder(sort, DomainConstant.NAME);
-		Page<City> page = cityService.findAll(params, PageUtil.getPageable(params, order));
+		Page<Country> page = countryService.findAll(params, PageUtil.getPageable(params, order));
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
 			return REDIRECT;
@@ -66,24 +63,19 @@ public class CityController {
 	
 	@PreAuthorize("hasAnyRole('COUNTRY_MK', 'COUNTRY_CK')")
 	@GetMapping("/{id}/detail")
-	public String viewCityDetail(ModelMap model, @PathVariable int id){
+	public String viewCountryDetail(ModelMap model, @PathVariable int id){
 		getById(model, id);		
 		return DETAIL;
 	}
 
 	public void getById(ModelMap model, int id){
-		Optional<City> current = cityService.findById(id);
+		Optional<Country> current = countryService.findById(id);
 		
 		if (current.isPresent()) {
 			model.addAttribute(DomainConstant.COUNTRY, current.get());
 		} else {
 			model.addAttribute(Constant.ERROR, MessageUtil.getNotFoundMessage(String.valueOf(id)));
 		}
-	}
-	
-	@GetMapping("/search/{name}")
-	public @ResponseBody List<NameOnly> viewAirports(@PathVariable String name) {
-		return cityService.findByName(name);
 	}
 
 }

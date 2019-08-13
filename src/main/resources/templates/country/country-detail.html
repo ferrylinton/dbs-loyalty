@@ -1,0 +1,43 @@
+<!doctype html>
+<html
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	layout:decorate="~{layout/layout}">
+
+<head>
+    <title th:text="#{country}">Country</title>
+</head>
+
+<body data-menu="country">
+	<nav aria-label="breadcrumb" layout:fragment="breadcrumb">
+   		<ol class="breadcrumb">
+      		<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{home}">Home</a></li>
+       		<li class="breadcrumb-item"><a th:href="@{/country}" th:text="#{country}">Country</a></li>
+          	<li class="breadcrumb-item active" aria-current="page" th:text="#{detail}">Detail</li>
+   		</ol>
+	</nav>
+	<div layout:fragment="content">
+		<div th:replace="fragment/value-not-found.html :: content"></div>
+		<div class="table-responsive border border-top-0" th:if="${country}">
+      		<table class="table table-sm table-detail" style="min-width: 400px;">
+       			<tbody>
+            		<tr>
+                		<th th:text="#{id}">Id</th>
+                     	<td th:text="${country.id}">1aC2gypfZh1T4sNgJUgmUx</td>
+               		</tr>
+                	<tr>
+                  		<th th:text="#{name}">Name</th>
+                   		<td th:text="${country.name}">Admin</td>
+              		</tr>
+     			</tbody>
+     		</table>
+     	</div>
+		<div class="toolbar">
+    		<a class="btn btn-sm btn-secondary" href="javascript:back();">
+       			<span class="icon-left"></span> <span th:text="#{back}">Back</span>
+     		</a>
+		</div>
+	</div>
+</body>
+
+</html>

@@ -3,9 +3,11 @@ package com.dbs.loyalty.service;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
@@ -13,13 +15,14 @@ import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.stereotype.Service;
 
 import com.dbs.loyalty.config.ApplicationProperties;
-import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.City;
 import com.dbs.loyalty.domain.Country;
 import com.dbs.loyalty.domain.Province;
 import com.dbs.loyalty.repository.CityRepository;
 import com.dbs.loyalty.repository.CountryRepository;
 import com.dbs.loyalty.repository.ProvinceRepository;
+import com.dbs.loyalty.service.specification.CountrySpec;
+import com.dbs.loyalty.util.SortUtil;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -31,8 +34,6 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class CountryService {
 
-	public static final Sort SORT_BY = Sort.by(DomainConstant.NAME);
-	
 	private final ApplicationProperties applicationProperties;
 	
 	private final CountryRepository countryRepository;
@@ -45,12 +46,20 @@ public class CountryService {
 	
 	private final ObjectMapper objectMapper;
 	
+	public Optional<Country> findById(Integer id){
+		return countryRepository.findById(id);
+	}
+	
 	public List<Country> findAll(){
-		return countryRepository.findAll(SORT_BY);
+		return countryRepository.findAll(SortUtil.SORT_BY_NAME);
 	}
 	
 	public List<Country> findWithAirports(){
 		return countryRepository.findWithAirports();
+	}
+	
+	public Page<Country> findAll(Map<String, String> params, Pageable pageable) {
+		return countryRepository.findAll(new CountrySpec(params), pageable);
 	}
 	
 	@Async

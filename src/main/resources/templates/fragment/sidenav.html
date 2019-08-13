@@ -24,6 +24,15 @@
                     <li th:if="${#authorization.expression('hasAnyAuthority(''EVENT_MK'', ''EVENT_CK'')')}">
                         <a class="icon-database" data-menu="event" th:href="@{/event}" th:text="#{event}">Event</a>
                     </li>
+                    <li th:if="${#authorization.expression('hasAnyAuthority(''COUNTRY_MK'', ''COUNTRY_CK'')')}">
+                        <a class="icon-database" data-menu="country" th:href="@{/country}" th:text="#{country}">Country</a>
+                    </li>
+                    <li th:if="${#authorization.expression('hasAnyAuthority(''COUNTRY_MK'', ''COUNTRY_CK'')')}">
+                        <a class="icon-database" data-menu="province" th:href="@{/province}" th:text="#{province}">Province</a>
+                    </li>
+                    <li th:if="${#authorization.expression('hasAnyAuthority(''COUNTRY_MK'', ''COUNTRY_CK'')')}">
+                        <a class="icon-database" data-menu="city" th:href="@{/city}" th:text="#{city}">City</a>
+                    </li>
                     <li th:if="${#authorization.expression('hasAnyAuthority(''SETTING'')')}">
                         <a class="icon-database" data-menu="setting" th:href="@{/setting}" th:text="#{setting}">Setting</a>
                     </li>
