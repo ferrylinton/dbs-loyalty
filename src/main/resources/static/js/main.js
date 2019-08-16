@@ -38,6 +38,8 @@ $(document).ready(function () {
 	
 	initAutoComplete();
 	
+	$('[data-toggle="tooltip"]').tooltip();
+	
 });
 
 function initDobMask(){

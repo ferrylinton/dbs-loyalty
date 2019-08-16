@@ -51,7 +51,7 @@ public class Arrival extends AbstractAuditing {
 	
 	@Column(name = "flight_number", nullable = false, length=50)
 	private String flightNumber;
-	
+
 	@Column(name = "customer_phone", length=20)
 	private String customerPhone;
 	
@@ -59,13 +59,13 @@ public class Arrival extends AbstractAuditing {
 	private String guestPhone;
 	
 	@Column(name = "airport_transfer", nullable = false)
-	private boolean airportTransfer;
+	private Boolean airportTransfer;
 	
 	@Column(name = "number_of_passengers", nullable = false)
-	private int numberOfPassengers;
+	private Integer numberOfPassengers;
 	
 	@Column(name = "number_of_luggages", nullable = false)
-	private int numberOfLuggages;
+	private Integer numberOfLuggages;
 	
 	@Column(name = "drop_off_address")
 	private String dropOffAddress;

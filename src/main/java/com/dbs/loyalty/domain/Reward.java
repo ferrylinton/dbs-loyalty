@@ -38,6 +38,12 @@ public class Reward extends AbstractAuditing implements Serializable {
 	@GenericGenerator(name = DomainConstant.ID_GENERATOR, strategy = DomainConstant.ID_GENERATOR_STRATEGY)
 	@GeneratedValue(generator = DomainConstant.ID_GENERATOR)
 	private String id;
+
+	@Column(name = "description")
+	private String description;
+	
+	@Column(name = "reward_type", length=10, nullable = false)
+	private String rewardType;
 	
 	@Column(name = "point", nullable = false)
 	private Integer point;
@@ -45,8 +51,11 @@ public class Reward extends AbstractAuditing implements Serializable {
 	@Column(name = "expiry_date", nullable = false)
 	private LocalDate expiryDate;
 
-	@Column(name = "description")
-	private String description;
+	@Column(name = "deducted_point")
+	private Integer deductedPoint;
+	
+	@Column(name = "transaction_id", length=22)
+	private String transactionId;
 	
 	@JsonIgnore
 	@ManyToOne(fetch=FetchType.LAZY)

@@ -12,13 +12,13 @@
            		<div class="input-group">
               		<input class="form-control" name="ky" maxlength="40" th:value="${param.ky}" th:placeholder="${fields}" />
                   	<div class="input-group-append">
-                   		<button class="btn btn-light" type="submit">
+                   		<button class="btn btn-light" type="submit" data-toggle="tooltip" th:title="#{search}">
                     		<span class="icon-search"></span>
                			</button>
-                    	<a class="btn btn-light" th:href="@{${url}}">
-                			<span class="icon-arrows-cw"></span>
+                    	<a class="btn btn-light" th:href="@{${url}}" data-toggle="tooltip" th:title="#{reload}">
+                			<span class="icon-ccw"></span>
                     	</a>
-                    	<a class="btn btn-light" th:href="@{|${url}/0|}" th:if="${canChangeData}">
+                    	<a class="btn btn-light" th:href="@{|${url}/0|}" data-toggle="tooltip" th:title="#{add}" th:if="${canChangeData}">
                    			<span class="icon-plus"></span>
                      	</a>
                		</div>

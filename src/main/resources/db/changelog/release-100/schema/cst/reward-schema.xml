@@ -10,15 +10,20 @@
             <column name="id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
             </column>
-            <column name="expiry_date" type="date">
+            <column name="description" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="reward_type" type="VARCHAR(10)">
                 <constraints nullable="false"/>
             </column>
             <column name="point" type="INT">
                 <constraints nullable="false"/>
             </column>
-            <column name="description" type="VARCHAR(255)">
+            <column name="expiry_date" type="date">
                 <constraints nullable="false"/>
             </column>
+            <column name="deducted_point" type="INT"/>
+        	<column name="transaction_id" type="VARCHAR(22)"/>
             <column name="customer_id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
             </column>

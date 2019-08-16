@@ -2,11 +2,16 @@ package com.dbs.loyalty.service;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.dbs.loyalty.domain.Reward;
 import com.dbs.loyalty.repository.RewardRepository;
+import com.dbs.loyalty.service.specification.RewardSpec;
 import com.dbs.loyalty.util.SecurityUtil;
 
 import lombok.RequiredArgsConstructor;
@@ -16,6 +21,14 @@ import lombok.RequiredArgsConstructor;
 public class RewardService {
 
 	private final RewardRepository rewardRepository;
+	
+	public Optional<Reward> findById(String id){
+		return rewardRepository.findById(id);
+	}
+	
+	public Page<Reward> findAll(Map<String, String> params, Pageable pageable) {
+		return rewardRepository.findAll(new RewardSpec(params), pageable);
+	}
 	
 	public List<Reward> findAllValid(){
 		return rewardRepository.findAllValid(SecurityUtil.getId());

@@ -46,6 +46,7 @@ public final class DomainConstant {
 	public static final String PROMO_CATEGORIES 		= "promoCategories";
 	public static final String PROMO_CATEGORY 			= "promoCategory";
 	public static final String PROVINCE		 			= "province";
+	public static final String REWARD 					= "reward";
 	public static final String ROLE 					= "role";
 	public static final String ROLES 					= "roles";
 	public static final String SETTING 					= "setting";

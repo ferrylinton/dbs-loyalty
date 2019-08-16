@@ -1,0 +1,52 @@
+<!doctype html>
+<html 
+	th:with="isMaker=${#authorization.expression('hasAuthority(''CUSTOMER_MK'')')}"
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	layout:decorate="~{layout/layout}">
+
+<head>
+    <title th:text="|#{customer} - #{reward}|">Customer - Reward</title>
+</head>
+
+<body data-menu="customer">
+	<nav aria-label="breadcrumb" layout:fragment="breadcrumb">
+		<ol class="breadcrumb">
+      		<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{home}">Home</a></li>
+     		<li class="breadcrumb-item"><a th:href="@{/customer}" th:text="#{customer}">Customer</a></li>
+       		<li class="breadcrumb-item active" aria-current="page" th:text="#{reward}">Reward</li>
+		</ol>
+	</nav>
+	<div layout:fragment="content">
+		<div class="table-responsive border border-top-0" th:if="${page.getTotalElements() > 0}">
+	   		<table class="table table-sm table-striped table-hover border-bottom" style="min-width: 900px;">
+	     		<thead>
+	        		<tr th:with="ascending=${order.getDirection().name() == 'ASC'}">
+						<th style="width:40px">#</th>
+	               		<th style="width:150px" th:with="sort=|&sort=createdDate,${ascending ? 'DESC' : 'ASC'}|">
+                      		<a th:href="@{|?page=${page.getNumber()}${params}${sort}|}" class="text-decoration-none">
+                            	<span th:text="#{createdDate}">Created Date</span> <span th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></span>
+                          	</a>
+                    	</th>
+                    	<th style="width:250px" th:text="#{description}">Description</th>
+                    	<th style="width:80px" th:text="#{point}">Point</th>
+                    	<th th:text="#{expiryDate}">Expiry Date</th>
+	             	</tr>
+	          	</thead>
+	           	<tbody th:remove="all-but-first">
+	           		<tr th:each="reward,row : ${page}">
+	               		<td th:text="${row.count + (page.number * page.size)}">1</td>
+	                 	<td><span th:data-date="${@dateService.jsDatetime()}" th:text="${reward.createdDate}">2019-08-15T10:41:15Z</span></td>
+	                 	<td th:text="${reward.description}">Description</td>
+	                 	<td th:text="${reward.point}">100</td>
+	                 	<td th:text="${reward.expiryDate}">2019-08-15</td>
+	            	</tr>
+	       		</tbody>
+	   		</table>
+		</div>
+		<div th:replace="fragment/not-found.html :: content(showBack=true)"></div>
+		<div th:replace="fragment/pager.html :: content(showBack=true)"></div>
+	</div>
+</body>
+
+</html>

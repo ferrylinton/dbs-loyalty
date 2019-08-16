@@ -8,6 +8,9 @@
 <body>
 	<div th:fragment="content" th:remove="tag">
 		<div class="toolbar" th:if="${page != null && page.getTotalPages() > 1}">
+			<a class="btn btn-sm btn-secondary" href="javascript:back();" th:if="${showBack}">
+       			<span class="icon-left"></span> <span th:text="#{back}">Back</span>
+     		</a>
 			<a class="btn btn-sm btn-secondary text-uppercase" th:href="@{|?${previous}${params}|}" th:classappend="${not page.hasPrevious()} ? 'disabled'">
 	       		<span class="icon-left-open"></span> <span th:text="#{previous}">Previous</span>
 	    	</a>

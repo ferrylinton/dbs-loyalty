@@ -10,6 +10,11 @@
 		<div class="border alert alert-light text-center" role="alert" th:if="${page.getTotalElements() == 0}">
 			<span class="icon-attention"></span> <span th:text="#{message.dataNotFound}">Data not found</span>
 		</div>
+		<div class="toolbar" th:if="${showBack}">
+    		<a class="btn btn-sm btn-secondary" href="javascript:back();">
+       			<span class="icon-left"></span> <span th:text="#{back}">Back</span>
+     		</a>
+		</div>
 	</div>
 </body>
 

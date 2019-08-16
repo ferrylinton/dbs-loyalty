@@ -15,6 +15,7 @@
             <column name="point" value="1000"/>
             <column name="customer_id" value="${Customer01}"/>
             <column name="description" value="Test 01"/>
+            <column name="reward_type" value="debit"/>
         </insert>
         
         <insert tableName="cst_reward">
@@ -25,6 +26,7 @@
             <column name="point" value="2000"/>
             <column name="customer_id" value="${Customer01}"/>
             <column name="description" value="Test 01"/>
+            <column name="reward_type" value="debit"/>
         </insert>
         
         <insert tableName="cst_reward">
@@ -35,6 +37,7 @@
             <column name="point" value="3000"/>
             <column name="customer_id" value="${Customer01}"/>
             <column name="description" value="Test 01"/>
+            <column name="reward_type" value="debit"/>
         </insert>
  
     </changeSet>
@@ -49,6 +52,7 @@
             <column name="point" value="1000"/>
             <column name="customer_id" value="${Customer02}"/>
             <column name="description" value="Test 01"/>
+            <column name="reward_type" value="debit"/>
         </insert>
         
         <insert tableName="cst_reward">
@@ -59,6 +63,7 @@
             <column name="point" value="2000"/>
             <column name="customer_id" value="${Customer02}"/>
             <column name="description" value="Test 01"/>
+            <column name="reward_type" value="debit"/>
         </insert>
         
         <insert tableName="cst_reward">
@@ -69,6 +74,7 @@
             <column name="point" value="3000"/>
             <column name="customer_id" value="${Customer02}"/>
             <column name="description" value="Test 01"/>
+            <column name="reward_type" value="debit"/>
         </insert>
  
     </changeSet>
@@ -83,6 +89,7 @@
             <column name="point" value="1000"/>
             <column name="customer_id" value="${Customer03}"/>
             <column name="description" value="Test 01"/>
+            <column name="reward_type" value="debit"/>
         </insert>
         
         <insert tableName="cst_reward">
@@ -93,6 +100,7 @@
             <column name="point" value="2000"/>
             <column name="customer_id" value="${Customer03}"/>
             <column name="description" value="Test 01"/>
+            <column name="reward_type" value="debit"/>
         </insert>
         
         <insert tableName="cst_reward">
@@ -103,6 +111,7 @@
             <column name="point" value="3000"/>
             <column name="customer_id" value="${Customer03}"/>
             <column name="description" value="Test 01"/>
+            <column name="reward_type" value="debit"/>
         </insert>
  
     </changeSet>
@@ -117,6 +126,7 @@
             <column name="point" value="1000"/>
             <column name="customer_id" value="${Customer04}"/>
             <column name="description" value="Test 01"/>
+            <column name="reward_type" value="debit"/>
         </insert>
         
         <insert tableName="cst_reward">
@@ -127,6 +137,7 @@
             <column name="point" value="2000"/>
             <column name="customer_id" value="${Customer04}"/>
             <column name="description" value="Test 01"/>
+            <column name="reward_type" value="debit"/>
         </insert>
         
         <insert tableName="cst_reward">
@@ -137,6 +148,7 @@
             <column name="point" value="3000"/>
             <column name="customer_id" value="${Customer04}"/>
             <column name="description" value="Test 01"/>
+            <column name="reward_type" value="debit"/>
         </insert>
  
     </changeSet>

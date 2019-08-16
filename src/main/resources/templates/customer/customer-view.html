@@ -48,6 +48,9 @@
 										    <a class="dropdown-item pl-1" th:href="@{|/customer/${customer.id}/detail|}">
 										    	<span class="icon-eye"></span> <span th:text="#{detail}">Detail</span>
                                             </a>
+                                            <a class="dropdown-item pl-1" th:href="@{|/customer/reward/${customer.id}|}">
+										    	<span class="icon-reward"></span> <span th:text="#{reward}">Reward</span>
+                                            </a>
                                             <th:block th:if="${isMaker && !customer.pending}">
                                                 <a class="dropdown-item pl-1" th:href="@{|/customer/${customer.id}|}">
                                                     <span class="icon-edit"></span> <span th:text="#{edit}">Edit</span>
