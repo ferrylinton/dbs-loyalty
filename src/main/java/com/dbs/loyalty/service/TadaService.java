@@ -26,6 +26,8 @@ import com.dbs.loyalty.domain.TadaPayment;
 import com.dbs.loyalty.exception.BadRequestException;
 import com.dbs.loyalty.util.HeaderUtil;
 import com.dbs.loyalty.util.ResponseUtil;
+import com.dbs.loyalty.util.SequenceUtil;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -35,6 +37,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Service
 public class TadaService {
+	
+	public static final String ORDER_NUMBER = "orderNumber";
 	
 	public static final String LOG_FORMAT = "CALL TADA API :: %s?%s";
 	
@@ -112,6 +116,7 @@ public class TadaService {
 		ResponseEntity<String> response = oauth2RestTemplate.exchange(getURI(url, null), HttpMethod.POST, requestEntity, String.class);
 		
 		tadaOrder.setResponse(response.getBody());
+		tadaOrder.setOrderNumber(getOrderNumber(response.getBody()));
 		tadaOrderService.save(tadaOrder);
 		return response;
 	}
@@ -124,7 +129,7 @@ public class TadaService {
 		tadaPayment.setCardPin(applicationProperties.getTadaPayment().getCardPin());
 		
 		tadaOrder.setTadaPayment(tadaPayment);
-		tadaOrder.setOrderReference(tadaOrderService.generate());
+		tadaOrder.setOrderReference(SequenceUtil.getNext());
 		tadaOrder.setCreatedBy(email);
 		tadaOrder.setCreatedDate(Instant.now());
 		return tadaOrder;
@@ -134,13 +139,11 @@ public class TadaService {
 		Integer totalPrice = 0;
 		
 		for(TadaItem tadaItem : tadaOrder.getTadaItems()) {
+			tadaItem.setPoint(priceToPoint(tadaItem.getPrice()));
 			totalPrice += tadaItem.getPrice() * tadaItem.getQuantity();
 		}
-		
-		int remainder = totalPrice % settingService.getPointToRupiah();
-		int totalPoint = totalPrice / settingService.getPointToRupiah();
-		
-		return remainder == 0 ? totalPoint : totalPoint + 1;
+
+		return priceToPoint(totalPrice);
 	}
 	
 	private URI getURI(String url, String queryString) throws URISyntaxException {
@@ -153,4 +156,14 @@ public class TadaService {
 		}
 	}
 	
+	private String getOrderNumber(String json) throws IOException {
+		JsonNode rootNode = objectMapper.readTree(json);
+		return rootNode.get(ORDER_NUMBER).textValue();
+	}
+	
+	private Integer priceToPoint(Integer price) {
+		int remainder = price % settingService.getPointToRupiah();
+		int totalPoint = price / settingService.getPointToRupiah();
+		return (remainder == 0) ? totalPoint : totalPoint + 1;
+	}
 }

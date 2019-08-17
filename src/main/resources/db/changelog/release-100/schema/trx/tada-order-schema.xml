@@ -7,9 +7,10 @@
     
     <changeSet author="FLH" id="trx-tada-order-schema-1">
         <createTable tableName="trx_tada_item">
-            <column name="id" type="VARCHAR(50)">
+        	<column name="tada_item_id" type="VARCHAR(22)">
                 <constraints nullable="false"/>
             </column>
+            <column name="id" type="VARCHAR(30)"/>
             <column name="custom_price" type="INT"/>
             <column name="price" type="INT"/>
             <column name="point" type="INT"/>
@@ -35,7 +36,10 @@
             <column name="last_modified_by" type="VARCHAR(50)"/>
             <column name="last_modified_date" type="timestamp"/>
             <column name="response" type="LONGTEXT"/>
-            <column name="order_reference" type="VARCHAR(20)">
+            <column name="order_number" type="VARCHAR(30)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="order_reference" type="VARCHAR(30)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
@@ -72,7 +76,7 @@
     </changeSet>
     
     <changeSet author="FLH" id="trx-tada-order-schema-5">
-        <addPrimaryKey columnNames="id" constraintName="trx_tada_item_pk" tableName="trx_tada_item"/>
+        <addPrimaryKey columnNames="tada_item_id" constraintName="trx_tada_item_pk" tableName="trx_tada_item"/>
     </changeSet>
     
     <changeSet author="FLH" id="trx-tada-order-schema-6">

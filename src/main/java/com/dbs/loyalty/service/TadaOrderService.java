@@ -3,7 +3,6 @@ package com.dbs.loyalty.service;
 import java.util.Map;
 import java.util.Optional;
 
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,8 +17,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Service
 public class TadaOrderService{
-	
-	private static final String PREFIX = "DBS-";
 
 	private final TadaOrderRepository tadaOrderRepository;
 
@@ -37,27 +34,6 @@ public class TadaOrderService{
 	
 	public Page<TadaOrder> findAll(Map<String, String> params, Pageable pageable) {
 		return tadaOrderRepository.findAll(new TadaOrderSpec(params), pageable);
-	}
-	
-	public String generate() {
-		String orderReference = PREFIX + RandomStringUtils.randomNumeric(10);
-		Optional<TadaOrder> current = tadaOrderRepository.findByOrderReference(orderReference);
-		
-		if(current.isPresent()) {
-			orderReference = PREFIX + RandomStringUtils.randomNumeric(10);
-			current = tadaOrderRepository.findByOrderReference(orderReference);
-			
-			if(current.isPresent()) {
-				orderReference = PREFIX + RandomStringUtils.randomNumeric(10);
-				current = tadaOrderRepository.findByOrderReference(orderReference);
-				
-				if(current.isPresent()) {
-					return null;
-				}
-			}
-		}
-
-		return orderReference;
 	}
 	
 	public TadaOrder save(TadaOrder tadaOrder) {

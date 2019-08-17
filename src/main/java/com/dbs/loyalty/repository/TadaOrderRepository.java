@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.lang.Nullable;
 
 import com.dbs.loyalty.domain.TadaOrder;
@@ -24,4 +25,7 @@ public interface TadaOrderRepository extends JpaRepository<TadaOrder, String>, J
 	
 	Optional<TadaOrder> findByOrderReferenceAndCreatedBy(String orderReference, String createdBy);
 
+	@Query("SELECT max(t.orderReference) FROM TadaOrder t where t.orderReference like ?1%")
+	String findMaxOrderReference(String orderReference);
+	
 }

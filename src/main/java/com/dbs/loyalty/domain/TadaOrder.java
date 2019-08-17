@@ -54,7 +54,10 @@ public class TadaOrder extends AbstractAuditing implements Serializable {
 	@GeneratedValue(generator = DomainConstant.ID_GENERATOR)
 	private String id;
 
-    @Column(name = "order_reference", length = 20, nullable = false)
+	@Column(name = "order_number", length = 30)
+	private String orderNumber;
+	
+    @Column(name = "order_reference", length = 30)
     private String orderReference;
 	
 	@JsonProperty("payment")

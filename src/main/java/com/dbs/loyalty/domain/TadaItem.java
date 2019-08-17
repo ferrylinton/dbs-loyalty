@@ -6,11 +6,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.GenericGenerator;
 
 import com.dbs.loyalty.config.constant.DomainConstant;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -36,9 +39,14 @@ public class TadaItem implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@NotNull
 	@Id
-	@Column(name = DomainConstant.ID, length=50)
+	@Column(name = "tada_item_id", length=22)
+	@GenericGenerator(name = DomainConstant.ID_GENERATOR, strategy = DomainConstant.ID_GENERATOR_STRATEGY)
+	@GeneratedValue(generator = DomainConstant.ID_GENERATOR)
+	private String tadaItemId;
+	
+	@NotNull
+	@Column(name = "id", length=30)
 	private String id;
 
 	@NotNull
@@ -46,10 +54,12 @@ public class TadaItem implements Serializable {
     private String variantId;
 
 	@NotNull
-	@JsonProperty( value = "price", access = JsonProperty.Access.WRITE_ONLY)
+	@JsonProperty(value = "price", access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "price")
     private Integer price;
     
+	@Column(name = "point")
+	@JsonProperty(value = "point", access = JsonProperty.Access.WRITE_ONLY)
     private Integer point;
     
     @NotNull
