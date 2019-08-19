@@ -3,6 +3,7 @@ package com.dbs.loyalty.service;
 import java.util.Map;
 import java.util.Optional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -38,6 +39,7 @@ public class TadaOrderService{
 	
 	public TadaOrder save(TadaOrder tadaOrder) {
 		for(TadaItem tadaItem : tadaOrder.getTadaItems()) {
+			tadaItem.setDescription(StringUtils.truncate(tadaItem.getDescription(), 250));
 			tadaItem.setTadaOrder(tadaOrder);
 		}
 		tadaOrder.getTadaPayment().setTadaOrder(tadaOrder);

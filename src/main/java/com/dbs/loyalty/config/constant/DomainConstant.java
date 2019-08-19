@@ -38,6 +38,8 @@ public final class DomainConstant {
 	public static final String MULTIPART_FILE_MATERIAL	= "multipartFileMaterial";
 	public static final String NAME						= "name";
 	public static final String OPERATION				= "operation";
+	public static final String ORDER_NUMBER				= "orderNumber";
+	public static final String ORDER_REFERENCE			= "orderReference";
 	public static final String PASSWORD_PLAIN			= "passwordPlain";
 	public static final String PHONE					= "phone";
 	public static final String PRIVILEDGE_ORDER 		= "priviledgeOrder";
@@ -51,6 +53,7 @@ public final class DomainConstant {
 	public static final String ROLES 					= "roles";
 	public static final String SETTING 					= "setting";
 	public static final String TADA_ORDER				= "tadaOrder";
+	public static final String TADA_RECIPIENT			= "tadaRecipient";
 	public static final String TASK 					= "task";
 	public static final String TITLE					= "title";
 	public static final String TRX_ORDER				= "trxOrder";

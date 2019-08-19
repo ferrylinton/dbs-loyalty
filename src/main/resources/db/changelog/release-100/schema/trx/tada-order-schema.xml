@@ -14,6 +14,9 @@
             <column name="custom_price" type="INT"/>
             <column name="price" type="INT"/>
             <column name="point" type="INT"/>
+            <column name="name" type="VARCHAR(250)"/>
+            <column name="description" type="VARCHAR(250)"/>
+            <column name="image" type="VARCHAR(250)"/>
             <column name="payment_currency" type="VARCHAR(50)"/>
             <column name="phone" type="VARCHAR(50)"/>
             <column name="quantity" type="INT"/>

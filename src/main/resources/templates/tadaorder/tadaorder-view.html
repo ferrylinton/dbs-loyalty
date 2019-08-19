@@ -17,7 +17,7 @@
 		</ol>
 	</nav>
 	<div layout:fragment="content">
-		<div th:replace="fragment/search.html :: content('/tadaorder', |#{itemName}, #{email}, #{customerName}|, false)"></div>
+		<div th:replace="fragment/search.html :: content('/tadaorder', |#{orderNumber}, #{orderReference}, #{customerName}|, false)"></div>
    		<div class="table-responsive border border-top-0" th:if="${page.getTotalElements() > 0}">
 			<table class="table table-sm table-striped table-hover border-bottom" style="min-width: 400px;">
 				<thead>
@@ -29,6 +29,7 @@
                             	<span th:text="#{date}">Date</span> <span th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></span>
                        		</a>
                        	</th>
+                       	<th th:text="#{orderNumber}">Order Number</th>
                        	<th th:text="#{orderReference}">Order Reference</th>
                        	<th th:text="#{email}">Email</th>
                        	<th th:text="#{customerName}">Customer Name</th>
@@ -50,7 +51,8 @@
 						</td>
 						<td th:text="${row.count + (page.number * page.size)}">1</td>
 						<td><span th:data-date="${@dateService.jsDatetime()}" th:text="${tadaorder.createdDate}">2019-05-01T21:24:44Z</span></td>
-						<td th:text="${tadaorder.orderReference}">Order Reference</td>
+						<td th:text="${tadaorder.orderNumber}">TADA19081711510058</td>
+						<td th:text="${tadaorder.orderReference}">DBS19081700000009</td>
 						<td th:text="${tadaorder.tadaRecipient.email}">Email</td>
 						<td th:text="|${tadaorder.tadaRecipient.firstName} ${tadaorder.tadaRecipient.lastName}|">Customer Name</td>
 					</tr>

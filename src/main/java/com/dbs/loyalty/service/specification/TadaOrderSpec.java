@@ -12,6 +12,7 @@ import javax.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
 
 import com.dbs.loyalty.config.constant.Constant;
+import com.dbs.loyalty.config.constant.DomainConstant;
 import com.dbs.loyalty.domain.TadaOrder;
 
 import lombok.RequiredArgsConstructor;
@@ -29,16 +30,18 @@ public class TadaOrderSpec implements Specification<TadaOrder>{
 		
 		if(params.containsKey(Constant.KY_PARAM) && !Constant.EMPTY.equals(params.get(Constant.KY_PARAM))) {
 			String keyword = String.format(Constant.LIKE_FORMAT, params.get(Constant.KY_PARAM).trim().toLowerCase());
-			predicates.add(cb.like(root.get("orderReference"), keyword));
+			predicates.add(cb.or(
+					cb.like(root.get(DomainConstant.ORDER_REFERENCE), keyword),
+					cb.like(root.get(DomainConstant.ORDER_NUMBER), keyword)
+				));
 		}
 		
 		if(params.containsKey(Constant.KY_PARAM) && !Constant.EMPTY.equals(params.get(Constant.KY_PARAM))) {
 			String keyword = String.format(Constant.LIKE_FORMAT, params.get(Constant.KY_PARAM).trim().toLowerCase());
 			predicates.add(cb.or(
-					cb.like(cb.lower(root.get("tadaRecipient").get("firstName")), keyword),
-					cb.like(cb.lower(root.get("tadaRecipient").get("lastName")), keyword),
-					cb.like(cb.lower(root.get("tadaRecipient").get("email")), keyword),
-					cb.like(cb.lower(root.get("tadaRecipient").get("phone")), keyword)
+					cb.like(cb.lower(root.get(DomainConstant.TADA_RECIPIENT).get(DomainConstant.FIRST_NAME)), keyword),
+					cb.like(cb.lower(root.get(DomainConstant.TADA_RECIPIENT).get(DomainConstant.LAST_NAME)), keyword),
+					cb.like(cb.lower(root.get(DomainConstant.TADA_RECIPIENT).get(DomainConstant.EMAIL)), keyword)
 				));
 		}
 		

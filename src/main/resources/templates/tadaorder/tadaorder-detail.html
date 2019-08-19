@@ -18,58 +18,95 @@
 	</nav>
 	<div layout:fragment="content">
 		<div th:replace="fragment/value-not-found.html :: content"></div>
-		<div class="table-responsive border border-top-0" th:if="${tadaorder}">
+		<div class="bg-secondary text-white px-2 py-1 text-uppercase font-weight-bold mb-2" th:text="#{order}">Order</div>
+		<div class="table-responsive border border-top-0" th:if="${tadaOrder}">
       		<table class="table table-sm table-detail" style="min-width: 400px;">
        			<tbody>
             		<tr>
                 		<th th:text="#{id}">Id</th>
-                     	<td th:text="${tadaorder.id}">ZwOkjFmG</td>
+                     	<td th:text="${tadaOrder.id}">ZwOkjFmG</td>
                		</tr>
                 	<tr>
+                  		<th th:text="#{orderNumber}">Order Number</th>
+                   		<td th:text="${tadaOrder.orderNumber}">Order Number</td>
+              		</tr>
+              		<tr>
                   		<th th:text="#{orderReference}">Order Reference</th>
-                   		<td th:text="${tadaorder.orderReference}">Order Reference</td>
+                   		<td th:text="${tadaOrder.orderReference}">Order Reference</td>
+              		</tr>
+              		<tr>
+                  		<th th:text="#{items}">Items</th>
+                   		<td>
+                   			<table class="table table-sm border mb-3" th:each="tadaItem,row : ${tadaOrder.tadaItems}">
+                   				<tbody>
+                   					<tr>
+                   						<th th:text="#{no}">No</th>
+				                   		<td th:text="${row.count}">1</td>
+                   					</tr>
+                   					<tr>
+				                  		<th th:text="#{name}">Name</th>
+				                   		<td th:text="${tadaItem.name}">Name</td>
+				              		</tr>
+				              		<tr th:if="${tadaItem.description}">
+				                  		<th th:text="#{description}">Description</th>
+				                   		<td th:utext="${tadaItem.description}">Description</td>
+				              		</tr>
+				              		<tr>
+				                  		<th th:text="#{image}">Image</th>
+				                   		<td>
+				                   			<div class="d-block overflow-auto">
+				                            	<img class="border p-1" alt="image" th:src="@{|${tadaItem.image}|}" />
+				                     		</div>
+										</td>
+				              		</tr>
+                   				</tbody>
+                   			</table>
+                   		</td>
               		</tr>
               		<tr>
                   		<th th:text="#{date}">Date</th>
-                   		<td><span th:data-date="${@dateService.jsDatetime()}" th:text="${tadaorder.createdDate}">2019-05-01T21:24:44Z</span></td>
+                   		<td><span th:data-date="${@dateService.jsDatetime()}" th:text="${tadaOrder.createdDate}">2019-05-01T21:24:44Z</span></td>
               		</tr>
      			</tbody>
      		</table>
      	</div>
-     	<div class="table-responsive border border-top-0 mt-1" th:if="${tadaorder}">
+     	
+     	<div class="bg-secondary text-white px-2 py-1 text-uppercase font-weight-bold mb-2" th:text="#{recipient}">Recipient</div>
+     	
+     	<div class="table-responsive border border-top-0 mt-1" th:if="${tadaOrder}">
      		<table class="table table-sm table-detail" style="min-width: 400px;">
        			<tbody>
               		<tr>
                			<th th:text="#{id}">Id</th>
-                    	<td th:text="${tadaorder.tadaRecipient.id}">0000001</td>
+                    	<td th:text="${tadaOrder.tadaRecipient.id}">0000001</td>
                		</tr>
          			<tr>
                     	<th th:text="#{firstName}">First Name</th>
-                      	<td th:text="${tadaorder.tadaRecipient.firstName}">Ferry</td>
+                      	<td th:text="${tadaOrder.tadaRecipient.firstName}">Ferry</td>
            			</tr>
            			<tr>
                     	<th th:text="#{lastName}">First Name</th>
-                      	<td th:text="${tadaorder.tadaRecipient.lastName}">Hutapea</td>
+                      	<td th:text="${tadaOrder.tadaRecipient.lastName}">Hutapea</td>
            			</tr>
                   	<tr>
                  		<th th:text="#{email}">Email</th>
-                     	<td th:text="${tadaorder.tadaRecipient.email}">ferrylinton@gmail.com</td>
+                     	<td th:text="${tadaOrder.tadaRecipient.email}">ferrylinton@gmail.com</td>
                   	</tr>
                		<tr>
                     	<th th:text="#{phone}">Phone</th>
-                     	<td th:text="${tadaorder.tadaRecipient.phone}">1234567890</td>
+                     	<td th:text="${tadaOrder.tadaRecipient.phone}">1234567890</td>
                 	</tr>
                 	<tr>
                     	<th th:text="#{cityId}">City Id</th>
-                     	<td th:text="${tadaorder.tadaRecipient.cityId}">1</td>
+                     	<td th:text="${tadaOrder.tadaRecipient.cityId}">1</td>
                 	</tr>
                 	<tr>
                     	<th th:text="#{address}">Address</th>
-                     	<td th:text="${tadaorder.tadaRecipient.address}">Address</td>
+                     	<td th:text="${tadaOrder.tadaRecipient.address}">Address</td>
                 	</tr>
                 	<tr>
                     	<th th:text="#{postalCode}">Postal Code</th>
-                     	<td th:text="${tadaorder.tadaRecipient.postalCode}">Postal Code</td>
+                     	<td th:text="${tadaOrder.tadaRecipient.postalCode}">Postal Code</td>
                 	</tr>
      			</tbody>
      		</table>

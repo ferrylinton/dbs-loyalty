@@ -61,6 +61,19 @@ public class TadaItem implements Serializable {
 	@Column(name = "point")
 	@JsonProperty(value = "point", access = JsonProperty.Access.WRITE_ONLY)
     private Integer point;
+	
+	@NotNull
+	@Column(name = "name")
+	@JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
+    private String name;
+	
+	@Column(name = "description")
+	@JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
+    private String description;
+	
+	@Column(name = "image")
+	@JsonProperty(value = "image", access = JsonProperty.Access.WRITE_ONLY)
+    private String image;
     
     @NotNull
     @Column(name = "quantity")

@@ -13,25 +13,25 @@
                 <span th:text="#{data}">Data</span>
                 <ul>
                     <li th:if="${#authorization.expression('hasAnyAuthority(''CUSTOMER_MK'', ''CUSTOMER_CK'')')}">
-                        <a class="icon-database" data-menu="customer" th:href="@{/customer}" th:text="#{customer}">Customer</a>
+                        <a class="icon-customer" data-menu="customer" th:href="@{/customer}" th:text="#{customer}">Customer</a>
                     </li>
                     <li th:if="${#authorization.expression('hasAnyAuthority(''PROMO_MK'', ''PROMO_CK'')')}">
-                        <a class="icon-database" data-menu="promo" th:href="@{/promo}" th:text="#{promo}">Promo</a>
+                        <a class="icon-promo" data-menu="promo" th:href="@{/promo}" th:text="#{promo}">Promo</a>
                     </li>
                     <li th:if="${#authorization.expression('hasAnyAuthority(''PROMO_CATEGORY_MK'', ''PROMO_CATEGORY_CK'')')}">
-                        <a class="icon-database" data-menu="promocategory" th:href="@{/promocategory}" th:text="#{promoCategory}">Promo Category</a>
+                        <a class="icon-category" data-menu="promocategory" th:href="@{/promocategory}" th:text="#{promoCategory}">Promo Category</a>
                     </li>
                     <li th:if="${#authorization.expression('hasAnyAuthority(''EVENT_MK'', ''EVENT_CK'')')}">
-                        <a class="icon-database" data-menu="event" th:href="@{/event}" th:text="#{event}">Event</a>
+                        <a class="icon-event" data-menu="event" th:href="@{/event}" th:text="#{event}">Event</a>
                     </li>
                     <li th:if="${#authorization.expression('hasAnyAuthority(''COUNTRY_MK'', ''COUNTRY_CK'')')}">
-                        <a class="icon-database" data-menu="country" th:href="@{/country}" th:text="#{country}">Country</a>
+                        <a class="icon-location" data-menu="country" th:href="@{/country}" th:text="#{country}">Country</a>
                     </li>
                     <li th:if="${#authorization.expression('hasAnyAuthority(''PROVINCE_MK'', ''PROVINCE_CK'')')}">
-                        <a class="icon-database" data-menu="province" th:href="@{/province}" th:text="#{province}">Province</a>
+                        <a class="icon-location" data-menu="province" th:href="@{/province}" th:text="#{province}">Province</a>
                     </li>
                     <li th:if="${#authorization.expression('hasAnyAuthority(''CITY_MK'', ''CITY_CK'')')}">
-                        <a class="icon-database" data-menu="city" th:href="@{/city}" th:text="#{city}">City</a>
+                        <a class="icon-location" data-menu="city" th:href="@{/city}" th:text="#{city}">City</a>
                     </li>
                     <li th:if="${#authorization.expression('hasAnyAuthority(''SETTING'')')}">
                         <a class="icon-database" data-menu="setting" th:href="@{/setting}" th:text="#{setting}">Setting</a>
@@ -42,19 +42,19 @@
                 <span th:text="#{wellness}">WELLNESS</span>
                 <ul>
                     <li th:if="${#authorization.expression('hasAnyAuthority(''APPOINTMENT_MK'', ''APPOINTMENT_CK'')')}">
-                        <a class="icon-medical" data-menu="appointment" th:href="@{/appointment}" th:text="#{appointment}">Appointment</a>
-                    </li>
-                    <li th:if="${#authorization.expression('hasAnyAuthority(''MEDICAL_PROVIDER_MK'', ''MEDICAL_PROVIDER_CK'')')}">
-                        <a class="icon-medical" data-menu="medicalprovider" th:href="@{/medicalprovider}" th:text="#{medicalProvider}">Medical Provider</a>
-                    </li>
-                    <li th:if="${#authorization.expression('hasAnyAuthority(''MEDICAL_CITY_MK'', ''MEDICAL_CITY_CK'')')}">
-                        <a class="icon-medical" data-menu="medicalcity" th:href="@{/medicalcity}" th:text="#{medicalCity}">Medical City</a>
-                    </li>
-                    <li th:if="${#authorization.expression('hasAnyAuthority(''MEDICAL_BRANCH_MK'', ''MEDICAL_BRANCH_CK'')')}">
-                        <a class="icon-medical" data-menu="medicalbranch" th:href="@{/medicalbranch}" th:text="#{medicalBranch}">Medical Branch</a>
+                        <a class="icon-heartbeat" data-menu="appointment" th:href="@{/appointment}" th:text="#{appointment}">Appointment</a>
                     </li>
                     <li th:if="${#authorization.expression('hasAnyAuthority(''HEALTH_PACKAGE_MK'', ''HEALTH_PACKAGE_CK'')')}">
-                        <a class="icon-medical" data-menu="healthpackage" th:href="@{/healthpackage}" th:text="#{healthPackage}">Health Package</a>
+                        <a class="icon-medkit" data-menu="healthpackage" th:href="@{/healthpackage}" th:text="#{healthPackage}">Health Package</a>
+                    </li>
+                    <li th:if="${#authorization.expression('hasAnyAuthority(''MEDICAL_PROVIDER_MK'', ''MEDICAL_PROVIDER_CK'')')}">
+                        <a class="icon-hospital" data-menu="medicalprovider" th:href="@{/medicalprovider}" th:text="#{medicalProvider}">Medical Provider</a>
+                    </li>
+                    <li th:if="${#authorization.expression('hasAnyAuthority(''MEDICAL_CITY_MK'', ''MEDICAL_CITY_CK'')')}">
+                        <a class="icon-hospital" data-menu="medicalcity" th:href="@{/medicalcity}" th:text="#{medicalCity}">Medical City</a>
+                    </li>
+                    <li th:if="${#authorization.expression('hasAnyAuthority(''MEDICAL_BRANCH_MK'', ''MEDICAL_BRANCH_CK'')')}">
+                        <a class="icon-hospital" data-menu="medicalbranch" th:href="@{/medicalbranch}" th:text="#{medicalBranch}">Medical Branch</a>
                     </li>
                 </ul>
             </li>
@@ -62,10 +62,10 @@
                 <span th:text="#{airportAssistance}">Airport Assistance</span>
                 <ul>
                     <li th:if="${#authorization.expression('hasAnyAuthority(''DEPARTURE_MK'', ''DEPARTURE_CK'')')}">
-                        <a class="icon-airport" data-menu="departure" th:href="@{/departure}" th:text="#{departure}">Departure</a>
+                        <a class="icon-briefcase" data-menu="departure" th:href="@{/departure}" th:text="#{departure}">Departure</a>
                     </li>
                     <li th:if="${#authorization.expression('hasAnyAuthority(''ARRIVAL_MK'', ''ARRIVAL_CK'')')}">
-                        <a class="icon-airport" data-menu="arrival" th:href="@{/arrival}" th:text="#{arrival}">Arrival</a>
+                        <a class="icon-briefcase" data-menu="arrival" th:href="@{/arrival}" th:text="#{arrival}">Arrival</a>
                     </li>
                     <li th:if="${#authorization.expression('hasAnyAuthority(''AIRPORT_MK'', ''AIRPORT_CK'')')}">
                         <a class="icon-airport" data-menu="airport" th:href="@{/airport}" th:text="#{airport}">Airport</a>
@@ -76,10 +76,10 @@
                 <span th:text="#{product}">Product</span>
                 <ul>
                     <li th:if="${#authorization.expression('hasAnyAuthority(''PRODUCT_MK'', ''PRODUCT_CK'')')}">
-                        <a class="icon-bookmark" data-menu="priviledgeproduct" th:href="@{/priviledgeproduct}" th:text="#{priviledge}">Priviledge</a>
+                        <a class="icon-star-circled" data-menu="priviledgeproduct" th:href="@{/priviledgeproduct}" th:text="#{priviledge}">Priviledge</a>
                     </li>
                    <li th:if="${#authorization.expression('hasAnyAuthority(''PRODUCT_MK'', ''PRODUCT_CK'')')}">
-                        <a class="icon-bookmark" data-menu="trxproduct" th:href="@{/trxproduct}" th:text="#{bankingTransaction}">Banking Transaction</a>
+                        <a class="icon-credit-card" data-menu="trxproduct" th:href="@{/trxproduct}" th:text="#{bankingTransaction}">Banking Transaction</a>
                     </li>
                 </ul>
             </li>
@@ -87,13 +87,13 @@
                 <span th:text="#{order}">Order</span>
                 <ul>
                 	<li th:if="${#authorization.expression('hasAnyAuthority(''ORDER_MK'', ''ORDER_CK'')')}">
-                        <a class="icon-basket" data-menu="tadaorder" th:href="@{/tadaorder}" th:text="#{gift}">Gift</a>
+                        <a class="icon-gift" data-menu="tadaorder" th:href="@{/tadaorder}" th:text="#{gift}">Gift</a>
                    	</li>
                     <li th:if="${#authorization.expression('hasAnyAuthority(''ORDER_MK'', ''ORDER_CK'')')}">
-                        <a class="icon-basket" data-menu="priviledgeorder" th:href="@{/priviledgeorder}" th:text="#{priviledge}">Priviledge</a>
+                        <a class="icon-star-circled" data-menu="priviledgeorder" th:href="@{/priviledgeorder}" th:text="#{priviledge}">Priviledge</a>
                     </li>
                    	<li th:if="${#authorization.expression('hasAnyAuthority(''ORDER_MK'', ''ORDER_CK'')')}">
-                        <a class="icon-basket" data-menu="trxorder" th:href="@{/trxorder}" th:text="#{bankingTransaction}">Banking Transaction</a>
+                        <a class="icon-credit-card" data-menu="trxorder" th:href="@{/trxorder}" th:text="#{bankingTransaction}">Banking Transaction</a>
                    	</li>
                 </ul>
             </li>
