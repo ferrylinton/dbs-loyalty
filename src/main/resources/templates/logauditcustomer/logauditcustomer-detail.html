@@ -79,7 +79,9 @@
               		</tr>
               		<tr th:if="${logAuditCustomer.responseJson}">
                   		<th th:text="#{response}">Request</th>
-                   		<td th:text="${logAuditCustomer.responseJson}">Response</td>
+                   		<td>
+							<div class="json" th:text="${logAuditCustomer.responseJson}"></div>
+						</td>
               		</tr>
               		<tr th:if="${logAuditCustomer.responseText}">
                   		<th th:text="#{response}">Request</th>

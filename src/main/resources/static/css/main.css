@@ -158,6 +158,11 @@ a:hover{
 	font-size: 0.9em;
 }
 
+.table th{
+	font-size: .85em;
+	text-transform: uppercase;	
+}
+
 .datepicker .table th{
 	font-weight: normal;
 	border-bottom: 1px solid #dee2e6;
@@ -389,7 +394,6 @@ a:hover{
 	margin-bottom: 0;
 }
 .json .table th{
-	font-size: .9em;
 	font-weight: bold;
 	background-color: #f2f2f2;
 	width: 130px;
