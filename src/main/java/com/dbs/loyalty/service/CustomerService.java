@@ -118,8 +118,13 @@ public class CustomerService{
 		customerRepository.changePassword(passwordHash, SecurityUtil.getLogged());
 	}
 	
+	public boolean isEmailExist(String email) {
+		Optional<Customer> customer = customerRepository.findByEmail(email);
+		return customer.isPresent();
+	}
+	
 	public Customer activate(CustomerActivateDto customerActivateDto) throws BadRequestException {
-		Optional<Customer> customer = customerRepository.findByEmailIgnoreCase(customerActivateDto.getEmail());
+		Optional<Customer> customer = customerRepository.findByEmail(customerActivateDto.getEmail());
 		
 		if(customer.isPresent()) {
 			customer.get().setActivated(true);

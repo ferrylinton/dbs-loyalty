@@ -43,6 +43,7 @@ public class RestSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	    	.antMatcher("/api/**")
 	    		.authorizeRequests()
 	    		.antMatchers("/api/authenticate").permitAll()
+	    		.antMatchers("/api/customers/check-email").permitAll()
 	    		.antMatchers("/api/customers/activate").permitAll()
 	    		.antMatchers("/api/verification-tokens/**").permitAll()
 	    		.anyRequest().authenticated();

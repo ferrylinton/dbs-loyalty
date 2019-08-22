@@ -5,14 +5,14 @@
 	layout:decorate="~{layout/layout}">
 
 <head>
-    <title th:text="#{logauditcustomer}">Log Audit Customer</title>
+    <title th:text="#{logAuditCustomer}">Log Audit Customer</title>
 </head>
 
 <body data-menu="logauditcustomer">
 	<nav aria-label="breadcrumb" layout:fragment="breadcrumb">
      	<ol class="breadcrumb">
        		<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{home}">Home</a></li>
-         	<li class="breadcrumb-item active" aria-current="page" th:text="#{logauditcustomer}">Log API</li>
+         	<li class="breadcrumb-item active" aria-current="page" th:text="#{logAuditCustomer}">Log API</li>
       	</ol>
 	</nav>
 	<div layout:fragment="content">
@@ -27,7 +27,7 @@
 		              	</div>
 					</div>
                   	<div class="input-group">
-                    	<input class="form-control" name="ky" maxlength="40" th:value="${param.ky}" th:placeholder="|#{operation}, #{url}|" />
+                    	<input class="form-control" name="ky" maxlength="40" th:value="${param.ky}" th:placeholder="|#{operation}, #{url}, #{customer}|" />
                       	<div class="input-group-append">
                        		<button class="btn btn-light border text-secondary" type="submit">
                              	<span class="icon-search"></span>
@@ -41,27 +41,42 @@
         	</div>
    		</div>
      	<div class="table-responsive" th:if="${page.getTotalElements() > 0}">
-	 		<table class="table table-sm table-striped table-hover border" style="min-width: 700px;">
+	 		<table class="table table-sm table-striped table-hover border" style="min-width: 950px;">
 	        	<thead>
                		<tr th:with="ascending=${order.getDirection().name() == 'ASC'}">
-						<th class="text-center" style="width:60px">#</th>
+						<th style="width:40px"></th>
+                      	<th >#</th>
                      	<th th:with="sort=|&sort=createdDate,${ascending ? 'DESC' : 'ASC'}|">
                         	<a th:href="@{|?page=${page.getNumber()}${params}${sort}|}" class="text-decoration-none">
                             	<span th:text="#{date}">Date</span> <span th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></span>
                        		</a>
                        	</th>
                       	<th th:text="#{operation}">Operation</th>
-                     	<th th:text="#{url}">Url</th>
+                     	<th th:text="#{email}">Email</th>
+                     	<th th:text="#{customer}">Customer</th>
                      	<th th:text="#{status}">Status</th>
                 	</tr>
              	</thead>
 	         	<tbody th:remove="all-but-first">
-	           		<tr th:each="logauditcustomer,row : ${page}">
-	                 	<td class="text-center" th:text="${row.count + (page.number * page.size)}">1</td>
-	                  	<td><span th:data-date="${@dateService.jsDatetime()}" th:text="${logauditcustomer.createdDate}">2019-05-01T21:24:44Z</span></td>
-						<td th:text="${logauditcustomer.operation}">Authenticate</td>
-						<td th:text="${logauditcustomer.url}">Url</td>
-						<td><span th:class="${logauditcustomer.status == 'Succeed'} ? 'badge badge-success' : 'badge badge-danger'" th:text="#{${#strings.toLowerCase(logauditcustomer.status)}}">Succeed</span></td>
+	           		<tr th:each="logAuditCustomer,row : ${page}">
+	           			<td class="p-0">
+							<div class="dropdown">
+								<button type="button" class="btn btn-default dropdown-toggle" id="dropdownMenuButton" data-boundary="window" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<span class="icon-cog"></span>
+								</button>
+								<div class="dropdown-menu py-0 shadow-sm" aria-labelledby="dropdownMenuButton">
+									<a class="dropdown-item pl-1" th:href="@{|/logauditcustomer/${logAuditCustomer.id}/detail|}">
+										<span class="icon-eye"></span> <span th:text="#{detail}">Detail</span>
+                              		</a>
+								</div>
+							</div>
+						</td>
+	                 	<td th:text="${row.count + (page.number * page.size)}">1</td>
+	                  	<td><span th:data-date="${@dateService.jsDatetime()}" th:text="${logAuditCustomer.createdDate}">2019-05-01T21:24:44Z</span></td>
+						<td th:text="${logAuditCustomer.operation}">Authenticate</td>
+						<td th:text="${logAuditCustomer.customer == null ? '-' : logAuditCustomer.customer.email}">Email</td>
+						<td th:text="${logAuditCustomer.customer == null ? '-' : logAuditCustomer.customer.firstName + ' ' + logAuditCustomer.customer.lastName}">Customer Name</td>
+						<td><span th:class="${logAuditCustomer.status == 'Succeed'} ? 'badge badge-success' : 'badge badge-danger'" th:text="#{${#strings.toLowerCase(logAuditCustomer.status)}}">Succeed</span></td>
 	              	</tr>
 	          	</tbody>
 	   		</table>

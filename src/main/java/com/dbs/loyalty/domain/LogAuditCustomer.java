@@ -61,9 +61,6 @@ public class LogAuditCustomer implements Serializable {
     @Column(name = "status", length = 10, nullable = false, updatable = false)
 	private String status;
 
-    @Column(name = "request_text")
-    private String requestText;
-    
     @Lob
 	@Type(type = "org.hibernate.type.TextType")
     @Column(name = "request_json")

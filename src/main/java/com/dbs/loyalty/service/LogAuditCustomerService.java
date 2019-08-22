@@ -3,6 +3,7 @@ package com.dbs.loyalty.service;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
@@ -45,6 +46,10 @@ public class LogAuditCustomerService {
 	private final ObjectMapper objectMapper;
 	
 	private Map<String, String> operations;
+	
+	public Optional<LogAuditCustomer> findWithCustomerById(String id) {
+		return logAuditCustomerRepository.findWithCustomerById(id);
+	}
 	
 	public Page<LogAuditCustomer> findAll(Map<String, String> params, Pageable pageable) {
 		return logAuditCustomerRepository.findAll(new LogAuditCustomerSpec(params), pageable);
@@ -100,19 +105,6 @@ public class LogAuditCustomerService {
 		LogAuditCustomer logAuditCustomer = new LogAuditCustomer();
 		logAuditCustomer.setOperation(operation);
     	logAuditCustomer.setUrl(url);
-    	logAuditCustomer.setHttpStatus(200);
-    	logAuditCustomer.setStatus(StatusConstant.SUCCEED);
-        logAuditCustomer.setCreatedDate(Instant.now());
-        logAuditCustomer.setCustomer(SecurityUtil.getCustomer());
-
-        save(logAuditCustomer);
-	}
-	
-	public void save(String operation, String url, String id) {
-		LogAuditCustomer logAuditCustomer = new LogAuditCustomer();
-		logAuditCustomer.setOperation(operation);
-    	logAuditCustomer.setUrl(url);
-    	logAuditCustomer.setRequestText(id);
     	logAuditCustomer.setHttpStatus(200);
     	logAuditCustomer.setStatus(StatusConstant.SUCCEED);
         logAuditCustomer.setCreatedDate(Instant.now());

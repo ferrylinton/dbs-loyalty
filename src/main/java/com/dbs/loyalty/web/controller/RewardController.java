@@ -23,7 +23,6 @@ import com.dbs.loyalty.service.RewardService;
 import com.dbs.loyalty.util.MessageUtil;
 import com.dbs.loyalty.util.PageUtil;
 import com.dbs.loyalty.util.QueryStringUtil;
-import com.dbs.loyalty.util.SecurityUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -49,7 +48,6 @@ public class RewardController {
 			Sort sort, Model model) {
 		
 		params.put(DomainConstant.CUSTOMER, customerId);
-		System.out.println("params : " + params);
 		Order order = PageUtil.getOrder(sort, DomainConstant.CREATED_DATE);
 		Page<Reward> page = rewardService.findAll(params, PageUtil.getPageable(params, order));
 

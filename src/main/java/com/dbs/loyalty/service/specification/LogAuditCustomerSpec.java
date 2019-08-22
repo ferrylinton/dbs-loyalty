@@ -32,8 +32,11 @@ public class LogAuditCustomerSpec implements Specification<LogAuditCustomer>{
 		if(params.containsKey(Constant.KY_PARAM) && !Constant.EMPTY.equals(params.get(Constant.KY_PARAM))) {
 			String keyword = String.format(Constant.LIKE_FORMAT, params.get(Constant.KY_PARAM).trim().toLowerCase());
 			predicates.add(cb.or(
-					cb.like(cb.lower(root.get(DomainConstant.URL)), keyword),
-					cb.like(cb.lower(root.get(DomainConstant.OPERATION)), keyword)
+					cb.like(cb.lower(root.get(DomainConstant.CUSTOMER).get(DomainConstant.EMAIL)), keyword),
+					cb.like(cb.lower(root.get(DomainConstant.CUSTOMER).get(DomainConstant.FIRST_NAME)), keyword),
+					cb.like(cb.lower(root.get(DomainConstant.CUSTOMER).get(DomainConstant.LAST_NAME)), keyword),
+					cb.like(cb.lower(root.get(DomainConstant.OPERATION)), keyword),
+					cb.like(cb.lower(root.get(DomainConstant.URL)), keyword)
 			));
 		}
 		

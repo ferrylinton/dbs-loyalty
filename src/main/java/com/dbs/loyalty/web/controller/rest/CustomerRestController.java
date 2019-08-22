@@ -101,6 +101,7 @@ public class CustomerRestController {
     		produces="application/json", 
     		authorizations={@Authorization(value="JWT")})
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response = JWTTokenDto.class)})
+    @EnableLogAuditCustomer(operation=UPDATE_CUSTOMER)
     @PutMapping
     public JWTTokenDto updateCustomer(
     		@ApiParam(name = "CustomerNewData", value = "Customer's new data") 

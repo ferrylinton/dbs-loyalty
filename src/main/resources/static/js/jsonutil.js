@@ -29,7 +29,11 @@ var JsonUtil = (function () {
                         var href = (contextPath == undefined) ? path : contextPath + path;
                         var imageLink = '<a onclick="return openNewTab(this)" class="btn btn-sm btn-secondary" href="' + href + '"> <span class="icon-picture"></span> <span>' + Lang.label('viewImage') + '</span> </a>';
                         table += '<td>' + imageLink + '</td>';
-
+                    }else if(key == 'imageUrl'){
+                        var contextPath = $('meta[name=contextPath]').attr('content');
+                        var href = (contextPath == undefined) ? path : contextPath + 'image/' + obj['id'];
+                        var imageLink = '<a onclick="return openNewTab(this)" class="btn btn-sm btn-secondary" href="' + href + '"> <span class="icon-picture"></span> <span>' + Lang.label('viewImage') + '</span> </a>';
+                        table += '<td>' + imageLink + '</td>';
                     }else if(key == 'material'){
                         var path = (obj['id'] == undefined || obj['id'] != obj[key]) ? 'pdf/task/' + obj[key] : 'pdf/' + obj[key];
                         var contextPath = $('meta[name=contextPath]').attr('content');

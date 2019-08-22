@@ -1,0 +1,99 @@
+<!doctype html>
+<html
+	xmlns:th="http://www.thymeleaf.org" 
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" 
+	layout:decorate="~{layout/layout}">
+
+<head>
+    <title th:text="#{logAuditCustomer}">Log Audit Customer</title>
+</head>
+
+<body data-menu="logauditcustomer">
+	<nav aria-label="breadcrumb" layout:fragment="breadcrumb">
+   		<ol class="breadcrumb">
+      		<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{home}">Home</a></li>
+       		<li class="breadcrumb-item"><a th:href="@{/logauditcustomer}" th:text="#{logAuditCustomer}">Log Audit Customer</a></li>
+          	<li class="breadcrumb-item active" aria-current="page" th:text="#{detail}">Detail</li>
+   		</ol>
+	</nav>
+	<div layout:fragment="content">
+		<div th:replace="fragment/value-not-found.html :: content"></div>
+		<div class="table-responsive border border-top-0" th:if="${logAuditCustomer}">
+      		<table class="table table-sm table-detail" style="min-width: 400px;">
+       			<tbody>
+            		<tr>
+                		<th th:text="#{id}">Id</th>
+                     	<td th:text="${logAuditCustomer.id}">ZwOkjFmG</td>
+               		</tr>
+                	<tr>
+                  		<th th:text="#{operation}">Operation</th>
+                   		<td th:text="${logAuditCustomer.operation}">operation</td>
+              		</tr>
+              		<tr>
+                  		<th th:text="#{url}">Url</th>
+                   		<td th:text="${logAuditCustomer.url}">Url</td>
+              		</tr>
+              		<tr>
+              			<th th:text="#{status}">Status</th>
+              			<td><span th:class="${logAuditCustomer.status == 'Succeed'} ? 'badge badge-success' : 'badge badge-danger'" th:text="#{${#strings.toLowerCase(logAuditCustomer.status)}}">Succeed</span></td>
+              		</tr>
+              		<tr>
+                  		<th th:text="#{httpStatus}">Http Status</th>
+                   		<td th:text="${logAuditCustomer.httpStatus}">200</td>
+              		</tr>
+              		<tr th:if="${logAuditCustomer.customer}">
+              			<th th:text="#{email}">Email</th>
+              			<td th:text="${logAuditCustomer.customer == null ? '-' : logAuditCustomer.customer.email}">Email</td>
+              		</tr>
+              		<tr th:if="${logAuditCustomer.customer}">
+              			<th th:text="#{customer}">Customer</th>
+              			<td th:text="${logAuditCustomer.customer == null ? '-' : logAuditCustomer.customer.firstName + ' ' + logAuditCustomer.customer.lastName}">Customer Name</td>
+              		</tr>
+              		<tr th:if="${logAuditCustomer.requestJson != null && !#strings.equals(logAuditCustomer.requestJson, '{}')}">
+                  		<th th:text="#{newData}">New Data</th>
+                   		<td>
+                   			<div class="json" th:text="${logAuditCustomer.requestJson}"></div>
+                   		</td>
+              		</tr>
+              		<tr th:if="${logAuditCustomer.oldJson}">
+                  		<th th:text="#{oldData}">Old Data</th>
+                   		<td>
+							<div class="json" th:text="${logAuditCustomer.oldJson}"></div>
+						</td>
+              		</tr>
+              		<tr th:if="${logAuditCustomer.requestFile}">
+                  		<th th:text="#{newImage}">New Image</th>
+                   		<td>
+                   			<div class="d-block">
+								<img class="border p-1" alt="image" th:src="${@base64Service.getString(logAuditCustomer.requestFile)}" />
+ 							</div>
+                   		</td>
+              		</tr>
+              		<tr th:if="${logAuditCustomer.oldFile}">
+                  		<th th:text="#{oldImage}">Old Image</th>
+                   		<td>
+                   			<div class="d-block">
+								<img class="border p-1" alt="image" th:src="${@base64Service.getString(logAuditCustomer.oldFile)}" />
+ 							</div>
+                   		</td>
+              		</tr>
+              		<tr th:if="${logAuditCustomer.responseJson}">
+                  		<th th:text="#{response}">Request</th>
+                   		<td th:text="${logAuditCustomer.responseJson}">Response</td>
+              		</tr>
+              		<tr th:if="${logAuditCustomer.responseText}">
+                  		<th th:text="#{response}">Request</th>
+                   		<td th:text="${logAuditCustomer.responseText}">Response</td>
+              		</tr>
+     			</tbody>
+     		</table>
+     	</div>
+		<div class="toolbar">
+    		<a class="btn btn-sm btn-secondary" href="javascript:back();">
+       			<span class="icon-left"></span> <span th:text="#{back}">Back</span>
+     		</a>
+		</div>
+	</div>
+</body>
+
+</html>

@@ -31,6 +31,7 @@ public final class DomainConstant {
 	public static final String IP 						= "ip";
 	public static final String LAST_NAME				= "lastName";
 	public static final String LOGIN_STATUS 			= "loginStatus";
+	public static final String LOG_AUDIT_CUSTOMER		= "logAuditCustomer";
 	public static final String MEDICAL_BRANCH 			= "medicalBranch";
 	public static final String MEDICAL_CITY 			= "medicalCity";
 	public static final String MEDICAL_PROVIDER			= "medicalProvider";
