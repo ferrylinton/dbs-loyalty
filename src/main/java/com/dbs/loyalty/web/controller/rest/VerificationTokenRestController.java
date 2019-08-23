@@ -5,8 +5,12 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Map;
 
+import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -70,6 +74,7 @@ public class VerificationTokenRestController {
      * POST  /api/verification-tokens/generate : generate token
      *
      * @return token
+     * @throws MessagingException 
      */
     @ApiOperation(
     		nickname=GENERATE_VERIFICATION_TOKEN, 
@@ -78,10 +83,13 @@ public class VerificationTokenRestController {
     		produces="application/json")
     @ApiResponses(value = { @ApiResponse(code=200, message="OK", response=VerificationTokenDto.class)})
     @EnableLogAuditCustomer(operation=GENERATE_VERIFICATION_TOKEN)
+    @Transactional
     @PostMapping("/generate")
     public VerificationTokenDto generate(
     		@ApiParam(name = "GenerateTokenData", value = "Generate token data")
-    		@Valid @RequestBody GenerateTokenDto generateToken) {
+    		@Valid @RequestBody GenerateTokenDto generateToken,
+    		HttpServletRequest request, 
+    		HttpServletResponse response) throws MessagingException {
     	
     	VerificationToken verificationToken = verificationTokenService.generate(generateToken.getEmail());
     	mailService.sendToken(verificationToken.getEmail(), verificationToken.getToken());
@@ -106,7 +114,9 @@ public class VerificationTokenRestController {
     @PostMapping("/verify")
     public Map<String, Boolean> verify(
     		@ApiParam(name = "VerificationTokenData", value = "Verification token data")
-    		@Valid @RequestBody VerificationTokenDto verificationTokenDto) {
+    		@Valid @RequestBody VerificationTokenDto verificationTokenDto, 
+    		HttpServletRequest request, 
+    		HttpServletResponse response) {
     	
     	VerificationToken verificationToken = verificationTokenService.verify(verificationTokenDto.getEmail(), verificationTokenDto.getToken());
     	return Collections.singletonMap(VERIFIED, verificationToken != null);
@@ -128,7 +138,9 @@ public class VerificationTokenRestController {
     @PostMapping("/authenticate")
     public JWTTokenDto authenticate(
     		@ApiParam(name = "VerificationTokenData", value = "Verification token data")
-    		@Valid @RequestBody VerificationTokenDto verificationTokenDto) throws IOException {
+    		@Valid @RequestBody VerificationTokenDto verificationTokenDto, 
+    		HttpServletRequest request, 
+    		HttpServletResponse response) throws IOException {
     	
     	VerificationToken verificationToken = verificationTokenService.verify(verificationTokenDto.getEmail(), verificationTokenDto.getToken());
     	String token = restTokenProvider.createToken(getTokenData(verificationToken), getValidity());

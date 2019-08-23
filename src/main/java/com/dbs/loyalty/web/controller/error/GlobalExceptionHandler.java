@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -41,6 +42,8 @@ public class GlobalExceptionHandler extends AbstractErrorController{
 
 	private static final Locale LOCALE = new Locale("en");
 	
+	private static final String SEND_EMAIL_ERROR = "Can not send email";
+	
 	private static final String OPERATION_KEY_FORMAT = "%s:%s";
 	
 	private static final List<String> CODES = Arrays.asList("NotNull", "Size", "NotEmpty");
@@ -64,6 +67,15 @@ public class GlobalExceptionHandler extends AbstractErrorController{
        return ResponseEntity
 	            .status(HttpStatus.INTERNAL_SERVER_ERROR)
 	            .body(new ErrorResponse(ErrorUtil.getThrowable(ex).getMessage()));
+    }
+	
+	@ExceptionHandler(value = MessagingException.class)
+    public ResponseEntity<ErrorResponse> sendEmailErrorHandler(MessagingException ex){
+		ErrorResponse response = new ErrorResponse(SEND_EMAIL_ERROR);
+		response.setDetail(ex.getLocalizedMessage());
+		return ResponseEntity
+	            .status(HttpStatus.INTERNAL_SERVER_ERROR)
+	            .body(response);
     }
 	
 	@ExceptionHandler(value = NotFoundException.class)

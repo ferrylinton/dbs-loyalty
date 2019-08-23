@@ -1,10 +1,8 @@
 package com.dbs.loyalty.web.controller.rest;
 
 
-import java.beans.PropertyEditorSupport;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +22,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dbs.loyalty.aop.EnableLogAuditCustomer;
 import com.dbs.loyalty.config.constant.Constant;
-import com.dbs.loyalty.config.constant.DateConstant;
 import com.dbs.loyalty.config.constant.MessageConstant;
 import com.dbs.loyalty.config.constant.SecurityConstant;
 import com.dbs.loyalty.config.constant.SwaggerConstant;
@@ -42,6 +39,7 @@ import com.dbs.loyalty.service.dto.JWTTokenDto;
 import com.dbs.loyalty.service.mapper.CustomerMapper;
 import com.dbs.loyalty.util.HeaderTokenUtil;
 import com.dbs.loyalty.util.SecurityUtil;
+import com.dbs.loyalty.web.customeditor.LocalDateEditor;
 import com.dbs.loyalty.web.response.Response;
 import com.dbs.loyalty.web.validator.CustomerPasswordValidator;
 import com.dbs.loyalty.web.validator.CustomerUpdateValidator;
@@ -140,8 +138,8 @@ public class CustomerRestController {
     @ApiResponses(value={@ApiResponse(code=200, message="OK", response=Response.class)})
     @PreAuthorize("hasRole('TOKEN')")
     @EnableLogAuditCustomer(operation=FORGOT_PASSWORD)
-    @PutMapping("/forgot")
-    public Response forgot(
+    @PostMapping("/forgot-password")
+    public Response forgotPassword(
     		@ApiParam(name = "CustomerNewPassword", value = "Customer's new password") 
     		@Valid @RequestBody CustomerNewPasswordDto requestData,
     		HttpServletRequest request,
@@ -152,7 +150,7 @@ public class CustomerRestController {
     	}
     	
     	customerService.changePassword(requestData);
-    	return new Response(MessageConstant.CUSTOMER_IS_ACTIVATED);
+    	return new Response(MessageConstant.PASSWORD_IS_CHANGED);
     }
     
     private JWTTokenDto createToken(CustomerDto customerDto, HttpServletRequest request) throws IOException {
@@ -172,20 +170,7 @@ public class CustomerRestController {
     
     @InitBinder("requestDataCustomer")
 	protected void initBinder(WebDataBinder binder) {
-		binder.registerCustomEditor(LocalDate.class, new PropertyEditorSupport() {
-			
-		    @Override
-		    public void setAsText(String text) throws IllegalArgumentException{
-		      setValue(LocalDate.parse(text, DateTimeFormatter.ofPattern(DateConstant.JAVA_DATE)));
-		    }
-
-		    @Override
-		    public String getAsText() throws IllegalArgumentException {
-		      return DateTimeFormatter.ofPattern(DateConstant.JAVA_DATE).format((LocalDate) getValue());
-		    }
-		    
-		});
-		
+    	binder.registerCustomEditor(LocalDate.class, new LocalDateEditor());
 		binder.addValidators(new CustomerUpdateValidator(customerService));
 	}
     
@@ -193,5 +178,5 @@ public class CustomerRestController {
 	protected void initPasswordBinder(WebDataBinder binder) {
 		binder.addValidators(new CustomerPasswordValidator(customerService));
 	}
-    
+
 }

@@ -40,18 +40,7 @@ public class LogAuditCustomerAspect {
 	
 	@Around("@annotation(enableLogAuditCustomer) && execution(* *(@org.springframework.web.bind.annotation.RequestBody (*), ..)) && args(obj, request, response)")
 	public Object logWithBody(ProceedingJoinPoint joinPoint, EnableLogAuditCustomer enableLogAuditCustomer, Object obj, HttpServletRequest request, HttpServletResponse response) throws Throwable {
-		String url = UrlUtil.getFullUrl(request);
-		String operation = enableLogAuditCustomer.operation();
-		
-		try {
-			Object result = joinPoint.proceed();
-			logAuditCustomerService.saveJson(operation, url, obj, request.getAttribute(Constant.OLD_DATA));
-			return result;
-		} catch (Throwable throwable) {
-			log.error(throwable.getLocalizedMessage(), throwable);
-			logAuditCustomerService.saveError(operation, url, throwable.getLocalizedMessage(), response.getStatus());
-			throw throwable;
-		}
+		return logPost(joinPoint, enableLogAuditCustomer, obj, request, response);
 	}
 
 	public Object logGet(ProceedingJoinPoint joinPoint, EnableLogAuditCustomer enableLogAuditCustomer, HttpServletRequest request, HttpServletResponse response) throws Throwable {
@@ -61,6 +50,21 @@ public class LogAuditCustomerAspect {
 		try {
 			Object result = joinPoint.proceed();
 			logAuditCustomerService.save(operation, url);
+			return result;
+		} catch (Throwable throwable) {
+			log.error(throwable.getLocalizedMessage(), throwable);
+			logAuditCustomerService.saveError(operation, url, throwable.getLocalizedMessage(), response.getStatus());
+			throw throwable;
+		}
+	}
+	
+	public Object logPost(ProceedingJoinPoint joinPoint, EnableLogAuditCustomer enableLogAuditCustomer, Object obj, HttpServletRequest request, HttpServletResponse response) throws Throwable {
+		String url = UrlUtil.getFullUrl(request);
+		String operation = enableLogAuditCustomer.operation();
+		
+		try {
+			Object result = joinPoint.proceed();
+			logAuditCustomerService.saveJson(operation, url, obj, request.getAttribute(Constant.OLD_DATA));
 			return result;
 		} catch (Throwable throwable) {
 			log.error(throwable.getLocalizedMessage(), throwable);

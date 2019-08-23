@@ -15,6 +15,7 @@ public final class MessageConstant {
 	public static final String LOGIN_FAILED 				= "Login failed";
 	public static final String NO_LIMIT_iS_AVAILABLE 		= "No limit is available";
 	public static final String PASSWORD_IS_NOT_CONFIRMED 	= "Password is not confirmed";
+	public static final String PASSWORD_IS_CHANGED 			= "Password is changed successfully";
 	public static final String SUCCESS 						= "message.success";
 	public static final String TASK_IS_REJECTED 			= "message.taskIsRejected";
 	public static final String TASK_IS_VERIFIED 			= "message.taskIsVerified";
