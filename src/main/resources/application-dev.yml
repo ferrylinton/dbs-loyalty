@@ -18,6 +18,9 @@ application:
     file-path: /home/ferry/loyalty/customers.csv
   mail: 
     from: testdevku007@gmail.com
+  customer: 
+    tpc: "0025"
+    treasure: "0012"
   file:
     # 3x1024x102 5MB
     image-max-size: 3145728
@@ -31,8 +34,7 @@ application:
       - image/jpg
       - image/jpeg
   tada:
-    domain: https://staging-distribution-api.gift.id/oauth/token
-    access-token-uri: /oauth/token
+    access-token-uri: https://staging-distribution-api.gift.id/oauth/token
     client-id: 54ud8nSSMxHughBhNe7JQWep9
     client-secret: OIBA5lyZXm8x3cyo2XC6NFjuD8tooMzbTQHp5MN1SV7JzuHxAU
     grant-type: password
@@ -40,10 +42,20 @@ application:
     password: 2571
     scope:
       - offline_access
+    categories-url: https://staging-distribution-api.gift.id/v2/categories
+    items-url: https://staging-distribution-api.gift.id/v2/items
+    orders-url: https://staging-distribution-api.gift.id/v2/orders
+    ordersById-url: https://staging-distribution-api.gift.id/v2/orders/{id}
+    countries-url: https://staging-distribution-api.gift.id/v2/countries
+  tada-payment:
+    type: tada
+    wallet-type: balance
+    card-number: 3671287772281932
+    card-pin: 286812
   http:
-    connect-timeout: 30000
-    connection-request-timeout: 30000 
-    read-timeout: 30000
+    connect-timeout: 60000
+    connection-request-timeout: 60000 
+    read-timeout: 60000
 
 spring:
   datasource:
