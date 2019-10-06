@@ -1,4 +1,4 @@
-﻿INSERT INTO loyalty.mst_city (id,name,active,province_id,created_at,updated_at,deleted_at) VALUES 
+﻿INSERT INTO mst_city (id,name,active,province_id,created_at,updated_at,deleted_at) VALUES 
 (1,'Jakarta Pusat',1,1,'2018-07-13 09:40:06.000','2018-07-13 09:40:06.000',NULL)
 ,(2,'Jakarta Selatan',1,1,'2018-07-13 09:40:16.000','2018-07-13 09:40:16.000',NULL)
 ,(3,'Jakarta Utara',1,1,'2018-07-13 09:40:23.000','2018-07-13 09:40:23.000',NULL)
@@ -10,7 +10,7 @@
 ,(9,'Serang',1,2,'2018-07-13 09:41:42.000','2018-07-13 09:41:42.000',NULL)
 ,(10,'Kab. Lebak',1,2,'2018-07-13 09:41:47.000','2018-07-13 09:41:47.000',NULL)
 ;
-INSERT INTO loyalty.mst_city (id,name,active,province_id,created_at,updated_at,deleted_at) VALUES 
+INSERT INTO mst_city (id,name,active,province_id,created_at,updated_at,deleted_at) VALUES 
 (18,'Semarang',1,4,'2018-07-13 09:43:30.000','2018-07-13 09:43:30.000',NULL)
 ,(19,'Kab. Semarang',1,4,'2018-07-13 09:43:34.000','2018-07-13 09:43:34.000',NULL)
 ,(20,'Solo',1,4,'2018-07-13 09:43:43.000','2018-07-13 09:43:43.000',NULL)
@@ -22,7 +22,7 @@ INSERT INTO loyalty.mst_city (id,name,active,province_id,created_at,updated_at,d
 ,(26,'Pasuruan',1,5,'2018-07-13 09:44:34.000','2018-07-13 09:44:34.000',NULL)
 ,(27,'Gresik',1,5,'2018-07-13 09:44:38.000','2018-07-13 09:44:38.000',NULL)
 ;
-INSERT INTO loyalty.mst_city (id,name,active,province_id,created_at,updated_at,deleted_at) VALUES 
+INSERT INTO mst_city (id,name,active,province_id,created_at,updated_at,deleted_at) VALUES 
 (28,'Tuban',1,5,'2018-07-13 09:44:44.000','2018-07-13 09:44:44.000',NULL)
 ,(29,'Mojokerto',1,5,'2018-07-13 09:44:49.000','2018-07-13 09:44:49.000',NULL)
 ,(30,'Denpasar',1,7,'2018-07-13 09:45:01.000','2018-07-13 09:45:01.000',NULL)
@@ -34,7 +34,7 @@ INSERT INTO loyalty.mst_city (id,name,active,province_id,created_at,updated_at,d
 ,(36,'Bandung',1,13,'2019-04-15 09:44:43.000','2019-04-15 09:44:43.000',NULL)
 ,(37,'Jurong',1,14,'2019-04-29 02:46:48.000','2019-04-29 02:46:48.000',NULL)
 ;
-INSERT INTO loyalty.mst_city (id,name,active,province_id,created_at,updated_at,deleted_at) VALUES 
+INSERT INTO mst_city (id,name,active,province_id,created_at,updated_at,deleted_at) VALUES 
 (38,'Yuhua',1,14,'2019-04-29 02:46:58.000','2019-04-29 02:46:58.000',NULL)
 ,(39,'Bukit Batok',1,14,'2019-04-29 02:47:12.000','2019-04-29 02:47:12.000',NULL)
 ;

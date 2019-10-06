@@ -1,4 +1,4 @@
-﻿INSERT INTO loyalty.mst_province (id,name,active,country_id,created_at,updated_at,deleted_at) VALUES 
+﻿INSERT INTO mst_province (id,name,active,country_id,created_at,updated_at,deleted_at) VALUES 
 (1,'DKI Jakarta',1,1,'2018-07-13 09:37:19.000','2018-07-13 09:37:19.000',NULL)
 ,(2,'Banten',1,1,'2018-07-13 09:37:26.000','2018-07-13 09:37:26.000',NULL)
 ,(4,'Jawa Tengah',1,1,'2018-07-13 09:37:41.000','2018-07-13 09:37:41.000',NULL)
@@ -10,7 +10,7 @@
 ,(10,'Sumatera Barat',1,1,'2018-07-13 09:39:21.000','2018-07-13 09:39:21.000',NULL)
 ,(11,'Sumatera Selatan',1,1,'2018-07-13 09:39:39.000','2018-07-13 09:39:39.000',NULL)
 ;
-INSERT INTO loyalty.mst_province (id,name,active,country_id,created_at,updated_at,deleted_at) VALUES 
+INSERT INTO mst_province (id,name,active,country_id,created_at,updated_at,deleted_at) VALUES 
 (12,'City test',1,1,'2018-10-29 10:01:50.000','2018-10-29 10:01:50.000',NULL)
 ,(13,'Jawa Barat',1,1,'2018-10-31 07:12:29.000','2018-10-31 07:12:29.000',NULL)
 ,(14,'Jurong-Clementi',1,2,'2019-04-29 02:46:33.000','2019-04-29 02:46:33.000',NULL)
