@@ -2,7 +2,7 @@ spring:
   application:
     name: DBS Loyalty
   profiles:
-    active: local
+    active: vps
 #    active: vps, cdnjs, min
 deploy:
   # suffix link for CSS and JS
