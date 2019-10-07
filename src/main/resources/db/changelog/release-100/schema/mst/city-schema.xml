@@ -22,7 +22,7 @@
     </changeSet>
     
     <changeSet author="FLH" id="mst-city-schema-2">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="mst_city"/>
+        <addPrimaryKey columnNames="id" constraintName="mst_city_pk" tableName="mst_city"/>
     </changeSet>
 
     <changeSet author="FLH" id="mst-city-schema-3">

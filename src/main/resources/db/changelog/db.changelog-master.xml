@@ -8,8 +8,8 @@
 	<!-- Schema -->
 	
     <include file="release-100/schema/variables.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/schema/batch-schema.xml" relativeToChangelogFile="true"/>
-    <include file="release-100/schema/task-schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/schema/batch/batch-schema.xml" relativeToChangelogFile="true"/>
+    <include file="release-100/schema/task/task-schema.xml" relativeToChangelogFile="true"/>
     
     <include file="release-100/schema/sec/authority-schema.xml" relativeToChangelogFile="true"/>
 	<include file="release-100/schema/sec/role-schema.xml" relativeToChangelogFile="true"/>

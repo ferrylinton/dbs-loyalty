@@ -7,6 +7,8 @@
     
     <property name="file.type" value="blob" dbms="h2"/>
 	<property name="file.type" value="mediumblob" dbms="mariadb,mysql"/>
+	<property name="text.type" value="clob" dbms="h2"/>
+	<property name="text.type" value="longtext" dbms="mariadb,mysql"/>
  	<property name="password" value="$2a$10$9KcHpiHwzPk.61JiGE.0MeyshggPZWY9TSyD66IZi26zl6mk67.S." />
  	
     <preConditions>

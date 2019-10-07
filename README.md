@@ -4,6 +4,9 @@
 
 ```
 mvn spring-boot:run
+mvn spring-boot:run -Dspring-boot.run.profiles=dev
+mvn spring-boot:run -Dspring-boot.run.profiles=local,cdnjs,min
+mvn spring-boot:run -Dspring-boot.run.profiles=vps,cdnjs,min
 ```
 ## Deploy
 
@@ -24,8 +27,10 @@ scp target/loyalty-0.0.1-SNAPSHOT.war root@192.227.166.217:/loyalty
 
 ### Run
 ```
+java -jar target/loyalty-0.0.1-SNAPSHOT.war --spring.profiles.active=local,cdnjs,min
 nohup mvn spring-boot:run &
 nohup java -jar target/loyalty-0.0.1-SNAPSHOT.war &
+nohup java -jar target/loyalty-0.0.1-SNAPSHOT.war --spring.profiles.active=vps,cdnjs,min &
 ```
 
 ## Liquibase

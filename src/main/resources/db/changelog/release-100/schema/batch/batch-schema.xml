@@ -5,10 +5,13 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
+	<property name="sqlfile" value="schema-h2.sql" dbms="h2"/>
+	<property name="sqlfile" value="schema-mariadb.sql" dbms="mariadb,mysql"/>
+	
     <changeSet author="FLH" id="batch-schema-1">
         <sqlFile
             endDelimiter=";"
-            path="schema-mariadb.sql"
+            path="${sqlfile}"
             relativeToChangelogFile="true"
             splitStatements="true"
             stripComments="true"/>

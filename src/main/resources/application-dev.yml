@@ -59,7 +59,6 @@ application:
 
 spring:
   datasource:
-    platform: h2
     type: com.zaxxer.hikari.HikariDataSource
     url: jdbc:h2:file:./target/h2db/dbs;MODE=MySQL;AUTO_SERVER=TRUE
     username: sa
@@ -77,13 +76,14 @@ spring:
       enabled: true
       path: /h2-console
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
     show-sql: true
     properties:
-      hibernate.hbm2ddl.auto: validate
+      hibernate.dialect: org.hibernate.dialect.H2Dialect
+      hibernate.hbm2ddl.auto: none
       hibernate.format_sql: true
       hibernate.jdbc.lob.non_contextual_creation: true
       hibernate.integration.envers.enabled: false
+      hibernate.jdbc.time_zone: UTC
   liquibase: 
     enabled: true
     change-log: classpath:/db/changelog/db.changelog-master.xml
@@ -100,21 +100,6 @@ spring:
     cache: false
   messages:
     basename: i18n/messages
-  devtools:
-    livereload:
-      enabled: true
-      port: 35729
-  ldap:
-    authenticate:
-      attribute: uid
-    base: dc=lwproject,dc=com
-    embedded:
-      base-dn: dc=lwproject,dc=com
-      ldif: classpath:schema.ldif
-      port: 10389
-      credential:
-        username: uid=admin
-        password: password
   batch:
     initialize-schema: never
     # File not exist, to prevent initialize
@@ -136,3 +121,20 @@ spring:
             port: 465
             class: javax.net.ssl.SSLSocketFactory
             fallback: false
+  ldap:
+    authenticate:
+      attribute: uid
+    base: dc=lwproject,dc=com
+    embedded:
+      base-dn: dc=lwproject,dc=com
+      ldif: classpath:schema.ldif
+      port: 10389
+      credential:
+        username: uid=admin
+        password: password
+  devtools:
+    livereload:
+      enabled: true
+      port: 35729
+logging:
+  config: classpath:logback-dev.xml

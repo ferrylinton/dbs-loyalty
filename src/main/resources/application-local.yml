@@ -74,9 +74,8 @@ spring:
   h2:
     console:
       enabled: false
+      path: /h2-console
   jpa:
-    database-platform: org.mariadb.jdbc.Driver
-    database: MYSQL
     show-sql: true
     properties:
       hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
@@ -84,7 +83,7 @@ spring:
       hibernate.format_sql: true
       hibernate.jdbc.lob.non_contextual_creation: true
       hibernate.integration.envers.enabled: false
-
+      hibernate.jdbc.time_zone: UTC
   liquibase: 
     enabled: true
     change-log: classpath:/db/changelog/db.changelog-master.xml
@@ -93,25 +92,14 @@ spring:
     static-path-pattern: /static/**
   servlet:
     multipart:
-      max-file-size: 50MB
-      max-request-size: 50MB
+      max-file-size: 5MB
+      max-request-size: 5MB
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
     cache: false
   messages:
     basename: i18n/messages
-  ldap:
-    authenticate:
-      attribute: uid
-    base: dc=lwproject,dc=com
-    embedded:
-      base-dn: dc=lwproject,dc=com
-      ldif: classpath:schema.ldif
-      port: 10389
-      credential:
-        username: uid=admin
-        password: password
   batch:
     initialize-schema: never
     # File not exist, to prevent initialize
@@ -133,3 +121,20 @@ spring:
             port: 465
             class: javax.net.ssl.SSLSocketFactory
             fallback: false
+  ldap:
+    authenticate:
+      attribute: uid
+    base: dc=lwproject,dc=com
+    embedded:
+      base-dn: dc=lwproject,dc=com
+      ldif: classpath:schema.ldif
+      port: 10389
+      credential:
+        username: uid=admin
+        password: password
+  devtools:
+    livereload:
+      enabled: true
+      port: 35729
+logging:
+  config: classpath:logback-dev.xml

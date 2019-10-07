@@ -27,7 +27,7 @@
     </changeSet>
     
     <changeSet author="FLH" id="md-medical-city-schema-2">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="md_medical_city"/>
+        <addPrimaryKey columnNames="id" constraintName="md_medical_city_pk" tableName="md_medical_city"/>
     </changeSet>
     
     <changeSet author="FLH" id="md-medical-city-schema-3">

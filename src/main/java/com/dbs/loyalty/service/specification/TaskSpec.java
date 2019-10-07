@@ -32,7 +32,7 @@ public class TaskSpec implements Specification<Task>{
 	public Predicate toPredicate(Root<Task> root, CriteriaQuery<?> cq, CriteriaBuilder cb) {
 		List<Predicate> predicates = new ArrayList<>();
 		
-		predicates.add(cb.equal(root.get(Constant.TASK_DATA_TYPE), taskDataType));
+		predicates.add(cb.equal(cb.lower(root.get(Constant.TASK_DATA_TYPE)), taskDataType.toLowerCase()));
 		
 		if(TaskUtil.getTaskStatus(params) != TaskStatus.ALL) {
 			predicates.add(cb.equal(root.get(Constant.TASK_STATUS), TaskUtil.getTaskStatus(params)));

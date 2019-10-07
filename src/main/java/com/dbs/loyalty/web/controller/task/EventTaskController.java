@@ -20,6 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dbs.loyalty.config.constant.Constant;
 import com.dbs.loyalty.config.constant.DomainConstant;
+import com.dbs.loyalty.domain.Event;
 import com.dbs.loyalty.domain.Task;
 import com.dbs.loyalty.service.EventService;
 import com.dbs.loyalty.service.TaskService;
@@ -58,7 +59,7 @@ public class EventTaskController extends AbstractTaskController {
 			Sort sort, Model model) {
 		
 		Order order = PageUtil.getOrder(sort, MADE_DATE);
-		Page<Task> page = taskService.findAll(DomainConstant.EVENT, params, PageUtil.getPageable(params, order));
+		Page<Task> page = taskService.findAll(Event.class.getSimpleName(), params, PageUtil.getPageable(params, order));
 		
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {
 			return REDIRECT;

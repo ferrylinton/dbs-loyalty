@@ -31,7 +31,7 @@
     </changeSet>
     
     <changeSet author="FLH" id="cst-departure-schema-2">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="cst_address"/>
+        <addPrimaryKey columnNames="id" constraintName="cst_address_pk" tableName="cst_address"/>
     </changeSet>
 
     <changeSet author="FLH" id="cst-departure-schema-3">

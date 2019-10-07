@@ -12,13 +12,13 @@
     </appender>
 	
     <appender name="FILE-AUDIT" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_HOME}/priviledge.log</file>
+        <file>${LOG_HOME}/loyalty.log</file>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <Pattern>%d{yyyy-MM-dd HH:mm:ss} - %msg%n</Pattern>
         </encoder>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_HOME}/archived/blog.%d{yyyy-MM-dd}.%i.log </fileNamePattern>
+            <fileNamePattern>${LOG_HOME}/archived/loyalty.%d{yyyy-MM-dd}.%i.log </fileNamePattern>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>10MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
@@ -32,6 +32,11 @@
     </logger>
 	
     <logger name="logging.level.org.springframework.jdbc" level="debug" additivity="false">
+        <appender-ref ref="FILE-AUDIT" />
+        <appender-ref ref="STDOUT" />
+    </logger>
+    
+    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="trace" additivity="false">
         <appender-ref ref="FILE-AUDIT" />
         <appender-ref ref="STDOUT" />
     </logger>

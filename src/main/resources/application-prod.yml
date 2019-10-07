@@ -18,12 +18,51 @@ application:
     file-path: /home/ferry/loyalty/customers.csv
   mail: 
     from: testdevku007@gmail.com
+  customer: 
+    tpc: "0025"
+    treasure: "0012"
+  file:
+    # 3x1024x102 5MB
+    image-max-size: 3145728
+    # 3x1024x102 5MB
+    pdf-max-size: 3145728
+    # 20x1024x102 20MB
+    csv-max-size: 20910080
+    pdf-content-type: application/pdf
+    image-content-types:
+      - image/png
+      - image/jpg
+      - image/jpeg
+  tada:
+    access-token-uri: https://staging-distribution-api.gift.id/oauth/token
+    client-id: 54ud8nSSMxHughBhNe7JQWep9
+    client-secret: OIBA5lyZXm8x3cyo2XC6NFjuD8tooMzbTQHp5MN1SV7JzuHxAU
+    grant-type: password
+    username: 17527002
+    password: 2571
+    scope:
+      - offline_access
+    categories-url: https://staging-distribution-api.gift.id/v2/categories
+    items-url: https://staging-distribution-api.gift.id/v2/items
+    orders-url: https://staging-distribution-api.gift.id/v2/orders
+    ordersById-url: https://staging-distribution-api.gift.id/v2/orders/{id}
+    countries-url: https://staging-distribution-api.gift.id/v2/countries
+  tada-payment:
+    type: tada
+    wallet-type: balance
+    card-number: 3671287772281932
+    card-pin: 286812
+  http:
+    connect-timeout: 60000
+    connection-request-timeout: 60000 
+    read-timeout: 60000
+    
 spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mariadb://localhost:3306/loyalty?useLegacyDatetimeCode=false&serverTimezone=UTC
-    username: root
-    password: 
+    url: jdbc:mariadb://192.227.166.217:3306/loyalty_dbs?useLegacyDatetimeCode=false&serverTimezone=UTC
+    username: loyalty_dbs_user
+    password: loyalty_dbs_password
     hikari:
       poolName: Hikari
       auto-commit: false
@@ -35,13 +74,12 @@ spring:
   h2:
     console:
       enabled: false
+      path: /h2-console
   jpa:
-    database-platform: org.mariadb.jdbc.Driver
-    database: MYSQL
-    show-sql: true
+    show-sql: false
     properties:
       hibernate.dialect: org.hibernate.dialect.MySQL5Dialect
-      hibernate.hbm2ddl.auto: none
+      hibernate.hbm2ddl.auto: validate
       hibernate.format_sql: true
       hibernate.jdbc.lob.non_contextual_creation: true
       hibernate.integration.envers.enabled: false
@@ -58,16 +96,10 @@ spring:
       max-request-size: 5MB
   thymeleaf:
     prefix: classpath:/templates/
+    suffix: .html
     cache: true
   messages:
     basename: i18n/messages
-  ldap:
-    authenticate:
-      attribute: uid
-    urls: ldap://192.227.166.217:389 
-    username: uid=admin01,cn=users,ou=dbs,dc=lwproject,dc=com
-    password: password
-    base: ou=dbs,dc=lwproject,dc=com
   batch:
     initialize-schema: never
     # File not exist, to prevent initialize
@@ -89,3 +121,16 @@ spring:
             port: 465
             class: javax.net.ssl.SSLSocketFactory
             fallback: false
+  ldap:
+    authenticate:
+      attribute: uid
+    urls: ldap://192.227.166.217:389 
+    username: uid=admin01,cn=users,ou=dbs,dc=lwproject,dc=com
+    password: password
+    base: ou=dbs,dc=lwproject,dc=com
+  devtools:
+    livereload:
+      enabled: false
+      port: 35729
+logging:
+  config: classpath:logback-prod.xml

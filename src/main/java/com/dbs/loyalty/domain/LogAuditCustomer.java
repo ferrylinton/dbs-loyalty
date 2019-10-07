@@ -63,12 +63,12 @@ public class LogAuditCustomer implements Serializable {
 
     @Lob
 	@Type(type = "org.hibernate.type.TextType")
-    @Column(name = "request_json")
+    @Column(name = "request_json", columnDefinition="TEXT")
     private String requestJson;
 
     @Lob
 	@Type(type = "org.hibernate.type.TextType")
-    @Column(name = "old_json")
+    @Column(name = "old_json", columnDefinition="TEXT")
     private String oldJson;
     
     @Lob
@@ -81,7 +81,7 @@ public class LogAuditCustomer implements Serializable {
 
     @Lob
    	@Type(type = "org.hibernate.type.TextType")
-    @Column(name = "response_json")
+    @Column(name = "response_json", columnDefinition="TEXT")
  	private String responseJson;
     
     @Column(name = "response_text")

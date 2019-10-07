@@ -27,7 +27,7 @@
     </changeSet>
     
     <changeSet author="FLH" id="md-medical-branch-schema-2">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="md_medical_branch"/>
+        <addPrimaryKey columnNames="id" constraintName="md_medical_branch_pk" tableName="md_medical_branch"/>
     </changeSet>
     
     <changeSet author="FLH" id="md-medical-branch-schema-3">

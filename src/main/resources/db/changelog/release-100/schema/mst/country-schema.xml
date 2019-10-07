@@ -24,7 +24,7 @@
     </changeSet>
     
     <changeSet author="FLH" id="mst-country-schema-2">
-        <addPrimaryKey columnNames="id" constraintName="PRIMARY" tableName="mst_country"/>
+        <addPrimaryKey columnNames="id" constraintName="mst_country_pk" tableName="mst_country"/>
     </changeSet>
     
     <changeSet author="FLH" id="mst-country-schema-3">
