@@ -30,11 +30,11 @@
                   	<div class="input-group">
                     	<input class="form-control" name="ky" maxlength="40" th:value="${param.ky}" th:placeholder="|#{customer}, #{medicalProvider}|" />
                       	<div class="input-group-append">
-                       		<button class="btn btn-light border text-secondary" type="submit">
+                       		<button class="btn btn-light border" type="submit">
                              	<span class="icon-search"></span>
                            	</button>
-                          	<a class="btn btn-light border text-secondary" th:href="@{/appointment}">
-                            	<span class="icon-arrows-cw"></span>
+                          	<a class="btn btn-light border" th:href="@{/appointment}">
+                            	<span class="icon-ccw"></span>
                           	</a>
                        	</div>
                    	</div>
@@ -47,11 +47,12 @@
                         <tr th:with="ascending=${order.getDirection().name() == 'ASC'}">
                             <th style="width:40px"></th>
                             <th style="width:40px">#</th>
-                            <th style="width:180px" th:with="sort=|&sort=arrivalDate,${ascending ? 'DESC' : 'ASC'}|">
+                            <th style="width:100px" th:with="sort=|&sort=date,${ascending ? 'DESC' : 'ASC'}|">
                                 <a th:href="@{|?page=${page.getNumber()}${params}${sort}|}" class="text-decoration-none">
                                     <span th:text="#{date}">Date</span> <span th:classappend="${ascending} ? 'icon-up' : 'icon-down'"></span>
                                 </a>
                             </th>
+                            <th style="width:60px" th:text="#{time}">Time</th>
                             <th th:text="#{firstName}">First Name</th>
                             <th th:text="#{lastName}">Last Name</th>
                             <th th:text="#{medicalProvider}">Medical Provider</th>
@@ -72,7 +73,8 @@
 								</div>
 							</td>
 	                        <td th:text="${row.count + (page.number * page.size)}">1</td>
-	                        <td><span th:data-date="${@dateService.jsDatetime()}" th:text="${appointment.date}">Date</span></td>
+	                        <td><span th:data-date="${@dateService.jsDate()}" th:text="${appointment.date}">Date</span></td>
+	                        <td><span th:data-date="${@dateService.jsTime()}" th:text="${appointment.dateTime}">Time</span></td>
 	                        <td th:text="${appointment.customer.firstName}">First Name</td>
 	                        <td th:text="${appointment.customer.lastName}">Last Name</td>
 	                        <td th:text="${appointment.medicalProvider.name}">BIOTEST INDONESIA</td>

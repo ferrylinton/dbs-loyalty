@@ -258,11 +258,14 @@
 		</dependency> 
 		
 		<!-- ID -->
+		
 		<dependency>
 		    <groupId>com.devskiller.friendly-id</groupId>
 		    <artifactId>friendly-id</artifactId>
 		    <version>1.1.0</version>
 		</dependency>
+		
+		<!-- HTTP CLIENT -->
 		
 		<dependency>
 	        <groupId>org.apache.httpcomponents</groupId>
@@ -288,6 +291,7 @@
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
             <version>${mapstruct.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>

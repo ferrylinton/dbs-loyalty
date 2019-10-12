@@ -48,7 +48,7 @@ public class AppointmentController {
 			@RequestParam Map<String, String> params, 
 			Sort sort, Model model) {
 		
-		Order order = PageUtil.getOrder(sort, SORT_BY);
+		Order order = PageUtil.getOrderDesc(sort, SORT_BY);
 		Page<Appointment> page = appointmentService.findAll(params, PageUtil.getPageable(params, order));
 
 		if (page.getNumber() > 0 && page.getNumber() + 1 > page.getTotalPages()) {

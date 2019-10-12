@@ -1,6 +1,7 @@
 package com.dbs.loyalty.domain;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import javax.persistence.Column;
@@ -12,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -56,6 +58,9 @@ public class Appointment extends AbstractAuditing {
 	@Column(name = "time", nullable = false)
 	private LocalTime time;
 	
+	@Transient
+	private LocalDateTime dateTime;
+	
 	@ManyToOne(optional = true, fetch = FetchType.LAZY)
     @JoinColumn(name = "medical_provider_id", foreignKey = @ForeignKey(name = "md_appointment_fk1"))
     private MedicalProvider medicalProvider;
@@ -76,4 +81,8 @@ public class Appointment extends AbstractAuditing {
     @JoinColumn(name = "health_package_id", nullable = true, foreignKey = @ForeignKey(name = "md_appointment_fk5"))
     private HealthPackage healthPackage;
 	
+    public LocalDateTime getDateTime() {
+    	return LocalDateTime.of(date, time);
+    }
+    
 }

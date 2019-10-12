@@ -52,7 +52,11 @@
                   	</tr>
                   	<tr>
                      	<th th:text="#{date}">Date</th>
-                     	<td><span th:data-date="${@dateService.jsDatetime()}" th:text="${appointment.date}">2019-05-01T21:24:44Z</span></td>
+                     	<td><span th:data-date="${@dateService.jsDate()}" th:text="${appointment.date}">2019-05-01T21:24:44Z</span></td>
+                  	</tr>
+                  	<tr>
+                     	<th th:text="#{time}">Time</th>
+                     	<td><span th:text="${appointment.time}">2019-05-01T21:24:44Z</span></td>
                   	</tr>
            			<tr th:replace="fragment/audit-detail.html :: content(data=${appointment})"></tr>
            		</tbody>
