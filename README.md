@@ -1,6 +1,6 @@
 # DBS Loyalty
 
-## Run With Embedded Server
+## Run With Embedded Server (pick one command)
 
 ```
 mvn spring-boot:run
@@ -9,6 +9,7 @@ mvn spring-boot:run -Dspring-boot.run.profiles=local,cdnjs,min
 mvn spring-boot:run -Dspring-boot.run.profiles=vps,cdnjs,min
 nohup mvn spring-boot:run -Dspring-boot.run.profiles=vps,cdnjs,min &
 ```
+
 ## Deploy
 
 ### Minify HTML
@@ -21,16 +22,30 @@ mvn htmlcompressor:html
 mvn clean package -DskipTests
 ```
 
+### Login To Server
+```
+ssh root@192.227.166.217
+1709b580ed
+```
+
 ### Copy To Server
 ```
 scp target/loyalty-0.0.1-SNAPSHOT.war root@192.227.166.217:/loyalty
 ```
 
-### Run
+### Run Spring Boot At Server
 ```
-java -jar target/loyalty-0.0.1-SNAPSHOT.war --spring.profiles.active=local,cdnjs,min
-nohup java -jar target/loyalty-0.0.1-SNAPSHOT.war &
 nohup java -jar target/loyalty-0.0.1-SNAPSHOT.war --spring.profiles.active=vps,cdnjs,min &
+```
+
+### Check Log Nohup
+```
+tail -1000f nohup.out
+```
+
+### Check From Browser
+```
+http://192.227.166.217:8181/loyalty/login
 ```
 
 ## Liquibase
